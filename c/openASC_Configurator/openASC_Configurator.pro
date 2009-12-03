@@ -11,6 +11,7 @@ HEADERS = src/mainwindowimpl.h \
  src/bandclass.h \
  src/main.h \
  src/posix_qextserialport.h \
+ src/win_qextserialport.h \
  src/qextserialbase.h \
  src/qextserialport.h \
  src/sequencerclass.h \
@@ -26,6 +27,7 @@ SOURCES = src/mainwindowimpl.cpp \
  src/generic.cpp \
  src/bandclass.cpp \
  src/posix_qextserialport.cpp \
+ src/win_qextserialport.cpp \
  src/qextserialbase.cpp \
  src/qextserialport.cpp \
  src/sequencerclass.cpp \
