@@ -2,17 +2,15 @@
 #ifndef _QEXTSERIALPORT_H_
 #define _QEXTSERIALPORT_H_
 
-#define _TTY_POSIX_
-
-/*POSIX CODE*/
-#ifdef _TTY_POSIX_
-#include "posix_qextserialport.h"
-#define QextBaseType Posix_QextSerialPort
+//#define _TTY_POSIX_
 
 /*MS WINDOWS CODE*/
-#else
-#include "win_qextserialport.h"
-#define QextBaseType Win_QextSerialPort
+#ifdef WIN32
+	#include "win_qextserialport.h"
+	#define QextBaseType Win_QextSerialPort
+#else /*POSIX CODE*/
+	#include "posix_qextserialport.h"
+	#define QextBaseType Posix_QextSerialPort
 #endif
 
 class QextSerialPort: public QextBaseType {
