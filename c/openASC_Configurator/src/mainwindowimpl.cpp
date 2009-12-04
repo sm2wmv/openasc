@@ -1117,36 +1117,44 @@ void MainWindowImpl::pushButtonRotatorDeletePressed() {
 void MainWindowImpl::comboBoxAntennaRotator1IndexChanged(int newIndex) {
 	if (newIndex > 0) {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(0,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorMinHeading(newIndex-1), rotators.getRotatorMaxHeading(newIndex-1),rotators.getRotatorDelay(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setHasRotator(0,true);
 	}
 	else {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(0,-1,0,0,0,0);
+		bandData[comboBoxBand->currentIndex()].setHasRotator(0,false);
 	}
 }
 
 void MainWindowImpl::comboBoxAntennaRotator2IndexChanged(int newIndex) {
 	if (newIndex > 0) {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(1,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorMinHeading(newIndex-1), rotators.getRotatorMaxHeading(newIndex-1),rotators.getRotatorDelay(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setHasRotator(1,true);
 	}
 	else {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(1,-1,0,0,0,0);
+		bandData[comboBoxBand->currentIndex()].setHasRotator(1,false);
 	}
 }
 
 void MainWindowImpl::comboBoxAntennaRotator3IndexChanged(int newIndex) {
 	if (newIndex > 0) {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(2,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorMinHeading(newIndex-1), rotators.getRotatorMaxHeading(newIndex-1),rotators.getRotatorDelay(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setHasRotator(2,true);
 	}
 	else {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(2,-1,0,0,0,0);
+		bandData[comboBoxBand->currentIndex()].setHasRotator(2,false);
 	}
 }
 	
 void MainWindowImpl::comboBoxAntennaRotator4IndexChanged(int newIndex) {
 	if (newIndex > 0) {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(3,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorMinHeading(newIndex-1), rotators.getRotatorMaxHeading(newIndex-1),rotators.getRotatorDelay(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setHasRotator(3,true);
 	}
 	else {
 		bandData[comboBoxBand->currentIndex()].setRotatorProperties(3,-1,0,0,0,0);
+		bandData[comboBoxBand->currentIndex()].setHasRotator(3,false);
 	}
 }
 

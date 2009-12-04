@@ -101,6 +101,8 @@
 #define CTRL_SET_ANT_DATA_ANT_FLAGS				0x04
 #define CTRL_SET_ANT_DATA_COMB_ALLOWED		0x05
 #define CTRL_SET_ANT_DATA_ANT_OUT_STR			0x06
+#define CTRL_SET_ANT_ROTATOR_DATA					0x07
+#define CTRL_SET_ANT_DEFAULT_INDEX				0x08
 
 /* Defines for the band data */
 #define CTRL_SET_BAND_DATA_LIMITS					0x01
@@ -239,6 +241,8 @@ void computer_interface_send_flag(void) {
 }
 
 void computer_interface_parse_data(void) {
+	unsigned char ptr_pos=2;
+	
 	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF)) {
 		if (computer_comm.command == CTRL_SET_TIME) {
 			ds1307_set_time(computer_comm.rx_buffer_start);
@@ -309,13 +313,28 @@ void computer_interface_parse_data(void) {
 					
 					computer_interface_send_ack();
 					break;
+				case CTRL_SET_ANT_ROTATOR_DATA:
+					for (unsigned char i=0;i<4;i++) {
+						antenna_ptr->rotator_addr[i] = computer_comm.rx_buffer[ptr_pos++];
+						antenna_ptr->rotator_max_heading[i] = computer_comm.rx_buffer[ptr_pos++] << 8;
+						antenna_ptr->rotator_max_heading[i] += computer_comm.rx_buffer[ptr_pos++];
+						antenna_ptr->rotator_min_heading[i] = computer_comm.rx_buffer[ptr_pos++] << 8;
+						antenna_ptr->rotator_min_heading[i] += computer_comm.rx_buffer[ptr_pos++];
+						antenna_ptr->rotator_delay[i] = computer_comm.rx_buffer[ptr_pos++];
+					}
+					
+					computer_interface_send_ack();
+					break;
+				case CTRL_SET_ANT_DEFAULT_INDEX:
+					antenna_ptr->default_antenna = computer_comm.rx_buffer[2];
+					computer_interface_send_ack();
+					break;	
 				case CTRL_SET_ANT_DATA_SAVE:
 					//Save the antenna structure to the eeprom
 					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1], antenna_ptr);
 
 					//Reset the content of the antenna_ptr
 					memset(antenna_ptr,0,sizeof(struct_antenna));
-					
 					computer_interface_send_ack();
 					break;
 				default:

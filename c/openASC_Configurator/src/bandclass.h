@@ -108,6 +108,7 @@ class BandClass
 		void setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, int minHeading, int maxHeading, unsigned char delay);
 		int getRotatorIndex(unsigned char antIndex);
 		
+		void setHasRotator(unsigned char ant_index, bool state);
 	private:
 		unsigned char rotatorAddress[4];
 		int rotatorIndex[4];
@@ -130,6 +131,7 @@ class BandClass
 		unsigned char antennaFlags[4];
 		bool antennaOutputCombAllowed[15];
 		bool multiband[4];
+		bool hasRotator[4];
 		//0 = none
 		//1 = 4-SQ
 		//2 = STACK

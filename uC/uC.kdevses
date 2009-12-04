@@ -1,34 +1,16 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="9" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="" Type="Source" />
+ <DocsAndViews NumberOfDocuments="3" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/radio_interface.h" >
+   <View0 Encoding="" line="15" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/sequencer.c" >
-   <View0 Encoding="" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/radio_interface.c" >
+   <View0 Encoding="" line="167" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/eeprom.c" >
-   <View0 Encoding="" Type="Source" />
-  </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/sequencer.h" >
-   <View0 Encoding="" Type="Source" />
-  </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/computer_interface.c" >
-   <View0 Encoding="" line="470" Type="Source" />
-  </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/main.h" >
+  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/menu.h" >
    <View0 Encoding="" line="0" Type="Source" />
-  </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/antenna_ctrl.c" >
-   <View0 Encoding="" line="253" Type="Source" />
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/antenna_ctrl.h" >
-   <View0 Encoding="" line="90" Type="Source" />
-  </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:///home/micke/projects/openASC/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="" line="637" Type="Source" />
-  </Doc8>
+  </Doc2>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

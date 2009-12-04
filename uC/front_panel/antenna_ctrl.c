@@ -28,6 +28,7 @@
 #include "eeprom.h"
 #include "led_control.h"
 #include "band_ctrl.h"
+#include "event_handler.h"
 
 #include "../global.h"
 
@@ -119,6 +120,7 @@ unsigned char antenna_ctrl_antenna_selected(void) {
 
 /*! Send the output string for the current antenna to the bus */
 void antenna_ctrl_send_ant_data_to_bus(void) {
+	
 	if (status.selected_ant != 0) {	
 		unsigned char value = antenna_ctrl_get_comb_value(status.selected_ant);
 		
@@ -430,25 +432,21 @@ char* antenna_ctrl_get_rx_antenna_output_str(unsigned char ant_index) {
 	return(rx_antennas.output_str[ant_index]);
 }
 
+void antenna_ctrl_select_default_ant(void) {
+	if (current_antennas.default_antenna == 0)
+		event_tx_button1_pressed();
+	else if (current_antennas.default_antenna == 1)
+		event_tx_button2_pressed();
+	else if (current_antennas.default_antenna == 2)
+		event_tx_button3_pressed();
+	else if (current_antennas.default_antenna == 3)
+		event_tx_button4_pressed();
+}
+
 /*! Read the eeprom for the antenna settings 
  *  \param band_index The band index */
 void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
 	eeprom_get_antenna_data(&current_antennas, band_index-1);
-	
-	//TEMPORARY
-	current_antennas.antenna_flag[0] |= (1<<ANTENNA_ROTATOR_FLAG);
-	current_antennas.antenna_flag[1] |= (1<<ANTENNA_ROTATOR_FLAG);
-	current_antennas.rotator_max_heading[0] = 360;
-	current_antennas.rotator_max_heading[1] = 450;
-	current_antennas.rotator_min_heading[0] = 0;
-	current_antennas.rotator_min_heading[1] = 0;
-	
-/*	printf("ANT_OUTPUT_STR_LEN[1]: %i\n",current_antennas.antenna_output_length[1]);
-	
-	printf("ANT_OUTPUT_STR\n");
-	
-	for (int i=0;i<current_antennas.antenna_output_length[1];i++)
-		printf("0x%02X ",current_antennas.antenna_comb_output_str[1][i]);*/
 }
 
 /*! Read the eeprom for the rx antenna settings  */

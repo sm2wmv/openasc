@@ -90,6 +90,8 @@ typedef struct {
 	unsigned char rotator_delay[4];
 	//! The rotator flags
 	unsigned char rotator_flags[4];
+	//! The default antenna index (0-3)
+	unsigned char default_antenna;
 } struct_antenna;
 
 
@@ -155,5 +157,7 @@ unsigned char antenna_ctrl_get_rotator_addr(unsigned char ant_index);
 
 void antenna_ctrl_set_rotator_flags(unsigned char ant_index,unsigned char flags);
 unsigned char antenna_ctrl_get_rotator_flags(unsigned char ant_index);
+
+void antenna_ctrl_select_default_ant(void);
 
 #endif
