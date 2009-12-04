@@ -111,14 +111,6 @@ void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 void band_ctrl_load_band(unsigned char band) {
 	//Retrieve the band data from the EEPROM
 	eeprom_get_band_data(band,&current_band);
-	
-	printf("LOW_LOW %i\n",current_band.low_portion_low_limit);
-	printf("LOW_HIGH %i\n",current_band.low_portion_high_limit);
-	printf("HIGH_LOW %i\n",current_band.high_portion_low_limit);
-	printf("HIGH_HIGH %i\n",current_band.high_portion_high_limit);
-	
-	printf("high_len: %i\n",current_band.band_high_output_str_length);
-	printf("low_len: %i\n",current_band.band_low_output_str_length);
 }
 
 void band_ctrl_change_band(unsigned char band) {
@@ -154,10 +146,12 @@ void band_ctrl_change_band(unsigned char band) {
 		
 		//Set RX antenna band data to the bus
 		antenna_ctrl_send_rx_ant_band_data_to_bus(band);
+		
+		antenna_ctrl_select_default_ant();
 	}
 	
 	//Update the display
-	main_update_display();	
+	main_update_display();
 }
 
 void band_ctrl_deactivate_all(void) {

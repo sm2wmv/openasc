@@ -2,7 +2,8 @@
 #include "generic.h"
 
 BandClass::BandClass() {
-	
+	for (int i=0;i<4;i++)
+		hasRotator[i] = false;
 }
 
 void BandClass::setIndex(int new_index) {
@@ -121,6 +122,9 @@ int BandClass::getFlagStatus(int index) {
 	if (antennaName[index].length() > 0)
 		temp |= (1<<0);
 	
+	if (hasRotator[index] == true)
+		temp |= (1<<1);
+	
 	return(temp);
 }
 
@@ -237,6 +241,10 @@ void BandClass::setSubMenuStackName(QString str) {
 
 QString BandClass::getSubMenuStackName() {
 	return(subMenuStack.stackName);
+}
+
+void BandClass::setHasRotator(unsigned char ant_index, bool state) {
+	hasRotator[ant_index] = state;
 }
 
 void BandClass::setSubMenuStackCombinationName(int index, QString str) {
@@ -454,12 +462,18 @@ void BandClass::loadSettings(QSettings& settings) {
 	rotatorDelay[2] = settings.value("RotatorDelay3").toInt();
 	rotatorDelay[3] = settings.value("RotatorDelay4").toInt();
 	
-	for (int i=0;i<4;i++)
+	for (int i=0;i<4;i++) {
 		if (antennaFlags[i] & (1<<2))
 			multiband[i] = true;
 		else
 			multiband[i] = false;
-	
+		
+		if (antennaFlags[i] & (1<<1))
+			hasRotator[i] = true;
+		else
+			hasRotator[i] = false;
+	}
+			
 	int size = settings.beginReadArray("AntennaOutputStr");
 	
 	for (int i=0;i<size;i++) {
@@ -479,7 +493,7 @@ void BandClass::loadSettings(QSettings& settings) {
 }
 
 void BandClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[20];
+	unsigned char tx_buff[30];
 	
 	for (int i=0;i<4;i++) {
 		tx_buff[0] = CTRL_SET_ANT_DATA_TEXT;
@@ -530,6 +544,28 @@ void BandClass::sendSettings(CommClass& serialPort) {
 
 		serialPort.addTXMessage(CTRL_SET_ANT_DATA,3+tx_buff[2],tx_buff);
 	}
+	
+	tx_buff[0] = CTRL_SET_ANT_DEFAULT_INDEX;
+	tx_buff[1] = index;
+	tx_buff[2] = defaultAntennaIndex;
+	
+	serialPort.addTXMessage(CTRL_SET_ANT_DATA,3,tx_buff);
+	
+	/* SEND ROTATOR DATA */
+	tx_buff[0] = CTRL_SET_ANT_ROTATOR_DATA;
+	tx_buff[1] = index;
+	
+	unsigned char posCount = 2;
+	for (unsigned char i=0;i<4;i++) {
+		tx_buff[posCount++]	= rotatorAddress[i];
+		tx_buff[posCount++] = (rotatorMaxHeading[i] >> 8);
+		tx_buff[posCount++] = (rotatorMaxHeading[i] & 0xFF);
+		tx_buff[posCount++] = (rotatorMinHeading[i] >> 8);
+		tx_buff[posCount++] = (rotatorMinHeading[i] & 0xFF);
+		tx_buff[posCount++] = rotatorDelay[i];
+	}
+	
+	serialPort.addTXMessage(CTRL_SET_ANT_DATA,26,tx_buff);
 	
 	tx_buff[0] = CTRL_SET_ANT_DATA_SAVE;
 	tx_buff[1] = index;

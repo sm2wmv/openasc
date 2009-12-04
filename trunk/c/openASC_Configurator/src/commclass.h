@@ -59,6 +59,8 @@
 #define CTRL_SET_ANT_DATA_ANT_FLAGS				0x04
 #define CTRL_SET_ANT_DATA_COMB_ALLOWED		0x05
 #define CTRL_SET_ANT_DATA_ANT_OUT_STR			0x06
+#define CTRL_SET_ANT_ROTATOR_DATA					0x07
+#define CTRL_SET_ANT_DEFAULT_INDEX				0x08
 
 /* Defines for the band data */
 #define CTRL_SET_BAND_DATA_LIMITS					0x01
