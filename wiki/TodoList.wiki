@@ -23,7 +23,7 @@
   * Implement broadcast error messages which are logged by the computer listening to the bus.
   * Implement more error messages in the box which can be viewed from the menu system
   * Work to implement more on the sequencer like what to do when radio transmits (sense input), computer PTT etc.
-  * Implement so that internal FETs can be switched from the configuration settings, maybe use address 0? So 12@0 would activate output 12 in the main box.
+  * Implement so that internal FETs can be switched from the configuration settings, maybe use address 0? So 12@0 would activate output 12 on the main-board. This way we can also control the AUX outputs on the 2nd floor.
   * Clean up code
 
 == Driver modules ==
