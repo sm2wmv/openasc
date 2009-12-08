@@ -33,4 +33,7 @@ Finish the hardware first...
   * Fix so that the sequencer timing sends its settings properly
 
 == PC controller software ==
-  * ? 
+  * Not planned
+
+== openASC server software by OH0GRY == 
+  * Impelement the openASC bus protocol
