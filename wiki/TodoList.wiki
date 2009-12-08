@@ -1,0 +1,9 @@
+#summary This is a list of things that need to be implemented.
+#labels Phase-Design
+
+= Todo - software =
+
+  * Fix manual bandchange to work properly
+  * Implement automatic freq decoding of ICOM
+  * Implement automatic band change from BCD
+  * Fix so that the sequencer timings can be configured properly
