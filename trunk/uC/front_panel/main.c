@@ -356,11 +356,11 @@ int main(void){
 		
 		//DISABLE_TIMER0_INT();
 		
-		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
+		/*if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
-		}
+		}*/
 	
 		//Poll the buttons
 		if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
@@ -453,7 +453,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
-			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+			event_run();
+			//main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
 	if (!display_screensaver_mode()) {
