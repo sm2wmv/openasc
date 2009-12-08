@@ -20,10 +20,16 @@
   * Add more available functions to the external keypad
   * Work on rotator support
   * Add option to change resolution of the rotator knob
+  * Implement broadcast error messages which are logged by the computer listening to the bus.
+  * Implement more error messages in the box which can be viewed from the menu system
+  * Work to implement more on the sequencer like what to do when radio transmits (sense input), computer PTT etc.
+  * Implement so that internal FETs can be switched from the configuration settings, maybe use address 0? So 12@0 would activate output 12 in the main box.
+  * Clean up code
 
 == Driver modules ==
   * Implement the inhibit signal from the openASC box
   * Implement TX/RX mode ability
+  * Implement timeouts of all I/O if no ping has been received in a certain amount of time from a device. Should also send an broadcast error message.
 
 == Rotator boards == 
 Finish the hardware first...
