@@ -27,6 +27,9 @@
   * Implement more error messages in the box which can be viewed from the menu system
   * Work to implement more on the sequencer like what to do when radio transmits (sense input), computer PTT etc.
   * Implement so that internal FETs can be switched from the configuration settings, maybe use address 0? So 12@0 would activate output 12 on the main-board. This way we can also control the AUX outputs on the 2nd floor.
+  * Implement code to handle the I2C external communication
+  * Fix so the I2C external communication works together with the power meter.
+  * Use one of the AUX pins on the 2nd floor to react to SWR alarm from the power meter. This should be configurable so that we can "lock" the sequencer. Should be locked until the AUX pin status is changed.
   * Clean up code
 
 == Driver modules ==
@@ -40,6 +43,7 @@ Finish the hardware first...
 == PC Configuration software ==
   * Finish the sub menu support
   * Fix so that the sequencer timing sends its settings properly
+  * Fix so that we can activate/deactivate the SWR alarm option, should be possible to configure it to react to active low/high?
 
 == PC controller software ==
   * Not planned
