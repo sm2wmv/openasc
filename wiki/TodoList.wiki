@@ -3,6 +3,9 @@
 
 = Todo - software =
 
+== Overall ==
+  * Implement a bootloader that works over the bus interface
+
 == openASC box ==
   * Fix manual band change to work properly
   * Figure out how to implement band decoding in general
@@ -43,3 +46,14 @@ Finish the hardware first...
 
 == openASC server software by OH0GRY == 
   * Impelement the openASC bus protocol
+
+= Todo - Hardware =
+
+== openASC box ==
+  * Test all the different radio interface levels on the 2nd floor
+
+== Rotator board ==
+  * Go through this design again
+  * Fix the wrong design with the backup capacitor
+  * Evaluate that the schmitt-triggered inputs work properly
+  * Add a DB9 and MAX232 serial chip to get easier way to interface it with rotators that have serial port, and also to configure it easier.
