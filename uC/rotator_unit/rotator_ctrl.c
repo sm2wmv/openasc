@@ -29,6 +29,7 @@
 #include "init.h"
 #include "board.h"
 #include "ext_control.h"
+#include "a2d.h"
 #include "../delay.h"
 
 /* Include the bus headers */
@@ -36,6 +37,27 @@
 #include "../wmv_bus/bus_rx_queue.h"
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
+
+double rotator_get_multiplier(void) {
+	return((double)((double)(rotator_settings.rotation_max) - (double)(rotator_settings.rotation_min)) / (double)(rotator_settings.rotation_degree_max));
+}
+
+/*typedef struct {
+	//! The current heading of the rotator (curr sample)
+	unsigned int curr_heading;
+	//! The last heading of the rotator (last sample)
+	unsigned int last_heading;
+	//! The current heading of the rotator (curr sample A/D value)
+	unsigned int curr_heading_ad_val;
+	//! The last heading of the rotator (last sample A/D value)
+	unsigned int last_heading_ad_val;
+	//! The target heading of the rotator
+	unsigned int target_heading;
+	//! The target heading of the rotator A/D value
+	unsigned int target_heading_ad_val;
+	//! The current speed of the rotator (calculated by using the heading input)
+	unsigned char rotator_speed;
+} struct_rotator_status;*/
 
 void rotator_rotate_to(int heading) {
 	//TODO: Implement this

@@ -4,6 +4,8 @@
 BandClass::BandClass() {
 	for (int i=0;i<4;i++)
 		hasRotator[i] = false;
+	
+	rotatorView360deg = 0;
 }
 
 void BandClass::setIndex(int new_index) {
@@ -336,20 +338,22 @@ void BandClass::writeSettings(QSettings& settings) {
 		settings.setValue("RotatorAddress3",rotatorAddress[2]);
 		settings.setValue("RotatorAddress4",rotatorAddress[3]);
 	
-		settings.setValue("RotatorMinHeading1",rotatorMinHeading[0]);
-		settings.setValue("RotatorMinHeading2",rotatorMinHeading[1]);
-		settings.setValue("RotatorMinHeading3",rotatorMinHeading[2]);
-		settings.setValue("RotatorMinHeading4",rotatorMinHeading[3]);
+		settings.setValue("RotatorStartHeading1",rotatorStartHeading[0]);
+		settings.setValue("RotatorStartHeading2",rotatorStartHeading[1]);
+		settings.setValue("RotatorStartHeading3",rotatorStartHeading[2]);
+		settings.setValue("RotatorStartHeading4",rotatorStartHeading[3]);
 	
-		settings.setValue("RotatorMaxHeading1",rotatorMaxHeading[0]);
-		settings.setValue("RotatorMaxHeading2",rotatorMaxHeading[1]);
-		settings.setValue("RotatorMaxHeading3",rotatorMaxHeading[2]);
-		settings.setValue("RotatorMaxHeading4",rotatorMaxHeading[3]);
+		settings.setValue("rotatorDegrees1",rotatorDegrees[0]);
+		settings.setValue("rotatorDegrees2",rotatorDegrees[1]);
+		settings.setValue("rotatorDegrees3",rotatorDegrees[2]);
+		settings.setValue("rotatorDegrees4",rotatorDegrees[3]);
 	
 		settings.setValue("RotatorDelay1",rotatorDelay[0]);
 		settings.setValue("RotatorDelay2",rotatorDelay[1]);
 		settings.setValue("RotatorDelay3",rotatorDelay[2]);
 		settings.setValue("RotatorDelay4",rotatorDelay[3]);
+		
+		settings.setValue("RotatorView360deg",rotatorView360deg);
 		
 		settings.beginWriteArray("AntennaOutputStr");
 
@@ -447,20 +451,22 @@ void BandClass::loadSettings(QSettings& settings) {
 	rotatorAddress[2] = settings.value("RotatorAddress3").toInt();
 	rotatorAddress[3] = settings.value("RotatorAddress4").toInt();
 	
-	rotatorMinHeading[0] = settings.value("RotatorMinHeading1").toInt();
-	rotatorMinHeading[1] = settings.value("RotatorMinHeading2").toInt();
-	rotatorMinHeading[2] = settings.value("RotatorMinHeading3").toInt();
-	rotatorMinHeading[3] = settings.value("RotatorMinHeading4").toInt();
+	rotatorStartHeading[0] = settings.value("RotatorStartHeading1").toInt();
+	rotatorStartHeading[1] = settings.value("RotatorStartHeading2").toInt();
+	rotatorStartHeading[2] = settings.value("RotatorStartHeading3").toInt();
+	rotatorStartHeading[3] = settings.value("RotatorStartHeading4").toInt();
 	
-	rotatorMaxHeading[0] = settings.value("RotatorMaxHeading1").toInt();
-	rotatorMaxHeading[1] = settings.value("RotatorMaxHeading2").toInt();
-	rotatorMaxHeading[2] = settings.value("RotatorMaxHeading3").toInt();
-	rotatorMaxHeading[3] = settings.value("RotatorMaxHeading4").toInt();
+	rotatorDegrees[0] = settings.value("RotatorDegrees1").toInt();
+	rotatorDegrees[1] = settings.value("RotatorDegrees2").toInt();
+	rotatorDegrees[2] = settings.value("RotatorDegrees3").toInt();
+	rotatorDegrees[3] = settings.value("RotatorDegrees4").toInt();
 	
 	rotatorDelay[0] = settings.value("RotatorDelay1").toInt();
 	rotatorDelay[1] = settings.value("RotatorDelay2").toInt();
 	rotatorDelay[2] = settings.value("RotatorDelay3").toInt();
 	rotatorDelay[3] = settings.value("RotatorDelay4").toInt();
+	
+	rotatorView360deg = settings.value("RotatorView360deg").toInt();
 	
 	for (int i=0;i<4;i++) {
 		if (antennaFlags[i] & (1<<2))
@@ -558,14 +564,16 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	unsigned char posCount = 2;
 	for (unsigned char i=0;i<4;i++) {
 		tx_buff[posCount++]	= rotatorAddress[i];
-		tx_buff[posCount++] = (rotatorMaxHeading[i] >> 8);
-		tx_buff[posCount++] = (rotatorMaxHeading[i] & 0xFF);
-		tx_buff[posCount++] = (rotatorMinHeading[i] >> 8);
-		tx_buff[posCount++] = (rotatorMinHeading[i] & 0xFF);
+		tx_buff[posCount++] = (rotatorDegrees[i] >> 8);
+		tx_buff[posCount++] = (rotatorDegrees[i] & 0xFF);
+		tx_buff[posCount++] = (rotatorStartHeading[i] >> 8);
+		tx_buff[posCount++] = (rotatorStartHeading[i] & 0xFF);
 		tx_buff[posCount++] = rotatorDelay[i];
 	}
 	
-	serialPort.addTXMessage(CTRL_SET_ANT_DATA,26,tx_buff);
+	tx_buff[posCount++] = rotatorView360deg;
+	
+	serialPort.addTXMessage(CTRL_SET_ANT_DATA,27,tx_buff);
 	
 	tx_buff[0] = CTRL_SET_ANT_DATA_SAVE;
 	tx_buff[1] = index;
@@ -614,12 +622,17 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	serialPort.addTXMessage(CTRL_SET_BAND_DATA,2,tx_buff);
 }
 
-void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, int minHeading, int maxHeading, unsigned char delay) {
+void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg) {
 	rotatorAddress[antIndex] = addr;
 	rotatorIndex[antIndex] = index;
-	rotatorMinHeading[antIndex] = minHeading;
-	rotatorMaxHeading[antIndex] = maxHeading;
+	rotatorStartHeading[antIndex] = startHeading;
+	rotatorDegrees[antIndex] = degrees;
 	rotatorDelay[antIndex] = delay;
+	
+	if (view360deg == true)
+		rotatorView360deg |= (1<<antIndex);
+	else
+		rotatorView360deg &= ~(1<<antIndex);
 }
 
 int BandClass::getRotatorIndex(unsigned char antIndex) {

@@ -316,12 +316,14 @@ void computer_interface_parse_data(void) {
 				case CTRL_SET_ANT_ROTATOR_DATA:
 					for (unsigned char i=0;i<4;i++) {
 						antenna_ptr->rotator_addr[i] = computer_comm.rx_buffer[ptr_pos++];
-						antenna_ptr->rotator_max_heading[i] = computer_comm.rx_buffer[ptr_pos++] << 8;
-						antenna_ptr->rotator_max_heading[i] += computer_comm.rx_buffer[ptr_pos++];
+						antenna_ptr->rotator_max_rotation[i] = computer_comm.rx_buffer[ptr_pos++] << 8;
+						antenna_ptr->rotator_max_rotation[i] += computer_comm.rx_buffer[ptr_pos++];
 						antenna_ptr->rotator_min_heading[i] = computer_comm.rx_buffer[ptr_pos++] << 8;
 						antenna_ptr->rotator_min_heading[i] += computer_comm.rx_buffer[ptr_pos++];
 						antenna_ptr->rotator_delay[i] = computer_comm.rx_buffer[ptr_pos++];
 					}
+					
+					antenna_ptr->rotator_view_360_deg = computer_comm.rx_buffer[ptr_pos++];
 					
 					computer_interface_send_ack();
 					break;

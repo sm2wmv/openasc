@@ -20,6 +20,12 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+
+//! The size of the RX queue in buffers
+#define BUS_RX_QUEUE_SIZE 10
+//! The size of the TX queue in buffers
+#define BUS_TX_QUEUE_SIZE	10
+
 #define ROTATOR_STATUS_UPDATE_INTERVAL	1000
 
 //! Run the event first in the event queue
@@ -77,7 +83,7 @@
 
 
 typedef struct {
-	//! Which one of the inputs is used to sense the beamheading
+	//! Which one of the inputs is used to sense the beamheading (hardwired mode)
 	unsigned char heading_input;
 	//! Which kind of mode the rotator card is in
 	unsigned char rotator_mode;
@@ -94,12 +100,12 @@ typedef struct {
 	unsigned char rotation_delay;
 	//! Max rotation degree value (450 degrees for YAESU etc)
 	unsigned int rotation_degree_max;
-	//! Start rotation input value, min
+	//! The starting point of the rotator heading, can be set to negative numbers
+	int rotation_start_angle;
+	//! Start rotation input value, min, this should be set at rotation_start_angle
 	unsigned int rotation_min;
 	//! Start rotation input value, max
 	unsigned int rotation_max;
-	//! Rotation over north or south, 0 = south, 1 = north
-	unsigned char rotation_path;
 	//! Rotator break delay, the delay between rotation and the break is put in/out (seconds)
 	unsigned char rotation_break_delay;
 } struct_settings;
@@ -109,8 +115,14 @@ typedef struct {
 	unsigned int curr_heading;
 	//! The last heading of the rotator (last sample)
 	unsigned int last_heading;
+	//! The current heading of the rotator (curr sample A/D value)
+	unsigned int curr_heading_ad_val;
+	//! The last heading of the rotator (last sample A/D value)
+	unsigned int last_heading_ad_val;
 	//! The target heading of the rotator
 	unsigned int target_heading;
+	//! The target heading of the rotator A/D value
+	unsigned int target_heading_ad_val;
 	//! The current speed of the rotator (calculated by using the heading input)
 	unsigned char rotator_speed;
 } struct_rotator_status;

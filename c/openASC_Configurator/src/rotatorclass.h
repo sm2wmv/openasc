@@ -8,26 +8,28 @@ class RotatorClass {
 		RotatorClass();
 		void writeSettings ( QSettings& settings );
 		void loadSettings ( QSettings& settings );
-		void addRotator(QString rotatorName, unsigned char rotatorAddress, int rotatorMinHeading, int rotatorMaxHeading, unsigned char rotatorDelay);
-		unsigned char changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, int rotatorMinHeading, int rotatorMaxHeading, unsigned char rotatorDelay);
+		void addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg);
+		unsigned char changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg);
 		QString getRotatorName(int index);
 		unsigned char getRotatorAddress(int index);
-		int getRotatorMinHeading(int index);
-		int getRotatorMaxHeading(int index);
+		unsigned int getRotatorStartHeading(int index);
+		unsigned int getRotatorDegrees(int index);
 		unsigned char getRotatorDelay(int index);
 		int getRotatorIndex(int index);
 		QStringList getNameList();
 		int getRotatorCount();
 		int deleteRotator(int index);
+		bool getRotator360degView(int index);
 	private:
 		//The last index that was used, this is just increased as time goes by 
 		//so that each rotator has got an unique index
 		int lastIndex;
 		QList<unsigned char> addressList;
 		QStringList nameList;
-		QList<int> minHeadingList;
-		QList<int> maxHeadingList;
+		QList<unsigned int> startHeadingList;
+		QList<unsigned int> degreesList;
 		QList<unsigned char> delayList;
+		QList<bool> view360degList;
 		QList<int> indexList;
 	protected:
 };

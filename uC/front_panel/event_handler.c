@@ -73,7 +73,7 @@ unsigned char event_get_error_state(unsigned char error_type) {
 
 void event_handler_enable_rotator_interface(void) {
 	status.new_beamheading = antenna_ctrl_get_direction(status.antenna_to_rotate-1);
-	display_show_set_heading(status.new_beamheading);
+	display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 }
 
 void event_internal_comm_parse_message(UC_MESSAGE message) {
@@ -200,12 +200,12 @@ void event_pulse_sensor_up(void) {
 				status.new_band++;
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
-			if (status.new_beamheading < antenna_ctrl_get_max_heading(status.antenna_to_rotate-1))
+			if (status.new_beamheading < (antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1)))
 				status.new_beamheading += status.rotator_step_resolution;
 			else
-				status.new_beamheading = antenna_ctrl_get_min_heading(status.antenna_to_rotate-1);
+				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1);
 					
-			display_show_set_heading(status.new_beamheading);
+			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
 	}
 }
@@ -230,14 +230,14 @@ void event_pulse_sensor_down(void) {
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 			if (status.new_band > BAND_UNDEFINED)
 				status.new_band--;
-		}
+		}	//TODO: Fix all the rotator options properly
 		else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
-			if (status.new_beamheading > antenna_ctrl_get_min_heading(status.antenna_to_rotate-1))
+			if (status.new_beamheading > antenna_ctrl_get_start_heading(status.antenna_to_rotate-1))
 				status.new_beamheading -= status.rotator_step_resolution;
-			else
-				status.new_beamheading = antenna_ctrl_get_max_heading(status.antenna_to_rotate-1);
+			else	
+				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1);
 			
-			display_show_set_heading(status.new_beamheading);
+			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
 		
 	}

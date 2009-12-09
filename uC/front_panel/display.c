@@ -263,11 +263,16 @@ void display_show_rx_ant(char ant_index) {
 
 /*! \brief Show SET rotator heading
  *  \param rotator_heading The current set rotator heading  */
-void display_show_set_heading(unsigned int rotator_heading) {
+void display_show_set_heading(unsigned int rotator_heading, unsigned char view_360_deg) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
 		glcd_clear();
 		char temp[7];
 		char size = 0;
+		
+		if (view_360_deg == 1) {
+			if (rotator_heading >= 360)
+				rotator_heading -= 360;
+		}
 		
 		if (rotator_heading < 10)
 			size = 1;
