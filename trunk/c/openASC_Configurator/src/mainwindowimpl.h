@@ -169,6 +169,7 @@ private slots:
 	void pushButtonRotatorAddPressed();
 	void pushButtonRotatorSavePressed();
 	void pushButtonRotatorDeletePressed();
+	
 	void comboBoxAntennaRotator1IndexChanged(int newIndex);
 	void comboBoxAntennaRotator2IndexChanged(int newIndex);
 	void comboBoxAntennaRotator3IndexChanged(int newIndex);

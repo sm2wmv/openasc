@@ -29,4 +29,6 @@ void rotator_rotate_ccw(void);
 void rotator_stop_cw(void);
 void rotator_stop_ccw(void);
 
+double rotator_get_multiplier(void);
+
 #endif

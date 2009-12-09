@@ -82,14 +82,16 @@ typedef struct {
 	unsigned char antenna_comb_output_str[15][ANTENNA_OUTPUT_COMB_SIZE];
 	//!The address to the rotator which controls the antenna
 	unsigned char rotator_addr[4];
-	//!The maximum heading of the rotator	
-	unsigned int rotator_max_heading[4];
-	//!The minimum heading of the rotator	
+	//!The number of degrees the rotator can turn, this might be for example 450 degrees for YAESU
+	unsigned int rotator_max_rotation[4];
+	//!The minimum heading of the rotator, this can also be negative numbers if starting point is not at 0 degrees
 	unsigned int rotator_min_heading[4];
 	//!The delay from a rotation has occured to it can start to rotate again (in seconds)
 	unsigned char rotator_delay[4];
 	//! The rotator flags
 	unsigned char rotator_flags[4];
+	//! Does the rotator have 360 degree view? Should it show 0-360 degree or start_point + rotation, maybe 90 - 500 deg
+	unsigned char rotator_view_360_deg;
 	//! The default antenna index (0-3)
 	unsigned char default_antenna;
 } struct_antenna;
@@ -150,13 +152,15 @@ void antenna_ctrl_deactivate_all(void);
 void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading);
 unsigned char antenna_ctrl_antenna_selected(void);
 unsigned char antenna_ctrl_get_rotatable(void);
-unsigned int antenna_ctrl_get_min_heading(unsigned char ant_index);
-unsigned int antenna_ctrl_get_max_heading(unsigned char ant_index);
+unsigned int antenna_ctrl_get_start_heading(unsigned char ant_index);
+unsigned int antenna_ctrl_get_max_rotation(unsigned char ant_index);
 
 unsigned char antenna_ctrl_get_rotator_addr(unsigned char ant_index);
 
 void antenna_ctrl_set_rotator_flags(unsigned char ant_index,unsigned char flags);
 unsigned char antenna_ctrl_get_rotator_flags(unsigned char ant_index);
+
+unsigned char antenna_ctrl_get_360_deg_view(unsigned char ant_index);
 
 void antenna_ctrl_select_default_ant(void);
 

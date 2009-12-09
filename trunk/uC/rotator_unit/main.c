@@ -30,6 +30,7 @@
 #include "board.h"
 #include "ext_control.h"
 #include "rotator_ctrl.h"
+#include "a2d.h"
 #include "../event_queue.h"
 #include "../delay.h"
 
@@ -75,8 +76,13 @@ void bus_parse_message(void) {
 		case BUS_CMD_PING:
 			break;
 		case BUS_CMD_ROTATOR_SET_ANGLE:
+			//1st byte = new direction (high bytes)
+			//2nd byte = new direction (low bytes)
+			
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED)
 				rotator_rotate_to((bus_message.data[0]<<8) + bus_message.data[1]);
+			
+			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_ROTATOR_GET_ANGLE:
 			temp[0] = ((rotator_status.curr_heading >> 8) & 0xFF);
@@ -96,12 +102,16 @@ void bus_parse_message(void) {
 				event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
 				event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
 			}
+			
+			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CCW:
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
 				event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
 				event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
 			}
+			
+			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_ROTATOR_STOP:
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
@@ -115,9 +125,12 @@ void bus_parse_message(void) {
 				}
 			}
 
+			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_TRANSPARENT:
 			//TODO: Write this code
+			
+			bus_send_ack(bus_message.from_addr);
 			break;
 		default:
 			break;
@@ -159,11 +172,11 @@ void init_dummy_values(void) {
 	rotator_settings.ccw_output = (1<<ROTATION_OUTPUT_RELAY2);
 	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
 	rotator_settings.ad_conv_average = 10;	//Samples 10 times and takes an average of that
-	rotator_settings.rotation_delay = 15;	//Rotation delay is 15 seconds before any action after a rotation
-	rotator_settings.rotation_degree_max = 450;
-	rotator_settings.rotation_min = 0;
-	rotator_settings.rotation_max = 1024;
-	rotator_settings.rotation_path = ROTATOR_PATH_SOUTH;
+	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
+	rotator_settings.rotation_degree_max = 360;
+	rotator_settings.rotation_start_angle = -90;
+	rotator_settings.rotation_min = 100;
+	rotator_settings.rotation_max = 900;
 	rotator_settings.rotation_break_delay = 2;
 	
 	main_flags |= (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
@@ -189,6 +202,10 @@ int main(void)
 
 	delay_ms(100);
 
+	a2dInit();
+	a2dSetPrescaler(ADC_PRESCALE_DIV32);
+	a2dSetReference(ADC_REFERENCE_AREF);
+		
 	/* Read the external address of the device */
 	bus_set_address(BUS_BASE_ADDR+read_ext_addr());
 
@@ -218,10 +235,10 @@ int main(void)
 	
 	init_dummy_values();
 	
-	if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
+	/*if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
 		event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
 		event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay*10,EVENT_QUEUE_ROTATE_CW_ID);
-	}
+	}*/
 	
 	while(1) {	
 		if (!rx_queue_is_empty()) {
@@ -261,6 +278,11 @@ ISR(SIG_OUTPUT_COMPARE0) {
 			counter_ping_interval = 0;
 		}
 	}
+	
+	if (rotator_settings.heading_input == HEADING_INPUT_POT1)
+		rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC0);
+	else if (rotator_settings.heading_input == HEADING_INPUT_POT2)
+		rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC1);
 
 	//This limits the update interval of the rotator status when the rotator is turning to max
 	//ROTATOR_STATUS_UPDATE_INTERVAL in milliseconds, so if ROTATOR_STATUS_UPDATE_INTERVAL is set

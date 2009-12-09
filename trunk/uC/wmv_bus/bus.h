@@ -39,6 +39,10 @@
 	#include "../driver_unit_v2/main.h"
 #endif
  
+#ifdef DEVICE_TYPE_ROTATOR_UNIT
+	#include "../rotator_unit/main.h"
+#endif
+ 
  #ifdef DEVICE_TYPE_DRIVER_UNIT
 	#define BUS_DISABLE_INTERRUPTS()	TIMSK &= ~(1<<OCIE2);
 	#define BUS_ENABLE_INTERRUPTS()		TIMSK |= (1<<OCIE2);
