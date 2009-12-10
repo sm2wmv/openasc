@@ -26,6 +26,7 @@
 #include "../delay.h"
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
+#include "../wmv_bus/bus_commands.h"
 
 #define PS2_CLK_LOW		PORTE &= ~(1<<6)
 #define PS2_CLK_HIGH	PORTE |= (1<<6)
@@ -35,6 +36,8 @@
 unsigned char temp_count = 0;
 
 unsigned int driver_output_state = 0;
+unsigned int driver_output_type[12];
+
 unsigned char btn_on_off_last_state = 1;
 
 unsigned int counter_time_start=0;
@@ -53,9 +56,10 @@ void __inline__ tiny_delay(void) {
 * It controls both the sink and source output at the same time.
 * \param index The index of which output to activate (1-12)
 */
-void activate_output(unsigned char index) {
+void activate_output(unsigned char index, unsigned char type) {
 	driver_output_state |= (1<<(index-1));
-
+	driver_output_type[index-1] = type;
+	
 	switch (index) {
 		case 1 :	PORTC |= (1<<DRIVER_OUTPUT_1);
 							break;
@@ -93,7 +97,8 @@ void activate_output(unsigned char index) {
 */
 void deactivate_output(unsigned char index) {
 	driver_output_state &= ~(1<<(index-1));
-
+	driver_output_type[index-1] = 0;
+	
 	switch (index) {
 		case 1 :	PORTC &= ~(1<<DRIVER_OUTPUT_1);
 							break;
@@ -128,19 +133,41 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
 
 	switch(message.cmd) {
-		case INT_COMM_ACTIVATE_DRIVER_OUTPUT:
-			//Deactivate all outputs
-			for (unsigned char i=1;i<=12;i++)
-				deactivate_output(i);
-			
-			//Activate the ones that should be active
+		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT :
 			for (unsigned char i=0;i<message.length;i++)
-				activate_output(message.data[i]);
+				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
 			break;
-		case INT_COMM_DEACTIVATE_DRIVER_OUTPUT:
+		case BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
 				deactivate_output(message.data[i]);
 			break;
+		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT: 
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS:
+			for (unsigned char i=1;i<=12;i++)
+				deactivate_output(i);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS:
+			for (unsigned char i=1;i<=12;i++)
+				if (driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
+					deactivate_output(i);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT:
+			for (unsigned char i=1;i<=12;i++)
+				if (driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
+					deactivate_output(i);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS:
+			for (unsigned char i=1;i<=12;i++)
+				if (driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
+					deactivate_output(i);
+			break;		
 		case INT_COMM_AUX_CHANGE_OUTPUT_PIN:
 			switch(message.data[0]) {
 				case AUX_X11_PIN3: 

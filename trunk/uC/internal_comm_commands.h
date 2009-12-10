@@ -26,19 +26,16 @@
 #define INT_COMM_TURN_DEVICE_OFF						0x01
 //! Shut down the device
 #define INT_COMM_PULL_THE_PLUG							0x02
-//! Driver output activate command
-#define INT_COMM_ACTIVATE_DRIVER_OUTPUT			0x10
-//! Driver output deactivate command
-#define INT_COMM_DEACTIVATE_DRIVER_OUTPUT		0x11
+
 //! Change the state of one of the AUX pins on the X11 connector
-#define INT_COMM_AUX_CHANGE_OUTPUT_PIN			0x20
+#define INT_COMM_AUX_CHANGE_OUTPUT_PIN			0x50
 //! Read the input status of an AUX pin on the X11 connector
-#define INT_COMM_AUX_READ_INPUT_PIN					0x21
+#define INT_COMM_AUX_READ_INPUT_PIN					0x51
 //! Read the BCD input on the top floor
-#define INT_COMM_GET_BAND_BCD_STATUS				0x30
+#define INT_COMM_GET_BAND_BCD_STATUS				0x60
 //! A key was pressed on the external PS2 keypad
-#define INT_COMM_PS2_KEYPRESSED							0x40
+#define INT_COMM_PS2_KEYPRESSED							0x70
 //! Command used to transfer commands from the PC to the front panel and vice versa
-#define INT_COMM_PC_CTRL										0x50
+#define INT_COMM_PC_CTRL										0x80
 
 #endif
