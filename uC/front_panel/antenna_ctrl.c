@@ -110,8 +110,12 @@ unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
  *  \param length The length of the address list
  *  \param cmd The command we wish to send to the boards in the address list */
 void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char length, unsigned char cmd) {
-	for (unsigned char i=0;i<length;i++)
-		bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
+	for (unsigned char i=0;i<length;i++) {
+		if (addresses[i] != 0x00)
+			bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
+		else
+			internal_comm_add_tx_message(cmd, 0 , 0);
+	}
 }
 
 unsigned char antenna_ctrl_antenna_selected(void) {
@@ -142,7 +146,10 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 				//Will add which address the message was sent to
 				current_activated_ant_outputs[addr_count++] = current_antennas.antenna_comb_output_str[value][i+1];
 				
-				bus_add_tx_message(bus_get_address(), current_antennas.antenna_comb_output_str[value][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, count-start_pos, temp+start_pos);
+				if (current_antennas.antenna_comb_output_str[value][i+1] != 0x00)
+					bus_add_tx_message(bus_get_address(), current_antennas.antenna_comb_output_str[value][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, count-start_pos, temp+start_pos);
+				else
+					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
 
 				start_pos += count;
 				i++;
@@ -186,8 +193,11 @@ void antenna_ctrl_send_rx_ant_data_to_bus(char antenna_index) {
 				//Will add which address the message was sent to
 				current_activated_rx_ant_outputs[addr_count++] = rx_antennas.output_str[antenna_index][i+1];
 				
-				bus_add_tx_message(bus_get_address(), rx_antennas.output_str[antenna_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT, count-start_pos, temp+start_pos);
-	
+				if (rx_antennas.output_str[antenna_index][i+1] != 0x00)
+					bus_add_tx_message(bus_get_address(), rx_antennas.output_str[antenna_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT, count-start_pos, temp+start_pos);
+				else
+					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
+			
 				start_pos += count;
 				i++;
 			}
@@ -230,7 +240,10 @@ void antenna_ctrl_send_rx_ant_band_data_to_bus(unsigned char index) {
 				//Will add which address the message was sent to
 				current_band_activated_outputs_rx[addr_count++] = rx_antennas.band_output_str[band_index][i+1];
 				
-				bus_add_tx_message(bus_get_address(), rx_antennas.band_output_str[band_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, temp+start_pos);
+				if (rx_antennas.band_output_str[band_index][i+1] != 0x00)
+					bus_add_tx_message(bus_get_address(), rx_antennas.band_output_str[band_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, temp+start_pos);
+			//	else
+			//		internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
 	
 				start_pos += count;
 				i++;
