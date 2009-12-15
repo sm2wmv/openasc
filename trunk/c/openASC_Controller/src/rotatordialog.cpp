@@ -1,58 +1,61 @@
 #include "rotatordialog.h"
 #include "mapviewwidget.h"
+#include <math.h>
 
-void RotatorDialog::loadBigMap(QString path) {
-	mapLarge = new MapViewWidget();
-	mapLarge->setWidgetSize(600,600);
-	
-	QVBoxLayout *mapLargeLayout = new QVBoxLayout;
-	mapLargeLayout->addWidget(mapLarge);
-	
-	frameMapLarge->setLayout(mapLargeLayout);	
-	
-	mapLarge->setImagePath(path);
-	
-	mapLarge->setMapTitle("6/6/6el");
-	
-	mapLarge->setCurrentDir(225,45);
-	mapLarge->repaint();
-	
-	mapLarge->setCurrentDir(305,65);
-	mapLarge->setTargetDir(45);
-}
+#define PI 3.1456
 
-void RotatorDialog::loadSmallMap(QString path) {
-	for (int i=0;i<5;i++) {
-		mapSmall[i] = new MapViewWidget();
-		mapSmall[i]->setWidgetSize(300,300);
+void RotatorDialog::loadMap(QString path) {
+	for (int i=0;i<4;i++) {
+		map[i] = new MapViewWidget();
+		map[i]->setWidgetSize(500,500);
 	
-		QVBoxLayout *mapSmallLayout = new QVBoxLayout;
-		mapSmallLayout->addWidget(mapSmall[i]);
+		QVBoxLayout *mapLayout = new QVBoxLayout;
+		mapLayout->addWidget(map[i]);
 			
 		if (i == 0)
-			frameMapSmall1->setLayout(mapSmallLayout);
+			frameMap1->setLayout(mapLayout);
 		if (i == 1)
-			frameMapSmall2->setLayout(mapSmallLayout);
+			frameMap2->setLayout(mapLayout);
+		if (i == 2)
+			frameMap3->setLayout(mapLayout);
+		if (i == 3)
+			frameMap3->setLayout(mapLayout);		
 		
-		mapSmall[i]->setImagePath(path);
+		map[i]->setImagePath(path);
 	}
-	
-	mapSmall[0]->setCurrentDir(45,60);
-	mapSmall[0]->setTargetDir(45);
-	mapSmall[1]->setCurrentDir(180,70);
-	mapSmall[1]->setTargetDir(180);
 }
 
-RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) 
-	: QDialog(parent, f)
-{
+void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {
+	printf("X: %i Y: %i\n",event->x(),event->y());
+	
+	if ((event->x() >= 124) && (event->y() >= 8) && (event->x() <= (620)) && (event->y() <= 506)) {
+		double mapX = abs(372 - event->x());
+		double mapY = 256 - event->y();
+		
+		if ((372 - event->x()) < 0)
+			map[0]->setCurrentDir(90-atan(mapY/mapX)*(180/PI),50);
+		else
+			map[0]->setCurrentDir(270+atan(mapY/mapX)*(180/PI),50);
+	}
+}
+
+RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
 	setupUi(this);
 	
-	loadBigMap("../src/maps/kp04hm_large.jpg");
-	loadSmallMap("../src/maps/kp04hm_small.jpg");
+	this->resize(1280,1024);
 	
-	mapSmall[0]->setMapTitle("4/4el");
-	mapSmall[1]->setMapTitle("4el @EU");
+	loadMap("../src/maps/map.jpg");
+	
+	map[0]->setMapTitle("6/6/6el");
+	map[1]->setMapTitle("5/5el");
+	map[2]->setMapTitle("4el");
+	
+	map[0]->setCurrentDir(325,50);
+	map[0]->setTargetDir(325);
+	map[1]->setCurrentDir(120,60);
+	map[1]->setTargetDir(45);
+	map[2]->setCurrentDir(180,75);
+	map[2]->setTargetDir(180);	
 }
 //
 

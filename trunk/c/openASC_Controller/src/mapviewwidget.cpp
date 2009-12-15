@@ -1,4 +1,5 @@
 #include "mapviewwidget.h"
+
 //
 
 void MapViewWidget::paintEvent(QPaintEvent *event) {
@@ -23,6 +24,8 @@ void MapViewWidget::paintEvent(QPaintEvent *event) {
 	painter.drawText(10,20,mapTitle);
 	painter.drawText(10,35,QString::number(currAzimuthAngle)+176);
 	
+	painter.drawText(390,490,"Stopped");
+	
 	if (targetAzimuthAngle != currAzimuthAngle) {
 		painter.setPen(Qt::SolidLine);
 		painter.setPen(Qt::TARGET_DIR_BEAMWIDTH_COLOR);
@@ -33,20 +36,22 @@ void MapViewWidget::paintEvent(QPaintEvent *event) {
 	}
 }
 
-void MapViewWidget::setCurrentDir(float azimuthAngle, float beamWidth) {
+void MapViewWidget::setCurrentDir(int azimuthAngle, int beamWidth) {
 	currAzimuthAngle = azimuthAngle;
 	currBeamWidth = beamWidth;
+	
+	painter.drawText(10,35,QString::number(currAzimuthAngle)+176);
 	
 	repaint();
 }
 
-void MapViewWidget::setTargetDir(float azimuthAngle) {
+void MapViewWidget::setTargetDir(int azimuthAngle) {
 	targetAzimuthAngle = azimuthAngle;
 	
 	repaint();
 }
 
-void MapViewWidget::setWidgetSize(float width, float height) {
+void MapViewWidget::setWidgetSize(int width, int height) {
 	sizeWidth = width;
 	sizeHeight = height;
 }
