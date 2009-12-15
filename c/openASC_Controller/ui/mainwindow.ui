@@ -67,7 +67,7 @@
            <item>
             <widget class="QPushButton" name="pushButtonTXComb2">
              <property name="text">
-              <string>4/4el</string>
+              <string>5/5el</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -77,7 +77,7 @@
            <item>
             <widget class="QPushButton" name="pushButtonTXComb3">
              <property name="text">
-              <string>4el @EU</string>
+              <string>4el</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -139,7 +139,7 @@
            <item>
             <widget class="QPushButton" name="pushButtonRXComb2">
              <property name="text">
-              <string>4/4el</string>
+              <string>5/5el</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -149,7 +149,7 @@
            <item>
             <widget class="QPushButton" name="pushButtonRXComb3">
              <property name="text">
-              <string>4el @EU</string>
+              <string>4el</string>
              </property>
              <property name="checkable">
               <bool>true</bool>

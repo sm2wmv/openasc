@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>5</y>
+     <y>0</y>
      <width>105</width>
      <height>181</height>
     </rect>
@@ -37,33 +37,33 @@
       <x>10</x>
       <y>10</y>
       <width>81</width>
-      <height>133</height>
+      <height>139</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="pushButtonAnt1">
        <property name="text">
         <string>6/6/6el</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButtonAnt2">
        <property name="text">
-        <string>4/4el</string>
+        <string>5/5el</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButtonAnt3">
        <property name="text">
-        <string>4el @EU</string>
+        <string>4el</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="pushButtonAnt4">
        <property name="text">
         <string/>
        </property>
@@ -72,13 +72,13 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QFrame" name="frameMapLarge">
+  <widget class="QFrame" name="frameMap1">
    <property name="geometry">
     <rect>
      <x>115</x>
-     <y>5</y>
-     <width>615</width>
-     <height>615</height>
+     <y>0</y>
+     <width>515</width>
+     <height>515</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -88,13 +88,13 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QFrame" name="frameMapSmall1">
+  <widget class="QFrame" name="frameMap3">
    <property name="geometry">
     <rect>
      <x>115</x>
-     <y>625</y>
-     <width>305</width>
-     <height>305</height>
+     <y>515</y>
+     <width>515</width>
+     <height>515</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -104,13 +104,13 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QFrame" name="frameMapSmall2">
+  <widget class="QFrame" name="frameMap4">
    <property name="geometry">
     <rect>
-     <x>425</x>
-     <y>625</y>
-     <width>305</width>
-     <height>305</height>
+     <x>630</x>
+     <y>515</y>
+     <width>515</width>
+     <height>515</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -120,13 +120,13 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QFrame" name="frameMapSmall3">
+  <widget class="QFrame" name="frameMap2">
    <property name="geometry">
     <rect>
-     <x>735</x>
-     <y>5</y>
-     <width>305</width>
-     <height>305</height>
+     <x>630</x>
+     <y>0</y>
+     <width>515</width>
+     <height>515</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -136,36 +136,30 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QFrame" name="frameMapSmall4">
+  <widget class="QLabel" name="labelX">
    <property name="geometry">
     <rect>
-     <x>735</x>
-     <y>315</y>
-     <width>305</width>
-     <height>305</height>
+     <x>10</x>
+     <y>195</y>
+     <width>69</width>
+     <height>19</height>
     </rect>
    </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+   <property name="text">
+    <string>TextLabel</string>
    </property>
   </widget>
-  <widget class="QFrame" name="frameMapSmall5">
+  <widget class="QLabel" name="labelY">
    <property name="geometry">
     <rect>
-     <x>735</x>
-     <y>625</y>
-     <width>305</width>
-     <height>305</height>
+     <x>10</x>
+     <y>220</y>
+     <width>69</width>
+     <height>19</height>
     </rect>
    </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+   <property name="text">
+    <string>TextLabel</string>
    </property>
   </widget>
  </widget>
