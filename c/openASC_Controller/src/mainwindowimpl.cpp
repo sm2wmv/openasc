@@ -18,6 +18,10 @@ void MainWindowImpl::pushButtonTXComb1(bool state) {
 	
 }
 
+void MainWindowImpl::pushButtonTXComb2(bool state) {
+
+}
+
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
 	setupUi(this);
 

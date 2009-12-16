@@ -20,7 +20,7 @@ void MapViewWidget::paintEvent(QPaintEvent *event) {
 	
 	QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth, rectHeight);
 	painter.drawPie(rectangle,(360-(-90+currAzimuthAngle + currBeamWidth/2))*16,currBeamWidth*16);
-	
+
 	painter.drawText(10,20,mapTitle);
 	painter.drawText(10,35,QString::number(currAzimuthAngle)+176);
 	
