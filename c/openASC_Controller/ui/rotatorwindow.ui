@@ -9,73 +9,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1048</width>
-    <height>948</height>
+    <width>1046</width>
+    <height>946</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Rotators</string>
   </property>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>0</y>
-     <width>105</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>81</width>
-      <height>139</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButtonAnt1">
-       <property name="text">
-        <string>6/6/6el</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonAnt2">
-       <property name="text">
-        <string>5/5el</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonAnt3">
-       <property name="text">
-        <string>4el</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonAnt4">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QFrame" name="frameMap1">
    <property name="geometry">
     <rect>
-     <x>115</x>
+     <x>0</x>
      <y>0</y>
      <width>515</width>
      <height>515</height>
@@ -91,7 +35,7 @@
   <widget class="QFrame" name="frameMap3">
    <property name="geometry">
     <rect>
-     <x>115</x>
+     <x>0</x>
      <y>515</y>
      <width>515</width>
      <height>515</height>
@@ -107,7 +51,7 @@
   <widget class="QFrame" name="frameMap4">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>515</x>
      <y>515</y>
      <width>515</width>
      <height>515</height>
@@ -123,7 +67,7 @@
   <widget class="QFrame" name="frameMap2">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>515</x>
      <y>0</y>
      <width>515</width>
      <height>515</height>
@@ -136,33 +80,24 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="labelX">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>195</y>
-     <width>69</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelY">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>220</y>
-     <width>69</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>5</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>5</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>
