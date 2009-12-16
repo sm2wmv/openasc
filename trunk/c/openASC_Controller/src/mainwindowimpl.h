@@ -16,9 +16,11 @@ private:
 protected:
 private slots:
 public slots:
-	void WindowRotatorsClicked();
-  void pushButtonTXComb1(bool state);
-	void pushButtonTXComb2(bool state);
+void WindowRotatorsClicked();
+void pushButtonTX1Clicked(bool state);
+void pushButtonTX2Clicked(bool state);
+void pushButtonTX3Clicked(bool state);
+void pushButtonTX4Clicked(bool state);
  
 };
 #endif

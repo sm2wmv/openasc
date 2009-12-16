@@ -14,11 +14,19 @@ void MainWindowImpl::WindowRotatorsClicked() {
 		rotatorWindow->show();
 }
   
-void MainWindowImpl::pushButtonTXComb1(bool state) {
-	
+void MainWindowImpl::pushButtonTX1Clicked(bool state) {
+
 }
 
-void MainWindowImpl::pushButtonTXComb2(bool state) {
+void MainWindowImpl::pushButtonTX2Clicked(bool state) {
+
+}
+
+void MainWindowImpl::pushButtonTX3Clicked(bool state) {
+
+}
+
+void MainWindowImpl::pushButtonTX4Clicked(bool state) {
 
 }
 

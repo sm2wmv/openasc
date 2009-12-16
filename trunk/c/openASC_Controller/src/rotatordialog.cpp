@@ -19,7 +19,7 @@ void RotatorDialog::loadMap(QString path) {
 		if (i == 2)
 			frameMap3->setLayout(mapLayout);
 		if (i == 3)
-			frameMap3->setLayout(mapLayout);		
+                        frameMap4->setLayout(mapLayout);
 		
 		map[i]->setImagePath(path);
 	}
@@ -28,15 +28,42 @@ void RotatorDialog::loadMap(QString path) {
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {
 	printf("X: %i Y: %i\n",event->x(),event->y());
 	
-	if ((event->x() >= 124) && (event->y() >= 8) && (event->x() <= (620)) && (event->y() <= 506)) {
-		double mapX = abs(372 - event->x());
+        if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (505)) && (event->y() <= 505)) {
+                double mapX = abs(256 - event->x());
 		double mapY = 256 - event->y();
 		
-		if ((372 - event->x()) < 0)
-			map[0]->setCurrentDir(90-atan(mapY/mapX)*(180/PI),50);
+                if ((256 - event->x()) < 0)
+                        map[0]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
 		else
-			map[0]->setCurrentDir(270+atan(mapY/mapX)*(180/PI),50);
+                        map[0]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
 	}
+        else if ((event->x() >= 523) && (event->y() >= 8) && (event->x() <= (1021)) && (event->y() <= 505)) {
+            double mapX = abs(771 - event->x());
+            double mapY = 256 - event->y();
+
+            if ((771 - event->x()) < 0)
+                    map[1]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
+            else
+                    map[1]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
+        }
+        else if ((event->x() >= 8) && (event->y() >= 522) && (event->x() <= (505)) && (event->y() <= 1021)) {
+            double mapX = abs(256 - event->x());
+            double mapY = 771 - event->y();
+
+            if ((256 - event->x()) < 0)
+                    map[2]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
+            else
+                    map[2]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
+        }
+        else if ((event->x() >= 523) && (event->y() >= 522) && (event->x() <= (1021)) && (event->y() <= 1021)) {
+            double mapX = abs(771 - event->x());
+            double mapY = 771 - event->y();
+
+            if ((771 - event->x()) < 0)
+                    map[3]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
+            else
+                    map[3]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
+        }
 }
 
 RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
