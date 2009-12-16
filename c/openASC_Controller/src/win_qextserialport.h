@@ -1,6 +1,8 @@
 #ifndef _WIN_QEXTSERIALPORT_H_
 #define _WIN_QEXTSERIALPORT_H_
 
+#ifdef WIN32
+
 #include "qextserialbase.h"
 
 /*if all warning messages are turned off, flag portability warnings to be turned off as well*/
@@ -44,5 +46,7 @@ protected:
     virtual qint64 readData(char *data, qint64 maxSize);
     virtual qint64 writeData(const char *data, qint64 maxSize);
 };
+
+#endif
 
 #endif

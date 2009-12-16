@@ -17,6 +17,8 @@ make no guarantees as to the quality of POSIX support under NT/2000 however.
 
 */
 
+#ifdef WIN32
+
 #include <stdio.h>
 #include "win_qextserialport.h"
 
@@ -875,3 +877,5 @@ void Win_QextSerialPort::setTimeout(ulong sec, ulong millisec) {
     }
     UNLOCK_MUTEX();
 }
+
+#endif

@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>638</width>
-    <height>572</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -36,7 +36,7 @@
          <x>10</x>
          <y>10</y>
          <width>140</width>
-         <height>360</height>
+         <height>381</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -75,71 +75,98 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>121</width>
-          <height>321</height>
+          <width>122</width>
+          <height>343</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt1">
            <property name="text">
-            <string/>
+            <string>Bev @5 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt2">
            <property name="text">
-            <string/>
+            <string>Bev @45 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt3">
            <property name="text">
-            <string/>
+            <string>Bev @80 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt4">
            <property name="text">
-            <string/>
+            <string>Bev @120 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="4" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt5">
            <property name="text">
-            <string/>
+            <string>Bev @180 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="5" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt6">
            <property name="text">
-            <string/>
+            <string>Bev @260 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="6" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt7">
            <property name="text">
-            <string/>
+            <string>Bev @300 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="7" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt8">
            <property name="text">
-            <string/>
+            <string>Bev @315 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="8" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt9">
            <property name="text">
-            <string/>
+            <string>Bev @330 deg</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -147,6 +174,9 @@
           <widget class="QPushButton" name="pushButtonRXAnt10">
            <property name="text">
             <string/>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -852,6 +882,8 @@
     <property name="title">
      <string>Network</string>
     </property>
+    <addaction name="actionConnect_2"/>
+    <addaction name="actionDisconnect_2"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -868,7 +900,6 @@
    <addaction name="menuSettings"/>
    <addaction name="menuWindows"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect">
    <property name="text">
     <string>Connect</string>
@@ -943,6 +974,16 @@
    </property>
    <property name="text">
     <string>Rotators</string>
+   </property>
+  </action>
+  <action name="actionConnect_2">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionDisconnect_2">
+   <property name="text">
+    <string>Disconnect</string>
    </property>
   </action>
  </widget>
@@ -1029,6 +1070,166 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonRXAnt1</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt1Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>547</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt2Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>669</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt3</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt3Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>554</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt4Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>182</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt5</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt5Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>636</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt6</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt6Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>251</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>286</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt7</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt7Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>108</x>
+     <y>277</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt8</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt8Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>82</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>636</x>
+     <y>391</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt9</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt9Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>635</x>
+     <y>358</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonRXAnt10</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonRXAnt10Clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>107</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
@@ -1053,5 +1254,15 @@
   <slot>pushButtonTX2Clicked(bool)</slot>
   <slot>pushButtonTX3Clicked(bool)</slot>
   <slot>pushButtonTX4Clicked(bool)</slot>
+  <slot>pushButtonRXAnt1Clicked(bool)</slot>
+  <slot>pushButtonRXAnt2Clicked(bool)</slot>
+  <slot>pushButtonRXAnt3Clicked(bool)</slot>
+  <slot>pushButtonRXAnt4Clicked(bool)</slot>
+  <slot>pushButtonRXAnt5Clicked(bool)</slot>
+  <slot>pushButtonRXAnt6Clicked(bool)</slot>
+  <slot>pushButtonRXAnt7Clicked(bool)</slot>
+  <slot>pushButtonRXAnt8Clicked(bool)</slot>
+  <slot>pushButtonRXAnt9Clicked(bool)</slot>
+  <slot>pushButtonRXAnt10Clicked(bool)</slot>
  </slots>
 </ui>
