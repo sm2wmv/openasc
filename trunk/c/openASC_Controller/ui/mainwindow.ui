@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
-    <height>576</height>
+    <width>640</width>
+    <height>574</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -687,8 +687,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>642</width>
-     <height>26</height>
+     <width>640</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">
@@ -824,9 +824,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonTXComb2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pushButtonTXComb2(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>91</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>112</x>
+     <y>110</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>WindowRotatorsClicked()</slot>
   <slot>pushButtonTXComb1(bool)</slot>
+  <slot>pushButtonTXComb2(bool)</slot>
  </slots>
 </ui>

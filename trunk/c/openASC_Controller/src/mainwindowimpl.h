@@ -18,6 +18,7 @@ private slots:
 public slots:
 	void WindowRotatorsClicked();
   void pushButtonTXComb1(bool state);
+	void pushButtonTXComb2(bool state);
  
 };
 #endif
