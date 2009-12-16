@@ -77,24 +77,24 @@ QextSerialBase::~QextSerialBase()
 /*!
 \fn void QextSerialBase::construct()
 Common constructor function for setting up default port settings.
-(115200 Baud, 8N1, Hardware flow control where supported, otherwise no flow control, and 500 ms timeout).
+(19200 Baud, 8N1, Hardware flow control where supported, otherwise no flow control, and 500 ms timeout).
 */
 void QextSerialBase::construct()
 {
-    Settings.BaudRate=BAUD115200;
+    Settings.BaudRate=BAUD19200;
     Settings.DataBits=DATA_8;
     Settings.Parity=PAR_NONE;
     Settings.StopBits=STOP_1;
-    Settings.FlowControl=FLOW_HARDWARE;
+		Settings.FlowControl=FLOW_OFF;
     Settings.Timeout_Sec=0;
     Settings.Timeout_Millisec=500;
 
-#ifdef QT_THREAD_SUPPORT
-    if (!mutex) {
-        mutex=new QMutex( QMutex::Recursive );
-    }
-    refCount++;
-#endif
+	#ifdef QT_THREAD_SUPPORT
+			if (!mutex) {
+					mutex=new QMutex( QMutex::Recursive );
+			}
+			refCount++;
+	#endif
 
 	setOpenMode(QIODevice::NotOpen);
 }

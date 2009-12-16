@@ -1,8 +1,8 @@
-/*! \file main.h \brief Main file of the motherboard
+/*! \file computer_interface.h \brief Interface towards the computer
  * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-08
+ * \date 2009-12-16
  */
-//    Copyright (C) 2008  Mikael Larsmark, SM2WMV
+//    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -17,26 +17,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _COMPUTER_INTERFACE_H_
+#define _COMPUTER_INTERFACE_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
+void computer_interface_init(void);
+void computer_interface_send_data(void);
+void computer_interface_parse_data(void);
 
-#define INT_COMM_REDIRECT_DATA	0x10
-
-typedef struct {
-	//To see if we have started to read a keyboard command
-	unsigned char started;
-	unsigned char bit_count;
-	unsigned char data;
-	unsigned char data_ready;
-	unsigned char transmit;
-	unsigned char parity;
-	unsigned char tx_data;
-	unsigned char prev_cmd;
-} PS2_STRUCT;
+unsigned char computer_interface_is_active(void);
 
 #endif

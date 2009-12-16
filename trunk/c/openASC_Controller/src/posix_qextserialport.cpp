@@ -12,6 +12,9 @@ warnings) in the project.  Note that _TTY_NOWARN_ will also turn off portability
 */
 
 #include <stdio.h>
+
+#ifndef WIN32
+
 #include "posix_qextserialport.h"
 
 /*!
@@ -1115,3 +1118,5 @@ qint64 Posix_QextSerialPort::writeData(const char * data, qint64 maxSize)
     flush();
     return retVal;
 }
+
+#endif

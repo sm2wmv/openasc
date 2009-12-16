@@ -28,6 +28,8 @@
 #include "../internal_comm_commands.h"
 #include "../wmv_bus/bus_commands.h"
 
+#include "computer_interface.h"
+
 #define PS2_CLK_LOW		PORTE &= ~(1<<6)
 #define PS2_CLK_HIGH	PORTE |= (1<<6)
 #define PS2_DATA_LOW	PORTA &= ~(1<<3)
@@ -133,6 +135,9 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
 
 	switch(message.cmd) {
+		case INT_COMM_REDIRECT_DATA:
+			computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
+			break;
 		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT :
 			for (unsigned char i=0;i<message.length;i++)
 				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
@@ -143,7 +148,7 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT: 
 			for (unsigned char i=0;i<message.length;i++)
-				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
+				activate_output(message	.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
@@ -298,6 +303,9 @@ int main(void) {
 	delay_ms(100);
 	
 	while(1) {
+		computer_interface_send_data();
+		computer_interface_parse_data();
+		
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
 		internal_comm_poll_rx_queue();
 		

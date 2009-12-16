@@ -62,7 +62,7 @@ TARGET = main
 DEVICE_TYPE = DEVICE_TYPE_MAIN_MOTHERBOARD_UNIT
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c init.c usart.c ../delay.c ../internal_comm.c ../internal_comm_tx_queue.c ../internal_comm_rx_queue.c
+SRC = $(TARGET).c init.c usart.c ../delay.c ../internal_comm.c ../internal_comm_tx_queue.c ../internal_comm_rx_queue.c computer_interface.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s

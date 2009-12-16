@@ -1,10 +1,6 @@
 # KDevelop Custom Project File List
 avrlibdefs.h
 avrlibtypes.h
-bootloader
-bootloader/Makefile
-bootloader/command.h
-bootloader/stk500boot.c
 delay.c
 delay.h
 driver_unit
@@ -84,6 +80,8 @@ internal_comm_tx_queue.c
 internal_comm_tx_queue.h
 motherboard
 motherboard/board.h
+motherboard/computer_interface.c
+motherboard/computer_interface.h
 motherboard/init.c
 motherboard/init.h
 motherboard/main.c

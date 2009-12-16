@@ -2,6 +2,8 @@
 #ifndef _POSIX_QEXTSERIALPORT_H_
 #define _POSIX_QEXTSERIALPORT_H_
 
+#ifndef WIN32
+
 #include <stdio.h>
 #include <termios.h>
 #include <errno.h>
@@ -52,5 +54,7 @@ protected:
     virtual qint64 readData(char * data, qint64 maxSize);
     virtual qint64 writeData(const char * data, qint64 maxSize);
 };
+
+#endif
 
 #endif
