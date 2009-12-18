@@ -24,6 +24,4 @@ void computer_interface_init(void);
 void computer_interface_send_data(void);
 void computer_interface_parse_data(void);
 
-unsigned char computer_interface_is_active(void);
-
 #endif
