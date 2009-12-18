@@ -33,6 +33,7 @@
 #include "../global.h"
 #include "band_ctrl.h"
 #include "antenna_ctrl.h"
+#include "remote_control.h"
 #include "eeprom_m24.h"
 #include "rotary_encoder.h"
 #include "menu.h"
@@ -42,6 +43,7 @@
 #include "glcd.h"
 #include "../internal_comm.h"
 #include "errors.h"
+
 
 #define ERROR_DEBUG
 
@@ -93,6 +95,9 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			break;
 		case INT_COMM_PS2_KEYPRESSED:
 			event_handler_process_ps2(message.data[0]);
+			break;
+		case INT_COMM_PC_CTRL:
+			remote_control_parse_command(message.data[0],(unsigned char)message.data[1], (char *)(message.data+2));
 			break;
 		default:
 			break;

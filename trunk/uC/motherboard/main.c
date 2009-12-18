@@ -274,6 +274,7 @@ int main(void) {
 	
 	//Initialize internal communication
 	internal_comm_init((void*)parse_internal_comm_message,(void*)usart0_transmit);
+	computer_interface_init();
 	
 	init_ports();
 	init_timer_0();

@@ -42,6 +42,7 @@
 #include "main.h"
 
 #include "../internal_comm.h"
+#include "../internal_comm_commands.h"
 
 //! The length of the computer RX BUFFER
 #define COMPUTER_RX_BUFFER_LENGTH	128
@@ -60,10 +61,8 @@
 //! The serial NOT acknowledge of the computer communication protocol
 #define COMPUTER_COMM_NACK			0xFB
 
-#define COMPUTER_COMM_REDIRECT_DATA	0x10
+#define COMPUTER_COMM_REDIRECT_DATA					0x10
 
-//! Flag to see if the setup mode is activated
-#define COMPUTER_COMM_FLAG_SETUP_MODE			0
 //! Flag to see if the preamble was found
 #define COMPUTER_COMM_FLAG_FOUND_PREAMBLE	1
 //! Flag to see that there is data in the rx buffer
@@ -86,7 +85,6 @@ typedef struct {
 	unsigned char command;
 	unsigned char length;
 	unsigned int count;
-	unsigned int eeprom_ptr;
 } computer_comm_struct;
 
 computer_comm_struct computer_comm;
@@ -103,7 +101,6 @@ void computer_interface_init(void) {
 	computer_comm.tx_buffer_start = computer_comm.tx_buffer;
 	
 	computer_comm.data_in_tx_buffer = 0;
-	computer_comm.flags |= (1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 }
 
 void computer_interface_send_data(void) {
@@ -168,12 +165,10 @@ void computer_interface_send_flag(void) {
 }
 
 void computer_interface_parse_data(void) {
-	unsigned char ptr_pos=2;
-	
 	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF)) {
 		
 		if (computer_comm.command == INT_COMM_REDIRECT_DATA) {
-			internal_comm_add_tx_message(computer_comm.rx_buffer_start[0], computer_comm.rx_buffer_start[1], (void *)computer_comm.rx_buffer_start[2]);
+			internal_comm_add_tx_message(INT_COMM_PC_CTRL, computer_comm.length, (void *)computer_comm.rx_buffer_start);
 			
 			computer_interface_send_ack();
 		}
@@ -184,10 +179,6 @@ void computer_interface_parse_data(void) {
 		computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF);
 		computer_comm.rx_buffer = computer_comm.rx_buffer_start;
 	}
-}
-
-unsigned char computer_interface_is_active(void) {
-	return((computer_comm.flags & (1<<COMPUTER_COMM_FLAG_SETUP_MODE))>>COMPUTER_COMM_FLAG_SETUP_MODE);
 }
 
 ISR(SIG_USART1_DATA) {

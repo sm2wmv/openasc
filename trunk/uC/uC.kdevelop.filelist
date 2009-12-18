@@ -61,6 +61,8 @@ front_panel/menu.h
 front_panel/pictures.h
 front_panel/radio_interface.c
 front_panel/radio_interface.h
+front_panel/remote_control.c
+front_panel/remote_control.h
 front_panel/rotary_encoder.c
 front_panel/rotary_encoder.h
 front_panel/sequencer.c

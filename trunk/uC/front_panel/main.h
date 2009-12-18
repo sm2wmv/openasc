@@ -94,7 +94,6 @@
 //! Knob function is to set the heading of a rotator
 #define KNOB_FUNCTION_SET_HEADING	3
 
-
 //! RX antenna name length
 #define RX_ANTENNA_NAME_LENGTH				15
 //! RX antenna output str length
