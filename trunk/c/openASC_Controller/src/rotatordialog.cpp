@@ -25,9 +25,7 @@ void RotatorDialog::loadMap(QString path) {
 	}
 }
 
-void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {
-	printf("X: %i Y: %i\n",event->x(),event->y());
-	
+void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
         if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (505)) && (event->y() <= 505)) {
                 double mapX = abs(256 - event->x());
 		double mapY = 256 - event->y();

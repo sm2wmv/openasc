@@ -6,9 +6,9 @@
 #include "mainwindowimpl.h"
 #include "generic.h"
 #include "commclass.h"
-	
 
-void MainWindowImpl::WindowRotatorsClicked() {
+
+void MainWindowImpl::WindowRotatorsTriggered() {
 	if (rotatorWindow->isVisible())
 		rotatorWindow->hide();
 	else
@@ -108,9 +108,19 @@ void MainWindowImpl::pushButtonRXAnt10Clicked(bool state) {
 		pushButtonPressed(REMOTE_CTRL_BUTTON_RXANT10);
 }
 
+void MainWindowImpl::actionSettingsEditTriggered() {
+		settingsDialog->show();
+}
+
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
 	setupUi(this);
 
+	settingsDialog = new SettingsDialog(this);
+	settingsDialog->hide();
+
 	rotatorWindow = new RotatorDialog(this);
 	rotatorWindow->hide();
+
+	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));
+	connect(actionWindowsRotators, SIGNAL(triggered()), this, SLOT(WindowRotatorsTriggered()));
 }
