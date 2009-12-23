@@ -7,7 +7,6 @@
 #include "generic.h"
 #include "commclass.h"
 
-
 void MainWindowImpl::WindowRotatorsTriggered() {
 	if (rotatorWindow->isVisible())
 		rotatorWindow->hide();
@@ -18,7 +17,7 @@ void MainWindowImpl::WindowRotatorsTriggered() {
 void MainWindowImpl::pushButtonPressed(unsigned char button) {
 		unsigned char temp[3] = {REMOTE_CONTROL_BUTTON_PRESSED,1,button};
 
-		serialPort.addTXMessage(COMPUTER_COMM_REDIRECT_DATA,3,temp);
+		comm.addTXMessage(COMPUTER_COMM_REDIRECT_DATA,3,temp);
 }
 
 void MainWindowImpl::pushButtonTX1Clicked(bool state) {
@@ -112,7 +111,30 @@ void MainWindowImpl::actionSettingsEditTriggered() {
 		settingsDialog->show();
 }
 
+void MainWindowImpl::actionConnectTriggered() {
+	if (interfaceType == INTERFACE_TYPE_SERIAL) {
+/*		if (comm.openPort(lineEditDevicePort->text())) {
+						QMessageBox::critical(0,"Serial port error!","Could not open the specified port!");
+		}
+		else {
+						serialPort.start();
+
+						addDebugLine("Serial port opened: " + lineEditDevicePort->text());
+		}*/
+	}
+	else if (interfaceType == INTERFACE_TYPE_TCP) {
+		comm.openPort("127.0.0.1",7900);
+		comm.start();
+	}
+}
+
+void MainWindowImpl::actionDisconnectTriggered() {
+
+}
+
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
+	interfaceType = INTERFACE_TYPE_NETWORK;
+
 	setupUi(this);
 
 	settingsDialog = new SettingsDialog(this);
@@ -123,4 +145,22 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 
 	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));
 	connect(actionWindowsRotators, SIGNAL(triggered()), this, SLOT(WindowRotatorsTriggered()));
+	connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
+	connect(actionDisconnect, SIGNAL(triggered()), this, SLOT(actionDisconnectTriggered()));
+
+	connect(pushButtonTX1, SIGNAL(clicked(bool)), this, SLOT(pushButtonTX1Clicked(bool)));
+	connect(pushButtonTX2, SIGNAL(clicked(bool)), this, SLOT(pushButtonTX2Clicked(bool)));
+	connect(pushButtonTX3, SIGNAL(clicked(bool)), this, SLOT(pushButtonTX3Clicked(bool)));
+	connect(pushButtonTX4, SIGNAL(clicked(bool)), this, SLOT(pushButtonTX4Clicked(bool)));
+
+	connect(pushButtonRXAnt1, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt1Clicked(bool)));
+	connect(pushButtonRXAnt2, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt2Clicked(bool)));
+	connect(pushButtonRXAnt3, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt3Clicked(bool)));
+	connect(pushButtonRXAnt4, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt4Clicked(bool)));
+	connect(pushButtonRXAnt5, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt5Clicked(bool)));
+	connect(pushButtonRXAnt6, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt6Clicked(bool)));
+	connect(pushButtonRXAnt7, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt7Clicked(bool)));
+	connect(pushButtonRXAnt8, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt8Clicked(bool)));
+	connect(pushButtonRXAnt9, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt9Clicked(bool)));
+	connect(pushButtonRXAnt10, SIGNAL(clicked(bool)), this, SLOT(pushButtonRXAnt10Clicked(bool)));
 }

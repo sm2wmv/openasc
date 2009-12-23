@@ -223,7 +223,7 @@
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="comboBoxBand">
         <property name="geometry">
          <rect>
           <x>35</x>
@@ -235,6 +235,11 @@
         <item>
          <property name="text">
           <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Auto</string>
          </property>
         </item>
         <item>

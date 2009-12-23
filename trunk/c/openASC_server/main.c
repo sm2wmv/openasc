@@ -1,5 +1,5 @@
 /*
- * Linus Widströmer, OH0GRY
+ * Linus Widstrï¿½mer, OH0GRY
  * License: GNU GENERAL PUBLIC LICENSE
  */
 

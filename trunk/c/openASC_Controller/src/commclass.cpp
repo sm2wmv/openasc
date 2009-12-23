@@ -35,6 +35,8 @@ int CommClass::openPort(QString deviceName) {
 	sent_count = 0;
 	lastMessageAcked = true;
 	
+	interfaceType = INTERFACE_TYPE_SERIAL;
+
 	//Sets the timeout between each character read to 50 us
 	serialPort->setTimeout(0,10);
 	
@@ -45,6 +47,16 @@ int CommClass::openPort(QString deviceName) {
 		return(1);
 	}
 
+}
+
+int CommClass::openPort(QString address, quint16 port) {
+	QHostAddress addr(address);
+	client.connectToHost(addr, port);
+
+	sent_count = 0;
+	lastMessageAcked = true;
+
+	interfaceType = INTERFACE_TYPE_TCP;
 }
 
 void CommClass::parseRXQueue() {
@@ -89,7 +101,7 @@ void CommClass::run() {
 	threadActive = true;
 	
 	while(threadActive) {
-		receiveMsg();
+		//receiveMsg();
 		
 		if (rxQueue.size() > 0)
 			parseRXQueue();
@@ -105,7 +117,10 @@ void CommClass::stopProcess() {
 }
 
 int CommClass::closePort() {
-	serialPort->close();
+	if (interfaceType == INTERFACE_TYPE_SERIAL)
+		serialPort->close();
+	else
+		client.close();
 	
 	return(0);
 }
@@ -151,11 +166,21 @@ bool CommClass::isOpen() {
 }
 
 void CommClass::sendMessage(char *data, int length) {
-	serialPort->write(data,length);
+	if (interfaceType == INTERFACE_TYPE_SERIAL)
+		serialPort->write(data,length);
+	else if (interfaceType == INTERFACE_TYPE_TCP) {
+		client.write(data,length);
+		printf("SENT1");
+	}
 }
 
 void CommClass::sendMessage(QByteArray& data) {
-	serialPort->write(data);
+	if (interfaceType == INTERFACE_TYPE_SERIAL)
+		serialPort->write(data);
+	else if (interfaceType == INTERFACE_TYPE_TCP) {
+		client.write(data);
+		printf("SENT2");
+	}
 }
 
 void CommClass::addTXMessage(unsigned char cmd, unsigned char length, unsigned char *data) {

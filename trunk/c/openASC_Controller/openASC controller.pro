@@ -1,6 +1,7 @@
 TEMPLATE = app
 QT = gui \
-    core
+    core \
+    network
 CONFIG += qt \
     warn_on \
     console \

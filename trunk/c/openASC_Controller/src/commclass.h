@@ -24,8 +24,14 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QLinkedList>
+#include <QtNetwork>
+#include <QString>
+#include <QTcpSocket>
 
 #include "qextserialport.h"
+
+#define INTERFACE_TYPE_SERIAL	1
+#define INTERFACE_TYPE_TCP		2
 
 //! The serial acknowledge of the computer communication protocol
 #define COMPUTER_COMM_ACK				0xFA
@@ -41,6 +47,9 @@
 
 #define REMOTE_CONTROL_BUTTON_PRESSED		0x10
 #define REMOTE_CONTROL_RX_ANT_TEXT			0x11
+#define REMOTE_CONTROL_ANT_TEXT					0x12
+#define REMOTE_CONTROL_ANT_STATUS				0x13
+#define REMOTE_CONTROL_CHANGE_BAND			0x14
 
 /* START OF BUTTON PRESSED DEFINES */
 #define REMOTE_CTRL_BUTTON_TX1			1
@@ -73,6 +82,7 @@ class CommClass : public QThread
 	public:
 		CommClass();
 		int openPort(QString deviceName);
+		int openPort(QString address, quint16 port);
 		int closePort();
 		void receiveMsg();
 		void sendMessage(char *data, int length);
@@ -84,10 +94,11 @@ class CommClass : public QThread
 		void parseRXQueue();
 		bool isOpen();
 	private:
-	
+		int interfaceType;
 	protected:
 		bool threadActive;
 		QextSerialPort *serialPort;
+		QTcpSocket client;
 		QByteArray receivedMessage;
 		QLinkedList<QByteArray> txQueue;
 		QLinkedList<QByteArray> rxQueue;
