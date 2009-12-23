@@ -7,6 +7,12 @@
 #include "commclass.h"
 #include "settingsdialog.h"
 
+#include <QtNetwork>
+#include <QTcpSocket>
+
+#define INTERFACE_TYPE_SERIAL_PORT	1
+#define INTERFACE_TYPE_NETWORK			2
+
 //
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
@@ -14,13 +20,16 @@ public:
 		MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
-		CommClass serialPort;
+		CommClass comm;
 		void pushButtonPressed(unsigned char button);
 private:
+		int interfaceType;
 protected:
 private slots:
 public slots:
 		void WindowRotatorsTriggered();
+		void actionConnectTriggered();
+		void actionDisconnectTriggered();
 		void pushButtonTX1Clicked(bool state);
 		void pushButtonTX2Clicked(bool state);
 		void pushButtonTX3Clicked(bool state);

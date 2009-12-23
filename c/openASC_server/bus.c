@@ -1,5 +1,5 @@
 /*
- * Linus Widströmer, OH0GRY
+ * Linus Widstrï¿½mer, OH0GRY
  * License: GNU GENERAL PUBLIC LICENSE
  */
 
@@ -60,7 +60,7 @@ static int check_bus(void)
 // TBD
 static void transmit_msg_onto_bus(MSG * msg)
 {
-
+	log_debug("Message sent to bus/com");
 }
 
 // TBD
