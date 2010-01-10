@@ -52,15 +52,19 @@ void CommClass::parseRXQueue() {
 	rxQueue.removeFirst();
 	
 	unsigned char cmd = (unsigned char)temp.at(0);
-	unsigned char length = (unsigned char)temp.at(0);
-	unsigned char data[length];
+	unsigned char length = (unsigned char)temp.at(1);
+	unsigned char data[length+1];
 	
-	for (int i=0;i<temp.size()-2;i++)
+	qDebug("CMD: %i - LENGTH: %i",cmd,length);
+
+	for (int i=0;i<length;i++)
 		data[i] = temp.at(i+2);
+
+	data[length] = 0;
 	
 	switch(cmd) {
 		case CTRL_GET_FIRMWARE_REV:
-			qDebug("Firmware rev: %s",data);
+			qDebug("Firmware rev: %s\n\r",data);
 			
 			if (txQueue.size() > 0)
 				txQueue.removeFirst();

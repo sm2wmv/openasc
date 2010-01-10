@@ -113,8 +113,8 @@ void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char len
 	for (unsigned char i=0;i<length;i++) {
 		if (addresses[i] != 0x00)
 			bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
-		else
-			internal_comm_add_tx_message(cmd, 0 , 0);
+		//else
+//			internal_comm_add_tx_message(cmd, 0 , 0);
 	}
 }
 
@@ -124,7 +124,6 @@ unsigned char antenna_ctrl_antenna_selected(void) {
 
 /*! Send the output string for the current antenna to the bus */
 void antenna_ctrl_send_ant_data_to_bus(void) {
-	
 	if (status.selected_ant != 0) {	
 		unsigned char value = antenna_ctrl_get_comb_value(status.selected_ant);
 		
@@ -153,7 +152,7 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 
 				start_pos += count;
 				i++;
-			}
+			} 
 			else {
 				temp[count] = current_antennas.antenna_comb_output_str[value][i];
 				count++;
