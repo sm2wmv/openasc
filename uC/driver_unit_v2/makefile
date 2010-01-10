@@ -50,7 +50,7 @@
 #
 
 # MCU name
-MCU = at90can128
+MCU = atmega128
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex

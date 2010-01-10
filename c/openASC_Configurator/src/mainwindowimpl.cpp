@@ -424,7 +424,7 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 
 void MainWindowImpl::actionGetFirmwareRevTriggered() {
 	serialPort.addTXMessage(CTRL_GET_FIRMWARE_REV,0,0);
-	addDebugLine("Trying to retrieve firmware information");
+	//addDebugLine("Trying to retrieve firmware information");
 }
 
 void MainWindowImpl::addDebugLine(QString str) {

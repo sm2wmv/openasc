@@ -20,7 +20,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#define FIRMWARE_REV "0.1b"
+#define FIRMWARE_REV "0.1b\0"
 
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
 #define DISABLE_TIMER0_INT() 	TIMSK0 &= ~(1<<OCIE0A);

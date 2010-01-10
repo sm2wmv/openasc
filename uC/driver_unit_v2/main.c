@@ -173,7 +173,6 @@ unsigned int lm76_get_temp(void) {
 	return((((temp[0]<<8) | temp[1]) >> 3));
 }
 
-
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
@@ -292,7 +291,7 @@ int main(void)
 	for (unsigned char i=1;i<=20;i++)
 		deactivate_output(0x00,i);
 
-	while(1) {	
+	while(1) {
 		if (!rx_queue_is_empty()) {
 			bus_parse_message();
 		}

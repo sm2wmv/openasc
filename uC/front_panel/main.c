@@ -286,7 +286,7 @@ int main(void){
 	sei();
 
 	//DEBUG data
-	printf("openASC started\n");
+//	printf("openASC started\n");
 
 	//TEMPORARY
 	//radio_interface_set_interface(RADIO_INTERFACE_MANUAL);
@@ -309,7 +309,6 @@ int main(void){
 	else {
 		PORTC |= (1<<7);
 		computer_interface_activate_setup();
-		printf("Setup mode\n");
 	}
 	
 	//Initialize the menu system
@@ -356,11 +355,11 @@ int main(void){
 		
 		//DISABLE_TIMER0_INT();
 		
-		/*if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
+		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
-		}*/
+		}
 	
 		//Poll the buttons
 		if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
@@ -530,17 +529,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		}
 	}
 	
-	counter_last_pulse_event++;
-	counter_poll_rotary_encoder++;
-	counter_poll_buttons++;
-	counter_poll_ext_devices++;	
-	counter_screensaver_timeout++;
-	counter_ping_interval++;
-	counter_ms++;
-	counter_event_timer++;
-	
-	counter_poll_radio++;
-	
 	if (counter_poll_radio >= radio_interface_get_poll_interval()*10) {
 		radio_poll_status();
 		
@@ -555,6 +543,17 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		
 		counter_event_timer = 0;
 	}
+	
+	counter_last_pulse_event++;
+	counter_poll_rotary_encoder++;
+	counter_poll_buttons++;
+	counter_poll_ext_devices++;	
+	counter_screensaver_timeout++;
+	counter_ping_interval++;
+	counter_ms++;
+	counter_event_timer++;
+	
+	counter_poll_radio++;	
 }
 
 /*!Output overflow 0 interrupt */
