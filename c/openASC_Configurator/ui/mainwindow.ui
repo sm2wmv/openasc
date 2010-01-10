@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>684</width>
-    <height>648</height>
+    <width>727</width>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,11 +26,17 @@
     </property>
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidgetSettings">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -724,7 +730,7 @@
          <rect>
           <x>5</x>
           <y>40</y>
-          <width>666</width>
+          <width>691</width>
           <height>322</height>
          </rect>
         </property>
@@ -1240,7 +1246,7 @@
          <rect>
           <x>5</x>
           <y>5</y>
-          <width>490</width>
+          <width>521</width>
           <height>381</height>
          </rect>
         </property>
@@ -1555,8 +1561,8 @@
          <rect>
           <x>5</x>
           <y>5</y>
-          <width>540</width>
-          <height>486</height>
+          <width>563</width>
+          <height>571</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1570,8 +1576,8 @@
           <rect>
            <x>15</x>
            <y>45</y>
-           <width>261</width>
-           <height>431</height>
+           <width>269</width>
+           <height>511</height>
           </rect>
          </property>
          <property name="title">
@@ -1591,8 +1597,8 @@
            <rect>
             <x>15</x>
             <y>25</y>
-            <width>231</width>
-            <height>101</height>
+            <width>244</width>
+            <height>124</height>
            </rect>
           </property>
           <property name="title">
@@ -1609,7 +1615,7 @@
             <rect>
              <x>21</x>
              <y>27</y>
-             <width>196</width>
+             <width>202</width>
              <height>70</height>
             </rect>
            </property>
@@ -1687,9 +1693,9 @@
           <property name="geometry">
            <rect>
             <x>15</x>
-            <y>135</y>
-            <width>230</width>
-            <height>96</height>
+            <y>160</y>
+            <width>242</width>
+            <height>120</height>
            </rect>
           </property>
           <property name="title">
@@ -1703,7 +1709,7 @@
             <rect>
              <x>20</x>
              <y>25</y>
-             <width>196</width>
+             <width>202</width>
              <height>70</height>
             </rect>
            </property>
@@ -1781,9 +1787,9 @@
           <property name="geometry">
            <rect>
             <x>15</x>
-            <y>240</y>
-            <width>231</width>
-            <height>96</height>
+            <y>290</y>
+            <width>232</width>
+            <height>120</height>
            </rect>
           </property>
           <property name="title">
@@ -1797,7 +1803,7 @@
             <rect>
              <x>15</x>
              <y>25</y>
-             <width>196</width>
+             <width>202</width>
              <height>70</height>
             </rect>
            </property>
@@ -1874,10 +1880,10 @@
          <widget class="QGroupBox" name="groupBoxSequencerAntenna">
           <property name="geometry">
            <rect>
-            <x>15</x>
-            <y>345</y>
-            <width>231</width>
-            <height>71</height>
+            <x>20</x>
+            <y>420</y>
+            <width>232</width>
+            <height>83</height>
            </rect>
           </property>
           <property name="title">
@@ -1888,7 +1894,7 @@
             <rect>
              <x>15</x>
              <y>25</y>
-             <width>196</width>
+             <width>202</width>
              <height>33</height>
             </rect>
            </property>
@@ -1951,8 +1957,8 @@
           <rect>
            <x>290</x>
            <y>45</y>
-           <width>240</width>
-           <height>120</height>
+           <width>258</width>
+           <height>136</height>
           </rect>
          </property>
          <property name="title">
@@ -1963,8 +1969,8 @@
            <rect>
             <x>15</x>
             <y>25</y>
-            <width>217</width>
-            <height>83</height>
+            <width>228</width>
+            <height>86</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_9">
@@ -2010,7 +2016,7 @@
          <property name="geometry">
           <rect>
            <x>290</x>
-           <y>175</y>
+           <y>190</y>
            <width>150</width>
            <height>85</height>
           </rect>
@@ -2170,7 +2176,7 @@
             <x>15</x>
             <y>60</y>
             <width>252</width>
-            <height>62</height>
+            <height>63</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
@@ -2237,8 +2243,8 @@
            <rect>
             <x>10</x>
             <y>29</y>
-            <width>159</width>
-            <height>58</height>
+            <width>163</width>
+            <height>59</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_12">
@@ -3004,6 +3010,33 @@ a function to it</string>
        <attribute name="title">
         <string>Debug</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <widget class="QFrame" name="frameDebug">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <widget class="QListWidget" name="listWidgetDebug"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonDebug">
+             <property name="text">
+              <string>Debug</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -3014,8 +3047,8 @@ a function to it</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>684</width>
-     <height>23</height>
+     <width>727</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">
@@ -3110,4 +3143,21 @@ a function to it</string>
  <layoutdefault spacing="3" margin="4"/>
  <resources/>
  <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>5</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>5</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>
