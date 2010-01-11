@@ -255,39 +255,50 @@ int main(void){
 	//Print the startup picture
 	glcd_print_picture();
 	
+		
+	//Check if the computer interface should have full control of the box, setup mode
+	if (PIND & (1<<5)) {
+		computer_interface_deactivate_setup();
+	}
+	else {
+		PORTC |= (1<<7);
+		computer_interface_activate_setup();
+	}
+		
 	//Load all settings from the EEPROM	
-	load_settings();
+	//if (!computer_interface_is_active())
+//		load_settings();
 	
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */	
-	delay_ms(7 * settings.network_address);
+	//delay_ms(7 * settings.network_address);
 	
 	//This must be done in this order for it to work properly!
 	/* Read the external address of the device */
-	bus_set_address(settings.network_address);
+	//bus_set_address(settings.network_address);
 	
-	bus_init();
+	//bus_init();
 	
-	if (settings.network_device_is_master == 1)
+	/*if (settings.network_device_is_master == 1)
 		bus_set_is_master(1,settings.network_device_count);
 	else
 		bus_set_is_master(0,0);	
 	
 	if (bus_is_master()) {
 		tx_queue_dropall();
-	}
+	}*/
 
 	init_timer_0();
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
-	init_timer_2();
+	//init_timer_2();
 		
 	sei();
 
 	//DEBUG data
-//	printf("openASC started\n");
-
+	printf("openASC started\n");
+	
 	//TEMPORARY
 	//radio_interface_set_interface(RADIO_INTERFACE_MANUAL);
 	
@@ -301,15 +312,6 @@ int main(void){
 	
 	//TEMP
 	//PORTC |= (1<<6);
-	
-	//Check if the computer interface should have full control of the box, setup mode
-	if (PIND & (1<<5)) {
-		computer_interface_deactivate_setup();
-	}
-	else {
-		PORTC |= (1<<7);
-		computer_interface_activate_setup();
-	}
 	
 	//Initialize the menu system
 	menu_init();
@@ -326,11 +328,11 @@ int main(void){
 		set_knob_function(KNOB_FUNCTION_SELECT_BAND);
 	
 	while(1) {
-		if (tx_queue_is_empty())
+/*		if (tx_queue_is_empty())
 			PORTC |= (1<<7);
 		else
 			PORTC &= ~(1<<7);
-
+*/
 		computer_interface_send_data();
 		computer_interface_parse_data();
 		

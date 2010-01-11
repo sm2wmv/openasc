@@ -39,12 +39,12 @@ void init_usart(void)
   */
 void init_timer_0(void)
 {
-   TCCR0A = 0;
-   TIFR0  |= (1<<OCIE0A)|(1<<TOIE0);
-   TIMSK0 |= (1<<TOIE0)|(1<<OCIE0A);         /* enable output compare interrupt */
-   TCCR0A  = (1<<WGM01)|(1<<CS02)|(0<<CS01)|(1<<CS00); /* CTC, prescale = 1024 */
+   TCCR0 = 0;
+   TIFR  |= (1<<OCIE0)|(1<<TOIE0);
+   TIMSK |= (1<<TOIE0)|(1<<OCIE0);         /* enable output compare interrupt */
+   TCCR0  = (1<<WGM01)|(1<<CS02)|(0<<CS01)|(1<<CS00); /* CTC, prescale = 1024 */
    TCNT0  = 0;
-   OCR0A   = OCR0_1MS;                     /* match in aprox 1 ms,  */
+   OCR0   = OCR0_1MS;                     /* match in aprox 1 ms,  */
 }
 
 /*!Set the direction of the ports

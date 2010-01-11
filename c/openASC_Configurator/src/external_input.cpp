@@ -40,7 +40,7 @@ void ExternalInputClass::sendSettings(CommClass& serialPort) {
 		
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS;
 	
-	for (int x=0;x<18;x++)
+	for (int x=0;x<17;x++)
 		tx_buff[1+x] = buttonFunction[x];
 	
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, sizeof(tx_buff), tx_buff);

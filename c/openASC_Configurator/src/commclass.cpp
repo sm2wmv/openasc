@@ -55,7 +55,7 @@ void CommClass::parseRXQueue() {
 	unsigned char length = (unsigned char)temp.at(1);
 	unsigned char data[length+1];
 	
-	qDebug("CMD: %i - LENGTH: %i",cmd,length);
+	//qDebug("CMD: %i - LENGTH: %i",cmd,length);
 
 	for (int i=0;i<length;i++)
 		data[i] = temp.at(i+2);
