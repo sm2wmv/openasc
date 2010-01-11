@@ -45,7 +45,7 @@
 #include "errors.h"
 
 
-#define ERROR_DEBUG
+//#define ERROR_DEBUG
 
 extern unsigned int main_flags;
 

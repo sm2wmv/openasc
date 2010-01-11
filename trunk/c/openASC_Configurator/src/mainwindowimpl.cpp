@@ -411,7 +411,10 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 	addDebugLine("Sending RX Antenna settings");
 	rxAntennas.sendSettings(serialPort);
 	
+	addDebugLine("Sending Ext input settings");
 	extInput.sendSettings(serialPort);
+
+	addDebugLine("Sending main settings");
 	settingsClass.sendSettings(serialPort);
 	
 	addDebugLine("Sending radio settings");
@@ -1310,7 +1313,6 @@ void MainWindowImpl::setupConnections() {
 
 MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
 	setupUi(this);
-	
 	//! Set the sequencer names, used for saving settings etc */
 	sequencerComputer.setName("SequencerComputer");
 	sequencerRadioSense.setName("SequencerRadioSense");

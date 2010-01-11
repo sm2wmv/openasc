@@ -167,7 +167,7 @@ unsigned char eeprom_m24_write_block(unsigned int start_address, unsigned int le
 				length--;
 				
 				//If we are about to wrap around a page
-				if ((current_address & 0xFFC0) != (last_address & 0xFFC0)) {
+				if ((current_address & 0xFFE0) != (last_address & 0xFFE0)) {
 					break;
 				}
 			}
