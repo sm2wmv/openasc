@@ -147,6 +147,12 @@ void band_ctrl_change_band(unsigned char band) {
 	antenna_ctrl_deactivate_all();
 	band_ctrl_deactivate_all();
 	
+	led_set_rxant(LED_STATE_OFF);
+	set_knob_function(KNOB_FUNCTION_AUTO);
+					
+	antenna_ctrl_change_rx_ant(-1);
+	status.function_status &= ~(1<<FUNC_STATUS_RXANT);
+	
 	if (band != BAND_UNDEFINED) {
 		//TODO: Change to correct band portion
 		band_ctrl_send_band_data_to_bus(BAND_HIGH);

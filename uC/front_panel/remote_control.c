@@ -23,6 +23,7 @@
 #include <avr/interrupt.h>
 #include <string.h>
 
+#include "event_handler.h"
 #include "remote_control.h"
 
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
