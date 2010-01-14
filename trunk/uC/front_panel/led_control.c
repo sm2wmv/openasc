@@ -42,32 +42,22 @@ void led_set_band_none(void) {
 
 /*! Set the PTT LED
  *  \param state The state of the LED */
-void led_set_ptt(enum enum_led_state state) {
-	if (state == LED_STATE_GREEN) {
+void led_set_ptt(enum enum_led_ptt_state state) {
+	if (state == LED_STATE_PTT_ACTIVE) {
 		//Turn off the red led and turn on the green led
 		PORTC |= (1<<LED_PTT_GREEN_BIT);
 		PORTC &= ~(1<<LED_PTT_RED_BIT);
 	}
-	else if (state == LED_STATE_RED) {
+	else if (state == LED_STATE_PTT_INHIBIT) {
 		//Turn off the green led and turn on the red led
 		PORTC |= (1<<LED_PTT_RED_BIT);
-		PORTC &= ~(1<<LED_PTT_GREEN_BIT);		
+		PORTC &= ~(1<<LED_PTT_GREEN_BIT);
 	}
-	else {
+	else if (state == LED_STATE_PTT_OK) {
 		//Turn off both
 		PORTC &= ~(1<<LED_PTT_GREEN_BIT);
-		PORTC &= ~(1<<LED_PTT_RED_BIT);		
+		PORTC &= ~(1<<LED_PTT_RED_BIT);
 	}
-}
-
-/*! Set the PTT led to on (RED) */
-void led_set_ptt_on(void) {
-	led_set_ptt(LED_STATE_RED);
-}
-
-/*! Set the PTT led to on (GREEN) */
-void led_set_ptt_off(void) {
-	led_set_ptt(LED_STATE_GREEN);
 }
 
 /*! Set the error LED status
@@ -224,7 +214,7 @@ void led_set_all(enum enum_led_state state) {
 		led_set_rx_ant(0,LED_STATE_ON);
 		led_set_tx_ant(0,LED_STATE_ON);
 		led_set_error(LED_STATE_ON);
-		led_set_ptt(LED_STATE_RED);
+		led_set_ptt(LED_STATE_PTT_ACTIVE);
 		led_set_rxant(LED_STATE_ON);
 		led_set_txrx(LED_STATE_ON);
 		led_set_rotate(LED_STATE_ON);
@@ -235,7 +225,7 @@ void led_set_all(enum enum_led_state state) {
 		led_set_rx_ant(0,LED_STATE_OFF);
 		led_set_tx_ant(0,LED_STATE_OFF);
 		led_set_error(LED_STATE_OFF);
-		led_set_ptt(LED_STATE_OFF);	
+		led_set_ptt(LED_STATE_PTT_OK);
 		led_set_rxant(LED_STATE_OFF);
 		led_set_txrx(LED_STATE_OFF);
 		led_set_rotate(LED_STATE_OFF);

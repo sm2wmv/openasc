@@ -21,21 +21,26 @@
 #ifndef _LED_CONTROL_H_
 #define _LED_CONTROL_H_
 
+enum enum_led_ptt_state {
+	//! Used to set the LED to PTT active color
+	LED_STATE_PTT_ACTIVE,
+	//! Used to set the LED to INHIBIT color
+ 	LED_STATE_PTT_INHIBIT,
+	//! Used to set the LED to PTT OK color (which means that it is OK to transmit)
+ 	LED_STATE_PTT_OK
+};
+
 enum enum_led_state {
 	//! Used to set the LED as ON
 	LED_STATE_ON,
 	//! Used to set the LED as OFF
-	LED_STATE_OFF,
-	//! Used to set the LED to GREEN
-	LED_STATE_GREEN,
-	//! Used to set the LED to RED
-	LED_STATE_RED
+	LED_STATE_OFF
 };
 
 void led_set_band(unsigned char band);
 void led_set_band_none(void);
 
-void led_set_ptt(enum enum_led_state state);
+void led_set_ptt(enum enum_led_ptt_state state);
 void led_set_error(enum enum_led_state state);
 void led_set_rotation_active(enum enum_led_state state);
 
@@ -47,9 +52,6 @@ void led_set_txrx(enum enum_led_state state);
 void led_set_rxant(enum enum_led_state state);
 void led_set_aux(enum enum_led_state state);
 void led_set_menu(enum enum_led_state state);
-
-void led_set_ptt_on(void);
-void led_set_ptt_off(void);
 
 void led_set_all(enum enum_led_state state);
 #endif

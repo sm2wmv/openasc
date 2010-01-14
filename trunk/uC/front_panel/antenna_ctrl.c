@@ -113,8 +113,8 @@ void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char len
 	for (unsigned char i=0;i<length;i++) {
 		if (addresses[i] != 0x00)
 			bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
-		//else
-//			internal_comm_add_tx_message(cmd, 0 , 0);
+		else
+			internal_comm_add_tx_message(cmd, 0 , 0);
 	}
 }
 

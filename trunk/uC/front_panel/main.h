@@ -93,6 +93,8 @@
 #define KNOB_FUNCTION_SELECT_BAND	2
 //! Knob function is to set the heading of a rotator
 #define KNOB_FUNCTION_SET_HEADING	3
+//! Auto select, pick the one which is most likely to be used
+#define KNOB_FUNCTION_AUTO				4
 
 //! RX antenna name length
 #define RX_ANTENNA_NAME_LENGTH				15
@@ -133,6 +135,11 @@
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
 
 /****************************************************************/
+
+enum enum_inhibit_state {
+	INHIBIT_OK_TO_SEND,
+	INHIBIT_NOT_OK_TO_SEND
+};
 
 typedef struct {
 	//! The size of this structure
@@ -193,6 +200,8 @@ typedef struct {
 	unsigned char rotator_small_step;
 	//! Rotator big resolution step
 	unsigned char rotator_big_step;
+	//! Show if the device is inhibited or not
+	unsigned char inhibit_state;
 } struct_runtime_settings;
 
 /* Different antenna views */
@@ -214,5 +223,8 @@ void check_knob_function(void);
 void set_tx_ant_leds(void);
 void set_knob_function(unsigned char function);
 void shutdown_device(void);
+
+enum enum_inhibit_state main_get_inhibit_state(void);
+void main_set_inhibit_state(enum enum_inhibit_state state);
 
 #endif

@@ -586,4 +586,7 @@ ISR(SIG_USART1_RECV) {
 			}
 		}
 	}
+	else {
+		usart3_transmit(data);
+	}
 }

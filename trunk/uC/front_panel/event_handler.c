@@ -27,6 +27,7 @@
 #include "main.h"
 #include "board.h"
 #include "display.h"
+#include "glcd.h"
 #include "led_control.h"
 #include "../delay.h"
 #include "../i2c.h"
@@ -270,7 +271,81 @@ void event_poll_buttons(void) {
 	status.buttons_current_state = ih_poll_buttons();
 	//Any change? If so then parse what change
 	if (status.buttons_last_state != status.buttons_current_state) {
-		event_parse_button_pressed(status.buttons_current_state ^ status.buttons_last_state);
+		unsigned int btn_status = status.buttons_current_state ^ status.buttons_last_state;
+		
+		//event_parse_button_pressed(status.buttons_current_state ^ status.buttons_last_state);
+			//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON1_TX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON1_TX_BIT))
+				event_tx_button1_pressed();
+		}
+
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON2_TX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON2_TX_BIT))
+				event_tx_button2_pressed();
+		}
+	
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON3_TX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON3_TX_BIT))
+				event_tx_button3_pressed();
+		}
+	
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON4_TX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON4_TX_BIT))
+				event_tx_button4_pressed();
+		}
+			if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
+			event_rotate_button_pressed();
+		}
+		
+		if (btn_status & (1<<FLAG_BUTTON_RXANT_BIT)) {
+			event_rxant_button_pressed();
+		}
+	
+	//Check if the MENU button has been pressed
+		if (btn_status & (1<<FLAG_BUTTON_MENU_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
+				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
+					status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+					led_set_menu(LED_STATE_OFF);
+				}
+				else {
+					status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
+					led_set_menu(LED_STATE_ON);
+				}
+			
+				main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+			}
+		}
+	
+		if (btn_status & (1<<	FLAG_BUTTON_PULSE_BIT)) {
+			if (status.buttons_current_state & (1<<	FLAG_BUTTON_PULSE_BIT)) {
+				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM)
+					menu_action(MENU_BUTTON_PRESSED);
+				else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
+					band_ctrl_change_band(status.new_band);
+				}
+				else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
+					if (status.antenna_to_rotate != 0) {
+						antenna_ctrl_rotate(status.antenna_to_rotate-1,status.new_beamheading);
+					
+						led_set_rotate(LED_STATE_OFF);
+						status.function_status &= ~(1<<FUNC_STATUS_ROTATE);
+				
+						status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
+						status.antenna_to_rotate = 0;
+				
+						set_knob_function(KNOB_FUNCTION_NONE);
+					
+						glcd_clear();
+						main_update_display();
+					}
+				}
+			}
+		}
 	}
 
 	status.buttons_last_state = status.buttons_current_state;
@@ -579,79 +654,7 @@ void event_rotate_button_pressed(void) {
 }
 
 void event_parse_button_pressed(unsigned int btn_status) {
-	//Checks if the status of this antenna button was changed
-	if (btn_status & (1<<FLAG_BUTTON1_TX_BIT)) {
-		if (status.buttons_current_state & (1<<FLAG_BUTTON1_TX_BIT))
-			event_tx_button1_pressed();
-	}
 
-	//Checks if the status of this antenna button was changed
-	if (btn_status & (1<<FLAG_BUTTON2_TX_BIT)) {
-		if (status.buttons_current_state & (1<<FLAG_BUTTON2_TX_BIT))
-			event_tx_button2_pressed();
-	}
-	
-	//Checks if the status of this antenna button was changed
-	if (btn_status & (1<<FLAG_BUTTON3_TX_BIT)) {
-		if (status.buttons_current_state & (1<<FLAG_BUTTON3_TX_BIT))
-			event_tx_button3_pressed();
-	}
-	
-	//Checks if the status of this antenna button was changed
-	if (btn_status & (1<<FLAG_BUTTON4_TX_BIT)) {
-		if (status.buttons_current_state & (1<<FLAG_BUTTON4_TX_BIT))
-			event_tx_button4_pressed();
-	}
-	
-	if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
-		event_rotate_button_pressed();
-	}
-		
-	if (btn_status & (1<<FLAG_BUTTON_RXANT_BIT)) {
-		event_rxant_button_pressed();
-	}
-	
-	//Check if the MENU button has been pressed
-	if (btn_status & (1<<FLAG_BUTTON_MENU_BIT)) {
-		if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
-			if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
-				status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-				led_set_menu(LED_STATE_OFF);
-			}
-			else {
-				status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
-				led_set_menu(LED_STATE_ON);
-			}
-			
-			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-		}
-	}
-	
-	if (btn_status & (1<<	FLAG_BUTTON_PULSE_BIT)) {
-		if (status.buttons_current_state & (1<<	FLAG_BUTTON_PULSE_BIT)) {
-			if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM)
-				menu_action(MENU_BUTTON_PRESSED);
-			else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
-				band_ctrl_change_band(status.new_band);
-			}
-			else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
-				if (status.antenna_to_rotate != 0) {
-					antenna_ctrl_rotate(status.antenna_to_rotate-1,status.new_beamheading);
-					
-					led_set_rotate(LED_STATE_OFF);
-					status.function_status &= ~(1<<FUNC_STATUS_ROTATE);
-				
-					status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
-					status.antenna_to_rotate = 0;
-				
-					set_knob_function(KNOB_FUNCTION_NONE);
-					
-					glcd_clear_screen();
-					main_update_display();
-				}
-			}
-		}
-	}
 }
 
 void event_bus_parse_message(void) {

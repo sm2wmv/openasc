@@ -203,6 +203,10 @@ void bus_parse_message(void) {
 			for (unsigned char i=0;i<bus_message.length;i++)
 				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
 		}
+		else if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT) {
+			for (unsigned char i=0;i<bus_message.length;i++)
+				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
+		}		
 		else if (bus_message.cmd == BUS_CMD_DRIVER_GET_STATUS) {
 			
 		}
@@ -216,11 +220,26 @@ void bus_parse_message(void) {
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
 		}
+		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS) {
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+		}		
 		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT) {
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
 		}
+		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS) {
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+		}		
+		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT) {
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+		}	
 		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS) {
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)

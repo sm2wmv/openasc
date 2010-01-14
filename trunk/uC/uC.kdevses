@@ -1,31 +1,28 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="8" >
+ <DocsAndViews NumberOfDocuments="7" >
   <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="" line="320" Type="Source" />
+   <View0 Encoding="" line="254" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/wmv_bus/bus.c" >
-   <View0 Encoding="" line="252" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.h" >
+   <View0 Encoding="" line="147" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="" line="47" Type="Source" />
-  </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/computer_interface.c" >
-   <View0 Encoding="" line="513" Type="Source" />
-  </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/eeprom.c" >
-   <View0 Encoding="" line="142" Type="Source" />
-  </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/eeprom.h" >
-   <View0 Encoding="" line="32" Type="Source" />
-  </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/eeprom_m24.c" >
-   <View0 Encoding="" line="100" Type="Source" />
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/eeprom_m24.h" >
+  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/board.h" >
    <View0 Encoding="" line="0" Type="Source" />
-  </Doc7>
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/init.c" >
+   <View0 Encoding="" line="28" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.c" >
+   <View0 Encoding="" line="443" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/usart.c" >
+   <View0 Encoding="" line="197" Type="Source" />
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/computer_interface.c" >
+   <View0 Encoding="" line="589" Type="Source" />
+  </Doc6>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

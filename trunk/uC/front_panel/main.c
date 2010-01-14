@@ -165,6 +165,13 @@ void set_tx_ant_leds(void) {
 }
 
 void set_knob_function(unsigned char function) {
+	if (function == KNOB_FUNCTION_AUTO) {
+		//The auto selects the knob function we feel is most useful
+		if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
+			status.knob_function = KNOB_FUNCTION_SELECT_BAND;
+		else
+			status.knob_function = KNOB_FUNCTION_NONE;	
+	}
 	if (function == KNOB_FUNCTION_NONE) {
 		if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
 			status.knob_function = KNOB_FUNCTION_SELECT_BAND;
@@ -197,6 +204,15 @@ void load_settings(void) {
 	
 	//Load the settings struct
 	eeprom_get_settings_structure(&settings);
+}
+
+
+void main_set_inhibit_state(enum enum_inhibit_state state) {
+	runtime_settings.inhibit_state = state;
+}
+
+enum enum_inhibit_state main_get_inhibit_state(void) {
+	return(runtime_settings.inhibit_state);
 }
 
 int main(void){
@@ -235,6 +251,9 @@ int main(void){
 	//Init the communication between the uCs
 	init_usart();
 
+	//TEMPORARY
+	usart3_init(766,1);
+	
 	//Init the backlight PWM
 	init_backlight();
 	i2c_init();
@@ -255,7 +274,10 @@ int main(void){
 	//Print the startup picture
 	glcd_print_picture();
 	
-		
+	//TODO: Do some kind of implementation that the device creates the eeprom table
+	//at its first startup
+	//eeprom_create_table();
+	
 	//Check if the computer interface should have full control of the box, setup mode
 	if (PIND & (1<<5)) {
 		computer_interface_deactivate_setup();
@@ -266,33 +288,35 @@ int main(void){
 	}
 		
 	//Load all settings from the EEPROM	
-	//if (!computer_interface_is_active())
-//		load_settings();
+	if (!computer_interface_is_active())
+		load_settings();
 	
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */	
-	//delay_ms(7 * settings.network_address);
+	delay_ms(7 * settings.network_address);
 	
 	//This must be done in this order for it to work properly!
 	/* Read the external address of the device */
 	//bus_set_address(settings.network_address);
+	bus_set_address(0x01);
 	
-	//bus_init();
-	
-	/*if (settings.network_device_is_master == 1)
-		bus_set_is_master(1,settings.network_device_count);
-	else
-		bus_set_is_master(0,0);	
+	bus_init();
+
+	//if (settings.network_device_is_master == 1)
+		//bus_set_is_master(1,settings.network_device_count);
+		bus_set_is_master(1,10);
+	//else
+//		bus_set_is_master(0,0);	
 	
 	if (bus_is_master()) {
 		tx_queue_dropall();
-	}*/
-
+	}
+	
 	init_timer_0();
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
-	//init_timer_2();
+	init_timer_2();
 		
 	sei();
 
@@ -320,19 +344,14 @@ int main(void){
 	status.current_display_level = DISPLAY_LEVEL_BAND;
 	
 	display_set_backlight(runtime_settings.lcd_backlight_value);
-	
-	led_set_ptt(LED_STATE_GREEN);
+
+	led_set_ptt(LED_STATE_PTT_OK);
 	
 	//At startup the knob function should be MANUAL BAND CHANGE
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
 		set_knob_function(KNOB_FUNCTION_SELECT_BAND);
 	
 	while(1) {
-/*		if (tx_queue_is_empty())
-			PORTC |= (1<<7);
-		else
-			PORTC &= ~(1<<7);
-*/
 		computer_interface_send_data();
 		computer_interface_parse_data();
 		
@@ -354,12 +373,12 @@ int main(void){
 		
 		//Poll the TX queue in the internal comm to see if we have any new messages to be SENT
 		internal_comm_poll_tx_queue();
-		
+			
 		//DISABLE_TIMER0_INT();
 		
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
-			event_run();
+			//event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}
 	
@@ -376,7 +395,7 @@ int main(void){
 		}
 		
 		//ENABLE_TIMER0_INT();
-	
+		
 		if (main_flags & (1<<FLAG_PULSE_SENSOR_UP)) {
 			counter_last_pulse_event=0;
 			
@@ -455,7 +474,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
 			event_run();
-			//main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+		main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
 	if (!display_screensaver_mode()) {
@@ -466,6 +485,17 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			counter_screensaver_timeout = 0;
 		}
 	}
+	
+	counter_last_pulse_event++;
+	counter_poll_rotary_encoder++;
+	counter_poll_buttons++;
+	counter_poll_ext_devices++;	
+	counter_screensaver_timeout++;
+	counter_ping_interval++;
+	counter_ms++;
+	counter_event_timer++;
+	
+	counter_poll_radio++;	
 	
 	//This will blink the NEW BAND LED, if the new band is not the same as the old one
 	if ((counter_ms % 250) == 0) {
@@ -545,17 +575,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		
 		counter_event_timer = 0;
 	}
-	
-	counter_last_pulse_event++;
-	counter_poll_rotary_encoder++;
-	counter_poll_buttons++;
-	counter_poll_ext_devices++;	
-	counter_screensaver_timeout++;
-	counter_ping_interval++;
-	counter_ms++;
-	counter_event_timer++;
-	
-	counter_poll_radio++;	
 }
 
 /*!Output overflow 0 interrupt */

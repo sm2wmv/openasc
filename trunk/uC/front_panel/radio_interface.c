@@ -97,8 +97,11 @@ unsigned char radio_get_current_band(void) {
 /*! Activate the radio PTT */
 void radio_ptt_active(void) {
 	if (runtime_settings.radio_ptt_output) {
-		led_set_ptt(LED_STATE_RED);
-	
+		if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND)
+			led_set_ptt(LED_STATE_PTT_ACTIVE);
+		else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND)
+			led_set_ptt(LED_STATE_PTT_INHIBIT);
+		
 		/* Activate the PTT to the radio */
 		PORTG |= (1<<RADIO_PTT_OUTPUT_BIT);
 		PORTJ |= (1<<3);
@@ -107,8 +110,11 @@ void radio_ptt_active(void) {
 
 /*! Deactivate the radio PTT */
 void radio_ptt_deactive(void) {
-	led_set_ptt(LED_STATE_GREEN);
-
+	if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND)
+		led_set_ptt(LED_STATE_PTT_OK);
+	else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND)
+		led_set_ptt(LED_STATE_PTT_INHIBIT);
+		
 	/* Deactivate the PTT to the radio */
 	PORTG &= ~(1<<RADIO_PTT_OUTPUT_BIT);
 	PORTJ &= ~(1<<3);
@@ -420,7 +426,7 @@ ISR(SIG_USART3_RECV) {
 	
 	radio_rx_data_counter = 0;
 	
-	if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
+	/*if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
 		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
 				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
@@ -435,7 +441,7 @@ ISR(SIG_USART3_RECV) {
 					*(radio_serial_rx_buffer++) = data;
 			}
 		}
-	}
+	}*/
 	
 	usart1_transmit(data);
 }

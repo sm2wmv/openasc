@@ -214,7 +214,7 @@ unsigned char usart3_transmit(char  data ) {
 	/* Wait for empty transmit buffer */
 	while (!( UCSR3A & (1<<UDRE3)));
 	/* Put data into buffer, sends the data */
-	UDR0 = data;
+	UDR3 = data;
 	return 0;
 }
 
@@ -240,7 +240,7 @@ unsigned char usart3_receive(void ) {
 	/* Wait for data to be received */
 	while (!(UCSR3A & (1<<RXC3)));
 	/* Get and return received data from buffer */
-	return UDR0;
+	return UDR3;
 }
 
 /*! \brief The USART3 recieve loopback
