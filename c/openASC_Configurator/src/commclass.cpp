@@ -26,6 +26,7 @@ CommClass::CommClass() {
 }
 
 int CommClass::openPort(QString deviceName) {
+
 	serialPort = new QextSerialPort(deviceName);
 	serialPort->setBaudRate(BAUD19200);
 	serialPort->setDataBits(DATA_8);
@@ -54,8 +55,6 @@ void CommClass::parseRXQueue() {
 	unsigned char cmd = (unsigned char)temp.at(0);
 	unsigned char length = (unsigned char)temp.at(1);
 	unsigned char data[length+1];
-	
-	//qDebug("CMD: %i - LENGTH: %i",cmd,length);
 
 	for (int i=0;i<length;i++)
 		data[i] = temp.at(i+2);
@@ -108,7 +107,7 @@ void CommClass::run() {
 		
 		checkTXQueue();
 		
-		QThread::usleep(100);
+		QThread::usleep(1000);
 	}
 }
 

@@ -382,6 +382,7 @@ void MainWindowImpl::actionExitConfModeTriggered() {
 void MainWindowImpl::actionConnectTriggered() {
 	if (serialPort.openPort(lineEditDevicePort->text())) {
 		QMessageBox::critical(0,"Serial port error!","Could not open the specified port!");
+		addDebugLine("ERROR: Serial port error! Could not open the specified port!");
 	}
 	else {
 		serialPort.start();
@@ -427,12 +428,12 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 
 void MainWindowImpl::actionGetFirmwareRevTriggered() {
 	serialPort.addTXMessage(CTRL_GET_FIRMWARE_REV,0,0);
-	//addDebugLine("Trying to retrieve firmware information");
+	addDebugLine("Trying to retrieve firmware information");
 }
 
 void MainWindowImpl::addDebugLine(QString str) {
-//	if (btnDebug->isChecked())
-		//listWidgetDebug->addItem(str);
+	if (pushButtonDebug->isChecked())
+		listWidgetDebug->addItem(str);
 }
 
 void MainWindowImpl::groupBoxSequencerPTTRadioClicked(bool state) {
