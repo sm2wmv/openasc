@@ -167,17 +167,11 @@ void set_tx_ant_leds(void) {
 void set_knob_function(unsigned char function) {
 	if (function == KNOB_FUNCTION_AUTO) {
 		//The auto selects the knob function we feel is most useful
-		if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
-			status.knob_function = KNOB_FUNCTION_SELECT_BAND;
-		else
-			status.knob_function = KNOB_FUNCTION_NONE;	
-	}
-	if (function == KNOB_FUNCTION_NONE) {
-		if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
+		if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL)
 			status.knob_function = KNOB_FUNCTION_SELECT_BAND;
 		else
 			status.knob_function = KNOB_FUNCTION_NONE;
-	}
+	} 
 	else
 		status.knob_function = function;
 }
@@ -266,6 +260,9 @@ int main(void){
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_AUTO;
 			 
 	if (!computer_interface_is_active()) {
+		//TEMPORARY!!
+		init_usart_computer();
+
 		//Initialize the radio interface
 		radio_interface_init();
 	}
@@ -354,9 +351,7 @@ int main(void){
 
 	led_set_ptt(LED_STATE_PTT_OK);
 	
-	//At startup the knob function should be MANUAL BAND CHANGE
-	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
-		set_knob_function(KNOB_FUNCTION_SELECT_BAND);
+	set_knob_function(KNOB_FUNCTION_AUTO);
 	
 	while(1) {
 		computer_interface_send_data();
@@ -368,7 +363,7 @@ int main(void){
 		if (!tx_queue_is_empty())
 			bus_check_tx_status();
 		
-		if (radio_interface_get_interface() != RADIO_INTERFACE_MANUAL) {
+		if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
 			if (radio_get_current_band() != status.selected_band) {
 				status.new_band = radio_get_current_band();
 				band_ctrl_change_band(status.new_band);

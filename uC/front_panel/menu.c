@@ -213,7 +213,7 @@ void menu_action(unsigned char menu_action_type) {
 					runtime_settings.band_change_mode = BAND_CHANGE_MODE_AUTO;
 				}
 					
-				set_knob_function(KNOB_FUNCTION_NONE);
+				set_knob_function(KNOB_FUNCTION_AUTO);
 			}
 			else if (current_menu_pos == MENU_POS_AMP_PTT) {
 				if (current_menu_option_selected[current_menu_pos] == 0)

@@ -40,9 +40,9 @@
 //! Serial interface that connects to the radio, POLLING
 #define RADIO_INTERFACE_CAT_POLL	1
 //! Serial interface that connects to the radio, MONITORING
-#define RADIO_INTERFACE_CAT_MON		3
+#define RADIO_INTERFACE_CAT_MON		2
 //! BCD interface that connects the radio
-#define RADIO_INTERFACE_BCD				4
+#define RADIO_INTERFACE_BCD				3
 
 //! This bit is set if the radio PTT should be sensed from the upper floor
 #define RADIO_SENSE_UPPER_FLOOR	1	

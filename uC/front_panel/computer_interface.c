@@ -176,7 +176,6 @@ void computer_interface_init(void) {
 	computer_comm.tx_buffer_start = computer_comm.tx_buffer;
 	
 	computer_comm.data_in_tx_buffer = 0;
-	computer_comm.flags |= (1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 }
 
 void computer_interface_send_data(void) {

@@ -338,7 +338,7 @@ void event_poll_buttons(void) {
 						status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 						status.antenna_to_rotate = 0;
 				
-						set_knob_function(KNOB_FUNCTION_NONE);
+						set_knob_function(KNOB_FUNCTION_AUTO);
 					
 						glcd_clear();
 						main_update_display();
@@ -615,7 +615,7 @@ void event_rxant_button_pressed(void) {
 				led_set_rxant(LED_STATE_OFF);
 				led_set_rotate(LED_STATE_OFF);
 					
-				set_knob_function(KNOB_FUNCTION_NONE);
+				set_knob_function(KNOB_FUNCTION_AUTO);
 					
 				antenna_ctrl_change_rx_ant(-1);
 					
@@ -645,7 +645,7 @@ void event_rotate_button_pressed(void) {
 			status.antenna_to_rotate = 0;
 			set_tx_ant_leds();				
 				
-			set_knob_function(KNOB_FUNCTION_NONE);
+			set_knob_function(KNOB_FUNCTION_AUTO);
 				
 			glcd_clear();
 			main_update_display();
