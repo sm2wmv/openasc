@@ -398,8 +398,8 @@ void computer_interface_parse_data(void) {
 			*/
 			switch(computer_comm.rx_buffer_start[0]) {
 				case CTRL_SET_RADIO_SETTINGS_ALL:
-					radio_interface_set_interface(computer_comm.rx_buffer_start[1]);
-					radio_interface_set_serial_mode(computer_comm.rx_buffer_start[2]);
+					radio_interface_set_model(computer_comm.rx_buffer_start[1]);
+					radio_interface_set_interface(computer_comm.rx_buffer_start[2]);
 					radio_interface_set_baudrate(computer_comm.rx_buffer_start[3]);
 					radio_interface_set_stopbits(computer_comm.rx_buffer_start[4]);
 					radio_interface_set_civ_addr(computer_comm.rx_buffer_start[5]);

@@ -49,25 +49,34 @@ void radio_interface_init(void) {
 	radio_serial_rx_buffer = (unsigned char *)malloc(RADIO_SERIAL_RX_BUFFER_LENGTH);
 	radio_serial_rx_buffer_start = radio_serial_rx_buffer;
 
-	if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
+	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
 		switch (radio_settings.baudrate) {
 			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
+																				usart1_init(766, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_2400 : usart3_init(383, radio_settings.stopbits);
+																				usart1_init(383, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_4800 : usart3_init(191, radio_settings.stopbits);
+																				usart1_init(191, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_9600 : usart3_init(95, radio_settings.stopbits);
+																				usart1_init(95, radio_settings.stopbits);
 																				break;
-			case RADIO_SERIAL_BAUDRATE_14400 : usart3_init(63, radio_settings.stopbits);
+			case RADIO_SERIAL_BAUDRATE_14400 :	usart3_init(63, radio_settings.stopbits);
+																					usart1_init(63, radio_settings.stopbits);
 																				break;
-			case RADIO_SERIAL_BAUDRATE_19200 : usart3_init(47, radio_settings.stopbits);
+			case RADIO_SERIAL_BAUDRATE_19200 :	usart3_init(47, radio_settings.stopbits);
+																					usart1_init(47, radio_settings.stopbits);
 																				break;
-			case RADIO_SERIAL_BAUDRATE_28800 : usart3_init(31, radio_settings.stopbits);
+			case RADIO_SERIAL_BAUDRATE_28800 :	usart3_init(31, radio_settings.stopbits);
+																					usart1_init(31, radio_settings.stopbits);
 																				break;
-			case RADIO_SERIAL_BAUDRATE_38400 : usart3_init(23, radio_settings.stopbits);
+			case RADIO_SERIAL_BAUDRATE_38400 :	usart3_init(23, radio_settings.stopbits);
+																					usart1_init(23, radio_settings.stopbits);
 																				break;
-			case RADIO_SERIAL_BAUDRATE_57600 : usart3_init(15, radio_settings.stopbits);
+			case RADIO_SERIAL_BAUDRATE_57600 : 	usart3_init(15, radio_settings.stopbits);
+																					usart1_init(15, radio_settings.stopbits);
 																				break;
 		}
 		
@@ -199,7 +208,7 @@ unsigned char radio_poll_status(void) {
 		
 		radio_status.current_band = bcd;
 	}
-	else if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
+	else if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
 		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			usart3_sendstring("IF;",3);
 			
@@ -312,12 +321,6 @@ void radio_interface_set_interface(unsigned char interface_type) {
 	radio_settings.interface_type = interface_type;
 }
 
-/*! Set which serial mode is used, saves it in the radio_settings struct
- *  \param serial_mode The serial mode */
-void radio_interface_set_serial_mode(unsigned char serial_mode) {
-	radio_settings.serial_mode = serial_mode;
-}
-
 /*! Set which baudrate setting is used, saves it in the radio_settings struct
  *  \param baudrate Which baudrate setting to use */
 void radio_interface_set_baudrate(unsigned char baudrate) {
@@ -364,12 +367,6 @@ unsigned char radio_interface_get_model(void) {
  *  \return The interface type */
 unsigned char radio_interface_get_interface(void) {
 	return(radio_settings.interface_type);
-}
-
-/*! Get which serial mode is used
- *  \return The serial mode */
-unsigned char radio_interface_get_serial_mode(void) {
-	return(radio_settings.serial_mode);
 }
 
 /*! Get which baudrate setting is used
@@ -429,7 +426,7 @@ ISR(SIG_USART3_RECV) {
 	
 	radio_rx_data_counter = 0;
 	
-	if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
+	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
 		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
 				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {

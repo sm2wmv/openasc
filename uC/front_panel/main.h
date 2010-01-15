@@ -56,6 +56,11 @@
 //! Indicate that inhibit is enabled or disabled
 #define INHIBIT_ENABLED_BIT	2
 
+//! Band changes are done manually
+#define BAND_CHANGE_MODE_MANUAL		0
+//! Band changes are done automatically
+#define BAND_CHANGE_MODE_AUTO			1
+
 /****************************************************************/
 
 //!POLL BUTTONS, is set when a poll on the front panel buttons should occur
@@ -202,6 +207,8 @@ typedef struct {
 	unsigned char rotator_big_step;
 	//! Show if the device is inhibited or not
 	unsigned char inhibit_state;
+	//! Band change mode
+	unsigned char band_change_mode;
 } struct_runtime_settings;
 
 /* Different antenna views */
