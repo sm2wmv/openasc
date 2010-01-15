@@ -10,6 +10,7 @@
 #include "main.h"
 #include "ds1307.h"
 #include "antenna_ctrl.h"
+#include "radio_interface.h"
 
 unsigned char screensaver_mode = 0;
 
@@ -299,8 +300,9 @@ void display_update(unsigned char band, unsigned char antenna) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {
 		display_antennas(band);
 		display_rotator_directions(band);
-		display_radio_freq("14.240 MHz");
-
+		
+		display_update_radio_freq();
+		
 		display_view(VIEW_ANTENNAS);
 		
 		if (antenna & (1<<0))
@@ -316,5 +318,22 @@ void display_update(unsigned char band, unsigned char antenna) {
 			display_invert_antenna(ANTENNA_4);
 		
 		glcd_update_all();
-	}	
+	}
+}
+
+void display_update_radio_freq() {
+	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
+		if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {	
+			char temp_str[10];
+			sprintf((char *)temp_str, "%0i kHz",radio_get_current_freq());
+						
+			display_radio_freq((char *)temp_str);
+			
+			display_view(VIEW_ANTENNAS);
+		}
+		else
+			CLEAR_RADIO_FREQ_AREA();
+		
+		glcd_update_all();
+	}
 }

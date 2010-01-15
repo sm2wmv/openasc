@@ -515,7 +515,7 @@ unsigned char computer_interface_is_active(void) {
 }
 
 void computer_interface_activate_setup(void) {
-	computer_comm.flags |= (1<<COMPUTER_COMM_FLAG_SETUP_MODE);
+	computer_comm.flags = (1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 	
 	//Create dummy structures
 	antenna_ptr = (struct_antenna *)malloc(sizeof(struct_antenna));
@@ -540,8 +540,7 @@ ISR(SIG_USART1_RECV) {
 	unsigned char data = UDR1;
 
 	//Check if the openASC is in setup mode
-	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_SETUP_MODE)) {
-	
+	if (computer_interface_is_active()) {
 		//Has a preamble been found?
 		if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_FOUND_PREAMBLE)) {
 			//Check if the data is a postamble

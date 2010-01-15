@@ -48,53 +48,38 @@ void radio_interface_init(void) {
 	//Initialize the serial rx buffer used for the communication with the radio
 	radio_serial_rx_buffer = (unsigned char *)malloc(RADIO_SERIAL_RX_BUFFER_LENGTH);
 	radio_serial_rx_buffer_start = radio_serial_rx_buffer;
-
-	printf("Init interface, type: %i\n",radio_settings.interface_type);
 	
 	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
-		printf("CAT MODE\n");
-		
 		switch (radio_settings.baudrate) {
 			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
-																				//usart1_init(766, radio_settings.stopbits);
-																				printf("1200 baud\n");
+																				usart1_init(766, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_2400 : usart3_init(383, radio_settings.stopbits);
-																				//usart1_init(383, radio_settings.stopbits);
+																				usart1_init(383, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_4800 : usart3_init(191, radio_settings.stopbits);
-																				//usart1_init(191, radio_settings.stopbits);
+																				usart1_init(191, radio_settings.stopbits);
 																				break;
-			case RADIO_SERIAL_BAUDRATE_9600 : usart3_init(95, radio_settings.stopbits);
-																				//usart1_init(95, radio_settings.stopbits);
+			case RADIO_SERIAL_BAUDRATE_9600 :	usart3_init(95, radio_settings.stopbits);
+																				usart1_init(95, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_14400 :	usart3_init(63, radio_settings.stopbits);
-																					//usart1_init(63, radio_settings.stopbits);
+																					usart1_init(63, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_19200 :	usart3_init(47, radio_settings.stopbits);
-																					//usart1_init(47, radio_settings.stopbits);
+																					usart1_init(47, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_28800 :	usart3_init(31, radio_settings.stopbits);
-																					//usart1_init(31, radio_settings.stopbits);
+																					usart1_init(31, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_38400 :	usart3_init(23, radio_settings.stopbits);
-																					//usart1_init(23, radio_settings.stopbits);
+																					usart1_init(23, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_57600 : 	usart3_init(15, radio_settings.stopbits);
-																					//usart1_init(15, radio_settings.stopbits);
+																					usart1_init(15, radio_settings.stopbits);
 																				break;
 		}
-		
-		printf("SETUP SERIAL DONE\n");
 	}
-}
-
-/*! Retrieve the frequency from the radio. If it's configured for BCD it just retrieves the freq band
- *  The frequency is returned with two decimal points, the first after which freq in MHz the radio is
- *  currently in and the other is the number of Hz. So 21.305.1 would be 21 MHz, 305 kHz and 10 Hz
- *  \return The frequency as an array of characters */
-char* radio_current_str_freq ( void ) {
-	return("21.305.0");
 }
 
 /*! Retrieve the frequency from the radio. If it's configured for BCD it just retrieves the freq band
@@ -153,9 +138,9 @@ void radio_inhibit_low(void) {
  *  \return Return BAND_HIGH if it's in the higher portion of the band, BAND_LOW if it's the lower portion. If neither
  *  then it returns BAND_UNDEFINED */
 unsigned char radio_get_band_portion(void) {
-	if ((radio_status.current_freq >= band_ctrl_get_low_portion_low()) && (radio_status.current_freq < band_ctrl_get_low_portion_high()))
+	if ((radio_status.current_freq >= band_ctrl_get_low_portion_low(radio_status.current_band)) && (radio_status.current_freq < band_ctrl_get_low_portion_high(radio_status.current_band)))
 		return (BAND_LOW);
-	else if ((radio_status.current_freq >= band_ctrl_get_high_portion_low()) && (radio_status.current_freq <= band_ctrl_get_high_portion_high()))
+	else if ((radio_status.current_freq >= band_ctrl_get_high_portion_low(radio_status.current_band)) && (radio_status.current_freq <= band_ctrl_get_high_portion_high(radio_status.current_band)))
 		return (BAND_HIGH);
 	
 	return(BAND_UNDEFINED);
@@ -200,10 +185,7 @@ unsigned char radio_poll_ptt(void) {
  *  \return 0 if the poll went OK and 1 if it didn't  */
 unsigned char radio_poll_status(void) {
 	//Ask radio for freq etc
-	if (radio_settings.interface_type == RADIO_INTERFACE_MANUAL) {
-		
-	} 
-	else if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
+	if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
 		unsigned char bcd;
 		
 		bcd = (PINF & (1<<2))>>2;
@@ -213,21 +195,11 @@ unsigned char radio_poll_status(void) {
 		
 		radio_status.current_band = bcd;
 	}
-	else if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
-		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
-			usart3_sendstring("IF;",3);
-			
-			radio_sent_request = 1;
-		}
-		else if (radio_settings.radio_model == RADIO_MODEL_FT1000MKV) {
-			usart3_transmit(0x00);
-			usart3_transmit(0x00);
-			usart3_transmit(0x00);
-			usart3_transmit(0x00);
-			usart3_transmit(0x02);
-			
-			radio_sent_request = 1;
-		}
+	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {
+		
+	}
+	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON) {
+		display_update_radio_freq();
 	}
 	
 	return(0);
@@ -306,10 +278,10 @@ void radio_amp_ptt_deactive(void) {
  *  \param freq The frequency as integer
  *  \return The band of the frequency sent in as parameter. If band not found then it returns BAND_UNDEFINED */
 unsigned char radio_freq_to_band(unsigned int freq) {
-/*	for (unsigned char i=0;i<9;i++)
-		if ((freq >= current_band.low_portion_low_limit) && (freq >= current_band.high_portion_high_limit))
+	for (unsigned char i=0;i<9;i++)
+		if ((freq >= band_ctrl_get_low_portion_low(i+1)) && (freq <= band_ctrl_get_high_portion_high(i+1)))
 			return(i+1);
-	*/
+	
 	//If the freq isn't in the band array then we just return BAND_UNDEFINED
 	return(BAND_UNDEFINED);
 }
@@ -432,7 +404,7 @@ ISR(SIG_USART3_RECV) {
 	radio_rx_data_counter = 0;
 	
 	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
-		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
+		/*if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
 				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
 					radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_KENWOOD);
@@ -445,15 +417,16 @@ ISR(SIG_USART3_RECV) {
 				else
 					*(radio_serial_rx_buffer++) = data;
 			}
-		}
-		else if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
+		}*/
+		if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
 			if (data == 0xFD) {
-//				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
-		//			radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_KENWOOD);
-					//radio_status.current_band = radio_freq_to_band(radio_status.current_freq);
-	//			}
-				
-				printf("YAY\n");
+				if ((radio_serial_rx_buffer_start[0] == 0xFE) && (radio_serial_rx_buffer_start[1] == 0xFE)) {
+					//TODO: Consider moving the parsing etc outside of the interrupt, to make the interrupt take as little time as possible
+					radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_ICOM);
+					radio_status.current_band = radio_freq_to_band(radio_status.current_freq);
+									
+					radio_serial_rx_buffer = radio_serial_rx_buffer_start;
+				}
 			}
 			else {
 				if ((radio_serial_rx_buffer - radio_serial_rx_buffer_start) >= RADIO_SERIAL_RX_BUFFER_LENGTH)
@@ -464,5 +437,5 @@ ISR(SIG_USART3_RECV) {
 		}
 	}
 	
-	//usart1_transmit(data);
+	usart1_transmit(data);
 }

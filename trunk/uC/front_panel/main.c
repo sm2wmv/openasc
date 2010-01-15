@@ -210,7 +210,6 @@ enum enum_inhibit_state main_get_inhibit_state(void) {
 }
 
 int main(void){
-	delay_ms(250);
 	cli();
 	
 	MCUSR = 0;
@@ -219,7 +218,8 @@ int main(void){
 	/* Initialize various hardware resources */
 	init_ports();
 	
-
+	delay_ms(250);
+	
 	//BEGIN TEMPORARY
 	//runtime_settings.lcd_backlight_value = 70;
 	//runtime_settings.amplifier_ptt_output = 1;
@@ -250,9 +250,12 @@ int main(void){
 	}
 	
 	i2c_init();
-	
+		
 	//Load all settings from the EEPROM	
 	load_settings();
+	
+	//Init the communication routines between the computer and the openASC box
+	computer_interface_init();
 	
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
@@ -261,7 +264,7 @@ int main(void){
 			 
 	if (!computer_interface_is_active()) {
 		//TEMPORARY!!
-		init_usart_computer();
+		//init_usart_computer();
 
 		//Initialize the radio interface
 		radio_interface_init();
@@ -274,14 +277,13 @@ int main(void){
 	//Init the communication between the uCs
 	init_usart();
 	
+	band_ctrl_load_band_limits();
+	
 	//Init the backlight PWM
 	init_backlight();
 
 	//Init the realtime clock
 	ds1307_init();
-	
-	//Init the communication routines between the computer and the openASC box
-	computer_interface_init();
 
 	//Init the communication between the motherboard uC and the front panel uC
 	//The first argument will be called each time a message should be parsed
@@ -305,16 +307,20 @@ int main(void){
 	
 	//This must be done in this order for it to work properly!
 	/* Read the external address of the device */
-	//bus_set_address(settings.network_address);
-	bus_set_address(0x01);
+	bus_set_address(settings.network_address);
+	//bus_set_address(0x01);
 	
 	bus_init();
 
-	//if (settings.network_device_is_master == 1)
-		//bus_set_is_master(1,settings.network_device_count);
-	bus_set_is_master(1,10);
-	//else
-//		bus_set_is_master(0,0);	
+	//TEMPORARY
+	//bus_set_is_master(1,10);
+	
+	if (settings.network_device_is_master == 1) {
+		bus_set_is_master(1,settings.network_device_count);
+	}
+	else {
+		bus_set_is_master(0,0);	
+	}
 	
 	if (bus_is_master()) {
 		tx_queue_dropall();
@@ -337,15 +343,11 @@ int main(void){
 	delay_ms(250);
 	delay_ms(250);
 	led_set_all(LED_STATE_OFF);
-	
 	//TEMP
 	//PORTC |= (1<<6);
 	
 	//Initialize the menu system
 	menu_init();
-
-	status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-	status.current_display_level = DISPLAY_LEVEL_BAND;
 	
 	display_set_backlight(runtime_settings.lcd_backlight_value);
 
@@ -445,7 +447,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	/*if (radio_rx_data_counter >= RADIO_RX_DATA_TIMEOUT) {
-//		radio_communicaton_timeout();
+		radio_communicaton_timeout();
 		radio_rx_data_counter = 0;
 	}*/
 
@@ -496,8 +498,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_ping_interval++;
 	counter_ms++;
 	counter_event_timer++;
-	
-	counter_poll_radio++;	
 	
 	//This will blink the NEW BAND LED, if the new band is not the same as the old one
 	if ((counter_ms % 250) == 0) {
@@ -563,10 +563,15 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		}
 	}
 	
-	if (counter_poll_radio >= radio_interface_get_poll_interval()*10) {
-		radio_poll_status();
+	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
+		//TODO: FIX SO WE CAN ADJUST POLL TIME
+		if (counter_poll_radio >= 500) {
+			radio_poll_status();
+			
+			counter_poll_radio = 0;
+		}
 		
-		counter_poll_radio = 0;
+		counter_poll_radio++;
 	}
 	
 	//If the value equals the half of it's range then

@@ -139,6 +139,7 @@ void band_ctrl_change_band(unsigned char band) {
 		band_ctrl_load_band(band-1);
 		antenna_ctrl_ant_read_eeprom(band);
 		status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+		status.current_display_level = DISPLAY_LEVEL_BAND;
 	}
 	else
 		status.current_display = CURRENT_DISPLAY_LOGO;
@@ -172,28 +173,43 @@ void band_ctrl_deactivate_all(void) {
 	current_band_activated_outputs_length = 0;
 }
 
+/*! \brief Loads the band limits into the band limits struct */
+void band_ctrl_load_band_limits(void) {
+	struct_band temp_band;
+	
+	for (unsigned char i=0;i<9;i++) {
+		//Retrieve the band data from the EEPROM
+		eeprom_get_band_data(i,&temp_band);
+				
+		band_limits[i].low_portion_low_limit = temp_band.low_portion_low_limit;
+		band_limits[i].low_portion_high_limit = temp_band.low_portion_high_limit;
+		band_limits[i].high_portion_low_limit = temp_band.high_portion_low_limit;
+		band_limits[i].high_portion_high_limit = temp_band.high_portion_high_limit;
+	}
+}
+
 /*! \brief Retrieve the lower frequency limit of the low band limit 
  *	\return The frequency in kHz */
-unsigned int band_ctrl_get_low_portion_low(void) {
-	return(current_band.low_portion_low_limit);
+unsigned int band_ctrl_get_low_portion_low(unsigned char band) {
+	return(band_limits[band-1].low_portion_low_limit);
 }
 
 /*! \brief Retrieve the higher frequency limit of the low band limit 
  *	\return The frequency in kHz */
-unsigned int band_ctrl_get_low_portion_high(void) {
-	return(current_band.low_portion_high_limit);
+unsigned int band_ctrl_get_low_portion_high(unsigned char band) {
+	return(band_limits[band-1].low_portion_high_limit);
 }
 
 /*! \brief Retrieve the lower frequency limit of the high band limit 
  *	\return The frequency in kHz */
-unsigned int band_ctrl_get_high_portion_low(void) {
-	return(current_band.high_portion_low_limit);
+unsigned int band_ctrl_get_high_portion_low(unsigned char band) {
+	return(band_limits[band-1].high_portion_low_limit);
 }
 
 /*! \brief Retrieve the higher frequency limit of the high band limit 
  *	\return The frequency in kHz */
-unsigned int band_ctrl_get_high_portion_high(void) {
-	return(current_band.high_portion_high_limit);
+unsigned int band_ctrl_get_high_portion_high(unsigned char band) {
+	return(band_limits[band-1].high_portion_high_limit);
 }
 
 /*! \brief Retrieve the higher frequency output string, of max length BAND_OUTPUT_STR_SIZE
