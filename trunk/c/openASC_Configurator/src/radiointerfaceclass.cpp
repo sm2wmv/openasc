@@ -65,6 +65,11 @@ void RadioInterfaceClass::sendSettings(CommClass& serialPort) {
 	tx_buff[8] = 0; //PTT INPUT //TODO: Support this
 	
 	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,9,tx_buff);
+
+	//Save the settings to the EEPROM
+	tx_buff[0] = CTRL_SET_RADIO_SETTINGS_SAVE;
+	tx_buff[1] = 0;
+	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,2,tx_buff);
 }
 
 void RadioInterfaceClass::setRadioType(unsigned char type) {

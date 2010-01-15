@@ -49,34 +49,39 @@ void radio_interface_init(void) {
 	radio_serial_rx_buffer = (unsigned char *)malloc(RADIO_SERIAL_RX_BUFFER_LENGTH);
 	radio_serial_rx_buffer_start = radio_serial_rx_buffer;
 
+	printf("Init interface, type: %i\n",radio_settings.interface_type);
+	
 	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
+		printf("CAT MODE\n");
+		
 		switch (radio_settings.baudrate) {
 			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
-																				usart1_init(766, radio_settings.stopbits);
+																				//usart1_init(766, radio_settings.stopbits);
+																				printf("1200 baud\n");
 																				break;
 			case RADIO_SERIAL_BAUDRATE_2400 : usart3_init(383, radio_settings.stopbits);
-																				usart1_init(383, radio_settings.stopbits);
+																				//usart1_init(383, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_4800 : usart3_init(191, radio_settings.stopbits);
-																				usart1_init(191, radio_settings.stopbits);
+																				//usart1_init(191, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_9600 : usart3_init(95, radio_settings.stopbits);
-																				usart1_init(95, radio_settings.stopbits);
+																				//usart1_init(95, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_14400 :	usart3_init(63, radio_settings.stopbits);
-																					usart1_init(63, radio_settings.stopbits);
+																					//usart1_init(63, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_19200 :	usart3_init(47, radio_settings.stopbits);
-																					usart1_init(47, radio_settings.stopbits);
+																					//usart1_init(47, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_28800 :	usart3_init(31, radio_settings.stopbits);
-																					usart1_init(31, radio_settings.stopbits);
+																					//usart1_init(31, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_38400 :	usart3_init(23, radio_settings.stopbits);
-																					usart1_init(23, radio_settings.stopbits);
+																					//usart1_init(23, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_57600 : 	usart3_init(15, radio_settings.stopbits);
-																					usart1_init(15, radio_settings.stopbits);
+																					//usart1_init(15, radio_settings.stopbits);
 																				break;
 		}
 		
