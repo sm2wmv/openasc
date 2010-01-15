@@ -107,7 +107,7 @@ void CommClass::run() {
 		
 		checkTXQueue();
 		
-		QThread::usleep(1000);
+		QThread::usleep(100);
 	}
 }
 

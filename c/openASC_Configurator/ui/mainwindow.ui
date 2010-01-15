@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>725</width>
-    <height>669</height>
+    <width>723</width>
+    <height>667</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,6 +135,11 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <item>
+              <property name="text">
+               <string>1200</string>
+              </property>
+             </item>
              <item>
               <property name="text">
                <string>2400</string>
@@ -3047,8 +3052,8 @@ a function to it</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>725</width>
-     <height>26</height>
+     <width>723</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">
