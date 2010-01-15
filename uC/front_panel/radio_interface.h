@@ -20,20 +20,18 @@
 #ifndef _RADIO_INTERFACE_H_
 #define _RADIO_INTERFACE_H_
 
-//! No interface to the radio
-#define RADIO_MODEL_NONE			0
 //! Kenwood radio connected to the box
-#define RADIO_MODEL_KENWOOD		1
+#define RADIO_MODEL_KENWOOD		0
 //! ICOM radio connected to the box
-#define RADIO_MODEL_ICOM			2
+#define RADIO_MODEL_ICOM			1
 //! FT1000D radio connected to the box
-#define RADIO_MODEL_FT1000		3
+#define RADIO_MODEL_FT1000		2
 //! FT1000MP radio connected to the box
-#define RADIO_MODEL_FT1000MP	4
+#define RADIO_MODEL_FT1000MP	3
 //! FT1000MKV radio connected to the box
-#define RADIO_MODEL_FT1000MKV	5
+#define RADIO_MODEL_FT1000MKV	4
 //! FT2000 radio connected to the box
-#define RADIO_MODEL_FT2000		6
+#define RADIO_MODEL_FT2000		5
 
 //! MANUAL mode which means no way to interface the radio
 #define RADIO_INTERFACE_MANUAL		0

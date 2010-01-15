@@ -1,28 +1,43 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="7" >
+ <DocsAndViews NumberOfDocuments="12" >
   <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="" line="254" Type="Source" />
+   <View0 Encoding="" line="236" Type="Source" />
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.h" >
-   <View0 Encoding="" line="147" Type="Source" />
+   <View0 Encoding="" line="38" Type="Source" />
   </Doc1>
   <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/board.h" >
    <View0 Encoding="" line="0" Type="Source" />
   </Doc2>
   <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/init.c" >
-   <View0 Encoding="" line="28" Type="Source" />
+   <View0 Encoding="" line="29" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.c" >
-   <View0 Encoding="" line="443" Type="Source" />
+  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/led_control.c" >
+   <View0 Encoding="" line="220" Type="Source" />
   </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/usart.c" >
-   <View0 Encoding="" line="197" Type="Source" />
+  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
+   <View0 Encoding="" line="4" Type="Source" />
   </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/computer_interface.c" >
-   <View0 Encoding="" line="589" Type="Source" />
+  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/band_ctrl.h" >
+   <View0 Encoding="" line="60" Type="Source" />
   </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/band_ctrl.c" >
+   <View0 Encoding="" line="142" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.c" >
+   <View0 Encoding="" line="24" Type="Source" />
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.c" >
+   <View0 Encoding="" line="324" Type="Source" />
+  </Doc9>
+  <Doc10 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.h" >
+   <View0 Encoding="" line="36" Type="Source" />
+  </Doc10>
+  <Doc11 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/computer_interface.c" >
+   <View0 Encoding="" line="587" Type="Source" />
+  </Doc11>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

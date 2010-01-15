@@ -43,10 +43,25 @@ typedef struct {
 	unsigned char band_low_output_str[BAND_OUTPUT_STR_SIZE];
 } struct_band;
 
-unsigned int band_ctrl_get_low_portion_low(void);
-unsigned int band_ctrl_get_low_portion_high(void);
-unsigned int band_ctrl_get_high_portion_low(void);
-unsigned int band_ctrl_get_high_portion_high(void);
+typedef struct{
+	//! The low limit of the lower portion of the band
+	unsigned int low_portion_low_limit;
+	//! The high limit of the lower portion of the band
+	unsigned int low_portion_high_limit;
+	//! The low limit of the higher portion of the band
+	unsigned int high_portion_low_limit;
+	//! The high limit of the higher portion of the band
+	unsigned int high_portion_high_limit;
+} struct_band_limits;
+
+struct_band_limits band_limits[9];
+
+void band_ctrl_load_band_limits(void);
+
+unsigned int band_ctrl_get_low_portion_low(unsigned char band);
+unsigned int band_ctrl_get_low_portion_high(unsigned char band);
+unsigned int band_ctrl_get_high_portion_low(unsigned char band);
+unsigned int band_ctrl_get_high_portion_high(unsigned char band);
 unsigned char *band_ctrl_get_high_output_str(void);
 unsigned char *band_ctrl_get_low_output_str(void);
 
