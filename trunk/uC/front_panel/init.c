@@ -26,9 +26,10 @@
 #define OCR0_1MS 14
 
 void init_usart_computer(void) {
-	usart1_init(766,1);
-	 //usart1_init(47,1);	19200
+	usart1_init(47,1);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
+	
+	printf("openASC started\n");
 }
 
 /*!Initializes the USART for the communication bus*/

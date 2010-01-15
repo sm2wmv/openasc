@@ -246,14 +246,40 @@ int main(void){
 	runtime_settings.rotator_big_step = 5;
 	status.rotator_step_resolution = runtime_settings.rotator_big_step;
 	
-	//Init the computer communication
-	init_usart_computer();
+	//Check if the computer interface should have full control of the box, setup mode
+	if (PIND & (1<<5)) {
+		computer_interface_deactivate_setup();
+	}
+	else {
+		PORTC |= (1<<7);
+		computer_interface_activate_setup();
+	}
+	
+	i2c_init();
+	
+	//Load all settings from the EEPROM	
+	load_settings();
+	
+	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
+		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
+	else
+		runtime_settings.band_change_mode = BAND_CHANGE_MODE_AUTO;
+			 
+	if (!computer_interface_is_active()) {
+		//Initialize the radio interface
+		radio_interface_init();
+	}
+	else {
+		//Init the computer communication
+		init_usart_computer();
+	}
+	
 	//Init the communication between the uCs
 	init_usart();
 	
 	//Init the backlight PWM
 	init_backlight();
-	i2c_init();
+
 	//Init the realtime clock
 	ds1307_init();
 	
@@ -264,9 +290,6 @@ int main(void){
 	//The first argument will be called each time a message should be parsed
 	//The second argument will be called each time a character should be sent
 	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
-
-	//Initialize the radio interface
-	radio_interface_init();
 	
 	//Initialize the 128x64 display
 	glcd_init();
@@ -277,20 +300,7 @@ int main(void){
 	//TODO: Do some kind of implementation that the device creates the eeprom table
 	//at its first startup
 	//eeprom_create_table();
-	
-	//Check if the computer interface should have full control of the box, setup mode
-	if (PIND & (1<<5)) {
-		computer_interface_deactivate_setup();
-	}
-	else {
-		PORTC |= (1<<7);
-		computer_interface_activate_setup();
-	}
-		
-	//Load all settings from the EEPROM	
-	if (!computer_interface_is_active())
-		load_settings();
-	
+			
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */	
@@ -305,7 +315,7 @@ int main(void){
 
 	//if (settings.network_device_is_master == 1)
 		//bus_set_is_master(1,settings.network_device_count);
-		bus_set_is_master(1,10);
+	bus_set_is_master(1,10);
 	//else
 //		bus_set_is_master(0,0);	
 	
@@ -319,9 +329,6 @@ int main(void){
 	init_timer_2();
 		
 	sei();
-
-	//DEBUG data
-	printf("openASC started\n");
 	
 	//TEMPORARY
 	//radio_interface_set_interface(RADIO_INTERFACE_MANUAL);

@@ -120,7 +120,7 @@ void menu_show_text(struct_menu_text menu_text) {
 }
 
 void menu_init(void) {
-	if (radio_interface_get_interface() == 0)
+	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL)
 		current_menu_option_selected[MENU_POS_BAND_MODE] = 0;
 	else
 		current_menu_option_selected[MENU_POS_BAND_MODE] = 1;
@@ -208,12 +208,11 @@ void menu_action(unsigned char menu_action_type) {
 			
 			if (current_menu_pos == MENU_POS_BAND_MODE) {
 				if (current_menu_option_selected[current_menu_pos] == 0)
-					radio_interface_set_interface(RADIO_INTERFACE_MANUAL);
-				else if (current_menu_option_selected[current_menu_pos] == 1)
-					radio_interface_set_interface(RADIO_INTERFACE_BCD);
-				else if (current_menu_option_selected[current_menu_pos] == 2)
-					radio_interface_set_interface(RADIO_INTERFACE_SERIAL);
-				
+					runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
+				else if (current_menu_option_selected[current_menu_pos] == 1) {
+					runtime_settings.band_change_mode = BAND_CHANGE_MODE_AUTO;
+				}
+					
 				set_knob_function(KNOB_FUNCTION_NONE);
 			}
 			else if (current_menu_pos == MENU_POS_AMP_PTT) {

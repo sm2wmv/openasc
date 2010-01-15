@@ -37,17 +37,12 @@
 
 //! MANUAL mode which means no way to interface the radio
 #define RADIO_INTERFACE_MANUAL		0
+//! Serial interface that connects to the radio, POLLING
+#define RADIO_INTERFACE_CAT_POLL	1
+//! Serial interface that connects to the radio, MONITORING
+#define RADIO_INTERFACE_CAT_MON		3
 //! BCD interface that connects the radio
-#define RADIO_INTERFACE_BCD				1
-//! Serial interface that connects to the radio
-#define RADIO_INTERFACE_SERIAL		2
-
-//! Poll the radio for it's frequency
-#define RADIO_MODE_POLL			0	//Asks the radio for it's frequency
-//! Just sit and monitor the communication between the radio and computer
-#define RADIO_MODE_MONITOR	1	//Just monitors the communication from the radio to the log soft
-//! Use auto information option in Kenwood radios
-#define RADIO_MODE_AI				2	//Auto information, works with Kenwood
+#define RADIO_INTERFACE_BCD				4
 
 //! This bit is set if the radio PTT should be sensed from the upper floor
 #define RADIO_SENSE_UPPER_FLOOR	1	
@@ -90,8 +85,6 @@ typedef struct {
 	unsigned char radio_model;
 	//! Which kind of interface to detect band
 	unsigned char interface_type;
-	//! Which kind of serial mode, POLL, MONITOR etc
-	unsigned char serial_mode;
 	//! Baudrate of the radio, used in serial mode
 	unsigned char baudrate;
 	//! Number of stop bits, used in serial mode
@@ -138,7 +131,6 @@ void radio_inhibit_high(void);
 /* Functions to change settings in the radio setting structure */
 void radio_interface_set_model(unsigned char model);
 void radio_interface_set_interface(unsigned char interface_type);
-void radio_interface_set_serial_mode(unsigned char serial_mode);
 void radio_interface_set_baudrate(unsigned char baudrate);
 void radio_interface_set_stopbits(unsigned char stopbits);
 void radio_interface_set_civ_addr(unsigned char civ);
@@ -149,7 +141,6 @@ void radio_interface_set_poll_interval(unsigned char poll_interval);
 /* Functions to retrieve settings in the radio setting structure */
 unsigned char radio_interface_get_model(void);
 unsigned char radio_interface_get_interface(void);
-unsigned char radio_interface_get_serial_mode(void);
 unsigned char radio_interface_get_baudrate(void);
 unsigned char radio_interface_get_stopbits(void);
 unsigned char radio_interface_get_civ_addr(void);
