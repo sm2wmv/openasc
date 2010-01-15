@@ -250,9 +250,6 @@ int main(void){
 	init_usart_computer();
 	//Init the communication between the uCs
 	init_usart();
-
-	//TEMPORARY
-	usart3_init(766,1);
 	
 	//Init the backlight PWM
 	init_backlight();
@@ -268,6 +265,9 @@ int main(void){
 	//The second argument will be called each time a character should be sent
 	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
 
+	//Initialize the radio interface
+	radio_interface_init();
+	
 	//Initialize the 128x64 display
 	glcd_init();
 	

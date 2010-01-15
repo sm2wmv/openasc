@@ -51,6 +51,8 @@ void radio_interface_init(void) {
 
 	if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
 		switch (radio_settings.baudrate) {
+			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
+																				break;
 			case RADIO_SERIAL_BAUDRATE_2400 : usart3_init(383, radio_settings.stopbits);
 																				break;
 			case RADIO_SERIAL_BAUDRATE_4800 : usart3_init(191, radio_settings.stopbits);
@@ -68,6 +70,8 @@ void radio_interface_init(void) {
 			case RADIO_SERIAL_BAUDRATE_57600 : usart3_init(15, radio_settings.stopbits);
 																				break;
 		}
+		
+		printf("SETUP SERIAL DONE\n");
 	}
 }
 
@@ -75,8 +79,7 @@ void radio_interface_init(void) {
  *  The frequency is returned with two decimal points, the first after which freq in MHz the radio is
  *  currently in and the other is the number of Hz. So 21.305.1 would be 21 MHz, 305 kHz and 10 Hz
  *  \return The frequency as an array of characters */
-char* radio_current_str_freq ( void )
-{
+char* radio_current_str_freq ( void ) {
 	return("21.305.0");
 }
 
@@ -426,7 +429,7 @@ ISR(SIG_USART3_RECV) {
 	
 	radio_rx_data_counter = 0;
 	
-	/*if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
+	if (radio_settings.interface_type == RADIO_INTERFACE_SERIAL) {
 		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
 				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
@@ -441,7 +444,23 @@ ISR(SIG_USART3_RECV) {
 					*(radio_serial_rx_buffer++) = data;
 			}
 		}
-	}*/
+		else if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
+			if (data == 0xFD) {
+//				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
+		//			radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_KENWOOD);
+					//radio_status.current_band = radio_freq_to_band(radio_status.current_freq);
+	//			}
+				
+				printf("YAY\n");
+			}
+			else {
+				if ((radio_serial_rx_buffer - radio_serial_rx_buffer_start) >= RADIO_SERIAL_RX_BUFFER_LENGTH)
+					radio_serial_rx_buffer = radio_serial_rx_buffer_start;
+				else
+					*(radio_serial_rx_buffer++) = data;
+			}
+		}
+	}
 	
-	usart1_transmit(data);
+	//usart1_transmit(data);
 }
