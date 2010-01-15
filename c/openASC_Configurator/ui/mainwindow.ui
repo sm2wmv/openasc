@@ -82,6 +82,21 @@
              <string>FT-1000D</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>FT-1000MP</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FT-1000MKV</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FT-2000</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item>

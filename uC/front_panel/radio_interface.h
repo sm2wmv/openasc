@@ -32,6 +32,8 @@
 #define RADIO_MODEL_FT1000MP	4
 //! FT1000MKV radio connected to the box
 #define RADIO_MODEL_FT1000MKV	5
+//! FT2000 radio connected to the box
+#define RADIO_MODEL_FT2000		6
 
 //! MANUAL mode which means no way to interface the radio
 #define RADIO_INTERFACE_MANUAL		0
@@ -62,22 +64,24 @@
 //! Radio serial RX buffer length
 #define RADIO_SERIAL_RX_BUFFER_LENGTH	50
 
+//! Serial baudrate 1200 baud
+#define RADIO_SERIAL_BAUDRATE_1200	0
 //! Serial baudrate 2400 baud
-#define RADIO_SERIAL_BAUDRATE_2400	0
+#define RADIO_SERIAL_BAUDRATE_2400	1
 //! Serial baudrate 4800 baud
-#define RADIO_SERIAL_BAUDRATE_4800	1
+#define RADIO_SERIAL_BAUDRATE_4800	2
 //! Serial baudrate 9600 baud
-#define RADIO_SERIAL_BAUDRATE_9600	2
+#define RADIO_SERIAL_BAUDRATE_9600	3
 //! Serial baudrate 14400 baud
-#define RADIO_SERIAL_BAUDRATE_14400	3
+#define RADIO_SERIAL_BAUDRATE_14400	4
 //! Serial baudrate 19200 baud
-#define RADIO_SERIAL_BAUDRATE_19200	4
+#define RADIO_SERIAL_BAUDRATE_19200	5
 //! Serial baudrate 28800 baud
-#define RADIO_SERIAL_BAUDRATE_28800	5
+#define RADIO_SERIAL_BAUDRATE_28800	6
 //! Serial baudrate 38400 baud
-#define RADIO_SERIAL_BAUDRATE_38400	6
+#define RADIO_SERIAL_BAUDRATE_38400	7
 //! Serial baudrate 57600 baud
-#define RADIO_SERIAL_BAUDRATE_57600	7
+#define RADIO_SERIAL_BAUDRATE_57600	8
 
 typedef struct {
 	//! The size of this structure
