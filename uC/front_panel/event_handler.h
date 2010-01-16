@@ -98,7 +98,6 @@ void event_pulse_sensor_down(void);
 void event_update_display(void);
 void event_poll_buttons(void);
 void event_poll_ext_device(void);
-void event_parse_button_pressed(unsigned int btn_status);
 void event_bus_parse_message(void);
 void event_parse_ext_event(unsigned int ext_event_status);
 

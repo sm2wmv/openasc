@@ -108,9 +108,11 @@ void sequencer_computer_rts_deactivated(void) {
 }
 
 void sequencer_radio_sense_activated(void) {
+	printf("RADIO_SENSE_ACTIVE\n");
 }
 
 void sequencer_radio_sense_deactivated(void) {
+	printf("RADIO_SENSE_DEACTIVE\n");
 }
 
 /*! Retrieve the polarity of the Computer RTS signal 

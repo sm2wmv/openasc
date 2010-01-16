@@ -219,12 +219,6 @@ int main(void){
 	init_ports();
 	
 	delay_ms(250);
-	
-	//BEGIN TEMPORARY
-	//runtime_settings.lcd_backlight_value = 70;
-	//runtime_settings.amplifier_ptt_output = 1;
-	//runtime_settings.radio_ptt_output = 1;
-	//END TEMPORORARY
 
 	//Init the status structure
 	status.buttons_last_state = 0;
@@ -233,12 +227,6 @@ int main(void){
 	status.ext_devices_last_state = status.ext_devices_current_state;
 	status.selected_rx_antenna = -1;
 	status.new_band = BAND_UNDEFINED;
-	
-	//TEMPORARY
-	//sequencer_init_dummy();
-	runtime_settings.rotator_small_step = 1;
-	runtime_settings.rotator_big_step = 5;
-	status.rotator_step_resolution = runtime_settings.rotator_big_step;
 	
 	//Check if the computer interface should have full control of the box, setup mode
 	if (PIND & (1<<5)) {
@@ -257,15 +245,13 @@ int main(void){
 	//Init the communication routines between the computer and the openASC box
 	computer_interface_init();
 	
+	//Check to see if the radio interface is configured as manual or automatic as default
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
 	else
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_AUTO;
 			 
 	if (!computer_interface_is_active()) {
-		//TEMPORARY!!
-		//init_usart_computer();
-
 		//Initialize the radio interface
 		radio_interface_init();
 	}
@@ -283,7 +269,7 @@ int main(void){
 	init_backlight();
 
 	//Init the realtime clock
-	ds1307_init();
+	//ds1307_init();
 
 	//Init the communication between the motherboard uC and the front panel uC
 	//The first argument will be called each time a message should be parsed
@@ -292,10 +278,7 @@ int main(void){
 	
 	//Initialize the 128x64 display
 	glcd_init();
-	
-	//Print the startup picture
-	glcd_print_picture();
-	
+		
 	//TODO: Do some kind of implementation that the device creates the eeprom table
 	//at its first startup
 	//eeprom_create_table();
@@ -308,13 +291,9 @@ int main(void){
 	//This must be done in this order for it to work properly!
 	/* Read the external address of the device */
 	bus_set_address(settings.network_address);
-	//bus_set_address(0x01);
 	
 	bus_init();
 
-	//TEMPORARY
-	//bus_set_is_master(1,10);
-	
 	if (settings.network_device_is_master == 1) {
 		bus_set_is_master(1,settings.network_device_count);
 	}
@@ -330,21 +309,15 @@ int main(void){
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();
-		
-	sei();
-	
-	//TEMPORARY
-	//radio_interface_set_interface(RADIO_INTERFACE_MANUAL);
-	
-	//eeprom_save_runtime_settings(&runtime_settings);
 
+	//Print the startup picture
+	glcd_print_picture();
+	
 	//Set all leds on at startup so it's possible to see everything works
 	led_set_all(LED_STATE_ON);
 	delay_ms(250);
 	delay_ms(250);
 	led_set_all(LED_STATE_OFF);
-	//TEMP
-	//PORTC |= (1<<6);
 	
 	//Initialize the menu system
 	menu_init();
@@ -355,7 +328,18 @@ int main(void){
 	
 	set_knob_function(KNOB_FUNCTION_AUTO);
 	
+	sei();
+	
+	//TEMPORARY
+	DDRB |= (1<<1);
+	
 	while(1) {
+		//Output a pulse so we can see how long time the main loop takes
+		if (PINB & (1<<1))
+			PORTB &= ~(1<<1);
+		else
+			PORTB |= (1<<1);
+		
 		computer_interface_send_data();
 		computer_interface_parse_data();
 		
@@ -378,11 +362,9 @@ int main(void){
 		//Poll the TX queue in the internal comm to see if we have any new messages to be SENT
 		internal_comm_poll_tx_queue();
 			
-		//DISABLE_TIMER0_INT();
-		
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
-			//event_run();
+			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}
 	
@@ -398,27 +380,65 @@ int main(void){
 			main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
 		}
 		
-		//ENABLE_TIMER0_INT();
-		
-		if (main_flags & (1<<FLAG_PULSE_SENSOR_UP)) {
-			counter_last_pulse_event=0;
-			
-			event_pulse_sensor_up();
-			main_flags &= ~(1<<FLAG_PULSE_SENSOR_UP);
-		}
-
-		if (main_flags & (1<<FLAG_PULSE_SENSOR_DOWN)) {
-			counter_last_pulse_event=0;
-			
-			event_pulse_sensor_down();
-			main_flags &= ~(1<<FLAG_PULSE_SENSOR_DOWN);
-		}
-
 		//Update the display
 		if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
 			event_update_display();
+			
 			main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
 		}
+		
+		if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
+			int val = rotary_encoder_poll();
+			
+			if (val != 0) {
+				if (val == 1)
+					event_pulse_sensor_up();
+				else if (val == -1)
+					event_pulse_sensor_down();
+				
+				counter_last_pulse_event=0;
+			}
+		}
+		
+		if (main_flags & (1<<FLAG_BLINK_BAND_LED)) {
+			if (status.new_band != status.selected_band) {
+				if (main_flags & (1<<FLAG_LAST_BAND_BLINK)) {
+					led_set_band_none();
+					led_set_band(status.new_band);
+				
+					main_flags &= ~(1<<FLAG_LAST_BAND_BLINK);
+				}
+				else {
+					led_set_band_none();
+					led_set_band(status.selected_band);
+				
+					main_flags |= (1<<FLAG_LAST_BAND_BLINK);
+				}
+			}
+			else if ((main_flags & (1<<FLAG_LAST_BAND_BLINK)) == 0) {
+				led_set_band_none();
+				led_set_band(status.selected_band);
+				
+				main_flags |= (1<<FLAG_LAST_BAND_BLINK);
+			}
+		
+			main_flags &= ~(1<<FLAG_BLINK_BAND_LED);
+		}
+		
+		if (main_flags & (1<<FLAG_POLL_RADIO)) {
+			radio_poll_status();
+			
+			main_flags &= ~(1<<FLAG_POLL_RADIO);
+		}
+		
+		if (main_flags & (1<<FLAG_PROCESS_RX_ANT_CHANGE)) {
+			antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
+			
+			main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
+			main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
+		}
+		
+		radio_process_tasks();
 	}
 }
 
@@ -452,14 +472,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}*/
 
 	if (counter_poll_rotary_encoder >= INTERVAL_POLL_ROTARY_ENCODER) {
-		int val = rotary_encoder_poll();
-		
-		if (val != 0) {
-			if (val == 1)
-				main_flags |= (1<<FLAG_PULSE_SENSOR_UP);
-			else if (val == -1)
-				main_flags |= (1<<FLAG_PULSE_SENSOR_DOWN);
-		}
+		main_flags |= (1<<FLAG_POLL_PULSE_SENSOR);
 		
 		counter_poll_rotary_encoder = 0;
 	}
@@ -477,18 +490,17 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
-			event_run();
-		main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	if (!display_screensaver_mode()) {
+/*	if (!display_screensaver_mode()) {
 		if (counter_screensaver_timeout == DISPLAY_SCREENSAVER_TIMEOUT) {
 			//event_add_message((void*)display_update_screensaver, 0);
 			//display_set_contrast(DISPLAY_SCREENSAVER_DEF_CONTRAST);
 			
 			counter_screensaver_timeout = 0;
 		}
-	}
+	}*/
 	
 	counter_last_pulse_event++;
 	counter_poll_rotary_encoder++;
@@ -501,31 +513,11 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	
 	//This will blink the NEW BAND LED, if the new band is not the same as the old one
 	if ((counter_ms % 250) == 0) {
-		if (status.new_band != status.selected_band) {
-			if (main_flags & (1<<FLAG_LAST_BAND_BLINK)) {
-				led_set_band_none();
-				//led_set_band(status.selected_band);
-				led_set_band(status.new_band);
-				
-				main_flags &= ~(1<<FLAG_LAST_BAND_BLINK);
-			}
-			else {
-				led_set_band_none();
-				led_set_band(status.selected_band);
-				
-				main_flags |= (1<<FLAG_LAST_BAND_BLINK);
-			}
-		}
-		else if ((main_flags & (1<<FLAG_LAST_BAND_BLINK)) == 0) {
-			led_set_band_none();
-			led_set_band(status.selected_band);
-				
-			main_flags |= (1<<FLAG_LAST_BAND_BLINK);
-		}
+		main_flags |= (1<<FLAG_BLINK_BAND_LED);
 	}
 	
 	//Update every 500 ms
-	if ((counter_ms % 500) == 0) {
+/*	if ((counter_ms % 500) == 0) {
 		unsigned char flags = 0;
 		
 		for (int i=0;i<4;i++) {
@@ -553,20 +545,17 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 				main_flags |= (1<<FLAG_LAST_ANTENNA_BLINK);
 			}
 		}
-	}
+	}*/
 	
 	if (counter_last_pulse_event > PULSE_SENSOR_RX_ANT_CHANGE_LIMIT) {
-		if (main_flags & (1<<FLAG_CHANGE_RX_ANT)) {
-			antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
-			
-			main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
-		}
+		if (main_flags & (1<<FLAG_CHANGE_RX_ANT))
+			main_flags |= (1<<FLAG_PROCESS_RX_ANT_CHANGE);
 	}
 	
 	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
 		//TODO: FIX SO WE CAN ADJUST POLL TIME
 		if (counter_poll_radio >= 500) {
-			radio_poll_status();
+			main_flags |= (1<<FLAG_POLL_RADIO);
 			
 			counter_poll_radio = 0;
 		}

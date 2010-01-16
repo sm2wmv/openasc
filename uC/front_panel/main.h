@@ -71,14 +71,20 @@
 #define FLAG_RUN_EVENT_QUEUE			2
 //!FLAG to indicate that the display should be updated
 #define FLAG_UPDATE_DISPLAY				3
-#define FLAG_PULSE_SENSOR_UP			4
-#define FLAG_PULSE_SENSOR_DOWN		5
+//! Poll the pulse sensor
+#define FLAG_POLL_PULSE_SENSOR		4
 //! This flag indicates the state of the last BAND blink event, used to blink the LED when a new band change is in process
-#define FLAG_LAST_BAND_BLINK			6
+#define FLAG_LAST_BAND_BLINK			5
 //! This flag is used to blink the antennas which can be rotated
-#define FLAG_LAST_ANTENNA_BLINK		7
-//! This flag is used when we wish an RX antenna change actually should happen
-#define FLAG_CHANGE_RX_ANT				8
+#define FLAG_LAST_ANTENNA_BLINK		6
+//! This flag is used to trigger an RX antenna change, after a certain amount of time which is set with the flag below
+#define FLAG_CHANGE_RX_ANT				7
+//! Works together with the above flag, but this is set when the actual antenna change should occur
+#define FLAG_PROCESS_RX_ANT_CHANGE	8
+//! Blink the band led
+#define FLAG_BLINK_BAND_LED				9
+//! Indicate that we should poll the radio
+#define FLAG_POLL_RADIO						10
 
 
 //! The poll interval of the front panel buttons (unit = ms)
@@ -201,17 +207,13 @@ typedef struct {
 	unsigned char amplifier_ptt_output;
 	//! Radio PTT output status, 1 = ON, 0 = OFF
 	unsigned char radio_ptt_output;
-	//! Rotator small resolution step
-	unsigned char rotator_small_step;
-	//! Rotator big resolution step
-	unsigned char rotator_big_step;
 	//! Show if the device is inhibited or not
 	unsigned char inhibit_state;
 	//! Band change mode
 	unsigned char band_change_mode;
 } struct_runtime_settings;
 
-/* Different antenna views */
+/* Different views */
 #define VIEW_ANTENNAS 0
 
 //! Contains different statuses of buttons etc

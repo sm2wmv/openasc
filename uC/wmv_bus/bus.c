@@ -245,13 +245,14 @@ void  bus_resend_message(void) {
 			//Set the error flag
 			event_set_error(ERROR_TYPE_BUS_RESEND,1);
 			
-			BUS_MESSAGE bus_message = tx_queue_get();
-			printf("TO_ADDR: %i\n",bus_message.to_addr);
+			//BUS_MESSAGE bus_message = tx_queue_get();
+
+			/*			printf("TO_ADDR: %i\n",bus_message.to_addr);
 			printf("FROM_ADDR: %i\n",bus_message.from_addr);
 			printf("CMD: %i\n",bus_message.cmd);
 			printf("LENGTH: %i\n",bus_message.length);
 			for (unsigned char i=0;i<bus_message.length;i++)
-				printf("DATA[%i]: %i\n",i,bus_message.data[i]);
+				printf("DATA[%i]: %i\n",i,bus_message.data[i]);*/
 			
 		#endif
 	}
