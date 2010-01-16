@@ -265,7 +265,7 @@ void antenna_ctrl_send_rx_ant_band_data_to_bus(unsigned char index) {
 void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	//current_antennas.antenna_direction[ant_index] = heading;
 	
-	printf("ROTATE TO: %i degrees\n",heading);
+/*	printf("ROTATE TO: %i degrees\n",heading);
 	
 	//TODO: CODE TO SEND TO THE ROTATOR BOARD
 	unsigned char new_dir[2];
@@ -273,6 +273,7 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	new_dir[1] = heading & 0x00FF;
 	
 	bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[ant_index], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_SET_ANGLE, 2, new_dir);
+	*/
 }
 
 void antenna_ctrl_change_rx_ant(char ant_index) {
@@ -466,13 +467,6 @@ void antenna_ctrl_select_default_ant(void) {
  *  \param band_index The band index */
 void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
 	eeprom_get_antenna_data(&current_antennas, band_index-1);
-	
-	//TEMPORARY
-	current_antennas.rotator_addr[0] = 13;
-	current_antennas.antenna_direction[0] = antenna_ctrl_get_start_heading(0);
-	current_antennas.antenna_direction[1] = antenna_ctrl_get_start_heading(1);
-	current_antennas.antenna_direction[2] = antenna_ctrl_get_start_heading(2);
-	current_antennas.antenna_direction[3] = antenna_ctrl_get_start_heading(3);
 }
 
 /*! Read the eeprom for the rx antenna settings  */
@@ -486,11 +480,4 @@ unsigned int antenna_ctrl_get_start_heading(unsigned char ant_index) {
 
 unsigned int antenna_ctrl_get_max_rotation(unsigned char ant_index) {
 	return(current_antennas.rotator_max_rotation[ant_index]);
-}
-
-unsigned char antenna_ctrl_get_360_deg_view(unsigned char ant_index) {
-	if (current_antennas.rotator_view_360_deg & (1<<ant_index))
-		return(1);
-
-	return(0);
 }

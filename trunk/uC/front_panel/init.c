@@ -93,10 +93,6 @@ void init_ports(void) {
 	PORTG |= (1<<BUTTON_PULSE_BIT);
 	
 	PORTE = 0x03;
-	
-	//Init the interrupts for the pulse sensor. Trigger on any edge
-	//EICRB = (1<<ISC61) | (1<<ISC60) | (1<<ISC71) | (1<<ISC70);
-	//EIMSK = (1<<6) | (1<<7);
 }
 
 /*! Initialize the backlight (Which is pulse width modulated so we can set the contrast) */

@@ -121,4 +121,6 @@ unsigned char display_calculate_width(char *str, unsigned char font, unsigned ch
 void display_show_set_heading(unsigned int rotator_heading, unsigned char view_360_deg);
 void display_text_center_adjust(unsigned char y,char *str, unsigned char length, unsigned char font);
 
+void display_update_radio_freq(void);
+
 #endif

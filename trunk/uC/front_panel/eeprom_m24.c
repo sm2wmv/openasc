@@ -28,9 +28,8 @@
 #include "../i2cconf.h"
 
 void __inline__ eeprom_tiny_delay(void) {
-	for (volatile unsigned char i=0;i<50;i++)
-		for (volatile unsigned char j=0;j<255;j++)
-			__asm__ __volatile__("nop");
+	for (volatile unsigned char i=0;i<15;i++)
+		__asm__ __volatile__("nop");
 }
 
 unsigned char eeprom_m24_write_byte(unsigned int eeprom_address, unsigned char value) {

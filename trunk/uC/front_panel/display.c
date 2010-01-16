@@ -321,7 +321,7 @@ void display_update(unsigned char band, unsigned char antenna) {
 	}
 }
 
-void display_update_radio_freq() {
+void display_update_radio_freq(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
 		if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {	
 			char temp_str[10];

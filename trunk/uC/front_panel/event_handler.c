@@ -75,8 +75,6 @@ unsigned char event_get_error_state(unsigned char error_type) {
 }
 
 void event_handler_enable_rotator_interface(void) {
-	status.new_beamheading = antenna_ctrl_get_direction(status.antenna_to_rotate-1);
-	display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 }
 
 void event_internal_comm_parse_message(UC_MESSAGE message) {
@@ -211,7 +209,7 @@ void event_pulse_sensor_up(void) {
 			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1);
 					
-			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
+	//		display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
 	}
 }
@@ -240,10 +238,10 @@ void event_pulse_sensor_down(void) {
 		else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
 			if (status.new_beamheading > antenna_ctrl_get_start_heading(status.antenna_to_rotate-1))
 				status.new_beamheading -= status.rotator_step_resolution;
-			else	
+			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1);
 			
-			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
+//			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
 		
 	}
@@ -628,7 +626,7 @@ void event_rxant_button_pressed(void) {
 }
 
 void event_rotate_button_pressed(void) {
-	if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
+/*	if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
 			
 		if (((status.function_status & (1<<FUNC_STATUS_ROTATE)) == 0) || ((status.function_status & (1<<FUNC_STATUS_ROTATE)) && (status.knob_function != KNOB_FUNCTION_SET_HEADING))) {
 			led_set_rotate(LED_STATE_ON);
@@ -650,11 +648,7 @@ void event_rotate_button_pressed(void) {
 			glcd_clear();
 			main_update_display();
 		}
-	}
-}
-
-void event_parse_button_pressed(unsigned int btn_status) {
-
+	}*/
 }
 
 void event_bus_parse_message(void) {
@@ -678,7 +672,7 @@ void event_bus_parse_message(void) {
 		#ifdef DEBUG_WMV_BUS
 			printf("DEBUG-> PING RXed from: 0x%02X\n",bus_message.from_addr);
 		#endif
-			
+			/*
 		if (bus_message.data[0] == DEVICE_ID_ROTATOR_UNIT) {
 			//Go through the antennas to find if any of the ones on the current band
 			//does have the same address as the broadcast sent. If so we update the heading
@@ -713,7 +707,7 @@ void event_bus_parse_message(void) {
 				}
 			}
 		}
-
+*/
 		if (bus_message.to_addr != BUS_BROADCAST_ADDR) {
 			#ifdef DEBUG_WMV_BUS
 				printf("DEBUG-> ADD ACK MESSAGE\n");

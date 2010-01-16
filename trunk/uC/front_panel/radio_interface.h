@@ -20,6 +20,9 @@
 #ifndef _RADIO_INTERFACE_H_
 #define _RADIO_INTERFACE_H_
 
+//! Flag to indicate that the frequency has changed
+#define RADIO_FLAG_FREQ_CHANGED		0
+
 //! Kenwood radio connected to the box
 #define RADIO_MODEL_KENWOOD		0
 //! ICOM radio connected to the box
@@ -109,6 +112,10 @@ typedef struct {
 	unsigned char current_band;
 } struct_radio_status;
 	
+void radio_process_tasks(void);
+	
+void radio_interface_init(void);
+	
 unsigned int radio_get_current_freq ( void );
 unsigned char radio_get_current_band(void);
 void radio_ptt(unsigned char status);
@@ -125,6 +132,8 @@ void radio_amp_ptt_deactive(void);
 
 void radio_inhibit_low(void);
 void radio_inhibit_high(void);
+
+unsigned char radio_freq_to_band(unsigned int freq);
 
 /* Functions to change settings in the radio setting structure */
 void radio_interface_set_model(unsigned char model);

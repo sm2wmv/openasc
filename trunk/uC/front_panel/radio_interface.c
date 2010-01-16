@@ -30,6 +30,7 @@
 #include "usart.h"
 #include "board.h"
 #include "eeprom.h"
+#include "display.h"
 #include "../global.h"
 
 unsigned char *radio_serial_rx_buffer;
@@ -37,6 +38,8 @@ unsigned char *radio_serial_rx_buffer_start;
 
 struct_radio_status radio_status;
 struct_radio_settings radio_settings;
+
+unsigned char radio_flags;
 
 unsigned char radio_sent_request = 0;
 
@@ -79,6 +82,13 @@ void radio_interface_init(void) {
 																					usart1_init(15, radio_settings.stopbits);
 																				break;
 		}
+	}
+}
+
+/*! This function is called each lap in the main loop and we can use this to process certain tasks */
+void radio_process_tasks(void) {
+	if (radio_flags & (1<<RADIO_FLAG_FREQ_CHANGED)) {
+		radio_status.current_band = radio_freq_to_band(radio_status.current_freq);	
 	}
 }
 
@@ -252,9 +262,7 @@ unsigned int radio_parse_freq(unsigned char *freq_data, unsigned char length, un
 		freq += ((0xF0 & *(freq_data+2))>>4) * 10;
 		freq += ( 0x0F & *(freq_data+2));
 	}
-	
 	else if (radio_model == RADIO_MODEL_FT1000) {
-		
 		/*TODO: This is very tricky to implement without the FT1000 firmware upgrade.
 						But hopefully we will be able to implement this */
 	}
@@ -395,7 +403,6 @@ void radio_interface_load_eeprom(void) {
 }
 
 ISR(SIG_USART3_DATA) {
-	
 }
 
 ISR(SIG_USART3_RECV) {
@@ -422,9 +429,10 @@ ISR(SIG_USART3_RECV) {
 			if (data == 0xFD) {
 				if ((radio_serial_rx_buffer_start[0] == 0xFE) && (radio_serial_rx_buffer_start[1] == 0xFE)) {
 					//TODO: Consider moving the parsing etc outside of the interrupt, to make the interrupt take as little time as possible
+					//TODO: Implement a timeout which resets the buffer after XX ms
 					radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_ICOM);
-					radio_status.current_band = radio_freq_to_band(radio_status.current_freq);
-									
+					
+					radio_flags |= (1<<RADIO_FLAG_FREQ_CHANGED);
 					radio_serial_rx_buffer = radio_serial_rx_buffer_start;
 				}
 			}
