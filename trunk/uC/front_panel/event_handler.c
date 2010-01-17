@@ -307,7 +307,8 @@ void event_poll_buttons(void) {
 		if (btn_status & (1<<FLAG_BUTTON_MENU_BIT)) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
-					status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+					status.current_display = CURRENT_DISPLAY_LOGO;
+					
 					led_set_menu(LED_STATE_OFF);
 				}
 				else {
@@ -315,7 +316,7 @@ void event_poll_buttons(void) {
 					led_set_menu(LED_STATE_ON);
 				}
 			
-				main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+				main_update_display();
 			}
 		}
 	
@@ -732,7 +733,7 @@ void event_parse_ext_event(unsigned int ext_event_status) {
 		if (status.ext_devices_current_state & (1<<STATUS_FOOTSWITCH_BIT))
 			sequencer_footsw_released();
 		else
-			sequencer_footsw_pressed();	
+			sequencer_footsw_pressed();
 	}
 	
 	if (ext_event_status & (1<<STATUS_USB2_RTS_BIT)) {

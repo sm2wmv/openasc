@@ -134,28 +134,6 @@ void shutdown_device(void) {
 	internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
 }
 
-/* This is a temporary thing */
-void init_dummy_values(void) {
-	antenna_ctrl_set_antenna_text("6/6/6el",0);
-	antenna_ctrl_set_antenna_text("5el",1);
-	antenna_ctrl_set_antenna_text("5el @JA",2);
-	antenna_ctrl_set_antenna_text("4el @EU",3);
-	
-	antenna_ctrl_set_direction(310,0);
-	antenna_ctrl_set_direction(185,1);
-	
-	antenna_ctrl_set_flags((1<<ANTENNA_EXIST_FLAG) | (1<<ANTENNA_ROTATOR_FLAG),0);
-	antenna_ctrl_set_flags((1<<ANTENNA_EXIST_FLAG) | (1<<ANTENNA_ROTATOR_FLAG),1);
-	antenna_ctrl_set_flags((1<<ANTENNA_EXIST_FLAG),2);	
-	antenna_ctrl_set_flags((1<<ANTENNA_EXIST_FLAG),3);
-	
-	antenna_ctrl_set_comb_allowed(0X097E);
-	
-	unsigned char temp[12] = {3,4,5,OUTPUT_ADDR_DELIMITER,0x02,10,12,13,OUTPUT_ADDR_DELIMITER,0x03};
-	
-	antenna_ctrl_set_output_comb(temp,1,10);
-}
-
 void set_tx_ant_leds(void) {
 	for (unsigned char i=0;i<4;i++)
 		if (status.selected_ant & (1<<i))
@@ -198,6 +176,9 @@ void load_settings(void) {
 	
 	//Load the settings struct
 	eeprom_get_settings_structure(&settings);
+	
+	//Load all the sequencer settings
+	sequencer_load_eeprom();
 }
 
 
@@ -245,6 +226,14 @@ int main(void){
 	//Init the communication routines between the computer and the openASC box
 	computer_interface_init();
 	
+	//Initialize the 128x64 display
+	glcd_init();
+	
+	//Init the backlight PWM
+	init_backlight();
+	
+	display_set_backlight(runtime_settings.lcd_backlight_value);
+	
 	//Check to see if the radio interface is configured as manual or automatic as default
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
@@ -258,15 +247,21 @@ int main(void){
 	else {
 		//Init the computer communication
 		init_usart_computer();
+		
+		sei();
+		
+		display_setup_view();
+		
+		while(1) {
+			computer_interface_send_data();
+			computer_interface_parse_data();
+		}
 	}
 	
 	//Init the communication between the uCs
 	init_usart();
 	
 	band_ctrl_load_band_limits();
-	
-	//Init the backlight PWM
-	init_backlight();
 
 	//Init the realtime clock
 	//ds1307_init();
@@ -275,10 +270,7 @@ int main(void){
 	//The first argument will be called each time a message should be parsed
 	//The second argument will be called each time a character should be sent
 	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
-	
-	//Initialize the 128x64 display
-	glcd_init();
-		
+			
 	//TODO: Do some kind of implementation that the device creates the eeprom table
 	//at its first startup
 	//eeprom_create_table();
@@ -322,11 +314,12 @@ int main(void){
 	//Initialize the menu system
 	menu_init();
 	
-	display_set_backlight(runtime_settings.lcd_backlight_value);
-
-	led_set_ptt(LED_STATE_PTT_OK);
+	main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+	led_set_ptt(LED_STATE_PTT_INHIBIT);
 	
 	set_knob_function(KNOB_FUNCTION_AUTO);
+	
+	init_usart_computer();
 	
 	sei();
 	

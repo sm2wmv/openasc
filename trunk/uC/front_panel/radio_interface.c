@@ -109,14 +109,18 @@ unsigned char radio_get_current_band(void) {
 /*! Activate the radio PTT */
 void radio_ptt_active(void) {
 	if (runtime_settings.radio_ptt_output) {
-		if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND)
+		if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND) {
 			led_set_ptt(LED_STATE_PTT_ACTIVE);
-		else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND)
+			
+			/* Activate the PTT to the radio */
+			PORTJ |= (1<<3);
+		}
+		else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND) {
 			led_set_ptt(LED_STATE_PTT_INHIBIT);
-		
-		/* Activate the PTT to the radio */
-		PORTG |= (1<<RADIO_PTT_OUTPUT_BIT);
-		PORTJ |= (1<<3);
+			
+			/* Deactivate the PTT to the radio, just to be safe */
+			PORTJ &= ~(1<<3);
+		}
 	}
 }
 
@@ -128,10 +132,35 @@ void radio_ptt_deactive(void) {
 		led_set_ptt(LED_STATE_PTT_INHIBIT);
 		
 	/* Deactivate the PTT to the radio */
-	PORTG &= ~(1<<RADIO_PTT_OUTPUT_BIT);
 	PORTJ &= ~(1<<3);
 }
 
+/*! Set the TX ACTIVE output to high */
+void radio_tx_active(void) {
+	if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND) {
+		PORTG |= (1<<TX_ACTIVE_OUTPUT_BIT);
+			
+		/* Activate the PTT to the radio */
+		PORTJ |= (1<<3);
+	}
+	else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND) {
+		led_set_ptt(LED_STATE_PTT_INHIBIT);
+			
+		/* Deactivate the TX ACTIVE, just to be safe */
+		PORTG &= ~(1<<TX_ACTIVE_OUTPUT_BIT);
+	}
+}
+
+/*! Set the TX ACTIVE output to high */
+void radio_tx_deactive(void) {
+	if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND)
+		led_set_ptt(LED_STATE_PTT_OK);
+	else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND)
+		led_set_ptt(LED_STATE_PTT_INHIBIT);
+		
+	/* Deactivate the PTT to the radio */
+	PORTG &= ~(1<<TX_ACTIVE_OUTPUT_BIT);
+}
 /*! Set the inhibit signal to high */
 void radio_inhibit_high(void) {
 	//This signal is inverted in hardware, because of a transistor output with pullup
@@ -445,5 +474,5 @@ ISR(SIG_USART3_RECV) {
 		}
 	}
 	
-	usart1_transmit(data);
+//	usart1_transmit(data);
 }

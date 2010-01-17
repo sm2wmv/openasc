@@ -141,8 +141,11 @@ void band_ctrl_change_band(unsigned char band) {
 		status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
 		status.current_display_level = DISPLAY_LEVEL_BAND;
 	}
-	else
+	else {
+		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+		led_set_ptt(LED_STATE_PTT_INHIBIT);
 		status.current_display = CURRENT_DISPLAY_LOGO;
+	}
 	
 	antenna_ctrl_deactivate_all_rx_band();
 	antenna_ctrl_deactivate_all();
@@ -162,6 +165,9 @@ void band_ctrl_change_band(unsigned char band) {
 		antenna_ctrl_send_rx_ant_band_data_to_bus(band);
 		
 		antenna_ctrl_select_default_ant();
+		
+		main_set_inhibit_state(INHIBIT_OK_TO_SEND);
+		led_set_ptt(LED_STATE_PTT_OK);
 	}
 	
 	//Update the display

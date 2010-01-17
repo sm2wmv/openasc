@@ -47,6 +47,7 @@
 #include "antenna_ctrl.h"
 #include "eeprom.h"
 #include "led_control.h"
+#include "sequencer.h"
 
 //! The length of the computer RX BUFFER
 #define COMPUTER_RX_BUFFER_LENGTH	128
@@ -89,6 +90,7 @@
 #define CTRL_SET_DEVICE_SETTINGS					0x15
 #define CTRL_SET_BAND_DATA								0x16
 #define CTRL_SET_EXT_INPUT								0x17
+#define CTRL_SET_SEQUENCER_SETTINGS				0x18
 
 /* Defines for the radio settings */
 #define CTRL_SET_RADIO_SETTINGS_SAVE	0x01
@@ -121,13 +123,12 @@
 #define CTRL_SET_DEVICE_SETTINGS_NR_NODES						0x02
 #define CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER		0x03
 
-/* bit 0 = PTTInputFootswitch
- * bit 1 = PTTInputRadioSense
- * bit 2 = PTTInputComputerRTS
- * bit 3 = PTTInputRadioSenseInverted
- * bit 4 = PTTInputComputerRTSInverted
- * bit 5 = InhibitPolarityActiveLow */
-#define CTRL_SET_DEVICE_SETTINGS_PTT_INPUTS		0x04
+/* Defines for the sequencer settings */
+#define CTRL_SET_SEQUENCER_SAVE					0x01
+#define CTRL_SET_SEQUENCER_FOOTSWITCH		0x02
+#define CTRL_SET_SEQUENCER_COMPUTER			0x03
+#define CTRL_SET_SEQUENCER_RADIO_SENSE	0x04
+
 #define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS		0x05
 #define CTRL_SET_DEVICE_SETTINGS_SAVE					0x07
 
@@ -163,6 +164,8 @@ struct_rx_antennas *rx_antenna_ptr;
 struct_band *band_ptr;
 
 struct_setting *settings_ptr;
+
+struct_ptt *ptt_sequencer_ptr;
 
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
@@ -333,7 +336,7 @@ void computer_interface_parse_data(void) {
 				case CTRL_SET_ANT_DATA_SAVE:
 					//Save the antenna structure to the eeprom
 					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1], antenna_ptr);
-
+					
 					//Reset the content of the antenna_ptr
 					memset(antenna_ptr,0,sizeof(struct_antenna));
 					computer_interface_send_ack();
@@ -410,8 +413,68 @@ void computer_interface_parse_data(void) {
 					break;
 				case CTRL_SET_RADIO_SETTINGS_SAVE:
 					radio_interface_save_eeprom();
+					
 					computer_interface_send_ack();
 				default:	//If sub command not found
+					computer_interface_send_nack();
+					break;
+			}
+		}
+		else if (computer_comm.command == CTRL_SET_SEQUENCER_SETTINGS) {
+				/*! Bit 0 = Footswitch
+						Bit 1 = Radio sense lower floor
+						Bit 2 = Radio sense upper floor
+						Bit 3 = Computer RTS
+						Bit 4 = Inverted radio sense
+						Bit 5 = Inverted Computer RTS 
+						Bit 6 = Inhibit polarity (0=active low, 1=active high)
+						
+						unsigned char ptt_input;
+				 */
+			switch(computer_comm.rx_buffer_start[0]) {
+				case CTRL_SET_SEQUENCER_FOOTSWITCH:
+					ptt_sequencer_ptr->footswitch.radio_pre_delay = computer_comm.rx_buffer_start[1];
+					ptt_sequencer_ptr->footswitch.radio_post_delay = computer_comm.rx_buffer_start[2];
+					ptt_sequencer_ptr->footswitch.amp_pre_delay = computer_comm.rx_buffer_start[3];
+					ptt_sequencer_ptr->footswitch.amp_post_delay = computer_comm.rx_buffer_start[4];
+					ptt_sequencer_ptr->footswitch.inhibit_pre_delay = computer_comm.rx_buffer_start[5];
+					ptt_sequencer_ptr->footswitch.inhibit_post_delay = computer_comm.rx_buffer_start[6];
+					ptt_sequencer_ptr->footswitch.antennas_post_delay = computer_comm.rx_buffer_start[7];
+					ptt_sequencer_ptr->footswitch.active = computer_comm.rx_buffer_start[8];
+					ptt_sequencer_ptr->ptt_input |= computer_comm.rx_buffer_start[9];
+					
+					computer_interface_send_ack();
+					break;
+				case CTRL_SET_SEQUENCER_COMPUTER:
+					ptt_sequencer_ptr->computer.radio_pre_delay = computer_comm.rx_buffer_start[1];
+					ptt_sequencer_ptr->computer.radio_post_delay = computer_comm.rx_buffer_start[2];
+					ptt_sequencer_ptr->computer.amp_pre_delay = computer_comm.rx_buffer_start[3];
+					ptt_sequencer_ptr->computer.amp_post_delay = computer_comm.rx_buffer_start[4];
+					ptt_sequencer_ptr->computer.inhibit_pre_delay = computer_comm.rx_buffer_start[5];
+					ptt_sequencer_ptr->computer.inhibit_post_delay = computer_comm.rx_buffer_start[6];
+					ptt_sequencer_ptr->computer.antennas_post_delay = computer_comm.rx_buffer_start[7];
+					ptt_sequencer_ptr->computer.active = computer_comm.rx_buffer_start[8];
+					ptt_sequencer_ptr->ptt_input |= computer_comm.rx_buffer_start[9];
+					
+					computer_interface_send_ack();
+					break;
+				case CTRL_SET_SEQUENCER_RADIO_SENSE:
+					ptt_sequencer_ptr->radio_sense.radio_pre_delay = computer_comm.rx_buffer_start[1];
+					ptt_sequencer_ptr->radio_sense.radio_post_delay = computer_comm.rx_buffer_start[2];
+					ptt_sequencer_ptr->radio_sense.amp_pre_delay = computer_comm.rx_buffer_start[3];
+					ptt_sequencer_ptr->radio_sense.amp_post_delay = computer_comm.rx_buffer_start[4];
+					ptt_sequencer_ptr->radio_sense.antennas_post_delay = computer_comm.rx_buffer_start[7];
+					ptt_sequencer_ptr->radio_sense.active = computer_comm.rx_buffer_start[8];
+					ptt_sequencer_ptr->ptt_input |= computer_comm.rx_buffer_start[9];
+					
+					computer_interface_send_ack();
+					break;
+				case CTRL_SET_SEQUENCER_SAVE:
+					eeprom_save_ptt_data(ptt_sequencer_ptr);
+					
+					computer_interface_send_ack();
+					break;
+				default:
 					computer_interface_send_nack();
 					break;
 			}
@@ -428,9 +491,6 @@ void computer_interface_parse_data(void) {
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER:
 					settings_ptr->network_device_is_master = computer_comm.rx_buffer_start[1];
-					computer_interface_send_ack();
-					break;
-				case CTRL_SET_DEVICE_SETTINGS_PTT_INPUTS:
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS:
@@ -522,11 +582,15 @@ void computer_interface_activate_setup(void) {
 	rx_antenna_ptr = (struct_rx_antennas *)malloc(sizeof(struct_rx_antennas));
 	band_ptr = (struct_band *)malloc(sizeof(struct_band));
 	settings_ptr = (struct_setting *)malloc(sizeof(struct_setting));
+	ptt_sequencer_ptr = (struct_ptt *)malloc(sizeof(struct_ptt));
+	
+	ptt_sequencer_ptr->ptt_input = 0;
 }
 
 void computer_interface_deactivate_setup(void) {
 	computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 	
+	free(ptt_sequencer_ptr);
 	free(antenna_ptr);
 	free(rx_antenna_ptr);
 	free(band_ptr);

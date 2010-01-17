@@ -25,17 +25,23 @@
     remove the upcoming events from the queue, that doesn't need to be executed */
 
 //! Event that the radio should be PTT:ed from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_RADIO_ON			1
+#define SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_ON	1
+//! Event that the inhibit output should be on
+#define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_ON		2
+//! Event that the radio should be PTT:ed from footswitch
+#define SEQUENCER_EVENT_TYPE_PTT_RADIO_ON			3
 //! Event that the amp should be PTT:ed from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_AMP_ON				2
+#define SEQUENCER_EVENT_TYPE_PTT_AMP_ON				4
 //! Event that the inhibit should be activated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_ON		3
-//! Event that the radio should be deactivated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_RADIO_OFF			4
-//! Event that the amp should be deactivated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_AMP_OFF				5
-//! Event that the inhibit should be deactiated from footswitch
+#define SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_OFF	5
+//! Event that the TX active output should be off
 #define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF		6
+//! Event that the radio should be deactivated from footswitch
+#define SEQUENCER_EVENT_TYPE_PTT_RADIO_OFF			7
+//! Event that the amp should be deactivated from footswitch
+#define SEQUENCER_EVENT_TYPE_PTT_AMP_OFF				8
+//! Event that the inhibit should be deactiated from footswitch
+#define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF		9
 
 #define PTT_INPUT_FOOTSWITCH						0
 #define PTT_INPUT_RADIO_SENSE_UP				1
@@ -104,7 +110,7 @@ typedef struct {
 	unsigned char ptt_input;
 } struct_ptt;
 
-void sequencer_init_dummy(void);
+void sequencer_load_eeprom(void);
 
 void sequencer_footsw_pressed(void);
 void sequencer_footsw_released(void);

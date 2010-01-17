@@ -149,6 +149,16 @@ void eeprom_save_runtime_settings(struct_runtime_settings *content) {
 	eeprom_m24_write_block(eeprom_table.runtime_settings, sizeof(struct_runtime_settings), (unsigned char *)content);
 }
 
+/*! Get the ptt structure from the EEPROM
+ *  \param data A pointer where to store the data*/
+void eeprom_get_ptt_data(struct_ptt *data) {
+	//Create a pointer which we can handle, and point it to where the data should be saved
+	unsigned char *data_ptr = (unsigned char *)data;
+	
+	for (unsigned int i=0;i<sizeof(struct_ptt);i++)
+		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.struct_ptt+i);
+}
+
 /*! Get the runtime_settings structure from the EEPROM
  *  \param data A pointer where to store the data*/
 void eeprom_get_runtime_settings(struct_runtime_settings *data) {
@@ -189,4 +199,10 @@ void eeprom_save_radio_settings_structure(struct_radio_settings *data) {
  * \param data The data to save to the EEPROM */
 void eeprom_save_band_data(unsigned char band, struct_band *data) {
 	eeprom_m24_write_block(eeprom_table.band[band], sizeof(struct_band), (unsigned char *)data);
+}
+
+/*! Save the band data to the eeprom
+ * \param data The data to save to the EEPROM */
+void eeprom_save_ptt_data(struct_ptt *data) {
+	eeprom_m24_write_block(eeprom_table.struct_ptt, sizeof(struct_ptt), (unsigned char *)data);
 }
