@@ -1,6 +1,10 @@
 # KDevelop Custom Project File List
 avrlibdefs.h
 avrlibtypes.h
+bootloader
+bootloader/Makefile
+bootloader/command.h
+bootloader/stk500boot.c
 delay.c
 delay.h
 driver_unit

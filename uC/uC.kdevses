@@ -1,22 +1,55 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="5" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/interrupt_handler.c" >
-   <View0 Encoding="" line="0" Type="Source" />
+ <DocsAndViews NumberOfDocuments="16" >
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.c" >
+   <View0 Encoding="" line="476" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/radio_interface.c" >
-   <View0 Encoding="" line="19" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
+   <View0 Encoding="" line="233" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="UTF-8" line="751" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/i2c.c" >
+   <View0 Encoding="" line="72" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/errors.h" >
-   <View0 Encoding="" line="27" Type="Source" />
+  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/eeprom_m24.c" >
+   <View0 Encoding="" line="25" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.h" >
-   <View0 Encoding="" line="111" Type="Source" />
+  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/sequencer.c" >
+   <View0 Encoding="" line="10" Type="Source" />
   </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/band_ctrl.c" >
+   <View0 Encoding="" line="146" Type="Source" />
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.h" >
+   <View0 Encoding="" line="27" Type="Source" />
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/led_control.h" >
+   <View0 Encoding="" line="42" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/board.h" >
+   <View0 Encoding="" line="241" Type="Source" />
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.h" >
+   <View0 Encoding="" line="160" Type="Source" />
+  </Doc9>
+  <Doc10 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/sequencer.h" >
+   <View0 Encoding="" line="111" Type="Source" />
+  </Doc10>
+  <Doc11 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/interrupt_handler.c" >
+   <View0 Encoding="" line="106" Type="Source" />
+  </Doc11>
+  <Doc12 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
+   <View0 Encoding="" line="409" Type="Source" />
+  </Doc12>
+  <Doc13 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/menu.c" >
+   <View0 Encoding="" line="215" Type="Source" />
+  </Doc13>
+  <Doc14 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.c" >
+   <View0 Encoding="" line="36" Type="Source" />
+  </Doc14>
+  <Doc15 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.h" >
+   <View0 Encoding="" line="108" Type="Source" />
+  </Doc15>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

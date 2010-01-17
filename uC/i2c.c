@@ -63,14 +63,14 @@ void i2c_init(void)
 	// clear SlaveReceive and SlaveTransmit handler to null
 	i2cSlaveReceive = 0;
 	i2cSlaveTransmit = 0;
-	// set i2c bit rate to 400KHz
+	// set i2c bit rate to 100KHz
 	i2cSetBitrate(100);
 	// enable TWI (two-wire interface)
 	sbi(TWCR, TWEN);
 	// set state
 	I2cState = I2C_IDLE;
 	// enable TWI interrupt and slave address ACK
-	sbi(TWCR, TWIE);
+	//sbi(TWCR, TWIE);
 	sbi(TWCR, TWEA);
 	//outb(TWCR, (inb(TWCR)&TWCR_CMD_MASK)|BV(TWINT)|BV(TWEA));
 	// enable interrupts

@@ -199,7 +199,7 @@ void menu_action(unsigned char menu_action_type) {
 						event_set_error(i,0);
 				
 				led_set_error(LED_STATE_OFF);
-			}			
+			}	
 			else
 				current_menu_level = 1;
 		}

@@ -106,6 +106,7 @@
 
 /************************************************/
 
+void display_setup_view(void);
 void display_shutdown_view(void);
 void display_antennas(unsigned char band);
 void display_rotator_directions(unsigned char band);

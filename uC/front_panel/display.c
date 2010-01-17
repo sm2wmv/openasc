@@ -24,6 +24,13 @@ void display_shutdown_view(void) {
 	glcd_update_all();
 }
 
+/*! \brief Display the setup  in progressscreen */
+void display_setup_view(void) {
+	glcd_clear();
+	display_text_center_adjust(10,"Setup",5, FONT_FIFTEEN_DOT);
+	display_text_center_adjust(30,"in progress",11, FONT_FIFTEEN_DOT);
+	glcd_update_all();
+}
 
 /*! \brief Get the mode of the screensaver 
  * \return 0 if the screensaver is disabled, 1 otherwise 

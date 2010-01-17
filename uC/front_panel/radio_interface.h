@@ -158,4 +158,7 @@ unsigned char radio_interface_get_poll_interval(void);
 void radio_interface_save_eeprom(void);
 void radio_interface_load_eeprom(void);
 
+void radio_tx_active(void);
+void radio_tx_deactive(void);
+
 #endif
