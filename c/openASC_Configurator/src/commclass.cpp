@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "commclass.h"
 
-//#define DEBUG
+#define DEBUG
 
 CommClass::CommClass() {
 	threadActive = false;
@@ -60,6 +60,10 @@ void CommClass::parseRXQueue() {
 		data[i] = temp.at(i+2);
 
 	data[length] = 0;
+
+#ifdef DEBUG
+	qDebug("Length %i",length-1);
+#endif
 	
 	switch(cmd) {
 		case CTRL_GET_FIRMWARE_REV:
