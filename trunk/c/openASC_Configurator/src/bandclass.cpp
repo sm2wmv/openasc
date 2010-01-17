@@ -9,9 +9,9 @@ BandClass::BandClass() {
 }
 
 void BandClass::setIndex(int new_index) {
-	index = new_index;
+	bandIndex = new_index;
 	
-	switch(index) {
+	switch(bandIndex) {
 		case 0: bandName = "160M";
 				break;
 		case 1: bandName = "80M";
@@ -38,7 +38,7 @@ QString BandClass::getBandName() {
 }
 
 int BandClass::getIndex(void) {
-	return(index);
+	return(bandIndex);
 }
 
 void BandClass::setCombinationAllowed(int combNr, bool state) {
@@ -141,55 +141,55 @@ QString BandClass::getAntennaOutputStr(int index) {
 }
 
 void BandClass::setDefaultBandLimits() {
-	if (index == 0) {
+	if (bandIndex == 0) {
 		band_data.low_portion_low_limit = 1800;
 		band_data.high_portion_low_limit = 1800;
 		band_data.low_portion_high_limit = 2000;
 		band_data.high_portion_high_limit = 2000;
 	}
-	else if (index == 1) {
+	else if (bandIndex == 1) {
 		band_data.low_portion_low_limit = 3500;
 		band_data.high_portion_low_limit = 3500;
 		band_data.low_portion_high_limit = 3900;
 		band_data.high_portion_high_limit = 3900;
 	}
-	else if (index == 2) {
+	else if (bandIndex == 2) {
 		band_data.low_portion_low_limit = 7000;
 		band_data.high_portion_low_limit = 7000;
 		band_data.low_portion_high_limit = 7300;
 		band_data.high_portion_high_limit = 7300;
 	}
-	else if (index == 3) {
+	else if (bandIndex == 3) {
 		band_data.low_portion_low_limit = 10100;
 		band_data.high_portion_low_limit = 10100;
 		band_data.low_portion_high_limit = 10200;
 		band_data.high_portion_high_limit = 10200;
 	}
-	else if (index == 4) {
+	else if (bandIndex == 4) {
 		band_data.low_portion_low_limit = 14000;
 		band_data.high_portion_low_limit = 14000;
 		band_data.low_portion_high_limit = 14350;
 		band_data.high_portion_high_limit = 14350;
 	}
-	else if (index == 5) {
+	else if (bandIndex == 5) {
 		band_data.low_portion_low_limit = 18068;
 		band_data.high_portion_low_limit = 18068;
 		band_data.low_portion_high_limit = 18180;
 		band_data.high_portion_high_limit = 18180;
 	}
-	else if (index == 6) {
+	else if (bandIndex == 6) {
 		band_data.low_portion_low_limit = 21000;
 		band_data.high_portion_low_limit = 21000;
 		band_data.low_portion_high_limit = 21450;
 		band_data.high_portion_high_limit = 21450;
 	}
-	else if (index == 7) {
+	else if (bandIndex == 7) {
 		band_data.low_portion_low_limit = 24800;
 		band_data.high_portion_low_limit = 24800;
 		band_data.low_portion_high_limit = 25000;
 		band_data.high_portion_high_limit = 25000;
 	}
-	else if (index == 8) {
+	else if (bandIndex == 8) {
 		band_data.low_portion_low_limit = 28000;
 		band_data.high_portion_low_limit = 28000;
 		band_data.low_portion_high_limit = 30000;
@@ -503,7 +503,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	
 	for (int i=0;i<4;i++) {
 		tx_buff[0] = CTRL_SET_ANT_DATA_TEXT;
-		tx_buff[1] = index;
+		tx_buff[1] = bandIndex;
 		tx_buff[2] = i;
 		tx_buff[3] = antennaName[i].length();
 	
@@ -516,7 +516,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	//TODO: tx_buff[0] = CTRL_SET_ANT_DATA_SUB_MENU_TYPE;
 	
 	tx_buff[0] = CTRL_SET_ANT_DATA_ANT_FLAGS;
-	tx_buff[1] = index;
+	tx_buff[1] = bandIndex;
 	tx_buff[2] = antennaFlags[0];
 	tx_buff[3] = antennaFlags[1];
 	tx_buff[4] = antennaFlags[2];
@@ -552,14 +552,14 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	}
 	
 	tx_buff[0] = CTRL_SET_ANT_DEFAULT_INDEX;
-	tx_buff[1] = index;
+	tx_buff[1] = bandIndex;
 	tx_buff[2] = defaultAntennaIndex;
 	
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,3,tx_buff);
 	
 	/* SEND ROTATOR DATA */
 	tx_buff[0] = CTRL_SET_ANT_ROTATOR_DATA;
-	tx_buff[1] = index;
+	tx_buff[1] = bandIndex;
 	
 	unsigned char posCount = 2;
 	for (unsigned char i=0;i<4;i++) {
@@ -576,12 +576,12 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,27,tx_buff);
 	
 	tx_buff[0] = CTRL_SET_ANT_DATA_SAVE;
-	tx_buff[1] = index;
+	tx_buff[1] = bandIndex;
 			
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,2,tx_buff);
 	
 	tx_buff[0] = CTRL_SET_BAND_DATA_LIMITS;
-	tx_buff[1] = index;
+	tx_buff[1] = bandIndex;
 	tx_buff[2] = ((band_data.low_portion_low_limit & 0xFF00)>>8);
 	tx_buff[3] = (band_data.low_portion_low_limit & 0x00FF);
 	tx_buff[4] = ((band_data.low_portion_high_limit & 0xFF00)>>8);
@@ -596,7 +596,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	QByteArray temp = strConvertToOutputStr(bandOutputStrHigh);
 	int len = temp.count();
 	temp.insert(0,CTRL_SET_BAND_DATA_HIGH_OUT_STR);
-	temp.insert(1,index);
+	temp.insert(1,bandIndex);
 	temp.insert(2,len);
 	
 	for (int x=0;x<temp.count();x++)
@@ -608,7 +608,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	temp = strConvertToOutputStr(bandOutputStrLow);
 	len = temp.count();
 	temp.insert(0,CTRL_SET_BAND_DATA_LOW_OUT_STR);
-	temp.insert(1,index);
+	temp.insert(1,bandIndex);
 	temp.insert(2,len);
 
 	for (int x=0;x<temp.count();x++)
@@ -618,7 +618,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	
 	//Save the settings to the EEPROM
 	tx_buff[0] = CTRL_SET_BAND_DATA_SAVE;
-	tx_buff[1] = index;
+	tx_buff[1] = bandIndex;
 	serialPort.addTXMessage(CTRL_SET_BAND_DATA,2,tx_buff);
 }
 

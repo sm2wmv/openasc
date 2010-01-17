@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "commclass.h"
 
-#define DEBUG
+//#define DEBUG
 
 CommClass::CommClass() {
 	threadActive = false;
@@ -28,7 +28,7 @@ CommClass::CommClass() {
 int CommClass::openPort(QString deviceName) {
 
 	serialPort = new QextSerialPort(deviceName);
-	serialPort->setBaudRate(BAUD19200);
+	serialPort->setBaudRate(BAUD115200);
 	serialPort->setDataBits(DATA_8);
 	serialPort->setFlowControl(FLOW_OFF);
 	serialPort->setParity(PAR_NONE);

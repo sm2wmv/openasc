@@ -117,7 +117,7 @@ class BandClass
 		unsigned char rotatorDelay[4];
 		unsigned char rotatorView360deg;
 	protected:
-		int index;
+		int bandIndex;
 		struct_band band_data;
 		structSubMenu4SQ subMenu4SQ;
 		structSubMenuStack subMenuStack;
