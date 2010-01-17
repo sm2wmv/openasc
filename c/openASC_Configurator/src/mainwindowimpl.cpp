@@ -422,10 +422,10 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 	radioInterface.sendSettings(serialPort);
 	
 	addDebugLine("Sending sequencer settings");
-	sequencerFootswitch.sendSettings(serialPort);
+	//sequencerFootswitch.sendSettings(serialPort);
 
 	//Save the sequencer settings
-	serialPort.addTXMessage(CTRL_SET_SEQUENCER_SETTINGS,CTRL_SET_SEQUENCER_SAVE);
+	//serialPort.addTXMessage(CTRL_SET_SEQUENCER_SETTINGS,CTRL_SET_SEQUENCER_SAVE);
 
 	serialPort.addTXMessage(CTRL_DONE,0,0);
 		
