@@ -427,7 +427,7 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 	//Save the sequencer settings
 	//serialPort.addTXMessage(CTRL_SET_SEQUENCER_SETTINGS,CTRL_SET_SEQUENCER_SAVE);
 
-	serialPort.addTXMessage(CTRL_DONE,0);
+	serialPort.addTXMessage(CTRL_DONE,0,0);
 		
 	statusbar->showMessage("Sending settings to device",STATUSBAR_MESSAGE_TIME);
 }
