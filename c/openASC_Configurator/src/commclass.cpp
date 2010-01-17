@@ -60,10 +60,6 @@ void CommClass::parseRXQueue() {
 		data[i] = temp.at(i+2);
 
 	data[length] = 0;
-
-#ifdef DEBUG
-	qDebug("Length %i",length-1);
-#endif
 	
 	switch(cmd) {
 		case CTRL_GET_FIRMWARE_REV:
@@ -170,6 +166,11 @@ void CommClass::sendMessage(char *data, int length) {
 }
 
 void CommClass::sendMessage(QByteArray& data) {
+	#ifdef DEBUG
+		for (int i=0;i<data.count();i++)
+			qDebug("0x%02X ",data.at(i));
+	#endif
+
 	serialPort->write(data);
 }
 
