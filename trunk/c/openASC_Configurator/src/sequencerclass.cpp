@@ -73,8 +73,55 @@ void SequencerClass::loadSettings(QSettings& settings) {
 	
 	inputEnabled = settings.value("InputEnabled").toBool();
 	inputInverted = settings.value("InputInverted").toBool();
-		
+
 	settings.endGroup();	
+}
+
+void SequencerClass::sendSettings(CommClass& serialPort) {
+	unsigned char tx_buff[10];
+
+	if (sequencerName == "SequencerFootswitch") {
+		tx_buff[0] = CTRL_SET_SEQUENCER_FOOTSWITCH;
+
+		if (inputEnabled)
+			tx_buff[9] = (1<<0);
+	}
+	else if (sequencerName == "SequencerComputer") {
+		tx_buff[0] = CTRL_SET_SEQUENCER_COMPUTER;
+
+		if (inputEnabled)
+			tx_buff[9] = (1<<3);
+		if (inputInverted)
+			tx_buff[9] |= (1<<5);
+	}
+	else if (sequencerName == "SequencerRadioSense") {
+		tx_buff[0] = CTRL_SET_SEQUENCER_RADIO_SENSE;
+
+		if (inputEnabled)
+			tx_buff[9] = (1<<1);
+		if (inputInverted)
+			tx_buff[9] |= (1<<4);
+	}
+
+	//TODO: Inhibit polarity setting
+
+	tx_buff[1] = radioPreDelay;
+	tx_buff[2] = radioPostDelay;
+	tx_buff[3] = ampPreDelay;
+	tx_buff[4] = ampPostDelay;
+	tx_buff[5] = inhibitPreDelay;
+	tx_buff[6] = inhibitPostDelay;
+	tx_buff[7] = antennaPostDelay;
+
+	if (pttRadioEnabled)
+		tx_buff[8] = (1<<0);
+	if (pttAmpEnabled)
+		tx_buff[8]  |= (1<<1);
+	if (pttInhibitEnabled)
+		tx_buff[8]  |= (1<<2);
+
+
+	serialPort.addTXMessage(CTRL_SET_SEQUENCER_SETTINGS,10,tx_buff);
 }
 
 void SequencerClass::setName(QString name) {

@@ -421,6 +421,12 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 	addDebugLine("Sending radio settings");
 	radioInterface.sendSettings(serialPort);
 	
+	addDebugLine("Sending sequencer settings");
+	sequencerFootswitch.sendSettings(serialPort);
+
+	//Save the sequencer settings
+	serialPort.addTXMessage(CTRL_SET_SEQUENCER_SETTINGS,CTRL_SET_SEQUENCER_SAVE);
+
 	serialPort.addTXMessage(CTRL_DONE,0,0);
 		
 	statusbar->showMessage("Sending settings to device",STATUSBAR_MESSAGE_TIME);
