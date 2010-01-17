@@ -22,6 +22,7 @@
 #define SEQUENCERCLASS_H
 
 #include <QSettings>
+#include "commclass.h"
 
 class SequencerClass
 {
@@ -29,6 +30,7 @@ class SequencerClass
 		SequencerClass();
 		void writeSettings(QSettings& settings);
 		void loadSettings(QSettings& settings);
+		void sendSettings(CommClass& serialPort);
 		void setName(QString name);
 		void setRadioPreDelay(int value);
 		void setRadioPostDelay(int value);

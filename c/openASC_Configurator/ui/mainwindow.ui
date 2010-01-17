@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>667</height>
+    <width>721</width>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -3067,7 +3067,7 @@ a function to it</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>723</width>
+     <width>721</width>
      <height>23</height>
     </rect>
    </property>
