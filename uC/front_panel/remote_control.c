@@ -56,34 +56,34 @@ void remote_control_parse_button(unsigned char button) {
 		case REMOTE_CTRL_BUTTON_TX4:
 			event_tx_button4_pressed();
 		case REMOTE_CTRL_BUTTON_RXANT1:
-			event_set_rx_antenna(0);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT2:
 			event_set_rx_antenna(1);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT3:
+		case REMOTE_CTRL_BUTTON_RXANT2:
 			event_set_rx_antenna(2);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT4:
+		case REMOTE_CTRL_BUTTON_RXANT3:
 			event_set_rx_antenna(3);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT5:
+		case REMOTE_CTRL_BUTTON_RXANT4:
 			event_set_rx_antenna(4);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT6:
+		case REMOTE_CTRL_BUTTON_RXANT5:
 			event_set_rx_antenna(5);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT7:
+		case REMOTE_CTRL_BUTTON_RXANT6:
 			event_set_rx_antenna(6);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT8:
+		case REMOTE_CTRL_BUTTON_RXANT7:
 			event_set_rx_antenna(7);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT9:
+		case REMOTE_CTRL_BUTTON_RXANT8:
 			event_set_rx_antenna(8);
 			break;
-		case REMOTE_CTRL_BUTTON_RXANT10:
+		case REMOTE_CTRL_BUTTON_RXANT9:
 			event_set_rx_antenna(9);
+			break;
+		case REMOTE_CTRL_BUTTON_RXANT10:
+			event_set_rx_antenna(10);
 			break;
 		default:
 			break;

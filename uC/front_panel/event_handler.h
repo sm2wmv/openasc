@@ -57,6 +57,8 @@
 #define EXT_KEY_SEL_RX_ANT6					6
 #define EXT_KEY_SEL_RX_ANT7					7
 #define EXT_KEY_SEL_RX_ANT8					8
+#define EXT_KEY_SEL_RX_ANT9					9
+#define EXT_KEY_SEL_RX_ANT10				10
 
 #define EXT_KEY_TOGGLE_TX_ANT1			9
 #define EXT_KEY_TOGGLE_TX_ANT2			10

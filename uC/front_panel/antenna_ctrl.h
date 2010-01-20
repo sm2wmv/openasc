@@ -109,8 +109,8 @@ typedef struct {
 void antenna_ctrl_deactivate_all_rx_band(void);
 
 void antenna_ctrl_send_ant_data_to_bus(void);
-void antenna_ctrl_send_rx_ant_data_to_bus(char antenna_index);
-void antenna_ctrl_send_rx_ant_band_data_to_bus(unsigned char index);
+void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index);
+void antenna_ctrl_send_rx_ant_band_data_to_bus(char index);
 
 unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb);
 unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb);
@@ -133,7 +133,7 @@ unsigned char antenna_ctrl_get_flags(unsigned char index);
 void antenna_ctrl_set_comb_allowed(unsigned int comb);
 unsigned int antenna_ctrl_get_comb_allowed(void);
 
-void antenna_ctrl_change_rx_ant(char ant_index);
+void antenna_ctrl_change_rx_ant(unsigned char ant_index);
 
 void antenna_ctrl_set_antenna_data(struct_antenna *data);
 void antenna_ctrl_set_rx_antenna_data(struct_rx_antennas *data);

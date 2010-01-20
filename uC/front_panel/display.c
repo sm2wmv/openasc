@@ -250,14 +250,14 @@ void display_view(unsigned char mode) {
 /*! \brief Show the current selected RX ant 
  *  \param ant_index The antenna index of which antenna that is selected and should be shown 
  */
-void display_show_rx_ant(char ant_index) {
+void display_show_rx_ant(unsigned char ant_index) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
 		CLEAR_RX_ANTENNA_AREA();
 
-		if ((antenna_ctrl_get_rx_antenna_count() > ant_index)) {
-			char temp[strlen(antenna_ctrl_get_rx_antenna_name(ant_index))+4];
+		if ((antenna_ctrl_get_rx_antenna_count() >= ant_index) && (ant_index != 0)) {
+			char temp[strlen(antenna_ctrl_get_rx_antenna_name(ant_index-1))+4];
 			
-			sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(ant_index));
+			sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(ant_index-1));
 			
 			glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_FIVE_DOT, temp, strlen(temp));
 		}
