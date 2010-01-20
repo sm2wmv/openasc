@@ -121,62 +121,67 @@ void band_ctrl_load_band(unsigned char band) {
 }
 
 void band_ctrl_change_band(unsigned char band) {
-	status.selected_ant = 0;
-	
-	status.selected_band = band;
-	status.new_band = band;
-	
-	led_set_band_none();
-	led_set_band(band);
-	
-	//Turn off antenna leds
-	for (unsigned char i=0;i<4;i++) {
-		led_set_tx_ant(i,LED_STATE_OFF);
-		led_set_rx_ant(i,LED_STATE_OFF);
-	}
-	
-	if (band != BAND_UNDEFINED) {
-		band_ctrl_load_band(band-1);
-		antenna_ctrl_ant_read_eeprom(band);
-		status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-		status.current_display_level = DISPLAY_LEVEL_BAND;
-	}
-	else {
-		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
-		led_set_ptt(LED_STATE_PTT_INHIBIT);
-		status.current_display = CURRENT_DISPLAY_LOGO;
-	}
-	
-	antenna_ctrl_deactivate_all_rx_band();
-	antenna_ctrl_deactivate_all();
-	band_ctrl_deactivate_all();
-	
-	led_set_rxant(LED_STATE_OFF);
-	set_knob_function(KNOB_FUNCTION_AUTO);
-					
-	antenna_ctrl_change_rx_ant(-1);
-	status.function_status &= ~(1<<FUNC_STATUS_RXANT);
-	
-	if (band != BAND_UNDEFINED) {
-		//TODO: Change to correct band portion
-		band_ctrl_send_band_data_to_bus(BAND_HIGH);
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+		status.selected_ant = 0;
 		
-		//Set RX antenna band data to the bus
-		antenna_ctrl_send_rx_ant_band_data_to_bus(band);
+		status.selected_band = band;
+		status.new_band = band;
 		
-		antenna_ctrl_select_default_ant();
+		led_set_band_none();
+		led_set_band(band);
 		
-		main_set_inhibit_state(INHIBIT_OK_TO_SEND);
-		led_set_ptt(LED_STATE_PTT_OK);
+		//Turn off antenna leds
+		for (unsigned char i=0;i<4;i++) {
+			led_set_tx_ant(i,LED_STATE_OFF);
+			led_set_rx_ant(i,LED_STATE_OFF);
+		}
+		
+		if (band != BAND_UNDEFINED) {
+			band_ctrl_load_band(band-1);
+			antenna_ctrl_ant_read_eeprom(band);
+			
+			status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+			status.current_display_level = DISPLAY_LEVEL_BAND;
+		}
+		else {
+			if (status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW)
+				status.current_display = CURRENT_DISPLAY_LOGO;
+		}
+		
+		antenna_ctrl_deactivate_all_rx_band();
+		antenna_ctrl_deactivate_all();
+		band_ctrl_deactivate_all();
+		
+		led_set_rxant(LED_STATE_OFF);
+		set_knob_function(KNOB_FUNCTION_AUTO);
+		
+		status.selected_rx_antenna = 0;
+		antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
+		
+		status.function_status &= ~(1<<FUNC_STATUS_RXANT);
+		
+		if (band != BAND_UNDEFINED) {
+			//TODO: Change to correct band portion
+			band_ctrl_send_band_data_to_bus(BAND_HIGH);
+			
+			//Set RX antenna band data to the bus
+			antenna_ctrl_send_rx_ant_band_data_to_bus(band);
+			
+			antenna_ctrl_select_default_ant();
+		}
+		
+		main_update_ptt_status();
+		
+		//Update the display
+		main_update_display();
 	}
-	
-	//Update the display
-	main_update_display();
 }
 
 void band_ctrl_deactivate_all(void) {
-	antenna_ctrl_deactivate_outputs(current_band_activated_outputs, current_band_activated_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS);
-	current_band_activated_outputs_length = 0;
+	if (current_band_activated_outputs_length > 0) {
+		antenna_ctrl_deactivate_outputs(current_band_activated_outputs, current_band_activated_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS);
+		current_band_activated_outputs_length = 0;
+	}
 }
 
 /*! \brief Loads the band limits into the band limits struct */

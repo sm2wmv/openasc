@@ -110,6 +110,8 @@ typedef struct {
 	unsigned char ptt_input;
 } struct_ptt;
 
+unsigned char sequencer_get_ptt_active(void);
+
 void sequencer_load_eeprom(void);
 
 void sequencer_footsw_pressed(void);

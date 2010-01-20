@@ -87,10 +87,10 @@ void bus_init(void) {
 
 	bus_status.frame_counter = 0;
 
-	bus_status.flags |= (1<<BUS_STATUS_RECEIVE_ON);
-
 	bus_reset_tx_status();
 	bus_reset_rx_status();
+	
+	bus_status.flags |= (1<<BUS_STATUS_RECEIVE_ON);
 }
 
 /*! Set the address of this device on the bus.

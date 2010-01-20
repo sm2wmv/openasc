@@ -274,6 +274,7 @@ int main(void) {
 	
 	//Initialize internal communication
 	internal_comm_init((void*)parse_internal_comm_message,(void*)usart0_transmit);
+	
 	computer_interface_init();
 	
 	init_ports();
@@ -316,13 +317,12 @@ int main(void) {
 		//Check if ON/OFF button was pressed, if so we send a message to the front panel
 		//which in it's turn will send a message to turn the device off after all settings have been saved
 		//and messages have been sent out to all slave cards
-/*		if ((btn_on_off_last_state == 0) && (PINB & (1<<6))) {
+		if ((btn_on_off_last_state == 0) && (PINB & (1<<6))) {
 			while ((PINB & (1<<6)));
 			delay_s(1);
 			internal_comm_add_tx_message(INT_COMM_TURN_DEVICE_OFF,0,0);
 			btn_on_off_last_state = 1;
 		}
-	*/
 	}
 }
 

@@ -141,6 +141,7 @@
 #define CURRENT_DISPLAY_LOGO					0
 #define CURRENT_DISPLAY_ANTENNA_INFO	1
 #define CURRENT_DISPLAY_MENU_SYSTEM		2
+#define CURRENT_DISPLAY_SHUTDOWN_VIEW	3
 
 //! The time from when a pulse sensor change occured to the actual change does happen
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
@@ -149,7 +150,8 @@
 
 enum enum_inhibit_state {
 	INHIBIT_OK_TO_SEND,
-	INHIBIT_NOT_OK_TO_SEND
+	INHIBIT_NOT_OK_TO_SEND,
+ 	INHIBIT_NOT_OK_TO_SEND_RADIO_TX
 };
 
 typedef struct {
@@ -186,11 +188,11 @@ typedef struct {
 	
 	/*! 0 = openASC logo, 1 = curr band level, 2 = sub menu */
 	unsigned char current_display_level;
-	/*! 0 = openASC logo, 1 = antenna info, 2 = menu system */
+	/*! 0 = openASC logo, 1 = antenna info, 2 = menu system, 3 = shutdown view */
 	unsigned char current_display;
 	
 	/*! The currently selected RX antenna, -1 if none selected */
-	char selected_rx_antenna;
+	unsigned char selected_rx_antenna;
 	/*! Knob function */
 	unsigned char knob_function;
 	/*! Which antenna to rotate */
@@ -221,6 +223,8 @@ struct_status status;
 
 //! Contains settings which will be saved and restored each time the box is turned on/off
 struct_runtime_settings runtime_settings;
+
+void main_update_ptt_status(void);
 
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned char ext_key_get_assignment(unsigned char index);

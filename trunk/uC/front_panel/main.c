@@ -163,11 +163,10 @@ void load_settings(void) {
 	
 	//Load antenna details for the current band
 	//antenna_ctrl_ant_read_eeprom(radio_get_current_band());
-	antenna_ctrl_ant_read_eeprom(BAND_20M);
+	//antenna_ctrl_ant_read_eeprom(BAND_20M);
 	
 	//Load the antenna RX data from the eeprom
 	antenna_ctrl_rx_ant_read_eeprom();
-	//init_dummy_values();
 
 	//Load the runtime settings from the EEPROM
 	eeprom_get_runtime_settings(&runtime_settings);
@@ -181,6 +180,47 @@ void load_settings(void) {
 	sequencer_load_eeprom();
 }
 
+void main_update_ptt_status(void) {
+	unsigned char state = 0;
+	
+	//Check that there is an antenna on the current band
+	if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG))
+		state = 0;
+	if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_EXIST_FLAG))
+		state = 0;
+	if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_EXIST_FLAG))
+		state = 0;
+	if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_EXIST_FLAG))
+		state = 0;
+	
+	//Check that an antenna is selected
+	if (status.selected_ant != 0)
+		state = 0;
+	else
+		state = 1;
+	
+	//Check that a band is selected
+	if (status.selected_band == BAND_UNDEFINED)
+		state = 1;
+	
+	if (radio_get_ptt_status() != 0)
+		state = 2;
+	
+	printf("UPDATE PTT, state = %i\n",state);
+	
+	if (state == 0) {
+		main_set_inhibit_state(INHIBIT_OK_TO_SEND);
+		led_set_ptt(LED_STATE_PTT_OK);
+	}
+	else if (state == 1) {
+		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+		led_set_ptt(LED_STATE_PTT_INHIBIT);
+	}
+	else if (state == 2) {
+		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND_RADIO_TX);
+		led_set_ptt(LED_STATE_PTT_ACTIVE);
+	}
+}
 
 void main_set_inhibit_state(enum enum_inhibit_state state) {
 	runtime_settings.inhibit_state = state;
@@ -196,17 +236,19 @@ int main(void){
 	MCUSR = 0;
 	wdt_disable();
 	
+	delay_ms(250);
+	
 	/* Initialize various hardware resources */
 	init_ports();
 	
 	delay_ms(250);
-
+	
 	//Init the status structure
 	status.buttons_last_state = 0;
 	status.buttons_current_state = 0;
 	status.ext_devices_current_state = ih_poll_ext_devices();
 	status.ext_devices_last_state = status.ext_devices_current_state;
-	status.selected_rx_antenna = -1;
+	status.selected_rx_antenna = 0;
 	status.new_band = BAND_UNDEFINED;
 	
 	//Check if the computer interface should have full control of the box, setup mode
@@ -219,20 +261,20 @@ int main(void){
 	}
 	
 	i2c_init();
-		
+	
 	//Load all settings from the EEPROM	
 	load_settings();
 	
 	//Init the communication routines between the computer and the openASC box
 	computer_interface_init();
 	
-	//Initialize the 128x64 display
-	glcd_init();
-	
 	//Init the backlight PWM
 	init_backlight();
-	
 	display_set_backlight(runtime_settings.lcd_backlight_value);
+	
+	//Initialize the 128x64 display
+	glcd_init();
+	glcd_clear();
 	
 	//Check to see if the radio interface is configured as manual or automatic as default
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
@@ -308,7 +350,6 @@ int main(void){
 	//Set all leds on at startup so it's possible to see everything works
 	led_set_all(LED_STATE_ON);
 	delay_ms(250);
-	delay_ms(250);
 	led_set_all(LED_STATE_OFF);
 	
 	//Initialize the menu system
@@ -354,7 +395,7 @@ int main(void){
 		
 		//Poll the TX queue in the internal comm to see if we have any new messages to be SENT
 		internal_comm_poll_tx_queue();
-			
+
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();

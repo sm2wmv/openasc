@@ -117,7 +117,7 @@ void display_update_screensaver(void);
 unsigned char display_screensaver_mode(void);
 void display_set_backlight(unsigned char value);
 void display_update(unsigned char band, unsigned char antenna);
-void display_show_rx_ant(char ant_index);
+void display_show_rx_ant(unsigned char ant_index);
 unsigned char display_calculate_width(char *str, unsigned char font, unsigned char length);
 void display_show_set_heading(unsigned int rotator_heading, unsigned char view_360_deg);
 void display_text_center_adjust(unsigned char y,char *str, unsigned char length, unsigned char font);

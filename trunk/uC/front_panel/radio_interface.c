@@ -43,6 +43,8 @@ unsigned char radio_flags;
 
 unsigned char radio_sent_request = 0;
 
+unsigned char ptt_status = 0;
+
 //! External variable of the radio rx data counter used for a timeout
 extern unsigned char radio_rx_data_counter;
 
@@ -109,57 +111,38 @@ unsigned char radio_get_current_band(void) {
 /*! Activate the radio PTT */
 void radio_ptt_active(void) {
 	if (runtime_settings.radio_ptt_output) {
-		if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND) {
-			led_set_ptt(LED_STATE_PTT_ACTIVE);
-			
-			/* Activate the PTT to the radio */
-			PORTJ |= (1<<3);
-		}
-		else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND) {
-			led_set_ptt(LED_STATE_PTT_INHIBIT);
-			
-			/* Deactivate the PTT to the radio, just to be safe */
-			PORTJ &= ~(1<<3);
-		}
+		/* Activate the PTT to the radio */
+		PORTJ |= (1<<3);
+		
+		ptt_status |= (1<<RADIO_FLAG_RADIO_PTT);
+		main_update_ptt_status();
 	}
 }
 
 /*! Deactivate the radio PTT */
 void radio_ptt_deactive(void) {
-	if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND)
-		led_set_ptt(LED_STATE_PTT_OK);
-	else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND)
-		led_set_ptt(LED_STATE_PTT_INHIBIT);
-		
 	/* Deactivate the PTT to the radio */
 	PORTJ &= ~(1<<3);
+	
+	ptt_status &= ~(1<<RADIO_FLAG_RADIO_PTT);
+	main_update_ptt_status();
 }
 
 /*! Set the TX ACTIVE output to high */
 void radio_tx_active(void) {
-	if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND) {
-		PORTG |= (1<<TX_ACTIVE_OUTPUT_BIT);
-			
-		/* Activate the PTT to the radio */
-		PORTJ |= (1<<3);
-	}
-	else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND) {
-		led_set_ptt(LED_STATE_PTT_INHIBIT);
-			
-		/* Deactivate the TX ACTIVE, just to be safe */
-		PORTG &= ~(1<<TX_ACTIVE_OUTPUT_BIT);
-	}
+	PORTG |= (1<<TX_ACTIVE_OUTPUT_BIT);
+	
+	ptt_status |= (1<<RADIO_FLAG_TX_ACTIVE);
+	main_update_ptt_status();
 }
 
 /*! Set the TX ACTIVE output to high */
 void radio_tx_deactive(void) {
-	if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND)
-		led_set_ptt(LED_STATE_PTT_OK);
-	else if(main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND)
-		led_set_ptt(LED_STATE_PTT_INHIBIT);
-		
 	/* Deactivate the PTT to the radio */
 	PORTG &= ~(1<<TX_ACTIVE_OUTPUT_BIT);
+	
+	ptt_status &= ~(1<<RADIO_FLAG_TX_ACTIVE);
+	main_update_ptt_status();
 }
 /*! Set the inhibit signal to high */
 void radio_inhibit_high(void) {
@@ -171,6 +154,10 @@ void radio_inhibit_high(void) {
 void radio_inhibit_low(void) {
 	//This signal is inverted in hardware, because of a transistor output with pullup
 	PORTE |= (1<<RADIO_INHIBIT_OUTPUT_BIT);
+}
+
+unsigned char radio_get_ptt_status(void) {
+	return(ptt_status);
 }
 
 /*! Get the portion of the band the radio is on.
@@ -301,13 +288,20 @@ unsigned int radio_parse_freq(unsigned char *freq_data, unsigned char length, un
 
 //! Activate PTT amp
 void radio_amp_ptt_active(void) {
-	if (runtime_settings.amplifier_ptt_output)
+	if (runtime_settings.amplifier_ptt_output) {
 		PORTE |= (1<<AMPLIFIER_OUTPUT_BIT);
+	
+		ptt_status |= (1<<RADIO_FLAG_AMP_PTT);
+		main_update_ptt_status();
+	}
 }
 
 //! Deactivate PTT amp
 void radio_amp_ptt_deactive(void) {
 	PORTE &= ~(1<<AMPLIFIER_OUTPUT_BIT);
+	
+	ptt_status &= ~(1<<RADIO_FLAG_AMP_PTT);
+	main_update_ptt_status();
 }
 
 

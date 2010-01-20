@@ -357,6 +357,8 @@ void computer_interface_parse_data(void) {
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							rx_antenna_ptr->name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
 					
+					rx_antenna_ptr->name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;
+					
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_RX_ANT_DATA_ANT_OUT_STR: 

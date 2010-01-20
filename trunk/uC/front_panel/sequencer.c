@@ -27,6 +27,10 @@ unsigned char ptt_active = 0;
 
 struct_ptt ptt_sequencer;
 
+unsigned char sequencer_get_ptt_active(void) {
+	return(ptt_active);
+}
+
 /*! This function will load data from the eeprom to the ptt_sequencer struct */
 void sequencer_load_eeprom(void) {
 	eeprom_get_ptt_data(&ptt_sequencer);
@@ -90,7 +94,7 @@ void sequencer_footsw_released(void) {
 					event_add_message((void *)radio_inhibit_low, ptt_sequencer.footswitch.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
 			}
 		}
-
+	
 		ptt_active &= ~(1<<PTT_ACTIVE_FOOTSWITCH);
 	}
 }

@@ -136,6 +136,12 @@ void menu_init(void) {
 		current_menu_option_selected[MENU_POS_AMP_PTT] = 1;
 }
 
+//Function will reset to init values, like menu level etc
+void menu_reset(void) {
+	current_menu_pos = 0;
+	current_menu_level = 0;
+}
+
 void menu_show(void) {
 	menu_show_text(menu_system_text[current_menu_pos]);
 }

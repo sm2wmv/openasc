@@ -110,11 +110,13 @@ unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
  *  \param length The length of the address list
  *  \param cmd The command we wish to send to the boards in the address list */
 void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char length, unsigned char cmd) {
-	for (unsigned char i=0;i<length;i++) {
-		if (addresses[i] != 0x00)
-			bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
-		else
-			internal_comm_add_tx_message(cmd, 0 , 0);
+	if (length > 0) {
+		for (unsigned char i=0;i<length;i++) {
+			if (addresses[i] != 0x00)
+				bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
+			//else
+//				internal_comm_add_tx_message(cmd, 0 , 0);
+		}
 	}
 }
 
@@ -129,41 +131,43 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 		
 		unsigned char length = current_antennas.antenna_output_length[value];
 		
-		unsigned char temp[length];
-
-		unsigned char start_pos = 0;
-		unsigned char count = 0;
-		unsigned char addr_count=0;
-
-		unsigned char i=0;
-			
-		antenna_ctrl_deactivate_outputs(current_activated_ant_outputs, current_activated_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS);
-		current_activated_ant_outputs_length = 0;
-		
-		while(i<length) {
-			if (current_antennas.antenna_comb_output_str[value][i] == OUTPUT_ADDR_DELIMITER) {
-				//Will add which address the message was sent to
-				current_activated_ant_outputs[addr_count++] = current_antennas.antenna_comb_output_str[value][i+1];
+		if (length > 0) {
+			unsigned char temp[length];
+	
+			unsigned char start_pos = 0;
+			unsigned char count = 0;
+			unsigned char addr_count=0;
+	
+			unsigned char i=0;
 				
-				if (current_antennas.antenna_comb_output_str[value][i+1] != 0x00)
-					bus_add_tx_message(bus_get_address(), current_antennas.antenna_comb_output_str[value][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, count-start_pos, temp+start_pos);
-				else
-					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
-
-				start_pos += count;
+			antenna_ctrl_deactivate_outputs(current_activated_ant_outputs, current_activated_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS);
+			current_activated_ant_outputs_length = 0;
+			
+			while(i<length) {
+				if (current_antennas.antenna_comb_output_str[value][i] == OUTPUT_ADDR_DELIMITER) {
+					//Will add which address the message was sent to
+					current_activated_ant_outputs[addr_count++] = current_antennas.antenna_comb_output_str[value][i+1];
+					
+					if (current_antennas.antenna_comb_output_str[value][i+1] != 0x00)
+						bus_add_tx_message(bus_get_address(), current_antennas.antenna_comb_output_str[value][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, count-start_pos, temp+start_pos);
+					//else
+					//	internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
+	
+					start_pos += count;
+					i++;
+				} 
+				else {
+					temp[count] = current_antennas.antenna_comb_output_str[value][i];
+					count++;
+				}
+				
 				i++;
-			} 
-			else {
-				temp[count] = current_antennas.antenna_comb_output_str[value][i];
-				count++;
 			}
 			
-			i++;
+			current_activated_ant_outputs_length = addr_count;
 		}
-		
-		current_activated_ant_outputs_length = addr_count;
 	}
-	else {
+	else if (current_activated_ant_outputs_length > 0) {
 		antenna_ctrl_deactivate_outputs(current_activated_ant_outputs, current_activated_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS);
 		current_activated_ant_outputs_length = 0;
 	}
@@ -171,10 +175,10 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 
 /*! Send the output string for the rx antenna to the bus 
  *  \param antenna_index The index of the antenna you wish to send the string of */
-void antenna_ctrl_send_rx_ant_data_to_bus(char antenna_index) {
-	if (antenna_index >= 0) {
-		unsigned char length = rx_antennas.output_length[antenna_index];
-		
+void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index) {
+	unsigned char length = rx_antennas.output_length[antenna_index];
+	
+	if (length > 0) {
 		unsigned char temp[length];
 	
 		unsigned char start_pos = 0;
@@ -194,8 +198,8 @@ void antenna_ctrl_send_rx_ant_data_to_bus(char antenna_index) {
 				
 				if (rx_antennas.output_str[antenna_index][i+1] != 0x00)
 					bus_add_tx_message(bus_get_address(), rx_antennas.output_str[antenna_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT, count-start_pos, temp+start_pos);
-				else
-					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
+				//else
+//					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
 			
 				start_pos += count;
 				i++;
@@ -209,54 +213,52 @@ void antenna_ctrl_send_rx_ant_data_to_bus(char antenna_index) {
 			
 		current_activated_rx_ant_outputs_length = addr_count;
 	}
-	else {
-		antenna_ctrl_deactivate_outputs(current_activated_rx_ant_outputs, current_activated_rx_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS);
-		current_activated_rx_ant_outputs_length = 0;
-	}
 }
 
 /*! Send the output string for the rx antenna to the bus 
  *  \param antenna_index The index of the antenna you wish to send the string of */
-void antenna_ctrl_send_rx_ant_band_data_to_bus(unsigned char index) {
+void antenna_ctrl_send_rx_ant_band_data_to_bus(char index) {
 	if ((index > 0) && (index < BAND_20M)){
 		unsigned char band_index = index-1;
 		unsigned char length = rx_antennas.band_output_length[band_index];
 		
-		unsigned char temp[length];
-	
-		unsigned char start_pos = 0;
-		unsigned char count = 0;
-		unsigned char addr_count=0;
-	
-		unsigned char i=0;
-	
-		antenna_ctrl_deactivate_outputs(current_band_activated_outputs_rx, current_band_activated_outputs_rx_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS);
+		if (length > 0) {
+			unsigned char temp[length];
 		
-		current_band_activated_outputs_rx_length = 0;
+			unsigned char start_pos = 0;
+			unsigned char count = 0;
+			unsigned char addr_count=0;
 		
-		while(i<length) {
-			if (rx_antennas.band_output_str[band_index][i] == OUTPUT_ADDR_DELIMITER) {
-				//Will add which address the message was sent to
-				current_band_activated_outputs_rx[addr_count++] = rx_antennas.band_output_str[band_index][i+1];
-				
-				if (rx_antennas.band_output_str[band_index][i+1] != 0x00)
-					bus_add_tx_message(bus_get_address(), rx_antennas.band_output_str[band_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, temp+start_pos);
-			//	else
-			//		internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
-	
-				start_pos += count;
+			unsigned char i=0;
+		
+			antenna_ctrl_deactivate_outputs(current_band_activated_outputs_rx, current_band_activated_outputs_rx_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS);
+			
+			current_band_activated_outputs_rx_length = 0;
+			
+			while(i<length) {
+				if (rx_antennas.band_output_str[band_index][i] == OUTPUT_ADDR_DELIMITER) {
+					//Will add which address the message was sent to
+					current_band_activated_outputs_rx[addr_count++] = rx_antennas.band_output_str[band_index][i+1];
+					
+					if (rx_antennas.band_output_str[band_index][i+1] != 0x00)
+						bus_add_tx_message(bus_get_address(), rx_antennas.band_output_str[band_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, temp+start_pos);
+				//	else
+				//		internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
+		
+					start_pos += count;
+					i++;
+				}
+				else {
+					temp[count] = rx_antennas.band_output_str[band_index][i];
+					count++;
+				}
 				i++;
 			}
-			else {
-				temp[count] = rx_antennas.band_output_str[band_index][i];
-				count++;
-			}
-			i++;
+				
+			current_band_activated_outputs_rx_length = addr_count;
 		}
-			
-		current_band_activated_outputs_rx_length = addr_count;
 	}
-	else {
+	else if (current_band_activated_outputs_rx_length > 0) {
 		antenna_ctrl_deactivate_outputs(current_band_activated_outputs_rx, current_band_activated_outputs_rx_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS);
 		current_band_activated_outputs_rx_length = 0;
 	}
@@ -276,8 +278,14 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	*/
 }
 
-void antenna_ctrl_change_rx_ant(char ant_index) {
-	antenna_ctrl_send_rx_ant_data_to_bus(ant_index);
+void antenna_ctrl_change_rx_ant(unsigned char ant_index) {
+	if (ant_index != 0) {
+		antenna_ctrl_send_rx_ant_data_to_bus(ant_index-1);
+	}
+	else if (current_activated_rx_ant_outputs_length > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_rx_ant_outputs, current_activated_rx_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS);
+		current_activated_rx_ant_outputs_length = 0;
+	}
 }
 
 /*! Get which antennas can be rotated
@@ -293,16 +301,17 @@ unsigned char antenna_ctrl_get_rotatable(void) {
 }
 
 void antenna_ctrl_deactivate_all(void) {
-	antenna_ctrl_deactivate_outputs(current_activated_ant_outputs, current_activated_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS);
-	current_activated_ant_outputs_length = 0;
-	
-	antenna_ctrl_deactivate_outputs(current_activated_rx_ant_outputs, current_activated_rx_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS);
-	current_activated_rx_ant_outputs_length = 0;
+	if (current_activated_ant_outputs_length > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_ant_outputs, current_activated_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS);
+		current_activated_ant_outputs_length = 0;
+	}
 }
 
 void antenna_ctrl_deactivate_all_rx_band(void) {
-	antenna_ctrl_deactivate_outputs(current_band_activated_outputs_rx, current_band_activated_outputs_rx_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS);
-	current_band_activated_outputs_rx_length = 0;	
+	if (current_band_activated_outputs_rx_length > 0) {
+		antenna_ctrl_deactivate_outputs(current_band_activated_outputs_rx, current_band_activated_outputs_rx_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS);
+		current_band_activated_outputs_rx_length = 0;	
+	}
 }
 
 
