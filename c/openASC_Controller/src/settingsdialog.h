@@ -3,6 +3,11 @@
 
 #include <QtGui/QDialog>
 
+#include <QMainWindow>
+#include <qsettings.h>
+
+#include "ui_settingsdialog.h"
+
 namespace Ui {
     class SettingsDialog;
 }
@@ -19,6 +24,15 @@ protected:
 
 private:
     Ui::SettingsDialog *m_ui;
+		QString strNetworkIPAddress;
+		QString strCOMDeviceName;
+		int iNetworkPort;
+		int iDeviceInterfaceType;
+public slots:
+		void groupboxNetworkClicked(bool state);
+		void groupBoxCOMClicked(bool state);
+		void btnOKClicked();
+		void btnCancelClicked();
 };
 
 #endif // SETTINGSDIALOG_H

@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>438</height>
+    <width>634</width>
+    <height>436</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -35,7 +35,7 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>140</width>
+         <width>145</width>
          <height>381</height>
         </rect>
        </property>
@@ -186,7 +186,7 @@
       <widget class="QFrame" name="frameBandInfo">
        <property name="geometry">
         <rect>
-         <x>155</x>
+         <x>160</x>
          <y>10</y>
          <width>176</width>
          <height>70</height>
@@ -292,7 +292,7 @@
       <widget class="QFrame" name="frame">
        <property name="geometry">
         <rect>
-         <x>155</x>
+         <x>160</x>
          <y>85</y>
          <width>405</width>
          <height>175</height>
@@ -801,7 +801,7 @@
       <widget class="QFrame" name="frameMisc">
        <property name="geometry">
         <rect>
-         <x>335</x>
+         <x>340</x>
          <y>10</y>
          <width>225</width>
          <height>70</height>
@@ -879,8 +879,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>636</width>
-     <height>27</height>
+     <width>634</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">
