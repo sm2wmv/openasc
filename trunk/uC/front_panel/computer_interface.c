@@ -58,6 +58,7 @@
 //! The length of the computer RX BUFFER
 #define COMPUTER_TX_BUFFER_LENGTH	20
 
+//! The fixed size of the computer interface structure (PREAMBLE, POSTAMBLE etc)
 #define COMPUTER_INTERFACE_FIXED_SIZE	5
 
 //! The preamble of the computer communication protocol
@@ -79,63 +80,95 @@
 
 //! Command to force the openASC box into bootloader mode
 #define COMPUTER_COMM_ENTER_BOOTLOADER		0x01
+//! CTRL command: Reboot the device
 #define CTRL_REBOOT												0x02
+//! CTRL command: Retrieve the firmware revision
 #define CTRL_GET_FIRMWARE_REV							0x03
 //! This function just replies with the same command, this is so we can see when something has been finished
 #define CTRL_DONE													0x04
 
 
+//! CTRL section: Set the time of the realtime clock
 #define CTRL_SET_TIME  										0x10
+//! CTRL section: Set the TX antenna settings
 #define CTRL_SET_ANT_DATA									0x11
+//! CTRL section: Create an EEPROM table
 #define CTRL_CREATE_EEPROM_TABLE					0x12
+//! CTRL section: Set the RX antenna settings
 #define CTRL_SET_RX_ANT_DATA							0x13
+//! CTRL section: Set the radio settings
 #define CTRL_SET_RADIO_SETTINGS						0x14
+//! CTRL section: Set the device settings
 #define CTRL_SET_DEVICE_SETTINGS					0x15
+//! CTRL section: Set the band data settings
 #define CTRL_SET_BAND_DATA								0x16
+//! CTRL section: Set the external input settings
 #define CTRL_SET_EXT_INPUT								0x17
+//! CTRL section: Set the sequencer settings
 #define CTRL_SET_SEQUENCER_SETTINGS				0x18
 
-/* Defines for the radio settings */
+//! CTRL command: Save the radio settings
 #define CTRL_SET_RADIO_SETTINGS_SAVE	0x01
+//! CTRL command: Set all antenna settings
 #define CTRL_SET_RADIO_SETTINGS_ALL		0x02
 
-/* Defines for the antenna data */
+//! CTRL command: Save the antenna information data to the EEPROM
 #define CTRL_SET_ANT_DATA_SAVE						0x01
+//! CTRL command: Set the antenna text
 #define CTRL_SET_ANT_DATA_TEXT						0x02
+//! CTRL command: Set the antenna sub menu type
 #define CTRL_SET_ANT_DATA_SUB_MENU_TYPE		0x03
+//! CTRL command: Set the antenna flags
 #define CTRL_SET_ANT_DATA_ANT_FLAGS				0x04
+//! CTRL command: Set the output combination allowed
 #define CTRL_SET_ANT_DATA_COMB_ALLOWED		0x05
+//! CTRL command: Set the antenna output str
 #define CTRL_SET_ANT_DATA_ANT_OUT_STR			0x06
+//! CTRL command: Set the rotator information
 #define CTRL_SET_ANT_ROTATOR_DATA					0x07
+//! CTRL command: Set the default antenna index
 #define CTRL_SET_ANT_DEFAULT_INDEX				0x08
 
-/* Defines for the band data */
+//! CTRL command: Set the band data limits
 #define CTRL_SET_BAND_DATA_LIMITS					0x01
+//! CTRL command: Set the band low portion output str
 #define CTRL_SET_BAND_DATA_LOW_OUT_STR		0x02
+//! CTRL command: Set the band high portion output str
 #define CTRL_SET_BAND_DATA_HIGH_OUT_STR		0x03
+//! CTRL command: Save the band data settings
 #define CTRL_SET_BAND_DATA_SAVE						0x07
 
-/* Defines for the rx antenna data */
+//! CTRL command: Set the RX antenna text
 #define CTRL_SET_RX_ANT_DATA_TEXT						0x01
+//! CTRL command: Set the RX antenna output str
 #define CTRL_SET_RX_ANT_DATA_ANT_OUT_STR		0x02
+//! CTRL command: Set the RX antenna band output str
 #define CTRL_SET_RX_ANT_DATA_BAND_OUT_STR		0x03
+//! CTRL command: Save the RX antenna settings
 #define CTRL_SET_RX_ANT_DATA_SAVE						0x07
 
-/* Defines for the device settings */
+//! CTRL command: Set the device address
 #define CTRL_SET_DEVICE_SETTINGS_ADDRESS						0x01
+//! CTRL command: Set the number of nodes (if in master mode)
 #define CTRL_SET_DEVICE_SETTINGS_NR_NODES						0x02
+//! CTRL command: Set if the device is master or not
 #define CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER		0x03
 
-/* Defines for the sequencer settings */
+//! CTRL command: Save the sequencer settings
 #define CTRL_SET_SEQUENCER_SAVE					0x01
+//! CTRL command: Set the sequencer footswitch input values
 #define CTRL_SET_SEQUENCER_FOOTSWITCH		0x02
+//! CTRL command: Set the sequencer computer input values
 #define CTRL_SET_SEQUENCER_COMPUTER			0x03
+//! CTRL command: Set the sequencer radio sense input values
 #define CTRL_SET_SEQUENCER_RADIO_SENSE	0x04
 
+//! CTRL command: Set the external inputs
 #define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS		0x05
+//! CTRL command: Save the external input settings
 #define CTRL_SET_DEVICE_SETTINGS_SAVE					0x07
 
-/* Defines for the ext input commands */
+/*! CTRL command: Set the external keypad function */
 #define CTRL_SET_EXT_KEYPAD_FUNCTIONS			0x01
 
 //! Computer interface communication struct
@@ -152,23 +185,32 @@ typedef struct {
 	char *rx_buffer_start;
 	//! Different flags
 	unsigned char data_in_tx_buffer;
+	//! Flags for computer comm, defined in this file
 	unsigned char flags;
+	//! The current command
 	unsigned char command;
+	//! Length of the data field
 	unsigned char length;
+	//! Current byte count
 	unsigned int count;
-	unsigned int eeprom_ptr;
 } computer_comm_struct;
 
+//! Computer communication structure
 computer_comm_struct computer_comm;
 
+//! Pointer to an area which we create space when configuring the antenna data
 struct_antenna *antenna_ptr;
 
+//! Pointer to an area which we create space when configuring the rx antenna data
 struct_rx_antennas *rx_antenna_ptr;
 
+//! Pointer to an area which we create space when configuring the band data
 struct_band *band_ptr;
 
+//! Pointer to an area which we create space when configuring the settings
 struct_setting *settings_ptr;
 
+//! Pointer to an area which we create space when configuring the ptt_sequencer
 struct_ptt *ptt_sequencer_ptr;
 
 void (*bootloader_start)(void) = (void *)0x1FE00;

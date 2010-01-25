@@ -32,7 +32,9 @@
 #include "../i2c.h"
 #include "../delay.h"
 
+//! Flag which is set to 1 if a read request is allowed to the ds1307
 unsigned char allowed_to_read = 0;
+//! Variable which contains information of the current time/date
 unsigned char *time_data;
 
 /*! \brief Initialize the realtime clock on the front panel */

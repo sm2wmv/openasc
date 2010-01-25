@@ -36,16 +36,22 @@
 #include "display.h"
 #include "../global.h"
 
+//! Serial receive buffer
 unsigned char *radio_serial_rx_buffer;
+//! Start address of the serial receive buffer
 unsigned char *radio_serial_rx_buffer_start;
 
+//! Radio status struct
 struct_radio_status radio_status;
+
+//! Radio settings struct
 struct_radio_settings radio_settings;
 
+
+//! Flags to indicate various things which has happened to the radio
 unsigned char radio_flags;
 
-unsigned char radio_sent_request = 0;
-
+//! Flag which does indicate if the radio is transmitting, amp is active etc
 unsigned char ptt_status = 0;
 
 //! \brief External variable of the radio rx data counter used for a timeout
@@ -431,6 +437,7 @@ void radio_interface_load_eeprom(void) {
 ISR(SIG_USART3_DATA) {
 }
 
+//! Interrupt which is called when a byte is received on the UART
 ISR(SIG_USART3_RECV) {
 	unsigned char data = UDR3;
 	

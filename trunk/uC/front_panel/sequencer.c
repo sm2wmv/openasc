@@ -50,6 +50,7 @@
 //! The status of the PTT, see defines above
 unsigned char ptt_active = 0;
 
+//! PTT sequencer data
 struct_ptt ptt_sequencer;
 
 /*! \brief Retrieve which PTT inputs that are currently active, defines above */

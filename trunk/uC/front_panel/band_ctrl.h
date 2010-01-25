@@ -59,6 +59,7 @@ typedef struct{
 	unsigned int high_portion_high_limit;
 } struct_band_limits;
 
+//! The band limits, an array with size 9
 struct_band_limits band_limits[9];
 
 void band_ctrl_load_band_limits(void);

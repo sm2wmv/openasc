@@ -29,6 +29,7 @@
 #include "bus_rx_queue.h"
 #include "bus.h"
 
+//! The rx queue
 rx_queue_struct rx_queue;
 
 /*! \brief Initialize the RX queue */

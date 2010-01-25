@@ -1,6 +1,6 @@
 /*! \file wmv_bus/bus.c
  *  \brief The communication bus protocol used in the openASC project.
- *  \defgroup bus_group BUS communication
+ *  \ingroup bus_group
  *  \author Mikael Larsmark, SM2WMV
  *  \date 2010-01-25
  *  \code #include "wmv_bus/bus.c" \endcode

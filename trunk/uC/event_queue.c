@@ -65,7 +65,7 @@ char event_queue_add(EVENT_MESSAGE event) {
 }
 
 /*! \brief Removes a certain amount of numbers from the time_target
- *  \param remove The number we want to remove from all time targets */
+ *  \param remove_val The number we want to remove from all time targets */
 void event_queue_wrap(unsigned int remove_val) {
 	for (unsigned char i=0;i<EVENT_LIST_SIZE;i++) {
 		if (event_list[i].func != NULL)

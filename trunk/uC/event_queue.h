@@ -23,6 +23,7 @@
 #ifndef _EVENT_QUEUE_H_
 #define _EVENT_QUEUE_H_
 
+//! The size of the event list
 #define EVENT_LIST_SIZE	10
 
 //! Event message used for timing of events
@@ -35,6 +36,7 @@ typedef struct {
 	unsigned char id;
 } EVENT_MESSAGE;
 
+//! Event list with size EVENT_LIST_SIZE
 EVENT_MESSAGE event_list[EVENT_LIST_SIZE];
 
 void event_queue_init(void);

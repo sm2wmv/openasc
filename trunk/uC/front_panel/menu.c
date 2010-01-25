@@ -36,22 +36,32 @@
 #include "event_handler.h"
 #include "led_control.h"
 
+//! Sets the intend from the left
 #define MENU_OPTION_LEFT_POS 13
 
+//! Number of options in the menu system
 #define MENU_OPTIONS	6
 
+//! Menu options - Errors
 const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}};
 
+//! The current selected menu option
 unsigned char current_menu_option_selected[MENU_OPTIONS];
 
+//! Flag to indicate which menu level we are on
 unsigned char current_menu_level = 0;
+//! Flag to indicate the current menu position
 unsigned char current_menu_pos   = 0;
 
 /********* SETUP MENU OPTIONS *********/
+//! Menu system option - band selection mode
 const struct_menu_option menu_option_band_selection_mode[] = {{"Manual"},{"Auto"}};
+//! Menu system option - amp ptt output
 const struct_menu_option menu_option_amp_ptt_output[] = {{"ON"},{"OFF"}};
+//! Menu system option - radio ptt output
 const struct_menu_option menu_option_radio_ptt_output[] = {{"ON"},{"OFF"}};
 /********* SETUP MENUS *********/
+//! Menu system
 const struct_menu_text menu_system_text[] = {
 {MENU_POS_BAND_MODE, "Band change", (struct_menu_option *)menu_option_band_selection_mode, 2,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_RADIO_PTT, "Radio PTT", (struct_menu_option *)menu_option_radio_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
@@ -61,6 +71,8 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL}
 };
 
+/*! \brief Show the text of a menu on the display 
+ *  \param menu_text The menu which we wish to show */
 void menu_show_text(struct_menu_text menu_text) {
 	//Clear the display
 	glcd_clear();
@@ -122,6 +134,7 @@ void menu_show_text(struct_menu_text menu_text) {
 	glcd_update_all();
 }
 
+/*! \brief Initialize the menu system */
 void menu_init(void) {
 	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL)
 		current_menu_option_selected[MENU_POS_BAND_MODE] = 0;
@@ -139,16 +152,19 @@ void menu_init(void) {
 		current_menu_option_selected[MENU_POS_AMP_PTT] = 1;
 }
 
-//Function will reset to init values, like menu level etc
+//! Function will reset to init values, like menu level etc
 void menu_reset(void) {
 	current_menu_pos = 0;
 	current_menu_level = 0;
 }
 
+/*! \brief Shows the menu */
 void menu_show(void) {
 	menu_show_text(menu_system_text[current_menu_pos]);
 }
 
+/*! This function will handle an menu action "event"
+ *  \param  menu_action_type Which action did occur? */
 void menu_action(unsigned char menu_action_type) {
 	if (menu_action_type == MENU_SCROLL_UP) {
 		if (current_menu_level == 0) {

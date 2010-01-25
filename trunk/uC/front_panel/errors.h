@@ -23,6 +23,7 @@
 #ifndef _ERRORS_H_
 #define _ERRORS_H_
 
+//! Define which tells us how many different error types that currently exist
 #define NR_OF_ERRORS	2
 
 //! Error that the bus had to resend a message more times than the max limit

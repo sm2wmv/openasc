@@ -55,7 +55,8 @@ unsigned int counter_ping_interval=0;
 * which device that sent the request for an activation so that the driver_unit will
 * remember it when that device goes offline so it can shut the outputs off.
 * \param from_addr The device that sent the request of activating an output
-* \param index The index of which output to activate */
+* \param index The index of which output to activate 
+* \param type Which type of output this is, usually is the BUS command */
 void activate_output(unsigned char from_addr, unsigned char index, unsigned char type) {
 	driver_status.driver_output_state |= (1<<(index-1));
 	driver_status.driver_output_owner[index-1] = from_addr;
@@ -274,6 +275,7 @@ unsigned char read_ext_addr(void) {
 	return(~(PIND >> 4) & 0x0F);
 }
 
+/*! Main function of the driver unit */
 int main(void)
 {
 	cli();

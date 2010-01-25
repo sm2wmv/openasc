@@ -49,13 +49,19 @@ struct_rx_antennas rx_antennas;
 
 extern unsigned int main_flags;
 
+//! Array which we store the current devices which we have activated antenna outputs on
 unsigned char current_activated_ant_outputs[ANTENNA_OUTPUT_COMB_SIZE];
+//! How many devices we have activated antenna outputs on
 unsigned char current_activated_ant_outputs_length = 0;
 
+//! Array which we store the current devices which we have rx antenna activated outputs on
 unsigned char current_activated_rx_ant_outputs[RX_ANTENNA_OUTPUT_STR_LENGTH];
+//! How many devices we have activated rx antenna outputs on
 unsigned char current_activated_rx_ant_outputs_length = 0;
 
+//! Array which we store the current devices which we have activated rx antenna band outputs on
 unsigned char current_band_activated_outputs_rx[RX_ANTENNA_BAND_OUTPUT_STR_LENGTH];
+//! How many devices we have activated rx antenna band outputs on
 unsigned char current_band_activated_outputs_rx_length = 0;
 
 unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
@@ -221,7 +227,7 @@ void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index) {
 }
 
 /*! \brief Send the output string for the rx antenna to the bus 
- *  \param antenna_index The index of the antenna you wish to send the string of */
+ *  \param index The index of the antenna you wish to send the string of */
 void antenna_ctrl_send_rx_ant_band_data_to_bus(char index) {
 	if ((index > 0) && (index < BAND_20M)){
 		unsigned char band_index = index-1;
@@ -385,7 +391,7 @@ unsigned int antenna_ctrl_get_direction(unsigned char index) {
 }
 
 /*! \brief Get the address of the rotator at a certain antenna index
- *  \param  index The index of the antenna
+ *  \param  ant_index The index of the antenna
  *  \return The address of the rotator */
 unsigned char antenna_ctrl_get_rotator_addr(unsigned char ant_index) {
 	return(current_antennas.rotator_addr[ant_index]);
@@ -414,6 +420,7 @@ void antenna_ctrl_set_comb_allowed(unsigned int comb) {
 }
 
 /*! \brief Set the flags of the rotator, see antenna_ctrl.h for defines
+ *  \param ant_index The antenna index
  *  \param flags Flags from the rotator */
 void antenna_ctrl_set_rotator_flags(unsigned char ant_index,unsigned char flags) {
 	current_antennas.rotator_flags[ant_index] = flags;

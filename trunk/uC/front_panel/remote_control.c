@@ -29,8 +29,10 @@
 #include "event_handler.h"
 #include "remote_control.h"
 
+//! Flag that the remote control is active
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
 
+//! Flags used in the remote control
 unsigned char remote_control_flags;
 
 /*! \brief Activate the remote control mode */

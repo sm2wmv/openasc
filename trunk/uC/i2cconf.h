@@ -25,7 +25,10 @@
 //! These buffers are used in interrupt-driven Master sending and receiving,
 //! and in slave sending and receiving.  They must be large enough to store
 //! the largest I2C packet you expect to send and receive, respectively.
+
+//! The size of the transmit buffer
 #define I2C_SEND_DATA_BUFFER_SIZE		0x20
+//! The size of the receive buffer
 #define I2C_RECEIVE_DATA_BUFFER_SIZE	0x20
 
 #endif
