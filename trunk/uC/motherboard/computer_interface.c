@@ -1,7 +1,9 @@
-/*! \file computer_interface.c \brief Interface towards the computer
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-12-16
- */
+/*! \file motherboard/computer_interface.c 
+ *  \ingroup motherboard_group
+ *  \brief Interface towards the computer
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "computer_interface.c" \endcode */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -68,6 +70,7 @@
 //! Flag to see that there is data in the rx buffer
 #define COMPUTER_COMM_FLAG_DATA_IN_RX_BUF	2
 
+//! Computer interface communication struct
 typedef struct {
 	//! The serial tx buffer
 	char *tx_buffer;
@@ -91,7 +94,7 @@ computer_comm_struct computer_comm;
 
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
-//! Initialize the communication interface towards the computer
+//! \brief Initialize the communication interface towards the computer
 void computer_interface_init(void) {
 	// Setup the RX buffer
 	computer_comm.rx_buffer = (char *)malloc(COMPUTER_RX_BUFFER_LENGTH);
@@ -103,6 +106,7 @@ void computer_interface_init(void) {
 	computer_comm.data_in_tx_buffer = 0;
 }
 
+//! \brief Send data to the computer
 void computer_interface_send_data(void) {
 	if (computer_comm.data_in_tx_buffer == 1) {
 		for (int i=0;i<computer_comm.tx_buffer_length;i++)
@@ -115,6 +119,10 @@ void computer_interface_send_data(void) {
 	}
 }
 
+/*! \brief Send data to the computer
+ *  \param command The command we wish to send 
+ *  \param length The length of the data 
+ *  \param data The data we wish to send */
 void computer_interface_send(unsigned char command, unsigned int length, char *data) {
 	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
 	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
@@ -131,6 +139,7 @@ void computer_interface_send(unsigned char command, unsigned int length, char *d
 	computer_comm.data_in_tx_buffer = 1;
 }
 
+/*! \brief Send an ACK message */
 void computer_interface_send_ack(void) {
 	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
 	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
@@ -142,6 +151,7 @@ void computer_interface_send_ack(void) {
 	computer_comm.data_in_tx_buffer = 1;
 }
 
+/*! \brief Send a NACK message */
 void computer_interface_send_nack(void) {
 	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
 	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
@@ -153,17 +163,7 @@ void computer_interface_send_nack(void) {
 	computer_comm.data_in_tx_buffer = 1;
 }
 
-void computer_interface_send_flag(void) {
-	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
-	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
-	computer_comm.tx_buffer[2] = 0xFC;
-	computer_comm.tx_buffer[3] = 0x01;
-	computer_comm.tx_buffer[4] = COMPUTER_COMM_POSTAMBLE;
-
-	computer_comm.tx_buffer_length = 5;
-	computer_comm.data_in_tx_buffer = 1;
-}
-
+/*! \brief Parse the data in the rx_buffer and execute the proper functions */
 void computer_interface_parse_data(void) {
 	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF)) {
 		

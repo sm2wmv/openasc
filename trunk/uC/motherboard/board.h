@@ -1,6 +1,9 @@
-/*! \file board.h \brief Motherboard defines 
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file motherboard/board.h 
+ *  \ingroup motherboard_group
+ *  \brief Motherboard defines 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "board.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

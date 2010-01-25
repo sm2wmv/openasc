@@ -1,6 +1,9 @@
-/*! \file band_ctrl.c \brief Band control functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-01-22
+/*! \file front_panel/band_ctrl.c
+ *  \ingroup front_panel_group 
+ *  \brief Band control functions
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/band_ctrl.c" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
@@ -37,13 +40,13 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
-//! Contains the current band information
+//! \brief Contains the current band information
 struct_band current_band;
 
 unsigned char current_band_activated_outputs[BAND_OUTPUT_STR_SIZE];
 unsigned char current_band_activated_outputs_length = 0;
 
-/*! Send the output string for the current band to the bus */
+/*! \brief Send the output string for the current band to the bus */
 void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 	if (status.selected_band != BAND_UNDEFINED) {
 		unsigned char length = 0;
@@ -115,11 +118,15 @@ void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 		band_ctrl_deactivate_all();
 }
 
+/*! \brief Function will load a band from the EEPROM into the current_band struct
+ *  \param band The index of the band we wish to load from the EEPROM */
 void band_ctrl_load_band(unsigned char band) {
 	//Retrieve the band data from the EEPROM
 	eeprom_get_band_data(band,&current_band);
 }
 
+/*! \brief Function used to change band
+ *  \param band The band we wish to change to */
 void band_ctrl_change_band(unsigned char band) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		status.selected_ant = 0;
@@ -177,6 +184,7 @@ void band_ctrl_change_band(unsigned char band) {
 	}
 }
 
+/*! \brief Function which will deactiavate all band outptus, BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS */
 void band_ctrl_deactivate_all(void) {
 	if (current_band_activated_outputs_length > 0) {
 		antenna_ctrl_deactivate_outputs(current_band_activated_outputs, current_band_activated_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS);

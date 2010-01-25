@@ -1,7 +1,9 @@
-/*! \file computer_interface.h \brief Interface towards the computer
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-12-16
- */
+/*! \file motherboard/computer_interface.h
+ *  \ingroup motherboard_group
+ *  \brief Interface towards the computer
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "computer_interface.h" \endcode */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify

@@ -1,6 +1,9 @@
-/*! \file main.h \brief Main file of the motherboard
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-08
+/*! \file motherboard/main.h 
+ *  \defgroup  motherboard_group Motherboard
+ *  \brief Main file of the motherboard
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "motherboard/main.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -27,6 +30,7 @@
 
 #define INT_COMM_REDIRECT_DATA	0x10
 
+//! Struct of the PS/2 interface flags etc
 typedef struct {
 	//To see if we have started to read a keyboard command
 	unsigned char started;

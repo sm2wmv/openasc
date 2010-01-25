@@ -1,6 +1,9 @@
-/*! \file eeprom_m24.h \brief EEPROM interface
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-12-09
+/*! \file front_panel/eeprom_m24.h
+ *  \brief EEPROM hardware functions
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/eeprom_m24.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

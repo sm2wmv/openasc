@@ -1,6 +1,9 @@
-/*! \file event_queue.c \brief Event queue
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-26
+/*! \file event_queue.c
+ *  \brief Event queue
+ *  \ingroup event_queue_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "event_queue.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -25,6 +28,7 @@
 
 #include "event_queue.h"
 
+/*! \brief Initialize the event queue */
 void event_queue_init(void) {
 	for (unsigned char i=0;i<EVENT_LIST_SIZE;i++) {
 		event_list[i].func = NULL;
@@ -60,7 +64,7 @@ char event_queue_add(EVENT_MESSAGE event) {
 	return(-1);
 }
 
-/*! Removes a certain amount of numbers from the time_target
+/*! \brief Removes a certain amount of numbers from the time_target
  *  \param remove The number we want to remove from all time targets */
 void event_queue_wrap(unsigned int remove_val) {
 	for (unsigned char i=0;i<EVENT_LIST_SIZE;i++) {
@@ -85,7 +89,7 @@ unsigned char event_in_queue(void) {
 	return(0);
 }
 
-/*! Drops the first message in the queue */
+/*! \brief Drops the first message in the queue */
 void event_queue_drop(void) {
 	if (event_list[0].func != NULL) {
 		for (unsigned char i=1;i<EVENT_LIST_SIZE;i++)
@@ -117,7 +121,7 @@ void event_queue_dropall(void) {
 }
 
 
-/*! Drops all messages in the queue with a certain ID
+/*! \brief Drops all messages in the queue with a certain ID
  * \return the number of events that were dropped */
 int event_queue_drop_id(unsigned char id) {
 	EVENT_MESSAGE temp_event_list[EVENT_LIST_SIZE];
@@ -145,7 +149,7 @@ int event_queue_drop_id(unsigned char id) {
 	return(id_dropped_count);
 }
 
-/*! Check if a specific ID exist in the event queue
+/*! \brief Check if a specific ID exist in the event queue
  * \param id The id we which to check for
  * \return 1 if it exist, 0 if it doesn't */
 unsigned char event_queue_check_id(unsigned char id) {

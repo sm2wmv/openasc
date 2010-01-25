@@ -1,3 +1,10 @@
+/*! \file front_panel/pictures.h 
+ *  \brief Pictures which can be viewed on the display
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/pictures.h " \endcode
+ */
 //    Copyright (C) 2007  Mikael Larsmark, SM3WMV
 //
 //    This program is free software: you can redistribute it and/or modify

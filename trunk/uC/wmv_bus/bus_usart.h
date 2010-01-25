@@ -1,7 +1,9 @@
-/*! \file bus_usart.h
+/*! \file wmv_bus/bus_usart.h
+ *  \ingroup bus_group 
  *  \brief BUS usart routines. 
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2008-04-13
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus_usart.h" \endcode
  */
 //    Copyright (C) 2007  Mikael Larsmark, SM3WMV
 //

@@ -1,6 +1,9 @@
-/*! \file interrupt_handler.c \brief Handles different external interrupts
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-26
+/*! \file front_panel/interrupt_handler.c 
+ *  \brief Handles different external interrupts
+ *  \ingroup front_panel_group 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/interrupt_handler.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

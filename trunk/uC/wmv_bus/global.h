@@ -1,6 +1,7 @@
-/*! \file global.h \brief AVRlib project global include.
- * \author Pascal Stang and Mikael Larsmark, SM2WMV
- * \date 2008-04-13
+/*! \file wmv_bus/global.h 
+ *  \brief AVRlib project global include.
+ *  \author Pascal Stang and Mikael Larsmark, SM2WMV
+ *  \date 2008-04-13
  */
 //*****************************************************************************
 //

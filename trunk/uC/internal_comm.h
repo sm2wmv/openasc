@@ -1,6 +1,9 @@
-/*! \file internal_comm.h \brief Internal communication between various devices
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-11-22
+/*! \file internal_comm.h
+ *  \brief The internal communication routines
+ *  \defgroup internal_comm_group Internal communication routines
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "internal_comm.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -57,6 +60,7 @@
 /****************************************************************/
 //! Preamble found for the communication between the uCs
 #define UC_PREAMBLE_FOUND			0
+//! Flag that a message is in the buffer
 #define UC_MESSAGE_IN_BUFFER	1
 
 //! Size of UC MESSAGE fixed part
@@ -89,7 +93,7 @@ typedef struct {
 	unsigned char data[UC_MESSAGE_DATA_SIZE];
 } UC_MESSAGE;
 
-/* Variables used for the communication between the two uCs */
+/*! Variables used for the communication between the two uCs */
 typedef struct {
 	unsigned char flags;
 	unsigned char checksum;

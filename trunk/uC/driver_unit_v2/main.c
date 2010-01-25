@@ -1,6 +1,9 @@
-/*! \file main.c \brief Main file of the driver unit. 
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-16
+/*! \file driver_unit_v2/main.c 
+ *  \ingroup driver_unit_v2_group
+ *  \brief Main file of the driver unit. 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2009-03-16
+ *  \code #include "driver_unit_v2/main.c" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
@@ -268,6 +271,7 @@ unsigned char read_ext_addr(void) {
 	return(~(PINE >> 2) & 0x0F);
 }
 
+/*! \brief Set the PTT led status */
 unsigned char set_ptt_led_status(unsigned char state) {
 	PORTF = state;
 }
@@ -320,7 +324,7 @@ int main(void)
 	return (0);
 }
 
-/*!Output compare 0 interrupt - "called" with 1ms intervals*/
+/*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
 	if (bus_allowed_to_send()) {
 		//Check if a ping message should be sent out on the bus

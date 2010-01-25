@@ -1,6 +1,9 @@
-/*! \file computer_interface.h \brief Interface towards the computer
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-05-01
+/*! \file front_panel/computer_interface.h 
+ *  \ingroup front_panel_group
+ *  \brief Interface towards the computer
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/computer_interface.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

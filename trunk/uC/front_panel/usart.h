@@ -1,5 +1,11 @@
-/*! \file usart.h \brief Motherboard USART routines. */
-//    Copyright (C) 2007  Mikael Larsmark, SM3WMV
+/*! \file front_panel/usart.h
+ *  \brief USART routines
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/usart.h" \endcode
+ */
+//    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -13,6 +19,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 #include "../global.h"
 

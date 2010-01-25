@@ -1,4 +1,4 @@
-/*! \file usart.h \brief Motherboard USART routines. 
+/*! \file rotator_unit/usart.h \brief Motherboard USART routines. 
  * \author Mikael Larsmark, SM2WMV
  * \date 2008-04-13
  */

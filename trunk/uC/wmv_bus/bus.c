@@ -1,7 +1,9 @@
-/*! \file bus.c
- * !The communication bus protocol used in the openASC project.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-13
+/*! \file wmv_bus/bus.c
+ *  \brief The communication bus protocol used in the openASC project.
+ *  \defgroup bus_group BUS communication
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -51,23 +53,24 @@
 #include "global.h"
 #include "bus_usart.h"
 
-//! The bus status structure
+//! \brief The bus status structure
 bus_status_struct bus_status;
 
-//! Variable used to calculate the checksum when receiving a message
+//! \brief Variable used to calculate the checksum when receiving a message
 unsigned char calc_checksum = 0;
 
+//! The new message
 BUS_MESSAGE bus_new_message;
 
-/*! Counter that keeps track of how long time ago it was when we received a
+/*! \brief Counter that keeps track of how long time ago it was when we received a
     new character and if it's over the limit we erase all the RX buffer */
 unsigned char timer_bus_timeout = 0;
 
-/*! Counter that keeps track of how long time ago it was when we received a
+/*! \brief Counter that keeps track of how long time ago it was when we received a
     new SYNC message on the BUS */
 unsigned int counter_sync_timeout = 0;
 
-/*! Init the communication bus */
+/*! \brief Init the communication bus */
 void bus_init(void) {
 	rx_queue_init();
 	tx_queue_init();
@@ -93,13 +96,13 @@ void bus_init(void) {
 	bus_status.flags |= (1<<BUS_STATUS_RECEIVE_ON);
 }
 
-/*! Set the address of this device on the bus.
+/*! \brief Set the address of this device on the bus.
  * \param addr The address of this device */
 void bus_set_address(unsigned char addr) {
 	bus_status.ext_addr = addr;
 }
 
-/*! Returns if you are allowed to transmit data to the bus or not
+/*! \brief Returns if you are allowed to transmit data to the bus or not
  *  \return 1 if it's allowed to transmit and 0 if not */
 unsigned char bus_allowed_to_send(void) {
 	if (bus_status.flags & (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT))// && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT)))
@@ -108,13 +111,13 @@ unsigned char bus_allowed_to_send(void) {
 		return(0);
 }
 
-/*! Returns the address of this device
+/*! \brief Returns the address of this device
 	\return The address of this device */
 unsigned char bus_get_address(void) {
 	return(bus_status.ext_addr);
 }
 
-/*! Sends the first message in the FIFO TX queue to the communication bus */
+/*! \brief Sends the first message in the FIFO TX queue to the communication bus */
 void bus_send_message(void) {
 	/* Indicates that a message is currently being transmitted */
 	bus_status.flags |= (1<<BUS_STATUS_SEND_ACTIVE);
@@ -163,7 +166,7 @@ void bus_send_message(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_SEND_ACTIVE);
 }
 
-/*! Function that resets the bus status variables */
+/*! \brief Function that resets the bus status variables */
 void __inline__ bus_reset_tx_status(void) {
 	bus_status.flags |= (1<<BUS_STATUS_SEND_MESSAGE);
 
@@ -171,7 +174,7 @@ void __inline__ bus_reset_tx_status(void) {
 	bus_status.send_count = 0;
 }
 
-/*! Function that resets the bus status variables */
+/*! \brief Function that resets the bus status variables */
 void __inline__ bus_reset_rx_status(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_PREAMBLE_FOUND_BIT);
 	bus_status.char_count = 0;
@@ -180,7 +183,7 @@ void __inline__ bus_reset_rx_status(void) {
 }
 
 
-/*! Returns if the bus is set to be master
+/*! \brief Returns if the bus is set to be master
 	\return 1 if it is configured to be master, 0 otherwise */
 unsigned char bus_is_master(void) {
 	if (bus_status.flags & (1<< BUS_STATUS_DEVICE_IS_MASTER_BIT))
@@ -189,7 +192,7 @@ unsigned char bus_is_master(void) {
 		return(0);
 }
 
-/*! Set the status if the device should be master or not
+/*! \brief Set the status if the device should be master or not
 	\param state 1 if you wish the device to be master, 0 if you wish that it should be slave
 	\param count The nr of devices */
 void bus_set_is_master(unsigned char state, unsigned char count) {
@@ -206,23 +209,23 @@ void bus_set_is_master(unsigned char state, unsigned char count) {
 		bus_status.flags &= ~(1<<BUS_STATUS_DEVICE_IS_MASTER_BIT);
 }
 
-/* Send an NOT acknowledge */
+/*! \brief Send an NOT acknowledge */
 void bus_send_nack(unsigned char to_addr) {
 	bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_NACK, 0, NULL);
 }
 
-/* Send an acknowledge */
+/*! \brief Send an acknowledge */
 void bus_send_ack(unsigned char to_addr) {
 	bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_ACK, 0, NULL);
 }
 
-/*! Receive the device count on the bus
+/*! \brief Receive the device count on the bus
  * \return The number of devices on the bus */
 unsigned char bus_get_device_count(void) {
 	return (bus_status.device_count);
 }
 
-/*! Set the number of devices that are on the bus
+/*! \brief Set the number of devices that are on the bus
  * \param device_count The number of devices on the bus, ie the number of time slots */
 void bus_set_device_count(unsigned char device_count) {
 	bus_status.device_count = device_count;
@@ -230,7 +233,7 @@ void bus_set_device_count(unsigned char device_count) {
 	bus_status.device_count_mult = bus_status.device_count*BUS_TIME_MULTIPLIER;
 }
 
-/*! Resend the last message */
+/*! \brief Resend the last message */
 void  bus_resend_message(void) {
 	if (bus_status.send_count < BUS_MAX_RESENDS) {
 		bus_status.flags |= (1<<BUS_STATUS_SEND_MESSAGE);
@@ -258,7 +261,7 @@ void  bus_resend_message(void) {
 	}
 }
 
-/*! Checks if there is anything that should be sent in the TX queue */
+/*! \brief Checks if there is anything that should be sent in the TX queue */
 void bus_check_tx_status(void) {
 	if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
 		if (bus_status.flags & (1<<BUS_STATUS_SEND_MESSAGE)) {
@@ -336,13 +339,13 @@ void bus_add_new_message(void) {
 	rx_queue_add(bus_new_message);
 }
 
-/* The message last sent was NACKED from the receiver */
+/*! \brief The message last sent was NACKED from the receiver */
 void bus_message_nacked(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 	bus_resend_message();
 }
 
-/* The message last sent was acknowledged from the receiver */
+/*! \brief The message last sent was acknowledged from the receiver */
 void bus_message_acked(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 

@@ -1,6 +1,9 @@
-/*! \file internal_comm_rx_queue.h \brief FIFO queue for the TXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-11-22
+/*! \file internal_comm_rx_queue.h
+ *  \brief The internal communication RX QUEUE
+ *  \ingroup internal_comm_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "internal_comm_rx_queue.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -22,12 +25,16 @@
 
 #include "internal_comm.h"
 
+//! The size of the RX QUEUE
 #define INTERNAL_COMM_RX_QUEUE_SIZE	5
 
 //! The structure of the RX circular buffer
 typedef struct rx_linked_list {
+	//! The list of messages
 	UC_MESSAGE message[INTERNAL_COMM_RX_QUEUE_SIZE];
+	//! The index of the first message in the list
 	unsigned char first;
+	//! The index of the last message in the list
 	unsigned char last;
 } int_comm_rx_queue_struct;
 

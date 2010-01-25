@@ -1,6 +1,9 @@
-/*! \file main.c \brief Main file of the driver unit. 
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file driver_unit/main.c 
+ *  \brief Main file of the driver unit. 
+ *  \ingroup driver_unit_group 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2008-04-06
+ *  \code #include "driver_unit/main.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

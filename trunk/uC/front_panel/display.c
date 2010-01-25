@@ -1,3 +1,25 @@
+/*! \file front_panel/display.c 
+ *  \ingroup front_panel_group 
+ *  \brief The serial interface to configure the device and control it
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/display.c" \endcode
+ */
+//    Copyright (C) 2008  Mikael Larsmark, SM2WMV
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -328,6 +350,7 @@ void display_update(unsigned char band, unsigned char antenna) {
 	}
 }
 
+/*! \brief Update the radio frequency area of the display */
 void display_update_radio_freq(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
 		if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {	

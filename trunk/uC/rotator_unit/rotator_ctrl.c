@@ -1,4 +1,4 @@
-/*! \file rotator_ctrl.c \brief Rotator command execution
+/*! \file rotator_unit/rotator_ctrl.c \brief Rotator command execution
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-04-22
  */

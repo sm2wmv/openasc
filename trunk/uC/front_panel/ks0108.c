@@ -1,4 +1,5 @@
-/*! \file ks0108.c \brief Graphic LCD driver for HD61202/KS0108 displays. */
+/*! \file front_panel/ks0108.c 
+ *  \brief Graphic LCD driver for HD61202/KS0108 displays. */
 //*****************************************************************************
 //
 // File Name	: 'ks0108.c'

@@ -1,6 +1,9 @@
-/*! \file usart.h \brief Motherboard USART routines. 
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-13
+/*! \file motherboard/usart.h 
+ *  \ingroup motherboard_group 
+ *  \brief Motherboard USART routines
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "motherboard/usart.h" \endcode
  */
 //    Copyright (C) 2007  Mikael Larsmark, SM3WMV
 //
@@ -16,6 +19,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 #include "../global.h"
 

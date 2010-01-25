@@ -1,6 +1,9 @@
-/*! \file computer_interface.c \brief Interface towards the computer
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-05-01
+/*! \file front_panel/computer_interface.c
+ *  \ingroup front_panel_group
+ *  \brief Interface towards the computer
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/computer_interface.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -135,6 +138,7 @@
 /* Defines for the ext input commands */
 #define CTRL_SET_EXT_KEYPAD_FUNCTIONS			0x01
 
+//! Computer interface communication struct
 typedef struct {
 	//! The serial tx buffer
 	char *tx_buffer;
@@ -169,7 +173,7 @@ struct_ptt *ptt_sequencer_ptr;
 
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
-//! Initialize the communication interface towards the computer
+//! \brief Initialize the communication interface towards the computer. Will initialize buffers etc.
 void computer_interface_init(void) {
 	// Setup the RX buffer
 	computer_comm.rx_buffer = (char *)malloc(COMPUTER_RX_BUFFER_LENGTH);
@@ -181,6 +185,7 @@ void computer_interface_init(void) {
 	computer_comm.data_in_tx_buffer = 0;
 }
 
+//! \brief Function which will send data from the tx_buffer to the uart
 void computer_interface_send_data(void) {
 	if (computer_comm.data_in_tx_buffer == 1) {
 		for (int i=0;i<computer_comm.tx_buffer_length;i++)
@@ -193,6 +198,10 @@ void computer_interface_send_data(void) {
 	}
 }
 
+/*! \brief Function which will add data to the tx_buffer. Function also sets the flag indicating that the data should be sent.
+ *  \param command The command we wish to sendchar(
+ *  \param length Number of bytes of data to be sent (only size of the data variable)
+ *  \param data The data we wish to send */
 void computer_interface_send(unsigned char command, unsigned int length, char *data) {
 	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
 	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
@@ -209,6 +218,7 @@ void computer_interface_send(unsigned char command, unsigned int length, char *d
 	computer_comm.data_in_tx_buffer = 1;
 }
 
+/*! \brief Function which will add an ACK message to the tx_buffer. Also sets a flag that indicates data ready to be sent */
 void computer_interface_send_ack(void) {
 	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
 	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
@@ -220,6 +230,7 @@ void computer_interface_send_ack(void) {
 	computer_comm.data_in_tx_buffer = 1;
 }
 
+/*! \brief Function which will add an NACK message to the tx_buffer. Also sets a flag that indicates data ready to be sent */
 void computer_interface_send_nack(void) {
 	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
 	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
@@ -231,17 +242,7 @@ void computer_interface_send_nack(void) {
 	computer_comm.data_in_tx_buffer = 1;
 }
 
-void computer_interface_send_flag(void) {
-	computer_comm.tx_buffer[0] = COMPUTER_COMM_PREAMBLE;
-	computer_comm.tx_buffer[1] = COMPUTER_COMM_PREAMBLE;
-	computer_comm.tx_buffer[2] = 0xFC;
-	computer_comm.tx_buffer[3] = 0x01;
-	computer_comm.tx_buffer[4] = COMPUTER_COMM_POSTAMBLE;
-
-	computer_comm.tx_buffer_length = 5;
-	computer_comm.data_in_tx_buffer = 1;
-}
-
+/*! \brief Function which will parse the data in the rx_buffer and process the command */
 void computer_interface_parse_data(void) {
 	unsigned char ptr_pos=2;
 	
@@ -572,10 +573,13 @@ void computer_interface_parse_data(void) {
 	}
 }
 
+/*! \brief Retrieve the status if the computer interface is active
+ *  \return 1 if it is active, 0 otherwise */
 unsigned char computer_interface_is_active(void) {
 	return((computer_comm.flags & (1<<COMPUTER_COMM_FLAG_SETUP_MODE))>>COMPUTER_COMM_FLAG_SETUP_MODE);
 }
 
+/*! \brief Activate the setup mode of the device. Will mainly just create various buffers needed to store settings */
 void computer_interface_activate_setup(void) {
 	computer_comm.flags = (1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 	
@@ -589,6 +593,7 @@ void computer_interface_activate_setup(void) {
 	ptt_sequencer_ptr->ptt_input = 0;
 }
 
+/*! \brief Function which will deactivate the computer setup mode, this will clear up memory space of the allocated buffers in the computer_interface_activate_setup() function */
 void computer_interface_deactivate_setup(void) {
 	computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 	
@@ -602,6 +607,7 @@ ISR(SIG_USART1_DATA) {
 	
 }
 
+/*! \brief Interrupt when a character is received over the UART. If computer setup mode is active it will parse the incoming data, otherwise it is used for CAT control */
 ISR(SIG_USART1_RECV) {
 	unsigned char data = UDR1;
 

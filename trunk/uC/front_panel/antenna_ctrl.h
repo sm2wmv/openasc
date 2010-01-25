@@ -1,6 +1,9 @@
-/*! \file antenna_ctrl.h \brief Antenna control functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-06-21
+/*! \file front_panel/antenna_ctrl.h
+ *  \ingroup front_panel_group
+ *  \brief Antenna control functions
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/antenna_ctrl.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -33,6 +36,7 @@
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
+	//! The length of the antenna names
 	unsigned char name_length[10];
 	//! RX antenna name
   char name[10][RX_ANTENNA_NAME_LENGTH];
@@ -40,10 +44,13 @@ typedef struct {
 	unsigned char output_length[10];
 	//! RX antenna output str
   char output_str[10][RX_ANTENNA_OUTPUT_STR_LENGTH];
+	//! The length of the band output data
 	unsigned char band_output_length[4];
+	//! Band output str
 	char band_output_str[4][RX_ANTENNA_BAND_OUTPUT_STR_LENGTH];
 } struct_rx_antennas;
 
+//! Structure of an antenna
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
@@ -96,7 +103,7 @@ typedef struct {
 	unsigned char default_antenna;
 } struct_antenna;
 
-
+//! Struct of a sub menu with the type array
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;

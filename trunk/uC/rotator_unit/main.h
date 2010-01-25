@@ -1,4 +1,4 @@
-/*! \file main.h \brief Main file of the rotator unit
+/*! \file rotator_unit/main.h \brief Main file of the rotator unit
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-04-22
  */
@@ -82,6 +82,7 @@
 #define EVENT_QUEUE_ACTIVATE_BREAK_ID	4
 
 
+//! Struct of the settings
 typedef struct {
 	//! Which one of the inputs is used to sense the beamheading (hardwired mode)
 	unsigned char heading_input;
@@ -110,6 +111,7 @@ typedef struct {
 	unsigned char rotation_break_delay;
 } struct_settings;
 
+//! Struct of the current rotator status
 typedef struct {
 	//! The current heading of the rotator (curr sample)
 	unsigned int curr_heading;

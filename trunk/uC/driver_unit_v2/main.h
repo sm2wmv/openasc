@@ -1,6 +1,9 @@
-/*! \file main.h \brief Main file of the driver unit. 
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-16
+/*! \file driver_unit_v2/main.h 
+ *  \defgroup driver_unit_v2_group Driver unit version 2
+ *  \brief Main file of the driver unit. 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2009-03-16
+ *  \code #include "driver_unit_v2/main.h" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
@@ -16,6 +19,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 #ifndef _MAIN_H_
 #define _MAIN_H_

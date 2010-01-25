@@ -1,6 +1,9 @@
-/*! \file internal_comm_int_comm_tx_queue.c \brief FIFO queue for the TXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-11-22
+/*! \file internal_comm_tx_queue.c
+ *  \brief The internal communication TX QUEUE
+ *  \ingroup internal_comm_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "internal_comm_tx_queue.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -25,8 +28,10 @@
 
 #include "internal_comm_tx_queue.h"
 
+//! The TX queue
 int_comm_tx_queue_struct int_comm_tx_queue;
 
+/*! Initialize the internal communication TX queue */
 void int_comm_int_comm_tx_queue_init(void) {
 	int_comm_tx_queue.first = 0;
 	int_comm_tx_queue.last = 0;

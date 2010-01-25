@@ -1,6 +1,9 @@
-/*! \file ds1307.h \brief Main file of the motherboard
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-30
+/*! \file front_panel/ds1307.h
+ *  \ingroup front_panel_group 
+ *  \brief Realtime clock
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/ds1307.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

@@ -1,4 +1,4 @@
-/*! \file ext_control.h \brief External control of the rotator unit
+/*! \file rotator_unit/ext_control.h \brief External control of the rotator unit
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-04-22
  */

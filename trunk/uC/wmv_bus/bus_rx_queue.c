@@ -1,6 +1,9 @@
-/*! \file bus_rx_queue.c \brief FIFO queue for the RXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-05-07
+/*! \file wmv_bus/bus_rx_queue.c 
+ *  \ingroup bus_group
+ *  \brief FIFO queue for the RXed messages.
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "bus_rx_queue.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -28,6 +31,7 @@
 
 rx_queue_struct rx_queue;
 
+/*! \brief Initialize the RX queue */
 void rx_queue_init(void) {
 	rx_queue.first = 0;
 	rx_queue.last = 0;
@@ -74,6 +78,8 @@ void rx_queue_dropall(void) {
 	rx_queue.last = 0;
 }
 
+/*! \brief Check if the queue is empty
+ *	\return 1 if the queue is empty and 0 otherwise */
 unsigned char rx_queue_is_empty(void) {
 	if (rx_queue.first == rx_queue.last)
 		return(1);

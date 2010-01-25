@@ -1,6 +1,9 @@
-/*! \file event_handler.h \brief Event handler of various things
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-04-19
+/*! \file front_panel/event_handler.h
+ *  \brief Event handler of various things
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/event_handler.h" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //

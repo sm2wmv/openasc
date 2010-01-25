@@ -1,6 +1,9 @@
-/*! \file bus_tx_queue.c \brief FIFO queue for the TXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-05-07
+/*! \file wmv_bus/bus_tx_queue.c \brief FIFO queue for the TXed messages.
+ *  \ingroup bus_group 
+ *  \brief FIFO queue for the TXed messages.
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus_tx_queue.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -28,6 +31,7 @@
 
 tx_queue_struct tx_queue;
 
+/*! \brief Initialize the TX queue */
 void tx_queue_init(void) {
 	tx_queue.first = 0;
 	tx_queue.last = 0;
@@ -75,8 +79,7 @@ void tx_queue_dropall(void) {
 }
 
 /*! \brief Check if the queue is empty
- *	\return 1 if the queue is empty and 0 otherwise
- */
+ *	\return 1 if the queue is empty and 0 otherwise */
 unsigned char tx_queue_is_empty(void) {
 	if (tx_queue.first == tx_queue.last)
 		return(1);

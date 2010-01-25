@@ -1,6 +1,9 @@
-/*! \file sequencer.h \brief Front panel board defines 
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-16
+/*! \file front_panel/sequencer.h
+ *  \brief Sequencer
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/sequencer.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -91,6 +94,7 @@ typedef struct {
 													//Bit 2 = Inhibit enabled
 } struct_ptt_sequencer;
 
+//! PTT Sequencer struct
 typedef struct {
 	unsigned int struct_size;
 	//! The PTT SEQUENCER for the computer input

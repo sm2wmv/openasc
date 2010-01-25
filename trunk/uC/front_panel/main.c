@@ -1,6 +1,9 @@
-/*! \file main.c \brief Main file of the front panel
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-30
+/*! \file front_panel/main.c
+ *  \brief Main file of the front panel
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/main.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

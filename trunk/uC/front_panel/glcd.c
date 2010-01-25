@@ -1,4 +1,5 @@
-/*! \file glcd.c \brief Graphic LCD API functions. */
+/*! \file glcd.c 
+ *  \brief Graphic LCD API functions. */
 //*****************************************************************************
 //
 // File Name	: 'glcd.c'

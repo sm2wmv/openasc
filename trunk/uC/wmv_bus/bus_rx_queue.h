@@ -1,6 +1,9 @@
-/*! \file bus_rx_queue.h \brief FIFO queue for the RXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-05-07
+/*! \file wmv_bus/bus_rx_queue.h 
+ *  \ingroup bus_group
+ *  \brief FIFO queue for the RXed messages.
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus_rx_queue.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

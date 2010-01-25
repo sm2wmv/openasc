@@ -1,6 +1,9 @@
-/*! \file event_handler.c \brief Event handler of various things
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-09-17
+/*! \file front_panel/event_handler.c '
+ *  \brief Event handler of various things
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/event_handler.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -52,6 +55,9 @@ extern unsigned int main_flags;
 
 unsigned char flag_errors = 0;
 
+/*! \brief Set that an error has occured 
+ *  \param error_type The type of error that has occured, defines can be found in errors.h
+ *  \param state State of the error */
 void event_set_error(unsigned char error_type, unsigned char state) {
 	if (state == 0)
 		flag_errors &= ~(1<<error_type);
@@ -63,10 +69,14 @@ void event_set_error(unsigned char error_type, unsigned char state) {
 	#endif
 }
 
+/*! \brief Retrieve the state error flags */
 unsigned char event_get_errors(void) {
 	return(flag_errors);
 }
 
+/*! \brief Retrieve the state of a specific error type
+ *  \param error_type Which kind of error we wish to check the state for
+ *  \return The current state of this error */
 unsigned char event_get_error_state(unsigned char error_type) {
 	if (flag_errors & (1<<error_type))
 		return(1);
@@ -74,9 +84,8 @@ unsigned char event_get_error_state(unsigned char error_type) {
 	return(0);
 }
 
-void event_handler_enable_rotator_interface(void) {
-}
-
+/*! \brief Function which will parse the internal communication message 
+ *  \param message The message that we wish to parse */
 void event_internal_comm_parse_message(UC_MESSAGE message) {
 	//Init the sequence of saving all data and disable all outputs activated by this unit
 	
@@ -105,6 +114,8 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 	}
 }
 
+/*! \brief Set an RX antenna. Will set the proper flags and call the antenna_ctrl_change_rx_ant function
+ *  \param ant_index The index of the RX antenna we wish to chose */
 void __inline__ event_set_rx_antenna(unsigned char ant_index) {
 	status.selected_rx_antenna = ant_index;
 	
@@ -112,6 +123,8 @@ void __inline__ event_set_rx_antenna(unsigned char ant_index) {
 	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 }
 
+/*! \brief Process an PS2 event 
+ *  \param key_code The key that was pressed */
 void event_handler_process_ps2(unsigned char key_code) {
 	char func_index = -1;
 	
@@ -184,6 +197,7 @@ void event_handler_process_ps2(unsigned char key_code) {
 	}
 }
 
+/*! \brief The pulse sensor was turned up */
 void event_pulse_sensor_up(void) {
 	if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 		menu_action(MENU_SCROLL_UP);
@@ -216,6 +230,7 @@ void event_pulse_sensor_up(void) {
 	}
 }
 
+/*! \brief The pulse sensor was turned down */
 void event_pulse_sensor_down(void) {
 	if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 		menu_action(MENU_SCROLL_DOWN);
@@ -249,6 +264,7 @@ void event_pulse_sensor_down(void) {
 	}
 }
 
+/*! \brief Function to be called if we wish to update the display */
 void event_update_display(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
 		//Should we show the RX antenna?
@@ -267,6 +283,7 @@ void event_update_display(void) {
 	}
 }
 
+/*! \brief Function which will poll all buttons and perform the proper action depending on their state */
 void event_poll_buttons(void) {
 	status.buttons_current_state = ih_poll_buttons();
 	//Any change? If so then parse what change
@@ -358,6 +375,7 @@ void event_poll_buttons(void) {
 	status.buttons_last_state = status.buttons_current_state;
 }
 
+/*! \brief Function which will poll the external devices and perform the proper actions depending on their state */
 void event_poll_ext_device(void) {
 	status.ext_devices_current_state = ih_poll_ext_devices();
 	
@@ -368,6 +386,7 @@ void event_poll_ext_device(void) {
 	status.ext_devices_last_state = status.ext_devices_current_state;
 }
 
+/*! \brief Perform the action of TX antenna button 1 if it was pressed */
 void event_tx_button1_pressed(void) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
@@ -430,6 +449,7 @@ void event_tx_button1_pressed(void) {
 	}
 }
 
+/*! \brief Perform the action of TX antenna button 2 if it was pressed */
 void event_tx_button2_pressed(void) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_EXIST_FLAG)) {
@@ -490,6 +510,7 @@ void event_tx_button2_pressed(void) {
 	}
 }
 
+/*! \brief Perform the action of TX antenna button 3 if it was pressed */
 void event_tx_button3_pressed(void) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_EXIST_FLAG)) {
@@ -551,6 +572,7 @@ void event_tx_button3_pressed(void) {
 	}
 }
 
+/*! \brief Perform the action of TX antenna button 4 if it was pressed */
 void event_tx_button4_pressed(void) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_EXIST_FLAG)) {
@@ -612,6 +634,7 @@ void event_tx_button4_pressed(void) {
 	}
 }
 
+/*! \brief Perform the action of RX antenna button if it was pressed */
 void event_rxant_button_pressed(void) {
 	if (status.buttons_current_state & (1<<FLAG_BUTTON_RXANT_BIT)) {
 		if (antenna_ctrl_get_rx_antenna_count() != 0) {
@@ -650,6 +673,7 @@ void event_rxant_button_pressed(void) {
 	}
 }
 
+/*! \brief Perform the action of Rotate button if it was pressed */
 void event_rotate_button_pressed(void) {
 /*	if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
 			
@@ -676,6 +700,7 @@ void event_rotate_button_pressed(void) {
 	}*/
 }
 
+/*! \brief Parse a message from the communication bus */
 void event_bus_parse_message(void) {
 	BUS_MESSAGE bus_message = rx_queue_get();
 	
@@ -751,7 +776,8 @@ void event_bus_parse_message(void) {
 	#endif	
 }
 
-
+/*! \brief Parse an external event and perform the proper action
+ *  \param ext_event_status The status of the external "hardware" event flags */
 void event_parse_ext_event(unsigned int ext_event_status) {
 	if (ext_event_status & (1<<STATUS_FOOTSWITCH_BIT)) {
 		if (status.ext_devices_current_state & (1<<STATUS_FOOTSWITCH_BIT))
