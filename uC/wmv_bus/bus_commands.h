@@ -1,7 +1,9 @@
-/*! \file bus_commands.h 
- * \brief Global commands for the WMV communication bus.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file wmv_bus/bus_commands.h 
+ *  \ingroup bus_group
+ *  \brief Global commands for the WMV communication bus.
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus_commands.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

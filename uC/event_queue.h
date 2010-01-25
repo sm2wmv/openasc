@@ -1,6 +1,9 @@
-/*! \file event_queue.h \brief Event queue
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-26
+/*! \file event_queue.h
+ *  \brief Event queue
+ *  \defgroup event_queue_group Event QUEUE library
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "event_queue.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

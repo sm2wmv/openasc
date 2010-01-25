@@ -1,7 +1,10 @@
-/*! \file bus.h \brief The communication bus protocol used in the openASC project.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-13
- */
+/*! \file wmv_bus/bus.h 
+ *  \brief The communication bus protocol used in the openASC project.
+ *  \defgroup bus_group BUS communication
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus.h" \endcode
+*/
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -197,15 +200,21 @@ typedef struct {
 
 //! The structure of the RX circular buffer
 typedef struct rx_linked_list {
+	//! List of bus messages
 	BUS_MESSAGE message[BUS_RX_QUEUE_SIZE];
+	//! The first item in the list
 	unsigned char first;
+	//! The last item in the list
 	unsigned char last;
 } rx_queue_struct;
 
 //! The structure of the TX circular buffer
 typedef struct tx_linked_list {
+	//! The bus messages
 	BUS_MESSAGE message[BUS_TX_QUEUE_SIZE];
+	//! The first position in the list
 	unsigned char first;
+	//! The last position in the list
 	unsigned char last;
 } tx_queue_struct;
 

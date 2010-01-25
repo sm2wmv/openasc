@@ -1,4 +1,5 @@
-/*! \file ks0108.h \brief Graphic LCD driver for HD61202/KS0108 displays. */
+/*! \file front_panel/ks0108.h 
+ *  \brief Graphic LCD driver for HD61202/KS0108 displays. */
 //*****************************************************************************
 //
 // File Name	: 'ks0108.h'
@@ -14,9 +15,8 @@
 // to be lacking in some functionality or documentation, or may not be fully
 // tested.  Nonetheless, you can expect most functions to work.
 //
-///	\ingroup driver_hw
-/// \defgroup ks0108 Graphic LCD Driver for HD61202/KS0108-based Displays (ks0108.c)
-/// \code #include "ks0108.h" \endcode
+///	\ingroup front_panel_group
+/// \code #include "front_panel/ks0108.h" \endcode
 /// \par Overview
 ///		This display driver performs the basic functions necessary to access
 /// any graphic LCD based on the KS0108 or HD61202 controller chip.� For more
@@ -63,14 +63,12 @@
 #define GLCD_NUM_CONTROLLERS	2 //((GLCD_XPIXELS+GLCD_CONTROLLER_XPIXELS-1)/GLCD_CONTROLLER_XPIXELS)
 
 // typedefs/structures
-typedef struct struct_GrLcdCtrlrStateType
-{
+typedef struct struct_GrLcdCtrlrStateType {
 	unsigned char xAddr;
 	unsigned char yAddr;
 } GrLcdCtrlrStateType;
 
-typedef struct struct_GrLcdStateType
-{
+typedef struct struct_GrLcdStateType {
 	unsigned char lcdXAddr;
 	unsigned char lcdYAddr;
 	GrLcdCtrlrStateType ctrlr[GLCD_NUM_CONTROLLERS];

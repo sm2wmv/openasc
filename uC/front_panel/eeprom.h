@@ -1,6 +1,9 @@
-/*! \file eeprom.h \brief EEPROM functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-28
+/*! \file front_panel/eeprom.h 
+ *  \brief EEPROM functions
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/eeprom.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -17,7 +20,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
 
@@ -28,6 +30,7 @@
 #include "radio_interface.h"
 #include "band_ctrl.h"
 
+//! The EEPROM table
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;

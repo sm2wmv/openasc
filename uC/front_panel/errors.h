@@ -1,6 +1,9 @@
-/*! \file errors.h \brief List of error codes
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-11-24
+/*! \file front_panel/errors.h 
+ *  \brief List of error codes
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/errors.h" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //

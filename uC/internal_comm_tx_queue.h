@@ -1,7 +1,4 @@
-/*! \file internal_comm_tx_queue.h \brief FIFO queue for the TXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-11-22
- */
+
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -22,12 +19,16 @@
 
 #include "internal_comm.h"
 
+//! \brief Size of the TX queue
 #define INTERNAL_COMM_TX_QUEUE_SIZE	5
 
 //! The structure of the TX circular buffer
 typedef struct tx_linked_list {
+	//! A UC_MESSAGE
 	UC_MESSAGE message[INTERNAL_COMM_TX_QUEUE_SIZE];
+	//! first position in the list
 	unsigned char first;
+	//! last position in the list
 	unsigned char last;
 } int_comm_tx_queue_struct;
 

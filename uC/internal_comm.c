@@ -1,6 +1,9 @@
-/*! \file internal_comm.c \brief Internal communication between various devices
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-11-23
+/*! \file internal_comm.c
+ *  \brief The internal communication routines
+ *  \ingroup internal_comm_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "internal_comm.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -40,14 +43,14 @@ unsigned char prev_data = 0;
 
 unsigned char msg_not_acked = 0;
 
-//! Function to be called when a message is recieved and should be parsed/executed
+/*! \brief Function to be called when a message is recieved and should be parsed/executed */
 void (*f_ptr_rx)(UC_MESSAGE);
+/*! \brief Function to be called when we wish to send a message */
 void (*f_ptr_tx)(char);
 
-/*! Initialize the internal communication 
+/*! \brief Initialize the internal communication 
  *  \param func_ptr_rx The function you wish to call when a new message has been recieved and should be parsed
- *  \param func_ptr_tx The function used to send data to the hardware handeling the data transmission
- */
+ *  \param func_ptr_tx The function used to send data to the hardware handeling the data transmission */
 void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(char)) {
 	f_ptr_rx = func_ptr_rx;	//To know which function we should call to parse a message
 	f_ptr_tx = func_ptr_tx;	//To know which function we should call to send data
@@ -60,8 +63,7 @@ void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(cha
 	int_comm_tx_queue_dropall();
 }
 
-/*! Polls the RX queue in the internal communication and calls the function
- * defined in internal_comm_init.
+/*! \brief Polls the RX queue in the internal communication and calls the function defined in internal_comm_init.
  * \return 1 if a message was in the buffer and got parsed, 0 if not
  */
 unsigned char internal_comm_poll_rx_queue(void) {
@@ -75,8 +77,7 @@ unsigned char internal_comm_poll_rx_queue(void) {
 	return(0);
 }
 
-/*! Polls the TX queue in the internal communication and sends the data if there is a message
- *  in the queue
+/*! \brief Polls the TX queue in the internal communication and sends the data if there is a message in the queue
  *  \return 1 if a message was in the buffer and got sent, 0 if not
  */
 unsigned char internal_comm_poll_tx_queue(void) {
@@ -91,6 +92,7 @@ unsigned char internal_comm_poll_tx_queue(void) {
 	return(0);
 }
 
+/*! \brief Send an ACK message to the internal communication uart */
 void internal_comm_send_ack(void) {
 	unsigned char checksum = UC_COMM_MSG_ACK;
 	
@@ -102,6 +104,7 @@ void internal_comm_send_ack(void) {
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
 }
 
+/*! \brief Send a NACK message to the internal communication uart */
 void internal_comm_send_nack(void) {
 	unsigned char checksum = UC_COMM_MSG_NACK;
 	
@@ -113,6 +116,8 @@ void internal_comm_send_nack(void) {
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
 }
 
+/*! \brief Send a message to the internal communication uart 
+ *  \param tx_message The message we wish to send */
 void internal_comm_send_message(UC_MESSAGE tx_message) {
 	f_ptr_tx(UC_COMM_MSG_PREAMBLE);
 	f_ptr_tx(UC_COMM_MSG_PREAMBLE);
@@ -126,6 +131,10 @@ void internal_comm_send_message(UC_MESSAGE tx_message) {
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
 }
 
+/*! \brief Add a message to the transmit queue 
+ *  \param command The command we wish to perform
+ *  \param length The length of the data field 
+ *  \param data The data we wish to send */
 void internal_comm_add_tx_message(unsigned char command, unsigned char length, char *data) {
 	UC_MESSAGE new_mess;
 	

@@ -1,6 +1,9 @@
-/*! \file remote_control.h \brief Remote control
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-12-18
+/*! \file front_panel/remote_control.h
+ *  \brief Remote control of the openASC box
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/remote_control.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

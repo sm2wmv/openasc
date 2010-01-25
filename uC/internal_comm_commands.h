@@ -1,6 +1,9 @@
-/*! \file internal_comm_commands.h \brief Internal communication commands
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-12-18
+/*! \file internal_comm_commands.h
+ *  \brief The internal communication commands
+ *  \ingroup internal_comm_group Internal
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "internal_comm_commands.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

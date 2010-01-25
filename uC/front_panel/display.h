@@ -1,6 +1,9 @@
-/*! \file display.h \brief The serial interface to configure the device and control it
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-30
+/*! \file front_panel/display.h
+ *  \ingroup front_panel_group 
+ *  \brief The serial interface to configure the device and control it
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/display.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -16,7 +19,6 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_

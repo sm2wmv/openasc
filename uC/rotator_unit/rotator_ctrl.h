@@ -1,4 +1,4 @@
-/*! \file board.h
+/*! \file rotator_unit/board.h
  *  \brief Defines for the rotator board
  *  \author Mikael Larsmark, SM2WMV
  *  \date 2009-04-22

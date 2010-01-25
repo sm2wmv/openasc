@@ -1,6 +1,9 @@
-/*! \file eeprom.c \brief EEPROM functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-01-18
+/*! \file front_panel/eeprom.c
+ *  \brief EEPROM functions
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/eeprom.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -36,6 +39,7 @@
 //! EEPROM table which is a description of the location of different structures in the eeprom
 struct_eeprom_table	eeprom_table;
 
+//! \brief Temporary crap for debug */
 void eeprom_print(void) {
 	printf("ANT 1: %i\n",eeprom_table.antenna[0]);
 	printf("ANT 2: %i\n",eeprom_table.antenna[1]);
@@ -44,7 +48,7 @@ void eeprom_print(void) {
 	printf("ANT 5: %i\n",eeprom_table.antenna[4]);
 }
 
-/*! Read the map of the EEPROM */
+/*! \brief Read the map of the EEPROM */
 void eeprom_read_table(void) {	
 	unsigned char *eeprom_table_ptr = (unsigned char *)&eeprom_table;
 	
@@ -54,7 +58,7 @@ void eeprom_read_table(void) {
 	//eeprom_m24_read_block(0,sizeof(eeprom_table), (unsigned char *)&eeprom_table);
 }
 
-/*! Returns the antenna struct for a specific band
+/*! \brief Returns the antenna struct for a specific band
  *  \param data Where the data should be saved
  *  \param band Which band you wish to get the pointer */
 void eeprom_get_antenna_data(struct_antenna *data, unsigned char band) {
@@ -65,7 +69,7 @@ void eeprom_get_antenna_data(struct_antenna *data, unsigned char band) {
 		*(ant_data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna[band]+i);
 }
 
-/*! Returns the rx antenna data
+/*! \brief Returns the rx antenna data
  *  \param data Where the data should be saved */
 void eeprom_get_rx_antenna_data(struct_rx_antennas *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -75,7 +79,7 @@ void eeprom_get_rx_antenna_data(struct_rx_antennas *data) {
 		*(ant_data_ptr+i) = eeprom_m24_read_byte(eeprom_table.rx_antennas+i);
 }
 
-/*! Returns the band data
+/*! \brief Returns the band data
  *  \param data Where the data should be saved */
 void eeprom_get_band_data(unsigned char band, struct_band *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -85,7 +89,7 @@ void eeprom_get_band_data(unsigned char band, struct_band *data) {
 		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.band[band]+i);
 }
 
-/*! get the radio settings from the eeprom
+/*! \brief get the radio settings from the eeprom
  *  \param data Where the data should be saved */
 void eeprom_get_radio_settings_structure(struct_radio_settings *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -95,7 +99,7 @@ void eeprom_get_radio_settings_structure(struct_radio_settings *data) {
 		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.radio_settings+i);
 }
 
-/*! get the settings from the eeprom
+/*! \brief get the settings from the eeprom
  *  \param data Where the data should be saved */
 void eeprom_get_settings_structure(struct_setting *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -105,7 +109,7 @@ void eeprom_get_settings_structure(struct_setting *data) {
 		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.settings+i);
 }
 
-/*! Creates the eeprom table */	
+/*! \brief Creates the eeprom table which is a map over the eeprom data */	
 void eeprom_create_table(void) {
 	eeprom_table.struct_size = sizeof(struct_eeprom_table);
 	
@@ -143,13 +147,13 @@ void eeprom_create_table(void) {
 	eeprom_m24_write_block(0, sizeof(eeprom_table), (unsigned char *)&eeprom_table);
 }
 
-/*! Save the runtime_settings structure to the eeprom
+/*! \brief Save the runtime_settings structure to the eeprom
  *  \param content The data to be saved */
 void eeprom_save_runtime_settings(struct_runtime_settings *content) {
 	eeprom_m24_write_block(eeprom_table.runtime_settings, sizeof(struct_runtime_settings), (unsigned char *)content);
 }
 
-/*! Get the ptt structure from the EEPROM
+/*! \brief Get the ptt structure from the EEPROM
  *  \param data A pointer where to store the data*/
 void eeprom_get_ptt_data(struct_ptt *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -159,7 +163,7 @@ void eeprom_get_ptt_data(struct_ptt *data) {
 		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.struct_ptt+i);
 }
 
-/*! Get the runtime_settings structure from the EEPROM
+/*! \brief Get the runtime_settings structure from the EEPROM
  *  \param data A pointer where to store the data*/
 void eeprom_get_runtime_settings(struct_runtime_settings *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -169,7 +173,7 @@ void eeprom_get_runtime_settings(struct_runtime_settings *data) {
 		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.runtime_settings+i);
 }
 
-/*! Save the antenna structure to the eeprom
+/*! \brief Save the antenna structure to the eeprom
  *  \param band_index Which band it is
  *  \param antenna_index Which antenna it is
  *  \param content The data to be saved */
@@ -177,31 +181,31 @@ void eeprom_save_ant_structure(unsigned char band_index, struct_antenna *content
 	eeprom_m24_write_block(eeprom_table.antenna[band_index], sizeof(struct_antenna), (unsigned char *)content);
 }
 
-/*! Save the rx antenna structure to the eeprom
+/*! \brief Save the rx antenna structure to the eeprom
  *  \param data The data to save to the EEPROM */
 void eeprom_save_rx_ant_structure(struct_rx_antennas *data) {
 	eeprom_m24_write_block(eeprom_table.rx_antennas, sizeof(struct_rx_antennas), (unsigned char *)data);
 }
 
-/*! Save the device settings to the eeprom
+/*! \brief Save the device settings to the eeprom
  * \param data The data to save to the EEPROM */
 void eeprom_save_settings_structure(struct_setting *data) {
 	eeprom_m24_write_block(eeprom_table.settings, sizeof(struct_setting), (unsigned char *)data);
 }
 
-/*! Save the radio settings to the eeprom
+/*! \brief Save the radio settings to the eeprom
  * \param data The data to save to the EEPROM */
 void eeprom_save_radio_settings_structure(struct_radio_settings *data) {
 	eeprom_m24_write_block(eeprom_table.radio_settings, sizeof(struct_radio_settings), (unsigned char *)data);
 }
 
-/*! Save the band data to the eeprom
+/*! \brief Save the band data to the eeprom
  * \param data The data to save to the EEPROM */
 void eeprom_save_band_data(unsigned char band, struct_band *data) {
 	eeprom_m24_write_block(eeprom_table.band[band], sizeof(struct_band), (unsigned char *)data);
 }
 
-/*! Save the band data to the eeprom
+/*! \brief Save the band data to the eeprom
  * \param data The data to save to the EEPROM */
 void eeprom_save_ptt_data(struct_ptt *data) {
 	eeprom_m24_write_block(eeprom_table.struct_ptt, sizeof(struct_ptt), (unsigned char *)data);

@@ -1,6 +1,9 @@
-/*! \file usart.c \brief Motherboard USART routines.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file motherboard/usart.c 
+ *  \ingroup motherboard_group 
+ *  \brief Motherboard USART routines
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "motherboard/usart.c" \endcode
 */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -104,7 +107,7 @@ unsigned char poll_usart0_receive(void ) {
  * This function is used to initialize the USART which a baudrate
  * that needs to be sent in as a parameter Use the baudrate settings
  * specified in the ATMEGA128 baudrate setting.
- * \param baud The baudrate param from the ATMEGA32 datasheet.
+ * \param baudrate The baudrate param from the ATMEGA32 datasheet.
  */
 void usart1_init(unsigned int baudrate) {
 	/* Set baud rate */

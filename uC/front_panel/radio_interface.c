@@ -1,6 +1,9 @@
-/*! \file radio_interface.c \brief Handles all the interfacing towards the radio
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-08
+/*! \file front_panel/radio_interface.c
+ *  \brief Radio interface, such as PTT AMP, PTT Radio, CAT etc
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/radio_interface.c " \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -45,10 +48,10 @@ unsigned char radio_sent_request = 0;
 
 unsigned char ptt_status = 0;
 
-//! External variable of the radio rx data counter used for a timeout
+//! \brief External variable of the radio rx data counter used for a timeout
 extern unsigned char radio_rx_data_counter;
 
-/*! Initialize the radio interface */
+/*! \brief Initialize the radio interface */
 void radio_interface_init(void) {
 	//Initialize the serial rx buffer used for the communication with the radio
 	radio_serial_rx_buffer = (unsigned char *)malloc(RADIO_SERIAL_RX_BUFFER_LENGTH);
@@ -87,7 +90,7 @@ void radio_interface_init(void) {
 	}
 }
 
-/*! This function is called each lap in the main loop and we can use this to process certain tasks */
+/*! \brief This function is called each lap in the main loop and we can use this to process certain tasks */
 void radio_process_tasks(void) {
 	if (radio_flags & (1<<RADIO_FLAG_FREQ_CHANGED)) {
 		radio_status.current_band = radio_freq_to_band(radio_status.current_freq);	
@@ -102,13 +105,13 @@ unsigned int radio_get_current_freq(void) {
 }
 
 
-/*! Retrieve the current band from the radio
+/*! \brief Retrieve the current band from the radio
  *  \return The radios band */
 unsigned char radio_get_current_band(void) {
 	return(radio_status.current_band);
 }
 
-/*! Activate the radio PTT */
+/*! \brief Activate the radio PTT */
 void radio_ptt_active(void) {
 	if (runtime_settings.radio_ptt_output) {
 		/* Activate the PTT to the radio */
@@ -119,7 +122,7 @@ void radio_ptt_active(void) {
 	}
 }
 
-/*! Deactivate the radio PTT */
+/*! \brief Deactivate the radio PTT */
 void radio_ptt_deactive(void) {
 	/* Deactivate the PTT to the radio */
 	PORTJ &= ~(1<<3);
@@ -128,7 +131,7 @@ void radio_ptt_deactive(void) {
 	main_update_ptt_status();
 }
 
-/*! Set the TX ACTIVE output to high */
+/*! \brief Set the TX ACTIVE output to high */
 void radio_tx_active(void) {
 	PORTG |= (1<<TX_ACTIVE_OUTPUT_BIT);
 	
@@ -136,7 +139,7 @@ void radio_tx_active(void) {
 	main_update_ptt_status();
 }
 
-/*! Set the TX ACTIVE output to high */
+/*! \brief Set the TX ACTIVE output to high */
 void radio_tx_deactive(void) {
 	/* Deactivate the PTT to the radio */
 	PORTG &= ~(1<<TX_ACTIVE_OUTPUT_BIT);
@@ -144,18 +147,19 @@ void radio_tx_deactive(void) {
 	ptt_status &= ~(1<<RADIO_FLAG_TX_ACTIVE);
 	main_update_ptt_status();
 }
-/*! Set the inhibit signal to high */
+/*! \brief Set the inhibit signal to high */
 void radio_inhibit_high(void) {
 	//This signal is inverted in hardware, because of a transistor output with pullup
 	PORTE &= ~(1<<RADIO_INHIBIT_OUTPUT_BIT);
 }
 
-/*! Set the inhibit signal to low */
+/*! \brief Set the inhibit signal to low */
 void radio_inhibit_low(void) {
 	//This signal is inverted in hardware, because of a transistor output with pullup
 	PORTE |= (1<<RADIO_INHIBIT_OUTPUT_BIT);
 }
 
+/*! \brief Retrieve the ptt status, defines can be found in radio_interface.h */
 unsigned char radio_get_ptt_status(void) {
 	return(ptt_status);
 }
@@ -172,7 +176,7 @@ unsigned char radio_get_band_portion(void) {
 	return(BAND_UNDEFINED);
 }
 
-/*! Polls the status of the PTT input
+/*! \brief Polls the status of the PTT input
  *  \return Return RADIO_PTT_ACTIVATE if the radio is PTT and RADIO_PTT_DEACTIVATE if it doesn't */
 unsigned char radio_poll_ptt(void) {
 	//Senses the radio PTT from the top floor
@@ -207,7 +211,7 @@ unsigned char radio_poll_ptt(void) {
 	return(RADIO_PTT_DEACTIVE);
 }
 
-/*! Polls the status of the radio and saves it into the radio_status structure.
+/*! \brief Polls the status of the radio and saves it into the radio_status structure.
  *  \return 0 if the poll went OK and 1 if it didn't  */
 unsigned char radio_poll_status(void) {
 	//Ask radio for freq etc
@@ -231,10 +235,10 @@ unsigned char radio_poll_status(void) {
 	return(0);
 }
 
-/*! Parse the radios frequency
+/*! \brief Parse the radios frequency
  *  \param freq_data The frequency data sent in as an array of characters
  *  \param length The length of the frequency data
- *  \param radio_type The type of radio that the freq should be parsed for
+ *  \param radio_model The type of radio that the freq should be parsed for
  *  \return The radios frequency in integer format. So for example 21305 is 21 MHz and 305 kHz. */
 unsigned int radio_parse_freq(unsigned char *freq_data, unsigned char length, unsigned char radio_model) {
 	unsigned int freq=0;
@@ -286,7 +290,7 @@ unsigned int radio_parse_freq(unsigned char *freq_data, unsigned char length, un
 	return(freq);
 }
 
-//! Activate PTT amp
+//! \brief Activate PTT amp
 void radio_amp_ptt_active(void) {
 	if (runtime_settings.amplifier_ptt_output) {
 		PORTE |= (1<<AMPLIFIER_OUTPUT_BIT);
@@ -296,7 +300,7 @@ void radio_amp_ptt_active(void) {
 	}
 }
 
-//! Deactivate PTT amp
+//! \brief Deactivate PTT amp
 void radio_amp_ptt_deactive(void) {
 	PORTE &= ~(1<<AMPLIFIER_OUTPUT_BIT);
 	
@@ -305,7 +309,7 @@ void radio_amp_ptt_deactive(void) {
 }
 
 
-/*! Convert a radio frequency (integer) to band data
+/*! \brief Convert a radio frequency (integer) to band data
  *  \param freq The frequency as integer
  *  \return The band of the frequency sent in as parameter. If band not found then it returns BAND_UNDEFINED */
 unsigned char radio_freq_to_band(unsigned int freq) {
@@ -317,110 +321,109 @@ unsigned char radio_freq_to_band(unsigned int freq) {
 	return(BAND_UNDEFINED);
 }
 
-/*! Set which radio model is used, saves it in the radio_settings struct
+/*! \brief Set which radio model is used, saves it in the radio_settings struct
  *  \param model The radio model */
 void radio_interface_set_model(unsigned char model) {
 	radio_settings.radio_model = model;
 }
 
-/*! Set which radio interface is used, saves it in the radio_settings struct
+/*! \brief Set which radio interface is used, saves it in the radio_settings struct
  *  \param interface_type The interface type */
 void radio_interface_set_interface(unsigned char interface_type) {
 	radio_settings.interface_type = interface_type;
 }
 
-/*! Set which baudrate setting is used, saves it in the radio_settings struct
+/*! \brief Set which baudrate setting is used, saves it in the radio_settings struct
  *  \param baudrate Which baudrate setting to use */
 void radio_interface_set_baudrate(unsigned char baudrate) {
 	radio_settings.baudrate = baudrate;
 }
 
-/*! Set which number of stopbits should be used, saves it in the radio_settings struct
+/*! \brief Set which number of stopbits should be used, saves it in the radio_settings struct
  *  \param stopbits The number of stopbits that are used to interface the radio */
 void radio_interface_set_stopbits(unsigned char stopbits) {
 	radio_settings.stopbits = stopbits;
 }
 
-/*! Set which CI-V address the radio has got, saves it in the radio_settings struct
+/*! \brief Set which CI-V address the radio has got, saves it in the radio_settings struct
  *  \param civ The CI-V address */
 void radio_interface_set_civ_addr(unsigned char civ) {
 	radio_settings.civ_addr = civ;	
 }
 
-/*! Set which PTT mode is used, saves it in the radio_settings struct
+/*! \brief Set which PTT mode is used, saves it in the radio_settings struct
  *  \param ptt_mode Set which PTT mode to be used */
 void radio_interface_set_ptt_mode(unsigned char ptt_mode) {
 	radio_settings.ptt_mode = ptt_mode;
 }
 
-/*! Set which PTT input that is used, saves it in the radio_settings struct
+/*! \brief Set which PTT input that is used, saves it in the radio_settings struct
  *  \param ptt_input Which PTT input that is used */
 void radio_interface_set_ptt_input(unsigned char ptt_input) {
 	radio_settings.ptt_input = ptt_input;
 }
 
-/*! Set the poll intervall for the radio band decoding, saves it in the radio_settings struct
+/*! \brief Set the poll intervall for the radio band decoding, saves it in the radio_settings struct
  *  \param poll_interval The poll interval in ms/10 */
 void radio_interface_set_poll_interval(unsigned char poll_interval) {
 	radio_settings.poll_interval = poll_interval;
 }
 
-/*! Get which radio model is used
+/*! \brief Get which radio model is used
  *  \return The radio model */
 unsigned char radio_interface_get_model(void) {
 	return(radio_settings.radio_model);
 }
 
-/*! Get which radio interface is used
+/*! \brief Get which radio interface is used
  *  \return The interface type */
 unsigned char radio_interface_get_interface(void) {
 	return(radio_settings.interface_type);
 }
 
-/*! Get which baudrate setting is used
+/*! \brief Get which baudrate setting is used
  *  \return Which baudrate setting is used */
 unsigned char radio_interface_get_baudrate(void) {
 	return(radio_settings.baudrate);
 }
 
-/*! Get which number of stopbits should be used
+/*! \brief Get which number of stopbits should be used
  *  \return The number of stopbits that are used to interface the radio */
 unsigned char radio_interface_get_stopbits(void) {
 	return(radio_settings.stopbits);
 }
 
-/*! Get which CI-V address the radio has got
+/*! \brief Get which CI-V address the radio has got
  *  \return The CI-V address */
 unsigned char radio_interface_get_civ_addr(void) {
 	return(radio_settings.civ_addr);
 }
 
-/*! Get which PTT mode is used
+/*! \brief Get which PTT mode is used
  *  \return Get which PTT mode to be used */
 unsigned char radio_interface_get_ptt_mode(void) {
 	return(radio_settings.ptt_mode);
 }
 
-/*! Get which PTT input that is used
+/*! \brief Get which PTT input that is used
  *  \return Which PTT input that is used */
 unsigned char radio_interface_get_ptt_input(void) {
 	return(radio_settings.ptt_input);
 }
 
-/*! Get the poll intervall for the radio band decoding
+/*! \brief Get the poll intervall for the radio band decoding
  *  \return The poll interval in ms/10 */
 unsigned char radio_interface_get_poll_interval(void){
 	return(radio_settings.poll_interval);
 }
 
 
-/*! This function will save the current data in the radio_settings struct into the EEPROM
-    at it's proper location */
+/*! \brief This function will save the current data in the radio_settings struct into the EEPROM at it's proper location */
 void radio_interface_save_eeprom(void) {
 	eeprom_save_radio_settings_structure(&radio_settings);
 }
 
-/*! This function will load data from the eeprom to the radio_settings struct */
+/*! \brief This function will load data from the eeprom to the radio_settings struct */
 void radio_interface_load_eeprom(void) {
 	eeprom_get_radio_settings_structure(&radio_settings);
 }

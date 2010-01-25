@@ -1,6 +1,9 @@
-/*! \file radio_interface.h \brief Front panel board defines 
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-16
+/*! \file front_panel/radio_interface.h
+ *  \brief Radio interface, such as PTT AMP, PTT Radio, CAT etc
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/radio_interface.h " \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -84,6 +87,7 @@
 //! Serial baudrate 57600 baud
 #define RADIO_SERIAL_BAUDRATE_57600	8
 
+//! Radio settings struct
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
@@ -110,6 +114,7 @@ typedef struct {
 	unsigned char poll_interval;
 } struct_radio_settings;
 
+//! The radio status struct
 typedef struct {
 	//! The radios current frequency
 	unsigned int current_freq;

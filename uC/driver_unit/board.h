@@ -1,7 +1,9 @@
-/*! \file board.h
- *  \brief Driver unit board defines 
+/*! \file driver_unit/board.h
+ *  \brief Board specific defines
+ *  \ingroup driver_unit_group 
  *  \author Mikael Larsmark, SM2WMV
  *  \date 2008-04-06
+ *  \code #include "driver_unit/board.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

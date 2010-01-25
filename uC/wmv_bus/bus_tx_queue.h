@@ -1,6 +1,9 @@
-/*! \file bus_tx_queue.h \brief FIFO queue for the TXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file wmv_bus/bus_tx_queue.h
+ *  \ingroup bus_group 
+ *  \brief FIFO queue for the TXed messages.
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus_tx_queue.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

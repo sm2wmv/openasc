@@ -1,4 +1,4 @@
-/*! \file main.c \brief Main file of the rotator board
+/*! \file rotator_unit/main.c \brief Main file of the rotator board
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-04-22
  */

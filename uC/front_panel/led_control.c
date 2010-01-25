@@ -1,6 +1,9 @@
-/*! \file led_control.c \brief Front panel LED control functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-25
+/*! \file front_panel/led_control.c
+ *  \brief Front panel LED control functions
+ *  \ingroup front_panel_group 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/led_control.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -24,7 +27,7 @@
 #include "board.h"
 #include "../global.h"
 
-/*! Set the band LEDs to the proper band
+/*! \brief Set the band LEDs to the proper band
  *  \param band The band we wish to turn on the LED for */
 void led_set_band(unsigned char band) {
 	if ((band >= BAND_160M) && (band <= BAND_12M))
@@ -33,14 +36,13 @@ void led_set_band(unsigned char band) {
 		PORTJ |= (1<<7);
 }
 
-/*! Turn off all band leds
- *  \param band Turn off all band leds */
+/*! \brief  Turn off all band leds */
 void led_set_band_none(void) {
 		PORTJ &= ~(1<<7);
 		PORTA = 0;
 }
 
-/*! Set the PTT LED
+/*! \brief  Set the PTT LED
  *  \param state The state of the LED */
 void led_set_ptt(enum enum_led_ptt_state state) {
 	if (state == LED_STATE_PTT_ACTIVE) {
@@ -60,7 +62,7 @@ void led_set_ptt(enum enum_led_ptt_state state) {
 	}
 }
 
-/*! Set the error LED status
+/*! \brief  Set the error LED status
  *  \param state The state of the LED */
 void led_set_error(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
@@ -69,6 +71,8 @@ void led_set_error(enum enum_led_state state) {
 		PORTH &= ~(1<<LED_ERROR_BIT);
 }
 
+/*! \brief  Set the rotating led to active state, indicates if any antenna on the current band is rotating
+ *  \param state The state of the LED */
 void led_set_rotation_active(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
 		PORTC |= (1<<LED_ROTATION_ACTIVE_BIT);
@@ -76,7 +80,7 @@ void led_set_rotation_active(enum enum_led_state state) {
 		PORTC &= ~(1<<LED_ROTATION_ACTIVE_BIT);
 }
 
-/*! Set the TX Antenna LED status
+/*! \brief  Set the TX Antenna LED status
  *  \param index Which LED we wish to change the status of
  *  \param state The state of the LED */
 void led_set_tx_ant(unsigned char index, enum enum_led_state state) {
@@ -118,7 +122,7 @@ void led_set_tx_ant(unsigned char index, enum enum_led_state state) {
 	}
 }
 
-/*! Set the RX Antenna LED status
+/*! \brief Set the RX Antenna LED status
  *  \param index Which LED we wish to change the status of
  *  \param state The state of the LED */
 void led_set_rx_ant(unsigned char index, enum enum_led_state state) {
@@ -160,7 +164,7 @@ void led_set_rx_ant(unsigned char index, enum enum_led_state state) {
 	}
 }
 
-/*! Set the Rotate LED status
+/*! \brief Set the Rotate LED status
  *  \param state The state of the LED */
 void led_set_rotate(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
@@ -169,7 +173,7 @@ void led_set_rotate(enum enum_led_state state) {
 		PORTC &= ~(1<<LED_ROTATE_BIT);
 }
 
-/*! Set the TX/RX mode LED status
+/*! \brief Set the TX/RX mode LED status
  *  \param state The state of the LED */
 void led_set_txrx(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
@@ -178,7 +182,7 @@ void led_set_txrx(enum enum_led_state state) {
 		PORTC &= ~(1<<LED_TXRX_BIT);
 } 
 
-/*! Set the RX antenna LED status
+/*! \brief Set the RX antenna LED status
  *  \param state The state of the LED */
 void led_set_rxant(enum enum_led_state state) {
 	if (state == LED_STATE_ON) {
@@ -189,7 +193,7 @@ void led_set_rxant(enum enum_led_state state) {
 	}
 }
 
-/*! Set the AUX LED status
+/*! \brief Set the AUX LED status
  *  \param state The state of the LED */
 void led_set_aux(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
@@ -198,7 +202,7 @@ void led_set_aux(enum enum_led_state state) {
 		PORTD &= ~(1<<LED_AUX_BIT);
 }
 
-/*! Set the menu LED status
+/*! \brief Set the menu LED status
  *  \param state The state of the LED */
 void led_set_menu(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
@@ -207,7 +211,7 @@ void led_set_menu(enum enum_led_state state) {
 		PORTK &= ~(1<<LED_MENU_BIT);
 }
 
-/*! Set all the LEDs
+/*! \brief Set all the LEDs
  *  \param state The state of the LED */
 void led_set_all(enum enum_led_state state) {
 	if (state == LED_STATE_ON) {

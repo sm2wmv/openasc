@@ -1,6 +1,9 @@
-/*! \file menu.c \brief Menu system
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-01
+/*! \file front_panel/menu.c 
+ *  \brief Menu system
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/menu.c " \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

@@ -1,4 +1,4 @@
-/*! \file init.h \brief Initialization routines for the driver unit
+/*! \file rotator_unit/init.h \brief Initialization routines for the rotator unit
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-03-16
  */

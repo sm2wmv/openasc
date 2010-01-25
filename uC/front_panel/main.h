@@ -1,6 +1,9 @@
-/*! \file main.h \brief Main file of the front panel
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-08
+/*! \file front_panel/main.h 
+ *  \brief Main file of the front panel
+ *  \defgroup front_panel_group Front panel
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/main.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -20,12 +23,17 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+//! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
 
+//! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
+//! Macro to disable timer 0 interrupt
 #define DISABLE_TIMER0_INT() 	TIMSK0 &= ~(1<<OCIE0A);
 
+//! Flag to indicate that the bus is allowed to transmit
 #define BUS_STATUS_ALLOWED_TO_SEND_BIT	0
+//! Flag to indicate that a preamble has been found in the bus
 #define BUS_STATUS_PREAMBLE_FOUND_BIT		1
 
 //! The size of the RX queue in buffers
@@ -133,14 +141,20 @@
 //! Define for function status, to select which antenna that should be rotated
 #define FUNC_STATUS_SELECT_ANT_ROTATE	2
 
-//! DISPLAY OPTIONS
+//! Display level openASC logo
 #define DISPLAY_LEVEL_LOGO		0
+//! Display level current band
 #define DISPLAY_LEVEL_BAND		1
+//! Display level sub menu
 #define DISPLAY_LEVEL_SUBMENU	2
 
+//! Current display is the openASC logo
 #define CURRENT_DISPLAY_LOGO					0
+//! Current display is the antenna information
 #define CURRENT_DISPLAY_ANTENNA_INFO	1
+//! Current display is the menu system
 #define CURRENT_DISPLAY_MENU_SYSTEM		2
+//! Current display is the shutdown in progress view
 #define CURRENT_DISPLAY_SHUTDOWN_VIEW	3
 
 //! The time from when a pulse sensor change occured to the actual change does happen
@@ -148,12 +162,17 @@
 
 /****************************************************************/
 
+//! Different inhibit states
 enum enum_inhibit_state {
+	//! Inhibit state, OK to start a transmission
 	INHIBIT_OK_TO_SEND,
+  //! Inhibit state, NOT OK to start a transmission
 	INHIBIT_NOT_OK_TO_SEND,
+  //! Inhibit state, NOT OK to start a transmission, Radio is in TX
  	INHIBIT_NOT_OK_TO_SEND_RADIO_TX
 };
 
+//! Settings struct
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
@@ -169,9 +188,13 @@ typedef struct {
 
 //! This struct only contains information that is temporary
 typedef struct {
+	//! The current state of the buttons
 	unsigned int buttons_current_state;
+	//! The last state of the buttons
 	unsigned int buttons_last_state;
+	//! The current state of the ext devices
 	unsigned char ext_devices_current_state;
+	//! The last state of the ext devices
 	unsigned char ext_devices_last_state;
 	
 	//! Bit 0-3 = TX, Bit 4-7 = RX

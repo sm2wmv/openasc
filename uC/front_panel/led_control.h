@@ -1,6 +1,9 @@
-/*! \file led_control.h \brief Front panel LED control functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-25
+/*! \file front_panel/led_control.h 
+ *  \brief Front panel LED control functions
+ *  \ingroup front_panel_group 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/led_control.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -16,7 +19,6 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 #ifndef _LED_CONTROL_H_
 #define _LED_CONTROL_H_

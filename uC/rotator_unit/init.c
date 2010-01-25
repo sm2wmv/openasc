@@ -1,4 +1,4 @@
-/*! \file init.c \brief Initialization routines for the driver unit 
+/*! \file rotator_unit/init.c \brief Initialization routines for the driver unit 
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-03-16
  */

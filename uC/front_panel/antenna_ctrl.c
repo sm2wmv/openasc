@@ -1,6 +1,9 @@
-/*! \file antenna_ctrl.c \brief Antenna control functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-06-21
+/*! \file front_panel/antenna_ctrl.c \brief Antenna control functions
+ *  \ingroup front_panel_group
+ *  \brief Antenna control functions
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/antenna_ctrl.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -92,7 +95,7 @@ unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
 	return(result);
 }
 
-/*! Retrieve if a certain antenna combination is allowed 
+/*! \brief Retrieve if a certain antenna combination is allowed 
  *  \param antenna_comb The antenna configuration you wish to check 
  *  \return 1 if the combination is allowed, 0 if it is not allowed */
 unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
@@ -105,7 +108,7 @@ unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
 		return(0);
 }
 
-/*! This command will go through a parameter with addresses and send a command to it
+/*! \brief This function will go through a parameter with addresses and send a command to it
  *  \param addresses The list of addresses to send CMD to
  *  \param length The length of the address list
  *  \param cmd The command we wish to send to the boards in the address list */
@@ -120,11 +123,13 @@ void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char len
 	}
 }
 
+/*! \brief This function returns the selected antenna combination 
+ * \return The selected antenna combination, for example 1 means antenna 1, 3 means antenna 1 and 2 (binary representation) */
 unsigned char antenna_ctrl_antenna_selected(void) {
 	return(status.selected_ant & 0x0F);
 }
 
-/*! Send the output string for the current antenna to the bus */
+/*! \brief Send the output string for the current antenna to the bus */
 void antenna_ctrl_send_ant_data_to_bus(void) {
 	if (status.selected_ant != 0) {	
 		unsigned char value = antenna_ctrl_get_comb_value(status.selected_ant);
@@ -173,7 +178,7 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 	}
 }
 
-/*! Send the output string for the rx antenna to the bus 
+/*! \brief Send the output string for the rx antenna to the bus 
  *  \param antenna_index The index of the antenna you wish to send the string of */
 void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index) {
 	unsigned char length = rx_antennas.output_length[antenna_index];
@@ -215,7 +220,7 @@ void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index) {
 	}
 }
 
-/*! Send the output string for the rx antenna to the bus 
+/*! \brief Send the output string for the rx antenna to the bus 
  *  \param antenna_index The index of the antenna you wish to send the string of */
 void antenna_ctrl_send_rx_ant_band_data_to_bus(char index) {
 	if ((index > 0) && (index < BAND_20M)){
@@ -278,6 +283,8 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	*/
 }
 
+/*! \brief Function used to change an rx antenna 
+ * \param ant_index Which RX antenna we wish to chose. If ant_index = 0 the rx antenna outputs are disabled */
 void antenna_ctrl_change_rx_ant(unsigned char ant_index) {
 	if (ant_index != 0) {
 		antenna_ctrl_send_rx_ant_data_to_bus(ant_index-1);
@@ -288,7 +295,7 @@ void antenna_ctrl_change_rx_ant(unsigned char ant_index) {
 	}
 }
 
-/*! Get which antennas can be rotated
+/*! \brief Get which antennas can be rotated
  *  \return Which antennas can be rotated, in binary form starting with ant 0 from byte 0 */
 unsigned char antenna_ctrl_get_rotatable(void) {
 	unsigned char flags = 0;
@@ -300,6 +307,7 @@ unsigned char antenna_ctrl_get_rotatable(void) {
 	return(flags);
 }
 
+/*! \brief Function which will deactivate all activated antenna ctrl outputs, using type BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS */
 void antenna_ctrl_deactivate_all(void) {
 	if (current_activated_ant_outputs_length > 0) {
 		antenna_ctrl_deactivate_outputs(current_activated_ant_outputs, current_activated_ant_outputs_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS);
@@ -307,6 +315,7 @@ void antenna_ctrl_deactivate_all(void) {
 	}
 }
 
+/*! \brief Function which will deactivate all activated rx antenna ctrl band outputs, using type BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS */
 void antenna_ctrl_deactivate_all_rx_band(void) {
 	if (current_band_activated_outputs_rx_length > 0) {
 		antenna_ctrl_deactivate_outputs(current_band_activated_outputs_rx, current_band_activated_outputs_rx_length, BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS);
@@ -315,7 +324,7 @@ void antenna_ctrl_deactivate_all_rx_band(void) {
 }
 
 
-/*! Set the antenna text
+/*! \brief Set the antenna text
  *  \param str Which data should be saved
  *  \param index The index of the antenna */
 void antenna_ctrl_set_antenna_text(char *str, unsigned char index) {
@@ -329,7 +338,7 @@ char* antenna_ctrl_get_antenna_text(unsigned char index) {
 	return(current_antennas.antenna_text[index]);
 }
 
-/*! Get the antenna text length
+/*! \brief Get the antenna text length
  *  \param index The index of the antenna
  *  \return the length of the text */
 unsigned char antenna_ctrl_get_antenna_text_length(unsigned char index) {
@@ -337,7 +346,7 @@ unsigned char antenna_ctrl_get_antenna_text_length(unsigned char index) {
 }
 
 
-/*! Set the output combination string
+/*! \brief Set the output combination string
  *  \param data The string you wish to save
  *  \param index The index of the output combination
  *  \param length The length of the output string */
@@ -347,42 +356,42 @@ void antenna_ctrl_set_output_comb(unsigned char *data, unsigned char index, unsi
 	current_antennas.antenna_output_length[index] = length;
 }
 
-/*! Retrieve the output combination string
+/*! \brief Retrieve the output combination string
  *  \param index Which of the bands you wish to get the output string for
  *  \return pointer to the string beginning */
 unsigned char* antenna_ctrl_get_output_comb(unsigned char index) {
 	return(current_antennas.antenna_comb_output_str[index]);
 }
 
-/*! Retrieve the length of the output combination string 
+/*! \brief Retrieve the length of the output combination string 
  *  \param index Which of the combinations you wish to retrieve the length of
  *  \return The length of the output string */
 unsigned char antenna_ctrl_get_output_comb_length(unsigned char index) {
 	return(current_antennas.antenna_output_length[index]);
 }
 
-/*! Set the direction of a specific antenna
+/*! \brief Set the direction of a specific antenna
  *  \param dir The direction of the antenna
  *  \param index The index of the antenna */
 void antenna_ctrl_set_direction(unsigned int dir, unsigned char index) {
 	current_antennas.antenna_direction[index] = dir;
 }
 
-/*! Get the direction of a specific antenna
+/*! \brief Get the direction of a specific antenna
  *  \param  index The index of the antenna
  *  \return The direction of the antenna */
 unsigned int antenna_ctrl_get_direction(unsigned char index) {
 	return(current_antennas.antenna_direction[index]);
 }
 
-/*! Get the address of the rotator at a certain antenna index
+/*! \brief Get the address of the rotator at a certain antenna index
  *  \param  index The index of the antenna
  *  \return The address of the rotator */
 unsigned char antenna_ctrl_get_rotator_addr(unsigned char ant_index) {
 	return(current_antennas.rotator_addr[ant_index]);
 }
 
-/*! Set the antenna flags
+/*! \brief Set the antenna flags
  *  \param flags The flags you wish to be enabled for this antenna
  *  \param index The index of the antenna which the flags should be set to
  */
@@ -390,7 +399,7 @@ void antenna_ctrl_set_flags(unsigned char flags, unsigned char index) {
 	current_antennas.antenna_flag[index] = flags;
 }
 
-/*! Get the antenna flags
+/*! \brief Get the antenna flags
  *  \param  index The index of which antenna you wish to get the flag content from
  *  \return The flags
  */
@@ -398,44 +407,44 @@ unsigned char antenna_ctrl_get_flags(unsigned char index) {
 	return(current_antennas.antenna_flag[index]);
 }
 
-/*! Set the value of combination allowed
+/*! \brief Set the value of combination allowed
  *  \param comb The combination that is allowed */
 void antenna_ctrl_set_comb_allowed(unsigned int comb) {
 	current_antennas.antenna_comb_allowed = comb;
 }
 
-/*! Set the flags of the rotator, see antenna_ctrl.h for defines
+/*! \brief Set the flags of the rotator, see antenna_ctrl.h for defines
  *  \param flags Flags from the rotator */
 void antenna_ctrl_set_rotator_flags(unsigned char ant_index,unsigned char flags) {
 	current_antennas.rotator_flags[ant_index] = flags;
 }
 
-/*! Get the flags of the rotator, see antenna_ctrl.h for defines
+/*! \brief Get the flags of the rotator, see antenna_ctrl.h for defines
  *  \return The rotator flags of the antenna */
 unsigned char antenna_ctrl_get_rotator_flags(unsigned char ant_index) {
 	return(current_antennas.rotator_flags[ant_index]);
 }
 
-/*! Get the value of combination allowed
+/*! \brief Get the value of combination allowed
  *  \return The combination allowed value
  */
 unsigned int antenna_ctrl_get_comb_allowed(void) {
 	return(current_antennas.antenna_comb_allowed);
 }
 
-/*! Set the antenna data
+/*! \brief Set the antenna data
  *  \param data The data we wish to use as antenna data */
 void antenna_ctrl_set_antenna_data(struct_antenna *data) {
 	memcpy(&current_antennas, &data, sizeof(struct_antenna));
 }
 
-/*! Set the antenna rx data
+/*! \brief Set the antenna rx data
  *  \param data The data we wish to use as rx antenna data */
 void antenna_ctrl_set_rx_antenna_data(struct_rx_antennas *data) {
 	memcpy(&rx_antennas, &data, sizeof(struct_rx_antennas));
 }
 
-/*! Retrieve the number of rx antennas
+/*! \brief Retrieve the number of rx antennas
  *  \return The number of rx antenna count */
 unsigned char antenna_ctrl_get_rx_antenna_count(void) {
 	unsigned char count = 0;
@@ -447,20 +456,21 @@ unsigned char antenna_ctrl_get_rx_antenna_count(void) {
 	return(count);
 }
 
-/*! Retrieve the rx antenna name
+/*! \brief Retrieve the rx antenna name
  *  \param ant_index The index of the antenna
  *  \return The name of the RX antenna */
 char* antenna_ctrl_get_rx_antenna_name(unsigned char ant_index) {
 	return(rx_antennas.name[ant_index]);
 }
 
-/*! Retrieve the rx antenna output str
+/*! \brief Retrieve the rx antenna output str
  *  \param ant_index The index of the antenna
  *  \return The output str of the rx antenna sent in */
 char* antenna_ctrl_get_rx_antenna_output_str(unsigned char ant_index) {
 	return(rx_antennas.output_str[ant_index]);
 }
 
+/*! \brief Function which will select the default antenna for this band if it is configured */
 void antenna_ctrl_select_default_ant(void) {
 	if (current_antennas.default_antenna == 0)
 		event_tx_button1_pressed();
@@ -472,21 +482,27 @@ void antenna_ctrl_select_default_ant(void) {
 		event_tx_button4_pressed();
 }
 
-/*! Read the eeprom for the antenna settings 
+/*! \brief Read the eeprom for the antenna settings 
  *  \param band_index The band index */
 void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
 	eeprom_get_antenna_data(&current_antennas, band_index-1);
 }
 
-/*! Read the eeprom for the rx antenna settings  */
+/*! \brief Read the eeprom for the rx antenna settings  */
 void antenna_ctrl_rx_ant_read_eeprom(void) {
 	eeprom_get_rx_antenna_data(&rx_antennas);
 }
 
+/*! \brief Function returns the start heading for a certain antenna 
+ *  \param ant_index The index of the antenna we wish to retrieve the heading from
+ *  \return The start heading of this antenna */
 unsigned int antenna_ctrl_get_start_heading(unsigned char ant_index) {
 	return(current_antennas.rotator_min_heading[ant_index]);
 }
 
+/*! \brief Function returns the maximal number of degrees we can rotate an antenna 
+ *  \param ant_index The antenna index we wish to retrieve the information from
+ *  \return The number of degrees the antenna can be rotated */
 unsigned int antenna_ctrl_get_max_rotation(unsigned char ant_index) {
 	return(current_antennas.rotator_max_rotation[ant_index]);
 }

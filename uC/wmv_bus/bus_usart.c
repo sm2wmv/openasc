@@ -1,7 +1,9 @@
-/*! \file bus_usart.c \brief Driver unit USART routines.
- * \brief These routines are used to communicate over the WMV bus.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file wmv_bus/bus_usart.c \brief Driver unit USART routines.
+ *  \ingroup bus_group 
+ *  \brief These routines are used to communicate over the WMV bus.
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "wmv_bus/bus_usart.c" \endcode
 */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

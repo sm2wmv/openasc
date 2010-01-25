@@ -1,4 +1,4 @@
-/*! \file ext_control.c \brief External control file
+/*! \file rotator_unit/ext_control.c \brief External control file
  * \author Mikael Larsmark, SM2WMV
  * \date 2009-04-22
  */

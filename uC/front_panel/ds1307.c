@@ -1,6 +1,12 @@
 /*! \file ds1307.c \brief Main file of the front panel
  * \author Mikael Larsmark, SM2WMV
  * \date 2008-04-30
+/*! \file front_panel/ds1307.c
+ *  \ingroup front_panel_group 
+ *  \brief Realtime clock
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/ds1307.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -29,6 +35,7 @@
 unsigned char allowed_to_read = 0;
 unsigned char *time_data;
 
+/*! \brief Initialize the realtime clock on the front panel */
 void ds1307_init(void) {
 	time_data = malloc(9);
 	
@@ -48,6 +55,8 @@ void ds1307_init(void) {
 	allowed_to_read = 1;
 }
 
+/*! \brief Set the current time of the realtime clock 
+ *  \param data data[0] = seconds, data[1] = minutes, data[2] = hours, data[3] = Day, data[4] = Date, data[5] = month, data[6] = year */
 void ds1307_set_time(char *data) {
 	//Flag to avoid a read from the real-time clock during 
 	//our time adjustment
@@ -69,24 +78,31 @@ void ds1307_set_time(char *data) {
 	allowed_to_read = 1;
 }
 
+/*! \brief Retrieve the hour part of the time from the realtime clock 
+ *  \return The current hour */
 unsigned char ds1307_get_hours(void) {
 	unsigned char temp = *(time_data+2) & 0x0F;
 	temp += ((*(time_data+2) & 0x30)>>4)*10;
 	return(temp);
 }
 
+/*! \brief Retrieve the minute part of the time from the realtime clock 
+ *  \return The current minute */
 unsigned char ds1307_get_minutes(void) {
 	unsigned char temp = *(time_data+1) & 0x0F;
 	temp += ((*(time_data+1) & 0x70)>>4)*10;
 	return(temp);
 }
 
+/*! \brief Retrieve the seconds part of the time from the realtime clock 
+ *  \return The current seconds */
 unsigned char ds1307_get_seconds(void) {
 	unsigned char temp = *(time_data+0) & 0x0F;
 	temp += ((*(time_data+0) & 0x70)>>4)*10;
 	return(temp);
 }
 
+/*! \brief Read the current time/date from the realtime clock. Stores the data and can be retrieved with the get functions in this file */
 void ds1307_read(void) {
 	if (allowed_to_read)
 		i2cMasterReceiveNI(DS1307_ADDR,7,(unsigned char *)time_data);

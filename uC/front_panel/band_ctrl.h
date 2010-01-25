@@ -1,6 +1,9 @@
-/*! \file band_ctrl.h \brief Band control functions
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-06-21
+/*! \file front_panel/band_ctrl.h 
+ *  \ingroup front_panel_group 
+ *  \brief Band control functions
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/band_ctrl.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -22,6 +25,7 @@
 
 #include "main.h"
 
+//! Struct of band data
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
@@ -43,6 +47,7 @@ typedef struct {
 	unsigned char band_low_output_str[BAND_OUTPUT_STR_SIZE];
 } struct_band;
 
+//! Struct of the band limits
 typedef struct{
 	//! The low limit of the lower portion of the band
 	unsigned int low_portion_low_limit;

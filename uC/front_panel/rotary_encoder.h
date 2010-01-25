@@ -1,6 +1,9 @@
-/*! \file rotary_encoder.h \brief The rotary encoder
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-16
+/*! \file front_panel/rotary_encoder.h
+ *  \brief Rotary encoder functions
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/rotary_encoder.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

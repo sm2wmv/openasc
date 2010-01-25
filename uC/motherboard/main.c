@@ -1,6 +1,9 @@
-/*! \file main.c \brief Main file of the motherboard
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file motherboard/main.c 
+ *  \ingroup  motherboard_group
+ *  \brief Main file of the motherboard
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "motherboard/main.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -131,6 +134,8 @@ void deactivate_output(unsigned char index) {
 	}
 }
 
+/*! \brief Parse an internal communication message 
+ *  \param message The message that we wish to parse */
 void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
 
@@ -237,6 +242,8 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 	}
 }
 
+/*! \brief Send a command to the PS/2 keyboard output/input 
+ *  \param cmd The command we wish to send */
 void ps2_keyboard_send(unsigned char cmd) {
 	ps2.transmit = 1;
 	ps2.bit_count = 0;
@@ -257,6 +264,8 @@ void ps2_keyboard_send(unsigned char cmd) {
 	ps2.bit_count = 0;
 }
 
+/*! \brief Process a keystroke
+ *  \param key_code The key code which was received */
 void ps2_process_key(unsigned char key_code) {
 	//TODO: Figure out why this does not work with just sending in one variable
 	unsigned char why[2];
@@ -326,7 +335,7 @@ int main(void) {
 	}
 }
 
-/*!Output compare 0 interrupt - "called" with 1ms intervals*/
+/*! \brief Output compare 0 interrupt - "called" with 1ms intervals */
 ISR(SIG_OUTPUT_COMPARE0) {
 	counter_time_start++;
 	
@@ -345,7 +354,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_ps2++;
 }
 
-/*! Output overflow 0 interrupt */
+/*! \brief Output overflow 0 interrupt */
 ISR(SIG_OVERFLOW0) {
 	
 }

@@ -1,6 +1,9 @@
-/*! \file init.c \brief Initialization routines for the driver unit 
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-16
+/*! \file driver_unit_v2/init.c 
+ *  \ingroup driver_unit_v2_group
+ *  \brief Initialization routines for the driver unit 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2009-03-16
+ *  \code #include "driver_unit_v2/init.c" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //

@@ -1,7 +1,11 @@
-/*! \file eeprom_m24.c \brief EEPROM interface
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-12-09
+/*! \file front_panel/eeprom_m24.c
+ *  \brief EEPROM hardware functions
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/eeprom_m24.c" \endcode
  */
+
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -32,6 +36,9 @@ void __inline__ eeprom_tiny_delay(void) {
 		__asm__ __volatile__("nop");
 }
 
+/*! \brief Write a byte of data to the EEPROM
+ *  \param eeprom_address The address where we wish to store the byte
+ *  \param value The value we wish to store at eeprom_address */
 unsigned char eeprom_m24_write_byte(unsigned int eeprom_address, unsigned char value) {
 	unsigned char temp[3];
 	temp[0] = ((eeprom_address & 0xFF00) >> 8);
@@ -82,6 +89,9 @@ unsigned char eeprom_m24_write_byte(unsigned int eeprom_address, unsigned char v
 	return retval;
 }
 
+/*! \brief Read a byte of data from the EEPROM
+ *  \param eeprom_address The address where we wish to read the byte from
+ *  \return The value at eeprom_address */
 unsigned char eeprom_m24_read_byte(unsigned int eeprom_address) {
 	unsigned char temp_addr[2];
 	
@@ -128,6 +138,10 @@ unsigned char eeprom_m24_read_byte(unsigned int eeprom_address) {
 	return(data);
 }
 
+/*! \brief Write a block of data to the EEPROM
+ *  \param start_address The start address of where we wish to store the data
+ *  \param length The length of the data we wish to store 
+ *  \param data The content we wish to write to the EEPROM */
 unsigned char eeprom_m24_write_block(unsigned int start_address, unsigned int length, unsigned char *data) {
 	
 	unsigned int current_address,last_address;
@@ -193,6 +207,10 @@ unsigned char eeprom_m24_write_block(unsigned int start_address, unsigned int le
 	return retval;
 }
 
+/*! \brief Read a block of data from the EEPROM - NOT FINISHED!!
+ *  \param start_address The start address of where we wish to read the data from
+ *  \param length The length of the data we wish read
+ *  \param data The memory area we wish to store the data to */
 unsigned char eeprom_m24_read_block(unsigned int start_address, unsigned int length, unsigned char *data) {
 //	if ((start_address & 0xFFC0) != ((start_address+length) & 0xFFC0)) 
 	unsigned char temp_addr[2];

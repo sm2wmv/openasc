@@ -1,4 +1,5 @@
-/*! \file ks0108conf.h \brief Graphic LCD driver configuration. */
+/*! \file front_panel/ks0108conf.h 
+ *  \brief Graphic LCD driver configuration. */
 //*****************************************************************************
 //
 // File Name	: 'ks0108conf.h'

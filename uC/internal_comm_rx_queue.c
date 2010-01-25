@@ -1,6 +1,9 @@
-/*! \file internal_comm_rx_queue.c \brief FIFO queue for the RXed messages.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-11-22
+/*! \file internal_comm_rx_queue.c
+ *  \brief The internal communication RX QUEUE
+ *  \ingroup internal_comm_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "internal_comm_rx_queue.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -25,6 +28,7 @@
 
 #include "internal_comm_rx_queue.h"
 
+//! The RX queue
 int_comm_rx_queue_struct int_comm_rx_queue;
 
 void int_comm_rx_queue_init(void) {

@@ -1,6 +1,9 @@
-/*! \file init.c \brief Initialization routines for the front panel
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file front_panel/init.c
+ *  \brief Initialization routines for the front panel
+ *  \ingroup front_panel_group 
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/init.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //

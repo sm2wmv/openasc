@@ -1,6 +1,9 @@
-/*! \file board.h \brief Front panel board defines 
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file front_panel/board.h 
+ *  \ingroup front_panel_group
+ *  \brief Front panel board defines
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/board.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -187,60 +190,102 @@
  */
 
 //LEDs
+//! Bit offset of TX button 1 LED
 #define LED_TX_BUTTON1_BIT	7
+//! Bit offset of TX button 2 LED
 #define LED_TX_BUTTON2_BIT	5
+//! Bit offset of TX button 3 LED
 #define LED_TX_BUTTON3_BIT	3
+//! Bit offset of TX button 4 LED
 #define LED_TX_BUTTON4_BIT	1
 
+//! Bit offset of Error LED
 #define LED_ERROR_BIT				7
+//! Bit offset of PTT Green LED
 #define LED_PTT_GREEN_BIT		0
+//! Bit offset of PTT Red LED
 #define LED_PTT_RED_BIT			1
+//! Bit offset of rotation active LED
 #define LED_ROTATION_ACTIVE_BIT		6
 
+//! Bit offset of RX button 1 LED
 #define LED_RX_BUTTON1_BIT	3
+//! Bit offset of RX button 2 LED
 #define LED_RX_BUTTON2_BIT	5
+//! Bit offset of RX button 3 LED
 #define LED_RX_BUTTON3_BIT	4
+//! Bit offset of RX button 4 LED
 #define LED_RX_BUTTON4_BIT	6
 
+//! Bit offset of LED rotate
 #define LED_ROTATE_BIT			4
+//! Bit offset of LED TX/RX mode
 #define LED_TXRX_BIT				2
+//! Bit offset of LED RX ANTENNA
 #define LED_RXANT_BIT				6
+//! Bit offset of LED SUB MENU
 #define LED_AUX_BIT					4
+//! Bit offset of LED for MENU system
 #define LED_MENU_BIT				7
 
 //Button and knobs
+//! Bit offset of the pulse sensor
 #define PULSE_SENSOR_BIT1		6
+//! Bit offset of the pulse sensor
 #define PULSE_SENSOR_BIT2		7
 
+//! Bit offset of TX button 1
 #define BUTTON1_TX_BIT			6
+//! Bit offset of TX button 2
 #define BUTTON2_TX_BIT			4
+//! Bit offset of TX button 3
 #define BUTTON3_TX_BIT			2
+//! Bit offset of TX button 4
 #define BUTTON4_TX_BIT			0
 
+//! Bit offset of RX button 1
 #define BUTTON1_RX_BIT			2
+//! Bit offset of RX button 2
 #define BUTTON2_RX_BIT			4
+//! Bit offset of RX button 3
 #define BUTTON3_RX_BIT			6
+//! Bit offset of RX button 4
 #define BUTTON4_RX_BIT			5
 
+//! Bit offset of rotate button
 #define BUTTON_ROTATE_BIT		5
+//! Bit offset of TX/RX mode button
 #define BUTTON_TXRX_BIT			3
+//! Bit offset of RX Antenna button
 #define BUTTON_RXANT_BIT		7
+//! Bit offset of SUB MENU button
 #define BUTTON_AUX_BIT			5
+//! Bit offset of MENU button
 #define BUTTON_MENU_BIT			6
+//! Bit offset of PULSE SENSOR button
 #define BUTTON_PULSE_BIT		2
 
 //Ext devices
+//! Bit offset of the EXT Radio sense 1
 #define	EXT_RADIO_SENSE1_BIT	4
+//! Bit offset of the EXT Radio sense 2
 #define	EXT_RADIO_SENSE2_BIT	2
+//! Bit offset of the footswitch
 #define	EXT_FOOTSWITCH_BIT		3
+//! Bit offset of the USB 1 DTR
 #define EXT_USB1_DTR_BIT			4
+//! Bit offset of the USB 2 DTR
 #define EXT_USB2_DTR_BIT			5
+//! Bit offset of the USB 2 RTS
 #define EXT_USB2_RTS_BIT			6
 
+//! Bit offset of the amplifier output
 #define AMPLIFIER_OUTPUT_BIT	2
 
+//! Bit offset of the tx active output
 #define TX_ACTIVE_OUTPUT_BIT	5
 
+//! Bit offset of the inhibit output
 #define RADIO_INHIBIT_OUTPUT_BIT 5
 
 //! Flag is set if the TX ANTENNA #1 button is pressed
@@ -284,6 +329,5 @@
 #define STATUS_USB2_DTR_BIT				4
 //! This bit shows the status of the USB RTS on USB port 2
 #define STATUS_USB2_RTS_BIT				5
-
 
 #endif

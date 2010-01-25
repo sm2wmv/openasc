@@ -14,8 +14,7 @@
 // to be lacking in some functionality or documentation, or may not be fully
 // tested.  Nonetheless, you can expect most functions to work.
 //
-///	\ingroup driver_hw
-/// \defgroup glcd Graphic LCD API (application programmer's interface) (glcd.c)
+///	\ingroup front_panel_group
 /// \code #include "glcd.h" \endcode
 /// \par Overview
 ///		This library (or API) allows you to draw dots, lines, boxes, circles,
@@ -84,7 +83,7 @@ void glcd_line(unsigned char x1,  unsigned char x2, unsigned char y);
 //! draw rectangle (coords????)
 void glcd_rectangle(unsigned char x, unsigned char y, unsigned char a, unsigned char b);
 
-//! draw circle of <radius> at <xcenter,ycenter>
+//! draw circle of radius at xcenter,ycenter
 void glcd_circle(unsigned char xcenter, unsigned char ycenter, unsigned char radius);
 
 void glcd_print_picture(void);

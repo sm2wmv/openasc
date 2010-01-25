@@ -1,7 +1,10 @@
-/*! \file usart.c \brief Motherboard USART routines.
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-08
-*/
+/*! \file front_panel/usart.c
+ *  \brief USART routines
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/usart.c" \endcode
+ */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -26,7 +29,7 @@
  * This function is used to initialize the USART which a baudrate
  * that needs to be sent in as a parameter Use the baudrate settings
  * specified in the ATMEGA2560 baudrate setting.
- * \param baud The baudrate param from the ATMEGA2560 datasheet.
+ * \param baudrate The baudrate param from the ATMEGA2560 datasheet.
  */
 void usart0_init(unsigned int baudrate) {
 	/* Set baud rate */
@@ -103,7 +106,7 @@ unsigned char poll_usart0_receive(void ) {
  * This function is used to initialize the USART which a baudrate
  * that needs to be sent in as a parameter Use the baudrate settings
  * specified in the ATMEGA2560 baudrate setting.
- * \param baud The baudrate param from the ATMEGA2560 datasheet.
+ * \param baudrate The baudrate param from the ATMEGA2560 datasheet.
  * \param stopbits The number of stopbits.
  */
 void usart1_init(unsigned int baudrate, unsigned char stopbits) {
@@ -188,7 +191,8 @@ unsigned char poll_usart1_receive(void ) {
  * This function is used to initialize the USART which a baudrate
  * that needs to be sent in as a parameter Use the baudrate settings
  * specified in the ATMEGA2560 baudrate setting.
- * \param baud The baudrate param from the ATMEGA2560 datasheet.
+ * \param baudrate The baudrate param from the ATMEGA2560 datasheet.
+ * \param stopbits The number of stopbits.
  */
 void usart3_init(unsigned int baudrate, unsigned char stopbits) {
 	/* Set baud rate */

@@ -1,6 +1,9 @@
-/*! \file menu.h \brief Menu system
- * \author Mikael Larsmark, SM2WMV
- * \date 2009-03-01
+/*! \file front_panel/menu.h 
+ *  \brief Menu system
+ *  \ingroup front_panel_group
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "front_panel/menu.h " \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
@@ -22,10 +25,12 @@
 
 #include <avr/pgmspace.h>
 
+//! Struct of a menu option
 typedef struct {
 	char *text;
 } struct_menu_option;
 
+//! Menu text structs
 typedef struct {
 	//! Position nr in the menu system
 	unsigned char pos;

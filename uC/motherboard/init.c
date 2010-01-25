@@ -1,6 +1,9 @@
-/*! \file init.c \brief Initialization routines for the motherboard
- * \author Mikael Larsmark, SM2WMV
- * \date 2008-04-06
+/*! \file motherboard/init.c 
+ *  \ingroup motherboard_group
+ *  \brief Initialization routines for the motherboard
+ *  \author Mikael Larsmark, SM2WMV
+ *  \date 2010-01-25
+ *  \code #include "init.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
 //
@@ -24,7 +27,7 @@
 
 #define OCR0_1MS	14
 
-/*!Initializes the USART for the communication bus*/
+/*! \brief Initializes the USART for the communication bus*/
 void init_usart(void)
 {
 	//Init USART to 115.2kBaud at 14.7456 MHz (communication bus)
@@ -32,8 +35,7 @@ void init_usart(void)
 	fdevopen((void*)usart0_transmit, (void*)usart0_receive_loopback);
 }
 
-/*
-  * Initialize timer0 to use the main crystal clock and the output
+/*! Initialize timer0 to use the main crystal clock and the output
   * compare interrupt feature to generate an interrupt approximately
   * once per millisecond to use as a general purpose time base.
   */
@@ -47,8 +49,7 @@ void init_timer_0(void)
    OCR0   = OCR0_1MS;                     /* match in aprox 1 ms,  */
 }
 
-/*!Set the direction of the ports
-*/
+/*! \brief Set the direction of the ports */
 void init_ports(void)
 {
 	DDRA = 0xFF;
