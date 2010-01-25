@@ -29,6 +29,7 @@
 #include "bus_tx_queue.h"
 #include "bus.h"
 
+//! The tx queue
 tx_queue_struct tx_queue;
 
 /*! \brief Initialize the TX queue */

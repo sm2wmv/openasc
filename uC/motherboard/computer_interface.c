@@ -52,6 +52,7 @@
 //! The length of the computer RX BUFFER
 #define COMPUTER_TX_BUFFER_LENGTH	20
 
+//! The number of bytes the fixed part of the data structure takes up
 #define COMPUTER_INTERFACE_FIXED_SIZE	5
 
 //! The preamble of the computer communication protocol
@@ -63,6 +64,7 @@
 //! The serial NOT acknowledge of the computer communication protocol
 #define COMPUTER_COMM_NACK			0xFB
 
+//! Command which is used just to redirect data from the USB to the front panel
 #define COMPUTER_COMM_REDIRECT_DATA					0x10
 
 //! Flag to see if the preamble was found
@@ -84,14 +86,20 @@ typedef struct {
 	char *rx_buffer_start;
 	//! Different flags
 	unsigned char data_in_tx_buffer;
+	//! Various flags
 	unsigned char flags;
+	//! The command
 	unsigned char command;
+	//! Data length
 	unsigned char length;
+	//! Number of bytes received
 	unsigned int count;
 } computer_comm_struct;
 
+//! Computer communication data
 computer_comm_struct computer_comm;
 
+//! The bootloader start address
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
 //! \brief Initialize the communication interface towards the computer
@@ -185,6 +193,7 @@ ISR(SIG_USART1_DATA) {
 	
 }
 
+/*! Interrupt which is called when a byte has been received */
 ISR(SIG_USART1_RECV) {
 	unsigned char data = UDR1;
 

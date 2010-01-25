@@ -23,6 +23,7 @@
 #ifndef _LED_CONTROL_H_
 #define _LED_CONTROL_H_
 
+//! PTT led state
 enum enum_led_ptt_state {
 	//! Used to set the LED to PTT active color
 	LED_STATE_PTT_ACTIVE,
@@ -32,6 +33,7 @@ enum enum_led_ptt_state {
  	LED_STATE_PTT_OK
 };
 
+//! Regular LED state
 enum enum_led_state {
 	//! Used to set the LED as ON
 	LED_STATE_ON,

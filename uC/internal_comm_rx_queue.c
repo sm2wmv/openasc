@@ -31,6 +31,7 @@
 //! The RX queue
 int_comm_rx_queue_struct int_comm_rx_queue;
 
+/*! \brief Initialize the internal comm rx queue */
 void int_comm_rx_queue_init(void) {
 	int_comm_rx_queue.first = 0;
 	int_comm_rx_queue.last = 0;

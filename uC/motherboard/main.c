@@ -38,16 +38,21 @@
 #define PS2_DATA_LOW	PORTA &= ~(1<<3)
 #define PS2_DATA_HIGH	PORTA |= (1<<3)
 
+//! Counter used for the PS/2 decoding
 unsigned char temp_count = 0;
 
+//! The driver output state
 unsigned int driver_output_state = 0;
+//! The type of driver output
 unsigned int driver_output_type[12];
 
 unsigned char btn_on_off_last_state = 1;
 
 unsigned int counter_time_start=0;
+//! Counter which keeps track of the PS/2 decoding
 unsigned int counter_ps2=0;
 
+//! PS/2 struct
 PS2_STRUCT ps2;
 
 void __inline__ tiny_delay(void) {
@@ -60,6 +65,7 @@ void __inline__ tiny_delay(void) {
 * This function is used to activate an output on the relay driver output in the openASC
 * It controls both the sink and source output at the same time.
 * \param index The index of which output to activate (1-12)
+* \param type The command that did activate this output
 */
 void activate_output(unsigned char index, unsigned char type) {
 	driver_output_state |= (1<<(index-1));

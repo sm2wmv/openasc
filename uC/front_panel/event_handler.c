@@ -441,7 +441,7 @@ void event_tx_button1_pressed(void) {
 				
 				set_tx_ant_leds();
 				
-				event_handler_enable_rotator_interface();
+				//event_handler_enable_rotator_interface();
 			}
 		}
 		
@@ -502,7 +502,7 @@ void event_tx_button2_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
 				set_tx_ant_leds();
-				event_handler_enable_rotator_interface();
+				//event_handler_enable_rotator_interface();
 			}
 		}
 		
@@ -564,7 +564,7 @@ void event_tx_button3_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
 				set_tx_ant_leds();
-				event_handler_enable_rotator_interface();
+				//event_handler_enable_rotator_interface();
 			}
 		}
 		
@@ -626,7 +626,7 @@ void event_tx_button4_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 					
 				set_tx_ant_leds();				
-				event_handler_enable_rotator_interface();
+				//event_handler_enable_rotator_interface();
 			}
 		}
 		

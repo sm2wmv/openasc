@@ -31,16 +31,21 @@
 #include "internal_comm_rx_queue.h"
 #include "internal_comm_tx_queue.h"
 
-/* TODO: Finish the transmission of data
- *       Timeout for TX messages (if not acked)
- *       Resend of NACKed messages or timeout
+/*! TODO: Finish the transmission of data
+ *  TODO: Timeout for TX messages (if not acked)
+ *  TODO: Resend of NACKed messages or timeout
  */
 
+//! The uc_com struct
 struct_uc_com uc_com;
+
+//! Where we save any new uc_comm message
 UC_MESSAGE uc_new_message;
 
+//! The previous data
 unsigned char prev_data = 0;
 
+//! Flag that the message has yet not been acked
 unsigned char msg_not_acked = 0;
 
 /*! \brief Function to be called when a message is recieved and should be parsed/executed */
@@ -151,6 +156,7 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 	int_comm_tx_queue_add(new_mess);
 }
 
+//! Interrupt when a byte has been received from the UART
 ISR(ISR_INTERNAL_COMM_USART_RECV) {
 	unsigned char data = INTERNAL_COMM_UDR;
 	uc_com.char_count++;
@@ -218,6 +224,7 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 	prev_data = data;
 }
 
+//! Interrupt when data has been received from the UART
 ISR(ISR_INTERNAL_COMM_USART_DATA) {
 	
 }

@@ -27,7 +27,10 @@
 #include "board.h"
 #include "rotary_encoder.h"
 
+//! The last state of the encoder
 unsigned char encoder_last_state = 0;
+
+//! The current state of the encoder
 unsigned char encoder_current_state = 0;
 
 /*! \brief Poll the rotary encoder pin states 

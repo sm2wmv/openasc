@@ -43,7 +43,9 @@
 //! \brief Contains the current band information
 struct_band current_band;
 
+//! Array which we use to keep track of which devices we have been activating outputs on
 unsigned char current_band_activated_outputs[BAND_OUTPUT_STR_SIZE];
+//! The number of devices we have activated outputs on
 unsigned char current_band_activated_outputs_length = 0;
 
 /*! \brief Send the output string for the current band to the bus */
@@ -243,6 +245,8 @@ unsigned char *band_ctrl_get_low_output_str(void) {
 	return(current_band.band_low_output_str);
 }
 
+/*! \brief Retrieve which band portion we are currently at 
+ *  \return BAND_LOW, BAND_HIGH or BAND_UNDEFINED */
 unsigned char band_ctrl_get_portion(void) {
 	//TODO: Add support for others as well not only radio
 	return(radio_get_band_portion());

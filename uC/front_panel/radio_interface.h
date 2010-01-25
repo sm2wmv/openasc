@@ -63,9 +63,11 @@
 //! Radio serial RX buffer length
 #define RADIO_SERIAL_RX_BUFFER_LENGTH	50
 
-//! Flags to indicate the transmission state of different devices
+//! Flag to indicate the radio PTT is active
 #define RADIO_FLAG_RADIO_PTT	0
+//! Flag to indicate the amp PTT is active
 #define RADIO_FLAG_AMP_PTT		1
+//! Flag to indicate the box openASC has enabled a transmission (TX ACTIVE output)
 #define RADIO_FLAG_TX_ACTIVE	2
 
 //! Serial baudrate 1200 baud

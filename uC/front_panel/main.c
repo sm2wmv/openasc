@@ -58,28 +58,33 @@
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 
-//#define DEBUG_WMV_BUS 1
-
+//! Settings struct
 struct_setting settings;
-struct_uc_com uc_com;
 
-UC_MESSAGE uc_new_message;
-
-/* Different counters */
+//! Counter to keep track of when a character for the CAT was last received
 unsigned char radio_rx_data_counter = 0;
+//! Counter which counts up each time a compare0 interrupt has occured
 unsigned int counter_compare0 = 0;
+//! Counter which is used to keep track of when we last received a sync message from the bus
 unsigned int counter_sync = 32000;
+//! Counter which keeps track of when we should poll the buttons
 unsigned char counter_poll_buttons = 0;
+//! Counter which keeps track of when we should poll the external inputs
 unsigned char counter_poll_ext_devices = 0;
+//! Counter which keeps track of the screensaver timeout
 unsigned int counter_screensaver_timeout = 0;
+//! Counter which keeps track of when we should send out a ping to the communication bus
 unsigned int counter_ping_interval = 0;
+//! Counter which counts up each millisecond
 unsigned int counter_ms = 0;
+//! Counter which keeps track when we should poll the rotary encoder
 unsigned char counter_poll_rotary_encoder = 0;
+//! Counter which keeps track of when we should poll the radio
 unsigned int counter_poll_radio = 0;
+//! Counter which keeps track of when the last pulse event did occur. This is used to sense if we should change rx antennas 
 unsigned int counter_last_pulse_event=0;
 
-//After the counter reaches half of it's limit we remove that number from it by
-//calling the function event_queue_wrap()
+//!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 unsigned int counter_event_timer = 0;
 
 //! Different flags, description is found in main.h
@@ -93,7 +98,7 @@ void clear_screensaver_timer(void) {
 /*! Add a message to the event queue which will be run at the correct time
  *  \param func A function pointer to the function we want to run
  *  \param offset the time in ms when we want our function to be run
- */
+ *  \param id Which type of event this is */
 void event_add_message(void (*func), unsigned int offset, unsigned char id) {
 	EVENT_MESSAGE event;
 	
@@ -107,16 +112,21 @@ void event_add_message(void (*func), unsigned int offset, unsigned char id) {
 	event_queue_add(event);
 }
 
+/*! Get the key assignment index
+ *  \param index The index of which task we wish to check
+ *  \return The current task index, can be found in event_handler.h */
 unsigned char ext_key_get_assignment(unsigned char index) {
 	return(settings.ext_key_assignments[index]);
 }
 
+/*! Set the key assignment task
+ *  \param index The index of which task we wish to set
+ *  \param func The function we wish to assign to the assignment index */
 void ext_key_set_assignment(unsigned char index, unsigned char func) {
 	settings.ext_key_assignments[index] = func;
 }
 
-/*! Run the first function in the event queue
- */
+/*! \brief Run the first function in the event queue */
 void event_run(void) {
 	if (event_in_queue()) {
 		EVENT_MESSAGE event = event_queue_get();
@@ -129,14 +139,17 @@ void event_run(void) {
 	}
 }
 
+/*! \brief Sets the flag that the display should be updated */
 void main_update_display(void) {
 	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 }
 
+/*! \brief Send a message to the motherboard that the openASC box should be shut off. Will deactivate the power supply relay. */
 void shutdown_device(void) {
 	internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
 }
 
+/*! \brief Set the TX antenna leds according to the status of status.selected_ant */
 void set_tx_ant_leds(void) {
 	for (unsigned char i=0;i<4;i++)
 		if (status.selected_ant & (1<<i))
@@ -145,6 +158,8 @@ void set_tx_ant_leds(void) {
 		led_set_tx_ant(i+1,LED_STATE_OFF);
 }
 
+/*! \brief Set the rotary knob function 
+ *  \param function Which type of action should occur when the knob is turned */
 void set_knob_function(unsigned char function) {
 	if (function == KNOB_FUNCTION_AUTO) {
 		//The auto selects the knob function we feel is most useful
@@ -157,6 +172,7 @@ void set_knob_function(unsigned char function) {
 		status.knob_function = function;
 }
 
+/*! \brief Load all settings from the EEPROM */
 void load_settings(void) {
 		/* Read the EEPROM table */
 	eeprom_read_table();
@@ -183,6 +199,10 @@ void load_settings(void) {
 	sequencer_load_eeprom();
 }
 
+/*! \brief Function which updates the status of the PTT
+ *  This function will check various sources if it is for example OK to transmit or not. This function
+ *  also updates the color of the PTT led. It does also set the main_set_inhibit_state() status which
+ *  is used at various places to make the sequencing etc safe. */
 void main_update_ptt_status(void) {
 	unsigned char state = 0;
 	
@@ -225,14 +245,23 @@ void main_update_ptt_status(void) {
 	}
 }
 
+/*! \brief Set the inhibit state 
+ *  This function is used to set the inhibit state, which is used to check at various places if it is safe for example
+ *  to transmit, change band or change antennas. 
+ *  \param state The state we wish to set the inhibit status to */
 void main_set_inhibit_state(enum enum_inhibit_state state) {
 	runtime_settings.inhibit_state = state;
 }
 
+/*! \brief Get the inhibit state 
+ *  This function is used to get the inhibit state, which is used to check at various places if it is safe for example
+ *  to transmit, change band or change antennas. 
+ *  \return The current inhibit status */
 enum enum_inhibit_state main_get_inhibit_state(void) {
 	return(runtime_settings.inhibit_state);
 }
 
+/*! Main function of the front panel */
 int main(void){
 	cli();
 	

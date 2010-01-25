@@ -80,6 +80,7 @@ void eeprom_get_rx_antenna_data(struct_rx_antennas *data) {
 }
 
 /*! \brief Returns the band data
+ *  \param band Which band we wish to retrieve the data from
  *  \param data Where the data should be saved */
 void eeprom_get_band_data(unsigned char band, struct_band *data) {
 	//Create a pointer which we can handle, and point it to where the data should be saved
@@ -175,7 +176,6 @@ void eeprom_get_runtime_settings(struct_runtime_settings *data) {
 
 /*! \brief Save the antenna structure to the eeprom
  *  \param band_index Which band it is
- *  \param antenna_index Which antenna it is
  *  \param content The data to be saved */
 void eeprom_save_ant_structure(unsigned char band_index, struct_antenna *content) {
 	eeprom_m24_write_block(eeprom_table.antenna[band_index], sizeof(struct_antenna), (unsigned char *)content);
@@ -200,6 +200,7 @@ void eeprom_save_radio_settings_structure(struct_radio_settings *data) {
 }
 
 /*! \brief Save the band data to the eeprom
+ * \param band Which band we wish to save the data to
  * \param data The data to save to the EEPROM */
 void eeprom_save_band_data(unsigned char band, struct_band *data) {
 	eeprom_m24_write_block(eeprom_table.band[band], sizeof(struct_band), (unsigned char *)data);

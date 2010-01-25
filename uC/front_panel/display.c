@@ -34,8 +34,10 @@
 #include "antenna_ctrl.h"
 #include "radio_interface.h"
 
+//! Flag which indicates if the screensaver is activated or not
 unsigned char screensaver_mode = 0;
 
+//! Memory area used for printing variables to the display
 char *temp_ptr = NULL;
 
 /*! \brief Display the shutdown in progress screen */
@@ -117,6 +119,7 @@ unsigned char display_calculate_width(char *str, unsigned char font, unsigned ch
 /**
  * \brief Displays a piece of text center adjusted on the display
  * \param y Where the text should be located in y-axis (pixels)
+ * \param str The string we wish to center adjust to the display
  * \param length The length of the string (strlen)
  * \param font Which font you wish to show the string with */
 void display_text_center_adjust(unsigned char y,char *str, unsigned char length, unsigned char font) {
@@ -270,8 +273,7 @@ void display_view(unsigned char mode) {
 }
 
 /*! \brief Show the current selected RX ant 
- *  \param ant_index The antenna index of which antenna that is selected and should be shown 
- */
+ *  \param ant_index The antenna index of which antenna that is selected and should be shown  */
 void display_show_rx_ant(unsigned char ant_index) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
 		CLEAR_RX_ANTENNA_AREA();
@@ -292,7 +294,8 @@ void display_show_rx_ant(unsigned char ant_index) {
 }
 
 /*! \brief Show SET rotator heading
- *  \param rotator_heading The current set rotator heading  */
+ *  \param rotator_heading The current set rotator heading  
+ *  \param view_360_deg The status of the view_360_deg option */
 void display_show_set_heading(unsigned int rotator_heading, unsigned char view_360_deg) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
 		glcd_clear();

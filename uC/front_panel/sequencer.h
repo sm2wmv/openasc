@@ -46,12 +46,19 @@
 //! Event that the inhibit should be deactiated from footswitch
 #define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF		9
 
+//! Flag bit offset for the footswitch
 #define PTT_INPUT_FOOTSWITCH						0
+//! Flag bit offset for the radio sense on the upper floor
 #define PTT_INPUT_RADIO_SENSE_UP				1
+//! Flag bit offset for the radio sense on the lower floor
 #define PTT_INPUT_RADIO_SENSE_LO				2
+//! Flag bit offset for the COMPUTER RTS signal
 #define PTT_INPUT_COMPUTER_RTS					3
+//! Flag bit offset for an inverted radio sense signal
 #define PTT_INPUT_INVERTED_RADIO_SENSE	4
+//! Flag bit offset for an inverted computer rts signal
 #define PTT_INPUT_INVERTED_COMPUTER_RTS	5
+//! Flag bit offset for the inhibit polarity
 #define PTT_INPUT_INHIBIT_POLARITY			6
 
 //! Sequencer enabled for RADIO
@@ -96,6 +103,7 @@ typedef struct {
 
 //! PTT Sequencer struct
 typedef struct {
+	//! The size of this structure in bytes
 	unsigned int struct_size;
 	//! The PTT SEQUENCER for the computer input
 	struct_ptt_sequencer computer;		
@@ -103,13 +111,13 @@ typedef struct {
 	struct_ptt_sequencer footswitch;	
 	//! The PTT SEQUENCER for the radio sense input
 	struct_ptt_sequencer radio_sense;	
-	/*! Bit 0 = Footswitch
-	    Bit 1 = Radio sense lower floor
-	    Bit 2 = Radio sense upper floor
-	    Bit 3 = Computer RTS
-	    Bit 4 = Inverted radio sense
-	    Bit 5 = Inverted Computer RTS 
-		  Bit 6 = Inhibit polarity (0=active low, 1=active high)
+	/*! Bit 0 = Footswitch \n
+			Bit 1 = Radio sense lower floor \n
+			Bit 2 = Radio sense upper floor \n
+			Bit 3 = Computer RTS \n
+			Bit 4 = Inverted radio sense \n
+			Bit 5 = Inverted Computer RTS  \n
+			Bit 6 = Inhibit polarity (0=active low, 1=active high) \n
 	*/
 	unsigned char ptt_input;
 } struct_ptt;

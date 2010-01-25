@@ -27,6 +27,7 @@
 
 //! Struct of a menu option
 typedef struct {
+	//! Menu option text
 	char *text;
 } struct_menu_option;
 
@@ -48,8 +49,11 @@ typedef struct {
 	unsigned char option_type;
 } struct_menu_text;
 
+//! Menu type option normal, regular choices
 #define MENU_OPTION_TYPE_NORMAL					0
+//! Menu type scroll numbers, for example increase/decrease a value
 #define MENU_OPTION_TYPE_SCROLL_NUMBERS	1
+//! No menu option
 #define MENU_OPTION_TYPE_NONE						99
 
 //! Show band change mode, auto or manual
@@ -65,8 +69,11 @@ typedef struct {
 //! Show the error menu
 #define MENU_POS_SHOW_ERRORS			5
 
+//! Menu flag scroll up
 #define MENU_SCROLL_UP			0
+//! Menu flag scroll down
 #define MENU_SCROLL_DOWN		1
+//! Menu flag button pressed
 #define MENU_BUTTON_PRESSED	2
 
 void menu_show(void);

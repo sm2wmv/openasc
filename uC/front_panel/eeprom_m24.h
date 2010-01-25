@@ -23,6 +23,7 @@
 #ifndef _EEPROM_M24_H_
 #define _EEPROM_M24_H_
 
+//! The address of the external EEPROM
 #define EEPROM_M24_ADDR	0xA0
 
 unsigned char eeprom_m24_write_byte(unsigned int eeprom_address, unsigned char value);

@@ -28,18 +28,28 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+//! Internal communication command to redirect data
 #define INT_COMM_REDIRECT_DATA	0x10
 
-//! Struct of the PS/2 interface flags etc
+//!TODO: We might want to change the PS2_STRUCT so that it uses less space, grouping together flags
+
+//! Struct of the PS/2 interface status
 typedef struct {
-	//To see if we have started to read a keyboard command
+	//! To see if we have started to read a keyboard command
 	unsigned char started;
+	//! Number of bytes we have receieved
 	unsigned char bit_count;
+	//! The actual data received
 	unsigned char data;
+	//! Flag to indicate that data is ready
 	unsigned char data_ready;
+	//! Flag to indicate that we are transmitting
 	unsigned char transmit;
+	//! The parity byte
 	unsigned char parity;
+	//! Transmit data
 	unsigned char tx_data;
+	//! Previous command
 	unsigned char prev_cmd;
 } PS2_STRUCT;
 

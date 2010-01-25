@@ -239,6 +239,7 @@ typedef struct {
 } struct_runtime_settings;
 
 /* Different views */
+//! Flag used if we wish to view antennas
 #define VIEW_ANTENNAS 0
 
 //! Contains different statuses of buttons etc

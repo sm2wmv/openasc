@@ -28,6 +28,7 @@
 
 #define OCR0_1MS 14
 
+/*! Init the UART for the computer communication */
 void init_usart_computer(void) {
 	usart1_init(7,1);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);

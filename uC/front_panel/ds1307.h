@@ -23,6 +23,7 @@
 #ifndef _DS1307_H_
 #define _DS1307_H_
 
+//! The external I2C address of the DS1307 realtime clock
 #define DS1307_ADDR	0x68
 
 void ds1307_init(void);
