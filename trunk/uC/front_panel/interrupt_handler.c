@@ -70,8 +70,8 @@ int ih_poll_buttons(void) {
 	if ((PIND & (1<<BUTTON_RXANT_BIT)) == 0)
 		temp |= (1<<FLAG_BUTTON_RXANT_BIT);
 		
-	if ((PIND & (1<<BUTTON_AUX_BIT)) == 0)
-		temp |= (1<<FLAG_BUTTON_AUX_BIT);
+	if ((PIND & (1<<BUTTON_SUBMENU_BIT)) == 0)
+		temp |= (1<<FLAG_BUTTON_SUBMENU_BIT);
 		
 	if ((PINK & (1<<BUTTON_MENU_BIT)) == 0)
 		temp |= (1<<FLAG_BUTTON_MENU_BIT);
@@ -79,6 +79,23 @@ int ih_poll_buttons(void) {
 	if ((PING & (1<<BUTTON_PULSE_BIT)) == 0)
 		temp |= (1<<FLAG_BUTTON_PULSE_BIT);
 
+	if ((PING & (1<<BUTTON_AUX1_BIT)) == 0)
+		temp |= (1<<FLAG_BUTTON_AUX1_BIT);
+	
+	if ((PING & (1<<BUTTON_AUX2_BIT)) == 0) {
+			temp |= (1<<FLAG_BUTTON_AUX2_BIT);
+			
+			/*! The following is done because of a hardware bug! The pullups on the uC are too small
+			    to actually charge the debounce capacitor in time. The way we solve it is that by making the 
+			    pin to an output we can charge the capacitor and then go over to using the pin as 
+			    input and reactivate the pullups again. */
+			DDRG |= (1<<BUTTON_AUX2_BIT);
+			PORTG |= (1<<BUTTON_AUX2_BIT);
+			
+			DDRG &= ~(1<<BUTTON_AUX2_BIT);
+			PORTG |= (1<<BUTTON_AUX2_BIT);
+	}
+	
 	return(temp);
 }
 

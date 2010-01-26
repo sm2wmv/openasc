@@ -127,6 +127,12 @@ void band_ctrl_load_band(unsigned char band) {
 	eeprom_get_band_data(band,&current_band);
 }
 
+/*! \brief Function will send out new band portion settings for the current selected band *
+    \param band_portion The current band portion */
+void band_ctrl_change_band_portion(unsigned char band_portion) {
+	band_ctrl_send_band_data_to_bus(band_portion);
+}
+
 /*! \brief Function used to change band
  *  \param band The band we wish to change to */
 void band_ctrl_change_band(unsigned char band) {
@@ -149,11 +155,13 @@ void band_ctrl_change_band(unsigned char band) {
 			band_ctrl_load_band(band-1);
 			antenna_ctrl_ant_read_eeprom(band);
 			
-			status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-			status.current_display_level = DISPLAY_LEVEL_BAND;
+			if (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM) {
+				status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+				status.current_display_level = DISPLAY_LEVEL_BAND;
+			}
 		}
 		else {
-			if (status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW)
+			if ((status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW) && (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM))
 				status.current_display = CURRENT_DISPLAY_LOGO;
 		}
 		
@@ -171,7 +179,7 @@ void band_ctrl_change_band(unsigned char band) {
 		
 		if (band != BAND_UNDEFINED) {
 			//TODO: Change to correct band portion
-			band_ctrl_send_band_data_to_bus(BAND_HIGH);
+			band_ctrl_send_band_data_to_bus(status.current_band_portion);
 			
 			//Set RX antenna band data to the bus
 			antenna_ctrl_send_rx_ant_band_data_to_bus(band);
@@ -249,5 +257,17 @@ unsigned char *band_ctrl_get_low_output_str(void) {
  *  \return BAND_LOW, BAND_HIGH or BAND_UNDEFINED */
 unsigned char band_ctrl_get_portion(void) {
 	//TODO: Add support for others as well not only radio
-	return(radio_get_band_portion());
+	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) {
+		if (status.current_band_portion == BAND_HIGH)
+			return(BAND_HIGH);
+		else if (status.current_band_portion == BAND_LOW)
+			return(BAND_LOW);
+		else
+			return(BAND_UNDEFINED);
+	}
+	else if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
+		return(radio_get_band_portion());
+	}
+
+	return(BAND_UNDEFINED);
 }

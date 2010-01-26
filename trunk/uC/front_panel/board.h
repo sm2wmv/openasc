@@ -61,7 +61,7 @@
  *
  * PORTB
  * =====================================================================================
- * PB0 - Not connected
+ * PB0 - Output/Input - AUX X11 PIN 8
  * PB1 - Output - SPI SCK (ISP)
  * PB2 - Output - SPI MOSI (ISP)
  * PB3 - Input  - SPI MISO (ISP)
@@ -126,8 +126,8 @@
  *
  * PORTG
  * =====================================================================================
- * PG0 - Output - Duo LED Green
- * PG1 - Output - Duo LED Red
+ * PG0 - Input  -  AUX Button 1
+ * PG1 - Input  - AUX Button 2
  * PG2 - Input  - Rotary button
  * PG3 - Input  - 32.768kHz crystal
  * PG4 - Input  - 32.768kHz crystal
@@ -259,11 +259,15 @@
 //! Bit offset of RX Antenna button
 #define BUTTON_RXANT_BIT		7
 //! Bit offset of SUB MENU button
-#define BUTTON_AUX_BIT			5
+#define BUTTON_SUBMENU_BIT	5
 //! Bit offset of MENU button
 #define BUTTON_MENU_BIT			6
 //! Bit offset of PULSE SENSOR button
 #define BUTTON_PULSE_BIT		2
+//! Bit offset of AUX 1 button
+#define BUTTON_AUX1_BIT			0
+//! Bit offset of AUX 2 button
+#define BUTTON_AUX2_BIT			1
 
 //Ext devices
 //! Bit offset of the EXT Radio sense 1
@@ -313,9 +317,14 @@
 //! Flag is set if the RX ANTENNA button is pressed
 #define FLAG_BUTTON_RXANT_BIT		11
 //! Flag is set if the AUX button is pressed
-#define FLAG_BUTTON_AUX_BIT			12
+#define FLAG_BUTTON_SUBMENU_BIT			12
 //! Flag is set if the pulse sensor button is pressed
 #define FLAG_BUTTON_PULSE_BIT		13
+//! Flag is set if the AUX button 1 is pressed
+#define FLAG_BUTTON_AUX1_BIT			14
+//! Flag is set if the AUX button 2 is pressed
+#define FLAG_BUTTON_AUX2_BIT			15
+
 
 //! This bit shows the status of the radio sense input on floor 1
 #define STATUS_RADIO_SENSE1_BIT		0

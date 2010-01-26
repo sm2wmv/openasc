@@ -282,6 +282,8 @@ int main(void){
 	status.ext_devices_last_state = status.ext_devices_current_state;
 	status.selected_rx_antenna = 0;
 	status.new_band = BAND_UNDEFINED;
+	status.current_band_portion = BAND_LOW;
+	status.new_band_portion = BAND_LOW;
 	
 	//Check if the computer interface should have full control of the box, setup mode
 	if (PIND & (1<<5)) {
@@ -419,6 +421,13 @@ int main(void){
 			if (radio_get_current_band() != status.selected_band) {
 				status.new_band = radio_get_current_band();
 				band_ctrl_change_band(status.new_band);
+			}
+			
+			if (radio_get_band_portion() != status.current_band_portion) {
+				status.new_band_portion = radio_get_band_portion();
+				status.current_band_portion = status.new_band_portion;
+				
+				band_ctrl_change_band_portion(status.new_band_portion);
 			}
 		}
 		
@@ -625,7 +634,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			
 			counter_poll_radio = 0;
 		}
-		
+			
 		counter_poll_radio++;
 	}
 	
