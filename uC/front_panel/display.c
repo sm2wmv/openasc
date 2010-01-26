@@ -256,9 +256,9 @@ void display_invert_antenna(unsigned char ant_index) {
  * \brief Displays the radios frequency
  * Will display the radios frequency in the bottom right corner of the display
  * \param freq the frequency you want to display */
-void display_radio_freq(char *freq) {
+void display_radio_freq(unsigned char length, char *freq) {
 	CLEAR_RADIO_FREQ_AREA();
-	display_text_right_adjust(DISPLAY_RADIO_FREQ_X_POS,DISPLAY_RADIO_FREQ_Y_POS,freq,strlen(freq),FONT_FIVE_DOT);
+	display_text_right_adjust(DISPLAY_RADIO_FREQ_X_POS,DISPLAY_RADIO_FREQ_Y_POS,freq,length,FONT_FIVE_DOT);
 }
 
 /**
@@ -356,16 +356,134 @@ void display_update(unsigned char band, unsigned char antenna) {
 /*! \brief Update the radio frequency area of the display */
 void display_update_radio_freq(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
-		if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {	
+		if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
+			if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {
+				char temp_str[14];
+				char temp_bandport = '?';
+				
+				unsigned char temp_port = radio_get_band_portion();
+				
+				if (temp_port == BAND_HIGH)
+					temp_bandport = 'H';
+				else if (temp_port == BAND_LOW)
+					temp_bandport = 'L';
+					
+				sprintf((char *)temp_str, "%0i kHz (%c)",radio_get_current_freq(), temp_bandport);
+							
+				display_radio_freq(strlen(temp_str),(char *)temp_str);
+				
+				display_view(VIEW_ANTENNAS);
+			}
+			else
+				CLEAR_RADIO_FREQ_AREA();
+		}
+		else if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) {
 			char temp_str[10];
-			sprintf((char *)temp_str, "%0i kHz",radio_get_current_freq());
-						
-			display_radio_freq((char *)temp_str);
+			unsigned char temp_nr_to_view = 0;
+			
+			if (status.selected_band == BAND_160M) {
+				temp_str[0] = '1';
+				temp_str[1] = '6';
+				temp_str[2] = '0';
+				temp_str[3] = 'M';
+				temp_str[4] = ':';
+				temp_str[5] = ' ';
+				
+				if (status.current_band_portion == BAND_HIGH) {
+					temp_str[6] = 'H';
+					temp_str[7] = 'I';
+					temp_str[8] = 'G';
+					temp_str[9] = 'H';
+					
+					temp_nr_to_view = 10;
+				}
+				else if (status.current_band_portion == BAND_LOW) {
+					temp_str[6] = 'L';
+					temp_str[7] = 'O';
+					temp_str[8] = 'W';
+					
+					temp_nr_to_view = 9;
+				}
+			}
+			else {
+				if (status.selected_band == BAND_80M) {
+					temp_str[0] = '8';
+					temp_str[1] = '0';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_40M) {
+					temp_str[0] = '4';
+					temp_str[1] = '0';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_30M) {
+					temp_str[0] = '3';
+					temp_str[1] = '0';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_20M) {
+					temp_str[0] = '2';
+					temp_str[1] = '0';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_17M) {
+					temp_str[0] = '1';
+					temp_str[1] = '7';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_15M) {
+					temp_str[0] = '1';
+					temp_str[1] = '5';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_12M) {
+					temp_str[0] = '1';
+					temp_str[1] = '2';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				else if (status.selected_band == BAND_10M) {
+					temp_str[0] = '1';
+					temp_str[1] = '0';
+					temp_str[2] = 'M';
+					temp_str[3] = ':';
+					temp_str[4] = ' ';
+				}
+				
+				if (status.current_band_portion == BAND_HIGH) {
+					temp_str[5] = 'H';
+					temp_str[6] = 'I';
+					temp_str[7] = 'G';
+					temp_str[8] = 'H';
+					
+					temp_nr_to_view = 9;
+				}
+				else if (status.current_band_portion == BAND_LOW) {
+					temp_str[5] = 'L';
+					temp_str[6] = 'O';
+					temp_str[7] = 'W';
+					
+					temp_nr_to_view = 8;
+				}
+			}
+			
+			display_radio_freq(temp_nr_to_view,(char *)temp_str);
 			
 			display_view(VIEW_ANTENNAS);
 		}
-		else
-			CLEAR_RADIO_FREQ_AREA();
 		
 		glcd_update_all();
 	}

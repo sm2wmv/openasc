@@ -1,16 +1,25 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="3" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/rotary_encoder.lst" >
-   <View0 Encoding="" line="0" Type="Source" />
+ <DocsAndViews NumberOfDocuments="6" >
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/menu.c" >
+   <View0 Encoding="" line="75" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/sequencer.c" >
-   <View0 Encoding="" line="0" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
+   <View0 Encoding="" line="429" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/sequencer.h" >
-   <View0 Encoding="" line="51" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.c" >
+   <View0 Encoding="" line="357" Type="Source" />
   </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/band_ctrl.c" >
+   <View0 Encoding="" line="170" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.h" >
+   <View0 Encoding="" line="0" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.h" >
+   <View0 Encoding="" line="155" Type="Source" />
+  </Doc5>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

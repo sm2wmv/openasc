@@ -73,6 +73,7 @@ unsigned char *band_ctrl_get_low_output_str(void);
 
 void band_ctrl_deactivate_all(void);
 
+void band_ctrl_change_band_portion(unsigned char band_portion);
 void band_ctrl_change_band(unsigned char band);
 
 #endif

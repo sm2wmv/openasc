@@ -203,6 +203,11 @@ typedef struct {
 	unsigned char selected_band;
 	//! The variable for changing to a new band
 	unsigned char new_band;
+	//! CURRENT Band portion selected
+	unsigned char current_band_portion;
+	//! NEW Band portion selected
+	unsigned char new_band_portion;
+	
 	//! The variable for the new beamheading
 	unsigned int new_beamheading;
 	

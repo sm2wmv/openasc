@@ -286,6 +286,7 @@ void event_update_display(void) {
 /*! \brief Function which will poll all buttons and perform the proper action depending on their state */
 void event_poll_buttons(void) {
 	status.buttons_current_state = ih_poll_buttons();
+	
 	//Any change? If so then parse what change
 	if (status.buttons_last_state != status.buttons_current_state) {
 		unsigned int btn_status = status.buttons_current_state ^ status.buttons_last_state;
@@ -370,9 +371,31 @@ void event_poll_buttons(void) {
 				}
 			}
 		}
+		
+		if (btn_status & (1<<FLAG_BUTTON_AUX2_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON_AUX2_BIT))
+				event_aux2_button_pressed();
+		}
 	}
-
+	
 	status.buttons_last_state = status.buttons_current_state;
+}
+
+/*! \brief Perform the actions that should be done when AUX 2 button is pressed */
+void event_aux2_button_pressed(void) {
+	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) {
+		if (status.current_band_portion == BAND_HIGH)
+			status.new_band_portion = BAND_LOW;
+		else
+			status.new_band_portion = BAND_HIGH;
+
+		if (status.new_band_portion != status.current_band_portion) {
+			status.current_band_portion = status.new_band_portion;
+				
+			display_update_radio_freq();
+			band_ctrl_change_band_portion(status.current_band_portion);
+		}
+	}
 }
 
 /*! \brief Function which will poll the external devices and perform the proper actions depending on their state */
