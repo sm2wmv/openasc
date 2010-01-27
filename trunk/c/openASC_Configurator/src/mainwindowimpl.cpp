@@ -676,7 +676,7 @@ void MainWindowImpl::comboBoxRadioModeCurrentIndexChanged(int index) {
 		else
 			spinBoxCIVAddress->setEnabled(false);
 		
-		sliderPollInterval->setEnabled(false);
+		sliderPollInterval->setEnabled(true);
 	}
 	else if (index == RADIO_MODE_BCD) {
 		comboBoxRadioBaudRate->setEnabled(false);
