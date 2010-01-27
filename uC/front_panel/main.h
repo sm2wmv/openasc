@@ -55,7 +55,7 @@
 
 //! The limit (in ms) of the radio communication timeout. If this limit is reached the 
 //! radio rx buffers will be cleared
-#define RADIO_RX_DATA_TIMEOUT	100
+#define RADIO_RX_DATA_TIMEOUT	10
 
 //! Indicate that radio is enabled or disabled
 #define PTT_RADIO_BIT	0

@@ -180,10 +180,6 @@ void load_settings(void) {
 	//Load the radio settings from the eeprom
 	radio_interface_load_eeprom();
 	
-	//Load antenna details for the current band
-	//antenna_ctrl_ant_read_eeprom(radio_get_current_band());
-	//antenna_ctrl_ant_read_eeprom(BAND_20M);
-	
 	//Load the antenna RX data from the eeprom
 	antenna_ctrl_rx_ant_read_eeprom();
 
@@ -394,7 +390,7 @@ int main(void){
 	
 	set_knob_function(KNOB_FUNCTION_AUTO);
 	
-	init_usart_computer();
+	//init_usart_computer();
 	
 	sei();
 	
@@ -541,10 +537,11 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		}
 	}
 	
-	/*if (radio_rx_data_counter >= RADIO_RX_DATA_TIMEOUT) {
+	if (radio_rx_data_counter >= RADIO_RX_DATA_TIMEOUT) {
 		radio_communicaton_timeout();
+		
 		radio_rx_data_counter = 0;
-	}*/
+	}
 
 	if (counter_poll_rotary_encoder >= INTERVAL_POLL_ROTARY_ENCODER) {
 		main_flags |= (1<<FLAG_POLL_PULSE_SENSOR);
@@ -585,6 +582,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_ping_interval++;
 	counter_ms++;
 	counter_event_timer++;
+	radio_rx_data_counter++;
 	
 	//This will blink the NEW BAND LED, if the new band is not the same as the old one
 	if ((counter_ms % 250) == 0) {
@@ -629,7 +627,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	
 	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
 		//TODO: FIX SO WE CAN ADJUST POLL TIME
-		if (counter_poll_radio >= 500) {
+		if (counter_poll_radio >= (radio_interface_get_poll_interval() * 10)) {
 			main_flags |= (1<<FLAG_POLL_RADIO);
 			
 			counter_poll_radio = 0;
