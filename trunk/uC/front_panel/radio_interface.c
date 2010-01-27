@@ -63,6 +63,8 @@ void radio_interface_init(void) {
 	radio_serial_rx_buffer = (unsigned char *)malloc(RADIO_SERIAL_RX_BUFFER_LENGTH);
 	radio_serial_rx_buffer_start = radio_serial_rx_buffer;
 	
+	radio_status.box_sent_request = 0;
+	
 	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
 		switch (radio_settings.baudrate) {
 			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
@@ -232,7 +234,19 @@ unsigned char radio_poll_status(void) {
 		radio_status.current_band = bcd;
 	}
 	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {
+		//The radio model is ICOM, we will send out a frequency request to the radio
+		if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
+			usart3_transmit(0xFE);
+			usart3_transmit(0xFE);
+			usart3_transmit(radio_settings.civ_addr);
+			usart3_transmit(0xE0); //We simulate that we are the computer by using its address
+			usart3_transmit(0x03);
+			usart3_transmit(0xFD);
+		}
 		
+		//We update frequency directly after the request has been sent. This means we probably don't see the update at once
+		//but it will still atleast update
+		display_update_radio_freq();
 	}
 	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON) {
 		display_update_radio_freq();
@@ -423,15 +437,23 @@ unsigned char radio_interface_get_poll_interval(void){
 	return(radio_settings.poll_interval);
 }
 
-
-/*! \brief This function will save the current data in the radio_settings struct into the EEPROM at it's proper location */
-void radio_interface_save_eeprom(void) {
-	eeprom_save_radio_settings_structure(&radio_settings);
-}
-
 /*! \brief This function will load data from the eeprom to the radio_settings struct */
 void radio_interface_load_eeprom(void) {
 	eeprom_get_radio_settings_structure(&radio_settings);
+}
+
+/*! This function should be called if an timeout has occured on the serial communication. This function will then reset the pointers
+    used for the CAT decoding */
+void radio_communicaton_timeout(void) {
+	radio_serial_rx_buffer = radio_serial_rx_buffer_start;
+	
+	radio_status.box_sent_request = 0;
+}
+
+/*! This function will tell us if the openASC box has sent any request to the radio 
+    \return 1 if a request has been sent, 0 otherwise */
+unsigned char radio_get_cat_status(void) {
+	return(radio_status.box_sent_request);
 }
 
 ISR(SIG_USART3_DATA) {
@@ -462,11 +484,22 @@ ISR(SIG_USART3_RECV) {
 			if (data == 0xFD) {
 				if ((radio_serial_rx_buffer_start[0] == 0xFE) && (radio_serial_rx_buffer_start[1] == 0xFE)) {
 					//TODO: Consider moving the parsing etc outside of the interrupt, to make the interrupt take as little time as possible
-					//TODO: Implement a timeout which resets the buffer after XX ms
-					radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_ICOM);
+					//TODO: Implement the buffering of the incoming data from the computer while we are processing some kind of request sent to the radio in poll mode
 					
-					radio_flags |= (1<<RADIO_FLAG_FREQ_CHANGED);
-					radio_serial_rx_buffer = radio_serial_rx_buffer_start;
+					//Is the data frequency data or something else?
+					if ((radio_serial_rx_buffer_start[3] == radio_settings.civ_addr) && (radio_serial_rx_buffer_start[4] == 0x03)) {
+						radio_status.new_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_ICOM);
+							
+						if (radio_status.new_freq != radio_status.current_freq) {
+							radio_status.current_freq = radio_status.new_freq;
+							
+								radio_flags |= (1<<RADIO_FLAG_FREQ_CHANGED);
+						}
+					
+						radio_serial_rx_buffer = radio_serial_rx_buffer_start;
+						
+						radio_status.box_sent_request = 0;
+					}
 				}
 			}
 			else {
@@ -478,5 +511,6 @@ ISR(SIG_USART3_RECV) {
 		}
 	}
 	
-//	usart1_transmit(data);
+	if (radio_get_cat_status() == 0)
+		usart1_transmit(data);
 }

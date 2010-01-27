@@ -120,8 +120,13 @@ typedef struct {
 typedef struct {
 	//! The radios current frequency
 	unsigned int current_freq;
+	//! The radios new frequency
+	unsigned int new_freq;	
 	//! The radios current band
 	unsigned char current_band;
+	/*! Variable which is set if the openASC box has sent a request to the radio, used to know
+	   	if we can just redirect the data from the radio to the computer or if it should be thrown away */
+	unsigned char box_sent_request;
 } struct_radio_status;
 	
 void radio_process_tasks(void);
@@ -167,12 +172,14 @@ unsigned char radio_interface_get_ptt_mode(void);
 unsigned char radio_interface_get_ptt_input(void);
 unsigned char radio_interface_get_poll_interval(void);
 
-void radio_interface_save_eeprom(void);
 void radio_interface_load_eeprom(void);
 
 void radio_tx_active(void);
 void radio_tx_deactive(void);
 
 unsigned char radio_get_ptt_status(void);
+
+unsigned char radio_get_cat_status(void);
+void radio_communicaton_timeout(void);
 
 #endif

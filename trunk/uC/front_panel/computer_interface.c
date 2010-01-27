@@ -213,6 +213,8 @@ struct_setting *settings_ptr;
 //! Pointer to an area which we create space when configuring the ptt_sequencer
 struct_ptt *ptt_sequencer_ptr;
 
+struct_radio_settings *radio_settings_ptr;
+
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
 //! \brief Initialize the communication interface towards the computer. Will initialize buffers etc.
@@ -445,21 +447,22 @@ void computer_interface_parse_data(void) {
 			*/
 			switch(computer_comm.rx_buffer_start[0]) {
 				case CTRL_SET_RADIO_SETTINGS_ALL:
-					radio_interface_set_model(computer_comm.rx_buffer_start[1]);
-					radio_interface_set_interface(computer_comm.rx_buffer_start[2]);
-					radio_interface_set_baudrate(computer_comm.rx_buffer_start[3]);
-					radio_interface_set_stopbits(computer_comm.rx_buffer_start[4]);
-					radio_interface_set_civ_addr(computer_comm.rx_buffer_start[5]);
-					radio_interface_set_poll_interval(computer_comm.rx_buffer_start[6]);
-					radio_interface_set_ptt_mode(computer_comm.rx_buffer_start[7]);
-					radio_interface_set_ptt_input(computer_comm.rx_buffer_start[8]);
+					radio_settings_ptr->radio_model = computer_comm.rx_buffer_start[1];
+					radio_settings_ptr->interface_type = computer_comm.rx_buffer_start[2];
+					radio_settings_ptr->baudrate = computer_comm.rx_buffer_start[3];
+					radio_settings_ptr->stopbits = computer_comm.rx_buffer_start[4];
+					radio_settings_ptr->civ_addr = computer_comm.rx_buffer_start[5];
+					radio_settings_ptr->poll_interval = computer_comm.rx_buffer_start[6];
+					radio_settings_ptr->ptt_mode = computer_comm.rx_buffer_start[7];
+					radio_settings_ptr->ptt_input = computer_comm.rx_buffer_start[8];
 					
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_RADIO_SETTINGS_SAVE:
-					radio_interface_save_eeprom();
+					eeprom_save_radio_settings_structure(radio_settings_ptr);
 					
 					computer_interface_send_ack();
+					break;
 				default:	//If sub command not found
 					computer_interface_send_nack();
 					break;
@@ -631,6 +634,7 @@ void computer_interface_activate_setup(void) {
 	band_ptr = (struct_band *)malloc(sizeof(struct_band));
 	settings_ptr = (struct_setting *)malloc(sizeof(struct_setting));
 	ptt_sequencer_ptr = (struct_ptt *)malloc(sizeof(struct_ptt));
+	radio_settings_ptr = (struct_radio_settings *)malloc(sizeof(struct_radio_settings));
 	
 	ptt_sequencer_ptr->ptt_input = 0;
 }
@@ -643,6 +647,7 @@ void computer_interface_deactivate_setup(void) {
 	free(antenna_ptr);
 	free(rx_antenna_ptr);
 	free(band_ptr);
+	free(radio_settings_ptr);
 }
 
 ISR(SIG_USART1_DATA) {
@@ -699,6 +704,9 @@ ISR(SIG_USART1_RECV) {
 		}
 	}
 	else {
-		usart3_transmit(data);
+		//TODO: Implement a buffer which does save the data sent from the computer and then after the box has receieved its answer
+		//      that data will be sent.
+		if (radio_get_cat_status() == 0)
+			usart3_transmit(data);
 	}
 }
