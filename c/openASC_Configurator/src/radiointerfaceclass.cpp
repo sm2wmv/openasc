@@ -25,7 +25,7 @@ RadioInterfaceClass::RadioInterfaceClass() {
 	radioMode = 0;
 	radioBaudrate = 1;
 	radioStopbits = 0;
-	radioCIVAddress = 0x80;
+	radioCIVAddress = 0x04;
 	radioPollInterval = 100;
 }
 
@@ -68,8 +68,7 @@ void RadioInterfaceClass::sendSettings(CommClass& serialPort) {
 
 	//Save the settings to the EEPROM
 	tx_buff[0] = CTRL_SET_RADIO_SETTINGS_SAVE;
-	tx_buff[1] = 0;
-	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,2,tx_buff);
+	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,1,tx_buff);
 }
 
 void RadioInterfaceClass::setRadioType(unsigned char type) {
