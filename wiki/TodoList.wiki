@@ -34,7 +34,9 @@
   * Implement a ping list with timeout. So if a PING hasn't been received from a box within a certain amount of time one should get warned, even inhibit lock if it is an "active" module.
   * Implement the support of band inhibits so that one cannot select the same band as another box.
   * Consider moving the sequencer events to be called from the interrupt, to make the timing more reliable. Maybe just look at EVENT id and filter out everything which is not from the sequencer.
-  * Implement the option to set the AUX 1, AUX 2 button functions (?)
+  * Implement the option to set the AUX 1, AUX 2 button functions (?) We can make this work just like the external keyboard.
+  * Move the menu system strings into the program memory to save RAM
+  * Make the a new box create typical default settings for runtime_settings etc at startup. 
 
 == Driver modules ==
   * Implement the inhibit signal from the openASC box
@@ -50,6 +52,7 @@ Finish the hardware first...
   * ~~Fix so that the sequencer timing sends its settings properly~~
   * Fix so that we can activate/deactivate the SWR alarm option, should be possible to configure it to react to active low/high?
   * Implement the option to set the AUX 1, AUX 2 button functions (?)
+  * Implement so that the create_eeprom() is called at the beginning of when the configuration software sends its settings
 
 == PC controller software ==
   * Not planned
