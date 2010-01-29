@@ -31,6 +31,10 @@
   * Fix so the I2C external communication works together with the power meter.
   * Use one of the AUX pins on the 2nd floor to react to SWR alarm from the power meter. This should be configurable so that we can "lock" the sequencer. Should be locked until the AUX pin status is changed.
    * ~~Clean up code~~
+   * Implement a ping list with timeout. So if a PING hasn't been received from a box within a certain amount of time one should get warned, even inhibit lock if it is an "active" module.
+    * Implement the support of band inhibits so that one cannot select the same band as another box.
+    * Consider moving the sequencer events to be called from the interrupt, to make the timing more reliable. Maybe just look at EVENT id and filter out everything which is not from the sequencer.
+  * Implement the option to set the AUX 1, AUX 2 button functions (?)
 
 == Driver modules ==
   * Implement the inhibit signal from the openASC box
@@ -45,6 +49,7 @@ Finish the hardware first...
   * Fix so it warns if the output strings are too long in the configuration part
   * ~~Fix so that the sequencer timing sends its settings properly~~
   * Fix so that we can activate/deactivate the SWR alarm option, should be possible to configure it to react to active low/high?
+  * Implement the option to set the AUX 1, AUX 2 button functions (?)
 
 == PC controller software ==
   * Not planned
@@ -56,9 +61,10 @@ Finish the hardware first...
 
 == openASC box ==
   * Test all the different radio interface levels on the 2nd floor
+  * Evaluate the filters for the communication bus
 
 == Rotator board ==
   * Go through this design again
   * Fix the wrong design with the backup capacitor
   * Evaluate that the schmitt-triggered inputs work properly
-  * Add a DB9 and MAX232 serial chip to get easier way to interface it with rotators that have serial port, and also to configure it easier.
+  * Add a MAX232 serial chip to get easier way to interface it with rotators that have serial port, and also to configure it easier.
