@@ -23,8 +23,28 @@
 
 #include "input.h"
 
-float input_calculate_vswr(void) {
-	float constant = (float)sqrt((float)status.curr_ref_power/(float)status.curr_fwd_power);
+double input_calculate_vswr(void) {
+	if (status.curr_fwd_power > 0) {
+		double constant = (double)sqrt((double)status.curr_ref_power/(double)status.curr_fwd_power);
 	
-	return((1.0f+constant)/(1.0f-constant));
+		return((1.0f+constant)/(1.0f-constant));
+	}
+	
+	return(0);
+}
+
+void input_calculate_power(void) {
+	//TODO: Fix freq counter, also change calculations to make them easier for uC
+	long temp = ((long)(status.curr_fwd_ad_value) * (long)(status.curr_fwd_ad_value)) / current_coupler.fwd_scale_value[0];
+	status.curr_fwd_power = (unsigned int)temp;
+	temp = ((long)(status.curr_ref_ad_value) * (long)(status.curr_ref_ad_value)) / current_coupler.ref_scale_value[0];
+	status.curr_ref_power = (unsigned int)temp;
+}
+
+void pulse_sensor_up(void) {
+	
+}
+
+void pulse_sensor_down(void) {
+	
 }

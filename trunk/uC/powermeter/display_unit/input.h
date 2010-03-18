@@ -20,15 +20,17 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
+#include "main.h"
+
 #define COUPLER_NAME_LENGTH	10
 
 typedef struct {
 	//! The name of the coupler
 	unsigned char coupler_name[COUPLER_NAME_LENGTH];
 	 //! The value which the read RMS voltage should be multiplied with
-	float fwd_scale_value[10]; //All HF bands + 6m
+	unsigned int fwd_scale_value[10]; //All HF bands + 6m
 	//! The value which the read RMS voltage should be multiplied with
-	float ref_scale_value[10];	//All HF bands + 6m
+	unsigned int ref_scale_value[10];	//All HF bands + 6m
 	//! The power limit of the coupler, high (in watts)
 	unsigned int power_limit;
 } struct_coupler_settings;
@@ -42,6 +44,13 @@ typedef struct {
 	unsigned int average_factor;
 	//! Peak level time, this is the time the peak LED is lit (ms)
 	unsigned int peak_level_time;
+	//! The bargraph mode
+	unsigned char bargraph_mode;
+	//! VSWR warning limit, represented with integer so for example 3.0:1 is 300, 1.1:1 is 110;
+	unsigned int vswr_warn_limit;
+	//! VSWR shutdown limit. This means that the output relay will be pulled when this limit is breached and
+	//! and the error will need to get reset before the relay will be released. 3.0:1 is 300, 1.1:1 is 110.
+	unsigned int vswr_shutdown_limit;
 } struct_settings;
 
 typedef struct {
@@ -54,12 +63,14 @@ typedef struct {
 	//! Current reflected power (in Watts)
 	unsigned int curr_ref_power;
 	//! Current VSWR
-	float curr_vswr;
+	double curr_vswr;
 } struct_status;
 
 struct_coupler_settings current_coupler;
 struct_status status;
+struct_settings settings;
 
-float input_calculate_vswr(void);
+double input_calculate_vswr(void);
+void input_calculate_power(void);
 
 #endif
