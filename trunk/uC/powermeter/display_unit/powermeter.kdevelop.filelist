@@ -1,0 +1,21 @@
+# KDevelop Custom Project File List
+avrlibdefs.h
+avrlibtypes.h
+board.h
+delay.c
+delay.h
+global.h
+init.c
+init.h
+input.c
+input.h
+lcd.c
+lcd.h
+lcdconf.h
+led_control.c
+led_control.h
+main.c
+main.h
+makefile
+output.c
+output.h
