@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <avr/interrupt.h>
 
+#include "main.h"
+
 void init_ports(void) {
 	DDRA = 0xFF;
 	DDRB = 0xFF;
@@ -18,7 +20,7 @@ void init_backlight_contrast(void) {
 	TCCR3B = (0<<WGM33) | (1<<WGM32) | (0<<CS32) | (1<<CS31) | (0<<CS30);
 	TCCR3C = 0;
 	OCR3AH = 0;
-	OCR3AL = 0x80;
+	OCR3AL = (DEFAULT_BACKLIGHT)*2.55f;
 	
 	//OCR3BH = 0;
 	//OCR3BL = 0x10;

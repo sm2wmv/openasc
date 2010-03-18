@@ -21,5 +21,6 @@
 #define _OUTPUT_H_
 
 void output_show_display(unsigned char index);
+void output_update_leds(void);
 
 #endif

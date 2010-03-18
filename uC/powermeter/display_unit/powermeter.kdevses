@@ -1,43 +1,49 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="12" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/main.c" >
+ <DocsAndViews NumberOfDocuments="14" >
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/main.c" >
    <View0 Encoding="" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/lcd.c" >
+  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/led_control.c" >
    <View0 Encoding="" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/lcd.h" >
+  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/input.c" >
    <View0 Encoding="" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/lcdconf.h" >
+  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/input.h" >
    <View0 Encoding="" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/init.c" >
+  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/init.c" >
    <View0 Encoding="" Type="Source" />
   </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/board.h" >
+  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/main.h" >
    <View0 Encoding="" Type="Source" />
   </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/output.c" >
+  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/output.c" >
    <View0 Encoding="" Type="Source" />
   </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/output.h" >
+  <Doc7 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/output.h" >
    <View0 Encoding="" Type="Source" />
   </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/makefile" >
+  <Doc8 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/board.h" >
    <View0 Encoding="" Type="Source" />
   </Doc8>
-  <Doc9 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/led_control.c" >
+  <Doc9 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/a2d.c" >
    <View0 Encoding="" Type="Source" />
   </Doc9>
-  <Doc10 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/input.c" >
+  <Doc10 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/makefile" >
    <View0 Encoding="" Type="Source" />
   </Doc10>
-  <Doc11 NumberOfViews="1" URL="file:///home/micke/projects/powermeter/trunk/firmware/input.h" >
-   <View0 Encoding="" line="31" Type="Source" />
+  <Doc11 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/a2d.h" >
+   <View0 Encoding="" Type="Source" />
   </Doc11>
+  <Doc12 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/lcd.c" >
+   <View0 Encoding="" Type="Source" />
+  </Doc12>
+  <Doc13 NumberOfViews="1" URL="file:///home/larsmark/private/projects/powermeter/trunk/firmware/lcd.h" >
+   <View0 Encoding="" line="0" Type="Source" />
+  </Doc13>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

@@ -1,4 +1,6 @@
 # KDevelop Custom Project File List
+a2d.c
+a2d.h
 avrlibdefs.h
 avrlibtypes.h
 board.h
