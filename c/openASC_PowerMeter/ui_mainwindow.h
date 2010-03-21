@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Thu Mar 18 23:14:13 2010
+** Created: Sun Mar 21 21:40:14 2010
 **      by: Qt User Interface Compiler version 4.5.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -32,8 +32,8 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindowClass
 {
 public:
-    QAction *actionNetworkConnect;
-    QAction *actionNetworkDisconnect;
+    QAction *actionConnect;
+    QAction *actionDisconnect;
     QAction *actionSettingsSetup;
     QAction *actionSettingsAbout;
     QAction *actionSettingsCalibrate;
@@ -62,11 +62,11 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QString::fromUtf8("MainWindowClass"));
-        MainWindowClass->resize(351, 179);
-        actionNetworkConnect = new QAction(MainWindowClass);
-        actionNetworkConnect->setObjectName(QString::fromUtf8("actionNetworkConnect"));
-        actionNetworkDisconnect = new QAction(MainWindowClass);
-        actionNetworkDisconnect->setObjectName(QString::fromUtf8("actionNetworkDisconnect"));
+        MainWindowClass->resize(358, 191);
+        actionConnect = new QAction(MainWindowClass);
+        actionConnect->setObjectName(QString::fromUtf8("actionConnect"));
+        actionDisconnect = new QAction(MainWindowClass);
+        actionDisconnect->setObjectName(QString::fromUtf8("actionDisconnect"));
         actionSettingsSetup = new QAction(MainWindowClass);
         actionSettingsSetup->setObjectName(QString::fromUtf8("actionSettingsSetup"));
         actionSettingsAbout = new QAction(MainWindowClass);
@@ -198,7 +198,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 351, 19));
+        menuBar->setGeometry(QRect(0, 0, 358, 19));
         menuSettings = new QMenu(menuBar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         menuConnection = new QMenu(menuBar);
@@ -210,8 +210,8 @@ public:
         menuSettings->addAction(actionSettingsSetup);
         menuSettings->addSeparator();
         menuSettings->addAction(actionSettingsAbout);
-        menuConnection->addAction(actionNetworkConnect);
-        menuConnection->addAction(actionNetworkDisconnect);
+        menuConnection->addAction(actionConnect);
+        menuConnection->addAction(actionDisconnect);
 
         retranslateUi(MainWindowClass);
 
@@ -314,8 +314,8 @@ public:
 "      border-color: black;\n"
 "      border-radius: 5px;\n"
 "}", 0, QApplication::UnicodeUTF8));
-        actionNetworkConnect->setText(QApplication::translate("MainWindowClass", "Connect", 0, QApplication::UnicodeUTF8));
-        actionNetworkDisconnect->setText(QApplication::translate("MainWindowClass", "Disconnect", 0, QApplication::UnicodeUTF8));
+        actionConnect->setText(QApplication::translate("MainWindowClass", "Connect", 0, QApplication::UnicodeUTF8));
+        actionDisconnect->setText(QApplication::translate("MainWindowClass", "Disconnect", 0, QApplication::UnicodeUTF8));
         actionSettingsSetup->setText(QApplication::translate("MainWindowClass", "Setup", 0, QApplication::UnicodeUTF8));
         actionSettingsAbout->setText(QApplication::translate("MainWindowClass", "About", 0, QApplication::UnicodeUTF8));
         actionSettingsCalibrate->setText(QApplication::translate("MainWindowClass", "Calibrate", 0, QApplication::UnicodeUTF8));
