@@ -34,7 +34,11 @@
       <filetype>Makefile</filetype>
       <filetype>makefile</filetype>
     </filetypes>
-    <blacklist/>
+    <blacklist>
+      <path>documentation</path>
+      <path>documentation/latex</path>
+      <path>documentation/latex/Makefile</path>
+    </blacklist>
     <build>
       <buildtool>make</buildtool>
       <builddir/>

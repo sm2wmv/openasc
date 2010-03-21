@@ -3,7 +3,7 @@
 
 /*! Load all settings from settings.ini */
 void SetupDialog::readSettings() {
-		QSettings settings("settings.ini",QSettings::IniFormat,0);
+/*		QSettings settings("settings.ini",QSettings::IniFormat,0);
 
 		settings.beginGroup("Settings");
 
@@ -12,7 +12,7 @@ void SetupDialog::readSettings() {
 		//strCOMDeviceName = settings.value("COMDeviceName").toString();
 		//iDeviceInterfaceType = settings.value("DeviceInterfaceType").toInt();
 
-		settings.endGroup();
+		settings.endGroup();*/
 }
 
 void SetupDialog::saveSettings() {

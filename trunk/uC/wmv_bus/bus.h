@@ -105,15 +105,19 @@
 #define BUS_BROADCAST_ADDR	0x00
 
 //! Device ID for the mainbox
-#define DEVICE_ID_MAINBOX				1
+#define DEVICE_ID_MAINBOX						1
 //! Device ID for the positive driver module
-#define DEVICE_ID_DRIVER_POS		2
+#define DEVICE_ID_DRIVER_POS				2
 //! Device ID for the negative driver module
-#define DEVICE_ID_DRIVER_NEG		3
+#define DEVICE_ID_DRIVER_NEG				3
 //! Device ID for the rotator unit
-#define DEVICE_ID_ROTATOR_UNIT	4
+#define DEVICE_ID_ROTATOR_UNIT			4
 //! Device ID for a computer
-#define DEVICE_ID_COMPUTER			5
+#define DEVICE_ID_COMPUTER					5
+//! Device ID for a power meter pickup
+#define DEVICE_ID_POWERMETER_PICKUP	6
+//! Device ID for a power meter
+#define DEVICE_ID_POWERMETER				7
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
 #define BUS_MAX_RESENDS	10

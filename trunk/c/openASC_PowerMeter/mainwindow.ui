@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>179</height>
+    <width>358</width>
+    <height>191</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -313,7 +313,7 @@ QFrame#frameReflected{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>351</width>
+     <width>358</width>
      <height>19</height>
     </rect>
    </property>
@@ -329,18 +329,18 @@ QFrame#frameReflected{
     <property name="title">
      <string>Connection</string>
     </property>
-    <addaction name="actionNetworkConnect"/>
-    <addaction name="actionNetworkDisconnect"/>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
    </widget>
    <addaction name="menuConnection"/>
    <addaction name="menuSettings"/>
   </widget>
-  <action name="actionNetworkConnect">
+  <action name="actionConnect">
    <property name="text">
     <string>Connect</string>
    </property>
   </action>
-  <action name="actionNetworkDisconnect">
+  <action name="actionDisconnect">
    <property name="text">
     <string>Disconnect</string>
    </property>
