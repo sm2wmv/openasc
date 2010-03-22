@@ -5,8 +5,21 @@ void MainWindow::menuActionSetupTriggered() {
 	setupDialog->show();
 }
 
-void MainWindow::busParseMessage(BUS_MESSAGE message) {
-		qDebug("PARSING MESSAGE");
+void MainWindow::recvBusMessage(BUS_MESSAGE message) {
+	#ifdef DEBUG
+		qDebug("----------------------------");
+		qDebug("from_addr: \t\t0x%02X",message.from_addr);
+		qDebug("to_addr: \t\t0x%02X",message.to_addr);
+		qDebug("checksum: \t\t0x%02X",message.checksum);
+		qDebug("flags: \t\t\t0x%02X",message.flags);
+		qDebug("cmd: \t\t\t0x%02X",message.cmd);
+		qDebug("length: \t\t0x%02X",message.length);
+
+		for (int i=0;i<message.length;i++)
+				qDebug("data[%i]: \t\t0x%02X",i,message.data[i]);
+
+		qDebug(" ");
+	#endif
 }
 
 void MainWindow::menuActionSettingsAboutPressed() {
@@ -37,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
 		setupDialog = new SetupDialog();
 		setupConnections();
 
-		client.initClient(0x04, "/dev/ttyUSB0");
+		client.initClient(0x04, "/dev/ttyUSB0", this);
 }
 
 MainWindow::~MainWindow()

@@ -7,8 +7,6 @@
 #include <QString>
 
 #include "qextserialport.h"
-//#include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 /******* BUS specifics ********/
 
@@ -132,11 +130,19 @@ typedef struct {
 		unsigned int device_count_mult;
 } bus_status_struct;
 
+class BusMessageListener
+{
+	public:
+		BusMessageListener() {}
+		virtual ~BusMessageListener() {};
+		virtual void recvBusMessage(BUS_MESSAGE) = 0;
+};
+
 class WMVBusClient : public QThread
 {
 public:
     WMVBusClient();
-		void initClient(unsigned char addr, QString dev);
+		void initClient(unsigned char addr, QString dev, BusMessageListener *);
 		unsigned char getBusAddress();
 		void addTxMessage(unsigned char fromAddr, unsigned char toAddr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 		void stopProcess();
@@ -157,6 +163,7 @@ private:
 		int openPort(QString deviceName);
 		int closePort();
 		void sendMessage(BUS_MESSAGE message);
+		BusMessageListener *msgListener;
 protected:
 		void printDebugMessage(BUS_MESSAGE message);
 		bool threadActive;

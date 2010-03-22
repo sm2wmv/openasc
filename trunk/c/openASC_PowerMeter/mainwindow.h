@@ -7,6 +7,11 @@
 #include "ui_setupdialog.h"
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
+
+#define DEBUG
+
+class MainWindow;
+
 #include "wmvbusclient.h"
 
 namespace Ui
@@ -14,13 +19,13 @@ namespace Ui
     class MainWindowClass;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public BusMessageListener
 {
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-		void busParseMessage(BUS_MESSAGE message);
+		void recvBusMessage(BUS_MESSAGE message);
 private:
 		SetupDialog *setupDialog;
 		Ui::MainWindowClass *ui;
