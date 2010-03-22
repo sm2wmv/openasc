@@ -24,10 +24,12 @@ void WMVBusClient::printDebugMessage(BUS_MESSAGE message) {
 
 /*! Init the WMV bus client
  *  \param addr The clients address
- *  \param dev The device name of the attached communication interface, for example COM? in windows or /dev/ttyUSB? for Linux */
-void WMVBusClient::initClient(unsigned char addr, QString dev) {
+ *  \param dev The device name of the attached communication interface, for example COM? in windows or /dev/ttyUSB? for Linux
+ *  \param listener A pointer to a function which should be called when there is a message to be parsed from the bus */
+void WMVBusClient::initClient(unsigned char addr, QString dev, BusMessageListener *listener) {
 		busAddr = addr;
 		deviceName = dev;
+		msgListener = listener;
 }
 
 /*! Retrieve the clients address on the bus
@@ -164,8 +166,6 @@ void WMVBusClient::receiveMsg() {
 		while(char_count > 0) {
 				//TODO: Write the parsing
 				if ((unsigned char)receivedMessage.at(char_count) == BUS_MSG_POSTAMBLE) {
-						qDebug("Found postamble, char_count: %i",char_count);
-
 						//Found preamble of this message, if there is one
 						for (int i=char_count;i>0;i--) {
 								//Check that this really is the preamble
@@ -185,7 +185,7 @@ void WMVBusClient::receiveMsg() {
 
 										receivedMessage.remove(i+1,char_count-i+1);
 
-										printDebugMessage(new_message);
+										//printDebugMessage(new_message);
 										rxQueue.append(new_message);
 
 										char_count = i;
@@ -243,6 +243,10 @@ void WMVBusClient::run() {
 
 				//Check to see if there are any characters waiting from the bus
 				//receiveMsg();
+
+				//If there is a message in the queue, then we send it to the "Main Application" for it to be parsed
+				if (messageInRXQueue())
+					msgListener->recvBusMessage(getMessageInRXQueue());
 
 				//we use the same interval as the hardware devices
 				QThread::usleep(BUS_TIME_INTERRUPT_INTERVAL);

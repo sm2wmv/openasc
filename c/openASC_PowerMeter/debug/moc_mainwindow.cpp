@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sun Mar 21 23:02:26 2010
+** Created: Mon Mar 22 16:51:14 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -59,6 +59,8 @@ void *MainWindow::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_MainWindow))
         return static_cast<void*>(const_cast< MainWindow*>(this));
+    if (!strcmp(_clname, "BusMessageListener"))
+        return static_cast< BusMessageListener*>(const_cast< MainWindow*>(this));
     return QMainWindow::qt_metacast(_clname);
 }
 
