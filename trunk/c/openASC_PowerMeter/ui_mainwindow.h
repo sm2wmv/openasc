@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Mon Mar 22 14:16:54 2010
+** Created: Tue Mar 23 00:53:28 2010
 **      by: Qt User Interface Compiler version 4.5.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -46,6 +46,7 @@ public:
     QLabel *labelFwd;
     QProgressBar *progressBarFwd;
     QLabel *labelFwdValue;
+    QSpacerItem *horizontalSpacer_2;
     QFrame *frameReflected;
     QHBoxLayout *horizontalLayout_2;
     QGridLayout *gridLayout_2;
@@ -54,6 +55,7 @@ public:
     QLabel *labelRefValue;
     QSpacerItem *horizontalSpacer;
     QLabel *labelSWRValue;
+    QSpacerItem *horizontalSpacer_3;
     QMenuBar *menuBar;
     QMenu *menuSettings;
     QMenu *menuConnection;
@@ -62,7 +64,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QString::fromUtf8("MainWindowClass"));
-        MainWindowClass->resize(358, 191);
+        MainWindowClass->resize(351, 179);
         actionConnect = new QAction(MainWindowClass);
         actionConnect->setObjectName(QString::fromUtf8("actionConnect"));
         actionDisconnect = new QAction(MainWindowClass);
@@ -124,7 +126,11 @@ public:
         font1.setWeight(75);
         labelFwdValue->setFont(font1);
 
-        gridLayout->addWidget(labelFwdValue, 1, 1, 1, 1);
+        gridLayout->addWidget(labelFwdValue, 1, 2, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_2, 1, 1, 1, 1);
 
 
         horizontalLayout->addLayout(gridLayout);
@@ -171,11 +177,11 @@ public:
         labelRefValue->setFont(font1);
         labelRefValue->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
-        gridLayout_2->addWidget(labelRefValue, 1, 1, 1, 1);
+        gridLayout_2->addWidget(labelRefValue, 1, 2, 1, 1);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_2->addItem(horizontalSpacer, 1, 2, 1, 1);
+        gridLayout_2->addItem(horizontalSpacer, 1, 3, 1, 1);
 
         labelSWRValue = new QLabel(frameReflected);
         labelSWRValue->setObjectName(QString::fromUtf8("labelSWRValue"));
@@ -187,7 +193,11 @@ public:
         labelSWRValue->setLayoutDirection(Qt::LeftToRight);
         labelSWRValue->setAlignment(Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing);
 
-        gridLayout_2->addWidget(labelSWRValue, 1, 3, 1, 1);
+        gridLayout_2->addWidget(labelSWRValue, 1, 4, 1, 1);
+
+        horizontalSpacer_3 = new QSpacerItem(0, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_3, 1, 1, 1, 1);
 
 
         horizontalLayout_2->addLayout(gridLayout_2);
@@ -198,7 +208,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 358, 19));
+        menuBar->setGeometry(QRect(0, 0, 351, 19));
         menuSettings = new QMenu(menuBar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         menuConnection = new QMenu(menuBar);

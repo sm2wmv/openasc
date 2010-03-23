@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Mon Mar 22 16:51:14 2010
+** Created: Tue Mar 23 00:48:43 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   12, // methods
+       7,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,6 +33,9 @@ static const uint qt_meta_data_MainWindow[] = {
       39,   11,   11,   11, 0x08,
       72,   11,   11,   11, 0x08,
       97,   11,   11,   11, 0x08,
+     125,   11,   11,   11, 0x08,
+     150,   11,   11,   11, 0x08,
+     177,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -42,6 +45,9 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "menuActionSettingsAboutPressed()\0"
     "actionConnectTriggered()\0"
     "actionDisconnectTriggered()\0"
+    "timerTextUpdateTimeout()\0"
+    "timerMetersUpdateTimeout()\0"
+    "timerTestValueChangeTimeout()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -75,9 +81,12 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: menuActionSettingsAboutPressed(); break;
         case 2: actionConnectTriggered(); break;
         case 3: actionDisconnectTriggered(); break;
+        case 4: timerTextUpdateTimeout(); break;
+        case 5: timerMetersUpdateTimeout(); break;
+        case 6: timerTestValueChangeTimeout(); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 7;
     }
     return _id;
 }

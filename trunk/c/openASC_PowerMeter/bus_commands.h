@@ -93,4 +93,7 @@
 /*! Transparent command which just redirects the data to the serial port */
 #define BUS_CMD_TRANSPARENT					0x29
 
+/*! PowerMeter information */
+#define BUS_CMD_POWERMETER_STATUS 0xA0
+
 #endif
