@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'setupdialog.ui'
 **
-** Created: Mon Mar 22 14:16:54 2010
+** Created: Tue Mar 23 00:30:43 2010
 **      by: Qt User Interface Compiler version 4.5.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -264,7 +264,7 @@ public:
         QObject::connect(buttonBox, SIGNAL(accepted()), SetupDialog, SLOT(accept()));
         QObject::connect(buttonBox, SIGNAL(rejected()), SetupDialog, SLOT(reject()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(SetupDialog);

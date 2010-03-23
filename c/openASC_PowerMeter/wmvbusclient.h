@@ -146,10 +146,8 @@ public:
 		unsigned char getBusAddress();
 		void addTxMessage(unsigned char fromAddr, unsigned char toAddr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 		void stopProcess();
-		void receiveMsg();
-		int messageInRXQueue();
-		BUS_MESSAGE getMessageInRXQueue();
 		void run();
+		void receiveMsg();	//TODO: Move to private
 private:
 		 QQueue<BUS_MESSAGE> txQueue;
 		 QQueue<BUS_MESSAGE> rxQueue;
@@ -164,8 +162,10 @@ private:
 		int closePort();
 		void sendMessage(BUS_MESSAGE message);
 		BusMessageListener *msgListener;
-protected:
+		int messageInRXQueue();
+		BUS_MESSAGE getMessageInRXQueue();
 		void printDebugMessage(BUS_MESSAGE message);
+protected:
 		bool threadActive;
 		QextSerialPort *serialPort;
 		QByteArray receivedMessage;
