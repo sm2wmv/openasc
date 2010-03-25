@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'setupdialog.h'
 **
-** Created: Mon Mar 22 14:31:28 2010
+** Created: Tue Mar 23 01:02:34 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.0)
 **
 ** WARNING! All changes made in this file will be lost!

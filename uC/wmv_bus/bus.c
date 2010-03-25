@@ -211,7 +211,8 @@ void bus_set_is_master(unsigned char state, unsigned char count) {
 
 /*! \brief Send an NOT acknowledge */
 void bus_send_nack(unsigned char to_addr) {
-	bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_NACK, 0, NULL);
+	if (to_addr != BUS_BROADCAST_ADDR)
+		bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_NACK, 0, NULL);
 }
 
 /*! \brief Send an acknowledge */
@@ -380,6 +381,10 @@ ISR(ISR_BUS_USART_RECV) {
 		unsigned char data = UDR;
 	#endif
 
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
+			unsigned char data = UDR;
+	#endif		
+		
 	bus_status.char_count++;
 
 	if (bus_status.flags & (1<< BUS_STATUS_PREAMBLE_FOUND_BIT)) {

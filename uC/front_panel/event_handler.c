@@ -781,14 +781,6 @@ void event_bus_parse_message(void) {
 			}
 		}
 */
-		if (bus_message.to_addr != BUS_BROADCAST_ADDR) {
-			#ifdef DEBUG_WMV_BUS
-				printf("DEBUG-> ADD ACK MESSAGE\n");
-			#endif
-			
-			if (bus_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
-				bus_send_ack(bus_message.from_addr);
-		}
 	}
 
 	//Drop the message

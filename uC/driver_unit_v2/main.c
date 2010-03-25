@@ -257,8 +257,6 @@ void bus_parse_message(void) {
 		}
 		else if (bus_message.cmd == BUS_CMD_SYNC) {
 		}
-		else
-			bus_send_nack(bus_message.from_addr);
 	}
 	
 	//Drop the message
