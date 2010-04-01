@@ -76,7 +76,8 @@ void bus_init(void) {
 	tx_queue_init();
 
 	#ifndef DEVICE_TYPE_COMPUTER
-		bus_usart_init(7);
+		//57.600kpbs
+		bus_usart_init(15);
 	#endif
 
 	bus_status.flags = 0;
@@ -384,7 +385,7 @@ ISR(ISR_BUS_USART_RECV) {
 	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
 			unsigned char data = UDR;
 	#endif		
-		
+	
 	bus_status.char_count++;
 
 	if (bus_status.flags & (1<< BUS_STATUS_PREAMBLE_FOUND_BIT)) {
@@ -406,7 +407,6 @@ ISR(ISR_BUS_USART_RECV) {
 						bus_send_nack(bus_new_message.from_addr);
 				}
 			}
-
 			bus_reset_rx_status();
 			return;
 		}
@@ -447,11 +447,7 @@ ISR(ISR_BUS_USART_RECV) {
 										//message from the master.
 										counter_sync_timeout = 0;
 
-										#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-											TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
-										#else ifdef DEVICE_TYPE_DRIVER_UNIT
-											TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
-										#endif
+										TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
 									}
 
 									calc_checksum += data;
@@ -512,9 +508,11 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 
 	if (bus_status.device_count != 0) {
 		if (((bus_status.frame_counter) >= bus_status.lower_limit) && ((bus_status.frame_counter) < bus_status.upper_limit)) {
+			PORTD |= (1<<3);
 			bus_status.flags |= (1<<BUS_STATUS_TIME_SLOT_ACTIVE);
 		}
 		else {
+			PORTD &= ~(1<<3);
 			bus_status.flags &= ~(1<<BUS_STATUS_TIME_SLOT_ACTIVE);
 		}
 

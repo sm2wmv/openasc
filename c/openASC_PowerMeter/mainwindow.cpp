@@ -141,7 +141,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 		//Dummy variables, should be set from settings
 		settings.textUpdateRate = 400;
-		settings.metersUpdateRate = 50;
+		settings.metersUpdateRate = 100;
 
 		rescaleMeters(PICKUP_TYPE_15000W);
 		pickupStatus.fwdPower = 12500;
