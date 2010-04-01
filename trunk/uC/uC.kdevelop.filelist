@@ -118,11 +118,7 @@ powermeter/display_unit/output.h
 powermeter/sensor_unit
 powermeter/sensor_unit/a2d.c
 powermeter/sensor_unit/a2d.h
-powermeter/sensor_unit/avrlibdefs.h
-powermeter/sensor_unit/avrlibtypes.h
 powermeter/sensor_unit/board.h
-powermeter/sensor_unit/delay.c
-powermeter/sensor_unit/delay.h
 powermeter/sensor_unit/global.h
 powermeter/sensor_unit/init.c
 powermeter/sensor_unit/init.h

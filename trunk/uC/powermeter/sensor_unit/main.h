@@ -21,4 +21,32 @@
 //! The size of the TX queue in buffers
 #define BUS_TX_QUEUE_SIZE	10
 
+//! The transmit interval of the power in ms, used when the meter is considered as active */
+#define POWER_TRANSMIT_INTERVAL1 50
+//! The transmit interval of the power in ms, used when the meter is considered as not active */
+#define POWER_TRANSMIT_INTERVAL2 1000
+
+//! The interval which the units polls the power */
+#define POWER_POLL_INTERVAL	50
+
+/*! 150w pickup configuration */
+#define PICKUP_TYPE_150W        0
+/*! 1000w pickup configuration */
+#define PICKUP_TYPE_1000W       1
+/*! 1500w pickup configuration */
+#define PICKUP_TYPE_1500W       2
+/*! 2000w pickup configuration */
+#define PICKUP_TYPE_2000W       3
+/*! 3000w pickup configuration */
+#define PICKUP_TYPE_3000W       4
+/*! 5000w pickup configuration */
+#define PICKUP_TYPE_5000W       5
+/*! 10000w pickup configuration */
+#define PICKUP_TYPE_10000W      6
+/*! 15000w pickup configuration */
+#define PICKUP_TYPE_15000W      7
+
+//! Under this value is considered to be no transmission occuring (in watts)
+#define NO_FWD_PWR_LIMIT	10
+
 #endif

@@ -104,6 +104,9 @@
  
 /******* BUS specifics ********/
 
+//The default number of devices
+#define DEF_NR_DEVICES	25
+
 /*! The preamble of the BUS message */
 #define BUS_MSG_PREAMBLE		0xFE
 /*! The postamble of the BUS message */
@@ -129,11 +132,9 @@
 #define DEVICE_ID_COMPUTER					5
 //! Device ID for a power meter pickup
 #define DEVICE_ID_POWERMETER_PICKUP	6
-//! Device ID for a power meter
-#define DEVICE_ID_POWERMETER				7
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
-#define BUS_MAX_RESENDS	10
+#define BUS_MAX_RESENDS	5
 
 /*! The interval between each status message (time is in ms) */
 #define BUS_DEVICE_STATUS_MESSAGE_INTERVAL	1500
@@ -141,7 +142,7 @@
 /*! The interval which the SYNC command is sent out from the master (time in ms) 
  *  This value is not allowed to be over 5000 ms since that will make it too big for the
  *  timer controlling the SYNC timeout on all the devices. */
-#define BUS_MASTER_SYNC_INTERVAL 500
+#define BUS_MASTER_SYNC_INTERVAL 1000
 
 /*! This limit is used to detect if it was too long ago since we receieved a SYNC message
  *  from the master. If so it will stop with all outgoing communication. */
@@ -149,7 +150,7 @@
 
 /*! The timeout limit between a message that was sent to when it will be a resend, this is counted as 
     number of wraparounds on the bus, ie 5 would mean 5 wraparounds */
-#define BUS_ACK_WRAPAROUND_LIMIT 10
+#define BUS_ACK_WRAPAROUND_LIMIT 5
 
 /*! Timeout limit for how long it can take without receiving a message before the buffer is cleared, this is counted as
     time, 5 would mean 5 * 130 us */
@@ -179,11 +180,11 @@
 
 /*! This is the multiplier for the send window
     BUS_TIME_INTERRUPT_INTERVAL * BUS_TIME_MULTIPLIER = BUS_TIME_FRAME_LIMIT */
-#define BUS_TIME_MULTIPLIER 8
+#define BUS_TIME_MULTIPLIER 4
 /*! The interval of the timer interrupts, in us */
 #define BUS_TIME_INTERRUPT_INTERVAL 130
 /*! The time frame size of the bus time slots, in us */
-#define BUS_TIME_FRAME_LIMIT	1040
+#define BUS_TIME_FRAME_LIMIT	520
 /*! The dead time of the time slot, in us. This should be set pretty high to accept rather high clock drift */
 #define BUS_SLOT_DEAD_TIME		260
 

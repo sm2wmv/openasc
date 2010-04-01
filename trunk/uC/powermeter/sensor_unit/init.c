@@ -37,6 +37,8 @@ void init_ports(void) {
 	DDRC = 0x03;
 	PORTC = 0x00;
 	DDRD = 0x86;
-	PORTD = (1<<3) | (1<<4) | (1<<5);
+	DDRD = (1<<3) | (1<<4) | (1<<5);
+	
+	//PORTD = (1<<3) | (1<<4) | (1<<5);
 }
 

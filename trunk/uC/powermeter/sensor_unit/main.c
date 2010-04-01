@@ -24,6 +24,14 @@ unsigned int counter_ping_interval=0;
 
 unsigned char update_status = 0;
 
+unsigned int counter_sync = 0;
+
+unsigned char pwr_meter_sleep = 0;
+
+unsigned char poll_curr_power = 0;
+
+unsigned int last_pwr_change_interval = 0;
+
 /*! \brief Parse a message and exectute the proper commands
  * This function is used to parse a message that was receieved on the bus that is located
  * in the RX queue. */
@@ -90,8 +98,10 @@ int main(void) {
 		//Initialize the communication bus	
 	bus_init();
 	
-	//The device should not be master
-	bus_set_is_master(0,0);
+	if ((BUS_BASE_ADDR+read_ext_addr()) == 0x01)
+		bus_set_is_master(1,DEF_NR_DEVICES);
+	else
+		bus_set_is_master(0,0);
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();	
@@ -107,31 +117,64 @@ int main(void) {
 	
 	sei();
 	
+	current_coupler.pickup_type = PICKUP_TYPE_15000W;
+	
+	unsigned char data[7];
+	unsigned int temp_vswr;
+	
+	status.curr_fwd_power = 0;
+	
+	delay_ms(250);
+	delay_ms(250);
+	delay_ms(250);
+	delay_ms(250);
+	
 	while(1) {
-		if (!rx_queue_is_empty())
+		if (!rx_queue_is_empty()) {
 			bus_parse_message();
-
-		if (!tx_queue_is_empty())
+		}
+		
+		if (!tx_queue_is_empty()) {
 			bus_check_tx_status();
+		}
+		
+		if (poll_curr_power == 1) {
+			read_state();
+			
+			status.curr_fwd_power = 12543;
+			status.curr_ref_power = 405;
+			status.curr_vswr = 1.25f;
+				
+			//This is to decrease the traffic on the bus from power meters which are currently not active
+			if ((status.curr_fwd_power < NO_FWD_PWR_LIMIT) && (last_pwr_change_interval >= 20)) {
+				pwr_meter_sleep = 1;
+			}
+			else if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
+				update_status = 1;
+				pwr_meter_sleep = 0;
+				last_pwr_change_interval = 0;
+			}
+				
+			
+			last_pwr_change_interval++;
+			poll_curr_power = 0;
+		}
 		
 		/* If the update_status flag is set, we should sample the current power values
 		   and send them over the bus as a broadcast message */
 		if (update_status == 1) {
-			read_state();
-			
-			unsigned char data[7];
 			data[0] = current_coupler.pickup_type;
 			data[1] = (status.curr_fwd_power >> 8) & 0xFF;
 			data[2] = (status.curr_fwd_power & 0xFF);
 			data[3] = (status.curr_ref_power >> 8) & 0xFF;
 			data[4] = (status.curr_ref_power & 0xFF);
+				
+			temp_vswr = (unsigned int)(status.curr_vswr * 100);
 			
-			unsigned int temp_vswr = (unsigned int)(status.curr_vswr * 100);
-					
 			data[5] = (temp_vswr >> 8) & 0xFF;
 			data[6] = (temp_vswr & 0xFF);
 			
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data[0]);
+			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data);
 			
 			update_status = 0;
 		}
@@ -140,17 +183,42 @@ int main(void) {
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
+	//If this device should act as master it should send out a SYNC command
+	//and also the number of devices (for the time slots) that are active on the bus
+	if (bus_is_master()) {
+		if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+			unsigned char temp = bus_get_device_count();
+			
+			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
+			counter_sync = 0;
+		}
+		
+		counter_sync++;
+	}
+	
 	if (bus_allowed_to_send()) {
 		//Check if a ping message should be sent out on the bus
 		if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 0, 0);
+			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, (unsigned char *)DEVICE_ID_POWERMETER_PICKUP);
 			counter_ping_interval = 0;
 		}
 	}
 	
-	//Will happen each 10 ms
-	if ((counter_compare0 % 10) == 0) {
-		update_status = 1;
+	if (pwr_meter_sleep == 0) {
+		if ((counter_compare0 % POWER_TRANSMIT_INTERVAL1) == 0) {
+			if (update_status == 0)
+				update_status = 1;
+		}
+	}
+	else {
+		if ((counter_compare0 % POWER_TRANSMIT_INTERVAL2) == 0) {
+			if (update_status == 0)
+				update_status = 1;
+		}
+	}
+	
+	if ((counter_compare0 % POWER_POLL_INTERVAL) == 0) {
+		poll_curr_power = 1;
 	}
 
 	counter_ping_interval++;
