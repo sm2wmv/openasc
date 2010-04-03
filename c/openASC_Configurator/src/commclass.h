@@ -79,6 +79,7 @@
 #define CTRL_SET_DEVICE_SETTINGS_ADDRESS						0x01
 #define CTRL_SET_DEVICE_SETTINGS_NR_NODES						0x02
 #define CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER		0x03
+#define CTRL_SET_POWERMETER_SETTINGS								0x04
 
 /* bit 0 = PTTInputFootswitch
  * bit 1 = PTTInputRadioSense

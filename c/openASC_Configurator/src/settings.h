@@ -18,10 +18,20 @@ class SettingsClass {
 		bool getDeviceIsMaster();
 		void setNumberOfDevices(int deviceCount);
 		int getNumberOfDevices();
+
+		void setPowerMeterAddress(unsigned char address);
+		unsigned char getPowerMeterAddress(void);
+		void setPowerMeterVSWRAlarm(double swr);
+		double getPowerMeterVSWRAlarm(void);
+		void setPowerMeterUpdateRate(unsigned int rate);
+		unsigned int getPowerMeterUpdateRate(void);
 	private:
 		int networkAddress;
 		bool deviceIsMaster;
 		int nrOfDevices;
+		unsigned char powerMeterAddress;
+		double powerMeterVSWRAlarmValue;
+		unsigned int powerMeterUpdateRate;
 	protected:
 };
 

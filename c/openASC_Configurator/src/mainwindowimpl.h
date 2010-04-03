@@ -164,6 +164,10 @@ private slots:
 	void checkBoxNetworkIsMasterClicked(bool state);
 	void spinBoxNetworkNrOfDevicesValueChanged(int newValue);
 	
+	void spinBoxPowerMeterAdressValueChanged(int);
+	void spinBoxPowerMeterSWRValueChanged(double);
+	void spinBoxPowerMeterUpdateRateValueChanged(int);
+
 	/* The rotator functions */
 	void comboBoxRotatorsIndexChanged(int index);
 	void pushButtonRotatorAddPressed();

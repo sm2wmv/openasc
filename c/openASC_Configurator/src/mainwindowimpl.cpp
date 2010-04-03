@@ -123,6 +123,10 @@ void MainWindowImpl::loadInitialGUIValues() {
 	checkBoxNetworkIsMaster->setChecked(settingsClass.getDeviceIsMaster());
 	spinBoxNetworkNrOfDevices->setValue(settingsClass.getNumberOfDevices());
 	
+	spinBoxPowerMeterAddress->setValue(settingsClass.getPowerMeterAddress());
+	doubleSpinBoxPowerMeterSWR->setValue(settingsClass.getPowerMeterVSWRAlarm());
+	spinBoxPowerMeterUpdateRate->setValue(settingsClass.getPowerMeterUpdateRate());
+
 	comboBoxRotatorsReload();
 }
 
@@ -1177,6 +1181,18 @@ void MainWindowImpl::comboBoxAntennaRotator4IndexChanged(int newIndex) {
 	}
 }
 
+void MainWindowImpl::spinBoxPowerMeterAdressValueChanged(int value) {
+		settingsClass.setPowerMeterAddress(value);
+}
+
+void MainWindowImpl::spinBoxPowerMeterSWRValueChanged(double value) {
+		settingsClass.setPowerMeterVSWRAlarm(value);
+}
+
+void MainWindowImpl::spinBoxPowerMeterUpdateRateValueChanged(int rate) {
+		settingsClass.setPowerMeterUpdateRate(rate);
+}
+
 void MainWindowImpl::setupConnections() {
 	/* RADIO INTERFACE START */
 	connect(comboBoxRadioType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioTypeCurrentIndexChanged(int)));
@@ -1312,6 +1328,11 @@ void MainWindowImpl::setupConnections() {
 	connect(checkBoxNetworkIsMaster, SIGNAL(clicked(bool)), this, SLOT(checkBoxNetworkIsMasterClicked(bool)));
 	connect(spinBoxNetworkNrOfDevices, SIGNAL(valueChanged(int)), this, SLOT(spinBoxNetworkNrOfDevicesValueChanged(int)));
 	
+	connect(spinBoxPowerMeterAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterAdressValueChanged(int)));
+	connect(doubleSpinBoxPowerMeterSWR, SIGNAL(valueChanged(double)), this, SLOT(spinBoxPowerMeterSWRValueChanged(double)));
+	connect(spinBoxPowerMeterUpdateRate, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateValueChanged(int)));
+
+
 	connect(comboBoxRotators, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRotatorsIndexChanged(int)));
 	connect(pushButtonRotatorAdd, SIGNAL(pressed()), this, SLOT(pushButtonRotatorAddPressed()));
 	connect(pushButtonRotatorSave, SIGNAL(pressed()), this, SLOT(pushButtonRotatorSavePressed()));
