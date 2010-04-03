@@ -16,21 +16,25 @@
 #include "../../wmv_bus/bus_tx_queue.h"
 #include "../../wmv_bus/bus_commands.h"
 
+/* All these flags should be put together in one variable to save space, however 
+   this is not needed on this device since it will never run out of RAM anyway */ 
 
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned int counter_compare0 = 0;
 //! Counter to keep track of when to send a ping out on the bus
 unsigned int counter_ping_interval=0;
-
+//! Flag which is set when the power information should be sent out on the bus
 unsigned char update_status = 0;
-
+//! Flag which is set when the power should be polled
+unsigned char poll_curr_power = 0;
+//! Counter for the bus SYNC if the device is acting as master
 unsigned int counter_sync = 0;
-
+//! Flag which indicates that the device is put into "sleep" mode, only sending out data
+//! at a very much lower rate than during its awake time
 unsigned char pwr_meter_sleep = 0;
 
-unsigned char poll_curr_power = 0;
-
-unsigned int last_pwr_change_interval = 0;
+//! The device ID of the power meter
+unsigned char device_id;
 
 /*! \brief Parse a message and exectute the proper commands
  * This function is used to parse a message that was receieved on the bus that is located
@@ -39,22 +43,19 @@ void bus_parse_message(void) {
 	BUS_MESSAGE bus_message = rx_queue_get();
 
 	if (bus_message.cmd == BUS_CMD_ACK)
-		bus_message_acked();
+		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked();
+		bus_message_nacked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_PING) {
 		
 	}
 	else {
 		if (bus_message.cmd == BUS_CMD_POWERMETER_CALIBRATE) {
-			//TODO: The calibration command
-		}
-		else if (bus_message.cmd == BUS_CMD_SYNC) {
-		
+			//TODO: The calibration commands
 		}
 	}
 	
-	//Drop the message
+	//Drop the message from the RX queue
 	rx_queue_drop();
 }
 
@@ -71,8 +72,16 @@ void read_state() {
 		//Read the reflected A/D value
 	status.curr_ref_ad_value = a2dConvert10bit(ADC_CH_ADC1);
 		
+	//Calculate the power from the new A/D reads
 	input_calculate_power();
+	//Save the calculation of the VSWR to the status struct
 	status.curr_vswr = input_calculate_vswr();
+}
+
+/*! Read the external configuration jumper settings 
+ *  \return The value of the three pins */
+unsigned char read_ext_configuration(void) {
+	return(~(PIND >> 3) & 0x07);
 }
 
 int main(void) {
@@ -91,7 +100,7 @@ int main(void) {
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */
-	delay_ms(7 * bus_get_address());
+	delay_ms(bus_get_address());
 	
 	a2dInit();
 	
@@ -104,10 +113,10 @@ int main(void) {
 		bus_set_is_master(0,0);
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
-	init_timer_2();	
+	init_timer_2();
 	
 	//Timer with interrupts each ms
-	init_timer_0();	
+	init_timer_0();
 	
 	a2dSetPrescaler(ADC_PRESCALE_DIV16);
 	a2dSetReference(ADC_REFERENCE_AREF);
@@ -115,20 +124,19 @@ int main(void) {
 	current_coupler.fwd_scale_value[0] = 3782;
 	current_coupler.ref_scale_value[0] = 3782;
 	
-	sei();
-	
-	current_coupler.pickup_type = PICKUP_TYPE_15000W;
+	current_coupler.pickup_type = read_ext_configuration();
 	
 	unsigned char data[7];
 	unsigned int temp_vswr;
 	
 	status.curr_fwd_power = 0;
 	
-	delay_ms(250);
-	delay_ms(250);
-	delay_ms(250);
-	delay_ms(250);
+	device_id = DEVICE_ID_POWERMETER_PICKUP;
 	
+	unsigned int last_pwr_change_interval = 0;
+	
+	sei();
+		
 	while(1) {
 		if (!rx_queue_is_empty()) {
 			bus_parse_message();
@@ -136,6 +144,25 @@ int main(void) {
 		
 		if (!tx_queue_is_empty()) {
 			bus_check_tx_status();
+		}
+		
+		//If this device should act as master it should send out a SYNC command
+		//and also the number of devices (for the time slots) that are active on the bus
+		if (bus_is_master()) {
+			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+				unsigned char temp = bus_get_device_count();
+			
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
+				counter_sync = 0;
+			}
+		}
+		
+		if (bus_allowed_to_send()) {
+		//Check if a ping message should be sent out on the bus
+			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
+				counter_ping_interval = 0;
+			}
 		}
 		
 		if (poll_curr_power == 1) {
@@ -155,7 +182,6 @@ int main(void) {
 				last_pwr_change_interval = 0;
 			}
 				
-			
 			last_pwr_change_interval++;
 			poll_curr_power = 0;
 		}
@@ -183,27 +209,6 @@ int main(void) {
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
-	//If this device should act as master it should send out a SYNC command
-	//and also the number of devices (for the time slots) that are active on the bus
-	if (bus_is_master()) {
-		if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-			unsigned char temp = bus_get_device_count();
-			
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
-			counter_sync = 0;
-		}
-		
-		counter_sync++;
-	}
-	
-	if (bus_allowed_to_send()) {
-		//Check if a ping message should be sent out on the bus
-		if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, (unsigned char *)DEVICE_ID_POWERMETER_PICKUP);
-			counter_ping_interval = 0;
-		}
-	}
-	
 	if (pwr_meter_sleep == 0) {
 		if ((counter_compare0 % POWER_TRANSMIT_INTERVAL1) == 0) {
 			if (update_status == 0)
@@ -221,6 +226,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		poll_curr_power = 1;
 	}
 
+	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
 }

@@ -153,6 +153,9 @@
 #define CTRL_SET_DEVICE_SETTINGS_NR_NODES						0x02
 //! CTRL command: Set if the device is master or not
 #define CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER		0x03
+//! CTRL command: Set the parameters for the power meter
+#define CTRL_SET_POWERMETER_SETTINGS	0x04
+
 
 //! CTRL command: Save the sequencer settings
 #define CTRL_SET_SEQUENCER_SAVE					0x01
@@ -547,6 +550,15 @@ void computer_interface_parse_data(void) {
 					}
 					
 					computer_interface_send_ack();
+					break;
+				case CTRL_SET_POWERMETER_SETTINGS:
+						settings_ptr->powermeter_address = computer_comm.rx_buffer_start[1];
+						settings_ptr->powermeter_vswr_limit = (computer_comm.rx_buffer_start[2] << 8);
+						settings_ptr->powermeter_vswr_limit += computer_comm.rx_buffer_start[3];
+						settings_ptr->powermeter_update_rate = (computer_comm.rx_buffer_start[4] << 8);
+						settings_ptr->powermeter_update_rate += computer_comm.rx_buffer_start[5];
+						
+						computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_SAVE:
 					eeprom_save_settings_structure(settings_ptr);

@@ -184,6 +184,12 @@ typedef struct {
 	unsigned char network_device_is_master;
 	//! The external keypad assignments
 	unsigned char ext_key_assignments[17];
+	//! The powermeter address
+	unsigned char powermeter_address;
+	//! The powermeter VSWR alarm limit (250 means 2.5:1)
+	unsigned int powermeter_vswr_limit;
+	//! The powermeter update rate on the display (0 means it's disabled)
+	unsigned int powermeter_update_rate;
 } struct_setting;
 
 //! This struct only contains information that is temporary

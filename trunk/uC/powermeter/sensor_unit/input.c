@@ -40,11 +40,3 @@ void input_calculate_power(void) {
 	temp = ((long)(status.curr_ref_ad_value) * (long)(status.curr_ref_ad_value)) / current_coupler.ref_scale_value[0];
 	status.curr_ref_power = (unsigned int)temp;
 }
-
-void pulse_sensor_up(void) {
-	
-}
-
-void pulse_sensor_down(void) {
-	
-}
