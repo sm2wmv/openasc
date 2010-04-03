@@ -37,7 +37,7 @@
 #define BUS_STATUS_PREAMBLE_FOUND_BIT		1
 
 //! The size of the RX queue in buffers
-#define BUS_RX_QUEUE_SIZE 10
+#define BUS_RX_QUEUE_SIZE 20
 //! The size of the TX queue in buffers
 #define BUS_TX_QUEUE_SIZE	20
 

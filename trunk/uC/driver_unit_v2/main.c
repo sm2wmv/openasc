@@ -37,6 +37,9 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
+//! Contains info if the module is a positive or negative driver
+unsigned char device_id;
+
 //! A status structure of the driver unit outputs
 driver_status_struct	driver_status;
 
@@ -184,9 +187,9 @@ void bus_parse_message(void) {
 	BUS_MESSAGE bus_message = rx_queue_get();
 
 	if (bus_message.cmd == BUS_CMD_ACK)
-		bus_message_acked();
+		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked();
+		bus_message_nacked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_PING) {
 		
 	}
@@ -290,7 +293,7 @@ int main(void)
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */
-	delay_ms(7 * bus_get_address());
+	delay_ms(bus_get_address());
 
 	/* Initialize various hardware resources */
 	init_ports();
@@ -305,9 +308,14 @@ int main(void)
 	init_timer_2();	
 	
 	//Timer with interrupts each ms
-	init_timer_0();	
+	init_timer_0();
 	
 	sei();
+
+	if (PINF & (1<<7))
+		device_id = DEVICE_ID_DRIVER_POS;
+	else
+		device_id = DEVICE_ID_DRIVER_NEG;
 
 	for (unsigned char i=1;i<=20;i++)
 		deactivate_output(0x00,i);
@@ -319,6 +327,17 @@ int main(void)
 
 		if (!tx_queue_is_empty())
 			bus_check_tx_status();
+			
+		if (bus_allowed_to_send()) {
+			//Check if a ping message should be sent out on the bus
+			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+				//Check if the device is a POS or NEG driver module
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
+
+				counter_ping_interval = 0;
+			}
+		}
+
 	}
 	
 	return (0);
@@ -326,15 +345,6 @@ int main(void)
 
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
-	if (bus_allowed_to_send()) {
-		//Check if a ping message should be sent out on the bus
-		if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, (unsigned char *)DEVICE_ID_DRIVER_POS);
-
-			counter_ping_interval = 0;
-		}
-	}
-
 	counter_ping_interval++;
 	counter_compare0++;
 }

@@ -29,6 +29,15 @@
 #include "bus_rx_queue.h"
 #include "bus.h"
 
+#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+	#include "../front_panel/led_control.h"
+	#include "../front_panel/event_handler.h"
+	#include "../front_panel/errors.h"
+#endif
+
+
+unsigned char bus_rx_queue_size;
+
 //! The rx queue
 rx_queue_struct rx_queue;
 
@@ -36,12 +45,26 @@ rx_queue_struct rx_queue;
 void rx_queue_init(void) {
 	rx_queue.first = 0;
 	rx_queue.last = 0;
+	bus_rx_queue_size = 0;
 }
 
 /*! \brief Insert a message into the RX queue (FIFO)
 * \param message - The message that should be inserted to the queue
 */
 void rx_queue_add(BUS_MESSAGE message) {
+	bus_rx_queue_size++;
+
+	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+		if (bus_rx_queue_size > BUS_RX_QUEUE_SIZE) {
+			led_set_error(LED_STATE_ON);
+			
+			//Set the error flag
+			event_set_error(ERROR_TYPE_BUS_RX_QUEUE_FULL,1);
+
+		}	
+	#endif
+
+	
 	rx_queue.message[rx_queue.last++] = message;
 	
 	if (rx_queue.last >= BUS_RX_QUEUE_SIZE)
@@ -67,6 +90,8 @@ BUS_MESSAGE rx_queue_get() {
 void rx_queue_drop(void) {
 	rx_queue.first++;
 	
+	bus_rx_queue_size--;
+	
 	if (rx_queue.first >= BUS_RX_QUEUE_SIZE)
 		rx_queue.first = 0;
 }
@@ -77,6 +102,8 @@ void rx_queue_drop(void) {
 void rx_queue_dropall(void) {
 	rx_queue.first = 0;
 	rx_queue.last = 0;
+	
+	bus_rx_queue_size = 0;
 }
 
 /*! \brief Check if the queue is empty
@@ -86,4 +113,8 @@ unsigned char rx_queue_is_empty(void) {
 		return(1);
 	else
 		return(0);
+}
+
+unsigned char rx_queue_size(void) {
+	return(bus_rx_queue_size);
 }

@@ -178,6 +178,7 @@ void __inline__ bus_reset_tx_status(void) {
 /*! \brief Function that resets the bus status variables */
 void __inline__ bus_reset_rx_status(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_PREAMBLE_FOUND_BIT);
+	
 	bus_status.char_count = 0;
 	calc_checksum = 0;
 	bus_status.prev_char = 0;
@@ -241,25 +242,29 @@ void  bus_resend_message(void) {
 		bus_status.flags |= (1<<BUS_STATUS_SEND_MESSAGE);
 	}
 	else {
-		tx_queue_drop();
-		bus_reset_tx_status();
-		
 		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 			led_set_error(LED_STATE_ON);
 			
 			//Set the error flag
 			event_set_error(ERROR_TYPE_BUS_RESEND,1);
 			
-			//BUS_MESSAGE bus_message = tx_queue_get();
+			/*BUS_MESSAGE bus_message = tx_queue_get();
+			printf("RESEND FAIL\n");
+			printf("-----------\n");
+			printf("QUEUE_SIZE: %i\n",tx_queue_size());
 
-			/*			printf("TO_ADDR: %i\n",bus_message.to_addr);
+			printf("TO_ADDR: %i\n",bus_message.to_addr);
 			printf("FROM_ADDR: %i\n",bus_message.from_addr);
 			printf("CMD: %i\n",bus_message.cmd);
 			printf("LENGTH: %i\n",bus_message.length);
-			for (unsigned char i=0;i<bus_message.length;i++)
-				printf("DATA[%i]: %i\n",i,bus_message.data[i]);*/
 			
+			for (unsigned char i=0;i<bus_message.length;i++)
+				printf("DATA[%i]: %i\n",i,bus_message.data[i]);
+			*/
 		#endif
+		
+		tx_queue_drop();
+		bus_reset_tx_status();
 	}
 }
 
@@ -301,12 +306,28 @@ void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 	bus_message.cmd = cmd;
 	checksum += cmd;
 	bus_message.length = length;
-	checksum += length;
+	checksum += length;		
 
 	for (unsigned char i=0;i<length;i++) {
 		checksum += data[i];
 		bus_message.data[i] = data[i];
 	}
+	
+	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+		/*
+		printf("ADDING MESS\n");
+		printf("-----------\n");
+		printf("RX status: %i\n",bus_status.flags & (1<<BUS_STATUS_RECEIVE_ON));
+		printf("TO_ADDR: %i\n",bus_message.to_addr);
+					printf("FROM_ADDR: %i\n",bus_message.from_addr);
+					printf("CMD: %i\n",bus_message.cmd);
+					printf("LENGTH: %i\n",bus_message.length);
+				
+					for (unsigned char i=0;i<bus_message.length;i++)
+						printf("DATA[%i]: %i\n",i,bus_message.data[i]);
+						*/
+			
+	#endif
 
 	bus_message.checksum = checksum;
 
@@ -342,18 +363,43 @@ void bus_add_new_message(void) {
 }
 
 /*! \brief The message last sent was NACKED from the receiver */
-void bus_message_nacked(void) {
+void bus_message_nacked(unsigned char addr) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
-	bus_resend_message();
+
+	BUS_MESSAGE bus_message;
+	
+	bus_message = tx_queue_get();
+	
+	//We need to make sure that this NACK was actually from the address we expected
+	//Otherwise there is a risk that another device which has gotten corrupted information
+	//will send a NACK to this device, even though the message wasn't supposed to be from that unit
+	if (bus_message.to_addr == addr)
+		bus_resend_message();
+#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+	else
+		printf("NACKED\n");
+	#endif
 }
 
 /*! \brief The message last sent was acknowledged from the receiver */
-void bus_message_acked(void) {
-	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
+void bus_message_acked(unsigned char addr) {
+	BUS_MESSAGE bus_message;
+	
+	bus_message = tx_queue_get();
+	
+	//We need to make sure that this ACK was actually from the address we expected
+	//Otherwise there is a risk that another device which has gotten corrupted information
+	//will send a ACK to this device, even though the message wasn't supposed to be from that unit
+	if (bus_message.to_addr == addr) {
+		bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 
-	tx_queue_drop();
-
-	bus_reset_tx_status();
+		tx_queue_drop();
+		bus_reset_tx_status();
+	}
+	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+	else
+		printf("ERR: ACKED\n");	
+		#endif
 }
 
 #ifndef DEVICE_TYPE_COMPUTER
@@ -407,7 +453,9 @@ ISR(ISR_BUS_USART_RECV) {
 						bus_send_nack(bus_new_message.from_addr);
 				}
 			}
+			
 			bus_reset_rx_status();
+			bus_status.prev_char = data;
 			return;
 		}
 		else {
@@ -476,7 +524,6 @@ ISR(ISR_BUS_USART_TRANS) {
 
 /*! Timer interrupt with ~130us intervals */
 ISR(ISR_BUS_TIMER_COMPARE) {
-
 	/* If the bus hasn't received a message in a certain amount of time we clear it's status
 	   allowing other devices to transmit data again */
 	if (timer_bus_timeout >= BUS_TIMEOUT_LIMIT) {
@@ -503,16 +550,16 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 	if (bus_status.wraparounds >= BUS_ACK_WRAPAROUND_LIMIT) {
 		if (bus_status.flags & (1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT)) {
 			bus_resend_message();
+			
+			bus_status.wraparounds = 0;
 		}
 	}
 
 	if (bus_status.device_count != 0) {
 		if (((bus_status.frame_counter) >= bus_status.lower_limit) && ((bus_status.frame_counter) < bus_status.upper_limit)) {
-			PORTD |= (1<<3);
 			bus_status.flags |= (1<<BUS_STATUS_TIME_SLOT_ACTIVE);
 		}
 		else {
-			PORTD &= ~(1<<3);
 			bus_status.flags &= ~(1<<BUS_STATUS_TIME_SLOT_ACTIVE);
 		}
 

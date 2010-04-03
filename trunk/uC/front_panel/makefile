@@ -235,8 +235,8 @@ DIRLIB = $(DIRAVR)/avr/lib
 
 # Define programs and commands.
 SHELL = sh
-CC = /usr/local/avr/bin/avr-gcc
-#CC = avr-gcc
+#CC = /usr/local/avr/bin/avr-gcc
+CC = avr-gcc
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 SIZE = avr-size
