@@ -58,8 +58,15 @@
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 
+//#define ERROR_DEBUG 1
+
 //! Settings struct
 struct_setting settings;
+
+//! Flag used to keep track of that the device hsa actually started.
+//! This is so that we don't send data before it is actually ready and everything
+//! is initialized
+unsigned char device_started = 0;
 
 //! Counter to keep track of when a character for the CAT was last received
 unsigned char radio_rx_data_counter = 0;
@@ -86,6 +93,8 @@ unsigned int counter_last_pulse_event=0;
 
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 unsigned int counter_event_timer = 0;
+
+unsigned char device_count = 0;
 
 //! Different flags, description is found in main.h
 unsigned int main_flags = 0;
@@ -225,7 +234,7 @@ void main_update_ptt_status(void) {
 	if (radio_get_ptt_status() != 0)
 		state = 2;
 	
-	printf("UPDATE PTT, state = %i\n",state);
+//	printf("UPDATE PTT, state = %i\n",state);
 	
 	if (state == 0) {
 		main_set_inhibit_state(INHIBIT_OK_TO_SEND);
@@ -314,7 +323,8 @@ int main(void){
 			 
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
-		radio_interface_init();
+		//radio_interface_init();
+		init_usart_computer();
 	}
 	else {
 		//Init the computer communication
@@ -352,9 +362,12 @@ int main(void){
 	that is based on the external address of the device */	
 	delay_ms(7 * settings.network_address);
 	
+	device_count = settings.network_device_count;
+	
 	//This must be done in this order for it to work properly!
 	/* Read the external address of the device */
 	bus_set_address(settings.network_address);
+	
 	
 	bus_init();
 
@@ -391,11 +404,13 @@ int main(void){
 	set_knob_function(KNOB_FUNCTION_AUTO);
 	
 	//init_usart_computer();
-	
+
 	sei();
 	
 	//TEMPORARY
 	DDRB |= (1<<1);
+	
+	device_started = 1;
 	
 	while(1) {
 		//Output a pulse so we can see how long time the main loop takes
@@ -404,8 +419,8 @@ int main(void){
 		else
 			PORTB |= (1<<1);
 		
-		computer_interface_send_data();
-		computer_interface_parse_data();
+		//computer_interface_send_data();
+		//computer_interface_parse_data();
 		
 		if (!rx_queue_is_empty())
 			event_bus_parse_message();
@@ -428,10 +443,10 @@ int main(void){
 		}
 		
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
-		internal_comm_poll_rx_queue();
+		//internal_comm_poll_rx_queue();
 		
 		//Poll the TX queue in the internal comm to see if we have any new messages to be SENT
-		internal_comm_poll_tx_queue();
+		//internal_comm_poll_tx_queue();
 
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
@@ -509,6 +524,47 @@ int main(void){
 			main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
 		}
 		
+		if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+			#ifdef ERROR_DEBUG
+				printf("SYNC_MESSAGE added\n");
+				
+				printf("TX_QUEUE_SIZE: %i\n",tx_queue_size());
+				printf("RX_QUEUE_SIZE: %i\n",rx_queue_size());
+
+				if (tx_queue_size() > 0) {
+					BUS_MESSAGE bus_message = tx_queue_get();
+
+					printf("FROM MAIN\n");
+					printf("---------\n");
+					printf("TO_ADDR: %i\n",bus_message.to_addr);
+					printf("FROM_ADDR: %i\n",bus_message.from_addr);
+					printf("CMD: %i\n",bus_message.cmd);
+					printf("LENGTH: %i\n",bus_message.length);
+				
+					for (unsigned char i=0;i<bus_message.length;i++)
+						printf("DATA[%i]: %i\n",i,bus_message.data[i]);
+							
+				}
+			#endif	
+	
+			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
+
+			counter_sync = 0;
+		}
+
+		if ((device_started == 1) && bus_allowed_to_send()) {
+			//Check if a ping message should be sent out on the bus
+			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+				#ifdef ERROR_DEBUG
+					printf("PING_MESSAGE added\n");
+				#endif	
+
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, (unsigned char *)DEVICE_ID_MAINBOX);
+
+				counter_ping_interval = 0;
+			}
+		}
+		
 		radio_process_tasks();
 	}
 }
@@ -517,24 +573,8 @@ int main(void){
 ISR(SIG_OUTPUT_COMPARE0A) {
 	//If this device should act as master it should send out a SYNC command
 	//and also the number of devices (for the time slots) that are active on the bus
-	if (bus_is_master()) {
-		if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-			unsigned char temp = bus_get_device_count();
-			
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
-			counter_sync = 0;
-		}
-		
+	if ((device_started == 1) && (bus_is_master())) {
 		counter_sync++;
-	}
-
-	if (bus_allowed_to_send()) {
-		//Check if a ping message should be sent out on the bus
-		if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, (unsigned char *)DEVICE_ID_MAINBOX);
-
-			counter_ping_interval = 0;
-		}
 	}
 	
 	if (radio_rx_data_counter >= RADIO_RX_DATA_TIMEOUT) {

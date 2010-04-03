@@ -128,7 +128,7 @@
  * PF4	-	PTT LED R5
  * PF5	-	PTT LED R6
  * PF6	-	PTT LED R7
- * PF7	-	
+ * PF7	-	Neg/Pos driver module sense input (0 = neg, 1 = pos), activate pullup
  * ===================================================================================== * *
  *
  *

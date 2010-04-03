@@ -134,7 +134,7 @@
 #define DEVICE_ID_POWERMETER_PICKUP	6
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
-#define BUS_MAX_RESENDS	5
+#define BUS_MAX_RESENDS	10
 
 /*! The interval between each status message (time is in ms) */
 #define BUS_DEVICE_STATUS_MESSAGE_INTERVAL	1500
@@ -150,7 +150,7 @@
 
 /*! The timeout limit between a message that was sent to when it will be a resend, this is counted as 
     number of wraparounds on the bus, ie 5 would mean 5 wraparounds */
-#define BUS_ACK_WRAPAROUND_LIMIT 5
+#define BUS_ACK_WRAPAROUND_LIMIT 10
 
 /*! Timeout limit for how long it can take without receiving a message before the buffer is cleared, this is counted as
     time, 5 would mean 5 * 130 us */
@@ -272,8 +272,8 @@ void  bus_resend_message(void);
 void bus_send_ack(unsigned char to_addr);
 void bus_send_nack(unsigned char to_addr);
 
-void bus_message_acked(void);
-void bus_message_nacked(void);
+void bus_message_acked(unsigned char addr);
+void bus_message_nacked(unsigned char addr);
 
 void __inline__ bus_reset_tx_status(void);
 void __inline__ bus_reset_rx_status(void);

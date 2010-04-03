@@ -29,6 +29,15 @@
 #include "bus_tx_queue.h"
 #include "bus.h"
 
+#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+	#include "../front_panel/led_control.h"
+	#include "../front_panel/event_handler.h"
+	#include "../front_panel/errors.h"
+#endif
+
+
+unsigned char bus_tx_queue_size;
+
 //! The tx queue
 tx_queue_struct tx_queue;
 
@@ -36,14 +45,28 @@ tx_queue_struct tx_queue;
 void tx_queue_init(void) {
 	tx_queue.first = 0;
 	tx_queue.last = 0;
+	
+	bus_tx_queue_size = 0;
 }
 
 /*! \brief Insert a message into the TX queue (FIFO)
 * \param message - The message that should be inserted to the queue
 */
 void tx_queue_add(BUS_MESSAGE message) {
-	tx_queue.message[tx_queue.last++] = message;
+	bus_tx_queue_size++;
 	
+	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+		if (bus_tx_queue_size > BUS_TX_QUEUE_SIZE) {
+			led_set_error(LED_STATE_ON);
+			
+			//Set the error flag
+			event_set_error(ERROR_TYPE_BUS_TX_QUEUE_FULL,1);
+
+		}	
+	#endif
+	
+	tx_queue.message[tx_queue.last++] = message;
+		
 	if (tx_queue.last >= BUS_TX_QUEUE_SIZE)
 		tx_queue.last = 0;
 	
@@ -66,7 +89,8 @@ BUS_MESSAGE tx_queue_get(void) {
 */
 void tx_queue_drop(void) {
 	tx_queue.first++;
-	
+	bus_tx_queue_size--;
+
 	if (tx_queue.first >= BUS_TX_QUEUE_SIZE)
 		tx_queue.first = 0;
 }
@@ -77,6 +101,7 @@ void tx_queue_drop(void) {
 void tx_queue_dropall(void) {
 	tx_queue.first = 0;
 	tx_queue.last = 0;
+	bus_tx_queue_size = 0;
 }
 
 /*! \brief Check if the queue is empty
@@ -86,4 +111,8 @@ unsigned char tx_queue_is_empty(void) {
 		return(1);
 	else
 		return(0);
+}
+
+unsigned char tx_queue_size(void) {
+	return(bus_tx_queue_size);
 }

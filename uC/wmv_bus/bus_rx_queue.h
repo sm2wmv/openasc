@@ -31,5 +31,6 @@ void rx_queue_drop(void);
 void rx_queue_dropall(void);
 void rx_queue_init(void);
 unsigned char rx_queue_is_empty(void);
+unsigned char rx_queue_size(void);
 
 #endif

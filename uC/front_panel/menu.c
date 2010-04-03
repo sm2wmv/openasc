@@ -43,7 +43,7 @@
 #define MENU_OPTIONS	6
 
 //! Menu options - Errors
-const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}};
+const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}};
 
 //! The current selected menu option
 unsigned char current_menu_option_selected[MENU_OPTIONS];

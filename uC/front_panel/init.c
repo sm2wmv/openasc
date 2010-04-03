@@ -52,7 +52,7 @@ void init_timer_0(void) {
 	TCCR0A = (1<<WGM01) | (0<<WGM00);
 	TCCR0B = (0<<WGM02) | (1<<CS02) | (0<<CS01) | (1<<CS00);	//Prescaler 1024
 	TCNT0 = 0;
-  OCR0A = OCR0_1MS;                     /* match in aprox 1 ms,  */
+	OCR0A = OCR0_1MS;       /* match in aprox 1 ms,  */
 	TIMSK0 |= (1<<OCIE0A);	//enable the interrupt
 }
 
@@ -61,8 +61,8 @@ void init_timer_0(void) {
 void init_timer_2(void) {
 	TCNT2 = 0;
 	TCCR2A = (1<<WGM21) | (0<<WGM20); //Normal operation, toggle on compare, prescale clk/64	
-	TCCR2B = (0<<WGM22) | (0<<CS22) | (1<<CS21) | (1<<CS20);
-	OCR2A = 58;	//Will run the timer at 
+	TCCR2B = (0<<WGM22) | (1<<CS22) | (0<<CS21) | (0<<CS20);
+	OCR2A = 30;	//Will run the timer at 130us intervals
 	TIMSK2 |= (1<<OCIE2A);
 }
 

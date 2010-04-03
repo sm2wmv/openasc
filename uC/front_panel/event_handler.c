@@ -48,6 +48,8 @@
 #include "../internal_comm.h"
 #include "errors.h"
 
+#define DEBUG_WMV_BUS 1
+
 
 //#define ERROR_DEBUG
 
@@ -738,9 +740,9 @@ void event_bus_parse_message(void) {
 	#endif
 	
 	if (bus_message.cmd == BUS_CMD_ACK)
-		bus_message_acked();
+		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked();
+		bus_message_nacked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_PING) {
 		#ifdef DEBUG_WMV_BUS
 			printf("DEBUG-> PING RXed from: 0x%02X\n",bus_message.from_addr);
