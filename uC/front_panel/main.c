@@ -443,10 +443,10 @@ int main(void){
 		}
 		
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
-		//internal_comm_poll_rx_queue();
+		internal_comm_poll_rx_queue();
 		
 		//Poll the TX queue in the internal comm to see if we have any new messages to be SENT
-		//internal_comm_poll_tx_queue();
+		internal_comm_poll_tx_queue();
 
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
