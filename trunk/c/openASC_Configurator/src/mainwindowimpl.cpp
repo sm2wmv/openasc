@@ -128,6 +128,23 @@ void MainWindowImpl::loadInitialGUIValues() {
 	spinBoxPowerMeterUpdateRateText->setValue(settingsClass.getPowerMeterUpdateRateText());
 	spinBoxPowerMeterUpdateRateBargraph->setValue(settingsClass.getPowerMeterUpdateRateBargraph());
 
+	if (settingsClass.getPTTInterlockInput() == 0)
+			radioButtonPTTInterlockNone->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 1)
+			radioButtonPTTInterlockInput1->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 2)
+			radioButtonPTTInterlockInput2->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 3)
+			radioButtonPTTInterlockInput3->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 4)
+			radioButtonPTTInterlockInput4->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 5)
+			radioButtonPTTInterlockInput5->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 6)
+			radioButtonPTTInterlockInput6->setChecked(true);
+	else if (settingsClass.getPTTInterlockInput() == 7)
+			radioButtonPTTInterlockInput7->setChecked(true);
+
 	comboBoxRotatorsReload();
 }
 
@@ -1198,6 +1215,38 @@ void MainWindowImpl::spinBoxPowerMeterUpdateRateBargraphValueChanged(int rate) {
 		settingsClass.setPowerMeterUpdateRateBargraph(rate);
 }
 
+void MainWindowImpl::radioButtonPTTInterlockNoneClicked(bool state) {
+		settingsClass.setPTTInterlockInput(0);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput1Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(1);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput2Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(2);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput3Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(3);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput4Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(4);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput5Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(5);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput6Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(6);
+}
+
+void MainWindowImpl::radioButtonPTTInterlockInput7Clicked(bool state) {
+		settingsClass.setPTTInterlockInput(7);
+}
+
 void MainWindowImpl::setupConnections() {
 	/* RADIO INTERFACE START */
 	connect(comboBoxRadioType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioTypeCurrentIndexChanged(int)));
@@ -1337,6 +1386,15 @@ void MainWindowImpl::setupConnections() {
 	connect(doubleSpinBoxPowerMeterSWR, SIGNAL(valueChanged(double)), this, SLOT(spinBoxPowerMeterSWRValueChanged(double)));
 	connect(spinBoxPowerMeterUpdateRateText, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateTextValueChanged(int)));
 	connect(spinBoxPowerMeterUpdateRateBargraph, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateBargraphValueChanged(int)));
+
+	connect(radioButtonPTTInterlockNone, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockNoneClicked(bool)));
+	connect(radioButtonPTTInterlockInput1, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput1Clicked(bool)));
+	connect(radioButtonPTTInterlockInput2, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput2Clicked(bool)));
+	connect(radioButtonPTTInterlockInput3, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput3Clicked(bool)));
+	connect(radioButtonPTTInterlockInput4, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput4Clicked(bool)));
+	connect(radioButtonPTTInterlockInput5, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput5Clicked(bool)));
+	connect(radioButtonPTTInterlockInput6, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput6Clicked(bool)));
+	connect(radioButtonPTTInterlockInput7, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput7Clicked(bool)));
 
 
 	connect(comboBoxRotators, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRotatorsIndexChanged(int)));

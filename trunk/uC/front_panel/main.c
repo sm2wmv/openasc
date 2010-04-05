@@ -412,6 +412,12 @@ int main(void){
 	
 	device_started = 1;
 	
+	//! The ping message
+	unsigned char ping_message[2];	
+	
+	ping_message[0] = DEVICE_ID_MAINBOX;
+	ping_message[1] = settings.ptt_interlock_input;
+	
 	while(1) {
 		//Output a pulse so we can see how long time the main loop takes
 		if (PINB & (1<<1))
@@ -525,28 +531,6 @@ int main(void){
 		}
 		
 		if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-			#ifdef ERROR_DEBUG
-				printf("SYNC_MESSAGE added\n");
-				
-				printf("TX_QUEUE_SIZE: %i\n",tx_queue_size());
-				printf("RX_QUEUE_SIZE: %i\n",rx_queue_size());
-
-				if (tx_queue_size() > 0) {
-					BUS_MESSAGE bus_message = tx_queue_get();
-
-					printf("FROM MAIN\n");
-					printf("---------\n");
-					printf("TO_ADDR: %i\n",bus_message.to_addr);
-					printf("FROM_ADDR: %i\n",bus_message.from_addr);
-					printf("CMD: %i\n",bus_message.cmd);
-					printf("LENGTH: %i\n",bus_message.length);
-				
-					for (unsigned char i=0;i<bus_message.length;i++)
-						printf("DATA[%i]: %i\n",i,bus_message.data[i]);
-							
-				}
-			#endif	
-	
 			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
 
 			counter_sync = 0;
@@ -555,11 +539,7 @@ int main(void){
 		if ((device_started == 1) && bus_allowed_to_send()) {
 			//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				#ifdef ERROR_DEBUG
-					printf("PING_MESSAGE added\n");
-				#endif	
-
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, (unsigned char *)DEVICE_ID_MAINBOX);
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 2, ping_message);
 
 				counter_ping_interval = 0;
 			}

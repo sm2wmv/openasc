@@ -27,6 +27,7 @@
 #define EN_FIFTEEN_DOT
 #define EN_EIGHTEEN_DOT
 #define EN_FONT_MT1
+#define EN_FONT_BARGRAPH
 
 /* define number labels for the font selections */
 typedef enum
@@ -63,6 +64,9 @@ typedef enum
 	FONT_MT1,
 #endif
 
+#ifdef EN_FONT_BARGRAPH
+	FONT_BARGRAPH, 
+#endif
 	FONT_COUNT
 } FONT_BASE;
 
@@ -120,6 +124,11 @@ extern const struct FONT_DEF fonts[FONT_COUNT];
 #ifdef EN_FONT_MT1
   extern const uint8_t __attribute__ ((progmem)) font_mt1_glyph_table[];
   extern const uint8_t  font_mt1_width_table[];
+#endif
+	
+#ifdef EN_FONT_BARGRAPH
+	extern const uint8_t __attribute__ ((progmem)) font_bargraph_glyph_table[];
+	extern const uint8_t  font_bargraph_width_table[];
 #endif
 
 #endif

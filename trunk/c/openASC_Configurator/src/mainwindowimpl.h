@@ -169,6 +169,15 @@ private slots:
 	void spinBoxPowerMeterUpdateRateTextValueChanged(int);
 	void spinBoxPowerMeterUpdateRateBargraphValueChanged(int);
 
+	void radioButtonPTTInterlockNoneClicked(bool);
+	void radioButtonPTTInterlockInput1Clicked(bool);
+	void radioButtonPTTInterlockInput2Clicked(bool);
+	void radioButtonPTTInterlockInput3Clicked(bool);
+	void radioButtonPTTInterlockInput4Clicked(bool);
+	void radioButtonPTTInterlockInput5Clicked(bool);
+	void radioButtonPTTInterlockInput6Clicked(bool);
+	void radioButtonPTTInterlockInput7Clicked(bool);
+
 	/* The rotator functions */
 	void comboBoxRotatorsIndexChanged(int index);
 	void pushButtonRotatorAddPressed();
