@@ -191,7 +191,24 @@ void bus_parse_message(void) {
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_PING) {
-		
+		//If the ping is coming from a mainbox, we need to save ptt input information for the interlock
+		if (bus_message.data[0] == DEVICE_ID_MAINBOX) {
+			//Check so that the PTT interlock input is <> 0
+			if (bus_message.data[1] != 0) {
+				if (bus_message.from_addr != driver_status.ptt_interlock_input[bus_message.data[1]-1]) {
+					//TODO: Make code to confirm this by sending a question to the openASC box that this value is actually correct
+					//      That way we are absolutely sure that this setting sent is 100% correct
+					driver_status.ptt_interlock_input[bus_message.data[1]] = bus_message.from_addr;
+				}
+			}
+			else {
+				//If we have that no input should be configured for this device, then we go through the list
+				//to make sure if the setting has been changed, it is also removed from the list
+				for (unsigned char i=0;i<7;i++)
+					if (driver_status.ptt_interlock_input[i] == bus_message.from_addr)
+						driver_status.ptt_interlock_input[i] = 0;
+			}
+		}
 	}
 	else {
 		if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT) {
@@ -301,8 +318,10 @@ int main(void)
 	//Initialize the communication bus	
 	bus_init();
 	
-	//The device should not be master
-	bus_set_is_master(0,0);
+	if ((BUS_BASE_ADDR+read_ext_addr()) == 0x01)
+		bus_set_is_master(1,DEF_NR_DEVICES);
+	else
+		bus_set_is_master(0,0);
 
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();	
@@ -328,6 +347,17 @@ int main(void)
 		if (!tx_queue_is_empty())
 			bus_check_tx_status();
 			
+		//If this device should act as master it should send out a SYNC command
+		//and also the number of devices (for the time slots) that are active on the bus
+		if (bus_is_master()) {
+			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+				unsigned char temp = bus_get_device_count();
+			
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
+				counter_sync = 0;
+			}
+		}
+
 		if (bus_allowed_to_send()) {
 			//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
@@ -345,6 +375,7 @@ int main(void)
 
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
+	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
 }

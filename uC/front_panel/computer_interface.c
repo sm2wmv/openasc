@@ -147,15 +147,16 @@
 //! CTRL command: Save the RX antenna settings
 #define CTRL_SET_RX_ANT_DATA_SAVE						0x07
 
-//! CTRL command: Set the device address
-#define CTRL_SET_DEVICE_SETTINGS_ADDRESS						0x01
-//! CTRL command: Set the number of nodes (if in master mode)
-#define CTRL_SET_DEVICE_SETTINGS_NR_NODES						0x02
-//! CTRL command: Set if the device is master or not
-#define CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER		0x03
-//! CTRL command: Set the parameters for the power meter
-#define CTRL_SET_POWERMETER_SETTINGS	0x04
-
+//! CTRL command: Network settings
+#define CTRL_SET_DEVICE_SETTINGS_NETWORK		0x01
+//! CTRL command: Powermeter settings
+#define CTRL_SET_POWERMETER_SETTINGS				0x02
+//! CTRL command: Various settings
+#define CTRL_SET_DEVICE_SETTINGS_OTHER			0x03
+//! CTRL command: External input settings
+#define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS	0x04
+//! CTRL command: Save data to eeprom
+#define CTRL_SET_DEVICE_SETTINGS_SAVE				0x07
 
 //! CTRL command: Save the sequencer settings
 #define CTRL_SET_SEQUENCER_SAVE					0x01
@@ -529,19 +530,14 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_nack();
 					break;
 			}
-		}
+		}			
 		else if (computer_comm.command == CTRL_SET_DEVICE_SETTINGS) {
 			switch(computer_comm.rx_buffer_start[0]) {
-				case CTRL_SET_DEVICE_SETTINGS_ADDRESS:
+				case CTRL_SET_DEVICE_SETTINGS_NETWORK:
 					settings_ptr->network_address = computer_comm.rx_buffer_start[1];
-					computer_interface_send_ack();
-					break;
-				case CTRL_SET_DEVICE_SETTINGS_NR_NODES:
-					settings_ptr->network_device_count = computer_comm.rx_buffer_start[1];
-					computer_interface_send_ack();
-					break;
-				case CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER:
-					settings_ptr->network_device_is_master = computer_comm.rx_buffer_start[1];
+					settings_ptr->network_device_count = computer_comm.rx_buffer_start[2];
+					settings_ptr->network_device_is_master = computer_comm.rx_buffer_start[3];
+					
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS:
@@ -551,6 +547,11 @@ void computer_interface_parse_data(void) {
 					
 					computer_interface_send_ack();
 					break;
+				case CTRL_SET_DEVICE_SETTINGS_OTHER:
+					settings_ptr->ptt_interlock_input = computer_comm.rx_buffer_start[1];
+					
+					computer_interface_send_ack();
+					break;					
 				case CTRL_SET_POWERMETER_SETTINGS:
 						settings_ptr->powermeter_address = computer_comm.rx_buffer_start[1];
 						settings_ptr->powermeter_vswr_limit = (computer_comm.rx_buffer_start[2] << 8);

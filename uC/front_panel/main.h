@@ -192,6 +192,10 @@ typedef struct {
 	unsigned int powermeter_update_rate_text;
 	//! The powermeter update rate on the display bargraph
 	unsigned int powermeter_update_rate_bargraph;	
+	//! Which PTT input of various boards this openASC box is configured to use, this is sent out in PING messages
+	//! and is saved in the various boxes so that they are aware of which TX ACTIVE input they should listen to
+	//! 0 = None, 1-7 inputs
+	unsigned char ptt_interlock_input;
 } struct_setting;
 
 //! This struct only contains information that is temporary

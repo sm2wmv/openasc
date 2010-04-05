@@ -76,20 +76,11 @@
 #define CTRL_SET_RX_ANT_DATA_SAVE						0x07
 
 /* Defines for the device settings */
-#define CTRL_SET_DEVICE_SETTINGS_ADDRESS						0x01
-#define CTRL_SET_DEVICE_SETTINGS_NR_NODES						0x02
-#define CTRL_SET_DEVICE_SETTINGS_DEVICE_IS_MASTER		0x03
-#define CTRL_SET_POWERMETER_SETTINGS								0x04
-
-/* bit 0 = PTTInputFootswitch
- * bit 1 = PTTInputRadioSense
- * bit 2 = PTTInputComputerRTS
- * bit 3 = PTTInputRadioSenseInverted
- * bit 4 = PTTInputComputerRTSInverted
- * bit 5 = InhibitPolarityActiveLow */
-#define CTRL_SET_DEVICE_SETTINGS_PTT_INPUTS		0x04
-#define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS		0x05
-#define CTRL_SET_DEVICE_SETTINGS_SAVE					0x07
+#define CTRL_SET_DEVICE_SETTINGS_NETWORK		0x01
+#define CTRL_SET_POWERMETER_SETTINGS				0x02
+#define CTRL_SET_DEVICE_SETTINGS_OTHER			0x03
+#define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS	0x04
+#define CTRL_SET_DEVICE_SETTINGS_SAVE				0x07
 
 /* Defines for the sequencer settings */
 #define CTRL_SET_SEQUENCER_SAVE					0x01

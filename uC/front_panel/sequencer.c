@@ -34,6 +34,7 @@
 #include "../global.h"
 #include "../event_queue.h"
 #include "antenna_ctrl.h"
+#include "eeprom.h"
 
 //! \brief The footswitch PTT input is active
 #define PTT_ACTIVE_FOOTSWITCH			0

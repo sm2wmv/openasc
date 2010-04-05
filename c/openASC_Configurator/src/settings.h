@@ -27,6 +27,8 @@ class SettingsClass {
 		void setPowerMeterUpdateRateBargraph(unsigned int rate);
 		unsigned int getPowerMeterUpdateRateText(void);
 		unsigned int getPowerMeterUpdateRateBargraph(void);
+		void setPTTInterlockInput(unsigned char);
+		unsigned char getPTTInterlockInput(void);
 	private:
 		int networkAddress;
 		bool deviceIsMaster;
@@ -35,6 +37,7 @@ class SettingsClass {
 		double powerMeterVSWRAlarmValue;
 		unsigned int powerMeterUpdateRateText;
 		unsigned int powerMeterUpdateRateBargraph;
+		unsigned char pttInterlockInput; //0 = disabled, 1-7 -> ptt inputs
 	protected:
 };
 

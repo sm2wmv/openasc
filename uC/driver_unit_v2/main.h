@@ -44,6 +44,10 @@ typedef struct {
 	unsigned long driver_output_state;
 	//! Flags
 	unsigned char flags;
+	//! PTT interlock input, byte1 = input 1, byte2 = input 2...byte7 = input 7
+	//! 0 = not active, If not 0 then the value does correspond to the address of the openASC box, so 5 for example
+	//! means address 5 corresponds to that ptt interlock input
+	unsigned char ptt_interlock_input[7];
 } driver_status_struct;
 
  /*! Flag to indicate if the TX/RX mode is enabled */

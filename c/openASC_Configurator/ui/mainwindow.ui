@@ -2250,6 +2250,84 @@
           </property>
          </widget>
         </widget>
+        <widget class="QGroupBox" name="groupBoxPTTInterlock">
+         <property name="geometry">
+          <rect>
+           <x>285</x>
+           <y>285</y>
+           <width>154</width>
+           <height>141</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>PTT interlock</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_15">
+            <item row="0" column="0">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockNone">
+              <property name="text">
+               <string>None</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput4">
+              <property name="text">
+               <string>Input 4</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput1">
+              <property name="text">
+               <string>Input 1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput5">
+              <property name="text">
+               <string>Input 5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput2">
+              <property name="text">
+               <string>Input 2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput6">
+              <property name="text">
+               <string>Input 6</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput3">
+              <property name="text">
+               <string>Input 3</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QRadioButton" name="radioButtonPTTInterlockInput7">
+              <property name="text">
+               <string>Input 7</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tabRotators">
