@@ -555,8 +555,10 @@ void computer_interface_parse_data(void) {
 						settings_ptr->powermeter_address = computer_comm.rx_buffer_start[1];
 						settings_ptr->powermeter_vswr_limit = (computer_comm.rx_buffer_start[2] << 8);
 						settings_ptr->powermeter_vswr_limit += computer_comm.rx_buffer_start[3];
-						settings_ptr->powermeter_update_rate = (computer_comm.rx_buffer_start[4] << 8);
-						settings_ptr->powermeter_update_rate += computer_comm.rx_buffer_start[5];
+						settings_ptr->powermeter_update_rate_text = (computer_comm.rx_buffer_start[4] << 8);
+						settings_ptr->powermeter_update_rate_text += computer_comm.rx_buffer_start[5];
+						settings_ptr->powermeter_update_rate_bargraph = (computer_comm.rx_buffer_start[6] << 8);
+						settings_ptr->powermeter_update_rate_bargraph += computer_comm.rx_buffer_start[7];
 						
 						computer_interface_send_ack();
 					break;

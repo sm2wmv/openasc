@@ -8,7 +8,8 @@ SettingsClass::SettingsClass() {
 
 	powerMeterAddress = 0;
 	powerMeterVSWRAlarmValue = 0;
-	powerMeterUpdateRate = 0;
+	powerMeterUpdateRateText = 0;
+	powerMeterUpdateRateBargraph = 0;
 }
 
 void SettingsClass::writeSettings(QSettings& settings) {
@@ -25,7 +26,8 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	
 	settings.setValue("PowerMeterAddress",powerMeterAddress);
 	settings.setValue("PowerMeterVSWRAlarmValue",powerMeterVSWRAlarmValue);
-	settings.setValue("PowerMeterDisplayUpdateRate",powerMeterUpdateRate);
+	settings.setValue("PowerMeterDisplayUpdateRateText",powerMeterUpdateRateText);
+	settings.setValue("PowerMeterDisplayUpdateRateBargraph",powerMeterUpdateRateBargraph);
 
 	settings.endGroup();
 }
@@ -42,7 +44,8 @@ void SettingsClass::loadSettings(QSettings& settings) {
 	
 	powerMeterAddress = settings.value("PowerMeterAddress").toInt();
 	powerMeterVSWRAlarmValue = settings.value("PowerMeterVSWRAlarmValue").toDouble();
-	powerMeterUpdateRate = settings.value("PowerMeterDisplayUpdateRate").toInt();
+	powerMeterUpdateRateText = settings.value("PowerMeterDisplayUpdateRateText").toInt();
+	powerMeterUpdateRateBargraph = settings.value("PowerMeterDisplayUpdateRateBargraph").toInt();
 
 	nrOfDevices = settings.value("nrOfDevices").toInt();
 	
@@ -50,7 +53,7 @@ void SettingsClass::loadSettings(QSettings& settings) {
 }
 
 void SettingsClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[6];
+	unsigned char tx_buff[8];
 		
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_ADDRESS;
 	tx_buff[1] = networkAddress;
@@ -72,10 +75,12 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[1] = powerMeterAddress;
 	tx_buff[2] = ((unsigned int)(powerMeterVSWRAlarmValue * 100) & 0xFF00) >> 8;
 	tx_buff[3] = (unsigned int)(powerMeterVSWRAlarmValue * 100) & 0x00FF;
-	tx_buff[4] = (powerMeterUpdateRate >> 8);
-	tx_buff[5] = (powerMeterUpdateRate & 0x00FF);
+	tx_buff[4] = (powerMeterUpdateRateText >> 8);
+	tx_buff[5] = (powerMeterUpdateRateText & 0x00FF);
+	tx_buff[6] = (powerMeterUpdateRateBargraph >> 8);
+	tx_buff[7] = (powerMeterUpdateRateBargraph & 0x00FF);
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 6, tx_buff);
+	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 8, tx_buff);
 
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
@@ -97,12 +102,20 @@ double SettingsClass::getPowerMeterVSWRAlarm(void) {
 		return(powerMeterVSWRAlarmValue);
 }
 
-void SettingsClass::setPowerMeterUpdateRate(unsigned int rate) {
-		powerMeterUpdateRate = rate;
+void SettingsClass::setPowerMeterUpdateRateText(unsigned int rate) {
+		powerMeterUpdateRateText = rate;
 }
 
-unsigned int SettingsClass::getPowerMeterUpdateRate(void) {
-		return(powerMeterUpdateRate);
+void SettingsClass::setPowerMeterUpdateRateBargraph(unsigned int rate) {
+		powerMeterUpdateRateBargraph = rate;
+}
+
+unsigned int SettingsClass::getPowerMeterUpdateRateText(void) {
+		return(powerMeterUpdateRateText);
+}
+
+unsigned int SettingsClass::getPowerMeterUpdateRateBargraph(void) {
+		return(powerMeterUpdateRateBargraph);
 }
 
 void SettingsClass::setNetworkAddress(int value) {

@@ -125,7 +125,8 @@ void MainWindowImpl::loadInitialGUIValues() {
 	
 	spinBoxPowerMeterAddress->setValue(settingsClass.getPowerMeterAddress());
 	doubleSpinBoxPowerMeterSWR->setValue(settingsClass.getPowerMeterVSWRAlarm());
-	spinBoxPowerMeterUpdateRate->setValue(settingsClass.getPowerMeterUpdateRate());
+	spinBoxPowerMeterUpdateRateText->setValue(settingsClass.getPowerMeterUpdateRateText());
+	spinBoxPowerMeterUpdateRateBargraph->setValue(settingsClass.getPowerMeterUpdateRateBargraph());
 
 	comboBoxRotatorsReload();
 }
@@ -1189,8 +1190,12 @@ void MainWindowImpl::spinBoxPowerMeterSWRValueChanged(double value) {
 		settingsClass.setPowerMeterVSWRAlarm(value);
 }
 
-void MainWindowImpl::spinBoxPowerMeterUpdateRateValueChanged(int rate) {
-		settingsClass.setPowerMeterUpdateRate(rate);
+void MainWindowImpl::spinBoxPowerMeterUpdateRateTextValueChanged(int rate) {
+		settingsClass.setPowerMeterUpdateRateText(rate);
+}
+
+void MainWindowImpl::spinBoxPowerMeterUpdateRateBargraphValueChanged(int rate) {
+		settingsClass.setPowerMeterUpdateRateBargraph(rate);
 }
 
 void MainWindowImpl::setupConnections() {
@@ -1330,7 +1335,8 @@ void MainWindowImpl::setupConnections() {
 	
 	connect(spinBoxPowerMeterAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterAdressValueChanged(int)));
 	connect(doubleSpinBoxPowerMeterSWR, SIGNAL(valueChanged(double)), this, SLOT(spinBoxPowerMeterSWRValueChanged(double)));
-	connect(spinBoxPowerMeterUpdateRate, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateValueChanged(int)));
+	connect(spinBoxPowerMeterUpdateRateText, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateTextValueChanged(int)));
+	connect(spinBoxPowerMeterUpdateRateBargraph, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateBargraphValueChanged(int)));
 
 
 	connect(comboBoxRotators, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRotatorsIndexChanged(int)));
