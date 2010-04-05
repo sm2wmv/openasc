@@ -166,7 +166,8 @@ private slots:
 	
 	void spinBoxPowerMeterAdressValueChanged(int);
 	void spinBoxPowerMeterSWRValueChanged(double);
-	void spinBoxPowerMeterUpdateRateValueChanged(int);
+	void spinBoxPowerMeterUpdateRateTextValueChanged(int);
+	void spinBoxPowerMeterUpdateRateBargraphValueChanged(int);
 
 	/* The rotator functions */
 	void comboBoxRotatorsIndexChanged(int index);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>719</width>
-    <height>651</height>
+    <width>714</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,7 @@
           <x>5</x>
           <y>5</y>
           <width>201</width>
-          <height>263</height>
+          <height>245</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -321,9 +321,9 @@
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>275</y>
+          <y>260</y>
           <width>201</width>
-          <height>143</height>
+          <height>139</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -424,10 +424,10 @@
        <widget class="QFrame" name="frameDeviceConfiguration">
         <property name="geometry">
          <rect>
-          <x>215</x>
-          <y>300</y>
-          <width>300</width>
-          <height>79</height>
+          <x>5</x>
+          <y>410</y>
+          <width>201</width>
+          <height>80</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -695,9 +695,9 @@
         <property name="geometry">
          <rect>
           <x>215</x>
-          <y>390</y>
-          <width>271</width>
-          <height>131</height>
+          <y>300</y>
+          <width>270</width>
+          <height>204</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -706,7 +706,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_12">
+        <layout class="QVBoxLayout" name="verticalLayout_13">
          <item>
           <widget class="QLabel" name="labelPowerMeter">
            <property name="text">
@@ -731,9 +731,12 @@
              <property name="text">
               <string>Address:</string>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2">
+           <item row="0" column="1">
             <widget class="QSpinBox" name="spinBoxPowerMeterAddress">
              <property name="minimum">
               <number>0</number>
@@ -746,7 +749,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="3">
+           <item row="0" column="2">
             <widget class="QLabel" name="labelPowerMeterAddressDec">
              <property name="text">
               <string>(dec, 0 = disabled)</string>
@@ -758,9 +761,12 @@
              <property name="text">
               <string>SWR limit:</string>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
             </widget>
            </item>
-           <item row="1" column="1" colspan="2">
+           <item row="1" column="1">
             <widget class="QDoubleSpinBox" name="doubleSpinBoxPowerMeterSWR">
              <property name="suffix">
               <string>:1</string>
@@ -776,15 +782,49 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QLabel" name="labelPowerMeterAddress_2">
+           <item row="1" column="2">
+            <widget class="QLabel" name="label">
              <property name="text">
-              <string>Update rate:</string>
+              <string>(0.0:1 = disabled)</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="2">
-            <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRate">
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelPowerMeterAddress_2">
+           <property name="text">
+            <string>Update rate:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line_10">
+           <property name="lineWidth">
+            <number>1</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_14">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelPowerMeterUpdateRateText">
+             <property name="text">
+              <string>Text:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRateText">
              <property name="minimum">
               <number>0</number>
              </property>
@@ -799,17 +839,43 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="3">
-            <widget class="QLabel" name="labelPowerMeterAddressDec_2">
+           <item row="0" column="2">
+            <widget class="QLabel" name="labelPowerMeterUpdateRateTextDec">
              <property name="text">
               <string>(ms, 0 = disabled)</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
-            <widget class="QLabel" name="label">
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelPowerMeterUpdateRateBargraph">
              <property name="text">
-              <string>(0.0:1 = disabled)</string>
+              <string>Bargraph:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRateBargraph">
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>5000</number>
+             </property>
+             <property name="singleStep">
+              <number>100</number>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="labelPowerMeterUpdateRateBargraphDec">
+             <property name="text">
+              <string>(ms)</string>
              </property>
             </widget>
            </item>
@@ -1399,7 +1465,7 @@
           <x>5</x>
           <y>5</y>
           <width>521</width>
-          <height>381</height>
+          <height>346</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1613,9 +1679,9 @@
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>390</y>
+          <y>360</y>
           <width>250</width>
-          <height>172</height>
+          <height>161</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1714,7 +1780,7 @@
           <x>5</x>
           <y>5</y>
           <width>555</width>
-          <height>565</height>
+          <height>536</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1728,8 +1794,8 @@
           <rect>
            <x>15</x>
            <y>45</y>
-           <width>260</width>
-           <height>511</height>
+           <width>256</width>
+           <height>481</height>
           </rect>
          </property>
          <property name="title">
@@ -1744,340 +1810,318 @@
          <property name="checked">
           <bool>false</bool>
          </property>
-         <widget class="QGroupBox" name="groupBoxSequencerPTTRadio">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>25</y>
-            <width>230</width>
-            <height>124</height>
-           </rect>
-          </property>
-          <property name="title">
-           <string>PTT Radio</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>15</x>
-             <y>27</y>
-             <width>202</width>
-             <height>70</height>
-            </rect>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_5">
-            <item row="0" column="0">
-             <widget class="QLabel" name="labelSequencerPreDelay1">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Pre delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerPTTRadioPreDelay">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="labelSequencerms1">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelSequencerPostDelay1">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Post delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerPTTRadioPostDelay">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="labelSequencerms2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-         <widget class="QGroupBox" name="groupBoxSequencerPTTAmp">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>160</y>
-            <width>230</width>
-            <height>120</height>
-           </rect>
-          </property>
-          <property name="title">
-           <string>PTT Amp</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>15</x>
-             <y>25</y>
-             <width>202</width>
-             <height>70</height>
-            </rect>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_6">
-            <item row="0" column="0">
-             <widget class="QLabel" name="labelSequencerPreDelay2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Pre delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerPTTAmpPreDelay">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="labelSequencerms3">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelSequencerPostDelay2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Post delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerPTTAmpPostDelay">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="labelSequencerms4">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-         <widget class="QGroupBox" name="groupBoxSequencerInhibitEnabled">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>290</y>
-            <width>230</width>
-            <height>120</height>
-           </rect>
-          </property>
-          <property name="title">
-           <string>Inhibit enabled</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget_4">
-           <property name="geometry">
-            <rect>
-             <x>15</x>
-             <y>25</y>
-             <width>202</width>
-             <height>70</height>
-            </rect>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_10">
-            <item row="0" column="0">
-             <widget class="QLabel" name="labelSequencerPreDelay3_2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Pre delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="labelSequencerms5_2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelSequencerPostDelay3_2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>Post delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="labelSequencerms6_2">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerInhibitPredelay">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerInhibitPostdelay">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-         <widget class="QGroupBox" name="groupBoxSequencerAntenna">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>420</y>
-            <width>230</width>
-            <height>83</height>
-           </rect>
-          </property>
-          <property name="title">
-           <string>Antennas</string>
-          </property>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>15</x>
-             <y>25</y>
-             <width>202</width>
-             <height>33</height>
-            </rect>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_8">
-            <item row="0" column="0">
-             <widget class="QLabel" name="labelSequencerAntennaPostDelay">
-              <property name="text">
-               <string>Post delay:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBoxSequencerAntennaPostDelay">
-              <property name="maximum">
-               <number>2555</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="labelSequencerms7">
-              <property name="text">
-               <string>(ms)</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_12">
+          <item>
+           <widget class="QGroupBox" name="groupBoxSequencerPTTRadio">
+            <property name="title">
+             <string>PTT Radio</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="layoutWidget">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>27</y>
+               <width>202</width>
+               <height>70</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelSequencerPreDelay1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Pre delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerPTTRadioPreDelay">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="labelSequencerms1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelSequencerPostDelay1">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Post delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerPTTRadioPostDelay">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="labelSequencerms2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBoxSequencerPTTAmp">
+            <property name="title">
+             <string>PTT Amp</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="layoutWidget">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>25</y>
+               <width>202</width>
+               <height>70</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelSequencerPreDelay2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Pre delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerPTTAmpPreDelay">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="labelSequencerms3">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelSequencerPostDelay2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Post delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerPTTAmpPostDelay">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="labelSequencerms4">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBoxSequencerInhibitEnabled">
+            <property name="title">
+             <string>Inhibit enabled</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="layoutWidget_4">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>25</y>
+               <width>202</width>
+               <height>70</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelSequencerPreDelay3_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Pre delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="labelSequencerms5_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelSequencerPostDelay3_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Post delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="labelSequencerms6_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerInhibitPredelay">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerInhibitPostdelay">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBoxSequencerAntenna">
+            <property name="title">
+             <string>Antennas</string>
+            </property>
+            <widget class="QWidget" name="layoutWidget">
+             <property name="geometry">
+              <rect>
+               <x>15</x>
+               <y>25</y>
+               <width>202</width>
+               <height>33</height>
+              </rect>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelSequencerAntennaPostDelay">
+                <property name="text">
+                 <string>Post delay:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinBoxSequencerAntennaPostDelay">
+                <property name="maximum">
+                 <number>2555</number>
+                </property>
+                <property name="singleStep">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="labelSequencerms7">
+                <property name="text">
+                 <string>(ms)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QComboBox" name="comboBoxSequencerSelect">
          <property name="geometry">
@@ -3186,7 +3230,7 @@ a function to it</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>719</width>
+     <width>714</width>
      <height>23</height>
     </rect>
    </property>
