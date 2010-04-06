@@ -247,22 +247,8 @@ void  bus_resend_message(void) {
 			
 			//Set the error flag
 			event_set_error(ERROR_TYPE_BUS_RESEND,1);
-			
-			/*BUS_MESSAGE bus_message = tx_queue_get();
-			printf("RESEND FAIL\n");
-			printf("-----------\n");
-			printf("QUEUE_SIZE: %i\n",tx_queue_size());
-
-			printf("TO_ADDR: %i\n",bus_message.to_addr);
-			printf("FROM_ADDR: %i\n",bus_message.from_addr);
-			printf("CMD: %i\n",bus_message.cmd);
-			printf("LENGTH: %i\n",bus_message.length);
-			
-			for (unsigned char i=0;i<bus_message.length;i++)
-				printf("DATA[%i]: %i\n",i,bus_message.data[i]);
-			*/
 		#endif
-		
+			
 		tx_queue_drop();
 		bus_reset_tx_status();
 	}
@@ -313,22 +299,6 @@ void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		bus_message.data[i] = data[i];
 	}
 	
-	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-		/*
-		printf("ADDING MESS\n");
-		printf("-----------\n");
-		printf("RX status: %i\n",bus_status.flags & (1<<BUS_STATUS_RECEIVE_ON));
-		printf("TO_ADDR: %i\n",bus_message.to_addr);
-					printf("FROM_ADDR: %i\n",bus_message.from_addr);
-					printf("CMD: %i\n",bus_message.cmd);
-					printf("LENGTH: %i\n",bus_message.length);
-				
-					for (unsigned char i=0;i<bus_message.length;i++)
-						printf("DATA[%i]: %i\n",i,bus_message.data[i]);
-						*/
-			
-	#endif
-
 	bus_message.checksum = checksum;
 
 	tx_queue_add(bus_message);
@@ -375,10 +345,6 @@ void bus_message_nacked(unsigned char addr) {
 	//will send a NACK to this device, even though the message wasn't supposed to be from that unit
 	if (bus_message.to_addr == addr)
 		bus_resend_message();
-#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-	else
-		printf("NACKED\n");
-	#endif
 }
 
 /*! \brief The message last sent was acknowledged from the receiver */
@@ -396,10 +362,6 @@ void bus_message_acked(unsigned char addr) {
 		tx_queue_drop();
 		bus_reset_tx_status();
 	}
-	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-	else
-		printf("ERR: ACKED\n");	
-		#endif
 }
 
 #ifndef DEVICE_TYPE_COMPUTER
