@@ -61,6 +61,9 @@ void init_ports(void) {
 	DDRF = 0x7F;
 	DDRG = 0x1C;
 	
+	PORTD |= (1<<2);
+	PORTD |= (1<<3);
+	
 	//Activate pullup, for POS/NEG driver module sense input
 	PORTF = (1<<7);
 }
