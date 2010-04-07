@@ -304,6 +304,9 @@ int main(void)
 
 	driver_status.driver_output_state = 0;
 
+	/* Initialize various hardware resources */
+	init_ports();
+
 	/* Read the external address of the device */
 	bus_set_address(BUS_BASE_ADDR+read_ext_addr());
 
@@ -311,9 +314,6 @@ int main(void)
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */
 	delay_ms(bus_get_address());
-
-	/* Initialize various hardware resources */
-	init_ports();
 
 	//Initialize the communication bus	
 	bus_init();
