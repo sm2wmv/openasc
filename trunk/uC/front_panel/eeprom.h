@@ -30,6 +30,8 @@
 #include "radio_interface.h"
 #include "band_ctrl.h"
 
+#define EEPROM_STARTUP_BYTE_ADDR 0x01
+
 //! The EEPROM table
 typedef struct {
 	//! The size of this structure
@@ -63,6 +65,9 @@ typedef struct {
 	//! Runtime settings, such as backlight level etc
 	unsigned int runtime_settings;
 } struct_eeprom_table;
+
+unsigned char eeprom_read_startup_byte(void);
+void eeprom_write_startup_byte(unsigned char val);
 
 //void eeprom_load_band(struct_band *ptr,unsigned char band);
 void eeprom_read_table(void);

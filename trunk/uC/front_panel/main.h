@@ -267,6 +267,8 @@ struct_runtime_settings runtime_settings;
 
 void main_update_ptt_status(void);
 
+void main_save_settings(void);
+
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned char ext_key_get_assignment(unsigned char index);
 void ext_key_set_assignment(unsigned char index, unsigned char func);

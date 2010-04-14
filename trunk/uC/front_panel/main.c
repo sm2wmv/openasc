@@ -181,6 +181,11 @@ void set_knob_function(unsigned char function) {
 		status.knob_function = function;
 }
 
+/*! \brief Save runtime settings etc to the EEPROM */
+void main_save_settings(void) {
+	eeprom_save_runtime_settings(&runtime_settings);
+}
+
 /*! \brief Load all settings from the EEPROM */
 void load_settings(void) {
 		/* Read the EEPROM table */
@@ -280,6 +285,43 @@ int main(void){
 	
 	delay_ms(250);
 	
+	//Initialize the 128x64 display
+	glcd_init();
+	glcd_clear();
+	
+	i2c_init();
+
+	//Check if the computer interface should have full control of the box, setup mode
+	if (PIND & (1<<5)) {
+		computer_interface_deactivate_setup();
+	}
+	else {
+		PORTC |= (1<<7);
+		computer_interface_activate_setup();
+	}
+
+	
+	//Check if this is the first time we start the device, if so we need to initiate some
+	//data structures
+	if (eeprom_read_startup_byte() != 0x02) {
+		eeprom_read_table();
+		
+		//write the default runtime settings
+		runtime_settings.lcd_backlight_value = 80;
+		runtime_settings.amplifier_ptt_output = 1;
+		runtime_settings.radio_ptt_output = 1;
+		runtime_settings.inhibit_state = 0;
+		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
+		
+		//Write the settings to the EEPROM
+		eeprom_save_runtime_settings(&runtime_settings);
+		
+		eeprom_write_startup_byte(0x02);
+
+		//The first time the box is started, we need to setup the settings
+		computer_interface_activate_setup();
+	}
+	
 	//Init the status structure
 	status.buttons_last_state = 0;
 	status.buttons_current_state = 0;
@@ -289,32 +331,17 @@ int main(void){
 	status.new_band = BAND_UNDEFINED;
 	status.current_band_portion = BAND_LOW;
 	status.new_band_portion = BAND_LOW;
-	
-	//Check if the computer interface should have full control of the box, setup mode
-	if (PIND & (1<<5)) {
-		computer_interface_deactivate_setup();
-	}
-	else {
-		PORTC |= (1<<7);
-		computer_interface_activate_setup();
-	}
-	
-	i2c_init();
-	
+		
 	//Load all settings from the EEPROM	
 	load_settings();
 	
-	//Init the communication routines between the computer and the openASC box
+	//Init the communzication routines between the computer and the openASC box
 	computer_interface_init();
 	
 	//Init the backlight PWM
 	init_backlight();
 	display_set_backlight(runtime_settings.lcd_backlight_value);
-	
-	//Initialize the 128x64 display
-	glcd_init();
-	glcd_clear();
-	
+		
 	//Check to see if the radio interface is configured as manual or automatic as default
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
@@ -416,7 +443,9 @@ int main(void){
 	unsigned char ping_message[2];	
 	
 	ping_message[0] = DEVICE_ID_MAINBOX;
-	ping_message[1] = settings.ptt_interlock_input;
+	ping_message[1] = 0x00;//settings.ptt_interlock_input;
+	
+		printf("Backlight level: %i\n",runtime_settings.lcd_backlight_value);
 	
 	while(1) {
 		//Output a pulse so we can see how long time the main loop takes

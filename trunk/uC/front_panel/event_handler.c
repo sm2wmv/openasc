@@ -48,7 +48,7 @@
 #include "../internal_comm.h"
 #include "errors.h"
 
-#define DEBUG_WMV_BUS 1
+//#define DEBUG_WMV_BUS 1
 
 
 //#define ERROR_DEBUG
@@ -100,6 +100,8 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			
 			status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
 			display_shutdown_view();
+			
+			main_save_settings();
 			
 			band_ctrl_change_band(BAND_UNDEFINED);
 

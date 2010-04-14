@@ -39,6 +39,17 @@
 //! EEPROM table which is a description of the location of different structures in the eeprom
 struct_eeprom_table	eeprom_table;
 
+/*! Will read the startup byte from the EEPROM, which does indicate if the unit has been started
+    before or not
+	\return The status of the startup byte */
+unsigned char eeprom_read_startup_byte(void) {
+	return(eeprom_read_byte((unsigned char *)EEPROM_STARTUP_BYTE_ADDR));
+}
+
+void eeprom_write_startup_byte(unsigned char val) {
+	eeprom_write_byte((unsigned char *)EEPROM_STARTUP_BYTE_ADDR,val);
+}
+
 //! \brief Temporary crap for debug */
 void eeprom_print(void) {
 	printf("ANT 1: %i\n",eeprom_table.antenna[0]);
