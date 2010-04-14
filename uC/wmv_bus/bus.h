@@ -185,8 +185,9 @@
 #define BUS_TIME_INTERRUPT_INTERVAL 130
 /*! The time frame size of the bus time slots, in us */
 #define BUS_TIME_FRAME_LIMIT	520
-/*! The dead time of the time slot, in us. This should be set pretty high to accept rather high clock drift */
-#define BUS_SLOT_DEAD_TIME		260
+/*! The dead time of the time slot, in us. This should be set pretty high to accept rather high clock drift 
+    There is a dead period both before and after our slot, so total dead time is BUS_SLOT_DEAD_TIME * 2 */
+#define BUS_SLOT_DEAD_TIME		130
 
 //! Length of the RX buffer
 #define SERIAL_RX_BUF_LENGTH 20

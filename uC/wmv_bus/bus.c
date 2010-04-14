@@ -83,7 +83,7 @@ void bus_init(void) {
 	bus_status.flags = 0;
 
 	/* Calculate the lower limit of the bus time frame */
-	bus_status.lower_limit = (bus_status.ext_addr * BUS_TIME_FRAME_LIMIT) / BUS_TIME_INTERRUPT_INTERVAL;
+	bus_status.lower_limit = (bus_status.ext_addr * BUS_TIME_FRAME_LIMIT + BUS_SLOT_DEAD_TIME) / BUS_TIME_INTERRUPT_INTERVAL;
 	/* Calculate the upper limit of the bus time frame */
 	bus_status.upper_limit = (bus_status.ext_addr * BUS_TIME_FRAME_LIMIT + BUS_TIME_FRAME_LIMIT - BUS_SLOT_DEAD_TIME) / BUS_TIME_INTERRUPT_INTERVAL;
 
@@ -369,6 +369,7 @@ void bus_message_acked(unsigned char addr) {
 ISR(ISR_BUS_USART_DATA) {
 }
 
+
 /*!USART data receive interrupt */
 ISR(ISR_BUS_USART_RECV) {
 	//Reset the bus timeout since we have received a character
@@ -445,6 +446,8 @@ ISR(ISR_BUS_USART_RECV) {
 
 									//The command is a SYNC message, reset the timer
 									if (bus_new_message.cmd == BUS_CMD_SYNC) {
+										TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
+										
 										bus_status.device_count = data;
 										bus_status.device_count_mult = (data * BUS_TIME_MULTIPLIER);
 
@@ -456,8 +459,6 @@ ISR(ISR_BUS_USART_RECV) {
 										//Reset the counter keeping track of how long ago we last receieved a SYNC
 										//message from the master.
 										counter_sync_timeout = 0;
-
-										TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
 									}
 
 									calc_checksum += data;

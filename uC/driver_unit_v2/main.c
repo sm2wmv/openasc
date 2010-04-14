@@ -299,13 +299,16 @@ unsigned char set_ptt_led_status(unsigned char state) {
 int main(void)
 {
 	cli();
+	
+	delay_ms(250);
 
-	delay_ms(100);
+	init_ports();
+
+	delay_ms(250);
 
 	driver_status.driver_output_state = 0;
 
 	/* Initialize various hardware resources */
-	init_ports();
 
 	/* Read the external address of the device */
 	bus_set_address(BUS_BASE_ADDR+read_ext_addr());
@@ -313,7 +316,8 @@ int main(void)
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */
-	delay_ms(bus_get_address());
+	for (unsigned char i=0;i<bus_get_address();i++)
+		delay_ms(90);
 
 	//Initialize the communication bus	
 	bus_init();
@@ -339,6 +343,8 @@ int main(void)
 	for (unsigned char i=1;i<=20;i++)
 		deactivate_output(0x00,i);
 
+	unsigned char device_count = bus_get_device_count();
+
 	while(1) {
 		if (!rx_queue_is_empty()) {
 			bus_parse_message();
@@ -351,9 +357,7 @@ int main(void)
 		//and also the number of devices (for the time slots) that are active on the bus
 		if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-				unsigned char temp = bus_get_device_count();
-			
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
 				counter_sync = 0;
 			}
 		}
