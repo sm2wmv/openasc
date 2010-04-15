@@ -7,9 +7,9 @@
 #include "mainwindowimpl.h"
 #include "commclass.h"
 
-#define SUBMENU_NONE	0
-#define SUBMENU_4SQ		1
-#define SUBMENU_STACK	2
+#define SUBMENU_NONE				0
+#define SUBMENU_VERT_ARRAY	1
+#define SUBMENU_STACK				2
 
 typedef struct {
 	int directionCount;
@@ -81,23 +81,23 @@ class BandClass
 		void setBandLimitLowSegLowLimit ( int limit );
 		int getBandLimitLowSegLowLimit ( void );
 
-		void setSubMenuType(int index, int type);
-		int getSubMenuType(int index);
-		void setSubMenu4SQdirectionCount(int directions);
-		int getSubMenu4SQdirectionCount();
-		void setSubMenu4SQdirectionName(int index, QString str);
-		QString getSubMenu4SQdirectionName(int index);
-		void setSubMenu4SQdirectionOutputStr(int index, QString str);
-		QString getSubMenu4SQdirectionOutputStr(int index);
+		void setSubMenuType(int ant_index, int type);
+		int getSubMenuType(int ant_index);
+		void setSubMenu4SQdirectionCount(int ant_index, int directions);
+		int getSubMenu4SQdirectionCount(int ant_index);
+		void setSubMenu4SQdirectionName(int ant_index, int index, QString str);
+		QString getSubMenu4SQdirectionName(int ant_index, int index);
+		void setSubMenu4SQdirectionOutputStr(int ant_index, int index, QString str);
+		QString getSubMenu4SQdirectionOutputStr(int ant_index, int index);
 		
-		void setSubMenuStackCombinationCount(int combos);
-		int getSubMenuStackCombinationCount();
-		void setSubMenuStackName(QString str);
-		QString getSubMenuStackName();
-		void setSubMenuStackCombinationName(int index, QString str);
-		QString getSubMenuStackCombinationName(int index);
-		void setSubMenuStackCombinationOutputStr(int index, QString str);
-		QString getSubMenuStackCombinationOutputStr(int index);
+		void setSubMenuStackCombinationCount(int ant_index, int combos);
+		int getSubMenuStackCombinationCount(int ant_index);
+		void setSubMenuStackName(int ant_index, QString str);
+		QString getSubMenuStackName(int ant_index);
+		void setSubMenuStackCombinationName(int ant_index, int index, QString str);
+		QString getSubMenuStackCombinationName(int ant_index, int index);
+		void setSubMenuStackCombinationOutputStr(int ant_index, int index, QString str);
+		QString getSubMenuStackCombinationOutputStr(int ant_index, int index);
 		
 		void writeSettings ( QSettings& settings );
 		void loadSettings ( QSettings& settings );
@@ -119,8 +119,8 @@ class BandClass
 	protected:
 		int bandIndex;
 		struct_band band_data;
-		structSubMenu4SQ subMenu4SQ;
-		structSubMenuStack subMenuStack;
+		structSubMenu4SQ subMenu4SQ[4];
+		structSubMenuStack subMenuStack[4];
 //		struct_antenna antenna_data;
 		QString bandOutputStrHigh;
 		QString bandOutputStrLow;

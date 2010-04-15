@@ -22,6 +22,7 @@ private slots:
 	void spinBoxStackPositionsValueChanged(int currValue);
 	
 	void pushButtonSavePressed();
+	void pushButtonCancelPressed();
 };
 #endif
 

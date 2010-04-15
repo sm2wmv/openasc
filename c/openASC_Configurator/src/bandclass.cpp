@@ -197,72 +197,72 @@ void BandClass::setDefaultBandLimits() {
 	}	
 }
 
-void BandClass::setSubMenuType(int index, int type) {
-	subMenuType[index] = type;
+void BandClass::setSubMenuType(int ant_index, int type) {
+	subMenuType[ant_index] = type;
 }
 
-int BandClass::getSubMenuType(int index) {
-	return(subMenuType[index]);
+int BandClass::getSubMenuType(int ant_index) {
+	return(subMenuType[ant_index]);
 }
 
-void BandClass::setSubMenu4SQdirectionCount(int directions) {
-	subMenu4SQ.directionCount = directions;
+void BandClass::setSubMenu4SQdirectionCount(int ant_index, int directions) {
+	subMenu4SQ[ant_index].directionCount = directions;
 }
 
-int BandClass::getSubMenu4SQdirectionCount() {
-	return(subMenu4SQ.directionCount);
+int BandClass::getSubMenu4SQdirectionCount(int ant_index) {
+	return(subMenu4SQ[ant_index].directionCount);
 }
 
-void BandClass::setSubMenu4SQdirectionName(int index, QString str) {
-	subMenu4SQ.directionName[index] = str;	
+void BandClass::setSubMenu4SQdirectionName(int ant_index, int index, QString str) {
+	subMenu4SQ[ant_index].directionName[index] = str;
 }
 
-QString BandClass::getSubMenu4SQdirectionName(int index) {
-	return(subMenu4SQ.directionName[index]);	
+QString BandClass::getSubMenu4SQdirectionName(int ant_index, int index) {
+	return(subMenu4SQ[ant_index].directionName[index]);
 }
 
-void BandClass::setSubMenu4SQdirectionOutputStr(int index, QString str) {
-	subMenu4SQ.directionOutputStr[index] = str;
+void BandClass::setSubMenu4SQdirectionOutputStr(int ant_index, int index, QString str) {
+	subMenu4SQ[ant_index].directionOutputStr[index] = str;
 }
 
-QString BandClass::getSubMenu4SQdirectionOutputStr(int index) {
-	return(subMenu4SQ.directionOutputStr[index]);
+QString BandClass::getSubMenu4SQdirectionOutputStr(int ant_index, int index) {
+	return(subMenu4SQ[ant_index].directionOutputStr[index]);
 }
 
-void BandClass::setSubMenuStackCombinationCount(int combos) {
-	subMenuStack.combinationCount = combos;
+void BandClass::setSubMenuStackCombinationCount(int ant_index, int combos) {
+	subMenuStack[ant_index].combinationCount = combos;
 }
 
-int BandClass::getSubMenuStackCombinationCount() {
-	return(subMenuStack.combinationCount);
+int BandClass::getSubMenuStackCombinationCount(int ant_index) {
+	return(subMenuStack[ant_index].combinationCount);
 }
 
-void BandClass::setSubMenuStackName(QString str) {
-	subMenuStack.stackName = str;
+void BandClass::setSubMenuStackName(int ant_index, QString str) {
+	subMenuStack[ant_index].stackName = str;
 }
 
-QString BandClass::getSubMenuStackName() {
-	return(subMenuStack.stackName);
+QString BandClass::getSubMenuStackName(int ant_index) {
+	return(subMenuStack[ant_index].stackName);
 }
 
 void BandClass::setHasRotator(unsigned char ant_index, bool state) {
 	hasRotator[ant_index] = state;
 }
 
-void BandClass::setSubMenuStackCombinationName(int index, QString str) {
-	subMenuStack.combinationName[index] = str;
+void BandClass::setSubMenuStackCombinationName(int ant_index, int index, QString str) {
+	subMenuStack[ant_index].combinationName[index] = str;
 }
 
-QString BandClass::getSubMenuStackCombinationName(int index) {
-	return(subMenuStack.combinationName[index]);
+QString BandClass::getSubMenuStackCombinationName(int ant_index, int index) {
+	return(subMenuStack[ant_index].combinationName[index]);
 }
 
-void BandClass::setSubMenuStackCombinationOutputStr(int index, QString str) {
-	subMenuStack.combinationOutputStr[index] = str;
+void BandClass::setSubMenuStackCombinationOutputStr(int ant_index, int index, QString str) {
+	subMenuStack[ant_index].combinationOutputStr[index] = str;
 }
 
-QString BandClass::getSubMenuStackCombinationOutputStr(int index) {
-	return(subMenuStack.combinationOutputStr[index]);
+QString BandClass::getSubMenuStackCombinationOutputStr(int ant_index, int index) {
+	return(subMenuStack[ant_index].combinationOutputStr[index]);
 }
 
 void BandClass::writeSettings(QSettings& settings) {
@@ -293,41 +293,51 @@ void BandClass::writeSettings(QSettings& settings) {
 		settings.setValue("subMenuTypeAnt2",subMenuType[1]);
 		settings.setValue("subMenuTypeAnt3",subMenuType[2]);
 		settings.setValue("subMenuTypeAnt4",subMenuType[3]);
-		settings.setValue("subMenu4SQdirectionCount",subMenu4SQ.directionCount);
-		settings.setValue("subMenu4SQdirectionName1",subMenu4SQ.directionName[0]);
-		settings.setValue("subMenu4SQdirectionName2",subMenu4SQ.directionName[1]);
-		settings.setValue("subMenu4SQdirectionName3",subMenu4SQ.directionName[2]);
-		settings.setValue("subMenu4SQdirectionName4",subMenu4SQ.directionName[3]);
-		settings.setValue("subMenu4SQdirectionName5",subMenu4SQ.directionName[4]);
-		settings.setValue("subMenu4SQdirectionName6",subMenu4SQ.directionName[5]);
-		settings.setValue("subMenu4SQdirectionName7",subMenu4SQ.directionName[6]);
-		settings.setValue("subMenu4SQdirectionName8",subMenu4SQ.directionName[7]);
-		settings.setValue("subMenu4SQdirectionOutputStr1",subMenu4SQ.directionOutputStr[0]);
-		settings.setValue("subMenu4SQdirectionOutputStr2",subMenu4SQ.directionOutputStr[1]);
-		settings.setValue("subMenu4SQdirectionOutputStr3",subMenu4SQ.directionOutputStr[2]);
-		settings.setValue("subMenu4SQdirectionOutputStr4",subMenu4SQ.directionOutputStr[3]);
-		settings.setValue("subMenu4SQdirectionOutputStr5",subMenu4SQ.directionOutputStr[4]);
-		settings.setValue("subMenu4SQdirectionOutputStr6",subMenu4SQ.directionOutputStr[5]);
-		settings.setValue("subMenu4SQdirectionOutputStr7",subMenu4SQ.directionOutputStr[6]);
-		settings.setValue("subMenu4SQdirectionOutputStr8",subMenu4SQ.directionOutputStr[7]);
-				
-		settings.setValue("subMenuStackName",subMenuStack.stackName);
-		settings.setValue("subMenuStackCombinationCount",subMenuStack.combinationCount);
-		
-		settings.setValue("subMenuStackCombinationName1",subMenuStack.combinationName[0]);
-		settings.setValue("subMenuStackCombinationName2",subMenuStack.combinationName[1]);
-		settings.setValue("subMenuStackCombinationName3",subMenuStack.combinationName[2]);
-		settings.setValue("subMenuStackCombinationName4",subMenuStack.combinationName[3]);
-		settings.setValue("subMenuStackCombinationName5",subMenuStack.combinationName[4]);
-		settings.setValue("subMenuStackCombinationName6",subMenuStack.combinationName[5]);
-		
-		settings.setValue("subMenuStackCombinationOutputStr1",subMenuStack.combinationOutputStr[0]);
-		settings.setValue("subMenuStackCombinationOutputStr2",subMenuStack.combinationOutputStr[1]);
-		settings.setValue("subMenuStackCombinationOutputStr3",subMenuStack.combinationOutputStr[2]);
-		settings.setValue("subMenuStackCombinationOutputStr4",subMenuStack.combinationOutputStr[3]);
-		settings.setValue("subMenuStackCombinationOutputStr5",subMenuStack.combinationOutputStr[4]);
-		settings.setValue("subMenuStackCombinationOutputStr6",subMenuStack.combinationOutputStr[5]);
-		
+
+		settings.beginWriteArray("SubMenu");
+
+		for (int i=0;i<4;i++) {
+				settings.setArrayIndex(i);
+
+				settings.setValue("subMenu4SQdirectionCount",subMenu4SQ[i].directionCount);
+
+				settings.setValue("subMenu4SQdirectionName1",subMenu4SQ[i].directionName[0]);
+				settings.setValue("subMenu4SQdirectionName2",subMenu4SQ[i].directionName[1]);
+				settings.setValue("subMenu4SQdirectionName3",subMenu4SQ[i].directionName[2]);
+				settings.setValue("subMenu4SQdirectionName4",subMenu4SQ[i].directionName[3]);
+				settings.setValue("subMenu4SQdirectionName5",subMenu4SQ[i].directionName[4]);
+				settings.setValue("subMenu4SQdirectionName6",subMenu4SQ[i].directionName[5]);
+				settings.setValue("subMenu4SQdirectionName7",subMenu4SQ[i].directionName[6]);
+				settings.setValue("subMenu4SQdirectionName8",subMenu4SQ[i].directionName[7]);
+				settings.setValue("subMenu4SQdirectionOutputStr1",subMenu4SQ[i].directionOutputStr[0]);
+				settings.setValue("subMenu4SQdirectionOutputStr2",subMenu4SQ[i].directionOutputStr[1]);
+				settings.setValue("subMenu4SQdirectionOutputStr3",subMenu4SQ[i].directionOutputStr[2]);
+				settings.setValue("subMenu4SQdirectionOutputStr4",subMenu4SQ[i].directionOutputStr[3]);
+				settings.setValue("subMenu4SQdirectionOutputStr5",subMenu4SQ[i].directionOutputStr[4]);
+				settings.setValue("subMenu4SQdirectionOutputStr6",subMenu4SQ[i].directionOutputStr[5]);
+				settings.setValue("subMenu4SQdirectionOutputStr7",subMenu4SQ[i].directionOutputStr[6]);
+				settings.setValue("subMenu4SQdirectionOutputStr8",subMenu4SQ[i].directionOutputStr[7]);
+
+				settings.setValue("subMenuStackName",subMenuStack[i].stackName);
+				settings.setValue("subMenuStackCombinationCount",subMenuStack[i].combinationCount);
+
+				settings.setValue("subMenuStackCombinationName1",subMenuStack[i].combinationName[0]);
+				settings.setValue("subMenuStackCombinationName2",subMenuStack[i].combinationName[1]);
+				settings.setValue("subMenuStackCombinationName3",subMenuStack[i].combinationName[2]);
+				settings.setValue("subMenuStackCombinationName4",subMenuStack[i].combinationName[3]);
+				settings.setValue("subMenuStackCombinationName5",subMenuStack[i].combinationName[4]);
+				settings.setValue("subMenuStackCombinationName6",subMenuStack[i].combinationName[5]);
+
+				settings.setValue("subMenuStackCombinationOutputStr1",subMenuStack[i].combinationOutputStr[0]);
+				settings.setValue("subMenuStackCombinationOutputStr2",subMenuStack[i].combinationOutputStr[1]);
+				settings.setValue("subMenuStackCombinationOutputStr3",subMenuStack[i].combinationOutputStr[2]);
+				settings.setValue("subMenuStackCombinationOutputStr4",subMenuStack[i].combinationOutputStr[3]);
+				settings.setValue("subMenuStackCombinationOutputStr5",subMenuStack[i].combinationOutputStr[4]);
+				settings.setValue("subMenuStackCombinationOutputStr6",subMenuStack[i].combinationOutputStr[5]);
+		}
+
+		settings.endArray();
+
 		settings.setValue("RotatorIndex1",rotatorIndex[0]);
 		settings.setValue("RotatorIndex2",rotatorIndex[1]);
 		settings.setValue("RotatorIndex3",rotatorIndex[2]);
@@ -402,45 +412,52 @@ void BandClass::loadSettings(QSettings& settings) {
 	subMenuType[1] = settings.value("subMenuTypeAnt2").toUInt(0);
 	subMenuType[2] = settings.value("subMenuTypeAnt3").toUInt(0);
 	subMenuType[3] = settings.value("subMenuTypeAnt4").toUInt(0);
-	subMenu4SQ.directionCount = settings.value("subMenu4SQdirectionCount").toUInt(0);
 	
 	defaultAntennaIndex = settings.value("defaultAntennaIndex").toUInt(0);
 	
-	subMenu4SQ.directionName[0] = settings.value("subMenu4SQdirectionName1").toString();
-	subMenu4SQ.directionName[1] = settings.value("subMenu4SQdirectionName2").toString();
-	subMenu4SQ.directionName[2] = settings.value("subMenu4SQdirectionName3").toString();
-	subMenu4SQ.directionName[3] = settings.value("subMenu4SQdirectionName4").toString();
-	subMenu4SQ.directionName[4] = settings.value("subMenu4SQdirectionName5").toString();
-	subMenu4SQ.directionName[5] = settings.value("subMenu4SQdirectionName6").toString();
-	subMenu4SQ.directionName[6] = settings.value("subMenu4SQdirectionName7").toString();
-	subMenu4SQ.directionName[7] = settings.value("subMenu4SQdirectionName8").toString();
+
+	int size = settings.beginReadArray("SubMenu");
+
+		for (int i=0;i<size;i++) {
+				settings.setArrayIndex(i);
+
+				subMenu4SQ[i].directionCount = settings.value("subMenu4SQdirectionCount").toUInt(0);
+				subMenu4SQ[i].directionName[0] = settings.value("subMenu4SQdirectionName1").toString();
+				subMenu4SQ[i].directionName[1] = settings.value("subMenu4SQdirectionName2").toString();
+				subMenu4SQ[i].directionName[2] = settings.value("subMenu4SQdirectionName3").toString();
+				subMenu4SQ[i].directionName[3] = settings.value("subMenu4SQdirectionName4").toString();
+				subMenu4SQ[i].directionName[4] = settings.value("subMenu4SQdirectionName5").toString();
+				subMenu4SQ[i].directionName[5] = settings.value("subMenu4SQdirectionName6").toString();
+				subMenu4SQ[i].directionName[6] = settings.value("subMenu4SQdirectionName7").toString();
+				subMenu4SQ[i].directionName[7] = settings.value("subMenu4SQdirectionName8").toString();
 	
-	subMenu4SQ.directionOutputStr[0] = settings.value("subMenu4SQdirectionOutputStr1").toString();
-	subMenu4SQ.directionOutputStr[1] = settings.value("subMenu4SQdirectionOutputStr2").toString();
-	subMenu4SQ.directionOutputStr[2] = settings.value("subMenu4SQdirectionOutputStr3").toString();
-	subMenu4SQ.directionOutputStr[3] = settings.value("subMenu4SQdirectionOutputStr4").toString();
-	subMenu4SQ.directionOutputStr[4] = settings.value("subMenu4SQdirectionOutputStr5").toString();
-	subMenu4SQ.directionOutputStr[5] = settings.value("subMenu4SQdirectionOutputStr6").toString();
-	subMenu4SQ.directionOutputStr[6] = settings.value("subMenu4SQdirectionOutputStr7").toString();
-	subMenu4SQ.directionOutputStr[7] = settings.value("subMenu4SQdirectionOutputStr8").toString();
+				subMenu4SQ[i].directionOutputStr[0] = settings.value("subMenu4SQdirectionOutputStr1").toString();
+				subMenu4SQ[i].directionOutputStr[1] = settings.value("subMenu4SQdirectionOutputStr2").toString();
+				subMenu4SQ[i].directionOutputStr[2] = settings.value("subMenu4SQdirectionOutputStr3").toString();
+				subMenu4SQ[i].directionOutputStr[3] = settings.value("subMenu4SQdirectionOutputStr4").toString();
+				subMenu4SQ[i].directionOutputStr[4] = settings.value("subMenu4SQdirectionOutputStr5").toString();
+				subMenu4SQ[i].directionOutputStr[5] = settings.value("subMenu4SQdirectionOutputStr6").toString();
+				subMenu4SQ[i].directionOutputStr[6] = settings.value("subMenu4SQdirectionOutputStr7").toString();
+				subMenu4SQ[i].directionOutputStr[7] = settings.value("subMenu4SQdirectionOutputStr8").toString();
 				
-	subMenuStack.stackName = settings.value("subMenuStackName").toString();
-	subMenuStack.combinationCount = settings.value("subMenuStackCombinationCount").toUInt(0);
+				subMenuStack[i].stackName = settings.value("subMenuStackName").toString();
+				subMenuStack[i].combinationCount = settings.value("subMenuStackCombinationCount").toUInt(0);
+
+				subMenuStack[i].combinationName[0] = settings.value("subMenuStackCombinationName1").toString();
+				subMenuStack[i].combinationName[1] = settings.value("subMenuStackCombinationName2").toString();
+				subMenuStack[i].combinationName[2] = settings.value("subMenuStackCombinationName3").toString();
+				subMenuStack[i].combinationName[3] = settings.value("subMenuStackCombinationName4").toString();
+				subMenuStack[i].combinationName[4] = settings.value("subMenuStackCombinationName5").toString();
+				subMenuStack[i].combinationName[5] = settings.value("subMenuStackCombinationName6").toString();
 	
-	subMenuStack.combinationName[0] = settings.value("subMenuStackCombinationName1").toString();
-	subMenuStack.combinationName[1] = settings.value("subMenuStackCombinationName2").toString();
-	subMenuStack.combinationName[2] = settings.value("subMenuStackCombinationName3").toString();
-	subMenuStack.combinationName[3] = settings.value("subMenuStackCombinationName4").toString();
-	subMenuStack.combinationName[4] = settings.value("subMenuStackCombinationName5").toString();
-	subMenuStack.combinationName[5] = settings.value("subMenuStackCombinationName6").toString();
-	
-	subMenuStack.combinationOutputStr[0] = settings.value("subMenuStackCombinationOutputStr1").toString();
-	subMenuStack.combinationOutputStr[1] = settings.value("subMenuStackCombinationOutputStr2").toString();
-	subMenuStack.combinationOutputStr[2] = settings.value("subMenuStackCombinationOutputStr3").toString();
-	subMenuStack.combinationOutputStr[3] = settings.value("subMenuStackCombinationOutputStr4").toString();
-	subMenuStack.combinationOutputStr[4] = settings.value("subMenuStackCombinationOutputStr5").toString();
-	subMenuStack.combinationOutputStr[5] = settings.value("subMenuStackCombinationOutputStr6").toString();		
-	
+				subMenuStack[i].combinationOutputStr[0] = settings.value("subMenuStackCombinationOutputStr1").toString();
+				subMenuStack[i].combinationOutputStr[1] = settings.value("subMenuStackCombinationOutputStr2").toString();
+				subMenuStack[i].combinationOutputStr[2] = settings.value("subMenuStackCombinationOutputStr3").toString();
+				subMenuStack[i].combinationOutputStr[3] = settings.value("subMenuStackCombinationOutputStr4").toString();
+				subMenuStack[i].combinationOutputStr[4] = settings.value("subMenuStackCombinationOutputStr5").toString();
+				subMenuStack[i].combinationOutputStr[5] = settings.value("subMenuStackCombinationOutputStr6").toString();
+		}
+
 	rotatorIndex[0] = settings.value("RotatorIndex1").toInt();
 	rotatorIndex[1] = settings.value("RotatorIndex2").toInt();
 	rotatorIndex[2] = settings.value("RotatorIndex3").toInt();
@@ -480,7 +497,7 @@ void BandClass::loadSettings(QSettings& settings) {
 			hasRotator[i] = false;
 	}
 			
-	int size = settings.beginReadArray("AntennaOutputStr");
+	size = settings.beginReadArray("AntennaOutputStr");
 	
 	for (int i=0;i<size;i++) {
 		settings.setArrayIndex(i);
@@ -513,8 +530,14 @@ void BandClass::sendSettings(CommClass& serialPort) {
 		serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
 	}
 	
-	//TODO: tx_buff[0] = CTRL_SET_ANT_DATA_SUB_MENU_TYPE;
+	tx_buff[0] = CTRL_SET_ANT_DATA_SUB_MENU_TYPE;
+	tx_buff[1] = subMenuType[0];
+	tx_buff[2] = subMenuType[1];
+	tx_buff[3] = subMenuType[2];
+	tx_buff[4] = subMenuType[3];
 	
+	serialPort.addTXMessage(CTRL_SET_ANT_DATA,5,tx_buff);
+
 	tx_buff[0] = CTRL_SET_ANT_DATA_ANT_FLAGS;
 	tx_buff[1] = bandIndex;
 	tx_buff[2] = antennaFlags[0];
@@ -574,6 +597,46 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	tx_buff[posCount++] = rotatorView360deg;
 	
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,27,tx_buff);
+
+	for (int i=0;i<4;i++) {
+		if (subMenuType[i] == SUBMENU_VERT_ARRAY) {
+				tx_buff[0] = CTRL_SET_ANT_SUB_MENU_DATA;
+				tx_buff[1] = i;	//Antenna index
+				tx_buff[2] = subMenu4SQ[i].directionCount;
+		}
+
+		serialPort.addTXMessage(CTRL_SET_ANT_DATA,3,tx_buff);
+	}
+
+	for (int i=0;i<4;i++) {
+		if (subMenuType[i] == SUBMENU_VERT_ARRAY) {
+				for (int dirIndex=0;dirIndex<8;dirIndex++) {
+						tx_buff[0] = CTRL_SET_ANT_SUB_MENU_TEXT;
+						tx_buff[1] = i; //Antenna index
+						tx_buff[2] = dirIndex;
+						tx_buff[3] = subMenu4SQ[i].directionName[dirIndex].length();
+
+						for (int x=0;x<subMenu4SQ[i].directionName[dirIndex].length();x++)
+								tx_buff[4+x] = subMenu4SQ[i].directionName[dirIndex].at(x).toAscii();
+
+						serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
+				}
+
+				for (int dirIndex=0;dirIndex<8;dirIndex++) {
+						QByteArray temp = strConvertToOutputStr(subMenu4SQ[i].directionOutputStr[dirIndex]);
+						int len = temp.count();
+						temp.insert(0,CTRL_SET_ANT_SUB_MENU_OUTPUT_STR);
+						temp.insert(1,i);
+						temp.insert(2,dirIndex);
+						temp.insert(3,len);
+
+						for (int x=0;x<temp.count();x++)
+								tx_buff[x] = temp.at(x);
+
+						serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
+				}
+		}
+	}
 	
 	tx_buff[0] = CTRL_SET_ANT_DATA_SAVE;
 	tx_buff[1] = bandIndex;
