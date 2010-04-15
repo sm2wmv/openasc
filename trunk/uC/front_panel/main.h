@@ -130,6 +130,8 @@
 #define BAND_OUTPUT_STR_SIZE			10
 //! The max size of the sub menu array output str size
 #define SUB_MENU_ARRAY_STR_SIZE		10
+//! The size of the name of a 4-SQ
+#define SUB_MENU_ARRAY_NAME_SIZE  10
 
 //! The delimiter that seperates the outputs from which address they should be sent to
 #define OUTPUT_ADDR_DELIMITER			0xFF
@@ -159,6 +161,13 @@
 
 //! The time from when a pulse sensor change occured to the actual change does happen
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
+
+//! Sub menu type NONE
+#define SUBMENU_NONE				0
+//! Sub menu type 4-SQ
+#define SUBMENU_VERT_ARRAY	1
+//! Sub menu type stack
+#define SUBMENU_STACK				2
 
 /****************************************************************/
 

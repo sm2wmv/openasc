@@ -128,6 +128,12 @@
 #define CTRL_SET_ANT_ROTATOR_DATA					0x07
 //! CTRL command: Set the default antenna index
 #define CTRL_SET_ANT_DEFAULT_INDEX				0x08
+//! CTRL command: Set the sub menu data
+#define CTRL_SET_ANT_SUB_MENU_DATA				0x09
+//! CTRL command: Set the sub menu data, text
+#define CTRL_SET_ANT_SUB_MENU_TEXT				0x0A
+//! CTRL command: Set the sub menu data, output str
+#define CTRL_SET_ANT_SUB_MENU_OUTPUT_STR  0x0B
 
 //! CTRL command: Set the band data limits
 #define CTRL_SET_BAND_DATA_LIMITS					0x01
@@ -218,6 +224,8 @@ struct_setting *settings_ptr;
 struct_ptt *ptt_sequencer_ptr;
 
 struct_radio_settings *radio_settings_ptr;
+
+struct_sub_menu_array *sub_menu_array_ptr[4];
 
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
@@ -338,7 +346,11 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_ANT_DATA_SUB_MENU_TYPE: 
-					//antenna_ptr->sub_menu_type[(int)*(computer_comm.rx_buffer_start+1)] = *(computer_comm.rx_buffer_start+3);
+					antenna_ptr->sub_menu_type[0] = computer_comm.rx_buffer_start[1];
+					antenna_ptr->sub_menu_type[1] = computer_comm.rx_buffer_start[2];
+					antenna_ptr->sub_menu_type[2] = computer_comm.rx_buffer_start[3];
+					antenna_ptr->sub_menu_type[3] = computer_comm.rx_buffer_start[4];
+					 
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_ANT_DATA_ANT_FLAGS:
@@ -382,9 +394,42 @@ void computer_interface_parse_data(void) {
 					antenna_ptr->default_antenna = computer_comm.rx_buffer[2];
 					computer_interface_send_ack();
 					break;	
+				case CTRL_SET_ANT_SUB_MENU_DATA:
+					if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer[1]] == SUBMENU_VERT_ARRAY) {
+						sub_menu_array_ptr[(int)computer_comm.rx_buffer[1]]->direction_count = computer_comm.rx_buffer[2];
+					}
+					else if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer[1]] == SUBMENU_STACK) {
+					
+					}
+					
+					computer_interface_send_ack();
+					break;
+				case CTRL_SET_ANT_SUB_MENU_TEXT:
+					if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_VERT_ARRAY) {
+						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
+							sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
+					}
+					
+					computer_interface_send_ack();
+					break;
+				case CTRL_SET_ANT_SUB_MENU_OUTPUT_STR:
+					if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_VERT_ARRAY) {
+						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
+							sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->output_str_dir[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
+					}
+					
+					computer_interface_send_ack();
+					break;
 				case CTRL_SET_ANT_DATA_SAVE:
 					//Save the antenna structure to the eeprom
 					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1], antenna_ptr);
+					
+					//Routines to save the SUB MENU data to the EEPROM
+					for (unsigned char ant_index=0;ant_index<4;ant_index++) {
+						if (antenna_ptr->sub_menu_type[ant_index] == SUBMENU_VERT_ARRAY) {
+							eeprom_save_ant_sub_menu_array_structure(computer_comm.rx_buffer_start[1], ant_index, sub_menu_array_ptr[ant_index]);
+						}
+					}
 					
 					//Reset the content of the antenna_ptr
 					memset(antenna_ptr,0,sizeof(struct_antenna));
@@ -406,7 +451,7 @@ void computer_interface_parse_data(void) {
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							rx_antenna_ptr->name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
 					
-					rx_antenna_ptr->name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;
+					rx_antenna_ptr->name[(int)computer_comm.rx_buffer_start[2]][(int)computer_comm.rx_buffer_start[3]] = 0;
 					
 					computer_interface_send_ack();
 					break;
@@ -650,6 +695,9 @@ void computer_interface_activate_setup(void) {
 	settings_ptr = (struct_setting *)malloc(sizeof(struct_setting));
 	ptt_sequencer_ptr = (struct_ptt *)malloc(sizeof(struct_ptt));
 	radio_settings_ptr = (struct_radio_settings *)malloc(sizeof(struct_radio_settings));
+	
+	for (unsigned char i=0;i<4;i++)
+		sub_menu_array_ptr[i] = (struct_sub_menu_array *)malloc(sizeof(struct_sub_menu_array));
 	
 	ptt_sequencer_ptr->ptt_input = 0;
 }

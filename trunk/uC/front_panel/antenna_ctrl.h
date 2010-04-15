@@ -107,8 +107,10 @@ typedef struct {
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
+	//! Number of directions
+	unsigned char direction_count;
 	//! The directions
-	unsigned char direction_name[8];
+	unsigned char direction_name[8][SUB_MENU_ARRAY_NAME_SIZE];
 	//! The output strings of the different directions
 	unsigned char output_str_dir[8][SUB_MENU_ARRAY_STR_SIZE];
 } struct_sub_menu_array;

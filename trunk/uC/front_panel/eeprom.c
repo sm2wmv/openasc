@@ -153,7 +153,18 @@ void eeprom_create_table(void) {
 	eeprom_table.settings = 9600;
 	eeprom_table.runtime_settings = 9728;
 	
-	//TODO: Continue with the table, sub menus etc
+	unsigned int curr_addr = 9856;
+	
+	for (unsigned char i=0;i<9;i++) {
+		eeprom_table.antenna1_sub_menu[i] = curr_addr;
+		curr_addr += 256;
+		eeprom_table.antenna2_sub_menu[i] = curr_addr;
+		curr_addr += 256;
+		eeprom_table.antenna3_sub_menu[i] = curr_addr;
+		curr_addr += 256;
+		eeprom_table.antenna4_sub_menu[i] = curr_addr;
+		curr_addr += 256;
+	}
 
 	//Save the table to the eeprom, starting from address 0
 	eeprom_m24_write_block(0, sizeof(eeprom_table), (unsigned char *)&eeprom_table);
@@ -221,4 +232,19 @@ void eeprom_save_band_data(unsigned char band, struct_band *data) {
  * \param data The data to save to the EEPROM */
 void eeprom_save_ptt_data(struct_ptt *data) {
 	eeprom_m24_write_block(eeprom_table.struct_ptt, sizeof(struct_ptt), (unsigned char *)data);
+}
+
+/*! \brief Save the sub menu array data to the EEPROM
+ *  \param band_index The band we wish to save the settings for
+ *  \param ant_index The antenna index of the data
+ *  \param data The data to save to the EEPROM */
+void eeprom_save_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data) {
+	if (ant_index == 0)
+		eeprom_m24_write_block(eeprom_table.antenna1_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+	else if (ant_index == 1)
+		eeprom_m24_write_block(eeprom_table.antenna2_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+	else if (ant_index == 2)
+		eeprom_m24_write_block(eeprom_table.antenna3_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+	else if (ant_index == 3)
+		eeprom_m24_write_block(eeprom_table.antenna4_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
 }

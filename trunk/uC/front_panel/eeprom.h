@@ -95,4 +95,6 @@ void eeprom_get_settings_structure(struct_setting *data);
 void eeprom_save_settings_structure(struct_setting *data);
 void eeprom_save_ptt_data(struct_ptt *data);
 
+void eeprom_save_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data);
+
 #endif
