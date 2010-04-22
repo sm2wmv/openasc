@@ -62,7 +62,7 @@ TARGET = main
 DEVICE_TYPE = DEVICE_TYPE_MAIN_FRONT_UNIT
 
 #Root directories
-WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_tx_queue.c ../wmv_bus/bus_rx_queue.c ../wmv_bus/bus_usart.c
+WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_tx_queue.c ../wmv_bus/bus_rx_queue.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c
 
 GLOBAL_ROUTINES = ../delay.c ../i2c.c ../internal_comm.c ../event_queue.c ../internal_comm_rx_queue.c ../internal_comm_tx_queue.c
 

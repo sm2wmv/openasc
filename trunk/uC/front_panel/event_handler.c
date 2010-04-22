@@ -104,7 +104,8 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			main_save_settings();
 			
 			band_ctrl_change_band(BAND_UNDEFINED);
-
+			send_ping();
+			
 			event_add_message((void *)shutdown_device,3000,0);
 			break;
 		case INT_COMM_PS2_KEYPRESSED:
@@ -356,6 +357,8 @@ void event_poll_buttons(void) {
 					menu_action(MENU_BUTTON_PRESSED);
 				else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 					band_ctrl_change_band(status.new_band);
+					
+					send_ping();
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
 					if (status.antenna_to_rotate != 0) {
