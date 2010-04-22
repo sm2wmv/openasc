@@ -63,11 +63,6 @@
 //! Settings struct
 struct_setting settings;
 
-//! Flag used to keep track of that the device hsa actually started.
-//! This is so that we don't send data before it is actually ready and everything
-//! is initialized
-unsigned char device_started = 0;
-
 //! Counter to keep track of when a character for the CAT was last received
 unsigned char radio_rx_data_counter = 0;
 //! Counter which counts up each time a compare0 interrupt has occured
@@ -98,6 +93,12 @@ unsigned char device_count = 0;
 
 //! Different flags, description is found in main.h
 unsigned int main_flags = 0;
+
+//! Ping message of the openASC device
+unsigned char ping_message[3];
+
+//! Variable to check if the device has actually gone through all init steps
+unsigned char device_started = 0;
 
 //! Clear the screensaver timer
 void clear_screensaver_timer(void) {
@@ -271,6 +272,14 @@ enum enum_inhibit_state main_get_inhibit_state(void) {
 	return(runtime_settings.inhibit_state);
 }
 
+/*! \brief Send a ping message out on the bus */
+void send_ping(void) {
+	//Set which is the current selected band
+	ping_message[2] = status.selected_band;
+				
+	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
+}
+
 /*! Main function of the front panel */
 int main(void){
 	cli();
@@ -437,15 +446,10 @@ int main(void){
 	//TEMPORARY
 	DDRB |= (1<<1);
 	
-	device_started = 1;
-	
-	//! The ping message
-	unsigned char ping_message[2];	
-	
 	ping_message[0] = DEVICE_ID_MAINBOX;
 	ping_message[1] = 0x00;//settings.ptt_interlock_input;
 	
-		printf("Backlight level: %i\n",runtime_settings.lcd_backlight_value);
+	device_started = 1;
 	
 	while(1) {
 		//Output a pulse so we can see how long time the main loop takes
@@ -467,6 +471,8 @@ int main(void){
 			if (radio_get_current_band() != status.selected_band) {
 				status.new_band = radio_get_current_band();
 				band_ctrl_change_band(status.new_band);
+				
+				send_ping();
 			}
 			
 			if (radio_get_band_portion() != status.current_band_portion) {
@@ -565,11 +571,11 @@ int main(void){
 			counter_sync = 0;
 		}
 
-		if ((device_started == 1) && bus_allowed_to_send()) {
+		if (bus_allowed_to_send()) {
 			//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 2, ping_message);
-
+				send_ping();
+				
 				counter_ping_interval = 0;
 			}
 		}

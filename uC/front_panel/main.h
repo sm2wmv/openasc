@@ -292,4 +292,6 @@ void shutdown_device(void);
 enum enum_inhibit_state main_get_inhibit_state(void);
 void main_set_inhibit_state(enum enum_inhibit_state state);
 
+void send_ping(void);
+
 #endif

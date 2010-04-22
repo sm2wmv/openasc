@@ -53,6 +53,9 @@ unsigned int counter_sync=0;
 //! Counter to keep track of when to send a ping out on the bus
 unsigned int counter_ping_interval=0;
 
+//! Flag which is set when we wish to poll the PTT status
+unsigned char check_ptt_status = 0;
+
 /*! \brief Activate a driver output
 * This function is used to activate an output on the driver unit. It will remember
 * which device that sent the request for an activation so that the driver_unit will
@@ -275,7 +278,12 @@ void bus_parse_message(void) {
 
 			bus_add_tx_message(bus_get_address(), bus_message.from_addr, 0, BUS_CMD_GET_TEMPERATURE,2, temp);
 		}
+		else if (bus_message.cmd == BUS_CMD_SET_PTT_SETTINGS) {
+			/* Data[0..n] -> | ADDR | INPUT # | */
+			driver_status.ptt_interlock_input[(int)bus_message.data[1]] = bus_message.data[0];
+		}
 		else if (bus_message.cmd == BUS_CMD_SYNC) {
+			
 		}
 	}
 	
@@ -291,8 +299,26 @@ unsigned char read_ext_addr(void) {
 }
 
 /*! \brief Set the PTT led status */
-unsigned char set_ptt_led_status(unsigned char state) {
+void set_ptt_led_status(unsigned char state) {
 	PORTF = state;
+}
+
+/*! \brief Check the status of the external PTT lines 
+    \return A byte which contains info of the state of the PTT lines. 0 = R1, 1 = R2 etc
+ */ 
+unsigned char get_ptt_status(void) {
+	unsigned char status = 0;
+
+	//Set the order correctly
+	status  = (PINA >> 6) & 0x01; //R1
+	status |= (PINA >> 3) & 0x02; //R2
+	status |= PINA & 0x04;        //R3
+	status |= (PINA << 3) & 0x08; //R4
+	status |= (PINA >> 1) & 0x10; //R5
+	status |= (PINA << 2) & 0x20; //R6
+	status |= (PINA << 5) & 0x40; //R7
+	
+	return(status);
 }
 
 /*! Main function of the driver unit */
@@ -335,6 +361,7 @@ int main(void)
 	
 	sei();
 
+	//Check which kind of driver card this is
 	if (PINF & (1<<7))
 		device_id = DEVICE_ID_DRIVER_POS;
 	else
@@ -371,7 +398,14 @@ int main(void)
 				counter_ping_interval = 0;
 			}
 		}
-
+		
+		//Check the PTT inputs
+		if (check_ptt_status) {
+			//Set the PTT leds
+			set_ptt_led_status(get_ptt_status());
+			
+			check_ptt_status = 0;
+		}
 	}
 	
 	return (0);
@@ -382,4 +416,6 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
+	
+	check_ptt_status = 1;
 }

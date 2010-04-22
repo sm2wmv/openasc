@@ -144,6 +144,8 @@ wmv_bus
 wmv_bus/bus.c
 wmv_bus/bus.h
 wmv_bus/bus_commands.h
+wmv_bus/bus_ping.c
+wmv_bus/bus_ping.h
 wmv_bus/bus_rx_queue.c
 wmv_bus/bus_rx_queue.h
 wmv_bus/bus_tx_queue.c

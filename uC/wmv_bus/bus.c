@@ -408,7 +408,7 @@ ISR(ISR_BUS_USART_RECV) {
 					//Is the checksum OK? In that case we add the new message to the RX queue, if not we send a NACK (not sent if it's a broadcast)
 					if (calc_checksum == bus_new_message.checksum) {
 						bus_add_new_message();
-						
+					
 						if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
 							bus_send_ack(bus_new_message.from_addr);
 					}

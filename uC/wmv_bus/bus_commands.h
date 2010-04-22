@@ -35,67 +35,69 @@
 #define BUS_CMD_PING	0x02	
 
 /*! Activate TX/RX mode */
-#define BUS_CMD_DRIVER_ACTIVATE_TXRX_MODE							0x14
+#define BUS_CMD_DRIVER_ACTIVATE_TXRX_MODE							0x10
 /*! Deactivate TX/RX mode */
-#define BUS_CMD_DRIVER_DEACTIVATE_TXRX_MODE						0x15
+#define BUS_CMD_DRIVER_DEACTIVATE_TXRX_MODE						0x11
 /*! Activate a driver combo, type = TX ANT */
-#define BUS_CMD_DRIVER_ACTIVATE_TX_ANT_COMBO					0x16
+#define BUS_CMD_DRIVER_ACTIVATE_TX_ANT_COMBO					0x12
 /*! Deactivate a driver combo, type = TX ANT */
-#define BUS_CMD_DRIVER_DEACTIVATE_TX_ANT_COMBO				0x17
+#define BUS_CMD_DRIVER_DEACTIVATE_TX_ANT_COMBO				0x13
 /*! Activate a driver combo, type = RX ANT combo */
-#define BUS_CMD_DRIVER_ACTIVATE_RX_ANT_COMBO					0x18
+#define BUS_CMD_DRIVER_ACTIVATE_RX_ANT_COMBO					0x14
 /*! Deactivate a driver combo, type = RX ANT combo */
-#define BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_COMBO				0x19
+#define BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_COMBO				0x15
 /*! Activate a driver output, type = ANT */
-#define BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT						0x20
+#define BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT						0x16
 /*! Deactivate a driver output, type = ANT */
-#define BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT					0x21
+#define BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT					0x17
 /*! Activate a driver output, type = BAND */
-#define BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT						0x22
+#define BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT						0x18
 /*! Deactivate a driver output, type = BAND */
-#define BUS_CMD_DRIVER_DEACTIVATE_BAND_OUTPUT					0x23
+#define BUS_CMD_DRIVER_DEACTIVATE_BAND_OUTPUT					0x19
 /*! Activate a driver output, type = RX Antenna */
-#define BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT					0x24
+#define BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT					0x1A
 /*! Deactivate a driver output, type = RX Antenna */
-#define BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT				0x25
+#define BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT				0x1B
 /*! Deactivate RX BAND output */
-#define BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT			0x26
+#define BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT			0x1C
 /*! Deactivate ALL RX BAND outputs */
-#define BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS	0x27
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS	0x1D
 /*! Activate RX BAND output */
-#define BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT				0x28
+#define BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT				0x1E
 
 /*! Get the driver status */
-#define BUS_CMD_DRIVER_GET_STATUS										0x30
+#define BUS_CMD_DRIVER_GET_STATUS										0x1F
 /*! Retrieve the temperature */
-#define BUS_CMD_GET_TEMPERATURE											0x31
+#define BUS_CMD_GET_TEMPERATURE											0x20
 /*! Deactivate all the outputs enabled by this device */
-#define BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS				0x32
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS				0x21
 /*! Deactivate all the ant outputs enabled by this device */
-#define BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS		0x33
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS		0x22
 /*! Deactivate all the band outputs enabled by this device */
-#define BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS	0x34
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS	0x23
 /*! Deactivate all the RX ANTENNA outputs */
-#define BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS	0x35
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS	0x24
+/*! Set the PTT settings, which PTT input that corresponds to which device */
+#define BUS_CMD_SET_PTT_SETTINGS										0x25
 
 /*! Set the target rotation direction and start rotation */
-#define BUS_CMD_ROTATOR_SET_ANGLE		0x20
+#define BUS_CMD_ROTATOR_SET_ANGLE		0x40
 /*! Get the current direction */
-#define BUS_CMD_ROTATOR_GET_ANGLE		0x21
+#define BUS_CMD_ROTATOR_GET_ANGLE		0x41
 /*! Get the current direction */
-#define BUS_CMD_ROTATOR_GET_STATUS	0x22
+#define BUS_CMD_ROTATOR_GET_STATUS	0x42
 /*! Rotate ClockWise */
-#define BUS_CMD_ROTATOR_ROTATE_CW		0x23
+#define BUS_CMD_ROTATOR_ROTATE_CW		0x43
 /*! Rotate CounterClockWise */
-#define BUS_CMD_ROTATOR_ROTATE_CCW	0x24
+#define BUS_CMD_ROTATOR_ROTATE_CCW	0x44
 /*! Stop the rotation of the rotator */
-#define BUS_CMD_ROTATOR_STOP				0x25	
+#define BUS_CMD_ROTATOR_STOP				0x45	
 /*! Transparent command which just redirects the data to the serial port */
-#define BUS_CMD_TRANSPARENT					0x29
+#define BUS_CMD_TRANSPARENT					0x46
 
 /*! PowerMeter information */
-#define BUS_CMD_POWERMETER_STATUS 		0xA0
+#define BUS_CMD_POWERMETER_STATUS 		0x50
 /*! PowerMeter calibration command */
-#define BUS_CMD_POWERMETER_CALIBRATE	0xA1
+#define BUS_CMD_POWERMETER_CALIBRATE	0x51
 
 #endif
