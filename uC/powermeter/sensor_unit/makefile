@@ -63,7 +63,7 @@ DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP
 BASE_ADDRESS = 0x00
 
 #Root directories
-WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_tx_queue.c ../../wmv_bus/bus_rx_queue.c ../../wmv_bus/bus_usart.c 
+WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_tx_queue.c ../../wmv_bus/bus_rx_queue.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = $(TARGET).c a2d.c input.c init.c $(WMV_BUS_SRC) ../../delay.c

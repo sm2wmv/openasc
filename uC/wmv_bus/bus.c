@@ -50,6 +50,7 @@
 #include "bus_tx_queue.h"
 #include "bus_rx_queue.h"
 #include "bus_commands.h"
+#include "bus_ping.h"
 #include "global.h"
 #include "bus_usart.h"
 
@@ -93,6 +94,8 @@ void bus_init(void) {
 
 	bus_reset_tx_status();
 	bus_reset_rx_status();
+	
+	bus_ping_init();
 	
 	bus_status.flags |= (1<<BUS_STATUS_RECEIVE_ON);
 }
@@ -211,10 +214,11 @@ void bus_set_is_master(unsigned char state, unsigned char count) {
 		bus_status.flags &= ~(1<<BUS_STATUS_DEVICE_IS_MASTER_BIT);
 }
 
-/*! \brief Send an NOT acknowledge */
-void bus_send_nack(unsigned char to_addr) {
+/*! \brief Send an NOT acknowledge 
+ *  \param error_type Why was the message nacked, see bus.h for more information about BUS errors */
+void bus_send_nack(unsigned char to_addr, unsigned char error_type) {
 	if (to_addr != BUS_BROADCAST_ADDR)
-		bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_NACK, 0, NULL);
+		bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_NACK, 1, &error_type);
 }
 
 /*! \brief Send an acknowledge */
@@ -332,8 +336,9 @@ void bus_add_new_message(void) {
 	rx_queue_add(bus_new_message);
 }
 
-/*! \brief The message last sent was NACKED from the receiver */
-void bus_message_nacked(unsigned char addr) {
+/*! \brief The message last sent was NACKED from the receiver
+ *  \param error_type Contains information why the message was NACKED */
+void bus_message_nacked(unsigned char addr, unsigned char error_type) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 
 	BUS_MESSAGE bus_message;
@@ -407,13 +412,22 @@ ISR(ISR_BUS_USART_RECV) {
 				if (bus_status.flags & (1<<BUS_STATUS_RECEIVE_ON)) {
 					//Is the checksum OK? In that case we add the new message to the RX queue, if not we send a NACK (not sent if it's a broadcast)
 					if (calc_checksum == bus_new_message.checksum) {
-						bus_add_new_message();
+						//Is the message a PING message? If so we should send it to the PING list
+						if (bus_new_message.cmd == BUS_CMD_PING) {
+							if (bus_new_message.length > 1)
+								bus_ping_new_stamp(bus_new_message.from_addr, bus_new_message.data[0], bus_new_message.length-1, (unsigned char *)(bus_new_message.data+1));
+							else
+								bus_ping_new_stamp(bus_new_message.from_addr, bus_new_message.data[0], 0, 0);
+						}
+						else {
+							bus_add_new_message();
 					
-						if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
-							bus_send_ack(bus_new_message.from_addr);
+							if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
+								bus_send_ack(bus_new_message.from_addr);
+						}
 					}
 					else if (bus_new_message.to_addr != BUS_BROADCAST_ADDR) //SEND NACK
-						bus_send_nack(bus_new_message.from_addr);
+						bus_send_nack(bus_new_message.from_addr, BUS_CHECKSUM_ERROR);
 				}
 			}
 			
@@ -537,4 +551,5 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 	timer_bus_timeout++;
 	counter_sync_timeout++;
 }
+
 #endif

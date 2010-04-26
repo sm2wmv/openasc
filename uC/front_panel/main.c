@@ -52,6 +52,7 @@
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
+#include "../wmv_bus/bus_ping.h"
 #include "../wmv_bus/bus_rx_queue.h"
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
@@ -699,6 +700,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		
 		counter_event_timer = 0;
 	}
+	
+	bus_ping_tick();
 }
 
 /*!Output overflow 0 interrupt */

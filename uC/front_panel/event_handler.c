@@ -747,48 +747,7 @@ void event_bus_parse_message(void) {
 	if (bus_message.cmd == BUS_CMD_ACK)
 		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked(bus_message.from_addr);
-	else if (bus_message.cmd == BUS_CMD_PING) {
-		#ifdef DEBUG_WMV_BUS
-			printf("DEBUG-> PING RXed from: 0x%02X\n",bus_message.from_addr);
-		#endif
-			/*
-		if (bus_message.data[0] == DEVICE_ID_ROTATOR_UNIT) {
-			//Go through the antennas to find if any of the ones on the current band
-			//does have the same address as the broadcast sent. If so we update the heading
-			//which is viewed on the display.	
-			for (int ant_index=0;ant_index<4;ant_index++) {
-				if ((bus_message.from_addr != 0) && (antenna_ctrl_get_rotator_addr(ant_index) == bus_message.from_addr)) {
-					unsigned int curr_dir = (bus_message.data[0] << 8);
-					curr_dir += bus_message.data[1];
-					
-					antenna_ctrl_set_direction(curr_dir,ant_index);
-					antenna_ctrl_set_rotator_flags(ant_index,bus_message.data[5]);
-					
-					main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-				}
-			}
-		}
-	}
-	else {
-		if (bus_message.cmd == BUS_CMD_ROTATOR_GET_STATUS) {
-			//Go through the antennas to find if any of the ones on the current band
-			//does have the same address as the broadcast sent. If so we update the heading
-			//which is viewed on the display.	
-			for (int ant_index=0;ant_index<4;ant_index++) {
-				if ((bus_message.from_addr != 0) && (antenna_ctrl_get_rotator_addr(ant_index) == bus_message.from_addr)) {
-					unsigned int curr_dir = (bus_message.data[0] << 8);
-					curr_dir += bus_message.data[1];
-					
-					antenna_ctrl_set_direction(curr_dir,ant_index);
-					antenna_ctrl_set_rotator_flags(ant_index,bus_message.data[5]);
-					
-					main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-				}
-			}
-		}
-*/
-	}
+		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 
 	//Drop the message
 	rx_queue_drop();

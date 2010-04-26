@@ -10,13 +10,29 @@
 #ifndef _BUS_PING_H_
 #define _BUS_PING_H_
 
-typedef struct {
-	unsigned char addr;
-	unsigned char device_id;
-	unsigned int time_last_ping;
-	unsigned char data[2];
-} bus_struct_ping_status;
+#define BUS_PING_TIMEOUT_LIMIT	6000
 
-void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_id, unsigned char data_len, unsigned char *data);
+//! Bit is set if the ping timeout has been processed
+#define PING_FLAG_PROCESSED	0
+
+	typedef struct {
+		//! The address of the device
+		unsigned char addr;
+		//! The type of device it is, see bus.h for details
+		unsigned char device_type;
+		//! The time since the last ping did occur in ms
+		unsigned int time_last_ping;
+		//! Flags, see defines above
+		unsigned char flags;
+		//! Data from the device, content varies depending on device_id
+		unsigned char data[2];
+	} bus_struct_ping_status;
+
+	void bus_ping_init(void);
+	void bus_ping_tick(void);
+	void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data);
+	bus_struct_ping_status *bus_ping_get_failed_ping(void);
+	unsigned char bus_ping_get_failed_count(void);
+	bus_struct_ping_status *bus_ping_get_ping_data(unsigned char index);
 
 #endif

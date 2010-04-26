@@ -199,6 +199,9 @@
 //! The message should be ACKED
 #define BUS_MESSAGE_FLAGS_NEED_ACK			0
 
+//! BUS ERRORs
+#define BUS_CHECKSUM_ERROR	0
+
 /*! BUS message structure */
 typedef struct {
 	//! From which address the bus message was sent
@@ -272,10 +275,10 @@ void bus_init(void);
 void  bus_resend_message(void);
 
 void bus_send_ack(unsigned char to_addr);
-void bus_send_nack(unsigned char to_addr);
+void bus_send_nack(unsigned char to_addr, unsigned char error_type);
 
 void bus_message_acked(unsigned char addr);
-void bus_message_nacked(unsigned char addr);
+void bus_message_nacked(unsigned char addr, unsigned char error_type);
 
 void __inline__ bus_reset_tx_status(void);
 void __inline__ bus_reset_rx_status(void);
