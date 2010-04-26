@@ -33,6 +33,7 @@
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
+#include "../wmv_bus/bus_ping.h"
 #include "../wmv_bus/bus_rx_queue.h"
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
@@ -192,7 +193,7 @@ void bus_parse_message(void) {
 	if (bus_message.cmd == BUS_CMD_ACK)
 		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked(bus_message.from_addr);
+		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_PING) {
 		//If the ping is coming from a mainbox, we need to save ptt input information for the interlock
 		if (bus_message.data[0] == DEVICE_ID_MAINBOX) {
@@ -418,4 +419,6 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_compare0++;
 	
 	check_ptt_status = 1;
+
+	bus_ping_tick();
 }
