@@ -48,7 +48,7 @@
 #include "../internal_comm.h"
 #include "errors.h"
 
-#define DEBUG_WMV_BUS 1
+//#define DEBUG_WMV_BUS 1
 
 
 //#define ERROR_DEBUG
@@ -93,17 +93,17 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 	
 	switch(message.cmd) {
 		case INT_COMM_TURN_DEVICE_OFF:
-			//TODO: Save settings to EEPROM
-			//TODO: Fix so that everything is shut down controlled by this unit, such as band outputs etc
 			//TODO: Problem with delay here, need to wait until everything is shut off
 			//This solution is pretty uggly...do it some other way?
-			
 			status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
 			display_shutdown_view();
 			
 			main_save_settings();
 			
 			band_ctrl_change_band(BAND_UNDEFINED);
+			
+			//TODO: Send global shutdown broadcast message three times
+			
 			send_ping();
 			
 			event_add_message((void *)shutdown_device,3000,0);
@@ -113,6 +113,10 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			break;
 		case INT_COMM_PC_CTRL:
 			remote_control_parse_command(message.data[0],(unsigned char)message.data[1], (char *)(message.data+2));
+			break;
+		case INT_COMM_GET_BAND_BCD_STATUS:
+			if (message.data[0] != radio_get_current_band())
+				radio_set_current_band(message.data[0]);
 			break;
 		default:
 			break;

@@ -25,20 +25,22 @@
 
 /* For turning on/off the driver outputs the same commands is sent as to the driver modules */
 
+//All the internal communication commands should be between 0xC0 - 0xEF except BUS_CMDs which are sent internally
+
 //! Initialize the shut down sequence
-#define INT_COMM_TURN_DEVICE_OFF						0x01
+#define INT_COMM_TURN_DEVICE_OFF						0xC0
 //! Shut down the device
-#define INT_COMM_PULL_THE_PLUG							0x02
+#define INT_COMM_PULL_THE_PLUG							0xC1
 
 //! Change the state of one of the AUX pins on the X11 connector
-#define INT_COMM_AUX_CHANGE_OUTPUT_PIN			0x50
+#define INT_COMM_AUX_CHANGE_OUTPUT_PIN			0xC2
 //! Read the input status of an AUX pin on the X11 connector
-#define INT_COMM_AUX_READ_INPUT_PIN					0x51
+#define INT_COMM_AUX_READ_INPUT_PIN					0xC3
 //! Read the BCD input on the top floor
-#define INT_COMM_GET_BAND_BCD_STATUS				0x60
+#define INT_COMM_GET_BAND_BCD_STATUS				0xC4
 //! A key was pressed on the external PS2 keypad
-#define INT_COMM_PS2_KEYPRESSED							0x70
+#define INT_COMM_PS2_KEYPRESSED							0xC5
 //! Command used to transfer commands from the PC to the front panel and vice versa
-#define INT_COMM_PC_CTRL										0x80
+#define INT_COMM_PC_CTRL										0xC6
 
 #endif
