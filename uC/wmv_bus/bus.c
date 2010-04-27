@@ -71,6 +71,9 @@ unsigned char timer_bus_timeout = 0;
     new SYNC message on the BUS */
 unsigned int counter_sync_timeout = 0;
 
+//! Counter which keeps track of each time the 130us timer counts up
+unsigned int counter_130us = 0;
+
 /*! \brief Init the communication bus */
 void bus_init(void) {
 	rx_queue_init();
@@ -132,8 +135,6 @@ void bus_send_message(void) {
 
 	BUS_MESSAGE bus_message = tx_queue_get();
 
-//	if (bus_message.flags & (1<<BUS_MESSAGE_FLAGS_HIGH_PRIORITY))
-//		temp_stat = 1;
 
 	#ifndef DEVICE_TYPE_COMPUTER
 		bus_usart_transmit(BUS_MSG_PREAMBLE);
@@ -181,6 +182,8 @@ void __inline__ bus_reset_tx_status(void) {
 /*! \brief Function that resets the bus status variables */
 void __inline__ bus_reset_rx_status(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_PREAMBLE_FOUND_BIT);
+	
+	bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
 	
 	bus_status.char_count = 0;
 	calc_checksum = 0;
@@ -285,27 +288,29 @@ void bus_check_tx_status(void) {
 * \param length The length of the data wanting to be sent
 * \param data The data wanted to be transmitted to the receiever */
 void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]) {
-	unsigned char checksum = 0;
+	if ((cmd == BUS_CMD_SYNC) || (bus_allowed_to_send())) {
+		unsigned char checksum = 0;
 
-	BUS_MESSAGE bus_message;
+		BUS_MESSAGE bus_message;
 
-	bus_message.from_addr = from_addr;
-	bus_message.to_addr = to_addr;
-	bus_message.flags = flags;
-	checksum += flags;
-	bus_message.cmd = cmd;
-	checksum += cmd;
-	bus_message.length = length;
-	checksum += length;		
+		bus_message.from_addr = from_addr;
+		bus_message.to_addr = to_addr;
+		bus_message.flags = flags;
+		checksum += flags;
+		bus_message.cmd = cmd;
+		checksum += cmd;
+		bus_message.length = length;
+		checksum += length;		
 
-	for (unsigned char i=0;i<length;i++) {
-		checksum += data[i];
-		bus_message.data[i] = data[i];
+		for (unsigned char i=0;i<length;i++) {
+			checksum += data[i];
+			bus_message.data[i] = data[i];
+		}
+		
+		bus_message.checksum = checksum;
+
+		tx_queue_add(bus_message);
 	}
-	
-	bus_message.checksum = checksum;
-
-	tx_queue_add(bus_message);
 }
 
 /*!\brief Adds a message to the RX queue which will be sent as soon as possible
@@ -448,10 +453,6 @@ ISR(ISR_BUS_USART_RECV) {
 									break;
 				case 5 :	bus_new_message.cmd = data;
 									calc_checksum += data;
-									//Sync pulse receieved from the master
-									if (data == BUS_CMD_SYNC) {
-										bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
-									}
 									break;
 				case 6 :	bus_new_message.length = data;
 									calc_checksum += data;
@@ -468,7 +469,8 @@ ISR(ISR_BUS_USART_RECV) {
 										bus_status.frame_counter = 0;
 
 										//Indicate that atleast one SYNC has been received
-										bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
+										bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);										
+										bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
 
 										//Reset the counter keeping track of how long ago we last receieved a SYNC
 										//message from the master.
@@ -484,6 +486,7 @@ ISR(ISR_BUS_USART_RECV) {
 		//Is this a preamble or just a variable sent?
 		if (bus_status.char_count >= 2)
 			if (bus_status.prev_char == 0xFE) {
+				bus_status.flags &= ~(1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
 				bus_status.char_count = 0;
 				calc_checksum = 0;
 				bus_status.flags |= (1 << BUS_STATUS_PREAMBLE_FOUND_BIT);
@@ -512,7 +515,7 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 	//If we have not received a sync within a certain time we stop all communication
 	//until we receive a new sync again
 	if (!bus_is_master() && (counter_sync_timeout >= BUS_SYNC_TIMEOUT_LIMIT)) {
-		bus_status.flags &= ~(1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
+		bus_status.flags &= ~(1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
 		
 		//Drops all current messages in the TX queue
 		tx_queue_dropall();
@@ -548,8 +551,13 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 			bus_status.frame_counter++;
 	}
 
+	//Will update with 1.04 ms intervals
+	if ((counter_130us % 8) == 0) {
+		counter_sync_timeout++;
+	}
+	
+	counter_130us++;
 	timer_bus_timeout++;
-	counter_sync_timeout++;
 }
 
 #endif
