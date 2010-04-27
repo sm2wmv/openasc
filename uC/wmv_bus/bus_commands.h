@@ -23,6 +23,8 @@
 #ifndef _BUS_COMMANDS_H_
 #define _BUS_COMMANDS_H_
 
+//Commands which are from 0xC0 to 0xEF are reserved for internal communication commands
+
 /*! Send an acknowledge */
 #define BUS_CMD_ACK	0xFA
 /*! Send an NOT acknowledge */

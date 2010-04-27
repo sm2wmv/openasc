@@ -34,6 +34,8 @@
 #include "board.h"
 #include "eeprom.h"
 #include "display.h"
+#include "../internal_comm.h"
+#include "../internal_comm_commands.h"
 #include "../global.h"
 
 //! Serial receive buffer
@@ -184,6 +186,12 @@ unsigned char radio_get_band_portion(void) {
 	return(BAND_UNDEFINED);
 }
 
+/*! Set the current band 
+ *  \param band The band we wish to set */
+void radio_set_current_band(unsigned char band) {
+	radio_status.current_band = band;
+}
+
 /*! \brief Polls the status of the PTT input
  *  \return Return RADIO_PTT_ACTIVATE if the radio is PTT and RADIO_PTT_DEACTIVATE if it doesn't */
 unsigned char radio_poll_ptt(void) {
@@ -224,14 +232,7 @@ unsigned char radio_poll_ptt(void) {
 unsigned char radio_poll_status(void) {
 	//Ask radio for freq etc
 	if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
-		unsigned char bcd;
-		
-		bcd = (PINF & (1<<2))>>2;
-		bcd += (PINF & (1<<3))>>2;
-		bcd += (PINF & (1<<0))<<2;
-		bcd += (PINF & (1<<1))<<2;
-		
-		radio_status.current_band = bcd;
+		internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS,0,NULL);
 	}
 	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {
 		//The radio model is ICOM, we will send out a frequency request to the radio
@@ -461,11 +462,14 @@ ISR(SIG_USART3_DATA) {
 
 //! Interrupt which is called when a byte is received on the UART
 ISR(SIG_USART3_RECV) {
+	//TODO: Redo all this, so that we just buffer all characters received and do the processing
+	//of the data from the main loop instead. That way we will save the amount of time spent in the interrupt
+	
 	unsigned char data = UDR3;
 	
 	radio_rx_data_counter = 0;
 	
-	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
+	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) || (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
 		/*if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
 				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {

@@ -135,6 +135,8 @@ void radio_interface_init(void);
 	
 unsigned int radio_get_current_freq ( void );
 unsigned char radio_get_current_band(void);
+void radio_set_current_band(unsigned char band);
+
 void radio_ptt(unsigned char status);
 
 unsigned char radio_get_band_portion(void);

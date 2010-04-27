@@ -35,7 +35,7 @@ void bus_ping_init(void) {
  *  \param from_addr The address which the PING message was sent from
  *  \param device_id Which type of device this is
  *  \param data_len The number of bytes the data is
- *  \param data Additional data which might be used for status */
+ *  \param data Additional data which might be used for status, for example current band information */
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data) {
 	ping_list[from_addr-1].addr = from_addr;
 	ping_list[from_addr-1].device_type = device_type;

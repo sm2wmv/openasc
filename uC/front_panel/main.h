@@ -37,17 +37,17 @@
 #define BUS_STATUS_PREAMBLE_FOUND_BIT		1
 
 //! The size of the RX queue in buffers
-#define BUS_RX_QUEUE_SIZE 20
+#define BUS_RX_QUEUE_SIZE 15
 //! The size of the TX queue in buffers
-#define BUS_TX_QUEUE_SIZE	20
+#define BUS_TX_QUEUE_SIZE	15
 
 //! This flag is to indicate that the antenna exist
 #define ANTENNA_EXIST_FLAG		0
 //! Flag if there is a rotator that can be controlled
 #define ANTENNA_ROTATOR_FLAG	1
-//! Flag if the antenna is a multiband antenna
+//! Flag if the antenna is a multiband antenna - Not implemented
 #define ANTENNA_IS_MULTIBAND	2
-//! Flag that shows if an antenna is occupied, used for multiband antennas primary
+//! Flag that shows if an antenna is occupied, used for multiband antennas primary - Not implemented
 #define ANTENNA_IN_USE_FLAG		3
 
 //! Screensaver timeout
@@ -102,7 +102,7 @@
 #define INTERVAL_POLL_ROTARY_ENCODER	5
 
 //! The poll interval of the external devices as shown in board.h (unit = ms)
-#define INTERVAL_POLL_EXT_DEVICES	1
+#define INTERVAL_POLL_EXT_DEVICES		1
 
 //! Knob function is to select RX antenna
 #define KNOB_FUNCTION_NONE				0
@@ -116,7 +116,7 @@
 #define KNOB_FUNCTION_AUTO				4
 
 //! RX antenna name length
-#define RX_ANTENNA_NAME_LENGTH				15
+#define RX_ANTENNA_NAME_LENGTH				10
 //! RX antenna output str length
 #define RX_ANTENNA_OUTPUT_STR_LENGTH	10
 //! RX antenna band output str length
@@ -159,7 +159,7 @@
 //! Current display is the shutdown in progress view
 #define CURRENT_DISPLAY_SHUTDOWN_VIEW	3
 
-//! The time from when a pulse sensor change occured to the actual change does happen
+//! The time from when a pulse sensor change occured to the actual change does happen, in ms
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
 
 //! Sub menu type NONE

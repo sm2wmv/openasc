@@ -393,10 +393,6 @@ int main(void){
 	//The second argument will be called each time a character should be sent
 	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
 			
-	//TODO: Do some kind of implementation that the device creates the eeprom table
-	//at its first startup
-	//eeprom_create_table();
-			
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */	
@@ -461,9 +457,6 @@ int main(void){
 			PORTB &= ~(1<<1);
 		else
 			PORTB |= (1<<1);
-		
-		//computer_interface_send_data();
-		//computer_interface_parse_data();
 		
 		if (!rx_queue_is_empty())
 			event_bus_parse_message();
@@ -686,7 +679,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
-		//TODO: FIX SO WE CAN ADJUST POLL TIME
 		if (counter_poll_radio >= (radio_interface_get_poll_interval() * 10)) {
 			main_flags |= (1<<FLAG_POLL_RADIO);
 			
