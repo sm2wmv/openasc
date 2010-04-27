@@ -568,11 +568,12 @@ int main(void){
 			main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
 			main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
 		}
-		
-		if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
+		if (bus_is_master()) {
+			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
 
-			counter_sync = 0;
+				counter_sync = 0;
+			}
 		}
 
 		if (bus_allowed_to_send()) {
