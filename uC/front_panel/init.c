@@ -84,7 +84,7 @@ void init_ports(void) {
 	DDRL = 0xAA;
 	
 	PORTH |= (1<<1);	//Set USART port high so we don't send continoulsy out on the bus
-	DDRH |= (1<<0) | (1<<1); //Pull up for the USART
+	PORTH |= (1<<0); //Pull up for the USART
 	
 	//Set pullups enabled for all the button inputs
 	PORTC |= (1<<BUTTON_ROTATE_BIT);
