@@ -48,7 +48,7 @@
 #include "../internal_comm.h"
 #include "errors.h"
 
-//#define DEBUG_WMV_BUS 1
+#define DEBUG_WMV_BUS 1
 
 
 //#define ERROR_DEBUG
