@@ -142,9 +142,12 @@
              <widget class="QLineEdit" name="lineEditDirection1">
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -155,9 +158,12 @@
              <widget class="QLineEdit" name="lineEditDirection2">
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -168,9 +174,12 @@
              <widget class="QLineEdit" name="lineEditDirection3">
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -181,9 +190,12 @@
              <widget class="QLineEdit" name="lineEditDirection4">
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -197,9 +209,12 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -217,9 +232,12 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -237,9 +255,12 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -257,9 +278,12 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="maxLength">
+               <number>3</number>
               </property>
              </widget>
             </item>
