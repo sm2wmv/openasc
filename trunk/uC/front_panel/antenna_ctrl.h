@@ -103,18 +103,6 @@ typedef struct {
 	unsigned char default_antenna;
 } struct_antenna;
 
-//! Struct of a sub menu with the type array
-typedef struct {
-	//! The size of this structure
-	unsigned int struct_size;
-	//! Number of directions
-	unsigned char direction_count;
-	//! The directions
-	unsigned char direction_name[8][SUB_MENU_ARRAY_NAME_SIZE];
-	//! The output strings of the different directions
-	unsigned char output_str_dir[8][SUB_MENU_ARRAY_STR_SIZE];
-} struct_sub_menu_array;
-
 void antenna_ctrl_deactivate_all_rx_band(void);
 
 void antenna_ctrl_send_ant_data_to_bus(void);
@@ -155,6 +143,8 @@ void antenna_ctrl_ant_read_eeprom(unsigned char band_index);
 void antenna_ctrl_rx_ant_read_eeprom(void);
 
 void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char length, unsigned char cmd);
+
+unsigned char antenna_ctrl_get_sub_menu_type(unsigned char ant_index);
 
 void antenna_ctrl_deactivate_all(void);
 

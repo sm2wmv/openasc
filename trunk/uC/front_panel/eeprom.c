@@ -196,6 +196,32 @@ void eeprom_get_runtime_settings(struct_runtime_settings *data) {
 		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.runtime_settings+i);
 }
 
+/*! \brief Get the struct_sub_menu_array structure from the EEPROM
+ *  \param band_index Which band we wish to retrieve the sub menu from 
+ *  \param ant_index Which antenna we wish to get the sub menu from
+ *  \param data Pointer to where we wish to store the data */
+void eeprom_get_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data) {
+	//Create a pointer which we can handle, and point it to where the data should be saved
+	unsigned char *data_ptr = (unsigned char *)data;
+	
+	if (ant_index == 0) {
+		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna1_sub_menu[band_index]+i);
+	}
+	else if (ant_index == 1) {
+		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna2_sub_menu[band_index]+i);
+	}
+	else if (ant_index == 2) {
+		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna3_sub_menu[band_index]+i);
+	}
+	else	if (ant_index == 3) {
+		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna4_sub_menu[band_index]+i);
+	}
+}
+
 /*! \brief Save the antenna structure to the eeprom
  *  \param band_index Which band it is
  *  \param content The data to be saved */

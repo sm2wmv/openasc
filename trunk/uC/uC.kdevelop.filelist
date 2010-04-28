@@ -67,6 +67,8 @@ front_panel/rotary_encoder.c
 front_panel/rotary_encoder.h
 front_panel/sequencer.c
 front_panel/sequencer.h
+front_panel/sub_menu.c
+front_panel/sub_menu.h
 front_panel/usart.c
 front_panel/usart.h
 global.h

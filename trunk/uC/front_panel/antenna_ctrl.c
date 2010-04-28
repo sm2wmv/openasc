@@ -329,7 +329,6 @@ void antenna_ctrl_deactivate_all_rx_band(void) {
 	}
 }
 
-
 /*! \brief Set the antenna text
  *  \param str Which data should be saved
  *  \param index The index of the antenna */
@@ -512,4 +511,11 @@ unsigned int antenna_ctrl_get_start_heading(unsigned char ant_index) {
  *  \return The number of degrees the antenna can be rotated */
 unsigned int antenna_ctrl_get_max_rotation(unsigned char ant_index) {
 	return(current_antennas.rotator_max_rotation[ant_index]);
+}
+
+/*! \brief Get which kind of sub meny type an antenna has got 
+ *  \param ant_index Which antenna index we wish to show the sub menu type for 
+ *  \return The sub meny type */
+unsigned char antenna_ctrl_get_sub_menu_type(unsigned char ant_index) {
+	return(current_antennas.sub_menu_type[ant_index]);
 }

@@ -29,6 +29,7 @@
 #include "antenna_ctrl.h"
 #include "radio_interface.h"
 #include "band_ctrl.h"
+#include "sub_menu.h"
 
 #define EEPROM_STARTUP_BYTE_ADDR 0x01
 
@@ -75,6 +76,7 @@ void eeprom_create_table(void);
 
 void eeprom_save_runtime_settings(struct_runtime_settings *content);
 void eeprom_get_runtime_settings(struct_runtime_settings *data);
+void eeprom_get_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data);
 
 void eeprom_get_antenna_data(struct_antenna *data, unsigned char band);
 void eeprom_get_band_data(unsigned char band, struct_band *data);
