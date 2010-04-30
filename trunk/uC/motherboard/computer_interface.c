@@ -196,7 +196,7 @@ ISR(SIG_USART1_DATA) {
 /*! Interrupt which is called when a byte has been received */
 ISR(SIG_USART1_RECV) {
 	unsigned char data = UDR1;
-
+	
 	//Has a preamble been found?
 	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_FOUND_PREAMBLE)) {
 		//Check if the data is a postamble
@@ -239,4 +239,6 @@ ISR(SIG_USART1_RECV) {
 			*(computer_comm.rx_buffer++) = data;
 		}
 	}
+	
+//	usart3_transmit(data);
 }

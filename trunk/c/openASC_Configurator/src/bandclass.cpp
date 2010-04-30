@@ -600,7 +600,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,27,tx_buff);
 
-	for (int i=0;i<4;i++) {
+	/*for (int i=0;i<4;i++) {
 		if (subMenuType[i] == SUBMENU_VERT_ARRAY) {
 				tx_buff[0] = CTRL_SET_ANT_SUB_MENU_DATA;
 				tx_buff[1] = i;	//Antenna index
@@ -639,7 +639,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 				}
 		}
 	}
-	
+	*/
 	tx_buff[0] = CTRL_SET_ANT_DATA_SAVE;
 	tx_buff[1] = bandIndex;
 			

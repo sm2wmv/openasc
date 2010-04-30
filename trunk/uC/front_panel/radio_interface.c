@@ -469,7 +469,7 @@ ISR(SIG_USART3_RECV) {
 	
 	radio_rx_data_counter = 0;
 	
-	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) || (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
+	//if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) || (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
 		/*if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
 				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
@@ -484,6 +484,7 @@ ISR(SIG_USART3_RECV) {
 					*(radio_serial_rx_buffer++) = data;
 			}
 		}*/
+		/*
 		if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
 			if (data == 0xFD) {
 				if ((radio_serial_rx_buffer_start[0] == 0xFE) && (radio_serial_rx_buffer_start[1] == 0xFE)) {
@@ -514,7 +515,7 @@ ISR(SIG_USART3_RECV) {
 			}
 		}
 	}
-	
-	if (radio_get_cat_status() == 0)
+	*/
+//	if (radio_get_cat_status() == 0)
 		usart1_transmit(data);
 }
