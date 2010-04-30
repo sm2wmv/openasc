@@ -424,11 +424,11 @@ void computer_interface_parse_data(void) {
 					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1], antenna_ptr);
 					
 					//Routines to save the SUB MENU data to the EEPROM
-					for (unsigned char ant_index=0;ant_index<4;ant_index++) {
+					/*for (unsigned char ant_index=0;ant_index<4;ant_index++) {
 						if (antenna_ptr->sub_menu_type[ant_index] == SUBMENU_VERT_ARRAY) {
 							eeprom_save_ant_sub_menu_array_structure(computer_comm.rx_buffer_start[1], ant_index, sub_menu_array_ptr[ant_index]);
 						}
-					}
+					}*/
 					
 					//Reset the content of the antenna_ptr
 					memset(antenna_ptr,0,sizeof(struct_antenna));

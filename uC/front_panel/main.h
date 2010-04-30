@@ -116,7 +116,7 @@
 #define KNOB_FUNCTION_AUTO				4
 
 //! RX antenna name length
-#define RX_ANTENNA_NAME_LENGTH				10
+#define RX_ANTENNA_NAME_LENGTH				15
 //! RX antenna output str length
 #define RX_ANTENNA_OUTPUT_STR_LENGTH	10
 //! RX antenna band output str length
