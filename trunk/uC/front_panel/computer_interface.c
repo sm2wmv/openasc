@@ -349,7 +349,7 @@ void computer_interface_parse_data(void) {
 					antenna_ptr->sub_menu_type[1] = computer_comm.rx_buffer_start[2];
 					antenna_ptr->sub_menu_type[2] = computer_comm.rx_buffer_start[3];
 					antenna_ptr->sub_menu_type[3] = computer_comm.rx_buffer_start[4];
-					 
+					
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_ANT_DATA_ANT_FLAGS:
