@@ -458,6 +458,8 @@ void BandClass::loadSettings(QSettings& settings) {
 				subMenuStack[i].combinationOutputStr[5] = settings.value("subMenuStackCombinationOutputStr6").toString();
 		}
 
+	settings.endArray();
+
 	rotatorIndex[0] = settings.value("RotatorIndex1").toInt();
 	rotatorIndex[1] = settings.value("RotatorIndex2").toInt();
 	rotatorIndex[2] = settings.value("RotatorIndex3").toInt();
