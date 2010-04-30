@@ -72,7 +72,7 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 4, tx_buff);
 
-	tx_buff[0] = CTRL_SET_POWERMETER_SETTINGS;
+/*	tx_buff[0] = CTRL_SET_POWERMETER_SETTINGS;
 	tx_buff[1] = powerMeterAddress;
 	tx_buff[2] = ((unsigned int)(powerMeterVSWRAlarmValue * 100) & 0xFF00) >> 8;
 	tx_buff[3] = (unsigned int)(powerMeterVSWRAlarmValue * 100) & 0x00FF;
@@ -82,7 +82,7 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[7] = (powerMeterUpdateRateBargraph & 0x00FF);
 
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 8, tx_buff);
-
+*/
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_OTHER;
 	tx_buff[1] = pttInterlockInput;
 
