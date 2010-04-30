@@ -86,6 +86,8 @@
 #define CTRL_GET_FIRMWARE_REV							0x03
 //! This function just replies with the same command, this is so we can see when something has been finished
 #define CTRL_DONE													0x04
+//! This command will create the EEPROM table
+#define CTRL_CREATE_EEPROM_TABLE					0x05
 
 
 //! CTRL section: Set the time of the realtime clock
@@ -329,6 +331,11 @@ void computer_interface_parse_data(void) {
 		}
 		else if (computer_comm.command == CTRL_DONE) {
 			computer_interface_send(CTRL_DONE, 0, 0);
+		}
+		else if (computer_comm.command == CTRL_CREATE_EEPROM_TABLE) {
+			eeprom_create_table();
+			
+			computer_interface_send_ack();
 		}
 		else if (computer_comm.command == CTRL_SET_ANT_DATA) {
 			//TODO: Sub menu support
