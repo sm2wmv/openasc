@@ -38,6 +38,8 @@
 #define CTRL_GET_FIRMWARE_REV							0x03
 //! This function just replies with the same command, this is so we can see when something has been finished
 #define CTRL_DONE													0x04
+//! This command will create the EEPROM table
+#define CTRL_CREATE_EEPROM_TABLE					0x05
 
 #define CTRL_SET_TIME  										0x10
 #define CTRL_SET_ANT_DATA									0x11

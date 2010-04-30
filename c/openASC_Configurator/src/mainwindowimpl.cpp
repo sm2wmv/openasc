@@ -425,6 +425,8 @@ void MainWindowImpl::actionDisconnectTriggered() {
 void MainWindowImpl::actionSendSettingsTriggered() {
 		addDebugLine("Sending settings to device");
 		
+	serialPort.addTXMessage(CTRL_CREATE_EEPROM_TABLE,0,0);
+
 	for (int i=0;i<9;i++) {
 		bandData[i].sendSettings(serialPort);
 		
