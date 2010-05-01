@@ -91,6 +91,8 @@ unsigned char event_get_error_state(unsigned char error_type) {
 void event_internal_comm_parse_message(UC_MESSAGE message) {
 	//Init the sequence of saving all data and disable all outputs activated by this unit
 	
+	printf("PARSE INT COMM\n");
+	
 	switch(message.cmd) {
 		case INT_COMM_TURN_DEVICE_OFF:
 			//TODO: Problem with delay here, need to wait until everything is shut off
@@ -115,8 +117,10 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			remote_control_parse_command(message.data[0],(unsigned char)message.data[1], (char *)(message.data+2));
 			break;
 		case INT_COMM_GET_BAND_BCD_STATUS:
-			if (message.data[0] != radio_get_current_band())
-				radio_set_current_band(message.data[0]);
+			if (message.data[0] != radio_get_current_band()) {
+				if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
+					radio_set_current_band(message.data[0]);
+			}
 			break;
 		default:
 			break;
@@ -439,12 +443,14 @@ void event_tx_button1_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF0;
-							
-						antenna_ctrl_send_ant_data_to_bus();
-		
-						led_set_tx_ant(0,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
+							status.selected_ant = new_ant_comb & 0xF0;
+								
+							antenna_ctrl_send_ant_data_to_bus();
+			
+							led_set_tx_ant(0,LED_STATE_OFF);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 				else {
@@ -459,13 +465,15 @@ void event_tx_button1_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF1;
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF1)) {
+							status.selected_ant = new_ant_comb & 0xF1;
 		
-						antenna_ctrl_send_ant_data_to_bus();
-		
-						led_set_tx_ant(0,LED_STATE_OFF);
-						led_set_tx_ant(1,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+							antenna_ctrl_send_ant_data_to_bus();
+			
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(1,LED_STATE_ON);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 			}
@@ -502,12 +510,14 @@ void event_tx_button2_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF0;
-		
-						antenna_ctrl_send_ant_data_to_bus();
-							
-						led_set_tx_ant(0,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
+							status.selected_ant = new_ant_comb & 0xF0;
+			
+							antenna_ctrl_send_ant_data_to_bus();
+								
+							led_set_tx_ant(0,LED_STATE_OFF);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 				else {		
@@ -522,13 +532,15 @@ void event_tx_button2_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF2;
-		
-						antenna_ctrl_send_ant_data_to_bus();
-							
-						led_set_tx_ant(0,LED_STATE_OFF);
-						led_set_tx_ant(2,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF2)) {
+							status.selected_ant = new_ant_comb & 0xF2;
+			
+							antenna_ctrl_send_ant_data_to_bus();
+								
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(2,LED_STATE_ON);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 			} else {
@@ -563,12 +575,14 @@ void event_tx_button3_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF0;
-							
-						antenna_ctrl_send_ant_data_to_bus();
-							
-						led_set_tx_ant(0,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
+							status.selected_ant = new_ant_comb & 0xF0;
+								
+							antenna_ctrl_send_ant_data_to_bus();
+								
+							led_set_tx_ant(0,LED_STATE_OFF);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 				else {
@@ -583,13 +597,15 @@ void event_tx_button3_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF4;
-		
-						antenna_ctrl_send_ant_data_to_bus();
-							
-						led_set_tx_ant(0,LED_STATE_OFF);
-						led_set_tx_ant(3,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF4)) {
+							status.selected_ant = new_ant_comb & 0xF4;
+			
+							antenna_ctrl_send_ant_data_to_bus();
+								
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(3,LED_STATE_ON);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 			}
@@ -625,12 +641,14 @@ void event_tx_button4_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF0;
-			
-						antenna_ctrl_send_ant_data_to_bus();
-								
-						led_set_tx_ant(0,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
+							status.selected_ant = new_ant_comb & 0xF0;
+				
+							antenna_ctrl_send_ant_data_to_bus();
+									
+							led_set_tx_ant(0,LED_STATE_OFF);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 				else {		
@@ -645,13 +663,15 @@ void event_tx_button4_pressed(void) {
 						display_update(status.selected_band, status.selected_ant);
 					}
 					else {
-						status.selected_ant = new_ant_comb & 0xF8;
-			
-						antenna_ctrl_send_ant_data_to_bus();
-								
-						led_set_tx_ant(0,LED_STATE_OFF);
-						led_set_tx_ant(4,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF8)) {
+							status.selected_ant = new_ant_comb & 0xF8;
+				
+							antenna_ctrl_send_ant_data_to_bus();
+									
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(4,LED_STATE_ON);
+							display_update(status.selected_band, status.selected_ant);
+						}
 					}
 				}
 			}
