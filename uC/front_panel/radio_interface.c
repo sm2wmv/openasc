@@ -232,6 +232,7 @@ unsigned char radio_poll_ptt(void) {
 unsigned char radio_poll_status(void) {
 	//Ask radio for freq etc
 	if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
+		printf("GET BCD\n");
 		internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS,0,NULL);
 	}
 	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {

@@ -288,7 +288,7 @@ void bus_check_tx_status(void) {
 * \param length The length of the data wanting to be sent
 * \param data The data wanted to be transmitted to the receiever */
 void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]) {
-	if ((cmd == BUS_CMD_SYNC) || (bus_allowed_to_send())) {
+	if ((cmd == BUS_CMD_SYNC) || (bus_allowed_to_send() != 0)) {
 		unsigned char checksum = 0;
 
 		BUS_MESSAGE bus_message;
@@ -469,7 +469,7 @@ ISR(ISR_BUS_USART_RECV) {
 										bus_status.frame_counter = 0;
 
 										//Indicate that atleast one SYNC has been received
-										bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);										
+										bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
 										bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
 
 										//Reset the counter keeping track of how long ago we last receieved a SYNC

@@ -105,13 +105,16 @@ unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
  *  \param antenna_comb The antenna configuration you wish to check 
  *  \return 1 if the combination is allowed, 0 if it is not allowed */
 unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
+	printf("COMB: %i",current_antennas.antenna_comb_allowed);
+	printf("COMB2: %i",antenna_comb);
+	
 	if (antenna_comb == 0)
 		return(1);
 	else if (current_antennas.antenna_comb_allowed & (1<<antenna_ctrl_get_comb_value(antenna_comb))) {
 		return(1);
 	}
-	else
-		return(0);
+	
+	return(0);
 }
 
 /*! \brief This function will go through a parameter with addresses and send a command to it

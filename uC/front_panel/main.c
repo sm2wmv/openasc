@@ -697,6 +697,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		counter_event_timer = 0;
 	}
 	
+	internal_comm_1ms_timer();
+	
 	bus_ping_tick();
 }
 

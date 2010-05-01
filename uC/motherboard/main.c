@@ -233,7 +233,7 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			temp = (PINF & (1<<2)) >> 2;
 			temp |= (PINF & (1<<3)) >> 2;
 			temp |= (PINF & (1<<0)) << 2;
-			temp |= (PINF & (1<<1)) << 3;
+			temp |= (PINF & (1<<1)) << 2;
 			
 			internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
 			break;
@@ -273,10 +273,7 @@ void ps2_keyboard_send(unsigned char cmd) {
 /*! \brief Process a keystroke
  *  \param key_code The key code which was received */
 void ps2_process_key(unsigned char key_code) {
-	//TODO: Figure out why this does not work with just sending in one variable
-	unsigned char why[2];
-	why[0] = key_code;
-	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,why);
+	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 
 int main(void) {
@@ -316,12 +313,12 @@ int main(void) {
 	
 	PORTA |= (1<<3);
 	
-	ps2_keyboard_send(0xF4);
+	//ps2_keyboard_send(0xF4);
 	delay_ms(100);
 	
 	while(1) {
-		computer_interface_send_data();
-		computer_interface_parse_data();
+		//computer_interface_send_data();
+		//computer_interface_parse_data();
 		
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
 		internal_comm_poll_rx_queue();
@@ -349,7 +346,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		btn_on_off_last_state = 0;
 	}
 	
-	if (counter_ps2 > 250) {
+	/*if (counter_ps2 > 250) {
 		ps2.started = 0;
 		ps2.bit_count = 0;
 		ps2.data = 0;
@@ -358,6 +355,8 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	}
 	
 	counter_ps2++;
+	*/
+	internal_comm_1ms_timer();
 }
 
 /*! \brief Output overflow 0 interrupt */
@@ -366,7 +365,7 @@ ISR(SIG_OVERFLOW0) {
 }
 
 ISR(SIG_INTERRUPT6) {
-	if (!ps2.transmit) {
+	/*if (!ps2.transmit) {
 		if ((PINE & (1<<6)) == 0) {
 			if (ps2.started == 0) {
 				if ((PINA & (1<<3)) == 0) {
@@ -439,5 +438,5 @@ ISR(SIG_INTERRUPT6) {
 					usart1_transmit('N');
 			}
 		}
-	}
+	}*/
 }

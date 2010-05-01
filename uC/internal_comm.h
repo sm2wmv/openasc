@@ -111,5 +111,7 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length,ch
 void internal_comm_send_ack(void);
 void internal_comm_send_nack(void);
 void internal_comm_send_message(UC_MESSAGE tx_message);
+void internal_comm_reset_rx(void);
+void internal_comm_1ms_timer(void);
 
 #endif
