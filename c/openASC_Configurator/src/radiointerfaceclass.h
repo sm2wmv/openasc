@@ -47,6 +47,10 @@ class RadioInterfaceClass
 		unsigned char getCIVAddress();
 		void setPollInterval(unsigned char interval);
 		unsigned char getPollInterval();
+		unsigned char setCATEnable(bool);
+		bool getCATEnabled();
+		void setSenseInput(unsigned char index);
+		unsigned char getSenseInput();
 	private:
 	
 	protected:
@@ -56,6 +60,8 @@ class RadioInterfaceClass
 		unsigned char radioStopbits;
 		unsigned char radioCIVAddress;
 		unsigned char radioPollInterval;
+		unsigned char radioCATEnabled;
+		unsigned char radioSenseInput;
 };
 
 #endif

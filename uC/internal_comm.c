@@ -48,9 +48,6 @@ unsigned char prev_data = 0;
 //! Flag that the message has yet not been acked
 unsigned char msg_not_acked = 0;
 
-//! Counter for when last character was RXed
-unsigned char last_rx_msg_tick = 0;
-
 /*! \brief Function to be called when a message is recieved and should be parsed/executed */
 void (*f_ptr_rx)(UC_MESSAGE);
 /*! \brief Function to be called when we wish to send a message */
@@ -101,7 +98,6 @@ unsigned char internal_comm_poll_tx_queue(void) {
 		//Send the first message in the queue
 		internal_comm_send_message(int_comm_tx_queue_get());	
 		
-		time_since_tx = 0;
 		msg_not_acked = 1;		
 		return(1);	//Return 1 to show that something was done
 	}
@@ -172,8 +168,6 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 ISR(ISR_INTERNAL_COMM_USART_RECV) {
 	unsigned char data = INTERNAL_COMM_UDR;
 	uc_com.char_count++;
-
-	last_rx_msg_tick = 0;
 	
 	if (uc_com.flags && (1<<UC_PREAMBLE_FOUND)) {
 		//Check if this is a postamble
@@ -245,8 +239,4 @@ ISR(ISR_INTERNAL_COMM_USART_DATA) {
 
 /*! \brief Function which should be called each ms */
 void internal_comm_1ms_timer(void) {
-	last_rx_msg_tick++;
-	
-	if (last_rx_msg_tick >= 5) 
-		internal_comm_reset_rx();
 }
