@@ -1,6 +1,5 @@
-- Fix so that when selecting no antenna it sends out to select no antenna to the bus
 - Fix the internal communication so it works properly
-- Fix so that we can select BCD decoding while CAT also works
+v Fix so that we can select BCD decoding while CAT also works
 - Fix so that we can reboot the box from the menu system
 - Make it possible to reboot the device from the setup mode
-- 
+ 
