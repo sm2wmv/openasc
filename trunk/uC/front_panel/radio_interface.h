@@ -114,6 +114,8 @@ typedef struct {
 	/*! The interval to poll the band information from the radio, this should be
       set in 10th ms, so for example 100 means 1000ms. */
 	unsigned char poll_interval;
+	//! The CAT is enabled
+	unsigned char cat_enabled;
 } struct_radio_settings;
 
 //! The radio status struct
@@ -160,7 +162,6 @@ void radio_interface_set_interface(unsigned char interface_type);
 void radio_interface_set_baudrate(unsigned char baudrate);
 void radio_interface_set_stopbits(unsigned char stopbits);
 void radio_interface_set_civ_addr(unsigned char civ);
-void radio_interface_set_ptt_mode(unsigned char ptt_mode);
 void radio_interface_set_ptt_input(unsigned char ptt_input);
 void radio_interface_set_poll_interval(unsigned char poll_interval);
 
@@ -170,7 +171,6 @@ unsigned char radio_interface_get_interface(void);
 unsigned char radio_interface_get_baudrate(void);
 unsigned char radio_interface_get_stopbits(void);
 unsigned char radio_interface_get_civ_addr(void);
-unsigned char radio_interface_get_ptt_mode(void);
 unsigned char radio_interface_get_ptt_input(void);
 unsigned char radio_interface_get_poll_interval(void);
 

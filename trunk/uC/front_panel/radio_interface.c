@@ -195,35 +195,8 @@ void radio_set_current_band(unsigned char band) {
 /*! \brief Polls the status of the PTT input
  *  \return Return RADIO_PTT_ACTIVATE if the radio is PTT and RADIO_PTT_DEACTIVATE if it doesn't */
 unsigned char radio_poll_ptt(void) {
-	//Senses the radio PTT from the top floor
-	if ((radio_settings.ptt_input << RADIO_SENSE_UPPER_FLOOR)) {
-		if ((radio_settings.ptt_input << RADIO_SENSE_INVERTED))
-			if (PINJ << 2)
-				return(RADIO_PTT_DEACTIVE);
-			else
-				return(RADIO_PTT_ACTIVE);
-		else {
-			if (PINJ << 2)
-				return(RADIO_PTT_DEACTIVE);
-			else
-				return(RADIO_PTT_ACTIVE);
-		}
-	}
-	//Senses the radio PTT from the lower floor
-	else if ((radio_settings.ptt_input << RADIO_SENSE_LOWER_FLOOR)) {
-		if ((radio_settings.ptt_input << RADIO_SENSE_INVERTED))
-			if (PINE << 5)
-				return(RADIO_PTT_DEACTIVE);
-		else
-			return(RADIO_PTT_ACTIVE);
-		else {
-			if (PINE << 5)
-				return(RADIO_PTT_ACTIVE);
-			else
-				return(RADIO_PTT_DEACTIVE);
-		}
-	}
-
+	//TODO: implement the sense stuff
+	
 	return(RADIO_PTT_DEACTIVE);
 }
 
@@ -373,12 +346,6 @@ void radio_interface_set_civ_addr(unsigned char civ) {
 	radio_settings.civ_addr = civ;	
 }
 
-/*! \brief Set which PTT mode is used, saves it in the radio_settings struct
- *  \param ptt_mode Set which PTT mode to be used */
-void radio_interface_set_ptt_mode(unsigned char ptt_mode) {
-	radio_settings.ptt_mode = ptt_mode;
-}
-
 /*! \brief Set which PTT input that is used, saves it in the radio_settings struct
  *  \param ptt_input Which PTT input that is used */
 void radio_interface_set_ptt_input(unsigned char ptt_input) {
@@ -419,12 +386,6 @@ unsigned char radio_interface_get_stopbits(void) {
  *  \return The CI-V address */
 unsigned char radio_interface_get_civ_addr(void) {
 	return(radio_settings.civ_addr);
-}
-
-/*! \brief Get which PTT mode is used
- *  \return Get which PTT mode to be used */
-unsigned char radio_interface_get_ptt_mode(void) {
-	return(radio_settings.ptt_mode);
 }
 
 /*! \brief Get which PTT input that is used

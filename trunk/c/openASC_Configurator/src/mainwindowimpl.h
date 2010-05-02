@@ -50,6 +50,8 @@ private slots:
 	void comboBoxRadioStopbitsCurrentIndexChanged(int index);
 	void spinBoxCIVAddressValueChanged(int value);
 	void sliderPollIntervalChanged(int value);
+	void groupBoxCATClicked(bool);
+	void comboBoxRadioSenseInputCurrentIndexChanged(int);
 	
 	void lineEditBandLimitHighSegHighLimitChanged(QString str);
 	void lineEditBandLimitHighSegLowLimitChanged(QString str);

@@ -89,6 +89,8 @@ void MainWindowImpl::loadInitialGUIValues() {
 	comboBoxRadioStopbits->setCurrentIndex(radioInterface.getStopbits());
 	spinBoxCIVAddress->setValue(radioInterface.getCIVAddress());
 	sliderPollIntervalChanged(radioInterface.getPollInterval());
+	groupBoxCAT->setChecked(radioInterface.getCATEnabled());
+	comboBoxRadioSenseInput->setCurrentIndex(radioInterface.getSenseInput());
 	
 	checkBoxCombinationAllowed->setChecked(bandData[comboBoxBand->currentIndex()].getCombinationAllowed(comboBoxAntennaCombination->currentIndex()));	
 	
@@ -655,60 +657,23 @@ void MainWindowImpl::radioButtonInhibitPolarityActiveHighClicked(bool state) {
 void MainWindowImpl::comboBoxRadioTypeCurrentIndexChanged(int index) {
 	if (index == RADIO_TYPE_ICOM) {
 		comboBoxRadioMode->setCurrentIndex(0);
-		
-		comboBoxRadioBaudRate->setEnabled(false);
-		comboBoxRadioStopbits->setEnabled(false);
-		spinBoxCIVAddress->setEnabled(false);
-		sliderPollInterval->setEnabled(false);
 	}
 	else {
 		comboBoxRadioMode->setCurrentIndex(0);
-		
-		comboBoxRadioBaudRate->setEnabled(false);
-		comboBoxRadioStopbits->setEnabled(false);
-		spinBoxCIVAddress->setEnabled(false);
-		sliderPollInterval->setEnabled(false);
 	}
 	
 	radioInterface.setRadioType(index);
 }
 
-void MainWindowImpl::comboBoxRadioModeCurrentIndexChanged(int index) {
-	if (index == RADIO_MODE_MANUAL) {
-		comboBoxRadioBaudRate->setEnabled(false);
-		comboBoxRadioStopbits->setEnabled(false);
-		spinBoxCIVAddress->setEnabled(false);
-		sliderPollInterval->setEnabled(false);	
-	}
-	else if (index == RADIO_MODE_CAT_POLL) {
-		comboBoxRadioBaudRate->setEnabled(true);
-		comboBoxRadioStopbits->setEnabled(true);
-		
-		if (comboBoxRadioType->currentIndex() == RADIO_TYPE_ICOM)
-			spinBoxCIVAddress->setEnabled(true);
-		else
-			spinBoxCIVAddress->setEnabled(false);
-		
-		sliderPollInterval->setEnabled(true);
-	}
-	else if (index == RADIO_MODE_CAT_MON) {
-		comboBoxRadioBaudRate->setEnabled(true);
-		comboBoxRadioStopbits->setEnabled(true);
-		
-		if (comboBoxRadioType->currentIndex() == RADIO_TYPE_ICOM)
-			spinBoxCIVAddress->setEnabled(true);
-		else
-			spinBoxCIVAddress->setEnabled(false);
-		
-		sliderPollInterval->setEnabled(true);
-	}
-	else if (index == RADIO_MODE_BCD) {
-		comboBoxRadioBaudRate->setEnabled(false);
-		comboBoxRadioStopbits->setEnabled(false);
-		spinBoxCIVAddress->setEnabled(false);
-		sliderPollInterval->setEnabled(true);
-	}
+void MainWindowImpl::groupBoxCATClicked(bool state) {
+		radioInterface.setCATEnable(state);
+}
 
+void MainWindowImpl::comboBoxRadioSenseInputCurrentIndexChanged(int index) {
+		radioInterface.setSenseInput(index);
+}
+
+void MainWindowImpl::comboBoxRadioModeCurrentIndexChanged(int index) {
 	radioInterface.setRadioMode(index);
 }
 
@@ -1257,6 +1222,8 @@ void MainWindowImpl::setupConnections() {
 	connect(comboBoxRadioStopbits, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioStopbitsCurrentIndexChanged(int)));
 	connect(spinBoxCIVAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxCIVAddressValueChanged(int)));
 	connect(sliderPollInterval, SIGNAL(valueChanged(int)), this, SLOT(sliderPollIntervalChanged(int)));
+	connect(groupBoxCAT, SIGNAL(clicked(bool)), this, SLOT(groupBoxCATClicked(bool)));
+	connect(comboBoxRadioSenseInput, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioSenseInputCurrentIndexChanged(int)));
 	/* RADIO INTERFACE END */
 	
 	/* BAND LIMITS START */

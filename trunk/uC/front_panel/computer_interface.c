@@ -497,11 +497,11 @@ void computer_interface_parse_data(void) {
 				case CTRL_SET_RADIO_SETTINGS_ALL:
 					radio_settings_ptr->radio_model = computer_comm.rx_buffer_start[1];
 					radio_settings_ptr->interface_type = computer_comm.rx_buffer_start[2];
-					radio_settings_ptr->baudrate = computer_comm.rx_buffer_start[3];
-					radio_settings_ptr->stopbits = computer_comm.rx_buffer_start[4];
-					radio_settings_ptr->civ_addr = computer_comm.rx_buffer_start[5];
-					radio_settings_ptr->poll_interval = computer_comm.rx_buffer_start[6];
-					radio_settings_ptr->ptt_mode = computer_comm.rx_buffer_start[7];
+					radio_settings_ptr->cat_enabled = computer_comm.rx_buffer_start[3];
+					radio_settings_ptr->baudrate = computer_comm.rx_buffer_start[4];
+					radio_settings_ptr->stopbits = computer_comm.rx_buffer_start[5];
+					radio_settings_ptr->civ_addr = computer_comm.rx_buffer_start[6];
+					radio_settings_ptr->poll_interval = computer_comm.rx_buffer_start[7];
 					radio_settings_ptr->ptt_input = computer_comm.rx_buffer_start[8];
 					
 					computer_interface_send_ack();

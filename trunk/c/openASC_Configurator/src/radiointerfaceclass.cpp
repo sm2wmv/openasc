@@ -27,6 +27,7 @@ RadioInterfaceClass::RadioInterfaceClass() {
 	radioStopbits = 0;
 	radioCIVAddress = 0x04;
 	radioPollInterval = 100;
+	radioSenseInput = 0;
 }
 
 void RadioInterfaceClass::writeSettings(QSettings& settings) {
@@ -37,6 +38,8 @@ void RadioInterfaceClass::writeSettings(QSettings& settings) {
 		settings.setValue("radioStopbits",radioStopbits);
 		settings.setValue("radioCIVAddress",radioCIVAddress);
 		settings.setValue("radioPollInterval",radioPollInterval);
+		settings.setValue("radioCATEnabled",radioCATEnabled);
+		settings.setValue("radioSenseInput", radioSenseInput);
 	settings.endGroup();
 }
 
@@ -48,6 +51,8 @@ void RadioInterfaceClass::loadSettings(QSettings& settings) {
 		radioStopbits = settings.value("radioStopbits").toInt();
 		radioCIVAddress = settings.value("radioCIVAddress").toInt();
 		radioPollInterval = settings.value("radioPollInterval").toInt();
+		radioCATEnabled = settings.value("radioCATEnabled").toBool();
+		radioSenseInput = settings.value("radioSenseInput").toInt();
 	settings.endGroup();	
 }
 
@@ -57,18 +62,39 @@ void RadioInterfaceClass::sendSettings(CommClass& serialPort) {
 	tx_buff[0] = CTRL_SET_RADIO_SETTINGS_ALL;
 	tx_buff[1] = radioType;
 	tx_buff[2] = radioMode;
-	tx_buff[3] = radioBaudrate;
-	tx_buff[4] = radioStopbits;
-	tx_buff[5] = radioCIVAddress;
-	tx_buff[6] = radioPollInterval;
-	tx_buff[7] = 0;	//PTT MODE //TODO: Support this
-	tx_buff[8] = 0; //PTT INPUT //TODO: Support this
+
+	if (radioCATEnabled)
+			tx_buff[3] = 1;
+	else
+			tx_buff[3] = 0;
+
+	tx_buff[4] = radioBaudrate;
+	tx_buff[5] = radioStopbits;
+	tx_buff[6] = radioCIVAddress;
+	tx_buff[7] = radioPollInterval;
+	tx_buff[8] = radioSenseInput;
 	
-	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,9,tx_buff);
+	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,10,tx_buff);
 
 	//Save the settings to the EEPROM
 	tx_buff[0] = CTRL_SET_RADIO_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_RADIO_SETTINGS,1,tx_buff);
+}
+
+void RadioInterfaceClass::setSenseInput(unsigned char index) {
+		radioSenseInput = index;
+}
+
+unsigned char RadioInterfaceClass::getSenseInput() {
+		return(radioSenseInput);
+}
+
+unsigned char RadioInterfaceClass::setCATEnable(bool state) {
+		radioCATEnabled = state;
+}
+
+bool RadioInterfaceClass::getCATEnabled() {
+		return(radioCATEnabled);
 }
 
 void RadioInterfaceClass::setRadioType(unsigned char type) {
