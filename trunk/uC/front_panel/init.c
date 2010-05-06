@@ -38,8 +38,8 @@ void init_usart_computer(void) {
 
 /*!Initializes the USART for the communication bus*/
 void init_usart(void) {
-	//Init the USART between the uC to run at 115.2 kbaud
-	usart0_init(7);
+	//Init the USART between the uC to run at 19.2 kbaud
+	usart0_init(47);
 }
 
 /*!

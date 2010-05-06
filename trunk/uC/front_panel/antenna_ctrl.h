@@ -89,6 +89,8 @@ typedef struct {
 	unsigned char antenna_comb_output_str[15][ANTENNA_OUTPUT_COMB_SIZE];
 	//!The address to the rotator which controls the antenna
 	unsigned char rotator_addr[4];
+	//!The SUB address to the rotator which controls the antenna
+	unsigned char rotator_sub_addr[4];
 	//!The number of degrees the rotator can turn, this might be for example 450 degrees for YAESU
 	unsigned int rotator_max_rotation[4];
 	//!The minimum heading of the rotator, this can also be negative numbers if starting point is not at 0 degrees

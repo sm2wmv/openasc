@@ -90,8 +90,6 @@ unsigned char event_get_error_state(unsigned char error_type) {
  *  \param message The message that we wish to parse */
 void event_internal_comm_parse_message(UC_MESSAGE message) {
 	//Init the sequence of saving all data and disable all outputs activated by this unit
-	printf("PARSE_MSG\n");
-	
 	switch(message.cmd) {
 		case INT_COMM_TURN_DEVICE_OFF:
 			if (!computer_interface_is_active()) {
@@ -374,8 +372,10 @@ void event_poll_buttons(void) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM)
 					menu_action(MENU_BUTTON_PRESSED);
 				else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
+					status.current_band_portion = BAND_LOW;
 					band_ctrl_change_band(status.new_band);
 					
+					display_update_radio_freq();
 					send_ping();
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
@@ -408,7 +408,7 @@ void event_poll_buttons(void) {
 
 /*! \brief Perform the actions that should be done when AUX 2 button is pressed */
 void event_aux2_button_pressed(void) {
-	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) {
+	if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || (radio_interface_get_interface() == RADIO_INTERFACE_BCD)) {
 		if (status.current_band_portion == BAND_HIGH)
 			status.new_band_portion = BAND_LOW;
 		else
@@ -705,8 +705,10 @@ void event_rxant_button_pressed(void) {
 				
 				//If the RX ANT isn't active we enter this part, also if the rx antenna is active but knob selection is on another function
 			if (((status.function_status & (1<<FUNC_STATUS_RXANT)) == 0) || ((status.function_status & (1<<FUNC_STATUS_RXANT)) && (status.knob_function != KNOB_FUNCTION_RX_ANT))) {
-					//If no antenna is selected, then we select the first one
-				if ((status.selected_rx_antenna > antenna_ctrl_get_rx_antenna_count()))
+				status.selected_rx_antenna = status.last_rx_antenna;
+				
+				//If no antenna is selected, then we select the first one, or if the selected rx antenna for some reason is more than the number of antennas available.
+				if ((status.selected_rx_antenna == 0) || (status.selected_rx_antenna > antenna_ctrl_get_rx_antenna_count()))
 					status.selected_rx_antenna = 1;
 				
 				status.function_status |= (1<<FUNC_STATUS_RXANT);
@@ -725,6 +727,7 @@ void event_rxant_button_pressed(void) {
 					
 				set_knob_function(KNOB_FUNCTION_AUTO);
 					
+				status.last_rx_antenna = status.selected_rx_antenna;
 				status.selected_rx_antenna = 0;
 				antenna_ctrl_change_rx_ant(0);
 					

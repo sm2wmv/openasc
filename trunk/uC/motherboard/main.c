@@ -147,6 +147,12 @@ void deactivate_output(unsigned char index) {
 void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
 
+	printf("CMD: 0x%02X\n",message.cmd);
+	printf("LEN: %i\n",message.length);
+	
+	for (unsigned char i=0;i<message.length;i++)
+		printf("DATA[%i]: 0x%02X\n",i,message.data[i]);
+	
 	switch(message.cmd) {
 		case INT_COMM_REDIRECT_DATA:
 			computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
@@ -232,25 +238,22 @@ void parse_internal_comm_message(UC_MESSAGE message) {
  			 * PF2 - Input  - BCD input Bit 0
 			 * PF3 - Input  - BCD input Bit 1 */
 			
-			/*temp = (PINF & (1<<2)) >> 2;
+			temp = (PINF & (1<<2)) >> 2;
 			temp |= (PINF & (1<<3)) >> 2;
 			temp |= (PINF & (1<<0)) << 2;
-			temp |= (PINF & (1<<1)) << 2;*/
+			temp |= (PINF & (1<<1)) << 2;
 			
-			printf("Read BCD\n");
-			
-			if ((band_change_count < 3000) == 0) {
-				temp = 0x02;
-			}
-			else if ((band_change_count > 3000) && (band_change_count < 6000)) {
+			if (band_change_count < 10000) {
 				temp = 0x03;
+			}
+			else if ((band_change_count > 10000) && (band_change_count < 20000)) {
+				temp = 0x05;
 			}
 			else {
 				temp = 0x02;
 				band_change_count = 0;
 			}
 			
-			printf("SEND BCD\n");
 			internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
 			break;
 		case INT_COMM_PULL_THE_PLUG:
@@ -312,8 +315,8 @@ int main(void) {
 	usart1_init(47);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 	
-	//115.2kbaud - internal comm
-	usart0_init(7);
+	//19.2kbaud - internal comm
+	usart0_init(47);
 	
 	printf("Motherboard started\n");
 	

@@ -44,6 +44,7 @@ void RotatorClass::writeSettings(QSettings& settings) {
 		settings.setArrayIndex(i);
 		settings.setValue("RotatorName",getRotatorName(i));
 		settings.setValue("RotatorAddress",getRotatorAddress(i));
+		settings.setValue("RotatorSubAddr",getRotatorSubAddress(i));
 		settings.setValue("RotatorStartHeading",getRotatorStartHeading(i));
 		settings.setValue("RotatorDegrees",getRotatorDegrees(i));
 		settings.setValue("RotatorDelay",getRotatorDelay(i));
@@ -74,6 +75,7 @@ void RotatorClass::loadSettings(QSettings& settings) {
 		settings.setArrayIndex(i);
 		nameList.append(settings.value("RotatorName").toString());
 		addressList.append(settings.value("RotatorAddress").toInt());
+		subAddressList.append(settings.value("RotatorSubAddr").toInt());
 		startHeadingList.append(settings.value("RotatorStartHeading").toInt());
 		degreesList.append(settings.value("RotatorDegrees").toInt());
 		delayList.append(settings.value("RotatorDelay").toInt());
@@ -86,9 +88,10 @@ void RotatorClass::loadSettings(QSettings& settings) {
 	settings.endGroup();
 }
 
-void RotatorClass::addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg) {
+void RotatorClass::addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg) {
 	nameList.append(rotatorName);
 	addressList.append(rotatorAddress);
+	subAddressList.append(subAddress);
 	startHeadingList.append(rotatorStartHeading);
 	degreesList.append(rotatorDegrees);
 	delayList.append(rotatorDelay);
@@ -96,9 +99,10 @@ void RotatorClass::addRotator(QString rotatorName, unsigned char rotatorAddress,
 	view360degList.append(view360deg);
 }
 
-unsigned char RotatorClass::changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg) {
+unsigned char RotatorClass::changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg) {
 	if (index > -1) {
 		nameList.replace(index, rotatorName);	
+		subAddressList.replace(index, subAddress);
 		addressList.replace(index, rotatorAddress);
 		startHeadingList.replace(index, rotatorStartHeading);
 		degreesList.replace(index, rotatorDegrees);
@@ -128,6 +132,13 @@ QString RotatorClass::getRotatorName(int index) {
 unsigned char RotatorClass::getRotatorAddress(int index) {
 	if (index < addressList.count())
 		return(addressList.at(index));
+	else
+		return(0);
+}
+
+unsigned char RotatorClass::getRotatorSubAddress(int index) {
+	if (index < subAddressList.count())
+		return(subAddressList.at(index));
 	else
 		return(0);
 }

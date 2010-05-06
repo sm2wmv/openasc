@@ -347,6 +347,11 @@ void BandClass::writeSettings(QSettings& settings) {
 		settings.setValue("RotatorAddress2",rotatorAddress[1]);
 		settings.setValue("RotatorAddress3",rotatorAddress[2]);
 		settings.setValue("RotatorAddress4",rotatorAddress[3]);
+
+		settings.setValue("RotatorSubAddress1",rotatorSubAddress[0]);
+		settings.setValue("RotatorSubAddress2",rotatorSubAddress[1]);
+		settings.setValue("RotatorSubAddress3",rotatorSubAddress[2]);
+		settings.setValue("RotatorSubAddress4",rotatorSubAddress[3]);
 	
 		settings.setValue("RotatorStartHeading1",rotatorStartHeading[0]);
 		settings.setValue("RotatorStartHeading2",rotatorStartHeading[1]);
@@ -469,6 +474,11 @@ void BandClass::loadSettings(QSettings& settings) {
 	rotatorAddress[1] = settings.value("RotatorAddress2").toInt();
 	rotatorAddress[2] = settings.value("RotatorAddress3").toInt();
 	rotatorAddress[3] = settings.value("RotatorAddress4").toInt();
+
+	rotatorSubAddress[0] = settings.value("RotatorSubAddress1").toInt();
+	rotatorSubAddress[1] = settings.value("RotatorSubAddress2").toInt();
+	rotatorSubAddress[2] = settings.value("RotatorSubAddress3").toInt();
+	rotatorSubAddress[3] = settings.value("RotatorSubAddress4").toInt();
 	
 	rotatorStartHeading[0] = settings.value("RotatorStartHeading1").toInt();
 	rotatorStartHeading[1] = settings.value("RotatorStartHeading2").toInt();
@@ -589,6 +599,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	unsigned char posCount = 2;
 	for (unsigned char i=0;i<4;i++) {
 		tx_buff[posCount++]	= rotatorAddress[i];
+		tx_buff[posCount++] = rotatorSubAddress[i];
 		tx_buff[posCount++] = (rotatorDegrees[i] >> 8);
 		tx_buff[posCount++] = (rotatorDegrees[i] & 0xFF);
 		tx_buff[posCount++] = (rotatorStartHeading[i] >> 8);
@@ -687,7 +698,8 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	serialPort.addTXMessage(CTRL_SET_BAND_DATA,2,tx_buff);
 }
 
-void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg) {
+void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, unsigned char subAddr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg) {
+	rotatorSubAddress[antIndex] = subAddr;
 	rotatorAddress[antIndex] = addr;
 	rotatorIndex[antIndex] = index;
 	rotatorStartHeading[antIndex] = startHeading;

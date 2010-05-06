@@ -8,10 +8,11 @@ class RotatorClass {
 		RotatorClass();
 		void writeSettings ( QSettings& settings );
 		void loadSettings ( QSettings& settings );
-		void addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg);
-		unsigned char changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg);
+		void addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg);
+		unsigned char changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg);
 		QString getRotatorName(int index);
 		unsigned char getRotatorAddress(int index);
+		unsigned char getRotatorSubAddress(int index);
 		unsigned int getRotatorStartHeading(int index);
 		unsigned int getRotatorDegrees(int index);
 		unsigned char getRotatorDelay(int index);
@@ -25,6 +26,7 @@ class RotatorClass {
 		//so that each rotator has got an unique index
 		int lastIndex;
 		QList<unsigned char> addressList;
+		QList<unsigned char> subAddressList;
 		QStringList nameList;
 		QList<unsigned int> startHeadingList;
 		QList<unsigned int> degreesList;

@@ -356,7 +356,7 @@ void display_update(unsigned char band, unsigned char antenna) {
 /*! \brief Update the radio frequency area of the display */
 void display_update_radio_freq(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
-		if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
+		if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() != RADIO_INTERFACE_BCD)) {
 			if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {
 				char temp_str[14];
 				char temp_bandport = '?';
@@ -377,7 +377,7 @@ void display_update_radio_freq(void) {
 			else
 				CLEAR_RADIO_FREQ_AREA();
 		}
-		else if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) {
+		else if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() == RADIO_INTERFACE_BCD))) {
 			char temp_str[10];
 			unsigned char temp_nr_to_view = 0;
 			

@@ -257,7 +257,7 @@ unsigned char *band_ctrl_get_low_output_str(void) {
  *  \return BAND_LOW, BAND_HIGH or BAND_UNDEFINED */
 unsigned char band_ctrl_get_portion(void) {
 	//TODO: Add support for others as well not only radio
-	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) {
+	if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() == RADIO_INTERFACE_BCD))) {
 		if (status.current_band_portion == BAND_HIGH)
 			return(BAND_HIGH);
 		else if (status.current_band_portion == BAND_LOW)
