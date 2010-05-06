@@ -80,6 +80,16 @@
 //! The size the data sent between the two devices can be maximum
 #define UC_MESSAGE_DATA_SIZE	15
 
+//! After this many ms it will reset the rx flags (in ms)
+#define UC_COMM_RX_TIMEOUT	3
+
+//! After this many ms a resend will occur if a message has not been acked (in ms)
+#define UC_COMM_TX_TIMEOUT	10
+
+//! Number of resends that is allowed
+#define UC_COMM_RESEND_COUNT	5
+
+
 /*! uC message structure, used for communication between the uCs */
 typedef struct {
 	//! The checksum of the message
@@ -113,5 +123,8 @@ void internal_comm_send_nack(void);
 void internal_comm_send_message(UC_MESSAGE tx_message);
 void internal_comm_reset_rx(void);
 void internal_comm_1ms_timer(void);
+
+void internal_comm_reset_rx(void);
+void internal_comm_resend(void);
 
 #endif

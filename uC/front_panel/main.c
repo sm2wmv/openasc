@@ -157,6 +157,9 @@ void main_update_display(void) {
 
 /*! \brief Send a message to the motherboard that the openASC box should be shut off. Will deactivate the power supply relay. */
 void shutdown_device(void) {
+
+	led_set_error(LED_STATE_ON);
+	
 	internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
 }
 
@@ -360,6 +363,14 @@ int main(void){
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
 	else
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_AUTO;
+
+	//Init the communication between the uCs
+	init_usart();
+
+	//Init the communication between the motherboard uC and the front panel uC
+	//The first argument will be called each time a message should be parsed
+	//The second argument will be called each time a character should be sent
+	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
 			 
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
@@ -376,22 +387,21 @@ int main(void){
 		
 		while(1) {
 			computer_interface_send_data();
+			
 			computer_interface_parse_data();
+			
+			//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
+			internal_comm_poll_rx_queue();
+		
+			//Poll the TX queue in the internal comm to see if we have any new messages to be SE
+			internal_comm_poll_tx_queue();
 		}
 	}
-	
-	//Init the communication between the uCs
-	init_usart();
 	
 	band_ctrl_load_band_limits();
 
 	//Init the realtime clock
 	//ds1307_init();
-
-	//Init the communication between the motherboard uC and the front panel uC
-	//The first argument will be called each time a message should be parsed
-	//The second argument will be called each time a character should be sent
-	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
 			
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
@@ -452,12 +462,6 @@ int main(void){
 	device_started = 1;
 	
 	while(1) {
-		//Output a pulse so we can see how long time the main loop takes
-		if (PINB & (1<<1))
-			PORTB &= ~(1<<1);
-		else
-			PORTB |= (1<<1);
-		
 		if (!rx_queue_is_empty())
 			event_bus_parse_message();
 		

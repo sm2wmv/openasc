@@ -90,25 +90,35 @@ unsigned char event_get_error_state(unsigned char error_type) {
  *  \param message The message that we wish to parse */
 void event_internal_comm_parse_message(UC_MESSAGE message) {
 	//Init the sequence of saving all data and disable all outputs activated by this unit
-	
-	printf("PARSE INT COMM\n");
+	printf("PARSE_MSG\n");
 	
 	switch(message.cmd) {
 		case INT_COMM_TURN_DEVICE_OFF:
-			//TODO: Problem with delay here, need to wait until everything is shut off
-			//This solution is pretty uggly...do it some other way?
-			status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
-			display_shutdown_view();
+			if (!computer_interface_is_active()) {
+				//TODO: Problem with delay here, need to wait until everything is shut off
+				//This solution is pretty uggly...do it some other way?
+				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
+				display_shutdown_view();
+				
+				main_save_settings();
+				
+				band_ctrl_change_band(BAND_UNDEFINED);
+				
+				//TODO: Send global shutdown broadcast message three times
+				
+				send_ping();
+				
+				event_add_message((void *)shutdown_device,3000,0);
+			}
+			else {
+				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
+				display_shutdown_view();
+
+				delay_s(2);
+
+				shutdown_device();
+			}
 			
-			main_save_settings();
-			
-			band_ctrl_change_band(BAND_UNDEFINED);
-			
-			//TODO: Send global shutdown broadcast message three times
-			
-			send_ping();
-			
-			event_add_message((void *)shutdown_device,3000,0);
 			break;
 		case INT_COMM_PS2_KEYPRESSED:
 			event_handler_process_ps2(message.data[0]);
