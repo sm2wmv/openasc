@@ -105,12 +105,13 @@ class BandClass
 		
 		void setDefaultAntenna(int index);
 		int getDefaultAntenna();
-		void setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg);
+		void setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, unsigned char subAddr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg);
 		int getRotatorIndex(unsigned char antIndex);
 		
 		void setHasRotator(unsigned char ant_index, bool state);
 	private:
 		unsigned char rotatorAddress[4];
+		unsigned char rotatorSubAddress[4];
 		int rotatorIndex[4];
 		int rotatorStartHeading[4];
 		unsigned int rotatorDegrees[4];

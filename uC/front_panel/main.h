@@ -248,6 +248,9 @@ typedef struct {
 	unsigned char antenna_to_rotate;
 	/*! Rotator resolution chosen */
 	unsigned char rotator_step_resolution;
+	
+	/*! The last RX antenna used */
+	unsigned char last_rx_antenna;
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM

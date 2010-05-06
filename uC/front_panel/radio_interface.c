@@ -203,28 +203,33 @@ unsigned char radio_poll_ptt(void) {
 /*! \brief Polls the status of the radio and saves it into the radio_status structure.
  *  \return 0 if the poll went OK and 1 if it didn't  */
 unsigned char radio_poll_status(void) {
-	//Ask radio for freq etc
-	if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
-		printf("GET BCD\n");
-		internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS,0,NULL);
-	}
-	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {
-		//The radio model is ICOM, we will send out a frequency request to the radio
-		if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
-			usart3_transmit(0xFE);
-			usart3_transmit(0xFE);
-			usart3_transmit(radio_settings.civ_addr);
-			usart3_transmit(0xE0); //We simulate that we are the computer by using its address
-			usart3_transmit(0x03);
-			usart3_transmit(0xFD);
+	//We dont poll the band data if we are transmitting, that will just increase the risk
+	//of corrupted band data
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+		//Ask radio for freq etc
+		if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
+			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+				internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS,0,NULL);
+			}
 		}
-		
-		//We update frequency directly after the request has been sent. This means we probably don't see the update at once
-		//but it will still atleast update
-		display_update_radio_freq();
-	}
-	else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON) {
-		display_update_radio_freq();
+		else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {
+			//The radio model is ICOM, we will send out a frequency request to the radio
+			if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
+				usart3_transmit(0xFE);
+				usart3_transmit(0xFE);
+				usart3_transmit(radio_settings.civ_addr);
+				usart3_transmit(0xE0); //We simulate that we are the computer by using its address
+				usart3_transmit(0x03);
+				usart3_transmit(0xFD);
+			}
+			
+			//We update frequency directly after the request has been sent. This means we probably don't see the update at once
+			//but it will still atleast update
+			display_update_radio_freq();
+		}
+		else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON) {
+			display_update_radio_freq();
+		}
 	}
 	
 	return(0);

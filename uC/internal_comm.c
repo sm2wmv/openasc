@@ -37,11 +37,6 @@
 	#include "../front_panel/errors.h"
 #endif
 
-/*! TODO: Finish the transmission of data
- *  TODO: Timeout for TX messages (if not acked)
- *  TODO: Resend of NACKed messages or timeout
- */
-
 //! The uc_com struct
 struct_uc_com uc_com;
 

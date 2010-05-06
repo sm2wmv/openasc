@@ -105,9 +105,6 @@ unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
  *  \param antenna_comb The antenna configuration you wish to check 
  *  \return 1 if the combination is allowed, 0 if it is not allowed */
 unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
-	printf("COMB: %i",current_antennas.antenna_comb_allowed);
-	printf("COMB2: %i",antenna_comb);
-	
 	if (antenna_comb == 0)
 		return(1);
 	else if (current_antennas.antenna_comb_allowed & (1<<antenna_ctrl_get_comb_value(antenna_comb))) {
@@ -126,8 +123,8 @@ void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char len
 		for (unsigned char i=0;i<length;i++) {
 			if (addresses[i] != 0x00)
 				bus_add_tx_message(bus_get_address(), addresses[i], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), cmd, 0, 0);
-			//else
-//				internal_comm_add_tx_message(cmd, 0 , 0);
+			else
+				internal_comm_add_tx_message(cmd, 0 , 0);
 		}
 	}
 }
@@ -164,8 +161,8 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 					
 					if (current_antennas.antenna_comb_output_str[value][i+1] != 0x00)
 						bus_add_tx_message(bus_get_address(), current_antennas.antenna_comb_output_str[value][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, count-start_pos, temp+start_pos);
-					//else
-					//	internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
+					else
+						internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
 	
 					start_pos += count;
 					i++;
@@ -212,8 +209,8 @@ void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index) {
 				
 				if (rx_antennas.output_str[antenna_index][i+1] != 0x00)
 					bus_add_tx_message(bus_get_address(), rx_antennas.output_str[antenna_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT, count-start_pos, temp+start_pos);
-				//else
-//					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
+				else
+					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
 			
 				start_pos += count;
 				i++;
@@ -256,8 +253,8 @@ void antenna_ctrl_send_rx_ant_band_data_to_bus(char index) {
 					
 					if (rx_antennas.band_output_str[band_index][i+1] != 0x00)
 						bus_add_tx_message(bus_get_address(), rx_antennas.band_output_str[band_index][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, temp+start_pos);
-				//	else
-				//		internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
+					else
+						internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
 		
 					start_pos += count;
 					i++;

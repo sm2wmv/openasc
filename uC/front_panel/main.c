@@ -323,7 +323,7 @@ int main(void){
 		eeprom_read_table();
 		
 		//write the default runtime settings
-		runtime_settings.lcd_backlight_value = 80;
+		runtime_settings.lcd_backlight_value = 20;
 		runtime_settings.amplifier_ptt_output = 1;
 		runtime_settings.radio_ptt_output = 1;
 		runtime_settings.inhibit_state = 0;
@@ -356,6 +356,9 @@ int main(void){
 	
 	//Init the backlight PWM
 	init_backlight();
+	
+	runtime_settings.lcd_backlight_value = 20;
+	
 	display_set_backlight(runtime_settings.lcd_backlight_value);
 		
 	//Check to see if the radio interface is configured as manual or automatic as default
@@ -470,17 +473,22 @@ int main(void){
 		
 		if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
 			if (radio_get_current_band() != status.selected_band) {
+				status.new_band_portion = BAND_LOW;
+				status.current_band_portion = status.new_band_portion;
+				
 				status.new_band = radio_get_current_band();
 				band_ctrl_change_band(status.new_band);
 				
 				send_ping();
 			}
 			
-			if (radio_get_band_portion() != status.current_band_portion) {
-				status.new_band_portion = radio_get_band_portion();
-				status.current_band_portion = status.new_band_portion;
-				
-				band_ctrl_change_band_portion(status.new_band_portion);
+			if (radio_interface_get_interface() != RADIO_INTERFACE_BCD) {
+				if (radio_get_band_portion() != status.current_band_portion) {
+					status.new_band_portion = radio_get_band_portion();
+					status.current_band_portion = status.new_band_portion;
+					
+					band_ctrl_change_band_portion(status.new_band_portion);
+				}
 			}
 		}
 		

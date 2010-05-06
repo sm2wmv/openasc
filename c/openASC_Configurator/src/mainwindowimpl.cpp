@@ -1043,6 +1043,7 @@ void MainWindowImpl::spinBoxNetworkNrOfDevicesValueChanged(int newValue) {
 void MainWindowImpl::comboBoxRotatorsIndexChanged(int index) {
 	if ((index > 0) && (index <= rotators.getRotatorCount())) {
 		lineEditRotatorName->setText(rotators.getRotatorName(index-1));
+		spinBoxRotatorSubAddress->setValue(rotators.getRotatorSubAddress(index-1));
 		spinBoxRotatorAddress->setValue(rotators.getRotatorAddress(index-1));
 		spinBoxRotatorStartAzimuth->setValue(rotators.getRotatorStartHeading(index-1));
 		spinBoxRotatorDegreesAzimuth->setValue(rotators.getRotatorDegrees(index-1));
@@ -1052,6 +1053,7 @@ void MainWindowImpl::comboBoxRotatorsIndexChanged(int index) {
 	else if (index == 0) {
 		lineEditRotatorName->setText("");
 		spinBoxRotatorAddress->setValue(spinBoxRotatorAddress->value()+1);
+		spinBoxRotatorSubAddress->setValue(0);
 		spinBoxRotatorStartAzimuth->setValue(0);
 		spinBoxRotatorDegreesAzimuth->setValue(360);
 		spinBoxRotatorDelay->setValue(0);
@@ -1099,7 +1101,7 @@ void MainWindowImpl::comboBoxRotatorsReload() {
 }
 
 void MainWindowImpl::pushButtonRotatorAddPressed() {
-	rotators.addRotator(lineEditRotatorName->text(), spinBoxRotatorAddress->value(), spinBoxRotatorStartAzimuth->value(), spinBoxRotatorDegreesAzimuth->value(), spinBoxRotatorDelay->value(), checkBoxRotator360degView->isChecked());
+	rotators.addRotator(lineEditRotatorName->text(), spinBoxRotatorAddress->value(), spinBoxRotatorSubAddress->value(), spinBoxRotatorStartAzimuth->value(), spinBoxRotatorDegreesAzimuth->value(), spinBoxRotatorDelay->value(), checkBoxRotator360degView->isChecked());
 
 	comboBoxRotatorsReload();
 	comboBoxRotators->setCurrentIndex(comboBoxRotators->count()-1);
@@ -1108,7 +1110,7 @@ void MainWindowImpl::pushButtonRotatorAddPressed() {
 void MainWindowImpl::pushButtonRotatorSavePressed() {
 	int tempIndex = comboBoxRotators->currentIndex();
 	
-	rotators.changeRotatorProperties(tempIndex-1, lineEditRotatorName->text(), spinBoxRotatorAddress->value(), spinBoxRotatorStartAzimuth->value(), spinBoxRotatorDegreesAzimuth->value(), spinBoxRotatorDelay->value(), checkBoxRotator360degView->isChecked());
+	rotators.changeRotatorProperties(tempIndex-1, lineEditRotatorName->text(), spinBoxRotatorAddress->value(), spinBoxRotatorSubAddress->value(), spinBoxRotatorStartAzimuth->value(), spinBoxRotatorDegreesAzimuth->value(), spinBoxRotatorDelay->value(), checkBoxRotator360degView->isChecked());
 	
 	comboBoxRotatorsReload();
 	comboBoxRotators->setCurrentIndex(tempIndex);
@@ -1124,44 +1126,44 @@ void MainWindowImpl::pushButtonRotatorDeletePressed() {
 
 void MainWindowImpl::comboBoxAntennaRotator1IndexChanged(int newIndex) {
 	if (newIndex > 0) {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(0,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(0,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorSubAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
 		bandData[comboBoxBand->currentIndex()].setHasRotator(0,true);
 	}
 	else {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(0,-1,0,0,0,0,false);
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(0,-1,0,0,0,0,0,false);
 		bandData[comboBoxBand->currentIndex()].setHasRotator(0,false);
 	}
 }
 
 void MainWindowImpl::comboBoxAntennaRotator2IndexChanged(int newIndex) {
 	if (newIndex > 0) {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(1,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(1,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorSubAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
 		bandData[comboBoxBand->currentIndex()].setHasRotator(1,true);
 	}
 	else {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(1,-1,0,0,0,0,false);
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(1,-1,0,0,0,0,0,false);
 		bandData[comboBoxBand->currentIndex()].setHasRotator(1,false);
 	}
 }
 
 void MainWindowImpl::comboBoxAntennaRotator3IndexChanged(int newIndex) {
 	if (newIndex > 0) {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(2,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(2,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorSubAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
 		bandData[comboBoxBand->currentIndex()].setHasRotator(2,true);
 	}
 	else {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(2,-1,0,0,0,0,false);
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(2,-1,0,0,0,0,0,false);
 		bandData[comboBoxBand->currentIndex()].setHasRotator(2,false);
 	}
 }
 	
 void MainWindowImpl::comboBoxAntennaRotator4IndexChanged(int newIndex) {
 	if (newIndex > 0) {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(3,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(3,rotators.getRotatorIndex(newIndex-1), rotators.getRotatorAddress(newIndex-1), rotators.getRotatorSubAddress(newIndex-1), rotators.getRotatorStartHeading(newIndex-1), rotators.getRotatorDegrees(newIndex-1),rotators.getRotatorDelay(newIndex-1), rotators.getRotator360degView(newIndex-1));
 		bandData[comboBoxBand->currentIndex()].setHasRotator(3,true);
 	}
 	else {
-		bandData[comboBoxBand->currentIndex()].setRotatorProperties(3,-1,0,0,0,0,false);
+		bandData[comboBoxBand->currentIndex()].setRotatorProperties(3,-1,0,0,0,0,0,false);
 		bandData[comboBoxBand->currentIndex()].setHasRotator(3,false);
 	}
 }
@@ -1183,35 +1185,43 @@ void MainWindowImpl::spinBoxPowerMeterUpdateRateBargraphValueChanged(int rate) {
 }
 
 void MainWindowImpl::radioButtonPTTInterlockNoneClicked(bool state) {
-		settingsClass.setPTTInterlockInput(0);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(0);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput1Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(1);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(1);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput2Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(2);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(2);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput3Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(3);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(3);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput4Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(4);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(4);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput5Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(5);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(5);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput6Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(6);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(6);
 }
 
 void MainWindowImpl::radioButtonPTTInterlockInput7Clicked(bool state) {
-		settingsClass.setPTTInterlockInput(7);
+		if (state == true)
+				settingsClass.setPTTInterlockInput(7);
 }
 
 void MainWindowImpl::setupConnections() {
