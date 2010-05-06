@@ -41,6 +41,8 @@
 //! Counter used for the PS/2 decoding
 unsigned char temp_count = 0;
 
+unsigned int band_change_count = 0;
+
 //! The driver output state
 unsigned int driver_output_state = 0;
 //! The type of driver output
@@ -230,11 +232,25 @@ void parse_internal_comm_message(UC_MESSAGE message) {
  			 * PF2 - Input  - BCD input Bit 0
 			 * PF3 - Input  - BCD input Bit 1 */
 			
-			temp = (PINF & (1<<2)) >> 2;
+			/*temp = (PINF & (1<<2)) >> 2;
 			temp |= (PINF & (1<<3)) >> 2;
 			temp |= (PINF & (1<<0)) << 2;
-			temp |= (PINF & (1<<1)) << 2;
+			temp |= (PINF & (1<<1)) << 2;*/
 			
+			printf("Read BCD\n");
+			
+			if ((band_change_count < 3000) == 0) {
+				temp = 0x02;
+			}
+			else if ((band_change_count > 3000) && (band_change_count < 6000)) {
+				temp = 0x03;
+			}
+			else {
+				temp = 0x02;
+				band_change_count = 0;
+			}
+			
+			printf("SEND BCD\n");
 			internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
 			break;
 		case INT_COMM_PULL_THE_PLUG:
@@ -357,6 +373,8 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_ps2++;
 	*/
 	internal_comm_1ms_timer();
+	
+	band_change_count++;
 }
 
 /*! \brief Output overflow 0 interrupt */

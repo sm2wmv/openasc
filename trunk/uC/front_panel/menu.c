@@ -40,11 +40,13 @@
 #define MENU_OPTION_LEFT_POS 13
 
 //! Number of options in the menu system
-#define MENU_OPTIONS	6
+#define MENU_OPTIONS	7
 
 //! Menu options - Errors
-const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}};
+const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}};
 
+
+const struct_menu_option menu_misc[] = {{"Reboot"}};
 //! The current selected menu option
 unsigned char current_menu_option_selected[MENU_OPTIONS];
 
@@ -68,7 +70,8 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_AMP_PTT, "Amplifier PTT", (struct_menu_option *)menu_option_amp_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_BACKLIGHT_LEVEL, "Backlight", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_SHOW_ACTIVITY, "Network activity", NULL, 0,MENU_OPTION_TYPE_NONE},
-{MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL}
+{MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL},
 };
 
 /*! \brief Show the text of a menu on the display 
@@ -251,6 +254,10 @@ void menu_action(unsigned char menu_action_type) {
 					runtime_settings.radio_ptt_output = 1;
 				else
 					runtime_settings.radio_ptt_output = 0;
+			}
+			else if (current_menu_pos == MENU_POS_MISC) {
+				if (current_menu_option_selected[current_menu_pos] == 0)
+					bootloader_start();
 			}
 		}
 		

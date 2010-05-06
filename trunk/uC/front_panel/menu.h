@@ -66,8 +66,10 @@ typedef struct {
 #define MENU_POS_BACKLIGHT_LEVEL	3
 //! Show network actvitity
 #define MENU_POS_SHOW_ACTIVITY		4
-//! Show the error menu
-#define MENU_POS_SHOW_ERRORS			5
+//! Show MISC menu
+#define MENU_POS_MISC        			5
+//! Show the error menu 
+#define MENU_POS_SHOW_ERRORS     	6
 
 //! Menu flag scroll up
 #define MENU_SCROLL_UP			0

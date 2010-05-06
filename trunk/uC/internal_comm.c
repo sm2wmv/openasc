@@ -31,6 +31,12 @@
 #include "internal_comm_rx_queue.h"
 #include "internal_comm_tx_queue.h"
 
+
+#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+	#include "../front_panel/led_control.h"
+	#include "../front_panel/errors.h"
+#endif
+
 /*! TODO: Finish the transmission of data
  *  TODO: Timeout for TX messages (if not acked)
  *  TODO: Resend of NACKed messages or timeout
@@ -44,6 +50,11 @@ UC_MESSAGE uc_new_message;
 
 //! The previous data
 unsigned char prev_data = 0;
+
+unsigned char counter_tx_timeout = 0;
+unsigned char counter_rx_timeout = 0;
+
+unsigned char resend_count = 0;
 
 //! Flag that the message has yet not been acked
 unsigned char msg_not_acked = 0;
@@ -115,6 +126,8 @@ void internal_comm_send_ack(void) {
 	f_ptr_tx(UC_COMM_MSG_ACK);
 	f_ptr_tx(0);
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
+	
+	counter_tx_timeout = 0;
 }
 
 /*! \brief Send a NACK message to the internal communication uart */
@@ -127,6 +140,8 @@ void internal_comm_send_nack(void) {
 	f_ptr_tx(UC_COMM_MSG_NACK);
 	f_ptr_tx(0);
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
+	
+	counter_tx_timeout = 0;
 }
 
 /*! \brief Send a message to the internal communication uart 
@@ -142,6 +157,8 @@ void internal_comm_send_message(UC_MESSAGE tx_message) {
 		f_ptr_tx(tx_message.data[i]);
 	
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
+	
+	counter_tx_timeout = 0;
 }
 
 /*! \brief Add a message to the transmit queue 
@@ -164,10 +181,29 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 	int_comm_tx_queue_add(new_mess);
 }
 
+void internal_comm_resend(void) {
+	if (resend_count < UC_COMM_RESEND_COUNT) {
+		if (msg_not_acked == 1) {
+			internal_comm_send_message(int_comm_tx_queue_get());
+			resend_count++;
+		}
+	}
+	else {
+		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+			led_set_error(LED_STATE_ON);
+			
+			//Set the error flag
+			event_set_error(ERROR_TYPE_INT_COMM_RESEND,1);
+		#endif
+	}
+}
+
 //! Interrupt when a byte has been received from the UART
 ISR(ISR_INTERNAL_COMM_USART_RECV) {
 	unsigned char data = INTERNAL_COMM_UDR;
 	uc_com.char_count++;
+	
+	counter_rx_timeout = 0;
 	
 	if (uc_com.flags && (1<<UC_PREAMBLE_FOUND)) {
 		//Check if this is a postamble
@@ -178,6 +214,10 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 						//Last TXed message was acked, lets drop the message from the TX queue
 						int_comm_tx_queue_drop();
 						msg_not_acked = 0;
+						resend_count = 0;
+					}
+					else if (uc_new_message.cmd == UC_COMM_MSG_NACK) {
+						internal_comm_resend();
 					}
 					else {
 						//Add the message to the RX queue
@@ -239,4 +279,12 @@ ISR(ISR_INTERNAL_COMM_USART_DATA) {
 
 /*! \brief Function which should be called each ms */
 void internal_comm_1ms_timer(void) {
+	if (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)
+		internal_comm_reset_rx();
+		
+	if (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)
+		internal_comm_resend();
+
+	counter_tx_timeout++;
+	counter_rx_timeout++;
 }

@@ -24,15 +24,17 @@
 #define _ERRORS_H_
 
 //! Define which tells us how many different error types that currently exist
-#define NR_OF_ERRORS	4
+#define NR_OF_ERRORS	5
 
 //! Error that the bus had to resend a message more times than the max limit
-#define ERROR_TYPE_BUS_RESEND				0
+#define ERROR_TYPE_BUS_RESEND						0
 //! Error that no sync was recieved within the default time frame
-#define ERROR_TYPE_BUS_SYNC					1
+#define ERROR_TYPE_BUS_SYNC							1
 //! The TX queue of the bus has gotten full
 #define ERROR_TYPE_BUS_TX_QUEUE_FULL		2
 //! The RX queue of the bus has gotten full
 #define ERROR_TYPE_BUS_RX_QUEUE_FULL		3
+//! Internal communication resend fail
+#define ERROR_TYPE_INT_COMM_RESEND			4
 
 #endif
