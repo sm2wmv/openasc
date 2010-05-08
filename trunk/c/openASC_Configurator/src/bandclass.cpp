@@ -1,10 +1,16 @@
+#include <QtDebug>
+
 #include "bandclass.h"
 #include "generic.h"
 
 BandClass::BandClass() {
-	for (int i=0;i<4;i++)
+	for (int i=0;i<4;i++) {
 		hasRotator[i] = false;
+		subMenuType[i] = 0;
+}
 	
+
+
 	rotatorView360deg = 0;
 }
 
@@ -611,7 +617,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,27,tx_buff);
 
-	/*for (int i=0;i<4;i++) {
+	for (int i=0;i<4;i++) {
 		if (subMenuType[i] == SUBMENU_VERT_ARRAY) {
 				tx_buff[0] = CTRL_SET_ANT_SUB_MENU_DATA;
 				tx_buff[1] = i;	//Antenna index
@@ -629,8 +635,11 @@ void BandClass::sendSettings(CommClass& serialPort) {
 						tx_buff[2] = dirIndex;
 						tx_buff[3] = subMenu4SQ[i].directionName[dirIndex].length();
 
-						for (int x=0;x<subMenu4SQ[i].directionName[dirIndex].length();x++)
+						for (int x=0;x<subMenu4SQ[i].directionName[dirIndex].length();x++) {
 								tx_buff[4+x] = subMenu4SQ[i].directionName[dirIndex].at(x).toAscii();
+						}
+
+						//qDebug() << subMenu4SQ[i].directionName[dirIndex];
 
 						serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
 				}
@@ -650,7 +659,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 				}
 		}
 	}
-	*/
+
 	tx_buff[0] = CTRL_SET_ANT_DATA_SAVE;
 	tx_buff[1] = bandIndex;
 			

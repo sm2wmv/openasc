@@ -47,6 +47,7 @@
 #include "glcd.h"
 #include "../internal_comm.h"
 #include "errors.h"
+#include "sub_menu.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -248,6 +249,11 @@ void event_pulse_sensor_up(void) {
 					
 	//		display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
+		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
+			sub_menu_pos_up(status.sub_menu_antenna_index);
+			
+			display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
+		}
 	}
 }
 
@@ -281,7 +287,11 @@ void event_pulse_sensor_down(void) {
 			
 //			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
-		
+		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
+			sub_menu_pos_down(status.sub_menu_antenna_index);
+			
+			display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
+		}		
 	}
 }
 
@@ -344,6 +354,10 @@ void event_poll_buttons(void) {
 			event_rxant_button_pressed();
 		}
 	
+		if (btn_status & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
+			event_sub_button_pressed();
+		}
+		
 	//Check if the MENU button has been pressed
 		if (btn_status & (1<<FLAG_BUTTON_MENU_BIT)) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
@@ -419,6 +433,46 @@ void event_aux2_button_pressed(void) {
 				
 			display_update_radio_freq();
 			band_ctrl_change_band_portion(status.current_band_portion);
+		}
+	}
+}
+
+/*! \brief Perform the actions that should be done when the SUB menu button is pressed */
+void event_sub_button_pressed(void) {
+	if (status.buttons_current_state & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
+		if (sub_menu_get_count() != 0) {
+			if ((status.function_status & (1<<FUNC_STATUS_SUBMENU)) == 0) {
+				led_set_submenu(LED_STATE_ON);
+				status.function_status |= (1<<FUNC_STATUS_SUBMENU);
+				set_knob_function(KNOB_FUNCTION_SET_SUBMENU);
+							
+				if (sub_menu_get_count() == 1) {
+					for (unsigned char i=0;i<4;i++)
+						if (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY)
+							status.sub_menu_antenna_index = i;
+					
+					status.current_display_level = DISPLAY_LEVEL_SUBMENU;
+					
+					glcd_clear();
+					display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
+				}
+			}
+			else {
+				led_set_submenu(LED_STATE_OFF);
+				status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
+				set_knob_function(KNOB_FUNCTION_AUTO);
+				
+				status.current_display_level = DISPLAY_LEVEL_BAND;
+				
+				glcd_clear();
+				main_update_display();
+			}
+		}
+		else {
+			//Make sure that no sub menu stuff is used
+			led_set_submenu(LED_STATE_OFF);
+			status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
+			set_knob_function(KNOB_FUNCTION_AUTO);
 		}
 	}
 }
@@ -742,7 +796,7 @@ void event_rxant_button_pressed(void) {
 
 /*! \brief Perform the action of Rotate button if it was pressed */
 void event_rotate_button_pressed(void) {
-/*	if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
+	/*	if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
 			
 		if (((status.function_status & (1<<FUNC_STATUS_ROTATE)) == 0) || ((status.function_status & (1<<FUNC_STATUS_ROTATE)) && (status.knob_function != KNOB_FUNCTION_SET_HEADING))) {
 			led_set_rotate(LED_STATE_ON);

@@ -197,9 +197,18 @@ void led_set_rxant(enum enum_led_state state) {
  *  \param state The state of the LED */
 void led_set_aux(enum enum_led_state state) {
 	if (state == LED_STATE_ON)
-		PORTD |= (1<<LED_AUX_BIT);
+		PORTC |= (1<<LED_AUX_BIT);
 	else
-		PORTD &= ~(1<<LED_AUX_BIT);
+		PORTC &= ~(1<<LED_AUX_BIT);
+}
+
+/*! \brief Set the AUX LED status
+ *  \param state The state of the LED */
+void led_set_submenu(enum enum_led_state state) {
+	if (state == LED_STATE_ON)
+		PORTD |= (1<<LED_SUBMENU_BIT);
+	else
+		PORTD &= ~(1<<LED_SUBMENU_BIT);
 }
 
 /*! \brief Set the menu LED status

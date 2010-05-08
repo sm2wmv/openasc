@@ -414,6 +414,8 @@ void computer_interface_parse_data(void) {
 					break;
 				case CTRL_SET_ANT_SUB_MENU_OUTPUT_STR:
 					if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_VERT_ARRAY) {
+						sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->output_str_dir_length[(int)computer_comm.rx_buffer_start[2]] = computer_comm.rx_buffer_start[3];
+						
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->output_str_dir[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
 					}
@@ -425,11 +427,11 @@ void computer_interface_parse_data(void) {
 					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1], antenna_ptr);
 					
 					//Routines to save the SUB MENU data to the EEPROM
-					/*for (unsigned char ant_index=0;ant_index<4;ant_index++) {
+					for (unsigned char ant_index=0;ant_index<4;ant_index++) {
 						if (antenna_ptr->sub_menu_type[ant_index] == SUBMENU_VERT_ARRAY) {
 							eeprom_save_ant_sub_menu_array_structure(computer_comm.rx_buffer_start[1], ant_index, sub_menu_array_ptr[ant_index]);
 						}
-					}*/
+					}
 					
 					//Reset the content of the antenna_ptr
 					memset(antenna_ptr,0,sizeof(struct_antenna));

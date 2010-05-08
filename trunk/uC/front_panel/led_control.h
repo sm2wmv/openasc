@@ -56,6 +56,7 @@ void led_set_txrx(enum enum_led_state state);
 void led_set_rxant(enum enum_led_state state);
 void led_set_aux(enum enum_led_state state);
 void led_set_menu(enum enum_led_state state);
+void led_set_submenu(enum enum_led_state state);
 
 void led_set_all(enum enum_led_state state);
 #endif

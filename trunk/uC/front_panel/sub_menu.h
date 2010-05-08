@@ -33,8 +33,21 @@ typedef struct {
 	unsigned char direction_count;
 	//! The directions
 	unsigned char direction_name[8][SUB_MENU_ARRAY_NAME_SIZE];
+	//! The length of the output str
+	unsigned char output_str_dir_length[8];
 	//! The output strings of the different directions
 	unsigned char output_str_dir[8][SUB_MENU_ARRAY_STR_SIZE];
 } struct_sub_menu_array;
+
+void sub_menu_load(unsigned char band_index);
+unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos);
+
+unsigned char sub_menu_get_count(void);
+unsigned char sub_menu_get_current_pos(unsigned char ant_index);
+void sub_menu_set_current_pos(unsigned char ant_index, unsigned char new_pos);
+unsigned char sub_menu_get_type(unsigned char ant_index);
+
+void sub_menu_pos_down(unsigned char ant_index);
+void sub_menu_pos_up(unsigned char ant_index);
 
 #endif

@@ -35,8 +35,10 @@
 #define CLEAR_RADIO_FREQ_AREA()	glcd_clear_area(70,128,58,64)
 //! Macro that clears the RX antenna area
 #define CLEAR_RX_ANTENNA_AREA() glcd_clear_area(0,70,58,64)
-//! Macro that clears the RX antenna area
+//! Macro that clears the rotator area
 #define CLEAR_SET_ROTATOR_AREA() glcd_clear_area(0,80,58,64)
+//! Macro that clears the sub menu array direction area
+#define CLEAR_SET_SUB_MENU_ARRAY_AREA() glcd_clear_area(44,84,35,64)
 
 
 #define DISPLAY_SCREENSAVER_DEF_CONTRAST	20
@@ -125,5 +127,6 @@ void display_show_set_heading(unsigned int rotator_heading, unsigned char view_3
 void display_text_center_adjust(unsigned char y,char *str, unsigned char length, unsigned char font);
 
 void display_update_radio_freq(void);
+void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type);
 
 #endif

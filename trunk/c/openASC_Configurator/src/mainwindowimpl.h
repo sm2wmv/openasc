@@ -139,6 +139,9 @@ private slots:
 	void pushButtonSubMenuAnt3Pressed();
 	void pushButtonSubMenuAnt4Pressed();
 	void checkBoxSubMenuEnabledAnt1Clicked(bool state);
+	void checkBoxSubMenuEnabledAnt2Clicked(bool state);
+	void checkBoxSubMenuEnabledAnt3Clicked(bool state);
+	void checkBoxSubMenuEnabledAnt4Clicked(bool state);
 	
 	/* EXTERNAL KEYPAD */	
 	void pushButtonExt0Pressed();

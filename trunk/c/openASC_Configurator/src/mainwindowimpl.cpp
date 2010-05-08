@@ -226,6 +226,8 @@ void MainWindowImpl::comboBoxBandLimitBandCurrentIndexChanged(int index) {
 }
 
 void MainWindowImpl::comboBoxBandCurrentIndexChanged(int index) {
+	comboBoxAntennaCombination->setCurrentIndex(0);
+
 	lineEditBandOutputStrHigh->setText(bandData[index].getBandOutputStrHigh());
 	lineEditBandOutputStrLow->setText(bandData[index].getBandOutputStrLow());
 	
@@ -235,7 +237,12 @@ void MainWindowImpl::comboBoxBandCurrentIndexChanged(int index) {
 	lineEditAntennaName4->setText(bandData[index].getAntennaName(3));
 	
 	lineEditAntennaOutputStr->setText(bandData[comboBoxBand->currentIndex()].getAntennaOutputStr(comboBoxAntennaCombination->currentIndex()));
-	
+
+	if (bandData[index].getCombinationAllowed(comboBoxAntennaCombination->currentIndex()))
+		checkBoxCombinationAllowed->setChecked(true);
+	else
+		checkBoxCombinationAllowed->setChecked(false);
+
 	checkBoxMultiband1->setChecked(bandData[comboBoxBand->currentIndex()].getAntennaMultiband(0));
 	checkBoxMultiband2->setChecked(bandData[comboBoxBand->currentIndex()].getAntennaMultiband(1));
 	checkBoxMultiband3->setChecked(bandData[comboBoxBand->currentIndex()].getAntennaMultiband(2));
@@ -252,6 +259,26 @@ void MainWindowImpl::comboBoxBandCurrentIndexChanged(int index) {
 	else if (defaultAntennaIndex == 3)
 		radioButtonAntennaDefault4->setChecked(true);
 	
+	if (bandData[index].getSubMenuType(0) == SUBMENU_NONE)
+		checkBoxSubMenuEnabledAnt1->setChecked(false);
+	else
+		checkBoxSubMenuEnabledAnt1->setChecked(true);
+
+	if (bandData[index].getSubMenuType(1) == SUBMENU_NONE)
+		checkBoxSubMenuEnabledAnt2->setChecked(false);
+	else
+		checkBoxSubMenuEnabledAnt2->setChecked(true);
+
+	if (bandData[index].getSubMenuType(2) == SUBMENU_NONE)
+		checkBoxSubMenuEnabledAnt3->setChecked(false);
+	else
+		checkBoxSubMenuEnabledAnt3->setChecked(true);
+
+	if (bandData[index].getSubMenuType(3) == SUBMENU_NONE)
+		checkBoxSubMenuEnabledAnt4->setChecked(false);
+	else
+		checkBoxSubMenuEnabledAnt4->setChecked(true);
+
 	reloadCurrentRotatorProperties();
 }
 
@@ -880,6 +907,24 @@ void MainWindowImpl::checkBoxSubMenuEnabledAnt1Clicked(bool state) {
 	}
 }
 
+void MainWindowImpl::checkBoxSubMenuEnabledAnt2Clicked(bool state) {
+	if (state == false) {
+		bandData[comboBoxBand->currentIndex()].setSubMenuType(1,SUBMENU_NONE);
+	}
+}
+
+void MainWindowImpl::checkBoxSubMenuEnabledAnt3Clicked(bool state) {
+	if (state == false) {
+		bandData[comboBoxBand->currentIndex()].setSubMenuType(2,SUBMENU_NONE);
+	}
+}
+
+void MainWindowImpl::checkBoxSubMenuEnabledAnt4Clicked(bool state) {
+	if (state == false) {
+		bandData[comboBoxBand->currentIndex()].setSubMenuType(3,SUBMENU_NONE);
+	}
+}
+
 void MainWindowImpl::radioButtonAntennaDefault1Clicked(bool state) {
 	if (state == true) {
 		bandData[comboBoxBand->currentIndex()].setDefaultAntenna(0);
@@ -1334,6 +1379,9 @@ void MainWindowImpl::setupConnections() {
 	connect(pushButtonSubMenuAnt3, SIGNAL(pressed()), this, SLOT(pushButtonSubMenuAnt3Pressed()));
 	connect(pushButtonSubMenuAnt4, SIGNAL(pressed()), this, SLOT(pushButtonSubMenuAnt4Pressed()));	
 	connect(checkBoxSubMenuEnabledAnt1, SIGNAL(clicked(bool)), this, SLOT(checkBoxSubMenuEnabledAnt1Clicked(bool)));
+	connect(checkBoxSubMenuEnabledAnt2, SIGNAL(clicked(bool)), this, SLOT(checkBoxSubMenuEnabledAnt2Clicked(bool)));
+	connect(checkBoxSubMenuEnabledAnt3, SIGNAL(clicked(bool)), this, SLOT(checkBoxSubMenuEnabledAnt3Clicked(bool)));
+	connect(checkBoxSubMenuEnabledAnt4, SIGNAL(clicked(bool)), this, SLOT(checkBoxSubMenuEnabledAnt4Clicked(bool)));
 	
 	/* External keypad */
 	connect(pushButtonExt0, SIGNAL(pressed()), this, SLOT(pushButtonExt0Pressed()));

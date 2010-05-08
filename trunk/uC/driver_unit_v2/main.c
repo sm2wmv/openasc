@@ -283,6 +283,19 @@ void bus_parse_message(void) {
 			/* Data[0..n] -> | ADDR | INPUT # | */
 			driver_status.ptt_interlock_input[(int)bus_message.data[1]] = bus_message.data[0];
 		}
+		else if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT) {
+			for (unsigned char i=0;i<bus_message.length;i++)
+				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT);
+		}
+		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_OUTPUT) {
+			for (unsigned char i=0;i<bus_message.length;i++)
+				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+		}		
+		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_OUTPUTS) {
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+		}
 		else if (bus_message.cmd == BUS_CMD_SYNC) {
 			
 		}

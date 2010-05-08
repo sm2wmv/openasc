@@ -114,6 +114,8 @@
 #define KNOB_FUNCTION_SET_HEADING	3
 //! Auto select, pick the one which is most likely to be used
 #define KNOB_FUNCTION_AUTO				4
+//! Knob function set submenu option
+#define KNOB_FUNCTION_SET_SUBMENU	5
 
 //! RX antenna name length
 #define RX_ANTENNA_NAME_LENGTH				15
@@ -142,6 +144,8 @@
 #define FUNC_STATUS_ROTATE						1
 //! Define for function status, to select which antenna that should be rotated
 #define FUNC_STATUS_SELECT_ANT_ROTATE	2
+//! Define for function status, to select sub menu
+#define FUNC_STATUS_SUBMENU						3
 
 //! Display level openASC logo
 #define DISPLAY_LEVEL_LOGO		0
@@ -251,6 +255,9 @@ typedef struct {
 	
 	/*! The last RX antenna used */
 	unsigned char last_rx_antenna;
+	
+	/*! The sub menu antenna index we are changing */
+	unsigned char sub_menu_antenna_index;
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM
