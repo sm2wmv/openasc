@@ -330,8 +330,6 @@ void computer_interface_parse_data(void) {
 			computer_interface_send(CTRL_DONE, 0, 0);
 		}
 		else if (computer_comm.command == CTRL_SET_ANT_DATA) {
-			//TODO: Sub menu support
-			
 			switch(computer_comm.rx_buffer_start[0]) {
 				case CTRL_SET_ANT_DATA_TEXT:
 					antenna_ptr->antenna_text_length[(int)computer_comm.rx_buffer_start[2]] = computer_comm.rx_buffer_start[3];

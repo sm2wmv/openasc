@@ -214,91 +214,132 @@ void bus_parse_message(void) {
 			}
 		}
 	}
-	else {
-		if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT) {
+	switch (bus_message.cmd) {
+		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				deactivate_output(bus_message.from_addr,bus_message.data[i]);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
-		}		
-		else if (bus_message.cmd == BUS_CMD_DRIVER_GET_STATUS) {
+			break;
+		case BUS_CMD_DRIVER_GET_STATUS:
 			
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_owner[i-1] == bus_message.from_addr)
 					deactivate_output(bus_message.from_addr,i);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
-		}		
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				deactivate_output(bus_message.from_addr,bus_message.data[i]);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
-		}		
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				deactivate_output(bus_message.from_addr,bus_message.data[i]);
-		}	
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
-		}
-		else if (bus_message.cmd == BUS_CMD_GET_TEMPERATURE) {
-			unsigned int temp_t = lm76_get_temp();
+			break;
+		case BUS_CMD_GET_TEMPERATURE:
+			/*unsigned int temp_t = lm76_get_temp();
 			unsigned char temp[2];
 			temp[0] = (temp_t & 0xFF00) >> 8;
 			temp[1] = (temp_t & 0x00FF);
 
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr, 0, BUS_CMD_GET_TEMPERATURE,2, temp);
-		}
-		else if (bus_message.cmd == BUS_CMD_SET_PTT_SETTINGS) {
+			bus_add_tx_message(bus_get_address(), bus_message.from_addr, 0, BUS_CMD_GET_TEMPERATURE,2, temp);*/
+			break;
+		case BUS_CMD_SET_PTT_SETTINGS:
 			/* Data[0..n] -> | ADDR | INPUT # | */
 			driver_status.ptt_interlock_input[(int)bus_message.data[1]] = bus_message.data[0];
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT) {
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT);
-		}
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_OUTPUT) {
+				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT:
 			for (unsigned char i=0;i<bus_message.length;i++)
 				deactivate_output(bus_message.from_addr,bus_message.data[i]);
-		}		
-		else if (bus_message.cmd == BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_OUTPUTS) {
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
-				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT)
 					deactivate_output(bus_message.from_addr,i);
-		}
-		else if (bus_message.cmd == BUS_CMD_SYNC) {
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT:
+			for (unsigned char i=0;i<bus_message.length;i++)
+				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT:
+			for (unsigned char i=0;i<bus_message.length;i++)
+				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT:
+			for (unsigned char i=0;i<bus_message.length;i++)
+				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT:
+			for (unsigned char i=0;i<bus_message.length;i++)
+				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT:
+			for (unsigned char i=0;i<bus_message.length;i++)
+				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT:
+			for (unsigned char i=0;i<bus_message.length;i++)
+				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT)
+					deactivate_output(bus_message.from_addr,i);
+			break;
+		case BUS_CMD_SYNC:
+			break;
+		default:
 			
-		}
+			break;
 	}
 	
 	//Drop the message
