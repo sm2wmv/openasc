@@ -93,6 +93,10 @@
 #define FLAG_BLINK_BAND_LED				9
 //! Indicate that we should poll the radio
 #define FLAG_POLL_RADIO						10
+//! This flag is set to indicate that we have changed the sub menu
+#define FLAG_CHANGE_SUBMENU					11
+//! This flag is to indicate that a sub menu change should occur, ie sent out on the bus
+#define FLAG_PROCESS_SUBMENU_CHANGE	12
 
 
 //! The poll interval of the front panel buttons (unit = ms)
@@ -165,6 +169,9 @@
 
 //! The time from when a pulse sensor change occured to the actual change does happen, in ms
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
+
+//! The time from when a pulse sensor change occured to the actual change does happen, in ms
+#define PULSE_SENSOR_SUBMENU_CHANGE_LIMIT	250
 
 //! Sub menu type NONE
 #define SUBMENU_NONE				0

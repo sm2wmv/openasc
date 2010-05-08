@@ -67,9 +67,7 @@ void event_set_error(unsigned char error_type, unsigned char state) {
 	else
 		flag_errors |= (1<<error_type);
 	
-	#ifdef ERROR_DEBUG
-		printf("ERROR_TYPE: %i - STATE: %i\n",error_type,state);
-	#endif
+	main_update_ptt_status();
 }
 
 /*! \brief Retrieve the state error flags */
@@ -250,10 +248,12 @@ void event_pulse_sensor_up(void) {
 	//		display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
-			sub_menu_pos_up(status.sub_menu_antenna_index);
-			
-			sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
-			display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
+			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+				sub_menu_pos_up(status.sub_menu_antenna_index);
+				
+				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
+				display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
+			}
 		}
 	}
 }
@@ -289,12 +289,13 @@ void event_pulse_sensor_down(void) {
 //			display_show_set_heading(status.new_beamheading, antenna_ctrl_get_360_deg_view(status.antenna_to_rotate-1));
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
-			sub_menu_pos_down(status.sub_menu_antenna_index);
-			
-			//Send the data out on the bus
-			sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
-			display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
-		}		
+			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+				sub_menu_pos_down(status.sub_menu_antenna_index);
+				
+				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
+				display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
+			}
+		}
 	}
 }
 

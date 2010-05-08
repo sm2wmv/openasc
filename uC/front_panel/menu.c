@@ -94,10 +94,12 @@ void menu_show_text(struct_menu_text menu_text) {
 		for (int i=0;i<NR_OF_ERRORS;i++) {
 			if (flags & (1<<i)) {
 				glcd_text(MENU_OPTION_LEFT_POS,18+count*10,FONT_SEVEN_DOT,menu_errors[i].text,strlen(menu_errors[i].text));
+				count++;
 			}
-		
-			count++;
 		}
+	}
+	else if (menu_text.pos == MENU_POS_SHOW_ACTIVITY) {
+		//TODO: Implement to show the ping list and make it possible to scroll down the list
 	}
 	else {
 		//Show the "Menu" text
