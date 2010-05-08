@@ -50,4 +50,8 @@ unsigned char sub_menu_get_type(unsigned char ant_index);
 void sub_menu_pos_down(unsigned char ant_index);
 void sub_menu_pos_up(unsigned char ant_index);
 
+void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos);
+void sub_menu_deactivate_all(void);
+void sub_menu_activate_all(void);
+
 #endif

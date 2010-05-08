@@ -31,7 +31,7 @@
 //! Internal communication command to redirect data
 #define INT_COMM_REDIRECT_DATA	0x10
 
-//!TODO: We might want to change the PS2_STRUCT so that it uses less space, grouping together flags
+//TODO: We might want to change the PS2_STRUCT so that it uses less space, grouping together flags
 
 //! Struct of the PS/2 interface status
 typedef struct {

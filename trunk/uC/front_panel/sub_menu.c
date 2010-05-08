@@ -32,6 +32,7 @@
 #include "band_ctrl.h"
 
 #include "../global.h"
+#include "../internal_comm.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -39,16 +40,18 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
-//TODO: Fix the transmission of submenu output str out on the bus
-//      For this we also need to figure out a way so that we can have multiple selected sub menu options on different
-//      antennas at the same time. Maybe insert some antenna index which is saved in the driver units? Or just ignore 
-//      using DEACTIVATE ALL commands?
-
 //TODO: Fix the implementation if more than one antenna has got a sub menu, should be done in event_handler.c
+//TODO: Maybe fix so that we are able to select RX antennas while in the sub menu of an ARRAY?
 
 struct_sub_menu_array current_sub_menu_array[4];
 
 unsigned char curr_option_selected[4] = {0,0,0,0};
+
+//! Array which we store the current devices which we have activated antenna outputs on
+unsigned char current_activated_sub_outputs[SUB_MENU_ARRAY_STR_SIZE][4];
+//! How many devices we have activated antenna outputs on
+unsigned char current_activated_sub_outputs_length[4] = {0,0,0,0};
+
 
 /*! \brief Load a set of sub menu from the EEPROM for a specific band
  *  \param band_index Which we band */
@@ -115,8 +118,121 @@ void sub_menu_pos_up(unsigned char ant_index) {
 }
 
 
-/*! \brief Send the output string for the rx antenna to the bus 
- *  \param index The index of the antenna you wish to send the string of */
-void sub_menu_send_data_to_bus(unsigned char ant_index) {
+/*! \brief Send the output string for the sub menu position to the bus 
+ *  \param ant_index The index of the antenna you wish to send the string of 
+ *  \param pos The sub menu position we wish to send the output str of */
+void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
+	unsigned char activate_cmd, deactivate_cmd, deactivate_all_cmd;
+	
+	unsigned char length = 0;
+	
+	switch (ant_index) {
+		case 0:
+			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT;
+			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT;
+			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS;
+			
+			length = current_sub_menu_array[0].output_str_dir_length[pos];
+			break;
+		case 1:
+			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT;
+			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT;
+			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS;
+			
+			length = current_sub_menu_array[1].output_str_dir_length[pos];
+			break;
+		case 2:
+			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT;
+			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT;
+			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS;
+			
+			length = current_sub_menu_array[2].output_str_dir_length[pos];
+			break;
+		case 3:
+			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT;
+			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT;
+			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS;
+			
+			length = current_sub_menu_array[3].output_str_dir_length[pos];
+			break;
+		default:
+			break;
+	}
+	
+	if (length > 0) {
+		unsigned char temp[length];
+	
+		unsigned char start_pos = 0;
+		unsigned char count = 0;
+		unsigned char addr_count=0;
 
+		unsigned char i=0;
+			
+		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[ant_index], current_activated_sub_outputs_length[ant_index], deactivate_all_cmd);
+		current_activated_sub_outputs_length[ant_index] = 0;
+		
+		while(i<length) {
+			if (current_sub_menu_array[3].output_str_dir[pos][i] == OUTPUT_ADDR_DELIMITER) {
+				//Will add which address the message was sent to
+				current_activated_sub_outputs[ant_index][addr_count++] = current_sub_menu_array[3].output_str_dir[pos][i+1];
+				
+				if (current_sub_menu_array[3].output_str_dir[pos][i+1] != 0x00)
+					bus_add_tx_message(bus_get_address(), current_sub_menu_array[3].output_str_dir[pos][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), activate_cmd, count-start_pos, temp+start_pos);
+				else
+					internal_comm_add_tx_message(activate_cmd,count-start_pos, (char *)(temp+start_pos));
+
+				start_pos += count;
+				i++;
+			} 
+			else {
+				temp[count] = current_sub_menu_array[3].output_str_dir[pos][i];
+				count++;
+			}
+			
+			i++;
+		}
+		
+		current_activated_sub_outputs_length[ant_index] = addr_count;
+	}
+	else if (current_activated_sub_outputs_length[ant_index] > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[ant_index], current_activated_sub_outputs_length[ant_index], deactivate_all_cmd);
+		current_activated_sub_outputs_length[ant_index] = 0;
+	}
+}
+
+void sub_menu_deactivate_all(void) {
+	if (current_activated_sub_outputs_length[0] > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[0], current_activated_sub_outputs_length[0], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS);
+		current_activated_sub_outputs_length[0] = 0;
+	}
+	
+	if (current_activated_sub_outputs_length[1] > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[1], current_activated_sub_outputs_length[1], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS);
+		current_activated_sub_outputs_length[1] = 0;
+	}
+	
+	if (current_activated_sub_outputs_length[2] > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[2], current_activated_sub_outputs_length[2], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS);
+		current_activated_sub_outputs_length[2] = 0;
+	}
+	
+	if (current_activated_sub_outputs_length[3] > 0) {
+		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[3], current_activated_sub_outputs_length[3], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS);
+		current_activated_sub_outputs_length[3] = 0;
+	}
+}
+
+void sub_menu_activate_all(void) {
+	//Activate all the sub menu options avaible for default position #0	
+	if (antenna_ctrl_get_sub_menu_type(0) != SUBMENU_NONE)
+		sub_menu_send_data_to_bus(0,0);
+	
+	if (antenna_ctrl_get_sub_menu_type(1) != SUBMENU_NONE)	
+		sub_menu_send_data_to_bus(1,0);
+	
+	if (antenna_ctrl_get_sub_menu_type(2) != SUBMENU_NONE)	
+		sub_menu_send_data_to_bus(2,0);
+	
+	if (antenna_ctrl_get_sub_menu_type(3) != SUBMENU_NONE)
+		sub_menu_send_data_to_bus(3,0);
 }

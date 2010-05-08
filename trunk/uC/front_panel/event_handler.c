@@ -252,6 +252,7 @@ void event_pulse_sensor_up(void) {
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
 			sub_menu_pos_up(status.sub_menu_antenna_index);
 			
+			sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
 			display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
 		}
 	}
@@ -290,6 +291,8 @@ void event_pulse_sensor_down(void) {
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
 			sub_menu_pos_down(status.sub_menu_antenna_index);
 			
+			//Send the data out on the bus
+			sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
 			display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
 		}		
 	}

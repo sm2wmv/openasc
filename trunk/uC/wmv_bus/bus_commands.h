@@ -82,30 +82,48 @@
 /*! Set the PTT settings, which PTT input that corresponds to which device */
 #define BUS_CMD_SET_PTT_SETTINGS										0x25
 /*! Activate sub menu output */
-#define BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT				0x26
+#define BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT					0x26
 /*! Deactivate sub menu output */
-#define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_OUTPUT			0x27
+#define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT				0x27
 /*! Deactivate all sub menu outputs */
-#define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_OUTPUTS	0x28
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS	0x28
+/*! Activate sub menu output */
+#define BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT					0x29
+/*! Deactivate sub menu output */
+#define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT				0x3A
+/*! Deactivate all sub menu outputs */
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS	0x3B
+/*! Activate sub menu output */
+#define BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT					0x3C
+/*! Deactivate sub menu output */
+#define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT				0x3D
+/*! Deactivate all sub menu outputs */
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS	0x3E
+/*! Activate sub menu output */
+#define BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT					0x3F
+/*! Deactivate sub menu output */
+#define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT				0x40
+/*! Deactivate all sub menu outputs */
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS	0x41
 
 /*! Set the target rotation direction and start rotation */
-#define BUS_CMD_ROTATOR_SET_ANGLE		0x40
+#define BUS_CMD_ROTATOR_SET_ANGLE		0x60
 /*! Get the current direction */
-#define BUS_CMD_ROTATOR_GET_ANGLE		0x41
+#define BUS_CMD_ROTATOR_GET_ANGLE		0x61
 /*! Get the current direction */
-#define BUS_CMD_ROTATOR_GET_STATUS	0x42
+#define BUS_CMD_ROTATOR_GET_STATUS	0x62
 /*! Rotate ClockWise */
-#define BUS_CMD_ROTATOR_ROTATE_CW		0x43
+#define BUS_CMD_ROTATOR_ROTATE_CW		0x63
 /*! Rotate CounterClockWise */
-#define BUS_CMD_ROTATOR_ROTATE_CCW	0x44
+#define BUS_CMD_ROTATOR_ROTATE_CCW	0x64
 /*! Stop the rotation of the rotator */
-#define BUS_CMD_ROTATOR_STOP				0x45	
+#define BUS_CMD_ROTATOR_STOP				0x65	
 /*! Transparent command which just redirects the data to the serial port */
-#define BUS_CMD_TRANSPARENT					0x46
+#define BUS_CMD_TRANSPARENT					0x66
 
 /*! PowerMeter information */
-#define BUS_CMD_POWERMETER_STATUS 		0x50
+#define BUS_CMD_POWERMETER_STATUS 		0x70
 /*! PowerMeter calibration command */
-#define BUS_CMD_POWERMETER_CALIBRATE	0x51
+#define BUS_CMD_POWERMETER_CALIBRATE	0x71
 
 #endif

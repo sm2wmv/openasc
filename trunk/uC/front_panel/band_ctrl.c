@@ -172,6 +172,7 @@ void band_ctrl_change_band(unsigned char band) {
 		antenna_ctrl_deactivate_all_rx_band();
 		antenna_ctrl_deactivate_all();
 		band_ctrl_deactivate_all();
+		sub_menu_deactivate_all();
 		
 		led_set_rxant(LED_STATE_OFF);
 		set_knob_function(KNOB_FUNCTION_AUTO);
@@ -189,6 +190,9 @@ void band_ctrl_change_band(unsigned char band) {
 			antenna_ctrl_send_rx_ant_band_data_to_bus(band);
 			
 			antenna_ctrl_select_default_ant();
+			
+			//Activate all default sub menu options
+			sub_menu_activate_all();
 		}
 		
 		main_update_ptt_status();
@@ -260,7 +264,6 @@ unsigned char *band_ctrl_get_low_output_str(void) {
 /*! \brief Retrieve which band portion we are currently at 
  *  \return BAND_LOW, BAND_HIGH or BAND_UNDEFINED */
 unsigned char band_ctrl_get_portion(void) {
-	//TODO: Add support for others as well not only radio
 	if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() == RADIO_INTERFACE_BCD))) {
 		if (status.current_band_portion == BAND_HIGH)
 			return(BAND_HIGH);
