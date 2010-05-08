@@ -243,7 +243,7 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			temp |= (PINF & (1<<0)) << 2;
 			temp |= (PINF & (1<<1)) << 2;
 			
-			if (band_change_count < 10000) {
+			/*if (band_change_count < 10000) {
 				temp = 0x03;
 			}
 			else if ((band_change_count > 10000) && (band_change_count < 20000)) {
@@ -252,7 +252,7 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			else {
 				temp = 0x02;
 				band_change_count = 0;
-			}
+			}*/
 			
 			internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
 			break;

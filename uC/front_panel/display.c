@@ -33,6 +33,7 @@
 #include "ds1307.h"
 #include "antenna_ctrl.h"
 #include "radio_interface.h"
+#include "sub_menu.h"
 
 //! Flag which indicates if the screensaver is activated or not
 unsigned char screensaver_mode = 0;
@@ -205,6 +206,26 @@ void display_rotator_directions(unsigned char band) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(3));
 		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
 	}
+	
+	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
+		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(0, sub_menu_get_current_pos(0)));
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+	}
+	
+	if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_VERT_ARRAY) {
+		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(1, sub_menu_get_current_pos(1)));
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+	}
+	
+	if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_VERT_ARRAY) {
+		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(2, sub_menu_get_current_pos(2)));
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+	}
+	
+	if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
+		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(3, sub_menu_get_current_pos(3)));
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+	}	
 }
 
 /**
@@ -486,5 +507,26 @@ void display_update_radio_freq(void) {
 		}
 		
 		glcd_update_all();
+	}
+}
+
+void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type) {
+	if (status.current_display_level == DISPLAY_LEVEL_SUBMENU) {
+		char temp[10];
+		
+		if (sub_menu_type == SUBMENU_VERT_ARRAY) {
+			CLEAR_SET_SUB_MENU_ARRAY_AREA();
+			
+			sprintf((char *)temp, "%s",antenna_ctrl_get_antenna_text(ant_index));
+			display_text_center_adjust(6, temp, strlen(temp), FONT_NINE_DOT);
+			
+			sprintf((char *)temp, "Direction");
+			display_text_center_adjust(19, temp, strlen(temp), FONT_NINE_DOT);
+			
+			sprintf((char *)temp, "%s",sub_menu_get_text(ant_index, sub_menu_get_current_pos(ant_index)));
+			display_text_center_adjust(38, temp, strlen(temp), FONT_FIFTEEN_DOT);
+			
+			glcd_update_all();
+		}
 	}
 }

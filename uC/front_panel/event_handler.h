@@ -158,6 +158,8 @@ void event_poll_ext_device(void);
 void event_bus_parse_message(void);
 void event_parse_ext_event(unsigned int ext_event_status);
 
+void event_sub_button_pressed(void);
+
 void event_tx_button1_pressed(void);
 void event_tx_button2_pressed(void);
 void event_tx_button3_pressed(void);

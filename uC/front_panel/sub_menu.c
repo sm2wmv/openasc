@@ -39,18 +39,84 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
-struct_sub_menu_array current_sub_menu;
+//TODO: Fix the transmission of submenu output str out on the bus
+//      For this we also need to figure out a way so that we can have multiple selected sub menu options on different
+//      antennas at the same time. Maybe insert some antenna index which is saved in the driver units? Or just ignore 
+//      using DEACTIVATE ALL commands?
 
-/*! \brief Load a sub menu from the EEPROM
- *  \param band_index Which we band
- *  \param ant_index Which antenna 
- *  \return The kind of sub meny type it is */
-unsigned char sub_menu_load(unsigned char band_index, unsigned char ant_index) {
-	unsigned char sub_menu_type = antenna_ctrl_get_sub_menu_type(ant_index);
+//TODO: Fix the implementation if more than one antenna has got a sub menu, should be done in event_handler.c
+
+struct_sub_menu_array current_sub_menu_array[4];
+
+unsigned char curr_option_selected[4] = {0,0,0,0};
+
+/*! \brief Load a set of sub menu from the EEPROM for a specific band
+ *  \param band_index Which we band */
+void sub_menu_load(unsigned char band_index) {
+	unsigned char sub_menu_type[4];
 	
-	if (sub_menu_type == SUBMENU_VERT_ARRAY) {
-		eeprom_get_ant_sub_menu_array_structure(band_index, ant_index, &current_sub_menu);
+	for (unsigned char i=0;i<4;i++) {
+		sub_menu_type[i] = antenna_ctrl_get_sub_menu_type(i);
+		eeprom_get_ant_sub_menu_array_structure(band_index, i, &current_sub_menu_array[i]);
+	}
+}
+
+/*! \brief Get the text for the sub menu 
+ *  \param ant_index The antenna index we wish to get the antenna text for
+ *  \param pos Which sub menu position to show
+ *  \return Returns the text of the sub menu antenna index */
+unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos) {
+	if (antenna_ctrl_get_sub_menu_type(ant_index) == SUBMENU_VERT_ARRAY) {
+		printf("%s\n",current_sub_menu_array[ant_index].direction_name[pos]);
+		return(current_sub_menu_array[ant_index].direction_name[pos]);
 	}
 	
-	return(sub_menu_type);
+	return("   ");
+}
+
+unsigned char sub_menu_get_current_pos(unsigned char ant_index) {
+	return(curr_option_selected[ant_index]);
+}
+
+void sub_menu_set_current_pos(unsigned char ant_index, unsigned char new_pos) {
+	curr_option_selected[ant_index] = new_pos;
+}
+
+unsigned char sub_menu_get_count(void) {
+	unsigned char temp = 0;
+	
+	for (unsigned char i=0;i<4;i++)
+		if (antenna_ctrl_get_sub_menu_type(i) != SUBMENU_NONE)
+			temp++;
+	
+	return(temp);
+}
+
+unsigned char sub_menu_get_type(unsigned char ant_index) {
+	return(antenna_ctrl_get_sub_menu_type(ant_index));
+}
+
+void sub_menu_pos_down(unsigned char ant_index) {
+	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+		if (sub_menu_get_current_pos(ant_index) > 0)
+			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
+		else
+			sub_menu_set_current_pos(ant_index,current_sub_menu_array[ant_index].direction_count-1);
+	}
+}
+
+void sub_menu_pos_up(unsigned char ant_index) {
+	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_array[ant_index].direction_count - 1)
+			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
+		else
+			sub_menu_set_current_pos(ant_index,0);
+	}
+}
+
+
+/*! \brief Send the output string for the rx antenna to the bus 
+ *  \param index The index of the antenna you wish to send the string of */
+void sub_menu_send_data_to_bus(unsigned char ant_index) {
+
 }

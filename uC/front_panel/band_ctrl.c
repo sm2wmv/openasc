@@ -30,6 +30,7 @@
 #include "eeprom.h"
 #include "led_control.h"
 #include "radio_interface.h"
+#include "sub_menu.h"
 #include "../global.h"
 
 #include "../internal_comm.h"
@@ -125,6 +126,9 @@ void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 void band_ctrl_load_band(unsigned char band) {
 	//Retrieve the band data from the EEPROM
 	eeprom_get_band_data(band,&current_band);
+	
+	//Load the sub menus for this band
+	sub_menu_load(band);
 }
 
 /*! \brief Function will send out new band portion settings for the current selected band *

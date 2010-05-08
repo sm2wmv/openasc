@@ -80,8 +80,8 @@
  * PC3 - Input  - Button RX/TX Mode
  * PC4 - Output - LED Button Rotate
  * PC5 - Input  - Button Rotate
- * PC6 - Output - LED
- * PC7 - Output - LED
+ * PC6 - Output - LED Rotation
+ * PC7 - Output - LED AUX
  * =====================================================================================
  *
  *
@@ -92,7 +92,7 @@
  * PD2 - Input  - USB RXD	(RXD 1)
  * PD3 - Output - USB TXD	(TXD 1)
  * PD4 - Output - LED Button AUX
- * PD5 - Input  - Button AUX
+ * PD5 - Input  - Button SUB
  * PD6 - Output - LED Button RX ANT 2
  * PD7 - Input  - Button RX ANT 2
  * =====================================================================================
@@ -224,9 +224,11 @@
 //! Bit offset of LED RX ANTENNA
 #define LED_RXANT_BIT				6
 //! Bit offset of LED SUB MENU
-#define LED_AUX_BIT					4
-//! Bit offset of LED for MENU system
+#define LED_SUBMENU_BIT			4
+//! bit offset of LED MENU
 #define LED_MENU_BIT				7
+//! Bit offset of LED for MENU system
+#define LED_AUX_BIT					7
 
 //Button and knobs
 //! Bit offset of the pulse sensor

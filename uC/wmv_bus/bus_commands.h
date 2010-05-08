@@ -81,6 +81,12 @@
 #define BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS	0x24
 /*! Set the PTT settings, which PTT input that corresponds to which device */
 #define BUS_CMD_SET_PTT_SETTINGS										0x25
+/*! Activate sub menu output */
+#define BUS_CMD_DRIVER_ACTIVATE_SUBMENU_OUTPUT				0x26
+/*! Deactivate sub menu output */
+#define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_OUTPUT			0x27
+/*! Deactivate all sub menu outputs */
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_OUTPUTS	0x28
 
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x40
