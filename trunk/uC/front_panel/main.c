@@ -244,6 +244,10 @@ void main_update_ptt_status(void) {
 	if (radio_get_ptt_status() != 0)
 		state = 2;
 	
+	//Comment this part for testing outside the bus
+	//if (event_get_errors() != 0)
+	//	state = 1;
+	
 //	printf("UPDATE PTT, state = %i\n",state);
 	
 	if (state == 0) {
@@ -404,7 +408,7 @@ int main(void){
 	band_ctrl_load_band_limits();
 
 	//Init the realtime clock
-	//ds1307_init();
+	ds1307_init();
 			
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
@@ -573,6 +577,14 @@ int main(void){
 			main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
 			main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
 		}
+		
+		if (main_flags & (1<<FLAG_PROCESS_SUBMENU_CHANGE)) {
+			sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
+			
+			main_flags &= ~(1<<FLAG_CHANGE_SUBMENU);
+			main_flags &= ~(1<<FLAG_PROCESS_SUBMENU_CHANGE);
+		}
+		
 		if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
@@ -631,9 +643,9 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 /*	if (!display_screensaver_mode()) {
-		if (counter_screensaver_timeout == DISPLAY_SCREENSAVER_TIMEOUT) {
-			//event_add_message((void*)display_update_screensaver, 0);
-			//display_set_contrast(DISPLAY_SCREENSAVER_DEF_CONTRAST);
+		if (counter_screensaver_timeout >= DISPLAY_SCREENSAVER_TIMEOUT) {
+			event_add_message((void*)display_update_screensaver, 0,0);
+			display_set_backlight(DISPLAY_SCREENSAVER_DEF_CONTRAST);
 			
 			counter_screensaver_timeout = 0;
 		}
@@ -688,6 +700,11 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	if (counter_last_pulse_event > PULSE_SENSOR_RX_ANT_CHANGE_LIMIT) {
 		if (main_flags & (1<<FLAG_CHANGE_RX_ANT))
 			main_flags |= (1<<FLAG_PROCESS_RX_ANT_CHANGE);
+	}
+	
+	if (counter_last_pulse_event > PULSE_SENSOR_SUBMENU_CHANGE_LIMIT) {
+		if (main_flags & (1<<FLAG_CHANGE_SUBMENU))
+			main_flags |= (1<<FLAG_PROCESS_SUBMENU_CHANGE);
 	}
 	
 	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {

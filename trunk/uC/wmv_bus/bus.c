@@ -524,6 +524,7 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 		
 		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 			event_set_error(ERROR_TYPE_BUS_SYNC,1);
+			led_set_error(LED_STATE_ON);
 		#endif
 	}
 
