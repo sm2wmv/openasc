@@ -157,7 +157,6 @@ void main_update_display(void) {
 
 /*! \brief Send a message to the motherboard that the openASC box should be shut off. Will deactivate the power supply relay. */
 void shutdown_device(void) {
-
 	led_set_error(LED_STATE_ON);
 	
 	internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
@@ -351,6 +350,8 @@ int main(void){
 	status.new_band = BAND_UNDEFINED;
 	status.current_band_portion = BAND_LOW;
 	status.new_band_portion = BAND_LOW;
+	status.sub_menu_antenna_index = 0;
+	status.rotator_step_resolution = 5;
 		
 	//Load all settings from the EEPROM	
 	load_settings();
@@ -536,7 +537,7 @@ int main(void){
 				else if (val == -1)
 					event_pulse_sensor_down();
 				
-				counter_last_pulse_event=0;
+				counter_last_pulse_event = 0;
 			}
 		}
 		
@@ -667,7 +668,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	//Update every 500 ms
-/*	if ((counter_ms % 500) == 0) {
+	if ((counter_ms % 500) == 0) {
 		unsigned char flags = 0;
 		
 		for (int i=0;i<4;i++) {
@@ -695,7 +696,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 				main_flags |= (1<<FLAG_LAST_ANTENNA_BLINK);
 			}
 		}
-	}*/
+	}
 	
 	if (counter_last_pulse_event > PULSE_SENSOR_RX_ANT_CHANGE_LIMIT) {
 		if (main_flags & (1<<FLAG_CHANGE_RX_ANT))

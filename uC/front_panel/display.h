@@ -32,9 +32,9 @@
 //! Macro that clears the rotator area of the LCD
 #define CLEAR_ROTATOR_AREA()	glcd_clear_area(90,128,0,56)
 //! Macro that clears the radio frequency area of the LCD
-#define CLEAR_RADIO_FREQ_AREA()	glcd_clear_area(70,128,58,64)
+#define CLEAR_RADIO_FREQ_AREA()	glcd_clear_area(90,128,58,64)
 //! Macro that clears the RX antenna area
-#define CLEAR_RX_ANTENNA_AREA() glcd_clear_area(0,70,58,64)
+#define CLEAR_RX_ANTENNA_AREA() glcd_clear_area(0,90,58,64)
 //! Macro that clears the rotator area
 #define CLEAR_SET_ROTATOR_AREA() glcd_clear_area(0,80,58,64)
 //! Macro that clears the sub menu array direction area
@@ -52,7 +52,7 @@
 //! The position of the antenna1 rotator text X position
 #define DISPLAY_TEXT_ROTATOR_ANT1_X_POS	128
 //! The position of the antenna1 rotator text Y position
-#define DISPLAY_TEXT_ROTATOR_ANT1_Y_POS	2
+#define DISPLAY_TEXT_ROTATOR_ANT1_Y_POS	1
 
 //! The position of the antenna2 rotator text X position
 #define DISPLAY_TEXT_ROTATOR_ANT2_X_POS	128
@@ -62,12 +62,12 @@
 //! The position of the antenna3 rotator text X position
 #define DISPLAY_TEXT_ROTATOR_ANT3_X_POS	128
 //! The position of the antenna3 rotator text Y position
-#define DISPLAY_TEXT_ROTATOR_ANT3_Y_POS	30
+#define DISPLAY_TEXT_ROTATOR_ANT3_Y_POS	29
 
 //! The position of the antenna4 rotator text X position
 #define DISPLAY_TEXT_ROTATOR_ANT4_X_POS	128
 //! The position of the antenna4 rotator text Y position
-#define DISPLAY_TEXT_ROTATOR_ANT4_Y_POS	44
+#define DISPLAY_TEXT_ROTATOR_ANT4_Y_POS	43
 
 //! The position of the antenna1 text X position
 #define DISPLAY_TEXT_ANT1_X_POS	0
@@ -77,7 +77,7 @@
 //! The position of the antenna2 text X position
 #define DISPLAY_TEXT_ANT2_X_POS	0
 //! The position of the antenna2 text Y position
-#define DISPLAY_TEXT_ANT2_Y_POS	14
+#define DISPLAY_TEXT_ANT2_Y_POS	15
 
 //! The position of the antenna3 text X position
 #define DISPLAY_TEXT_ANT3_X_POS	0

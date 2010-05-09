@@ -1,28 +1,43 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="7" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.c" >
-   <View0 Encoding="" line="0" Type="Source" />
+ <DocsAndViews NumberOfDocuments="12" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/sub_menu.c" >
+   <View0 Encoding="" line="230" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.h" >
-   <View0 Encoding="" line="53" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/band_ctrl.c" >
+   <View0 Encoding="" line="153" Type="Source" />
   </Doc1>
   <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="" line="251" Type="Source" />
+   <View0 Encoding="" line="64" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/fonts.h" >
-   <View0 Encoding="" line="29" Type="Source" />
-  </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/fonts.c" >
+  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/sub_menu.h" >
    <View0 Encoding="" line="0" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.h" >
+   <View0 Encoding="" line="121" Type="Source" />
   </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/menu.c" >
-   <View0 Encoding="" line="90" Type="Source" />
+  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
+   <View0 Encoding="" line="424" Type="Source" />
   </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="" line="291" Type="Source" />
+  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.c" >
+   <View0 Encoding="" line="411" Type="Source" />
   </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/display.c" >
+   <View0 Encoding="" line="306" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.h" >
+   <View0 Encoding="" line="63" Type="Source" />
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/fonts.h" >
+   <View0 Encoding="" line="22" Type="Source" />
+  </Doc9>
+  <Doc10 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/display.h" >
+   <View0 Encoding="" line="39" Type="Source" />
+  </Doc10>
+  <Doc11 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/wmv_bus/bus_tx_queue.c" >
+   <View0 Encoding="" line="57" Type="Source" />
+  </Doc11>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

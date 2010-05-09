@@ -189,42 +189,42 @@ void display_rotator_directions(unsigned char band) {
 	
 	if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_ROTATOR_FLAG)) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(0));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 	
 	if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_ROTATOR_FLAG)) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(1));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 
 	if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_ROTATOR_FLAG)) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(2));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 
 	if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_ROTATOR_FLAG)) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(3));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 	
 	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
 		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(0, sub_menu_get_current_pos(0)));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 	
 	if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_VERT_ARRAY) {
 		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(1, sub_menu_get_current_pos(1)));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 	
 	if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_VERT_ARRAY) {
 		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(2, sub_menu_get_current_pos(2)));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}
 	
 	if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
 		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(3, sub_menu_get_current_pos(3)));
-		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_FIVE_DOT);
+		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}	
 }
 
@@ -289,7 +289,7 @@ void display_radio_freq(unsigned char length, char *freq) {
  * \param mode Which view mode you wish to display */
 void display_view(unsigned char mode) {
 	if (mode == VIEW_ANTENNAS) {
-		glcd_line(0,128,56);
+		glcd_line(0,128,55);
 	}
 }
 
@@ -304,7 +304,7 @@ void display_show_rx_ant(unsigned char ant_index) {
 			
 			sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(ant_index-1));
 			
-			glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_FIVE_DOT, temp, strlen(temp));
+			glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_SIX_DOT, temp, strlen(temp));
 		}
 		else {
 			display_view(VIEW_ANTENNAS);
@@ -399,110 +399,26 @@ void display_update_radio_freq(void) {
 				CLEAR_RADIO_FREQ_AREA();
 		}
 		else if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() == RADIO_INTERFACE_BCD))) {
-			char temp_str[10];
+			char temp_str[4];
 			unsigned char temp_nr_to_view = 0;
 			
-			if (status.selected_band == BAND_160M) {
-				temp_str[0] = '1';
-				temp_str[1] = '6';
-				temp_str[2] = '0';
-				temp_str[3] = 'M';
-				temp_str[4] = ':';
-				temp_str[5] = ' ';
+			if (status.current_band_portion == BAND_HIGH) {
+				temp_str[0] = 'H';
+				temp_str[1] = 'I';
+				temp_str[2] = 'G';
+				temp_str[3] = 'H';
 				
-				if (status.current_band_portion == BAND_HIGH) {
-					temp_str[6] = 'H';
-					temp_str[7] = 'I';
-					temp_str[8] = 'G';
-					temp_str[9] = 'H';
-					
-					temp_nr_to_view = 10;
-				}
-				else if (status.current_band_portion == BAND_LOW) {
-					temp_str[6] = 'L';
-					temp_str[7] = 'O';
-					temp_str[8] = 'W';
-					
-					temp_nr_to_view = 9;
-				}
+				temp_nr_to_view = 4;
 			}
-			else {
-				if (status.selected_band == BAND_80M) {
-					temp_str[0] = '8';
-					temp_str[1] = '0';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_40M) {
-					temp_str[0] = '4';
-					temp_str[1] = '0';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_30M) {
-					temp_str[0] = '3';
-					temp_str[1] = '0';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_20M) {
-					temp_str[0] = '2';
-					temp_str[1] = '0';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_17M) {
-					temp_str[0] = '1';
-					temp_str[1] = '7';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_15M) {
-					temp_str[0] = '1';
-					temp_str[1] = '5';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_12M) {
-					temp_str[0] = '1';
-					temp_str[1] = '2';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
-				else if (status.selected_band == BAND_10M) {
-					temp_str[0] = '1';
-					temp_str[1] = '0';
-					temp_str[2] = 'M';
-					temp_str[3] = ':';
-					temp_str[4] = ' ';
-				}
+			else if (status.current_band_portion == BAND_LOW) {
+				temp_str[0] = 'L';
+				temp_str[1] = 'O';
+				temp_str[2] = 'W';
 				
-				if (status.current_band_portion == BAND_HIGH) {
-					temp_str[5] = 'H';
-					temp_str[6] = 'I';
-					temp_str[7] = 'G';
-					temp_str[8] = 'H';
-					
-					temp_nr_to_view = 9;
-				}
-				else if (status.current_band_portion == BAND_LOW) {
-					temp_str[5] = 'L';
-					temp_str[6] = 'O';
-					temp_str[7] = 'W';
-					
-					temp_nr_to_view = 8;
-				}
+				temp_nr_to_view = 3;
 			}
 			
 			display_radio_freq(temp_nr_to_view,(char *)temp_str);
-			
 			display_view(VIEW_ANTENNAS);
 		}
 		
@@ -518,7 +434,7 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 			CLEAR_SET_SUB_MENU_ARRAY_AREA();
 			
 			sprintf((char *)temp, "%s",antenna_ctrl_get_antenna_text(ant_index));
-			display_text_center_adjust(6, temp, strlen(temp), FONT_NINE_DOT);
+			display_text_center_adjust(3, temp, strlen(temp), FONT_NINE_DOT);
 			
 			sprintf((char *)temp, "Direction");
 			display_text_center_adjust(19, temp, strlen(temp), FONT_NINE_DOT);

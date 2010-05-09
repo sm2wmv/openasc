@@ -77,7 +77,7 @@ void eeprom_get_antenna_data(struct_antenna *data, unsigned char band) {
 	unsigned char *ant_data_ptr = (unsigned char *)data;
 	
 	for (unsigned int i=0;i<sizeof(struct_antenna);i++)
-		*(ant_data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna[band]+i);
+		*(ant_data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna[band-1]+i);
 }
 
 /*! \brief Returns the rx antenna data
@@ -98,7 +98,7 @@ void eeprom_get_band_data(unsigned char band, struct_band *data) {
 	unsigned char *data_ptr = (unsigned char *)data;
 	
 	for (unsigned int i=0;i<sizeof(struct_band);i++)
-		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.band[band]+i);
+		*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.band[band-1]+i);
 }
 
 /*! \brief get the radio settings from the eeprom
@@ -206,19 +206,19 @@ void eeprom_get_ant_sub_menu_array_structure(unsigned char band_index, unsigned 
 	
 	if (ant_index == 0) {
 		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
-			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna1_sub_menu[band_index]+i);
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna1_sub_menu[band_index-1]+i);
 	}
 	else if (ant_index == 1) {
 		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
-			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna2_sub_menu[band_index]+i);
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna2_sub_menu[band_index-1]+i);
 	}
 	else if (ant_index == 2) {
 		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
-			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna3_sub_menu[band_index]+i);
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna3_sub_menu[band_index-1]+i);
 	}
 	else	if (ant_index == 3) {
 		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
-			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna4_sub_menu[band_index]+i);
+			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna4_sub_menu[band_index-1]+i);
 	}
 }
 
@@ -226,7 +226,7 @@ void eeprom_get_ant_sub_menu_array_structure(unsigned char band_index, unsigned 
  *  \param band_index Which band it is
  *  \param content The data to be saved */
 void eeprom_save_ant_structure(unsigned char band_index, struct_antenna *content) {
-	eeprom_m24_write_block(eeprom_table.antenna[band_index], sizeof(struct_antenna), (unsigned char *)content);
+	eeprom_m24_write_block(eeprom_table.antenna[band_index-1], sizeof(struct_antenna), (unsigned char *)content);
 }
 
 /*! \brief Save the rx antenna structure to the eeprom
@@ -251,7 +251,7 @@ void eeprom_save_radio_settings_structure(struct_radio_settings *data) {
  * \param band Which band we wish to save the data to
  * \param data The data to save to the EEPROM */
 void eeprom_save_band_data(unsigned char band, struct_band *data) {
-	eeprom_m24_write_block(eeprom_table.band[band], sizeof(struct_band), (unsigned char *)data);
+	eeprom_m24_write_block(eeprom_table.band[band-1], sizeof(struct_band), (unsigned char *)data);
 }
 
 /*! \brief Save the band data to the eeprom
@@ -266,11 +266,11 @@ void eeprom_save_ptt_data(struct_ptt *data) {
  *  \param data The data to save to the EEPROM */
 void eeprom_save_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data) {
 	if (ant_index == 0)
-		eeprom_m24_write_block(eeprom_table.antenna1_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+		eeprom_m24_write_block(eeprom_table.antenna1_sub_menu[band_index-1], sizeof(struct_sub_menu_array), (unsigned char *)data);
 	else if (ant_index == 1)
-		eeprom_m24_write_block(eeprom_table.antenna2_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+		eeprom_m24_write_block(eeprom_table.antenna2_sub_menu[band_index-1], sizeof(struct_sub_menu_array), (unsigned char *)data);
 	else if (ant_index == 2)
-		eeprom_m24_write_block(eeprom_table.antenna3_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+		eeprom_m24_write_block(eeprom_table.antenna3_sub_menu[band_index-1], sizeof(struct_sub_menu_array), (unsigned char *)data);
 	else if (ant_index == 3)
-		eeprom_m24_write_block(eeprom_table.antenna4_sub_menu[band_index], sizeof(struct_sub_menu_array), (unsigned char *)data);
+		eeprom_m24_write_block(eeprom_table.antenna4_sub_menu[band_index-1], sizeof(struct_sub_menu_array), (unsigned char *)data);
 }

@@ -48,19 +48,23 @@ struct_sub_menu_array current_sub_menu_array[4];
 unsigned char curr_option_selected[4] = {0,0,0,0};
 
 //! Array which we store the current devices which we have activated antenna outputs on
-unsigned char current_activated_sub_outputs[SUB_MENU_ARRAY_STR_SIZE][4];
+unsigned char current_activated_sub_outputs[4][SUB_MENU_ARRAY_STR_SIZE];
+
 //! How many devices we have activated antenna outputs on
 unsigned char current_activated_sub_outputs_length[4] = {0,0,0,0};
-
 
 /*! \brief Load a set of sub menu from the EEPROM for a specific band
  *  \param band_index Which we band */
 void sub_menu_load(unsigned char band_index) {
 	unsigned char sub_menu_type[4];
-	
+		
 	for (unsigned char i=0;i<4;i++) {
+		curr_option_selected[i] = 0;
+		
 		sub_menu_type[i] = antenna_ctrl_get_sub_menu_type(i);
-		eeprom_get_ant_sub_menu_array_structure(band_index, i, &current_sub_menu_array[i]);
+		
+		if (sub_menu_type[i] == SUBMENU_VERT_ARRAY)
+			eeprom_get_ant_sub_menu_array_structure(band_index, i, &current_sub_menu_array[i]);
 	}
 }
 
@@ -70,7 +74,6 @@ void sub_menu_load(unsigned char band_index) {
  *  \return Returns the text of the sub menu antenna index */
 unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos) {
 	if (antenna_ctrl_get_sub_menu_type(ant_index) == SUBMENU_VERT_ARRAY) {
-		printf("%s\n",current_sub_menu_array[ant_index].direction_name[pos]);
 		return(current_sub_menu_array[ant_index].direction_name[pos]);
 	}
 	
@@ -124,6 +127,8 @@ void sub_menu_pos_up(unsigned char ant_index) {
 void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 	unsigned char activate_cmd, deactivate_cmd, deactivate_all_cmd;
 	
+	printf("SEND\n");
+	
 	unsigned char length = 0;
 	
 	switch (ant_index) {
@@ -172,12 +177,12 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 		current_activated_sub_outputs_length[ant_index] = 0;
 		
 		while(i<length) {
-			if (current_sub_menu_array[3].output_str_dir[pos][i] == OUTPUT_ADDR_DELIMITER) {
+			if (current_sub_menu_array[ant_index].output_str_dir[pos][i] == OUTPUT_ADDR_DELIMITER) {
 				//Will add which address the message was sent to
-				current_activated_sub_outputs[ant_index][addr_count++] = current_sub_menu_array[3].output_str_dir[pos][i+1];
+				current_activated_sub_outputs[ant_index][addr_count++] = current_sub_menu_array[ant_index].output_str_dir[pos][i+1];
 				
-				if (current_sub_menu_array[3].output_str_dir[pos][i+1] != 0x00)
-					bus_add_tx_message(bus_get_address(), current_sub_menu_array[3].output_str_dir[pos][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), activate_cmd, count-start_pos, temp+start_pos);
+				if (current_sub_menu_array[ant_index].output_str_dir[pos][i+1] != 0x00)
+					bus_add_tx_message(bus_get_address(), current_sub_menu_array[ant_index].output_str_dir[pos][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), activate_cmd, count-start_pos, temp+start_pos);
 				else
 					internal_comm_add_tx_message(activate_cmd,count-start_pos, (char *)(temp+start_pos));
 
@@ -185,7 +190,7 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 				i++;
 			} 
 			else {
-				temp[count] = current_sub_menu_array[3].output_str_dir[pos][i];
+				temp[count] = current_sub_menu_array[ant_index].output_str_dir[pos][i];
 				count++;
 			}
 			
@@ -223,7 +228,7 @@ void sub_menu_deactivate_all(void) {
 }
 
 void sub_menu_activate_all(void) {
-	//Activate all the sub menu options avaible for default position #0	
+	//Activate all the sub menu options avaible for default position #0
 	if (antenna_ctrl_get_sub_menu_type(0) != SUBMENU_NONE)
 		sub_menu_send_data_to_bus(0,0);
 	
