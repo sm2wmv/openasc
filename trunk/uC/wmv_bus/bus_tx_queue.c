@@ -55,6 +55,8 @@ void tx_queue_init(void) {
 void tx_queue_add(BUS_MESSAGE message) {
 	bus_tx_queue_size++;
 	
+	//printf("SIZE: %i\n",bus_tx_queue_size);	
+	
 	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 		if (bus_tx_queue_size > BUS_TX_QUEUE_SIZE) {
 			led_set_error(LED_STATE_ON);

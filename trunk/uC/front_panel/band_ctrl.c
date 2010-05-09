@@ -127,6 +127,9 @@ void band_ctrl_load_band(unsigned char band) {
 	//Retrieve the band data from the EEPROM
 	eeprom_get_band_data(band,&current_band);
 	
+	//Load the antenna settings for this band
+	antenna_ctrl_ant_read_eeprom(band);
+	
 	//Load the sub menus for this band
 	sub_menu_load(band);
 }
@@ -156,8 +159,7 @@ void band_ctrl_change_band(unsigned char band) {
 		}
 		
 		if (band != BAND_UNDEFINED) {
-			band_ctrl_load_band(band-1);
-			antenna_ctrl_ant_read_eeprom(band);
+			band_ctrl_load_band(band);
 			
 			if (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM) {
 				status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
@@ -173,22 +175,19 @@ void band_ctrl_change_band(unsigned char band) {
 		antenna_ctrl_deactivate_all();
 		band_ctrl_deactivate_all();
 		sub_menu_deactivate_all();
-		
 		led_set_rxant(LED_STATE_OFF);
 		set_knob_function(KNOB_FUNCTION_AUTO);
 		
 		status.selected_rx_antenna = 0;
 		antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
-		
 		status.function_status &= ~(1<<FUNC_STATUS_RXANT);
 		
 		if (band != BAND_UNDEFINED) {
 			//TODO: Change to correct band portion
 			band_ctrl_send_band_data_to_bus(status.current_band_portion);
 			
-			//Set RX antenna band data to the bus
+			//Send RX antenna band data to the bus
 			antenna_ctrl_send_rx_ant_band_data_to_bus(band);
-			
 			antenna_ctrl_select_default_ant();
 			
 			//Activate all default sub menu options
@@ -196,7 +195,7 @@ void band_ctrl_change_band(unsigned char band) {
 		}
 		
 		main_update_ptt_status();
-		
+
 		//Update the display
 		main_update_display();
 	}
@@ -216,7 +215,7 @@ void band_ctrl_load_band_limits(void) {
 	
 	for (unsigned char i=0;i<9;i++) {
 		//Retrieve the band data from the EEPROM
-		eeprom_get_band_data(i,&temp_band);
+		eeprom_get_band_data(i+1,&temp_band);
 				
 		band_limits[i].low_portion_low_limit = temp_band.low_portion_low_limit;
 		band_limits[i].low_portion_high_limit = temp_band.low_portion_high_limit;

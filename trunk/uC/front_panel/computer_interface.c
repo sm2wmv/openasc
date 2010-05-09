@@ -422,12 +422,12 @@ void computer_interface_parse_data(void) {
 					break;
 				case CTRL_SET_ANT_DATA_SAVE:
 					//Save the antenna structure to the eeprom
-					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1], antenna_ptr);
+					eeprom_save_ant_structure(computer_comm.rx_buffer_start[1]+1, antenna_ptr);
 					
 					//Routines to save the SUB MENU data to the EEPROM
 					for (unsigned char ant_index=0;ant_index<4;ant_index++) {
 						if (antenna_ptr->sub_menu_type[ant_index] == SUBMENU_VERT_ARRAY) {
-							eeprom_save_ant_sub_menu_array_structure(computer_comm.rx_buffer_start[1], ant_index, sub_menu_array_ptr[ant_index]);
+							eeprom_save_ant_sub_menu_array_structure(computer_comm.rx_buffer_start[1]+1, ant_index, sub_menu_array_ptr[ant_index]);
 						}
 					}
 					
@@ -657,7 +657,7 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_BAND_DATA_SAVE:
-					eeprom_save_band_data(computer_comm.rx_buffer_start[1],band_ptr);
+					eeprom_save_band_data(computer_comm.rx_buffer_start[1]+1,band_ptr);
 					
 					//Reset the content of the band_ptr
 					memset(band_ptr,0,sizeof(struct_band));
