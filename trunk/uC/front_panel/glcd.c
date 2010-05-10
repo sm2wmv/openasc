@@ -44,11 +44,10 @@ static const unsigned char glcd_mask_array[8] = {0x01,0x02,0x04,0x08,0x10,0x20,0
 
 void glcd_update_area(unsigned char x1, unsigned char x2, unsigned char y1, unsigned char y2)
 {
-	glcd_set_address(0,0);
+	glcd_set_address(x1,y1>>3);
 	
 	y1 = y1>>3;
 	y2 = y2>>3;
-	
 	
 	for (unsigned char y=y1;y<y2;y++)
 		for (unsigned char x=x1;x<x2;x++)
@@ -132,6 +131,10 @@ void glcd_glyph(unsigned char left, unsigned char top, unsigned char width, unsi
 		glyph_offset++;
 		}
 	}
+}
+
+void glcd_set_byte(unsigned char x, unsigned char y, unsigned char curr_byte) {
+	glcd_buffer[y][x] = curr_byte;
 }
 
 void glcd_text(unsigned char left, unsigned char top, unsigned char font, char *str, unsigned char length)
@@ -236,6 +239,7 @@ void glcd_rectangle(unsigned char x, unsigned char y, unsigned char a, unsigned 
 		glcd_set_dot(x, y + j,GLCD_MODE_SET);
 		glcd_set_dot(x + b - 1, y + j,GLCD_MODE_SET);
 	}
+	
   for (j = 0; j < b; j++)	{
 		glcd_set_dot(x + j, y,GLCD_MODE_SET);
 		glcd_set_dot(x + j, y + a - 1,GLCD_MODE_SET);

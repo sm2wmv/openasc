@@ -129,4 +129,8 @@ void display_text_center_adjust(unsigned char y,char *str, unsigned char length,
 void display_update_radio_freq(void);
 void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type);
 
+void display_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_power);
+void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr);
+void display_show_powermeter(void);
+
 #endif

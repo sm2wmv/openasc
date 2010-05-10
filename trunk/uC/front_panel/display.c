@@ -38,6 +38,9 @@
 //! Flag which indicates if the screensaver is activated or not
 unsigned char screensaver_mode = 0;
 
+unsigned char last_fwd_val = 0;
+unsigned char last_ref_val = 0;
+
 //! Memory area used for printing variables to the display
 char *temp_ptr = NULL;
 
@@ -445,4 +448,83 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 			glcd_update_all();
 		}
 	}
+}
+
+void display_show_bargraph_fwd(unsigned char percent) {
+	unsigned char val = (unsigned char)(((float)percent*122.0f)/100.0);
+	
+	if (last_fwd_val > val) {
+		for (unsigned char i=val;i<last_fwd_val;i++) {
+			glcd_set_byte(3+i,2,0x00);
+
+			if ((i%5) == 0) {
+				glcd_set_byte(3+i,2,0x00);
+			}
+		}
+		
+		glcd_update_area(3+val,last_fwd_val+3,16,24);
+	}
+	else {
+		for (unsigned char i=last_fwd_val;i<val;i++) {
+			glcd_set_byte(3+i,2,0xFF);
+
+			if ((i%5) == 0) {
+				glcd_set_byte(3+i,2,0x00);
+			}
+		}
+	
+		glcd_update_area(3+last_fwd_val,3+val,16,24);
+	}
+	
+	last_fwd_val = val;
+}
+
+void display_show_bargraph_ref(unsigned char percent) {
+	unsigned char val = (unsigned char)(((float)percent*77.0f)/100.0);
+	
+	if (last_ref_val > val) {
+		for (unsigned char i=val;i<last_ref_val;i++) {
+			glcd_set_byte(3+i,6,0x00);
+
+			if ((i%5) == 0) {
+				glcd_set_byte(3+i,6,0x00);
+			}
+		}
+		
+		glcd_update_area(3+val,last_ref_val+3,48,56);
+	}
+	else {
+		for (unsigned char i=last_ref_val;i<val;i++) {
+			glcd_set_byte(3+i,6,0xFF);
+
+			if ((i%5) == 0) {
+				glcd_set_byte(3+i,6,0x00);
+			}
+		}
+	
+		glcd_update_area(3+last_ref_val,3+val,48,56);
+	}
+	
+	last_ref_val = val;
+}
+
+void display_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_power) {
+	display_show_bargraph_fwd(fwd_power);
+	display_show_bargraph_ref(ref_power);
+}
+
+void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr) {
+	//TODO: Insert the real values here
+	display_text_right_adjust(125,3,"8470W",5,FONT_NINE_DOT);
+	display_text_right_adjust(80,34,"150W",4,FONT_NINE_DOT);
+	display_text_right_adjust(125,45,"1.3:1",5,FONT_NINE_DOT);
+}
+
+void display_show_powermeter(void) {
+	glcd_rectangle(0,0,28,128);
+	glcd_rectangle(0,32,28,128);
+
+	glcd_text(3,3,FONT_NINE_DOT,"FWD:",4);
+	glcd_text(3,34,FONT_NINE_DOT,"REF:",4);
+	display_text_right_adjust(125,34,"VSWR",4,FONT_NINE_DOT);
 }
