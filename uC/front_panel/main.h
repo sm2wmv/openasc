@@ -97,7 +97,11 @@
 #define FLAG_CHANGE_SUBMENU					11
 //! This flag is to indicate that a sub menu change should occur, ie sent out on the bus
 #define FLAG_PROCESS_SUBMENU_CHANGE	12
-
+//! This flag is to indicate that a powermeter text update should occur
+#define FLAG_POWERMETER_UPDATE_TEXT	13
+//! This flag is to indicate that a powermeter bargraph update should occur
+#define FLAG_POWERMETER_UPDATE_BARGRAPH	14
+#define FLAGS_POWERMETER_ACTIVE	15
 
 //! The poll interval of the front panel buttons (unit = ms)
 #define INTERVAL_POLL_BUTTONS 50
@@ -166,6 +170,8 @@
 #define CURRENT_DISPLAY_MENU_SYSTEM		2
 //! Current display is the shutdown in progress view
 #define CURRENT_DISPLAY_SHUTDOWN_VIEW	3
+//! Current display power meter view
+#define CURRENT_DISPLAY_POWERMETER_VIEW 4
 
 //! The time from when a pulse sensor change occured to the actual change does happen, in ms
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
