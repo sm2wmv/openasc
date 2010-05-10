@@ -40,6 +40,8 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
+unsigned char device_id=0;
+
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned int counter_compare0 = 0;
 //! Counter to keep track of the time elapsed since the last sync message was sent
@@ -68,10 +70,10 @@ void bus_parse_message(void) {
 	
 	switch(bus_message.cmd) {
 		case BUS_CMD_ACK:
-			bus_message_acked();
+			bus_message_acked(bus_message.from_addr);
 			break;
 		case BUS_CMD_NACK:
-			bus_message_nacked();
+			bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 			break;
 		case BUS_CMD_PING:
 			break;
@@ -220,8 +222,19 @@ int main(void)
 	//Initialize the communication bus	
 	bus_init();
 	
-	//The device should not be master, a rotator unit never is
-	bus_set_is_master(0,0);
+	
+	/* This delay is simply so that if you have the devices connected to the same power supply
+	all units should not send their status messages at the same time. Therefor we insert a delay
+	that is based on the external address of the device */
+	for (unsigned char i=0;i<bus_get_address();i++)
+		delay_ms(90);
+
+
+	if ((BUS_BASE_ADDR+read_ext_addr()) == 0x01)
+		bus_set_is_master(1,DEF_NR_DEVICES);
+	else
+		bus_set_is_master(0,0);
+
 
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();	
@@ -240,6 +253,10 @@ int main(void)
 		event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay*10,EVENT_QUEUE_ROTATE_CW_ID);
 	}*/
 	
+	unsigned char device_count = bus_get_device_count();
+	
+	device_id = DEVICE_ID_ROTATOR_UNIT;
+	
 	while(1) {	
 		if (!rx_queue_is_empty()) {
 			bus_parse_message();
@@ -254,6 +271,26 @@ int main(void)
 			
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}
+		
+		//If this device should act as master it should send out a SYNC command
+		//and also the number of devices (for the time slots) that are active on the bus
+		if (bus_is_master()) {
+			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
+				
+				counter_sync = 0;
+			}
+		}
+
+		if (bus_allowed_to_send()) {
+			//Check if a ping message should be sent out on the bus
+			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+				//Check if the device is a POS or NEG driver module
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
+
+				counter_ping_interval = 0;
+			}
+		}
 	}
 	
 	return (0);
@@ -261,25 +298,7 @@ int main(void)
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
-	if (bus_allowed_to_send()) {
-		//Check if a ping message should be sent out on the bus
-		if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-			unsigned char temp[6];
-
-			temp[0] = DEVICE_ID_ROTATOR_UNIT;
-			temp[1] = ((rotator_status.curr_heading >> 8) & 0xFF);
-			temp[2] = (rotator_status.curr_heading & 0xFF);
-			temp[3] = ((rotator_status.target_heading >> 8) & 0xFF);
-			temp[4] = (rotator_status.target_heading & 0xFF);
-			temp[5] = main_flags;
-
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 6, temp);
-
-			counter_ping_interval = 0;
-		}
-	}
-	
-	if (rotator_settings.heading_input == HEADING_INPUT_POT1)
+/*	if (rotator_settings.heading_input == HEADING_INPUT_POT1)
 		rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC0);
 	else if (rotator_settings.heading_input == HEADING_INPUT_POT2)
 		rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC1);
@@ -307,7 +326,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		
 		rotator_status_counter = 0;
 	}
-		
+	*/	
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
 			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
@@ -330,6 +349,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	rotator_status_counter++;
 	counter_ping_interval++;
 	counter_compare0++;
+	counter_sync++;
 }
 
 ISR(SIG_USART0_RECV) {
