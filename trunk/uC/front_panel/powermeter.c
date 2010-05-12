@@ -26,48 +26,73 @@
 #include <string.h>
 
 #include "powermeter.h"
+#include "radio_interface.h"
+#include "display.h"
+#include "glcd.h"
+#include "main.h"
+
+#define POWERMETER_FLAG_ACTIVE 					0
 
 powermeter_struct powermeter_status;
 
-void powermeter_init(void) {
+unsigned char powermeter_flags;
+
+//! The counter which keeps track of when we should update the power meter text
+unsigned int counter_powermeter_update_text=0;
+
+//! The counter which keeps track of when we should update the power meter bargraph
+unsigned int counter_powermeter_update_bargraph=0;
+
+void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit) {
 	powermeter_status.curr_fwd_pwr_value = 0;
 	powermeter_status.curr_ref_pwr_value = 0;
 	powermeter_status.curr_vswr_value = 0;
 	
-	powermeter_status.prev_fwd_pwr_value = 0;
-	powermeter_status.prev_ref_pwr_value = 0;
-	powermeter_status.prev_vswr_value = 0;	
+	powermeter_status.pickup_addr = pickup_addr;
+	powermeter_status.text_update_rate = text_update_rate;
+	powermeter_status.bargraph_update_rate = bargraph_update_rate;
+	powermeter_status.vswr_limit = vswr_limit;
+}
+
+void powermeter_set_active(unsigned char state) {
+	if (state != 0) {
+		powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
+		
+		glcd_clear();
+		display_show_powermeter();
+		glcd_update_all();
+	}
+	else {
+		powermeter_flags &= ~(1<<POWERMETER_FLAG_ACTIVE);
+		
+		glcd_clear();
+		main_update_display();
+	}
+}
+
+void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr) {
+	powermeter_status.curr_fwd_pwr_value = fwd_pwr;
+	powermeter_status.curr_ref_pwr_value = ref_pwr;
+	powermeter_status.curr_vswr_value = vswr;
 }
 
 void powermeter_process_tasks(void) {
-	if ((radio_get_ptt_status() & (1<<RADIO_FLAG_RADIO_PTT)) != 0) {
-		if ((main_flags & (1<<FLAGS_POWERMETER_ACTIVE)) == 0) {
-			glcd_clear();
-			display_show_powermeter();
-			display_show_powermeter_text(8705,160,131);
-			display_show_powermeter_bargraph(70, 20);
-			glcd_update_all();
-				
-			main_flags |= (1<<FLAGS_POWERMETER_ACTIVE);
-		}
+	if (powermeter_flags & (1<<POWERMETER_FLAG_ACTIVE)) {
+		if (counter_powermeter_update_text >= powermeter_status.text_update_rate) {
+			display_show_powermeter_text(powermeter_status.curr_fwd_pwr_value,powermeter_status.curr_ref_pwr_value,powermeter_status.curr_vswr_value);
 			
-		if ((main_flags & (1<<FLAG_POWERMETER_UPDATE_TEXT)) != 0) {
-			display_show_powermeter_text(8705,160,131);
-				
-			main_flags &= ~(1<<FLAG_POWERMETER_UPDATE_TEXT);
 			counter_powermeter_update_text = 0;
 		}
-			
-		if ((main_flags & (1<<FLAG_POWERMETER_UPDATE_BARGRAPH)) != 0) {
+		
+		if (counter_powermeter_update_bargraph >= powermeter_status.bargraph_update_rate) {
 			display_show_powermeter_bargraph(70, 20);
-				
-			main_flags &= ~(1<<FLAG_POWERMETER_UPDATE_BARGRAPH);
+			
 			counter_powermeter_update_bargraph = 0;
 		}
 	}
-	else if ((main_flags & (1<<FLAGS_POWERMETER_ACTIVE)) != 0) {
-		glcd_clear();
-		main_flags &= ~(1<<FLAGS_POWERMETER_ACTIVE);
-		main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-	}
+}
+
+void powermeter_1ms_tick(void) {
+	counter_powermeter_update_text++;
+	counter_powermeter_update_bargraph++;
 }
