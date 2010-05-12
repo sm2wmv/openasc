@@ -49,6 +49,7 @@
 #include "menu.h"
 #include "rotary_encoder.h"
 #include "event_handler.h"
+#include "powermeter.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -89,12 +90,6 @@ unsigned int counter_last_pulse_event=0;
 
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 unsigned int counter_event_timer = 0;
-
-//! The counter which keeps track of when we should update the power meter text
-unsigned char counter_powermeter_update_text=0;
-
-//! The counter which keeps track of when we should update the power meter bargraph
-unsigned char counter_powermeter_update_bargraph=0;
 
 unsigned char device_count = 0;
 
@@ -431,6 +426,9 @@ int main(void){
 	
 	bus_init();
 
+	//Init the power meter
+	powermeter_init(settings.powermeter_address, settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph, settings.powermeter_vswr_limit);
+	
 	if (settings.network_device_is_master == 1) {
 		bus_set_is_master(1,settings.network_device_count);
 	}
@@ -609,37 +607,8 @@ int main(void){
 			}
 		}
 		
-		//TODO: Move some of this into an own powermeter.c file to clean it up a bit
-		if ((radio_get_ptt_status() & (1<<RADIO_FLAG_RADIO_PTT)) != 0) {
-			if ((main_flags & (1<<FLAGS_POWERMETER_ACTIVE)) == 0) {
-				glcd_clear();
-				display_show_powermeter();
-				display_show_powermeter_text(8705,160,131);
-				display_show_powermeter_bargraph(70, 20);
-				glcd_update_all();
-				
-				main_flags |= (1<<FLAGS_POWERMETER_ACTIVE);
-			}
-			
-			if ((main_flags & (1<<FLAG_POWERMETER_UPDATE_TEXT)) != 0) {
-				display_show_powermeter_text(8705,160,131);
-				
-				main_flags &= ~(1<<FLAG_POWERMETER_UPDATE_TEXT);
-				counter_powermeter_update_text = 0;
-			}
-			
-			if ((main_flags & (1<<FLAG_POWERMETER_UPDATE_BARGRAPH)) != 0) {
-				display_show_powermeter_bargraph(70, 20);
-				
-				main_flags &= ~(1<<FLAG_POWERMETER_UPDATE_BARGRAPH);
-				counter_powermeter_update_bargraph = 0;
-			}
-		}
-		else if ((main_flags & (1<<FLAGS_POWERMETER_ACTIVE)) != 0) {
-			glcd_clear();
-			main_flags &= ~(1<<FLAGS_POWERMETER_ACTIVE);
-			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-		}
+		if (settings.powermeter_address != 0x00)
+			powermeter_process_tasks();
 		
 		radio_process_tasks();
 	}
@@ -699,9 +668,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_ms++;
 	counter_event_timer++;
 	radio_rx_data_counter++;
-	counter_powermeter_update_bargraph++;
-	counter_powermeter_update_text++;
-	
+
 	//This will blink the NEW BAND LED, if the new band is not the same as the old one
 	if ((counter_ms % 250) == 0) {
 		main_flags |= (1<<FLAG_BLINK_BAND_LED);
@@ -767,17 +734,10 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		counter_event_timer = 0;
 	}
 	
-	if (status.current_display == CURRENT_DISPLAY_POWERMETER_VIEW) {
-		if (counter_powermeter_update_bargraph >= 50) {
-			main_flags |= (1<<FLAG_POWERMETER_UPDATE_TEXT);
-		}
-		
-		if (counter_powermeter_update_text >= 200) {
-			main_flags |= (1<<FLAG_POWERMETER_UPDATE_BARGRAPH);
-		}
-	}
-		
 	internal_comm_1ms_timer();
+	
+	if (settings.powermeter_address != 0x00)
+		powermeter_1ms_tick();
 	
 	bus_ping_tick();
 }

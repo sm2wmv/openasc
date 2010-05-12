@@ -30,15 +30,19 @@ typedef struct {
 	unsigned int curr_ref_pwr_value;
 	//! VSWR represented as an integer, 152 means 1.52:1 in SWR
 	unsigned int curr_vswr_value;
-	//! Previous forward power value in watts
-	unsigned int prev_fwd_pwr_value;
-	//! Previous reflected power value in watts
-	unsigned int prev_ref_pwr_value;
-	//! Previous VSWR represented as an integer, 152 means 1.52:1 in SWR
-	unsigned int prev_vswr_value;	
+	//! Address of the power meter pickup
+	unsigned char pickup_addr;
+	//! The update in ms of the text on the display
+	unsigned int text_update_rate;
+	//! The update rate in ms of the bargraph
+	unsigned int bargraph_update_rate;
+	//! The VSWR limit of when the radios PTT should be deactivated and the device set into ERROR mode
+	unsigned int vswr_limit;
 } powermeter_struct;
 
-void powermeter_init(void);
+void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr);
+void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit);
 void powermeter_process_tasks(void);
+void powermeter_1ms_tick(void);
 
 #endif

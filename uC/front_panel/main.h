@@ -97,11 +97,6 @@
 #define FLAG_CHANGE_SUBMENU					11
 //! This flag is to indicate that a sub menu change should occur, ie sent out on the bus
 #define FLAG_PROCESS_SUBMENU_CHANGE	12
-//! This flag is to indicate that a powermeter text update should occur
-#define FLAG_POWERMETER_UPDATE_TEXT	13
-//! This flag is to indicate that a powermeter bargraph update should occur
-#define FLAG_POWERMETER_UPDATE_BARGRAPH	14
-#define FLAGS_POWERMETER_ACTIVE	15
 
 //! The poll interval of the front panel buttons (unit = ms)
 #define INTERVAL_POLL_BUTTONS 50

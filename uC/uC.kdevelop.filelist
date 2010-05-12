@@ -59,6 +59,8 @@ front_panel/makefile
 front_panel/menu.c
 front_panel/menu.h
 front_panel/pictures.h
+front_panel/powermeter.c
+front_panel/powermeter.h
 front_panel/radio_interface.c
 front_panel/radio_interface.h
 front_panel/remote_control.c
