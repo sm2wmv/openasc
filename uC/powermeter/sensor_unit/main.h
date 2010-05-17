@@ -22,12 +22,12 @@
 #define BUS_TX_QUEUE_SIZE	10
 
 //! The transmit interval of the power in ms, used when the meter is considered as active */
-#define POWER_TRANSMIT_INTERVAL1 50
+#define POWER_TRANSMIT_INTERVAL1 500
 //! The transmit interval of the power in ms, used when the meter is considered as not active */
 #define POWER_TRANSMIT_INTERVAL2 1000
 
 //! The interval which the units polls the power */
-#define POWER_POLL_INTERVAL	50
+#define POWER_POLL_INTERVAL	1000
 
 /*! 150w pickup configuration */
 #define PICKUP_TYPE_150W        0
