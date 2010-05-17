@@ -26,9 +26,8 @@ CommClass::CommClass() {
 }
 
 int CommClass::openPort(QString deviceName) {
-
-	serialPort = new QextSerialPort(deviceName);
-	serialPort->setBaudRate(BAUD115200);
+        serialPort = new QextSerialPort(deviceName);
+        serialPort->setBaudRate(BAUD115200);
 	serialPort->setDataBits(DATA_8);
 	serialPort->setFlowControl(FLOW_OFF);
 	serialPort->setParity(PAR_NONE);

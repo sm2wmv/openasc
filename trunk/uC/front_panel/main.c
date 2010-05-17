@@ -602,6 +602,7 @@ int main(void){
 			//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
 				send_ping();
+				printf("SEND PING, addr: 0x%02X\n",bus_get_address());
 				
 				counter_ping_interval = 0;
 			}

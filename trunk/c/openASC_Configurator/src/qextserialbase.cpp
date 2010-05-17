@@ -22,7 +22,7 @@ QextSerialBase::QextSerialBase()
 {
 
 #ifdef _TTY_WIN_
-    setPortName("COM1");
+    setPortName("COM15");
 
 #elif defined(_TTY_IRIX_)
     setPortName("/dev/ttyf1");

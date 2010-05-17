@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <math.h>
 
 #include "main.h"
 #include "board.h"
@@ -15,6 +16,7 @@
 #include "../../wmv_bus/bus_rx_queue.h"
 #include "../../wmv_bus/bus_tx_queue.h"
 #include "../../wmv_bus/bus_commands.h"
+#include "../../wmv_bus/bus_usart.h"
 
 /* All these flags should be put together in one variable to save space, however 
    this is not needed on this device since it will never run out of RAM anyway */ 
@@ -24,7 +26,7 @@ unsigned int counter_compare0 = 0;
 //! Counter to keep track of when to send a ping out on the bus
 unsigned int counter_ping_interval=0;
 //! Flag which is set when the power information should be sent out on the bus
-unsigned char update_status = 0;
+unsigned int update_status = 0;
 //! Flag which is set when the power should be polled
 unsigned char poll_curr_power = 0;
 //! Counter for the bus SYNC if the device is acting as master
@@ -71,7 +73,7 @@ void read_state() {
 	status.curr_fwd_ad_value = a2dConvert10bit(ADC_CH_ADC0);
 		//Read the reflected A/D value
 	status.curr_ref_ad_value = a2dConvert10bit(ADC_CH_ADC1);
-		
+	
 	//Calculate the power from the new A/D reads
 	input_calculate_power();
 	//Save the calculation of the VSWR to the status struct
@@ -107,7 +109,7 @@ int main(void) {
 		//Initialize the communication bus	
 	bus_init();
 	
-	if ((BUS_BASE_ADDR+read_ext_addr()) == 0x01)
+	if (bus_get_address() == 0x01)
 		bus_set_is_master(1,DEF_NR_DEVICES);
 	else
 		bus_set_is_master(0,0);
@@ -119,7 +121,7 @@ int main(void) {
 	init_timer_0();
 	
 	a2dSetPrescaler(ADC_PRESCALE_DIV16);
-	a2dSetReference(ADC_REFERENCE_AREF);
+	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
 	
 	current_coupler.fwd_scale_value[0] = 3782;
 	current_coupler.ref_scale_value[0] = 3782;
@@ -135,7 +137,16 @@ int main(void) {
 	
 	unsigned int last_pwr_change_interval = 0;
 	
+	//TEMP
+	fdevopen((void*)bus_usart_transmit, (void*)bus_usart_receive_loopback);
+	
 	sei();
+	
+	double fwd_volt;
+	double ref_volt;
+	double fwd_db_val;
+	double fwd_pwr;
+	double ref_db_val;
 		
 	while(1) {
 		if (!rx_queue_is_empty()) {
@@ -148,7 +159,7 @@ int main(void) {
 		
 		//If this device should act as master it should send out a SYNC command
 		//and also the number of devices (for the time slots) that are active on the bus
-		if (bus_is_master()) {
+		/*if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
 				unsigned char temp = bus_get_device_count();
 			
@@ -163,17 +174,38 @@ int main(void) {
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
 				counter_ping_interval = 0;
 			}
-		}
+		}*/
 		
 		if (poll_curr_power == 1) {
 			read_state();
 			
-			status.curr_fwd_power = 12543;
+			
+			
+			printf("FWD A/D VAL: %i\n",status.curr_fwd_ad_value);
+			printf("REF A/D VAL: %i\n",status.curr_ref_ad_value);
+			
+			fwd_volt = ((2.56f/1024)*status.curr_fwd_ad_value);
+			ref_volt = ((2.56f/1024)*status.curr_ref_ad_value);
+			
+			fwd_db_val = 40.5*(fwd_volt-1);
+			
+			
+			printf("FWD VOLTAGE: %.5f volts\n",fwd_volt);
+			printf("REF VOLTAGE: %.5f volts\n",ref_volt);
+			printf("dB fwd: %.1f dB\n",fwd_db_val);
+		
+			fwd_pwr = pow(10,fwd_db_val/10)/1000;
+			
+			printf("Pout: %.1f\n", fwd_pwr);
+			printf("\n\n");
+			//bus_add_tx_message(
+			
+			/*status.curr_fwd_power = 12543;
 			status.curr_ref_power = 405;
 			status.curr_vswr = 1.25f;
-				
+				*/
 			//This is to decrease the traffic on the bus from power meters which are currently not active
-			if ((status.curr_fwd_power < NO_FWD_PWR_LIMIT) && (last_pwr_change_interval >= 20)) {
+/*			if ((status.curr_fwd_power < NO_FWD_PWR_LIMIT) && (last_pwr_change_interval >= 20)) {
 				pwr_meter_sleep = 1;
 			}
 			else if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
@@ -181,14 +213,14 @@ int main(void) {
 				pwr_meter_sleep = 0;
 				last_pwr_change_interval = 0;
 			}
-				
+				*/
 			last_pwr_change_interval++;
 			poll_curr_power = 0;
 		}
 		
 		/* If the update_status flag is set, we should sample the current power values
 		   and send them over the bus as a broadcast message */
-		if (update_status == 1) {
+		/*if (update_status == 1) {
 			data[0] = current_coupler.pickup_type;
 			data[1] = (status.curr_fwd_power >> 8) & 0xFF;
 			data[2] = (status.curr_fwd_power & 0xFF);
@@ -203,7 +235,7 @@ int main(void) {
 			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data);
 			
 			update_status = 0;
-		}
+		}*/
 	}
 }
 
