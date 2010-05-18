@@ -40,48 +40,4 @@ void remote_control_parse_button(unsigned char button);
 //! Command for sending rx antenna button texts
 #define REMOTE_CONTROL_RX_ANT_TEXT			0x11
 
-//! Button should be pressed - TX antenna combination #1
-#define REMOTE_CTRL_BUTTON_TX1			1
-//! Button should be pressed - TX antenna combination #2
-#define REMOTE_CTRL_BUTTON_TX2			2
-//! Button should be pressed - TX antenna combination #3
-#define REMOTE_CTRL_BUTTON_TX3			3
-//! Button should be pressed - TX antenna combination #4
-#define REMOTE_CTRL_BUTTON_TX4			4
-
-//! Button should be pressed - RX antenna combination #1
-#define REMOTE_CTRL_BUTTON_RX1			5
-//! Button should be pressed - RX antenna combination #2
-#define REMOTE_CTRL_BUTTON_RX2			6
-//! Button should be pressed - RX antenna combination #3
-#define REMOTE_CTRL_BUTTON_RX3			7
-//! Button should be pressed - RX antenna combination #4
-#define REMOTE_CTRL_BUTTON_RX4			8
-
-//! Button should be pressed - RX antenna #1
-#define REMOTE_CTRL_BUTTON_RXANT1		9
-//! Button should be pressed - RX antenna #2
-#define REMOTE_CTRL_BUTTON_RXANT2		10
-//! Button should be pressed - RX antenna #3
-#define REMOTE_CTRL_BUTTON_RXANT3		11
-//! Button should be pressed - RX antenna #4
-#define REMOTE_CTRL_BUTTON_RXANT4		12
-//! Button should be pressed - RX antenna #5
-#define REMOTE_CTRL_BUTTON_RXANT5		13
-//! Button should be pressed - RX antenna #6
-#define REMOTE_CTRL_BUTTON_RXANT6		14
-//! Button should be pressed - RX antenna #7
-#define REMOTE_CTRL_BUTTON_RXANT7		15
-//! Button should be pressed - RX antenna #8
-#define REMOTE_CTRL_BUTTON_RXANT8		16
-//! Button should be pressed - RX antenna #9
-#define REMOTE_CTRL_BUTTON_RXANT9		17
-//! Button should be pressed - RX antenna #10
-#define REMOTE_CTRL_BUTTON_RXANT10	18
-
-//! Button should be pressed - TX/RX mode
-#define REMOTE_CTRL_BUTTON_TXRX_MODE		19
-//! Button should be pressed - RX antenna enable/disable
-#define REMOTE_CTRL_BUTTON_RXANT				20
-
 #endif

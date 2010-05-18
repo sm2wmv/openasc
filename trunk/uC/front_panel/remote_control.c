@@ -55,47 +55,6 @@ unsigned char remote_control_get_remote_mode(void) {
  *  \param button The button we wish to press */
 void remote_control_parse_button(unsigned char button) {
 	switch (button) {
-		case REMOTE_CTRL_BUTTON_TX1:
-			event_tx_button1_pressed();
-			break;
-		case REMOTE_CTRL_BUTTON_TX2:
-			event_tx_button2_pressed();
-			break;			
-		case REMOTE_CTRL_BUTTON_TX3:
-			event_tx_button3_pressed();
-			break;
-		case REMOTE_CTRL_BUTTON_TX4:
-			event_tx_button4_pressed();
-		case REMOTE_CTRL_BUTTON_RXANT1:
-			event_set_rx_antenna(1);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT2:
-			event_set_rx_antenna(2);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT3:
-			event_set_rx_antenna(3);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT4:
-			event_set_rx_antenna(4);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT5:
-			event_set_rx_antenna(5);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT6:
-			event_set_rx_antenna(6);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT7:
-			event_set_rx_antenna(7);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT8:
-			event_set_rx_antenna(8);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT9:
-			event_set_rx_antenna(9);
-			break;
-		case REMOTE_CTRL_BUTTON_RXANT10:
-			event_set_rx_antenna(10);
-			break;
 		default:
 			break;
 	}

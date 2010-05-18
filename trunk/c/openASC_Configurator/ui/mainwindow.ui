@@ -2737,22 +2737,19 @@
       </widget>
       <widget class="QWidget" name="tabExternalInput">
        <attribute name="title">
-        <string>External Input</string>
+        <string>External control</string>
        </attribute>
-       <widget class="QFrame" name="frameExternalInput">
+       <widget class="QGroupBox" name="groupBoxExternalKeypad">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>10</y>
-          <width>246</width>
-          <height>421</height>
+          <y>5</y>
+          <width>242</width>
+          <height>426</height>
          </rect>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+        <property name="title">
+         <string>External keypad</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
@@ -3217,183 +3214,7 @@ a function to it</string>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBoxExtKeypadFunc">
-           <item>
-            <property name="text">
-             <string>None</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 5</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 6</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 7</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 8</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 9</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Select RX antenna 10</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle TX antenna 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle TX antenna 2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle TX antenna 3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle TX antenna 4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle RX antenna 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle RX antenna 2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle RX antenna 3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle RX antenna 4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle RX antenna mode</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Toggle TX/RX mode</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 5</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 6</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 7</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Array DIR 8</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Stack Combo 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Stack Combo 2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Stack Combo 3</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Stack Combo 4</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Stack Combo 5</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Set Stack Combo 6</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="comboBoxExtKeypadFunc"/>
          </item>
          <item>
           <widget class="QCheckBox" name="checkBoxExtLEDPTT">
@@ -3403,6 +3224,221 @@ a function to it</string>
           </widget>
          </item>
         </layout>
+       </widget>
+       <widget class="QGroupBox" name="groupBoxAmplifierControl">
+        <property name="geometry">
+         <rect>
+          <x>255</x>
+          <y>5</y>
+          <width>191</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Amplifier control</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <widget class="QCheckBox" name="checkBoxAmplifierPowerControl">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>106</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mains ON/OFF</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBoxAmplifierStandbyControl">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>106</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Standby</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBoxAmplifierBandControl">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>130</y>
+           <width>161</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Automatic band control</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBoxAmplifierReset">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>150</y>
+           <width>161</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Amplifier reset</string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>25</y>
+           <width>170</width>
+           <height>58</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelAmplifierAddress">
+            <property name="text">
+             <string>Address:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxAmplifierAddress">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="labelAmplifierAddressDec">
+            <property name="text">
+             <string>(dec)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelAmplifierSubAddress">
+            <property name="text">
+             <string>Sub address:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxAmplifierSubAddress">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="labelAmplifierSubAddressDec">
+            <property name="text">
+             <string>(dec)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBoxAUX">
+        <property name="geometry">
+         <rect>
+          <x>455</x>
+          <y>5</y>
+          <width>246</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>AUX functions</string>
+        </property>
+        <widget class="QLabel" name="labelButtonsAUX">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>30</y>
+           <width>52</width>
+           <height>15</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Buttons</string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>45</y>
+           <width>196</width>
+           <height>56</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_17">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelButtonAUX1">
+            <property name="text">
+             <string>AUX 1:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboBoxButtonAUX1">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelButtonAUX2">
+            <property name="text">
+             <string>AUX 2:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="comboBoxButtonAUX2">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tabDebug">
@@ -3447,7 +3483,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>714</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">
