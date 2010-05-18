@@ -1,5 +1,5 @@
-- Fix the internal communication so it works properly
+v Fix the internal communication so it works properly
 v Fix so that we can select BCD decoding while CAT also works
-- Fix so that we can reboot the box from the menu system
-- Make it possible to reboot the device from the setup mode
+v Fix so that we can reboot the box from the menu system
+v Make it possible to reboot the device from the setup mode
  

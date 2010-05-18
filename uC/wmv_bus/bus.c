@@ -393,6 +393,10 @@ ISR(ISR_BUS_USART_RECV) {
 		unsigned char data = UDR1;
 	#endif
 
+	#ifdef DEVICE_TYPE_GENERAL_IO
+		unsigned char data = UDR1;
+	#endif
+
 #ifdef DEVICE_TYPE_ROTATOR_UNIT
 		unsigned char data = UDR1;
 #endif
