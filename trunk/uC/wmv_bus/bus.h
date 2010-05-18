@@ -49,6 +49,10 @@
 #ifdef DEVICE_TYPE_POWERMETER_PICKUP
 	#include "../powermeter/sensor_unit/main.h"
 #endif
+
+#ifdef DEVICE_TYPE_GENERAL_IO
+	#include "../general_io/main.h"
+#endif
  
  #ifdef DEVICE_TYPE_DRIVER_UNIT
 	#define BUS_DISABLE_INTERRUPTS()	TIMSK &= ~(1<<OCIE2);
@@ -83,6 +87,15 @@
 	#define ISR_BUS_TIMER_OVERFLOW	SIG_OVERFLOW2
 #endif
 
+#ifdef DEVICE_TYPE_GENERAL_IO
+	#define ISR_BUS_USART_DATA 	SIG_USART1_DATA
+	#define ISR_BUS_USART_RECV 	SIG_USART1_RECV
+	#define ISR_BUS_USART_TRANS	SIG_USART1_TRANS
+		
+	#define ISR_BUS_TIMER_COMPARE		SIG_OUTPUT_COMPARE2
+	#define ISR_BUS_TIMER_OVERFLOW	SIG_OVERFLOW2
+#endif
+
 #ifdef DEVICE_TYPE_ROTATOR_UNIT
 	#define ISR_BUS_USART_DATA 	SIG_USART1_DATA
 	#define ISR_BUS_USART_RECV 	SIG_USART1_RECV
@@ -104,8 +117,11 @@
  
 /******* BUS specifics ********/
 
-//The default number of devices
+//!The default number of devices
 #define DEF_NR_DEVICES	25
+
+//! The startup time for the device. This is so that all units dont send ping at the same time
+#define DEFAULT_STARTUP_DELAY 90
 
 /*! The preamble of the BUS message */
 #define BUS_MSG_PREAMBLE		0xFE
@@ -132,6 +148,8 @@
 #define DEVICE_ID_COMPUTER					5
 //! Device ID for a power meter pickup
 #define DEVICE_ID_POWERMETER_PICKUP	6
+//! Device ID for the General I/O card
+#define DEVICE_ID_GENERAL_IO				7
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
 #define BUS_MAX_RESENDS	10

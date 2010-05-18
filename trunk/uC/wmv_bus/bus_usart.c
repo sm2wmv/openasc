@@ -72,6 +72,19 @@ void bus_usart_init(unsigned int baudrate) {
 		UCSR1B = (1<<RXEN1) | (1<<TXEN1) | (1<<RXCIE1) | (1<<TXCIE1);
 	#endif
 
+	#ifdef DEVICE_TYPE_GENERAL_IO
+		/* Set baud rate */
+		UBRR1H = (unsigned char) (baudrate>>8);
+		UBRR1L = (unsigned char) baudrate;
+
+		UCSR1A = 0;
+
+		/* Set frame format: 8data, no parity & 1 stop bits */
+		UCSR1C = (1<<UCSZ11) | (1<<UCSZ10) | (0<<UCSZ12);
+		/* Enable receiver and transmitter */
+		UCSR1B = (1<<RXEN1) | (1<<TXEN1) | (1<<RXCIE1) | (1<<TXCIE1);
+	#endif
+
 	#ifdef DEVICE_TYPE_ROTATOR_UNIT
 		/* Set baud rate */
 		UBRR1H = (unsigned char) (baudrate>>8);
@@ -121,6 +134,14 @@ unsigned char bus_usart_transmit(unsigned char  data) {
 		/* Put data into buffer, sends the data */
 		UDR1 = data;
 	#endif
+
+	#ifdef DEVICE_TYPE_GENERAL_IO
+		/* Wait for empty transmit buffer */
+		while (!( UCSR1A & (1<<UDRE1)));
+		/* Put data into buffer, sends the data */
+		UDR1 = data;
+	#endif
+
 
 	#ifdef DEVICE_TYPE_ROTATOR_UNIT
 		/* Wait for empty transmit buffer */
@@ -173,6 +194,13 @@ unsigned char bus_usart_receive(void ) {
 	#endif
 		
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+		/* Wait for data to be received */
+		while (!(UCSR1A & (1<<RXC1)));
+		/* Get and return received data from buffer */
+		return UDR1;
+	#endif
+
+	#ifdef DEVICE_TYPE_GENERAL_IO
 		/* Wait for data to be received */
 		while (!(UCSR1A & (1<<RXC1)));
 		/* Get and return received data from buffer */
@@ -232,6 +260,16 @@ unsigned char bus_usart_receive_loopback(void ) {
 		return rbuff;
 	#endif
 
+	#ifdef DEVICE_TYPE_GENERAL_IO
+		uint8_t rbuff;
+		/* Wait for data to be received */
+		while (!(UCSR1A & (1<<RXC1)));
+		/* Get and return received data from buffer */
+		rbuff = UDR1;
+		bus_usart_transmit(rbuff);
+		return rbuff;
+	#endif
+
 	#ifdef DEVICE_TYPE_ROTATOR_UNIT
 		uint8_t rbuff;
 		/* Wait for data to be received */
@@ -272,6 +310,11 @@ unsigned char bus_poll_usart_receive(void ) {
 	#endif
 		
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+		/* Check if data is received */
+		return ((UCSR1A & (1<<RXC1)));
+	#endif
+
+	#ifdef DEVICE_TYPE_GENERAL_IO
 		/* Check if data is received */
 		return ((UCSR1A & (1<<RXC1)));
 	#endif
