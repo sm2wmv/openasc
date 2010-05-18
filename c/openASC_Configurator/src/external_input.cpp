@@ -4,6 +4,8 @@ ExternalInputClass::ExternalInputClass() {
 	//Set all the buttons to have no function assigned to them at startup
 	for (int i=0;i<17;i++)
 		buttonFunction[i] = 0;
+
+	currSelectedButtonIndex = 10;
 }
 
 void ExternalInputClass::writeSettings(QSettings& settings) {

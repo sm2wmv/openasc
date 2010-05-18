@@ -186,7 +186,7 @@ void event_handler_process_ps2(unsigned char key_code) {
 	unsigned char curr_task = ext_key_get_assignment(func_index);
 	
 	/* Requires that we dont change the order of the functions */
-	if ((curr_task >= EXT_KEY_SEL_RX_ANT1) && (curr_task <= EXT_KEY_SEL_RX_ANT10)) {
+	if ((curr_task >= EXT_CTRL_SEL_RX_ANT1) && (curr_task <= EXT_CTRL_SEL_RX_ANT10)) {
 		event_set_rx_antenna(curr_task);
 		return;
 	}	
@@ -194,22 +194,22 @@ void event_handler_process_ps2(unsigned char key_code) {
 	//TODO: Continue with implementation of ext keypad functions
 	
 	switch(curr_task) {
-		case EXT_KEY_SEL_NONE:
+		case EXT_CTRL_SEL_NONE:
 			//Do nothing
 			break;
-		case EXT_KEY_TOGGLE_TX_ANT1:
+		case EXT_CTRL_TOGGLE_TX_ANT1:
 			event_tx_button1_pressed();
 			break;
-		case EXT_KEY_TOGGLE_TX_ANT2:
+		case EXT_CTRL_TOGGLE_TX_ANT2:
 			event_tx_button2_pressed();
 			break;
-		case EXT_KEY_TOGGLE_TX_ANT3:
+		case EXT_CTRL_TOGGLE_TX_ANT3:
 			event_tx_button3_pressed();
 			break;
-		case EXT_KEY_TOGGLE_TX_ANT4:
+		case EXT_CTRL_TOGGLE_TX_ANT4:
 			event_tx_button4_pressed();
 			break;
-		case EXT_KEY_TOGGLE_RX_ANT_MODE:
+		case EXT_CTRL_TOGGLE_RX_ANT_MODE:
 			event_rxant_button_pressed();
 			break;
 		default:

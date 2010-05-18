@@ -67,82 +67,91 @@
 //! External keyboard keycode for Button G
 #define KEYPAD_BTN_G			0x71
 
-/* EXTERNAL KEYBOARD FUNCTIONS */
-//! Ext keyboard - No function assigned
-#define EXT_KEY_SEL_NONE						0
-//! Ext keyboard - Set RX antenna #1
-#define EXT_KEY_SEL_RX_ANT1					1
-//! Ext keyboard - Set RX antenna #2
-#define EXT_KEY_SEL_RX_ANT2					2
-//! Ext keyboard - Set RX antenna #3
-#define EXT_KEY_SEL_RX_ANT3					3
-//! Ext keyboard - Set RX antenna #4
-#define EXT_KEY_SEL_RX_ANT4					4
-//! Ext keyboard - Set RX antenna #5
-#define EXT_KEY_SEL_RX_ANT5					5
-//! Ext keyboard - Set RX antenna #6
-#define EXT_KEY_SEL_RX_ANT6					6
-//! Ext keyboard - Set RX antenna #7
-#define EXT_KEY_SEL_RX_ANT7					7
-//! Ext keyboard - Set RX antenna #8
-#define EXT_KEY_SEL_RX_ANT8					8
-//! Ext keyboard - Set RX antenna #9
-#define EXT_KEY_SEL_RX_ANT9					9
-//! Ext keyboard - Set RX antenna #10
-#define EXT_KEY_SEL_RX_ANT10				10
+/* EXTERNAL CTRL FUNCTIONS */
+//! Ext ctrl - No function assigned
+#define EXT_CTRL_SEL_NONE						0
+//! Ext ctrl - Set RX antenna #1
+#define EXT_CTRL_SEL_RX_ANT1					1
+//! Ext ctrl - Set RX antenna #2
+#define EXT_CTRL_SEL_RX_ANT2					2
+//! Ext ctrl - Set RX antenna #3
+#define EXT_CTRL_SEL_RX_ANT3					3
+//! Ext ctrl - Set RX antenna #4
+#define EXT_CTRL_SEL_RX_ANT4					4
+//! Ext ctrl - Set RX antenna #5
+#define EXT_CTRL_SEL_RX_ANT5					5
+//! Ext ctrl - Set RX antenna #6
+#define EXT_CTRL_SEL_RX_ANT6					6
+//! Ext ctrl - Set RX antenna #7
+#define EXT_CTRL_SEL_RX_ANT7					7
+//! Ext ctrl - Set RX antenna #8
+#define EXT_CTRL_SEL_RX_ANT8					8
+//! Ext ctrl - Set RX antenna #9
+#define EXT_CTRL_SEL_RX_ANT9					9
+//! Ext ctrl - Set RX antenna #10
+#define EXT_CTRL_SEL_RX_ANT10				10
 
-//! Ext keyboard - Toggle TX antenna combination #1
-#define EXT_KEY_TOGGLE_TX_ANT1			9
-//! Ext keyboard - Toggle TX antenna combination #2
-#define EXT_KEY_TOGGLE_TX_ANT2			10
-//! Ext keyboard - Toggle TX antenna combination #3
-#define EXT_KEY_TOGGLE_TX_ANT3			11
-//! Ext keyboard - Toggle TX antenna combination #4
-#define EXT_KEY_TOGGLE_TX_ANT4			12
+//! Ext ctrl - Toggle TX antenna combination #1
+#define EXT_CTRL_TOGGLE_TX_ANT1			9
+//! Ext ctrl - Toggle TX antenna combination #2
+#define EXT_CTRL_TOGGLE_TX_ANT2			10
+//! Ext ctrl - Toggle TX antenna combination #3
+#define EXT_CTRL_TOGGLE_TX_ANT3			11
+//! Ext ctrl - Toggle TX antenna combination #4
+#define EXT_CTRL_TOGGLE_TX_ANT4			12
 
-//! Ext keyboard - Toggle RX antenna combination #1
-#define EXT_KEY_TOGGLE_RX_ANT1			13
-//! Ext keyboard - Toggle RX antenna combination #2
-#define EXT_KEY_TOGGLE_RX_ANT2			14
-//! Ext keyboard - Toggle RX antenna combination #3
-#define EXT_KEY_TOGGLE_RX_ANT3			15
-//! Ext keyboard - Toggle RX antenna combination #4
-#define EXT_KEY_TOGGLE_RX_ANT4			16
+//! Ext ctrl - Toggle RX antenna combination #1
+#define EXT_CTRL_TOGGLE_RX_ANT1			13
+//! Ext ctrl - Toggle RX antenna combination #2
+#define EXT_CTRL_TOGGLE_RX_ANT2			14
+//! Ext ctrl - Toggle RX antenna combination #3
+#define EXT_CTRL_TOGGLE_RX_ANT3			15
+//! Ext ctrl - Toggle RX antenna combination #4
+#define EXT_CTRL_TOGGLE_RX_ANT4			16
 
-//! Ext keyboard - Toggle RX antenna enabled
-#define EXT_KEY_TOGGLE_RX_ANT_MODE	17
-//! Ext keyboard - Toggle TX/RX mode on/off
-#define EXT_KEY_TOGGLE_TXRX_MODE		18
+//! Ext ctrl - Toggle RX antenna enabled
+#define EXT_CTRL_TOGGLE_RX_ANT_MODE	17
+//! Ext ctrl - Toggle TX/RX mode on/off
+#define EXT_CTRL_TOGGLE_TXRX_MODE		18
 
-//! Ext keyboard - Select array direction #1
-#define EXT_KEY_SET_ARRAY_DIR1			19
-//! Ext keyboard - Select array direction #2
-#define EXT_KEY_SET_ARRAY_DIR2			20
-//! Ext keyboard - Select array direction #3
-#define EXT_KEY_SET_ARRAY_DIR3			21
-//! Ext keyboard - Select array direction #4
-#define EXT_KEY_SET_ARRAY_DIR4			22
-//! Ext keyboard - Select array direction #5
-#define EXT_KEY_SET_ARRAY_DIR5			23
-//! Ext keyboard - Select array direction #6
-#define EXT_KEY_SET_ARRAY_DIR6			24
-//! Ext keyboard - Select array direction #7
-#define EXT_KEY_SET_ARRAY_DIR7			25
-//! Ext keyboard - Select array direction #8
-#define EXT_KEY_SET_ARRAY_DIR8			26
+//! Ext ctrl - Select array direction #1
+#define EXT_CTRL_SET_ARRAY_DIR1			19
+//! Ext ctrl - Select array direction #2
+#define EXT_CTRL_SET_ARRAY_DIR2			20
+//! Ext ctrl - Select array direction #3
+#define EXT_CTRL_SET_ARRAY_DIR3			21
+//! Ext ctrl - Select array direction #4
+#define EXT_CTRL_SET_ARRAY_DIR4			22
+//! Ext ctrl - Select array direction #5
+#define EXT_CTRL_SET_ARRAY_DIR5			23
+//! Ext ctrl - Select array direction #6
+#define EXT_CTRL_SET_ARRAY_DIR6			24
+//! Ext ctrl - Select array direction #7
+#define EXT_CTRL_SET_ARRAY_DIR7			25
+//! Ext ctrl - Select array direction #8
+#define EXT_CTRL_SET_ARRAY_DIR8			26
 
-//! Ext keyboard - Select stack combo #1
-#define EXT_KEY_SET_STACK_COMB1			27
-//! Ext keyboard - Select stack combo #2
-#define EXT_KEY_SET_STACK_COMB2			28
-//! Ext keyboard - Select stack combo #3
-#define EXT_KEY_SET_STACK_COMB3			29
-//! Ext keyboard - Select stack combo #4
-#define EXT_KEY_SET_STACK_COMB4			30
-//! Ext keyboard - Select stack combo #5
-#define EXT_KEY_SET_STACK_COMB5			31
-//! Ext keyboard - Select stack combo #6
-#define EXT_KEY_SET_STACK_COMB6			32
+//! Ext ctrl - Select stack combo #1
+#define EXT_CTRL_SET_STACK_COMB1			27
+//! Ext ctrl - Select stack combo #2
+#define EXT_CTRL_SET_STACK_COMB2			28
+//! Ext ctrl - Select stack combo #3
+#define EXT_CTRL_SET_STACK_COMB3			29
+//! Ext ctrl - Select stack combo #4
+#define EXT_CTRL_SET_STACK_COMB4			30
+//! Ext ctrl - Select stack combo #5
+#define EXT_CTRL_SET_STACK_COMB5			31
+//! Ext ctrl - Select stack combo #6
+#define EXT_CTRL_SET_STACK_COMB6			32
+
+//! Ext ctrl - Toggle the amplifier on/off
+#define EXT_CTRL_AMPLIFIER_TOGGLE_ON_OFF	33
+//! Ext ctrl - Toggle the amplifier standby
+#define EXT_CTRL_AMPLIFIER_TOGGLE_STANDBY	34
+//! Ext ctrl - Tune the amplifier to the correct band
+#define EXT_CTRL_AMPLIFIER_TUNE	35
+//! Ext ctrl - Reset the amplifier
+#define EXT_CTRL_AMPLIFIER_RESET	36
 
 void event_set_error(unsigned char error_type, unsigned char state);
 unsigned char event_get_errors(void);

@@ -1,6 +1,7 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <qfiledialog.h>
+#include <QStringList>
 
 #include "mainwindowimpl.h"
 #include "submenuimpl.h"
@@ -18,6 +19,26 @@ BandClass bandData[9];
 RXAntennaClass rxAntennas;
 
 using namespace std;
+
+void MainWindowImpl::listExtButtonFunctionsLoad() {
+		listExtButtonFunctions << "None" << "Select RX Antenna 1" << "Select RX Antenna 2" << "Select RX Antenna 3" << "Select RX Antenna 4" << "Select RX Antenna 5"
+						<< "Select RX Antenna 6" << "Select RX Antenna 7" << "Select RX Antenna 8" << "Select RX Antenna 9" << "Select RX Antenna 10";
+
+		listExtButtonFunctions << "Toggle TX antenna 1" << "Toggle TX antenna 2" << "Toggle TX antenna 3" << "Toggle TX antenna 4" << "Toggle RX antenna 1"
+						<< "Toggle RX antenna 2" << "Toggle RX antenna 3" << "Toggle RX antenna 4";
+
+		listExtButtonFunctions << "Toggle RX Ant mode" << "Toggle TX/RX Ant mode";
+
+		listExtButtonFunctions << "Set Array dir 1" << "Set Array dir 2" << "Set Array dir 3" << "Set Array dir 4" << "Set Array dir 5" << "Set Array dir 6" << "Set Array dir 7" << "Set Array dir 8";
+		listExtButtonFunctions << "Set Stack comb 1" << "Set Stack comb 2" << "Set Stack comb 3" << "Set Stack comb 4" << "Set Stack comb 5" << "Set Stack comb 6";
+
+
+		listExtButtonFunctions << "Amplifier toggle ON/OFF" << "Amplifier toggle standby" << "Amplifier tune" << "Amplifier reset";
+
+		comboBoxExtKeypadFunc->addItems(listExtButtonFunctions);
+		comboBoxButtonAUX1->addItems(listExtButtonFunctions);
+		comboBoxButtonAUX2->addItems(listExtButtonFunctions);
+}
 
 void MainWindowImpl::reloadCurrentRotatorProperties() {
 	unsigned char index = comboBoxBand->currentIndex();
@@ -1070,7 +1091,7 @@ void MainWindowImpl::pushButtonExtGPressed() {
 }
 
 void MainWindowImpl::comboBoxExtKeypadFuncIndexChanged(int funcIndex) {
-	extInput.setButtonFunction(funcIndex);
+		extInput.setButtonFunction(funcIndex);
 }
 
 void MainWindowImpl::spinBoxNetworkAddressValueChanged(int newValue) {
@@ -1437,6 +1458,9 @@ void MainWindowImpl::setupConnections() {
 
 MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
 	setupUi(this);
+
+	listExtButtonFunctionsLoad();
+
 	//! Set the sequencer names, used for saving settings etc */
 	sequencerComputer.setName("SequencerComputer");
 	sequencerRadioSense.setName("SequencerRadioSense");
@@ -1449,6 +1473,6 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(pa
 		bandData[i].setIndex(i);
 		bandData[i].setDefaultBandLimits();
 	}
-	
+
 	loadInitialGUIValues();
 }

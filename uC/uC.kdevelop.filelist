@@ -73,6 +73,14 @@ front_panel/sub_menu.c
 front_panel/sub_menu.h
 front_panel/usart.c
 front_panel/usart.h
+general_io
+general_io/board.h
+general_io/global.h
+general_io/init.c
+general_io/init.h
+general_io/main.c
+general_io/main.h
+general_io/makefile
 global.h
 i2c.c
 i2c.h

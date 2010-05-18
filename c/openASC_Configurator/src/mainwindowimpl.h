@@ -33,6 +33,8 @@ private:
 	void lineEditRXAntennaOutputs(QString str, int index);
 	void comboBoxRotatorsReload();
 	void reloadCurrentRotatorProperties();
+	void listExtButtonFunctionsLoad();
+	QStringList listExtButtonFunctions;
 protected:
 	SequencerClass sequencerFootswitch;
 	SequencerClass sequencerComputer;
