@@ -38,7 +38,10 @@
 //! Flag which indicates if the screensaver is activated or not
 unsigned char screensaver_mode = 0;
 
+//! The last forward value, used for the power meter bargraph update
 unsigned char last_fwd_val = 0;
+
+//! The last reflected value, used for the power meter bargraph update
 unsigned char last_ref_val = 0;
 
 //! Memory area used for printing variables to the display
@@ -52,7 +55,7 @@ void display_shutdown_view(void) {
 	glcd_update_all();
 }
 
-/*! \brief Display the setup  in progressscreen */
+/*! \brief Display the setup  in progress screen */
 void display_setup_view(void) {
 	glcd_clear();
 	display_text_center_adjust(10,"Setup",5, FONT_FIFTEEN_DOT);
@@ -429,6 +432,9 @@ void display_update_radio_freq(void) {
 	}
 }
 
+/*! \brief Will show the sub menu of a certain antenna 
+ *  \param ant_index The antenna index (0-3)
+ *  \param sub_menu_type Which type of sub menu it is */
 void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type) {
 	if (status.current_display_level == DISPLAY_LEVEL_SUBMENU) {
 		char temp[10];
@@ -450,6 +456,8 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 	}
 }
 
+/*! \brief Will display the forward bargraph
+ *  \param percent How much we wish to fill it */
 void display_show_bargraph_fwd(unsigned char percent) {
 	unsigned char val = (unsigned char)(((float)percent*122.0f)/100.0);
 	
@@ -479,6 +487,8 @@ void display_show_bargraph_fwd(unsigned char percent) {
 	last_fwd_val = val;
 }
 
+/*! \brief Will display the reflected bargraph
+ *  \param percent How much we wish to fill it */
 void display_show_bargraph_ref(unsigned char percent) {
 	unsigned char val = (unsigned char)(((float)percent*77.0f)/100.0);
 	
@@ -508,11 +518,18 @@ void display_show_bargraph_ref(unsigned char percent) {
 	last_ref_val = val;
 }
 
+/*! \brief Show the power meter bargraphs 
+ *  \param fwd_power The forward power in percent
+ *  \param ref_power The reflected power in percent */
 void display_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_power) {
 	display_show_bargraph_fwd(fwd_power);
 	display_show_bargraph_ref(ref_power);
 }
 
+/*! \brief This function will print out the power meter text which shows FWD, REF power and VSWR
+ *  \param fwd_power Forward power in watts
+ *  \param ref_power Reflected power in watts
+ *  \param vswr The current VSWR, for example 151 means 1.51:1 */
 void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr) {
 	//TODO: Insert the real values here
 	display_text_right_adjust(125,3,"8470W",5,FONT_NINE_DOT);
@@ -520,6 +537,7 @@ void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power
 	display_text_right_adjust(125,45,"1.3:1",5,FONT_NINE_DOT);
 }
 
+/*! \brief This function will show the power meter display */
 void display_show_powermeter(void) {
 	glcd_rectangle(0,0,28,128);
 	glcd_rectangle(0,32,28,128);

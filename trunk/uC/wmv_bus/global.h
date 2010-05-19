@@ -26,7 +26,9 @@
 #define GLOBAL_H
 
 // CPU clock speed
+//! The CPU speed
 #define F_CPU        14745000               		// 14.745MHz processor
+//! Cycles per us
 #define CYCLES_PER_US ((F_CPU+500000)/1000000) 	// cpu cycles per microsecond
 
 #endif

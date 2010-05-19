@@ -33,8 +33,10 @@
 
 #define POWERMETER_FLAG_ACTIVE 					0
 
+//! The current status of the power meter
 powermeter_struct powermeter_status;
 
+//! Various flags used in the powermeter, defines can be found in powermeter.h
 unsigned char powermeter_flags;
 
 //! The counter which keeps track of when we should update the power meter text
@@ -43,6 +45,11 @@ unsigned int counter_powermeter_update_text=0;
 //! The counter which keeps track of when we should update the power meter bargraph
 unsigned int counter_powermeter_update_bargraph=0;
 
+/*! \brief Initialize the power meter
+ *  \param pickup_addr The address of the powermeter unit that sends the information
+ *  \param text_update_rate How often we should refresh the text on the display
+ *  \param bargraph_update_rate How often we should update the bargraph of the display
+ *  \param vswr_limit What is the SWR limit of the device, when this is exceeded we shut down the possibility to PTT */
 void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit) {
 	powermeter_status.curr_fwd_pwr_value = 0;
 	powermeter_status.curr_ref_pwr_value = 0;
@@ -54,6 +61,8 @@ void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, u
 	powermeter_status.vswr_limit = vswr_limit;
 }
 
+/*! \brief Activate the power meter display 
+/*! \param state If this is set to 1 we will activate the powermeter, if set to 0 we will deactivate it */
 void powermeter_set_active(unsigned char state) {
 	if (state != 0) {
 		powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
@@ -70,12 +79,17 @@ void powermeter_set_active(unsigned char state) {
 	}
 }
 
+/*! \brief Update the values of the power meter
+ *  \param fwd_pwr The current forward power in watts
+ *  \param ref_pwr The current reflected power in watts
+ *  \param vswr The current VSWR value, for example 151 means 1.51:1 in VSWR */
 void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr) {
 	powermeter_status.curr_fwd_pwr_value = fwd_pwr;
 	powermeter_status.curr_ref_pwr_value = ref_pwr;
 	powermeter_status.curr_vswr_value = vswr;
 }
 
+/*! \brief This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc */
 void powermeter_process_tasks(void) {
 	if (powermeter_flags & (1<<POWERMETER_FLAG_ACTIVE)) {
 		if (counter_powermeter_update_text >= powermeter_status.text_update_rate) {
@@ -92,6 +106,7 @@ void powermeter_process_tasks(void) {
 	}
 }
 
+/*! \brief This function should be called at 1 ms intervals. It is to keep track of update rates etc for the display */
 void powermeter_1ms_tick(void) {
 	counter_powermeter_update_text++;
 	counter_powermeter_update_bargraph++;

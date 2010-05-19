@@ -91,6 +91,7 @@ unsigned int counter_last_pulse_event=0;
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 unsigned int counter_event_timer = 0;
 
+//! The number of devices on the bus
 unsigned char device_count = 0;
 
 //! Different flags, description is found in main.h

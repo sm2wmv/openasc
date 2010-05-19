@@ -1,0 +1,190 @@
+\hypertarget{sequencer_8c}{
+\section{front\_\-panel/sequencer.c File Reference}
+\label{sequencer_8c}\index{front\_\-panel/sequencer.c@{front\_\-panel/sequencer.c}}
+}
+Sequencer.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include \char`\"{}radio\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}sequencer.h\char`\"{}}\par
+{\tt \#include \char`\"{}main.h\char`\"{}}\par
+{\tt \#include \char`\"{}led\_\-control.h\char`\"{}}\par
+{\tt \#include \char`\"{}usart.h\char`\"{}}\par
+{\tt \#include \char`\"{}../global.h\char`\"{}}\par
+{\tt \#include \char`\"{}../event\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}antenna\_\-ctrl.h\char`\"{}}\par
+{\tt \#include \char`\"{}eeprom.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{sequencer_8c_297ab6ae481decc5b654b11033b61a5d}{
+\#define \hyperlink{sequencer_8c_297ab6ae481decc5b654b11033b61a5d}{PTT\_\-ACTIVE\_\-FOOTSWITCH}~0}
+\label{sequencer_8c_297ab6ae481decc5b654b11033b61a5d}
+
+\begin{CompactList}\small\item\em The footswitch PTT input is active. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_d60968742cb87ad1e5a4955db2fb04ac}{
+\#define \hyperlink{sequencer_8c_d60968742cb87ad1e5a4955db2fb04ac}{PTT\_\-ACTIVE\_\-RADIO\_\-SENSE}~1}
+\label{sequencer_8c_d60968742cb87ad1e5a4955db2fb04ac}
+
+\begin{CompactList}\small\item\em The radio sense PTT input is active. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_7f794cc4a66dade4c3a970c75ad2362e}{
+\#define \hyperlink{sequencer_8c_7f794cc4a66dade4c3a970c75ad2362e}{PTT\_\-ACTIVE\_\-COMPUTER\_\-RTS}~2}
+\label{sequencer_8c_7f794cc4a66dade4c3a970c75ad2362e}
+
+\begin{CompactList}\small\item\em The computer PTT input is active. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{sequencer_8c_70c4a395961e80655ad14fe4779f7fd3}{
+unsigned char \hyperlink{sequencer_8c_70c4a395961e80655ad14fe4779f7fd3}{sequencer\_\-get\_\-ptt\_\-active} (void)}
+\label{sequencer_8c_70c4a395961e80655ad14fe4779f7fd3}
+
+\begin{CompactList}\small\item\em Retrieve which PTT inputs that are currently active, defines above. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_a29ae1c1d47ca3fbd6a910beb32d10e8}{
+void \hyperlink{sequencer_8c_a29ae1c1d47ca3fbd6a910beb32d10e8}{sequencer\_\-load\_\-eeprom} (void)}
+\label{sequencer_8c_a29ae1c1d47ca3fbd6a910beb32d10e8}
+
+\begin{CompactList}\small\item\em This function will load data from the eeprom to the ptt\_\-sequencer struct. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_205749ea1a958bd5efa4f5abc1a6ff2e}{
+void \hyperlink{sequencer_8c_205749ea1a958bd5efa4f5abc1a6ff2e}{sequencer\_\-footsw\_\-pressed} (void)}
+\label{sequencer_8c_205749ea1a958bd5efa4f5abc1a6ff2e}
+
+\begin{CompactList}\small\item\em Function to be called if the footswitch is pressed. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_447cb34cbaba75283524b32ea1e1fc35}{
+void \hyperlink{sequencer_8c_447cb34cbaba75283524b32ea1e1fc35}{sequencer\_\-footsw\_\-released} (void)}
+\label{sequencer_8c_447cb34cbaba75283524b32ea1e1fc35}
+
+\begin{CompactList}\small\item\em Function to be called if the footswitch is released. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_e57c1a07f28becc0318f364b15196d25}{
+void \hyperlink{sequencer_8c_e57c1a07f28becc0318f364b15196d25}{sequencer\_\-computer\_\-rts\_\-activated} (void)}
+\label{sequencer_8c_e57c1a07f28becc0318f364b15196d25}
+
+\begin{CompactList}\small\item\em Function to be called if the computer rts is activated. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_2083ed0682dc10e08b34165e621b8ffb}{
+void \hyperlink{sequencer_8c_2083ed0682dc10e08b34165e621b8ffb}{sequencer\_\-computer\_\-rts\_\-deactivated} (void)}
+\label{sequencer_8c_2083ed0682dc10e08b34165e621b8ffb}
+
+\begin{CompactList}\small\item\em Function to be called if the computer rts is deactivated. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_558af8a3cc03524c519865da8c52e94d}{
+void \hyperlink{sequencer_8c_558af8a3cc03524c519865da8c52e94d}{sequencer\_\-radio\_\-sense\_\-activated} (void)}
+\label{sequencer_8c_558af8a3cc03524c519865da8c52e94d}
+
+\begin{CompactList}\small\item\em Function to be called if the radio sense input is activated. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_2d3a0f37732079072955fc9397fccae8}{
+void \hyperlink{sequencer_8c_2d3a0f37732079072955fc9397fccae8}{sequencer\_\-radio\_\-sense\_\-deactivated} (void)}
+\label{sequencer_8c_2d3a0f37732079072955fc9397fccae8}
+
+\begin{CompactList}\small\item\em Function to be called if the radio sense input is deactivated. \item\end{CompactList}\item 
+unsigned char \hyperlink{sequencer_8c_b818249c0d01c3158c9ac4a980162e4e}{sequencer\_\-get\_\-rts\_\-polarity} ()
+\begin{CompactList}\small\item\em Retrieve the polarity of the Computer RTS signal. \item\end{CompactList}\item 
+unsigned char \hyperlink{sequencer_8c_82395bc82dfd38aac92240d8a4035241}{sequencer\_\-get\_\-sense\_\-polarity} ()
+\begin{CompactList}\small\item\em Retrieve the polarity of the radio sense signal. \item\end{CompactList}\item 
+unsigned char \hyperlink{sequencer_8c_bd5428803147cbe9960a82d9e6e7dce6}{sequencer\_\-ptt\_\-active} (void)
+\begin{CompactList}\small\item\em Will return if the PTT is active or not. \item\end{CompactList}\item 
+unsigned char \hyperlink{sequencer_8c_989542be4592763f28295ccc7fe8db3c}{sequencer\_\-get\_\-radio\_\-sense} (void)
+\begin{CompactList}\small\item\em Retrieve if the radio sense should be sensed from upper floor or bottom. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{sequencer_8c_339ca62dcc7f2ddaddcc68541f5c9a61}{
+unsigned char \hyperlink{sequencer_8c_339ca62dcc7f2ddaddcc68541f5c9a61}{ptt\_\-active} = 0}
+\label{sequencer_8c_339ca62dcc7f2ddaddcc68541f5c9a61}
+
+\begin{CompactList}\small\item\em The status of the PTT, see defines above. \item\end{CompactList}\item 
+\hypertarget{sequencer_8c_e3993ee1882aa3846a9eca8d74bd6f76}{
+\hyperlink{structstruct__ptt}{struct\_\-ptt} \hyperlink{sequencer_8c_e3993ee1882aa3846a9eca8d74bd6f76}{ptt\_\-sequencer}}
+\label{sequencer_8c_e3993ee1882aa3846a9eca8d74bd6f76}
+
+\begin{CompactList}\small\item\em PTT sequencer data. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Sequencer. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/sequencer.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{sequencer_8c-source}{sequencer.c}.
+
+\subsection{Function Documentation}
+\hypertarget{sequencer_8c_989542be4592763f28295ccc7fe8db3c}{
+\index{sequencer.c@{sequencer.c}!sequencer\_\-get\_\-radio\_\-sense@{sequencer\_\-get\_\-radio\_\-sense}}
+\index{sequencer\_\-get\_\-radio\_\-sense@{sequencer\_\-get\_\-radio\_\-sense}!sequencer.c@{sequencer.c}}
+\subsubsection[{sequencer\_\-get\_\-radio\_\-sense}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char sequencer\_\-get\_\-radio\_\-sense (void)}}
+\label{sequencer_8c_989542be4592763f28295ccc7fe8db3c}
+
+
+Retrieve if the radio sense should be sensed from upper floor or bottom. 
+
+\begin{Desc}
+\item[Returns:]0 if lower floor, 1 if upper floor \end{Desc}
+
+
+Definition at line 231 of file sequencer.c.
+
+References struct\_\-ptt::ptt\_\-input, and PTT\_\-INPUT\_\-RADIO\_\-SENSE\_\-UP.
+
+Referenced by event\_\-parse\_\-ext\_\-event().\hypertarget{sequencer_8c_b818249c0d01c3158c9ac4a980162e4e}{
+\index{sequencer.c@{sequencer.c}!sequencer\_\-get\_\-rts\_\-polarity@{sequencer\_\-get\_\-rts\_\-polarity}}
+\index{sequencer\_\-get\_\-rts\_\-polarity@{sequencer\_\-get\_\-rts\_\-polarity}!sequencer.c@{sequencer.c}}
+\subsubsection[{sequencer\_\-get\_\-rts\_\-polarity}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char sequencer\_\-get\_\-rts\_\-polarity (void)}}
+\label{sequencer_8c_b818249c0d01c3158c9ac4a980162e4e}
+
+
+Retrieve the polarity of the Computer RTS signal. 
+
+\begin{Desc}
+\item[Returns:]1 if the polarity is active low (inverted), 0 otherwise \end{Desc}
+
+
+Definition at line 210 of file sequencer.c.
+
+References struct\_\-ptt::ptt\_\-input, and PTT\_\-INPUT\_\-INVERTED\_\-COMPUTER\_\-RTS.
+
+Referenced by event\_\-parse\_\-ext\_\-event().\hypertarget{sequencer_8c_82395bc82dfd38aac92240d8a4035241}{
+\index{sequencer.c@{sequencer.c}!sequencer\_\-get\_\-sense\_\-polarity@{sequencer\_\-get\_\-sense\_\-polarity}}
+\index{sequencer\_\-get\_\-sense\_\-polarity@{sequencer\_\-get\_\-sense\_\-polarity}!sequencer.c@{sequencer.c}}
+\subsubsection[{sequencer\_\-get\_\-sense\_\-polarity}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char sequencer\_\-get\_\-sense\_\-polarity (void)}}
+\label{sequencer_8c_82395bc82dfd38aac92240d8a4035241}
+
+
+Retrieve the polarity of the radio sense signal. 
+
+\begin{Desc}
+\item[Returns:]1 if the polarity is active low (inverted), 0 otherwise \end{Desc}
+
+
+Definition at line 219 of file sequencer.c.
+
+References struct\_\-ptt::ptt\_\-input, and PTT\_\-INPUT\_\-INVERTED\_\-RADIO\_\-SENSE.
+
+Referenced by event\_\-parse\_\-ext\_\-event().\hypertarget{sequencer_8c_bd5428803147cbe9960a82d9e6e7dce6}{
+\index{sequencer.c@{sequencer.c}!sequencer\_\-ptt\_\-active@{sequencer\_\-ptt\_\-active}}
+\index{sequencer\_\-ptt\_\-active@{sequencer\_\-ptt\_\-active}!sequencer.c@{sequencer.c}}
+\subsubsection[{sequencer\_\-ptt\_\-active}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char sequencer\_\-ptt\_\-active (void)}}
+\label{sequencer_8c_bd5428803147cbe9960a82d9e6e7dce6}
+
+
+Will return if the PTT is active or not. 
+
+\begin{Desc}
+\item[Returns:]The state of the ptt\_\-active variable, 0 if nothing is PTTing the radio \end{Desc}
+
+
+Definition at line 225 of file sequencer.c.
+
+References ptt\_\-active.

@@ -56,7 +56,8 @@
 
 extern unsigned int main_flags;
 
-unsigned char flag_errors = 0;
+//! Contains the errors which are set
+unsigned int flag_errors = 0;
 
 /*! \brief Set that an error has occured 
  *  \param error_type The type of error that has occured, defines can be found in errors.h

@@ -31,7 +31,7 @@ void usart0_init (unsigned int baudrate);
 void usart0_transmit (char data);
 unsigned char usart0_receive (void);
 unsigned char usart0_receive_loopback (void);
-unsigned char poll_usart0_Receive (void);
+unsigned char poll_usart0_receive (void);
 unsigned char usart0_sendstring (char *data,unsigned char length);
 
 unsigned char poll_usart1_receive (void);
@@ -39,7 +39,7 @@ void usart1_init(unsigned int baudrate, unsigned char stopbits);
 unsigned char usart1_transmit (unsigned char data);
 unsigned char usart1_receive (void);
 unsigned char usart1_receive_loopback (void);
-unsigned char poll_usart1_Receive (void);
+unsigned char poll_usart1_receive (void);
 unsigned char usart1_sendstring (char *data,unsigned char length);
 
 unsigned char poll_usart3_receive (void);
@@ -47,7 +47,7 @@ void usart3_init (unsigned int baudrate, unsigned char stopbits);
 unsigned char usart3_transmit (unsigned char data);
 unsigned char usart3_receive (void);
 unsigned char usart3_receive_loopback (void);
-unsigned char poll_usart3_Receive (void);
+unsigned char poll_usart3_receive (void);
 unsigned char usart3_sendstring (char *data,unsigned char length);
 
 #endif

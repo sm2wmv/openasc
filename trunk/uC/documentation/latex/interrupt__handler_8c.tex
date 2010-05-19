@@ -1,0 +1,77 @@
+\hypertarget{interrupt__handler_8c}{
+\section{front\_\-panel/interrupt\_\-handler.c File Reference}
+\label{interrupt__handler_8c}\index{front\_\-panel/interrupt\_\-handler.c@{front\_\-panel/interrupt\_\-handler.c}}
+}
+Handles different external interrupts.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include \char`\"{}main.h\char`\"{}}\par
+{\tt \#include \char`\"{}board.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+int \hyperlink{interrupt__handler_8c_87de6417ad629ba7edd240f6d0c9b2c9}{ih\_\-poll\_\-buttons} (void)
+\item 
+unsigned char \hyperlink{interrupt__handler_8c_4921d984c3419d1d6703d9190069639d}{ih\_\-poll\_\-ext\_\-devices} (void)
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Handles different external interrupts. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/interrupt_handler.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{interrupt__handler_8c-source}{interrupt\_\-handler.c}.
+
+\subsection{Function Documentation}
+\hypertarget{interrupt__handler_8c_87de6417ad629ba7edd240f6d0c9b2c9}{
+\index{interrupt\_\-handler.c@{interrupt\_\-handler.c}!ih\_\-poll\_\-buttons@{ih\_\-poll\_\-buttons}}
+\index{ih\_\-poll\_\-buttons@{ih\_\-poll\_\-buttons}!interrupt_handler.c@{interrupt\_\-handler.c}}
+\subsubsection[{ih\_\-poll\_\-buttons}]{\setlength{\rightskip}{0pt plus 5cm}int ih\_\-poll\_\-buttons (void)}}
+\label{interrupt__handler_8c_87de6417ad629ba7edd240f6d0c9b2c9}
+
+
+Polls the status of all buttons on the front panel and returns it as an integer. The bit mask pattern is defined in board.h
+
+\begin{Desc}
+\item[Returns:]Which buttons that are currently pressed, see mask pattern in board.h \end{Desc}
+
+
+The following is done because of a hardware bug! The pullups on the uC are too small to actually charge the debounce capacitor in time. The way we solve it is that by making the pin to an output we can charge the capacitor and then go over to using the pin as input and reactivate the pullups again. 
+
+Definition at line 37 of file interrupt\_\-handler.c.
+
+References BUTTON1\_\-RX\_\-BIT, BUTTON1\_\-TX\_\-BIT, BUTTON2\_\-RX\_\-BIT, BUTTON2\_\-TX\_\-BIT, BUTTON3\_\-RX\_\-BIT, BUTTON3\_\-TX\_\-BIT, BUTTON4\_\-RX\_\-BIT, BUTTON4\_\-TX\_\-BIT, BUTTON\_\-AUX1\_\-BIT, BUTTON\_\-AUX2\_\-BIT, BUTTON\_\-MENU\_\-BIT, BUTTON\_\-PULSE\_\-BIT, BUTTON\_\-ROTATE\_\-BIT, BUTTON\_\-RXANT\_\-BIT, BUTTON\_\-SUBMENU\_\-BIT, BUTTON\_\-TXRX\_\-BIT, FLAG\_\-BUTTON1\_\-RX\_\-BIT, FLAG\_\-BUTTON1\_\-TX\_\-BIT, FLAG\_\-BUTTON2\_\-RX\_\-BIT, FLAG\_\-BUTTON2\_\-TX\_\-BIT, FLAG\_\-BUTTON3\_\-RX\_\-BIT, FLAG\_\-BUTTON3\_\-TX\_\-BIT, FLAG\_\-BUTTON4\_\-RX\_\-BIT, FLAG\_\-BUTTON4\_\-TX\_\-BIT, FLAG\_\-BUTTON\_\-AUX1\_\-BIT, FLAG\_\-BUTTON\_\-AUX2\_\-BIT, FLAG\_\-BUTTON\_\-MENU\_\-BIT, FLAG\_\-BUTTON\_\-PULSE\_\-BIT, FLAG\_\-BUTTON\_\-ROTATE\_\-BIT, FLAG\_\-BUTTON\_\-RXANT\_\-BIT, FLAG\_\-BUTTON\_\-SUBMENU\_\-BIT, and FLAG\_\-BUTTON\_\-TXRX\_\-BIT.
+
+Referenced by event\_\-poll\_\-buttons().\hypertarget{interrupt__handler_8c_4921d984c3419d1d6703d9190069639d}{
+\index{interrupt\_\-handler.c@{interrupt\_\-handler.c}!ih\_\-poll\_\-ext\_\-devices@{ih\_\-poll\_\-ext\_\-devices}}
+\index{ih\_\-poll\_\-ext\_\-devices@{ih\_\-poll\_\-ext\_\-devices}!interrupt_handler.c@{interrupt\_\-handler.c}}
+\subsubsection[{ih\_\-poll\_\-ext\_\-devices}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char ih\_\-poll\_\-ext\_\-devices (void)}}
+\label{interrupt__handler_8c_4921d984c3419d1d6703d9190069639d}
+
+
+Polls the status of all the external inputs. This function does not care if the device is active low or active high. It will just return the current state so the handeling of leveling needs to be done elsewhere. The bit mask pattern is defined in board.h
+
+\begin{Desc}
+\item[Returns:]The status of the external devices \end{Desc}
+
+
+Definition at line 108 of file interrupt\_\-handler.c.
+
+References EXT\_\-FOOTSWITCH\_\-BIT, EXT\_\-RADIO\_\-SENSE1\_\-BIT, EXT\_\-RADIO\_\-SENSE2\_\-BIT, EXT\_\-USB1\_\-DTR\_\-BIT, EXT\_\-USB2\_\-DTR\_\-BIT, EXT\_\-USB2\_\-RTS\_\-BIT, STATUS\_\-FOOTSWITCH\_\-BIT, STATUS\_\-RADIO\_\-SENSE1\_\-BIT, STATUS\_\-RADIO\_\-SENSE2\_\-BIT, STATUS\_\-USB1\_\-DTR\_\-BIT, STATUS\_\-USB2\_\-DTR\_\-BIT, and STATUS\_\-USB2\_\-RTS\_\-BIT.
+
+Referenced by event\_\-poll\_\-ext\_\-device(), and main().

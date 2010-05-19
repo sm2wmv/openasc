@@ -218,6 +218,7 @@ void bus_set_is_master(unsigned char state, unsigned char count) {
 }
 
 /*! \brief Send an NOT acknowledge 
+ *  \param to_addr Which address we wish to send the ping to
  *  \param error_type Why was the message nacked, see bus.h for more information about BUS errors */
 void bus_send_nack(unsigned char to_addr, unsigned char error_type) {
 	if (to_addr != BUS_BROADCAST_ADDR)
@@ -342,6 +343,7 @@ void bus_add_new_message(void) {
 }
 
 /*! \brief The message last sent was NACKED from the receiver
+ *  \param addr The address of the device that sent the NACK
  *  \param error_type Contains information why the message was NACKED */
 void bus_message_nacked(unsigned char addr, unsigned char error_type) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);

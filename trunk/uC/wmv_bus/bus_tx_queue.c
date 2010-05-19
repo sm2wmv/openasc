@@ -36,6 +36,7 @@
 #endif
 
 
+//! Variable that keeps track of how much of the TX queue that is being used
 unsigned char bus_tx_queue_size;
 
 //! The tx queue
@@ -115,6 +116,8 @@ unsigned char tx_queue_is_empty(void) {
 		return(0);
 }
 
+/*! \brief Get how much of the TX queue that is currently being used 
+ *  \return How much of the queue is being used */
 unsigned char tx_queue_size(void) {
 	return(bus_tx_queue_size);
 }

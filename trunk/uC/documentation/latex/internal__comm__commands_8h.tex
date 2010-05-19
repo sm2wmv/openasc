@@ -1,0 +1,63 @@
+\hypertarget{internal__comm__commands_8h}{
+\section{internal\_\-comm\_\-commands.h File Reference}
+\label{internal__comm__commands_8h}\index{internal\_\-comm\_\-commands.h@{internal\_\-comm\_\-commands.h}}
+}
+The internal communication commands.  
+
+
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{internal__comm__commands_8h_ad098c552374cea58294629839abec8f}{
+\#define \hyperlink{internal__comm__commands_8h_ad098c552374cea58294629839abec8f}{INT\_\-COMM\_\-TURN\_\-DEVICE\_\-OFF}~0xC0}
+\label{internal__comm__commands_8h_ad098c552374cea58294629839abec8f}
+
+\begin{CompactList}\small\item\em Initialize the shut down sequence. \item\end{CompactList}\item 
+\hypertarget{internal__comm__commands_8h_ddbac91ba96071f1af1f31226a3e0f63}{
+\#define \hyperlink{internal__comm__commands_8h_ddbac91ba96071f1af1f31226a3e0f63}{INT\_\-COMM\_\-PULL\_\-THE\_\-PLUG}~0xC1}
+\label{internal__comm__commands_8h_ddbac91ba96071f1af1f31226a3e0f63}
+
+\begin{CompactList}\small\item\em Shut down the device. \item\end{CompactList}\item 
+\hypertarget{internal__comm__commands_8h_e20d97b578a06617c6db2ecc9b9a64cc}{
+\#define \hyperlink{internal__comm__commands_8h_e20d97b578a06617c6db2ecc9b9a64cc}{INT\_\-COMM\_\-AUX\_\-CHANGE\_\-OUTPUT\_\-PIN}~0xC2}
+\label{internal__comm__commands_8h_e20d97b578a06617c6db2ecc9b9a64cc}
+
+\begin{CompactList}\small\item\em Change the state of one of the AUX pins on the X11 connector. \item\end{CompactList}\item 
+\hypertarget{internal__comm__commands_8h_1f32f8b6ff01595798f5101a6b37e5d3}{
+\#define \hyperlink{internal__comm__commands_8h_1f32f8b6ff01595798f5101a6b37e5d3}{INT\_\-COMM\_\-AUX\_\-READ\_\-INPUT\_\-PIN}~0xC3}
+\label{internal__comm__commands_8h_1f32f8b6ff01595798f5101a6b37e5d3}
+
+\begin{CompactList}\small\item\em Read the input status of an AUX pin on the X11 connector. \item\end{CompactList}\item 
+\hypertarget{internal__comm__commands_8h_8a5dd71758f76d34a3551a99b28fe3bf}{
+\#define \hyperlink{internal__comm__commands_8h_8a5dd71758f76d34a3551a99b28fe3bf}{INT\_\-COMM\_\-GET\_\-BAND\_\-BCD\_\-STATUS}~0xC4}
+\label{internal__comm__commands_8h_8a5dd71758f76d34a3551a99b28fe3bf}
+
+\begin{CompactList}\small\item\em Read the BCD input on the top floor. \item\end{CompactList}\item 
+\hypertarget{internal__comm__commands_8h_6275b1911d8acf30d8085527161c0f05}{
+\#define \hyperlink{internal__comm__commands_8h_6275b1911d8acf30d8085527161c0f05}{INT\_\-COMM\_\-PS2\_\-KEYPRESSED}~0xC5}
+\label{internal__comm__commands_8h_6275b1911d8acf30d8085527161c0f05}
+
+\begin{CompactList}\small\item\em A key was pressed on the external PS2 keypad. \item\end{CompactList}\item 
+\hypertarget{internal__comm__commands_8h_395e66f9c94890580825860ff632f363}{
+\#define \hyperlink{internal__comm__commands_8h_395e66f9c94890580825860ff632f363}{INT\_\-COMM\_\-PC\_\-CTRL}~0xC6}
+\label{internal__comm__commands_8h_395e66f9c94890580825860ff632f363}
+
+\begin{CompactList}\small\item\em Command used to transfer commands from the PC to the front panel and vice versa. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The internal communication commands. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "internal_comm_commands.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{internal__comm__commands_8h-source}{internal\_\-comm\_\-commands.h}.

@@ -24,13 +24,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+//! Used for timer compare to match 1 ms
 #define OCR0_1MS 14
 
-/*
-  * Initialize timer0 to use the main crystal clock and the output
+/*! Initialize timer0 to use the main crystal clock and the output
   * compare interrupt feature to generate an interrupt approximately
-  * once per millisecond to use as a general purpose time base.
-  */
+  * once per millisecond to use as a general purpose time base. */
 void init_timer_0(void) {
    TCCR0 = 0;
    TIMSK |= (1<<OCIE0);         /* enable output compare interrupt */
@@ -39,8 +38,7 @@ void init_timer_0(void) {
    OCR0   = OCR0_1MS;                     /* match in aprox 1 ms,  */
 }
 
-/*!Initializes timer 2, used for the communication bus and the interrupt is caught in bus.c
-*/
+/*! Initializes timer 2, used for the communication bus and the interrupt is caught in bus.c */
 void init_timer_2(void) {
 	TCCR2 = 0;
 	TCNT2 = 0;

@@ -31,6 +31,7 @@
 #include "../i2c.h"
 #include "../i2cconf.h"
 
+/*! Just a tiny delay */
 void __inline__ eeprom_tiny_delay(void) {
 	for (volatile unsigned char i=0;i<15;i++)
 		__asm__ __volatile__("nop");

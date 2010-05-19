@@ -33,30 +33,37 @@
 
 #include "computer_interface.h"
 
+//! Macro to put PS2 CLK output LOW
 #define PS2_CLK_LOW		PORTE &= ~(1<<6)
+//! Macro to put PS2 CLK output HIGH
 #define PS2_CLK_HIGH	PORTE |= (1<<6)
+//! Macro to put PS2 DATA output LOW
 #define PS2_DATA_LOW	PORTA &= ~(1<<3)
+//! Macro to put PS2 DATA output HIGH
 #define PS2_DATA_HIGH	PORTA |= (1<<3)
 
 //! Counter used for the PS/2 decoding
 unsigned char temp_count = 0;
-
-unsigned int band_change_count = 0;
 
 //! The driver output state
 unsigned int driver_output_state = 0;
 //! The type of driver output
 unsigned int driver_output_type[12];
 
+//! Variable used to keep track of the last state of the ON/OFF button so we can see when it has been pressed and released
 unsigned char btn_on_off_last_state = 1;
 
+/*! Counter which keeps track of how long time ago it was since we started the box. This is used at startup so that 
+		we ignore button actions on the ON/OFF button for a certain time at startup */
 unsigned int counter_time_start=0;
+
 //! Counter which keeps track of the PS/2 decoding
 unsigned int counter_ps2=0;
 
 //! PS/2 struct
 PS2_STRUCT ps2;
 
+//! \brief Tiny delay function
 void __inline__ tiny_delay(void) {
 	for (volatile unsigned char i=0;i<50;i++)
 		for (volatile unsigned char j=0;j<255;j++)
@@ -295,6 +302,7 @@ void ps2_process_key(unsigned char key_code) {
 	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 
+//! Main function of the motherboard
 int main(void) {
 	delay_ms(100);
 	//Pull the input voltage relay

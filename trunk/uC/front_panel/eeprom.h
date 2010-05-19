@@ -31,6 +31,7 @@
 #include "band_ctrl.h"
 #include "sub_menu.h"
 
+//! Defines where the startup byte is located in the uC EEPROM. This is used to keep track of the device is started for the first time
 #define EEPROM_STARTUP_BYTE_ADDR 0x01
 
 //! The EEPROM table

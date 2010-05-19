@@ -25,6 +25,7 @@
 #include <avr/interrupt.h>
 #include "usart.h"
 
+//! Used for timer compare to match 1 ms
 #define OCR0_1MS	14
 
 /*! \brief Initializes the USART for the communication bus*/

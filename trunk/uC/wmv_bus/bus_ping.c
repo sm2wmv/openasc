@@ -20,8 +20,10 @@
 
 //TODO: Change the ping list to be dynamic, responding to the length which the master sends out, how many number of units on the bus
 
+//! The ping list
 bus_struct_ping_status ping_list[DEF_NR_DEVICES];
 
+/*! \brief Initialize the ping functions of the bus communication interface */
 void bus_ping_init(void) {
 	for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
 		ping_list[i].addr = 0;
@@ -33,7 +35,7 @@ void bus_ping_init(void) {
 
 /*! \brief This function will update the ping list with the sent in arguments and reset the counter to 0 
  *  \param from_addr The address which the PING message was sent from
- *  \param device_id Which type of device this is
+ *  \param device_type Which type of device this is
  *  \param data_len The number of bytes the data is
  *  \param data Additional data which might be used for status, for example current band information */
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data) {

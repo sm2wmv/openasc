@@ -43,8 +43,10 @@
 //TODO: Fix the implementation if more than one antenna has got a sub menu, should be done in event_handler.c
 //TODO: Maybe fix so that we are able to select RX antennas while in the sub menu of an ARRAY?
 
+//! Current sub menu array
 struct_sub_menu_array current_sub_menu_array[4];
 
+//! Which option is currently selected of the sub menu options
 unsigned char curr_option_selected[4] = {0,0,0,0};
 
 //! Array which we store the current devices which we have activated antenna outputs on
@@ -80,14 +82,22 @@ unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos) {
 	return("   ");
 }
 
+/*! \brief Get the current position of the sub menu cursor
+ *  \param ant_index The antenna index, (0-3)
+ *  \return The cursor position of the sub menu */
 unsigned char sub_menu_get_current_pos(unsigned char ant_index) {
 	return(curr_option_selected[ant_index]);
 }
 
+/*! \brief Set the current sub menu option 
+ *  \param ant_index The antenna index (0-3)
+ *  \param new_pos The position we wish to chose */
 void sub_menu_set_current_pos(unsigned char ant_index, unsigned char new_pos) {
 	curr_option_selected[ant_index] = new_pos;
 }
 
+/*! \brief Get the number of antennas which has got a sub menu configured 
+ *  \return The number of antennas which has got sub menus, (0-4) */
 unsigned char sub_menu_get_count(void) {
 	unsigned char temp = 0;
 	
@@ -98,10 +108,15 @@ unsigned char sub_menu_get_count(void) {
 	return(temp);
 }
 
+/*! \brief Get the sub menu type of an antenna 
+ *  \param ant_index The antenna we wish to get the sub menu type of, (0-3)
+ *  \return The sub meny type of the antenna */
 unsigned char sub_menu_get_type(unsigned char ant_index) {
 	return(antenna_ctrl_get_sub_menu_type(ant_index));
 }
 
+/*! \brief This function should be called when we wish to decrease the selected sub menu option 
+ *  \param ant_index Which antenna we wish to decrease the sub menu position of */
 void sub_menu_pos_down(unsigned char ant_index) {
 	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
 		if (sub_menu_get_current_pos(ant_index) > 0)
@@ -111,6 +126,8 @@ void sub_menu_pos_down(unsigned char ant_index) {
 	}
 }
 
+/*! \brief This function should be called when we wish to increase the selected sub menu option 
+ *  \param ant_index Which antenna we wish to increase the sub menu position of */
 void sub_menu_pos_up(unsigned char ant_index) {
 	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
 		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_array[ant_index].direction_count - 1)
@@ -205,6 +222,7 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 	}
 }
 
+/*! \brief Will deactivate all currently selected outputs which has been sent out on the bus */
 void sub_menu_deactivate_all(void) {
 	if (current_activated_sub_outputs_length[0] > 0) {
 		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[0], current_activated_sub_outputs_length[0], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS);
@@ -227,6 +245,7 @@ void sub_menu_deactivate_all(void) {
 	}
 }
 
+/*! \brief This function will go through the sub menus and if there is one configured it will activae its default option which is index 0 */
 void sub_menu_activate_all(void) {
 	//Activate all the sub menu options avaible for default position #0
 	if (antenna_ctrl_get_sub_menu_type(0) != SUBMENU_NONE)
