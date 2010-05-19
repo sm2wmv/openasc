@@ -46,6 +46,8 @@ unsigned char eeprom_read_startup_byte(void) {
 	return(eeprom_read_byte((unsigned char *)EEPROM_STARTUP_BYTE_ADDR));
 }
 
+/*! \brief This function will write a byte in the EEPROM so we can keep track of if the unit has ever been started 
+ *  \param val What value we wish to write to the EEPROM */
 void eeprom_write_startup_byte(unsigned char val) {
 	eeprom_write_byte((unsigned char *)EEPROM_STARTUP_BYTE_ADDR,val);
 }

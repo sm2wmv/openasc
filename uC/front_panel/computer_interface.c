@@ -222,10 +222,13 @@ struct_setting *settings_ptr;
 //! Pointer to an area which we create space when configuring the ptt_sequencer
 struct_ptt *ptt_sequencer_ptr;
 
+//! Pointer to an area which we crate space when configuring the radio settings
 struct_radio_settings *radio_settings_ptr;
 
+//! Pointer to an area which we crate space when configuring the sub menu (array)
 struct_sub_menu_array *sub_menu_array_ptr[4];
 
+//! Address which we call when we wish to reboot the device (jumps to the bootloader area)
 void (*bootloader_start)(void) = (void *)0x1FE00;
 
 //! \brief Initialize the communication interface towards the computer. Will initialize buffers etc.

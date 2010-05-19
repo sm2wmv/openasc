@@ -23,6 +23,7 @@
 #ifndef _POWERMETER_H_
 #define _POWERMETER_H_
 
+//! Struct which contains information of the power meter status
 typedef struct {
 	//! Current forward power in watts
 	unsigned int curr_fwd_pwr_value;

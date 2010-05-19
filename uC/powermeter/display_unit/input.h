@@ -24,6 +24,7 @@
 
 #define COUPLER_NAME_LENGTH	10
 
+//! Struct which contains information of the coupler
 typedef struct {
 	//! The name of the coupler
 	unsigned char coupler_name[COUPLER_NAME_LENGTH];

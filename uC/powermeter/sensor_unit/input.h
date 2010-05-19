@@ -20,6 +20,7 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
+//! Struct which contains information of the pickup type
 typedef struct {
 	unsigned char pickup_type; 
 	//! The value which the read RMS voltage should be multiplied with

@@ -36,6 +36,7 @@
 #endif
 
 
+//! Variable keeps track of how much of the queue that is currently used
 unsigned char bus_rx_queue_size;
 
 //! The rx queue
@@ -115,6 +116,8 @@ unsigned char rx_queue_is_empty(void) {
 		return(0);
 }
 
+/*! \brief Get how much size of the RX queue is used at the moment 
+ *  \return The size of the queue that is used */
 unsigned char rx_queue_size(void) {
 	return(bus_rx_queue_size);
 }

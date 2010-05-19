@@ -1,0 +1,123 @@
+\hypertarget{front__panel_2init_8h}{
+\section{front\_\-panel/init.h File Reference}
+\label{front__panel_2init_8h}\index{front\_\-panel/init.h@{front\_\-panel/init.h}}
+}
+Initialization routines for the front panel.  
+
+
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{front__panel_2init_8h_64c88f8f419036c766c3b881335d75f4}{init\_\-timer\_\-0} (void)
+\item 
+void \hyperlink{front__panel_2init_8h_a9d25e6ae6cdd28863148176ab274ec9}{init\_\-timer\_\-2} (void)
+\item 
+void \hyperlink{front__panel_2init_8h_41959d20756307f8b73709871cc2bf47}{init\_\-ports} (void)
+\begin{CompactList}\small\item\em Set the direction of the ports. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2init_8h_168d1d788d3c0045374fd84be5b8f492}{init\_\-usart\_\-computer} (void)
+\item 
+void \hyperlink{front__panel_2init_8h_d9b40dee04f1b7ced79b74fe3f6cb7fd}{init\_\-usart} (void)
+\begin{CompactList}\small\item\em Initializes the USART for the communication bus. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2init_8h_da88b09254ab04468cc50270c98aa647}{init\_\-backlight} (void)
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Initialization routines for the front panel. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/init.h" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{front__panel_2init_8h-source}{init.h}.
+
+\subsection{Function Documentation}
+\hypertarget{front__panel_2init_8h_da88b09254ab04468cc50270c98aa647}{
+\index{front\_\-panel/init.h@{front\_\-panel/init.h}!init\_\-backlight@{init\_\-backlight}}
+\index{init\_\-backlight@{init\_\-backlight}!front_panel/init.h@{front\_\-panel/init.h}}
+\subsubsection[{init\_\-backlight}]{\setlength{\rightskip}{0pt plus 5cm}void init\_\-backlight (void)}}
+\label{front__panel_2init_8h_da88b09254ab04468cc50270c98aa647}
+
+
+Initialize the backlight (Which is pulse width modulated so we can set the contrast) 
+
+Definition at line 105 of file init.c.
+
+Referenced by main().\hypertarget{front__panel_2init_8h_41959d20756307f8b73709871cc2bf47}{
+\index{front\_\-panel/init.h@{front\_\-panel/init.h}!init\_\-ports@{init\_\-ports}}
+\index{init\_\-ports@{init\_\-ports}!front_panel/init.h@{front\_\-panel/init.h}}
+\subsubsection[{init\_\-ports}]{\setlength{\rightskip}{0pt plus 5cm}void init\_\-ports (void)}}
+\label{front__panel_2init_8h_41959d20756307f8b73709871cc2bf47}
+
+
+Set the direction of the ports. 
+
+Set the direction of the ports
+
+Set the direction of the ports
+
+Set the direction of the ports
+
+Set the direction of the ports 
+
+Definition at line 56 of file init.c.\hypertarget{front__panel_2init_8h_64c88f8f419036c766c3b881335d75f4}{
+\index{front\_\-panel/init.h@{front\_\-panel/init.h}!init\_\-timer\_\-0@{init\_\-timer\_\-0}}
+\index{init\_\-timer\_\-0@{init\_\-timer\_\-0}!front_panel/init.h@{front\_\-panel/init.h}}
+\subsubsection[{init\_\-timer\_\-0}]{\setlength{\rightskip}{0pt plus 5cm}void init\_\-timer\_\-0 (void)}}
+\label{front__panel_2init_8h_64c88f8f419036c766c3b881335d75f4}
+
+
+Initialize timer0 to use the main crystal clock and the output compare interrupt feature to generate an interrupt approximately once per millisecond to use as a general purpose time base.
+
+Initialize timer0 to use the main crystal clock and the output compare interrupt feature to generate an interrupt approximately once per millisecond to use as a general purpose time base.
+
+Initialize timer0 to use the main crystal clock and the output compare interrupt feature to generate an interrupt approximately once per millisecond to use as a general purpose time base.
+
+Initialize timer0 to use the main crystal clock and the output compare interrupt feature to generate an interrupt approximately once per millisecond to use as a general purpose time base. 
+
+Definition at line 35 of file init.c.\hypertarget{front__panel_2init_8h_a9d25e6ae6cdd28863148176ab274ec9}{
+\index{front\_\-panel/init.h@{front\_\-panel/init.h}!init\_\-timer\_\-2@{init\_\-timer\_\-2}}
+\index{init\_\-timer\_\-2@{init\_\-timer\_\-2}!front_panel/init.h@{front\_\-panel/init.h}}
+\subsubsection[{init\_\-timer\_\-2}]{\setlength{\rightskip}{0pt plus 5cm}void init\_\-timer\_\-2 (void)}}
+\label{front__panel_2init_8h_a9d25e6ae6cdd28863148176ab274ec9}
+
+
+Initializes timer 2, used for the communication bus and the interrupt is caught in \hyperlink{bus_8c}{bus.c}
+
+Initializes timer 2
+
+Initializes timer 2, used for the communication bus and the interrupt is caught in \hyperlink{bus_8c}{bus.c} 
+
+Definition at line 45 of file init.c.\hypertarget{front__panel_2init_8h_d9b40dee04f1b7ced79b74fe3f6cb7fd}{
+\index{front\_\-panel/init.h@{front\_\-panel/init.h}!init\_\-usart@{init\_\-usart}}
+\index{init\_\-usart@{init\_\-usart}!front_panel/init.h@{front\_\-panel/init.h}}
+\subsubsection[{init\_\-usart}]{\setlength{\rightskip}{0pt plus 5cm}void init\_\-usart (void)}}
+\label{front__panel_2init_8h_d9b40dee04f1b7ced79b74fe3f6cb7fd}
+
+
+Initializes the USART for the communication bus. 
+
+Initializes the USART for the communication bus 
+
+Definition at line 41 of file init.c.\hypertarget{front__panel_2init_8h_168d1d788d3c0045374fd84be5b8f492}{
+\index{front\_\-panel/init.h@{front\_\-panel/init.h}!init\_\-usart\_\-computer@{init\_\-usart\_\-computer}}
+\index{init\_\-usart\_\-computer@{init\_\-usart\_\-computer}!front_panel/init.h@{front\_\-panel/init.h}}
+\subsubsection[{init\_\-usart\_\-computer}]{\setlength{\rightskip}{0pt plus 5cm}void init\_\-usart\_\-computer (void)}}
+\label{front__panel_2init_8h_168d1d788d3c0045374fd84be5b8f492}
+
+
+Init the UART for the computer communication 
+
+Definition at line 33 of file init.c.
+
+References usart1\_\-init(), usart1\_\-receive\_\-loopback(), and usart1\_\-transmit().
+
+Referenced by main().

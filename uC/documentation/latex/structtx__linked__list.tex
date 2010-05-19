@@ -1,0 +1,66 @@
+\hypertarget{structtx__linked__list}{
+\section{tx\_\-linked\_\-list Struct Reference}
+\label{structtx__linked__list}\index{tx\_\-linked\_\-list@{tx\_\-linked\_\-list}}
+}
+The structure of the TX circular buffer.  
+
+
+{\tt \#include $<$internal\_\-comm\_\-tx\_\-queue.h$>$}
+
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{structtx__linked__list_91fe1c1fbc5f7c41c2e772fd5e954359}{
+\hyperlink{structUC__MESSAGE}{UC\_\-MESSAGE} \hyperlink{structtx__linked__list_91fe1c1fbc5f7c41c2e772fd5e954359}{message} \mbox{[}INTERNAL\_\-COMM\_\-TX\_\-QUEUE\_\-SIZE\mbox{]}}
+\label{structtx__linked__list_91fe1c1fbc5f7c41c2e772fd5e954359}
+
+\begin{CompactList}\small\item\em A \hyperlink{structUC__MESSAGE}{UC\_\-MESSAGE}. \item\end{CompactList}\item 
+unsigned char \hyperlink{structtx__linked__list_953e1b569a24b8d898896ef81b47499d}{first}
+\begin{CompactList}\small\item\em first position in the list \item\end{CompactList}\item 
+unsigned char \hyperlink{structtx__linked__list_7d2794d33345fb0d994a0a2556d72b73}{last}
+\begin{CompactList}\small\item\em last position in the list \item\end{CompactList}\item 
+\hypertarget{structtx__linked__list_e0d439f6aa38b19f116433fa9c1aab56}{
+\hyperlink{structBUS__MESSAGE}{BUS\_\-MESSAGE} \hyperlink{structtx__linked__list_e0d439f6aa38b19f116433fa9c1aab56}{message} \mbox{[}BUS\_\-TX\_\-QUEUE\_\-SIZE\mbox{]}}
+\label{structtx__linked__list_e0d439f6aa38b19f116433fa9c1aab56}
+
+\begin{CompactList}\small\item\em The bus messages. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The structure of the TX circular buffer. 
+
+Definition at line 26 of file internal\_\-comm\_\-tx\_\-queue.h.
+
+\subsection{Member Data Documentation}
+\hypertarget{structtx__linked__list_953e1b569a24b8d898896ef81b47499d}{
+\index{tx\_\-linked\_\-list@{tx\_\-linked\_\-list}!first@{first}}
+\index{first@{first}!tx_linked_list@{tx\_\-linked\_\-list}}
+\subsubsection[{first}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf tx\_\-linked\_\-list::first}}}
+\label{structtx__linked__list_953e1b569a24b8d898896ef81b47499d}
+
+
+first position in the list 
+
+The first position in the list. 
+
+Definition at line 30 of file internal\_\-comm\_\-tx\_\-queue.h.
+
+Referenced by int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init(), int\_\-comm\_\-tx\_\-queue\_\-add(), int\_\-comm\_\-tx\_\-queue\_\-drop(), int\_\-comm\_\-tx\_\-queue\_\-dropall(), int\_\-comm\_\-tx\_\-queue\_\-get(), int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty(), tx\_\-queue\_\-add(), tx\_\-queue\_\-drop(), tx\_\-queue\_\-dropall(), tx\_\-queue\_\-get(), tx\_\-queue\_\-init(), and tx\_\-queue\_\-is\_\-empty().\hypertarget{structtx__linked__list_7d2794d33345fb0d994a0a2556d72b73}{
+\index{tx\_\-linked\_\-list@{tx\_\-linked\_\-list}!last@{last}}
+\index{last@{last}!tx_linked_list@{tx\_\-linked\_\-list}}
+\subsubsection[{last}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf tx\_\-linked\_\-list::last}}}
+\label{structtx__linked__list_7d2794d33345fb0d994a0a2556d72b73}
+
+
+last position in the list 
+
+The last position in the list. 
+
+Definition at line 32 of file internal\_\-comm\_\-tx\_\-queue.h.
+
+Referenced by int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init(), int\_\-comm\_\-tx\_\-queue\_\-add(), int\_\-comm\_\-tx\_\-queue\_\-dropall(), int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty(), tx\_\-queue\_\-add(), tx\_\-queue\_\-dropall(), tx\_\-queue\_\-init(), and tx\_\-queue\_\-is\_\-empty().
+
+The documentation for this struct was generated from the following files:\begin{CompactItemize}
+\item 
+internal\_\-comm\_\-tx\_\-queue.h\item 
+wmv\_\-bus/\hyperlink{bus_8h}{bus.h}\end{CompactItemize}

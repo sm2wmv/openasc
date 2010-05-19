@@ -24,6 +24,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+//! Used for timer compare to match 1 ms
 #define OCR0_1MS 14
 
 /*

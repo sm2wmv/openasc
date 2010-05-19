@@ -33,6 +33,7 @@
 //! The rotator is being rotated CCW
 #define FLAG_ROTATION_CCW					4
 
+//! Struct which contains information of the rx antennas
 typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;

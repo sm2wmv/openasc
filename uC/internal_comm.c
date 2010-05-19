@@ -46,9 +46,12 @@ UC_MESSAGE uc_new_message;
 //! The previous data
 unsigned char prev_data = 0;
 
+//! Counter which keep track of when we last did a transmission
 unsigned char counter_tx_timeout = 0;
+//! Counter which keeps track of when we last did receive a character
 unsigned char counter_rx_timeout = 0;
 
+//! The number of times the last message has been resent
 unsigned char resend_count = 0;
 
 //! Flag that the message has yet not been acked
@@ -176,6 +179,7 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 	int_comm_tx_queue_add(new_mess);
 }
 
+/*! \brief Will trigger a resend of the last message */
 void internal_comm_resend(void) {
 	if (resend_count < UC_COMM_RESEND_COUNT) {
 		if (msg_not_acked == 1) {

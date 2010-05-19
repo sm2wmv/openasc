@@ -1,22 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="5" >
-  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/powermeter.c" >
-   <View0 Encoding="" line="63" Type="Source" />
+ <DocsAndViews NumberOfDocuments="4" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/remote_control.c" >
+   <View0 Encoding="" line="30" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="" line="610" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/remote_control.h" >
+   <View0 Encoding="" line="23" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/powermeter.h" >
-   <View0 Encoding="" line="35" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.h" >
+   <View0 Encoding="" line="143" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.h" >
-   <View0 Encoding="" line="210" Type="Source" />
+  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
+   <View0 Encoding="" line="188" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.c" >
-   <View0 Encoding="" line="528" Type="Source" />
-  </Doc4>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
