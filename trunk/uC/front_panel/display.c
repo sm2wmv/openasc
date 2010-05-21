@@ -214,6 +214,7 @@ void display_rotator_directions(unsigned char band) {
 	}
 	
 	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
+		//sub_menu_get_text(0, sub_menu_get_current_pos(0))
 		sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(0, sub_menu_get_current_pos(0)));
 		display_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
 	}

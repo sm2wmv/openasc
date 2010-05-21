@@ -33,8 +33,6 @@
 void init_usart_computer(void) {
 	usart1_init(7,1);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
-	
-	printf("openASC started\n");
 }
 
 /*!Initializes the USART for the communication bus*/

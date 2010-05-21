@@ -102,6 +102,8 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 				
 				band_ctrl_change_band(BAND_UNDEFINED);
 				
+				main_set_device_online(0);
+				
 				//TODO: Send global shutdown broadcast message three times
 				
 				send_ping();

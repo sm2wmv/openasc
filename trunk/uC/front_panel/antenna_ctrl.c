@@ -278,8 +278,6 @@ void antenna_ctrl_send_rx_ant_band_data_to_bus(char index) {
 void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	current_antennas.antenna_direction[ant_index] = heading;
 	
-	printf("ROTATE TO: %i degrees\n",heading);
-	
 	//TODO: CODE TO SEND TO THE ROTATOR BOARD
 	unsigned char new_dir[2];
 	new_dir[0] = (heading >> 8)	& 0x00FF;

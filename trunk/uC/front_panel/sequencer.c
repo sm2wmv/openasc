@@ -197,12 +197,12 @@ void sequencer_computer_rts_deactivated(void) {
 
 /*! \brief Function to be called if the radio sense input is activated */
 void sequencer_radio_sense_activated(void) {
-	printf("RADIO_SENSE_ACTIVE\n");
+
 }
 
 /*! \brief Function to be called if the radio sense input is deactivated */
 void sequencer_radio_sense_deactivated(void) {
-	printf("RADIO_SENSE_DEACTIVE\n");
+
 }
 
 /*! \brief Retrieve the polarity of the Computer RTS signal 

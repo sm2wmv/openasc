@@ -136,7 +136,7 @@
 //! The max size of the sub menu array output str size
 #define SUB_MENU_ARRAY_STR_SIZE		10
 //! The size of the name of a 4-SQ
-#define SUB_MENU_ARRAY_NAME_SIZE  3
+#define SUB_MENU_ARRAY_NAME_SIZE  4
 
 //! The delimiter that seperates the outputs from which address they should be sent to
 #define OUTPUT_ADDR_DELIMITER			0xFF
@@ -311,5 +311,7 @@ enum enum_inhibit_state main_get_inhibit_state(void);
 void main_set_inhibit_state(enum enum_inhibit_state state);
 
 void send_ping(void);
+
+void main_set_device_online(unsigned char state);
 
 #endif
