@@ -56,17 +56,18 @@ unsigned char current_activated_sub_outputs[4][SUB_MENU_ARRAY_STR_SIZE];
 unsigned char current_activated_sub_outputs_length[4] = {0,0,0,0};
 
 /*! \brief Load a set of sub menu from the EEPROM for a specific band
- *  \param band_index Which we band */
+ *  \param band_index Which band it is for */
 void sub_menu_load(unsigned char band_index) {
 	unsigned char sub_menu_type[4];
-		
+	
 	for (unsigned char i=0;i<4;i++) {
 		curr_option_selected[i] = 0;
 		
 		sub_menu_type[i] = antenna_ctrl_get_sub_menu_type(i);
 		
-		if (sub_menu_type[i] == SUBMENU_VERT_ARRAY)
+		if (sub_menu_type[i] == SUBMENU_VERT_ARRAY) {
 			eeprom_get_ant_sub_menu_array_structure(band_index, i, &current_sub_menu_array[i]);
+		}
 	}
 }
 
@@ -143,9 +144,6 @@ void sub_menu_pos_up(unsigned char ant_index) {
  *  \param pos The sub menu position we wish to send the output str of */
 void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 	unsigned char activate_cmd, deactivate_cmd, deactivate_all_cmd;
-	
-	printf("SEND\n");
-	
 	unsigned char length = 0;
 	
 	switch (ant_index) {
@@ -198,8 +196,9 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 				//Will add which address the message was sent to
 				current_activated_sub_outputs[ant_index][addr_count++] = current_sub_menu_array[ant_index].output_str_dir[pos][i+1];
 				
-				if (current_sub_menu_array[ant_index].output_str_dir[pos][i+1] != 0x00)
+				if (current_sub_menu_array[ant_index].output_str_dir[pos][i+1] != 0x00) {
 					bus_add_tx_message(bus_get_address(), current_sub_menu_array[ant_index].output_str_dir[pos][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), activate_cmd, count-start_pos, temp+start_pos);
+				}
 				else
 					internal_comm_add_tx_message(activate_cmd,count-start_pos, (char *)(temp+start_pos));
 

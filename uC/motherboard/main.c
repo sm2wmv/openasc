@@ -154,12 +154,6 @@ void deactivate_output(unsigned char index) {
 void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
 
-	printf("CMD: 0x%02X\n",message.cmd);
-	printf("LEN: %i\n",message.length);
-	
-	for (unsigned char i=0;i<message.length;i++)
-		printf("DATA[%i]: 0x%02X\n",i,message.data[i]);
-	
 	switch(message.cmd) {
 		case INT_COMM_REDIRECT_DATA:
 			computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
@@ -384,8 +378,6 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_ps2++;
 	*/
 	internal_comm_1ms_timer();
-	
-	band_change_count++;
 }
 
 /*! \brief Output overflow 0 interrupt */

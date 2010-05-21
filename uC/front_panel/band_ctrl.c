@@ -129,7 +129,7 @@ void band_ctrl_load_band(unsigned char band) {
 	
 	//Load the antenna settings for this band
 	antenna_ctrl_ant_read_eeprom(band);
-	printf("LOAD SUB: %i\n",band);
+	//printf("LOAD SUB: %i\n",band);
 	//Load the sub menus for this band
 	sub_menu_load(band);
 }
@@ -169,12 +169,13 @@ void band_ctrl_change_band(unsigned char band) {
 		else {
 			if ((status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW) && (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM))
 				status.current_display = CURRENT_DISPLAY_LOGO;
-		}
+		}		
 		
 		antenna_ctrl_deactivate_all_rx_band();
 		antenna_ctrl_deactivate_all();
 		band_ctrl_deactivate_all();
-//		sub_menu_deactivate_all();
+	
+		sub_menu_deactivate_all();
 		led_set_rxant(LED_STATE_OFF);
 		set_knob_function(KNOB_FUNCTION_AUTO);
 		
@@ -191,11 +192,11 @@ void band_ctrl_change_band(unsigned char band) {
 			antenna_ctrl_select_default_ant();
 			
 			//Activate all default sub menu options
-	//		sub_menu_activate_all();
+			sub_menu_activate_all();
 		}
-		
+			
 		main_update_ptt_status();
-
+		
 		//Update the display
 		main_update_display();
 	}

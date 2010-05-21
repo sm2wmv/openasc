@@ -409,6 +409,8 @@ void computer_interface_parse_data(void) {
 					if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_VERT_ARRAY) {
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
+						
+						sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;
 					}
 					
 					computer_interface_send_ack();

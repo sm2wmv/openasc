@@ -65,6 +65,9 @@
 //! Settings struct
 struct_setting settings;
 
+//! Used to disable/enable all polling of radios, buttons etc, used for shutdown
+unsigned char device_online = 0;
+
 //! Counter to keep track of when a character for the CAT was last received
 unsigned char radio_rx_data_counter = 0;
 //! Counter which counts up each time a compare0 interrupt has occured
@@ -155,6 +158,12 @@ void event_run(void) {
 /*! \brief Sets the flag that the display should be updated */
 void main_update_display(void) {
 	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+}
+
+/*! \brief This function will set the device_online variable 
+ *  \param state What the state of the device_online variable should be */
+void main_set_device_online(unsigned char state) {
+	device_online = state;
 }
 
 /*! \brief Send a message to the motherboard that the openASC box should be shut off. Will deactivate the power supply relay. */
@@ -394,7 +403,7 @@ int main(void){
 		sei();
 		
 		display_setup_view();
-		
+	
 		while(1) {
 			computer_interface_send_data();
 			
@@ -474,6 +483,8 @@ int main(void){
 	
 	device_started = 1;
 	
+	main_set_device_online(1);
+	
 	while(1) {
 		if (!rx_queue_is_empty())
 			event_bus_parse_message();
@@ -481,27 +492,130 @@ int main(void){
 		if (!tx_queue_is_empty())
 			bus_check_tx_status();
 		
-		if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
-			if (radio_get_current_band() != status.selected_band) {
-				status.new_band_portion = BAND_LOW;
-				status.current_band_portion = status.new_band_portion;
-				
-				status.new_band = radio_get_current_band();
-				band_ctrl_change_band(status.new_band);
-				
-				send_ping();
-			}
-			
-			if (radio_interface_get_interface() != RADIO_INTERFACE_BCD) {
-				if (radio_get_band_portion() != status.current_band_portion) {
-					status.new_band_portion = radio_get_band_portion();
+		//This variable can be set to 0 to disable all the control of the device
+		//For example this is used when the box is about to shut down
+		if (device_online == 1) {
+			if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
+				if (radio_get_current_band() != status.selected_band) {
+					status.new_band_portion = BAND_LOW;
 					status.current_band_portion = status.new_band_portion;
 					
-					band_ctrl_change_band_portion(status.new_band_portion);
+					status.new_band = radio_get_current_band();
+					band_ctrl_change_band(status.new_band);
+					
+					send_ping();
+				}
+				
+				/*if (radio_interface_get_interface() != RADIO_INTERFACE_BCD) {
+					if (radio_get_band_portion() != status.current_band_portion) {
+						status.new_band_portion = radio_get_band_portion();
+						status.current_band_portion = status.new_band_portion;
+						
+						band_ctrl_change_band_portion(status.new_band_portion);
+					}
+				}*/
+			}
+			
+		//Poll the buttons
+			if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
+				event_poll_buttons();
+				main_flags &= ~(1<<FLAG_POLL_BUTTONS);
+			}
+		
+		//Poll the external devices, such as footswitch, radio sense etc
+			if (main_flags & (1<<FLAG_POLL_EXT_DEVICES)) {
+				event_poll_ext_device();
+				main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
+			}
+		
+		//Update the display
+			if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
+				event_update_display();
+			
+				main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
+			}
+		
+			if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
+				int val = rotary_encoder_poll();
+			
+				if (val != 0) {
+					if (val == 1)
+						event_pulse_sensor_up();
+					else if (val == -1)
+						event_pulse_sensor_down();
+				
+					counter_last_pulse_event = 0;
 				}
 			}
-		}
 		
+			if (main_flags & (1<<FLAG_BLINK_BAND_LED)) {
+				if (status.new_band != status.selected_band) {
+					if (main_flags & (1<<FLAG_LAST_BAND_BLINK)) {
+						led_set_band_none();
+						led_set_band(status.new_band);
+				
+						main_flags &= ~(1<<FLAG_LAST_BAND_BLINK);
+					}
+					else {
+						led_set_band_none();
+						led_set_band(status.selected_band);
+				
+						main_flags |= (1<<FLAG_LAST_BAND_BLINK);
+					}
+				}
+				else if ((main_flags & (1<<FLAG_LAST_BAND_BLINK)) == 0) {
+					led_set_band_none();
+					led_set_band(status.selected_band);
+				
+					main_flags |= (1<<FLAG_LAST_BAND_BLINK);
+				}
+		
+				main_flags &= ~(1<<FLAG_BLINK_BAND_LED);
+			}
+		
+			if (main_flags & (1<<FLAG_POLL_RADIO)) {
+				radio_poll_status();
+			
+				main_flags &= ~(1<<FLAG_POLL_RADIO);
+			}
+		
+			if (main_flags & (1<<FLAG_PROCESS_RX_ANT_CHANGE)) {
+				antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
+			
+				main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
+				main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
+			}
+		
+			if (main_flags & (1<<FLAG_PROCESS_SUBMENU_CHANGE)) {
+				sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
+			
+				main_flags &= ~(1<<FLAG_CHANGE_SUBMENU);
+				main_flags &= ~(1<<FLAG_PROCESS_SUBMENU_CHANGE);
+			}
+		
+			if (bus_is_master()) {
+				if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+					bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
+
+					counter_sync = 0;
+				}
+			}
+
+			if (bus_allowed_to_send()) {
+			//Check if a ping message should be sent out on the bus
+				if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+					send_ping();
+					
+					counter_ping_interval = 0;
+				}
+			}
+		
+			if (settings.powermeter_address != 0x00)
+				powermeter_process_tasks();
+		
+			radio_process_tasks();
+		}
+			
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
 		internal_comm_poll_rx_queue();
 		
@@ -513,106 +627,6 @@ int main(void){
 			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}
-	
-		//Poll the buttons
-		if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
-			event_poll_buttons();
-			main_flags &= ~(1<<FLAG_POLL_BUTTONS);
-		}
-		
-		//Poll the external devices, such as footswitch, radio sense etc
-		if (main_flags & (1<<FLAG_POLL_EXT_DEVICES)) {
-			event_poll_ext_device();
-			main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
-		}
-		
-		//Update the display
-		if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
-			event_update_display();
-			
-			main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
-		}
-		
-		if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
-			int val = rotary_encoder_poll();
-			
-			if (val != 0) {
-				if (val == 1)
-					event_pulse_sensor_up();
-				else if (val == -1)
-					event_pulse_sensor_down();
-				
-				counter_last_pulse_event = 0;
-			}
-		}
-		
-		if (main_flags & (1<<FLAG_BLINK_BAND_LED)) {
-			if (status.new_band != status.selected_band) {
-				if (main_flags & (1<<FLAG_LAST_BAND_BLINK)) {
-					led_set_band_none();
-					led_set_band(status.new_band);
-				
-					main_flags &= ~(1<<FLAG_LAST_BAND_BLINK);
-				}
-				else {
-					led_set_band_none();
-					led_set_band(status.selected_band);
-				
-					main_flags |= (1<<FLAG_LAST_BAND_BLINK);
-				}
-			}
-			else if ((main_flags & (1<<FLAG_LAST_BAND_BLINK)) == 0) {
-				led_set_band_none();
-				led_set_band(status.selected_band);
-				
-				main_flags |= (1<<FLAG_LAST_BAND_BLINK);
-			}
-		
-			main_flags &= ~(1<<FLAG_BLINK_BAND_LED);
-		}
-		
-		if (main_flags & (1<<FLAG_POLL_RADIO)) {
-			radio_poll_status();
-			
-			main_flags &= ~(1<<FLAG_POLL_RADIO);
-		}
-		
-		if (main_flags & (1<<FLAG_PROCESS_RX_ANT_CHANGE)) {
-			antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
-			
-			main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
-			main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
-		}
-		
-		if (main_flags & (1<<FLAG_PROCESS_SUBMENU_CHANGE)) {
-			sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
-			
-			main_flags &= ~(1<<FLAG_CHANGE_SUBMENU);
-			main_flags &= ~(1<<FLAG_PROCESS_SUBMENU_CHANGE);
-		}
-		
-		if (bus_is_master()) {
-			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &device_count);
-
-				counter_sync = 0;
-			}
-		}
-
-		if (bus_allowed_to_send()) {
-			//Check if a ping message should be sent out on the bus
-			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				send_ping();
-				printf("SEND PING, addr: 0x%02X\n",bus_get_address());
-				
-				counter_ping_interval = 0;
-			}
-		}
-		
-		if (settings.powermeter_address != 0x00)
-			powermeter_process_tasks();
-		
-		radio_process_tasks();
 	}
 }
 

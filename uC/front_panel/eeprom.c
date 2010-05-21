@@ -207,8 +207,9 @@ void eeprom_get_ant_sub_menu_array_structure(unsigned char band_index, unsigned 
 	unsigned char *data_ptr = (unsigned char *)data;
 	
 	if (ant_index == 0) {
-		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
+		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++) {
 			*(data_ptr+i) = eeprom_m24_read_byte(eeprom_table.antenna1_sub_menu[band_index-1]+i);
+		}
 	}
 	else if (ant_index == 1) {
 		for (unsigned int i=0;i<sizeof(struct_sub_menu_array);i++)
