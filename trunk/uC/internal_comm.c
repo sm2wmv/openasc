@@ -73,6 +73,9 @@ void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(cha
 	uc_com.checksum = 0;
 	uc_com.flags = 0;
 	
+	int_comm_rx_queue_init();
+	int_comm_tx_queue_init();
+	
 	int_comm_rx_queue_dropall();
 	int_comm_tx_queue_dropall();
 }
@@ -105,9 +108,8 @@ unsigned char internal_comm_poll_rx_queue(void) {
 unsigned char internal_comm_poll_tx_queue(void) {
 	if ((!int_comm_tx_queue_is_empty()) && (msg_not_acked == 0)) {
 		//Send the first message in the queue
-		internal_comm_send_message(int_comm_tx_queue_get());	
-		
-		msg_not_acked = 1;		
+		internal_comm_send_message(int_comm_tx_queue_get());
+		msg_not_acked = 1;
 		return(1);	//Return 1 to show that something was done
 	}
 	
@@ -145,6 +147,10 @@ void internal_comm_send_nack(void) {
 /*! \brief Send a message to the internal communication uart 
  *  \param tx_message The message we wish to send */
 void internal_comm_send_message(UC_MESSAGE tx_message) {
+	#ifdef INT_COMM_DEBUG
+		printf("S: 0x%02X\n",tx_message.cmd);
+	#endif
+	
 	f_ptr_tx(UC_COMM_MSG_PREAMBLE);
 	f_ptr_tx(UC_COMM_MSG_PREAMBLE);
 	f_ptr_tx(tx_message.checksum);
@@ -164,6 +170,10 @@ void internal_comm_send_message(UC_MESSAGE tx_message) {
  *  \param length The length of the data field 
  *  \param data The data we wish to send */
 void internal_comm_add_tx_message(unsigned char command, unsigned char length, char *data) {
+	#ifdef INT_COMM_DEBUG
+		printf("ADD 0x%02X\n",command);
+	#endif
+		
 	UC_MESSAGE new_mess;
 	
 	new_mess.checksum = command + length;
@@ -179,11 +189,33 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 	int_comm_tx_queue_add(new_mess);
 }
 
+void internal_comm_message_acked(void) {
+	uc_new_message.checksum = 0;
+	uc_new_message.cmd = 0;
+	uc_new_message.length = 0;
+				
+	msg_not_acked = 0;
+	counter_tx_timeout = 0;
+	
+	//Last TXed message was acked, lets drop the message from the TX queue
+	int_comm_tx_queue_drop();
+	resend_count = 0;
+}
+
+void internal_comm_message_nacked(void) {
+	internal_comm_resend();
+}
+
 /*! \brief Will trigger a resend of the last message */
 void internal_comm_resend(void) {
 	if (resend_count < UC_COMM_RESEND_COUNT) {
 		if (msg_not_acked == 1) {
 			internal_comm_send_message(int_comm_tx_queue_get());
+			
+			#ifdef INT_COMM_DEBUG
+				printf("RS\n");
+			#endif
+			
 			resend_count++;
 		}
 	}
@@ -194,6 +226,16 @@ void internal_comm_resend(void) {
 			//Set the error flag
 			event_set_error(ERROR_TYPE_INT_COMM_RESEND,1);
 		#endif
+			
+		#ifdef INT_COMM_DEBUG
+			printf("RESEND ERROR\n");
+		#endif
+			
+		int_comm_tx_queue_drop();
+		counter_tx_timeout = 0;
+		internal_comm_reset_rx();
+		resend_count = 0;
+		msg_not_acked = 0;
 	}
 }
 
@@ -201,7 +243,6 @@ void internal_comm_resend(void) {
 ISR(ISR_INTERNAL_COMM_USART_RECV) {
 	unsigned char data = INTERNAL_COMM_UDR;
 	uc_com.char_count++;
-	
 	counter_rx_timeout = 0;
 	
 	if (uc_com.flags && (1<<UC_PREAMBLE_FOUND)) {
@@ -209,27 +250,23 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 		if ((uc_com.char_count >= 4) && (data == UC_COMM_MSG_POSTAMBLE)) {
 			if (uc_new_message.length == (uc_com.char_count-4)) {
 				if (uc_new_message.checksum == uc_com.checksum) {
-					if (uc_new_message.cmd == UC_COMM_MSG_ACK) {
-						//Last TXed message was acked, lets drop the message from the TX queue
-						int_comm_tx_queue_drop();
-						msg_not_acked = 0;
-						resend_count = 0;
-					}
-					else if (uc_new_message.cmd == UC_COMM_MSG_NACK) {
-						internal_comm_resend();
-					}
-					else {
-						//Add the message to the RX queue
-						int_comm_rx_queue_add(uc_new_message);
-						//Send ack to acknowledge we recieved the package
+					#ifdef INT_COMM_DEBUG
+						printf("AM 0x%02X\n",uc_new_message.cmd);
+					#endif
+					//Add the message to the RX queue
+					int_comm_rx_queue_add(uc_new_message);
+					//Send ack to acknowledge we recieved the package
+					
+					if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK))
 						internal_comm_send_ack();
-					}
 				}
-				else
+				else {
 					internal_comm_send_nack();
-				
+				}
+
 				uc_com.flags &= ~(1<<UC_PREAMBLE_FOUND);
 				uc_com.char_count = 0;
+				prev_data = 0;
 			}
 			else {
 				if ((uc_com.char_count - 4) < UC_MESSAGE_DATA_SIZE) {
@@ -265,6 +302,7 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 		if (prev_data == UC_COMM_MSG_PREAMBLE) {
 			uc_com.flags |= (1 << UC_PREAMBLE_FOUND);
 			uc_com.char_count = 0;
+			uc_com.checksum = 0;
 		}
 	}
 	
@@ -278,12 +316,20 @@ ISR(ISR_INTERNAL_COMM_USART_DATA) {
 
 /*! \brief Function which should be called each ms */
 void internal_comm_1ms_timer(void) {
-	if (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)
+	if ((uc_com.char_count > 0) && (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)) {
+		counter_rx_timeout = 0;
 		internal_comm_reset_rx();
+	}
 		
-	if (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)
+	if ((msg_not_acked == 1) && (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)) {
+		counter_tx_timeout = 0;
+		
 		internal_comm_resend();
-
-	counter_tx_timeout++;
-	counter_rx_timeout++;
+	}
+	
+	if (msg_not_acked != 0)
+		counter_tx_timeout++;
+	
+	if (uc_com.char_count != 0)
+		counter_rx_timeout++;
 }

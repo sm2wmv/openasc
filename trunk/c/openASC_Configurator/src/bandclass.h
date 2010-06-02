@@ -105,7 +105,7 @@ class BandClass
 		
 		void setDefaultAntenna(int index);
 		int getDefaultAntenna();
-		void setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, unsigned char subAddr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg);
+		void setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, unsigned char subAddr, int startHeading, unsigned int degrees);
 		int getRotatorIndex(unsigned char antIndex);
 		
 		void setHasRotator(unsigned char ant_index, bool state);
@@ -116,7 +116,6 @@ class BandClass
 		int rotatorStartHeading[4];
 		unsigned int rotatorDegrees[4];
 		unsigned char rotatorDelay[4];
-		unsigned char rotatorView360deg;
 	protected:
 		int bandIndex;
 		struct_band band_data;

@@ -31,7 +31,7 @@
 /*! \brief Initializes the USART for the communication bus*/
 void init_usart(void)
 {
-	//Init USART to 115.2kBaud at 14.7456 MHz (communication bus)
+	//Init USART to 57.6kBaud at 14.7456 MHz (communication bus)
 	usart0_init(15);
 	fdevopen((void*)usart0_transmit, (void*)usart0_receive_loopback);
 }
@@ -62,4 +62,7 @@ void init_ports(void)
 	//Trigger on any edge
 	EICRB = (0<<ISC61) | (1<<ISC60);
 	EIMSK |= (1<<INT6);
+	
+	PORTE |= (1<<0);
+	PORTE |= (1<<1);
 }

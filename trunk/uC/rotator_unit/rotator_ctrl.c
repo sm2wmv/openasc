@@ -61,6 +61,8 @@ double rotator_get_multiplier(void) {
 
 void rotator_rotate_to(int heading) {
 	//TODO: Implement this
+	
+	rotator_rotate_cw();
 }
 
 void rotator_release_break(void) {

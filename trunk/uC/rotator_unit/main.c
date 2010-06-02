@@ -61,12 +61,16 @@ unsigned int counter_event_timer = 0;
 
 unsigned char main_flags = 0;
 
+unsigned char timer_flags = 0;
+
+unsigned int counter_ad_poll = 0;
+
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
 void bus_parse_message(void) {
 	BUS_MESSAGE bus_message = rx_queue_get();
-	unsigned char temp[5];
+	unsigned char temp[6];
 	
 	switch(bus_message.cmd) {
 		case BUS_CMD_ACK:
@@ -78,26 +82,26 @@ void bus_parse_message(void) {
 		case BUS_CMD_PING:
 			break;
 		case BUS_CMD_ROTATOR_SET_ANGLE:
-			//1st byte = new direction (high bytes)
-			//2nd byte = new direction (low bytes)
-			
+			//1st byte = sub_addr (0x00 in our case)
+			//2nd byte = new direction (high bytes)
+			//3rd byte = new direction (low bytes)
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED)
-				rotator_rotate_to((bus_message.data[0]<<8) + bus_message.data[1]);
-			
-			bus_send_ack(bus_message.from_addr);
+				rotator_rotate_to((bus_message.data[1]<<8) + bus_message.data[2]);
 			break;
 		case BUS_CMD_ROTATOR_GET_ANGLE:
-			temp[0] = ((rotator_status.curr_heading >> 8) & 0xFF);
-			temp[1] = (rotator_status.curr_heading & 0xFF);
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_ANGLE, 2, temp);
+			temp[0] = 0x00;
+			temp[1] = ((rotator_status.curr_heading >> 8) & 0xFF);
+			temp[2] = (rotator_status.curr_heading & 0xFF);
+			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_ANGLE, 3, temp);
 			break;
 		case BUS_CMD_ROTATOR_GET_STATUS:
-			temp[0] = ((rotator_status.curr_heading >> 8) & 0xFF);
-			temp[1] = (rotator_status.curr_heading & 0xFF);
-			temp[2] = ((rotator_status.target_heading >> 8) & 0xFF);
-			temp[3] = (rotator_status.target_heading & 0xFF);
-			temp[4] = main_flags;
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_STATUS, 5, temp);
+			temp[0] = 0x00;
+			temp[1] = ((rotator_status.curr_heading >> 8) & 0xFF);
+			temp[2] = (rotator_status.curr_heading & 0xFF);
+			temp[3] = ((rotator_status.target_heading >> 8) & 0xFF);
+			temp[4] = (rotator_status.target_heading & 0xFF);
+			temp[5] = main_flags;
+			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_STATUS, 6, temp);
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CW:
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
@@ -105,7 +109,6 @@ void bus_parse_message(void) {
 				event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
 			}
 			
-			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CCW:
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
@@ -113,7 +116,6 @@ void bus_parse_message(void) {
 				event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
 			}
 			
-			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_ROTATOR_STOP:
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
@@ -127,12 +129,9 @@ void bus_parse_message(void) {
 				}
 			}
 
-			bus_send_ack(bus_message.from_addr);
 			break;
 		case BUS_CMD_TRANSPARENT:
 			//TODO: Write this code
-			
-			bus_send_ack(bus_message.from_addr);
 			break;
 		default:
 			break;
@@ -164,7 +163,7 @@ void event_add_message(void (*func), unsigned int offset, unsigned char id) {
 * This function is used to read the external offset address on the rotator unit
 *	\return The address of the external DIP-switch */
 unsigned char read_ext_addr(void) {
-	return(~(PINB >> 4) & 0x0F);
+	return(~(PINE>>2) & 0x0F);
 }
 
 void init_dummy_values(void) {
@@ -175,12 +174,13 @@ void init_dummy_values(void) {
 	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
 	rotator_settings.ad_conv_average = 10;	//Samples 10 times and takes an average of that
 	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
-	rotator_settings.rotation_degree_max = 360;
-	rotator_settings.rotation_start_angle = -90;
+	rotator_settings.rotation_degree_max = 450;
+	rotator_settings.rotation_start_angle = 0;
 	rotator_settings.rotation_min = 100;
 	rotator_settings.rotation_max = 900;
-	rotator_settings.rotation_break_delay = 2;
+	rotator_settings.rotation_break_delay = 1;
 	
+	main_flags = 0;	
 	main_flags |= (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
 }
 
@@ -255,6 +255,8 @@ int main(void)
 	
 	unsigned char device_count = bus_get_device_count();
 	
+	unsigned char send_status[7];
+	
 	device_id = DEVICE_ID_ROTATOR_UNIT;
 	
 	while(1) {	
@@ -270,6 +272,34 @@ int main(void)
 			event_run();
 			
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
+		}
+		
+		if ((timer_flags & (1<<FLAG_SEND_STATUS)) != 0) {
+			//We only update if the beaming heading has changed with > 1 degree from the last update
+			if (rotator_status.curr_heading != rotator_status.last_heading) {
+				send_status[0] = DEVICE_ID_ROTATOR_UNIT;
+				send_status[1] = 0;
+				send_status[2] = ((rotator_status.curr_heading >> 8) & 0xFF);
+				send_status[3] = (rotator_status.curr_heading & 0xFF);
+				send_status[4] = ((rotator_status.target_heading >> 8) & 0xFF);
+				send_status[5] = (rotator_status.target_heading & 0xFF);
+				send_status[6] = main_flags;
+	
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_ROTATOR_GET_STATUS, 7, send_status);
+			
+				rotator_status.last_heading = rotator_status.curr_heading;
+			}
+			
+			timer_flags &= ~(1<<FLAG_SEND_STATUS);
+		}
+		
+		if ((timer_flags & (1<<FLAG_POLL_AD)) != 0) {
+			if (rotator_settings.heading_input == HEADING_INPUT_POT1)
+				rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC0);
+			else if (rotator_settings.heading_input == HEADING_INPUT_POT2)
+				rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC1);
+	
+			timer_flags &= ~(1<<FLAG_POLL_AD);
 		}
 		
 		//If this device should act as master it should send out a SYNC command
@@ -298,35 +328,22 @@ int main(void)
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
-/*	if (rotator_settings.heading_input == HEADING_INPUT_POT1)
-		rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC0);
-	else if (rotator_settings.heading_input == HEADING_INPUT_POT2)
-		rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC1);
+	if (counter_ad_poll >= AD_VAL_POLL_INTERVAL) {
+		timer_flags |= (1<<FLAG_POLL_AD);
+		
+		counter_ad_poll = 0;
+	}
 
 	//This limits the update interval of the rotator status when the rotator is turning to max
 	//ROTATOR_STATUS_UPDATE_INTERVAL in milliseconds, so if ROTATOR_STATUS_UPDATE_INTERVAL is set
 	//to 1000 it means that maximum update interval of beam heading is one second.
 	//ROTATOR_STATUS_UPDATE_INTERVAL can be found in main.h
 	if (rotator_status_counter >= ROTATOR_STATUS_UPDATE_INTERVAL) {
-		//We only update if the beaming heading has changed with > 1 degree from the last update
-		if (rotator_status.curr_heading != rotator_status.last_heading) {
-			unsigned char temp[6];
-			
-			temp[0] = DEVICE_ID_ROTATOR_UNIT;
-			temp[1] = ((rotator_status.curr_heading >> 8) & 0xFF);
-			temp[2] = (rotator_status.curr_heading & 0xFF);
-			temp[3] = ((rotator_status.target_heading >> 8) & 0xFF);
-			temp[4] = (rotator_status.target_heading & 0xFF);
-			temp[5] = main_flags;
-	
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_ROTATOR_GET_STATUS, 6, temp);
-			
-			rotator_status.last_heading = rotator_status.curr_heading;
-		}
+		timer_flags |= (1<<FLAG_SEND_STATUS);
 		
 		rotator_status_counter = 0;
 	}
-	*/	
+	
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
 			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
@@ -350,6 +367,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_ping_interval++;
 	counter_compare0++;
 	counter_sync++;
+	counter_ad_poll++;
 }
 
 ISR(SIG_USART0_RECV) {

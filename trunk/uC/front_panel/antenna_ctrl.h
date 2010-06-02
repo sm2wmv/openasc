@@ -96,12 +96,8 @@ typedef struct {
 	unsigned int rotator_max_rotation[4];
 	//!The minimum heading of the rotator, this can also be negative numbers if starting point is not at 0 degrees
 	unsigned int rotator_min_heading[4];
-	//!The delay from a rotation has occured to it can start to rotate again (in seconds)
-	unsigned char rotator_delay[4];
 	//! The rotator flags
 	unsigned char rotator_flags[4];
-	//! Does the rotator have 360 degree view? Should it show 0-360 degree or start_point + rotation, maybe 90 - 500 deg
-	unsigned char rotator_view_360_deg;
 	//! The default antenna index (0-3)
 	unsigned char default_antenna;
 } struct_antenna;

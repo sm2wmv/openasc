@@ -51,40 +51,40 @@
  * 
  * PORTA
  * =====================================================================================
- * PA0	-	AUX I/O - SV4 (10)
- * PA1	-	AUX I/O - SV4 (9)
- * PA2	- AUX I/O - SV4 (8)
- * PA3	-	AUX I/O - SV4 (7)
- * PA4	-	AUX I/O - SV4 (6)
- * PA5	-	AUX I/O - SV4 (5)
- * PA6	-	AUX I/O - SV4 (4)
- * PA7	-	AUX I/O - SV4 (3)
+ * PA0	-	Input - AUX I/O - SV4 (10)
+ * PA1	-	Input - AUX I/O - SV4 (9)
+ * PA2	- Input - AUX I/O - SV4 (8)
+ * PA3	-	Input - AUX I/O - SV4 (7)
+ * PA4	-	Input - AUX I/O - SV4 (6)
+ * PA5	-	Input - AUX I/O - SV4 (5)
+ * PA6	-	Input - AUX I/O - SV4 (4)
+ * PA7	-	Input - AUX I/O - SV4 (3)
  * =====================================================================================
  *
  *
  * PORTB
  * =====================================================================================
- * PB0	-	
+ * PB0	-
  * PB1	-	ISP SCK
- * PB2	-	
- * PB3	-	
- * PB4	-	External address input bit 0
- * PB5	-	External address input bit 1
- * PB6	-	External address input bit 2
- * PB7	-	External address input bit 3
+ * PB2	-
+ * PB3	-
+ * PB4	-
+ * PB5	-
+ * PB6	-
+ * PB7	-
  * =====================================================================================
  *
  *
  * PORTC
  * =====================================================================================
- * PC0	-	NMOS output #1
- * PC1	-	NMOS output #2
- * PC2	-	
- * PC3	-	
- * PC4	-	
- * PC5	-	
- * PC6	-	
- * PC7	-	
+ * PC0	-	Output - NMOS output #3
+ * PC1	-	Output - NMOS output #4
+ * PC2	-	Output - NMOS output #1
+ * PC3	-	Output - NMOS output #2
+ * PC4	-
+ * PC5	-
+ * PC6	-
+ * PC7	-
  * =====================================================================================
  *
  *
@@ -92,12 +92,12 @@
  * =====================================================================================
  * PD0	-	
  * PD1	-	
- * PD2	-	BUS RXD
- * PD3	-	BUS TXD
- * PD4	-	Relay #3
- * PD5	-	Relay #4
- * PD6	-	Relay #2
- * PD7	-	Relay #1
+ * PD2	-	Input  - BUS RXD
+ * PD3	-	Output - BUS TXD
+ * PD4	-	Output - Relay #3
+ * PD5	-	Output - Relay #4
+ * PD6	-	Output - Relay #2
+ * PD7	-	Output - Relay #1
  * =====================================================================================
  *
  *
@@ -105,25 +105,25 @@
  * =====================================================================================
  * PE0	-	MOSI (ISP)
  * PE1	-	MISO (ISP)
- * PE2	-	
- * PE3	-	
- * PE4	-	
- * PE5	-	
- * PE6	-	Pulse sensor input #1
- * PE7	-	Pulse sensor input #2
+ * PE2	- Input -	External address bit 0
+ * PE3	-	Input - External address bit 1
+ * PE4	-	Input - External address bit 2
+ * PE5	-	Input - External address bit 3
+ * PE6	-	Input - Pulse sensor input #1
+ * PE7	-	Input - Pulse sensor input #2
  * ===================================================================================== *
  *
  *
  * PORTF
  * =====================================================================================
- * PF0	-	Potentiometer input #1 (A/D)
- * PF1	-	Potentiometer input #2 (A/D)
- * PF2	-	
+ * PF0	-	Input - Potentiometer input #1 (A/D)
+ * PF1	-	Input - Potentiometer input #2 (A/D)
+ * PF2	-	Input - DC Voltage sense (Vin = 13.8V -> PF2 voltage = 3.872V)
  * PF3	-	
  * PF4	-	
  * PF5	-	
  * PF6	-	
- * PF7	-	A/D input for sensing voltage dropoff (for saving data before shutdown)
+ * PF7	-
  * ===================================================================================== * *
  *
  *
@@ -142,7 +142,9 @@
 #define RELAY3_BIT 4
 #define RELAY4_BIT 5
 
-#define FET1_BIT	0
-#define FET2_BIT	1
- 
+#define FET1_BIT	2
+#define FET2_BIT	3
+#define FET3_BIT  0
+#define FET4_BIT  1
+
 #endif

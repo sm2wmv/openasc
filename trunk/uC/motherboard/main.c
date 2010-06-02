@@ -57,6 +57,8 @@ unsigned char btn_on_off_last_state = 1;
 		we ignore button actions on the ON/OFF button for a certain time at startup */
 unsigned int counter_time_start=0;
 
+unsigned long long global_bcd_count = 0;
+
 //! Counter which keeps track of the PS/2 decoding
 unsigned int counter_ps2=0;
 
@@ -153,8 +155,18 @@ void deactivate_output(unsigned char index) {
  *  \param message The message that we wish to parse */
 void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
+	
+	#ifdef INT_COMM_DEBUG	
+		printf("P: 0x%02X\n",message.cmd);	
+	#endif
 
 	switch(message.cmd) {
+		case UC_COMM_MSG_ACK:
+			internal_comm_message_acked();
+			break;
+		case UC_COMM_MSG_NACK:
+			internal_comm_message_nacked();
+			break;
 		case INT_COMM_REDIRECT_DATA:
 			computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
 			break;
@@ -244,23 +256,10 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			temp |= (PINF & (1<<0)) << 2;
 			temp |= (PINF & (1<<1)) << 2;
 			
-			/*if (band_change_count < 10000) {
-				temp = 0x03;
-			}
-			else if ((band_change_count > 10000) && (band_change_count < 20000)) {
-				temp = 0x05;
-			}
-			else {
-				temp = 0x02;
-				band_change_count = 0;
-			}*/
-			
 			internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
 			break;
 		case INT_COMM_PULL_THE_PLUG:
-			printf("PULLING THE PLUG\n");
 			//Will drop the voltage to the input relay
-			//
 			PORTB &= ~(1<<7);
 			break;
 		default:
@@ -313,8 +312,8 @@ int main(void) {
 	init_ports();
 	init_timer_0();
 	
-	//19.2kbaud
-	usart1_init(47);
+	//115.2kbaud
+	usart1_init(7);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 	
 	//19.2kbaud - internal comm

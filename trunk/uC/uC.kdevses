@@ -1,10 +1,28 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="1" >
-  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/motherboard/main.c" >
-   <View0 Encoding="" line="0" Type="Source" />
+ <DocsAndViews NumberOfDocuments="7" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/internal_comm.c" >
+   <View0 Encoding="" line="308" Type="Source" />
   </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/internal_comm.h" >
+   <View0 Encoding="" line="61" Type="Source" />
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/motherboard/init.c" >
+   <View0 Encoding="" line="65" Type="Source" />
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/motherboard/main.c" >
+   <View0 Encoding="" line="320" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/init.c" >
+   <View0 Encoding="" line="73" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/board.h" >
+   <View0 Encoding="" line="103" Type="Source" />
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/motherboard/board.h" >
+   <View0 Encoding="" line="0" Type="Source" />
+  </Doc6>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

@@ -109,17 +109,17 @@
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x60
 /*! Get the current direction */
-#define BUS_CMD_ROTATOR_GET_ANGLE		0x61
-/*! Get the current direction */
-#define BUS_CMD_ROTATOR_GET_STATUS	0x62
+#define BUS_CMD_ROTATOR_GET_STATUS	0x61
 /*! Rotate ClockWise */
-#define BUS_CMD_ROTATOR_ROTATE_CW		0x63
+#define BUS_CMD_ROTATOR_ROTATE_CW		0x62
 /*! Rotate CounterClockWise */
-#define BUS_CMD_ROTATOR_ROTATE_CCW	0x64
+#define BUS_CMD_ROTATOR_ROTATE_CCW	0x63
 /*! Stop the rotation of the rotator */
-#define BUS_CMD_ROTATOR_STOP				0x65	
+#define BUS_CMD_ROTATOR_STOP				0x64	
 /*! Transparent command which just redirects the data to the serial port */
-#define BUS_CMD_TRANSPARENT					0x66
+#define BUS_CMD_ROTATOR_TRANSPARENT	0x65
+/*! Rotator unit status message */
+#define BUS_CMD_ROTATOR_STATUS_UPDATE	0x66
 
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70

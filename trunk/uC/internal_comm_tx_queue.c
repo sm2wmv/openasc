@@ -32,7 +32,7 @@
 int_comm_tx_queue_struct int_comm_tx_queue;
 
 /*! Initialize the internal communication TX queue */
-void int_comm_int_comm_tx_queue_init(void) {
+void int_comm_tx_queue_init(void) {
 	int_comm_tx_queue.first = 0;
 	int_comm_tx_queue.last = 0;
 }
@@ -50,7 +50,7 @@ void int_comm_tx_queue_add(UC_MESSAGE message) {
 		int_comm_tx_queue.first++;
 	
 	if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
-		int_comm_tx_queue.first = 0;	
+		int_comm_tx_queue.first = 0;
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.

@@ -7,11 +7,7 @@ BandClass::BandClass() {
 	for (int i=0;i<4;i++) {
 		hasRotator[i] = false;
 		subMenuType[i] = 0;
-}
-	
-
-
-	rotatorView360deg = 0;
+	}
 }
 
 void BandClass::setIndex(int new_index) {
@@ -374,8 +370,6 @@ void BandClass::writeSettings(QSettings& settings) {
 		settings.setValue("RotatorDelay3",rotatorDelay[2]);
 		settings.setValue("RotatorDelay4",rotatorDelay[3]);
 		
-		settings.setValue("RotatorView360deg",rotatorView360deg);
-		
 		settings.beginWriteArray("AntennaOutputStr");
 
 		for (int i=0;i<15;i++){
@@ -501,8 +495,6 @@ void BandClass::loadSettings(QSettings& settings) {
 	rotatorDelay[2] = settings.value("RotatorDelay3").toInt();
 	rotatorDelay[3] = settings.value("RotatorDelay4").toInt();
 	
-	rotatorView360deg = settings.value("RotatorView360deg").toInt();
-	
 	for (int i=0;i<4;i++) {
 		if (antennaFlags[i] & (1<<2))
 			multiband[i] = true;
@@ -534,7 +526,7 @@ void BandClass::loadSettings(QSettings& settings) {
 }
 
 void BandClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[30];
+	unsigned char tx_buff[35];
 	
 	for (int i=0;i<4;i++) {
 		tx_buff[0] = CTRL_SET_ANT_DATA_TEXT;
@@ -603,6 +595,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	tx_buff[1] = bandIndex;
 	
 	unsigned char posCount = 2;
+
 	for (unsigned char i=0;i<4;i++) {
 		tx_buff[posCount++]	= rotatorAddress[i];
 		tx_buff[posCount++] = rotatorSubAddress[i];
@@ -610,12 +603,9 @@ void BandClass::sendSettings(CommClass& serialPort) {
 		tx_buff[posCount++] = (rotatorDegrees[i] & 0xFF);
 		tx_buff[posCount++] = (rotatorStartHeading[i] >> 8);
 		tx_buff[posCount++] = (rotatorStartHeading[i] & 0xFF);
-		tx_buff[posCount++] = rotatorDelay[i];
 	}
 	
-	tx_buff[posCount++] = rotatorView360deg;
-	
-	serialPort.addTXMessage(CTRL_SET_ANT_DATA,27,tx_buff);
+	serialPort.addTXMessage(CTRL_SET_ANT_DATA,26,tx_buff);
 
 	for (int i=0;i<4;i++) {
 		if (subMenuType[i] == SUBMENU_VERT_ARRAY) {
@@ -707,18 +697,12 @@ void BandClass::sendSettings(CommClass& serialPort) {
 	serialPort.addTXMessage(CTRL_SET_BAND_DATA,2,tx_buff);
 }
 
-void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, unsigned char subAddr, int startHeading, unsigned int degrees, unsigned char delay, bool view360deg) {
+void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned char addr, unsigned char subAddr, int startHeading, unsigned int degrees) {
 	rotatorSubAddress[antIndex] = subAddr;
 	rotatorAddress[antIndex] = addr;
 	rotatorIndex[antIndex] = index;
 	rotatorStartHeading[antIndex] = startHeading;
 	rotatorDegrees[antIndex] = degrees;
-	rotatorDelay[antIndex] = delay;
-	
-	if (view360deg == true)
-		rotatorView360deg |= (1<<antIndex);
-	else
-		rotatorView360deg &= ~(1<<antIndex);
 }
 
 int BandClass::getRotatorIndex(unsigned char antIndex) {

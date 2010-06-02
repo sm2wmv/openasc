@@ -210,6 +210,7 @@ unsigned char radio_poll_status(void) {
 		if (radio_settings.interface_type == RADIO_INTERFACE_BCD) {
 			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 				internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS,0,NULL);
+				//printf("SEND BCD REQ\n");
 			}
 		}
 		else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {

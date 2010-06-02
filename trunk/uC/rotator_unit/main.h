@@ -61,14 +61,18 @@
 #define ROTATION_OUTPUT_FET1		0
 //! Rotation output (hardwired mode) - FET2
 #define ROTATION_OUTPUT_FET2		1
+//! Rotation output (hardwired mode) - FET3
+#define ROTATION_OUTPUT_FET3		2
+//! Rotation output (hardwired mode) - FET4
+#define ROTATION_OUTPUT_FET4		3
 //! Rotation output (hardwired mode) - RELAY1
-#define ROTATION_OUTPUT_RELAY1	2
+#define ROTATION_OUTPUT_RELAY1	4
 //! Rotation output (hardwired mode) - RELAY2
-#define ROTATION_OUTPUT_RELAY2	3
+#define ROTATION_OUTPUT_RELAY2	5
 //! Rotation output (hardwired mode) - RELAY3
-#define ROTATION_OUTPUT_RELAY3	4
+#define ROTATION_OUTPUT_RELAY3	6
 //! Rotation output (hardwired mode) - RELAY4
-#define ROTATION_OUTPUT_RELAY4	5
+#define ROTATION_OUTPUT_RELAY4	7
 
 //! The rotator turns over south
 #define ROTATOR_PATH_SOUTH 0
@@ -81,6 +85,11 @@
 #define EVENT_QUEUE_RELEASE_BREAK_ID	3
 #define EVENT_QUEUE_ACTIVATE_BREAK_ID	4
 
+#define AD_VAL_POLL_INTERVAL						100
+#define ROTATOR_STATUS_UPDATE_INTERVAL	200
+
+#define FLAG_POLL_AD			0
+#define FLAG_SEND_STATUS	1
 
 //! Struct of the settings
 typedef struct {
