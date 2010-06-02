@@ -89,8 +89,18 @@ unsigned char event_get_error_state(unsigned char error_type) {
 /*! \brief Function which will parse the internal communication message 
  *  \param message The message that we wish to parse */
 void event_internal_comm_parse_message(UC_MESSAGE message) {
+	#ifdef INT_COMM_DEBUG
+		printf("0x%02X\n",message.cmd);
+	#endif
+	
 	//Init the sequence of saving all data and disable all outputs activated by this unit
 	switch(message.cmd) {
+		case UC_COMM_MSG_ACK:
+			internal_comm_message_acked();
+			break;
+		case UC_COMM_MSG_NACK:
+			internal_comm_message_nacked();
+			break;
 		case INT_COMM_TURN_DEVICE_OFF:
 			if (!computer_interface_is_active()) {
 				//TODO: Problem with delay here, need to wait until everything is shut off
@@ -116,7 +126,7 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 
 				delay_s(2);
 
-				shutdown_device();
+				bootloader_start();
 			}
 			
 			break;
@@ -131,6 +141,10 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 				if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
 					radio_set_current_band(message.data[0]);
 			}
+			
+			#ifdef INT_COMM_DEBUG
+				printf("RX BCD STATUS\n");
+			#endif
 			break;
 		default:
 			break;
@@ -239,8 +253,8 @@ void event_pulse_sensor_up(void) {
 			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
-			if (status.new_band < BAND_10M)
-				status.new_band++;
+			if (status.new_band > BAND_UNDEFINED)
+				status.new_band--;
 		}
 		else if ((status.knob_function == KNOB_FUNCTION_SET_HEADING) && ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0)) {
 			if (status.new_beamheading < (antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1)))
@@ -280,8 +294,8 @@ void event_pulse_sensor_down(void) {
 			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
-			if (status.new_band > BAND_UNDEFINED)
-				status.new_band--;
+			if (status.new_band < BAND_10M)
+				status.new_band++;
 		}	//TODO: Fix all the rotator options properly
 		else if ((status.knob_function == KNOB_FUNCTION_SET_HEADING) && ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0)) {
 			if (status.new_beamheading > antenna_ctrl_get_start_heading(status.antenna_to_rotate-1))

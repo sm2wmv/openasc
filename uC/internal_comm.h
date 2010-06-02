@@ -36,6 +36,8 @@
 #ifndef _INTERNAL_COMM_H_
 #define _INTERNAL_COMM_H_
 
+//#define INT_COMM_DEBUG 1
+
 //! if the device is a motherboard we need to set the proper USARTs used
 #ifdef DEVICE_TYPE_MAIN_MOTHERBOARD_UNIT
 	#define ISR_INTERNAL_COMM_USART_RECV	SIG_USART0_RECV
@@ -69,10 +71,10 @@
 #define UC_COMM_MSG_PREAMBLE		0xFE
 /*! The postamble of the BUS message */
 #define UC_COMM_MSG_POSTAMBLE		0xFD
-/*! The acknowledge command of the bus */
-#define UC_COMM_MSG_ACK					0xFB
-/*! The NOT acknowledge command of the bus */
-#define UC_COMM_MSG_NACK				0xFA
+/*! The acknowledge command */
+#define UC_COMM_MSG_ACK					0xFA
+/*! The NOT acknowledge command  */
+#define UC_COMM_MSG_NACK				0xFB
 
 //! The length of the serial rx buffer used for communication between the uCs
 #define UC_SERIAL_RX_BUFFER_LENGTH	20
@@ -81,13 +83,13 @@
 #define UC_MESSAGE_DATA_SIZE	15
 
 //! After this many ms it will reset the rx flags (in ms)
-#define UC_COMM_RX_TIMEOUT	3
+#define UC_COMM_RX_TIMEOUT	25
 
 //! After this many ms a resend will occur if a message has not been acked (in ms)
-#define UC_COMM_TX_TIMEOUT	10
+#define UC_COMM_TX_TIMEOUT	25
 
 //! Number of resends that is allowed
-#define UC_COMM_RESEND_COUNT	5
+#define UC_COMM_RESEND_COUNT	10
 
 
 /*! uC message structure, used for communication between the uCs */
@@ -117,6 +119,9 @@ void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(cha
 unsigned char internal_comm_poll_rx_queue(void);
 unsigned char internal_comm_poll_tx_queue(void);
 void internal_comm_add_tx_message(unsigned char command, unsigned char length,char *data);
+
+void internal_comm_message_acked(void);
+void internal_comm_message_nacked(void);
 
 void internal_comm_send_ack(void);
 void internal_comm_send_nack(void);

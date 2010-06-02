@@ -35,7 +35,7 @@ void init_usart_computer(void) {
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 }
 
-/*!Initializes the USART for the communication bus*/
+/*!Initializes the USART for the internal communication */
 void init_usart(void) {
 	//Init the USART between the uC to run at 19.2 kbaud
 	usart0_init(47);
@@ -96,7 +96,8 @@ void init_ports(void) {
 	PORTB |= (1<<BUTTON4_RX_BIT);
 	PORTG |= (1<<BUTTON_PULSE_BIT) | (1<<BUTTON_AUX1_BIT) | (1<<BUTTON_AUX2_BIT);
 	
-	PORTE = 0x03;
+	PORTE |= (1<<0);
+	PORTE |= (1<<1);
 }
 
 /*! Initialize the backlight (Which is pulse width modulated so we can set the contrast) */

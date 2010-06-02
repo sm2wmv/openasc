@@ -29,8 +29,6 @@ RotatorClass::RotatorClass() {
 	degreesList.clear();
 	nameList.clear();
 	addressList.clear();
-	delayList.clear();
-	view360degList.clear();
 }
 
 void RotatorClass::writeSettings(QSettings& settings) {
@@ -47,9 +45,7 @@ void RotatorClass::writeSettings(QSettings& settings) {
 		settings.setValue("RotatorSubAddr",getRotatorSubAddress(i));
 		settings.setValue("RotatorStartHeading",getRotatorStartHeading(i));
 		settings.setValue("RotatorDegrees",getRotatorDegrees(i));
-		settings.setValue("RotatorDelay",getRotatorDelay(i));
 		settings.setValue("RotatorIndex",getRotatorIndex(i));
-		settings.setValue("Rotator360degView",getRotator360degView(i));
 	}
 		
 	settings.endArray();
@@ -62,7 +58,6 @@ void RotatorClass::loadSettings(QSettings& settings) {
 	nameList.clear();
 	startHeadingList.clear();
 	degreesList.clear();
-	delayList.clear();
 	indexList.clear();
 	
 	lastIndex = settings.value("LastRotatorIndex").toInt();
@@ -78,9 +73,7 @@ void RotatorClass::loadSettings(QSettings& settings) {
 		subAddressList.append(settings.value("RotatorSubAddr").toInt());
 		startHeadingList.append(settings.value("RotatorStartHeading").toInt());
 		degreesList.append(settings.value("RotatorDegrees").toInt());
-		delayList.append(settings.value("RotatorDelay").toInt());
 		indexList.append(settings.value("RotatorIndex").toInt());
-		view360degList.append(settings.value("Rotator360degView").toBool());
 	}
 	
 	settings.endArray();
@@ -88,38 +81,27 @@ void RotatorClass::loadSettings(QSettings& settings) {
 	settings.endGroup();
 }
 
-void RotatorClass::addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg) {
+void RotatorClass::addRotator(QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees) {
 	nameList.append(rotatorName);
 	addressList.append(rotatorAddress);
 	subAddressList.append(subAddress);
 	startHeadingList.append(rotatorStartHeading);
 	degreesList.append(rotatorDegrees);
-	delayList.append(rotatorDelay);
 	indexList.append(++lastIndex);
-	view360degList.append(view360deg);
 }
 
-unsigned char RotatorClass::changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees, unsigned char rotatorDelay, bool view360deg) {
+unsigned char RotatorClass::changeRotatorProperties(int index, QString rotatorName, unsigned char rotatorAddress, unsigned char subAddress, unsigned int rotatorStartHeading, unsigned int rotatorDegrees) {
 	if (index > -1) {
 		nameList.replace(index, rotatorName);	
 		subAddressList.replace(index, subAddress);
 		addressList.replace(index, rotatorAddress);
 		startHeadingList.replace(index, rotatorStartHeading);
 		degreesList.replace(index, rotatorDegrees);
-		delayList.replace(index, rotatorDelay);
-		view360degList.replace(index, view360deg);
 	}
 	else
 		return(1);
 	
 	return(0);
-}
-
-bool RotatorClass::getRotator360degView(int index) {
-	if (index < view360degList.count())
-		return(view360degList.at(index));
-	else
-		return(false);
 }
 
 QString RotatorClass::getRotatorName(int index) {
@@ -157,13 +139,6 @@ unsigned int RotatorClass::getRotatorDegrees(int index) {
 		return(0);
 }
 
-unsigned char RotatorClass::getRotatorDelay(int index) {
-	if (index < delayList.count())
-		return(delayList.at(index));
-	else
-		return(0);
-}
-
 int RotatorClass::getRotatorIndex(int index) {
 	if (index < indexList.count())
 		return(indexList.at(index));
@@ -185,8 +160,6 @@ int RotatorClass::deleteRotator(int index) {
 		addressList.removeAt(index);
 		startHeadingList.removeAt(index);
 		degreesList.removeAt(index);
-		delayList.removeAt(index);
 		indexList.removeAt(index);
-		view360degList.removeAt(index);
 	}
 }

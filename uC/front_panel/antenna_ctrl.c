@@ -280,11 +280,11 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	
 	//TODO: CODE TO SEND TO THE ROTATOR BOARD
 	unsigned char new_dir[2];
+	
 	new_dir[0] = (heading >> 8)	& 0x00FF;
 	new_dir[1] = heading & 0x00FF;
 	
 	bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[ant_index], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_SET_ANGLE, 2, new_dir);
-	
 }
 
 /*! \brief Function used to change an rx antenna 
