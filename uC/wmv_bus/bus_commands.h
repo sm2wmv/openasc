@@ -120,6 +120,18 @@
 #define BUS_CMD_ROTATOR_TRANSPARENT	0x65
 /*! Rotator unit status message */
 #define BUS_CMD_ROTATOR_STATUS_UPDATE	0x66
+/*! Rotator activate calibration mode */
+#define BUS_CMD_ROTATOR_ACTIVATE_CAL	0x67
+/*! Rotator deactivate calibration mode */
+#define BUS_CMD_ROTATOR_DEACTIVATE_CAL	0x68
+/*! Rotator set CCW limit */
+#define BUS_CMD_ROTATOR_SET_CCW_LIMIT	0x69
+/*! Rotator set CW limit */
+#define BUS_CMD_ROTATOR_SET_CW_LIMIT	0x6A
+/*! Rotator store calibration data */
+#define BUS_CMD_ROTATOR_STORE_CAL	0x6B
+/*! Rotator clear calibration data */
+#define BUS_CMD_ROTATOR_CLEAR_CAL	0x6C
 
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70
