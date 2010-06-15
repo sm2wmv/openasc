@@ -529,11 +529,11 @@ int main(void){
 			}
 		
 		//Update the display
-			if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
-				event_update_display();
+		if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
+			event_update_display();
 			
-				main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
-			}
+			main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
+		}
 		
 			if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
 				int val = rotary_encoder_poll();

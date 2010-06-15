@@ -85,6 +85,10 @@ void rotator_activate_break(void) {
 		ext_ctrl_fet1_deactivate();
 	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
 		ext_ctrl_fet2_deactivate();
+	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET3))
+		ext_ctrl_fet3_deactivate();
+	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET4))
+		ext_ctrl_fet4_deactivate();
 	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
 		ext_ctrl_relay1_deactivate();
 	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
@@ -100,6 +104,10 @@ void rotator_rotate_cw(void) {
 			ext_ctrl_fet1_activate();
 		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
 			ext_ctrl_fet2_activate();
+		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET3))
+			ext_ctrl_fet3_activate();
+		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET4))
+			ext_ctrl_fet4_activate();
 		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
 			ext_ctrl_relay1_activate();
 		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))

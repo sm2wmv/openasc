@@ -88,12 +88,6 @@ void bus_parse_message(void) {
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED)
 				rotator_rotate_to((bus_message.data[1]<<8) + bus_message.data[2]);
 			break;
-		case BUS_CMD_ROTATOR_GET_ANGLE:
-			temp[0] = 0x00;
-			temp[1] = ((rotator_status.curr_heading >> 8) & 0xFF);
-			temp[2] = (rotator_status.curr_heading & 0xFF);
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_ANGLE, 3, temp);
-			break;
 		case BUS_CMD_ROTATOR_GET_STATUS:
 			temp[0] = 0x00;
 			temp[1] = ((rotator_status.curr_heading >> 8) & 0xFF);
@@ -130,9 +124,6 @@ void bus_parse_message(void) {
 			}
 
 			break;
-		case BUS_CMD_TRANSPARENT:
-			//TODO: Write this code
-			break;
 		default:
 			break;
 	}
@@ -166,18 +157,24 @@ unsigned char read_ext_addr(void) {
 	return(~(PINE>>2) & 0x0F);
 }
 
+void main_convert_ad_vals(void) {
+	rotator_status.curr_heading = (int)((double)rotator_status.curr_heading_ad_val * 0.5625f);
+}
+
 void init_dummy_values(void) {
 	rotator_settings.heading_input = HEADING_INPUT_POT1;
 	rotator_settings.rotator_mode = ROTATOR_MODE_HARDWIRED;
 	rotator_settings.cw_output = (1<<ROTATION_OUTPUT_RELAY1);
 	rotator_settings.ccw_output = (1<<ROTATION_OUTPUT_RELAY2);
 	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
+	
 	rotator_settings.ad_conv_average = 10;	//Samples 10 times and takes an average of that
 	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
 	rotator_settings.rotation_degree_max = 450;
-	rotator_settings.rotation_start_angle = 0;
+	rotator_settings.rotation_start_angle = 20;
 	rotator_settings.rotation_min = 100;
 	rotator_settings.rotation_max = 900;
+	rotator_settings.ad_scale_value = rotator_settings.rotation_degree_max / (rotator_settings.rotation_max - rotator_settings.rotation_min);
 	rotator_settings.rotation_break_delay = 1;
 	
 	main_flags = 0;	
@@ -285,7 +282,7 @@ int main(void)
 				send_status[5] = (rotator_status.target_heading & 0xFF);
 				send_status[6] = main_flags;
 	
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_ROTATOR_GET_STATUS, 7, send_status);
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_ROTATOR_STATUS_UPDATE, 7, send_status);
 			
 				rotator_status.last_heading = rotator_status.curr_heading;
 			}
@@ -299,9 +296,11 @@ int main(void)
 			else if (rotator_settings.heading_input == HEADING_INPUT_POT2)
 				rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC1);
 	
+			main_convert_ad_vals();
+			
 			timer_flags &= ~(1<<FLAG_POLL_AD);
 		}
-		
+
 		//If this device should act as master it should send out a SYNC command
 		//and also the number of devices (for the time slots) that are active on the bus
 		if (bus_is_master()) {

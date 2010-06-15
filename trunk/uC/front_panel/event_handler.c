@@ -105,6 +105,7 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			if (!computer_interface_is_active()) {
 				//TODO: Problem with delay here, need to wait until everything is shut off
 				//This solution is pretty uggly...do it some other way?
+				status.prev_display = status.current_display;
 				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
 				display_shutdown_view();
 				
@@ -121,6 +122,7 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 				event_add_message((void *)shutdown_device,3000,0);
 			}
 			else {
+				status.prev_display = status.current_display;
 				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
 				display_shutdown_view();
 
@@ -261,7 +263,7 @@ void event_pulse_sensor_up(void) {
 				status.new_beamheading += status.rotator_step_resolution;
 			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1);
-					
+			
 			display_show_set_heading(status.new_beamheading, 0);
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
@@ -333,6 +335,9 @@ void event_update_display(void) {
 	else if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 		menu_show();
 	}
+	else if (status.current_display == CURRENT_DISPLAY_SETTING) {
+		
+	}
 }
 
 /*! \brief Function which will poll all buttons and perform the proper action depending on their state */
@@ -384,16 +389,20 @@ void event_poll_buttons(void) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 					if (status.selected_band != BAND_UNDEFINED) {
+						status.prev_display = status.current_display;
 						status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
 						status.current_display_level = DISPLAY_LEVEL_BAND;
 					}
 					else
+						status.prev_display = status.current_display;
 						status.current_display = CURRENT_DISPLAY_LOGO;
 						
 						led_set_menu(LED_STATE_OFF);
 				}
 				else {
 					menu_reset();
+					
+					status.prev_display = status.current_display;
 					status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
 					led_set_menu(LED_STATE_ON);
 				}
@@ -436,6 +445,7 @@ void event_poll_buttons(void) {
 					status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
 					set_knob_function(KNOB_FUNCTION_AUTO);
 				
+					status.prev_display = status.current_display;
 					status.current_display_level = DISPLAY_LEVEL_BAND;
 				
 					glcd_clear();
@@ -767,6 +777,7 @@ void event_sub_button_pressed(void) {
 						if (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY)
 							status.sub_menu_antenna_index = i;
 					
+					status.prev_display = status.current_display;
 					status.current_display_level = DISPLAY_LEVEL_SUBMENU;
 					
 					glcd_clear();
@@ -778,6 +789,7 @@ void event_sub_button_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
 				set_knob_function(KNOB_FUNCTION_AUTO);
 				
+				status.prev_display = status.current_display;
 				status.current_display_level = DISPLAY_LEVEL_BAND;
 				
 				glcd_clear();
@@ -857,6 +869,8 @@ void event_rotate_button_pressed(void) {
 					status.new_beamheading = antenna_ctrl_get_direction(rotator_index);
 					set_knob_function(KNOB_FUNCTION_SET_HEADING);
 					
+					status.prev_display = status.current_display;
+					status.current_display = CURRENT_DISPLAY_SETTING;
 					display_show_set_heading(status.new_beamheading, 0);	
 				}
 				else {
@@ -876,7 +890,10 @@ void event_rotate_button_pressed(void) {
 				set_tx_ant_leds();
 					
 				set_knob_function(KNOB_FUNCTION_AUTO);
-					
+				
+				status.prev_display = status.current_display;
+				status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+				
 				glcd_clear();
 				main_update_display();
 			}
@@ -902,7 +919,35 @@ void event_bus_parse_message(void) {
 		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
+	else if (bus_message.cmd == BUS_CMD_ROTATOR_STATUS_UPDATE) {
+		for (unsigned char i=0;i<4;i++) {
+			if (antenna_ctrl_get_rotator_addr(i) == bus_message.from_addr) {
+				if (antenna_ctrl_get_rotator_sub_addr(i) == 0) {
+					unsigned int curr_heading = 0;
+					
+					curr_heading = bus_message.data[2]<<8;
+					curr_heading += bus_message.data[3];
 
+					antenna_ctrl_set_direction(curr_heading,i);
+					
+					main_update_display();
+				}
+				else {
+					if (antenna_ctrl_get_rotator_sub_addr(i) == bus_message.data[1]) {
+						unsigned int curr_heading = 0;
+						
+						curr_heading = bus_message.data[2]<<8;
+						curr_heading += bus_message.data[3];
+	
+						antenna_ctrl_set_direction(curr_heading,i);
+						
+						main_update_display();
+					}
+				}
+			}
+		}
+	}
+	
 	//Drop the message
 	rx_queue_drop();
 	

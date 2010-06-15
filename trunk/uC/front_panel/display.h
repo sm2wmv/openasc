@@ -110,6 +110,9 @@
 
 /************************************************/
 
+#define DISPLAY_UPDATE_ALL			1
+#define DISPLAY_UPDATE_ROTATOR	2
+
 void display_setup_view(void);
 void display_shutdown_view(void);
 void display_antennas(unsigned char band);
