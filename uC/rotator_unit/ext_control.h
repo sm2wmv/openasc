@@ -37,10 +37,15 @@ void ext_ctrl_fet1_deactivate(void);
 void ext_ctrl_fet2_activate(void);
 void ext_ctrl_fet2_deactivate(void);
 
+void ext_ctrl_fet3_activate(void);
+void ext_ctrl_fet3_deactivate(void);
+
+void ext_ctrl_fet4_activate(void);
+void ext_ctrl_fet4_deactivate(void);
+
 //AUX I/Os
 void ext_ctrl_set_io_dir(unsigned char bit, unsigned char dir);
 void ext_ctrl_set_io(unsigned char bit, unsigned char state);
 unsigned char ext_ctrl_read_io(unsigned char bit);
 
 #endif
-

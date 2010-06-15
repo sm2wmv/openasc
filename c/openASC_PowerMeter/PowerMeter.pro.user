@@ -77,12 +77,12 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-qQfYvtZ5Ar,guid=7589b3497e1c443fb38d0a454bb0c360</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-eTllx95FtX,guid=701a5f31a63d6a4d19c9179b4bf9621f</value>
     <value type="QString" >DESKTOP_SESSION=kde</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0</value>
     <value type="QString" >DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString" >GPG_AGENT_INFO=/tmp/gpg-oXGlaQ/S.gpg-agent:4000:1</value>
+    <value type="QString" >GPG_AGENT_INFO=/tmp/gpg-zZy0ay/S.gpg-agent:10477:1</value>
     <value type="QString" >GS_LIB=/home/micke/.fonts</value>
     <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/micke/.gtkrc-2.0:/home/micke/.gtkrc-2.0-kde4:/home/micke/.kde/share/config/gtkrc-2.0</value>
     <value type="QString" >GTK_MODULES=canberra-gtk-module</value>
@@ -101,16 +101,16 @@
     <value type="QString" >PWD=/home/micke</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_PLUGIN_PATH=/home/micke/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString" >SESSION_MANAGER=local/beavis:/tmp/.ICE-unix/4098</value>
+    <value type="QString" >SESSION_MANAGER=local/beavis:/tmp/.ICE-unix/12090</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=0</value>
-    <value type="QString" >SSH_AGENT_PID=3999</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-OhCgJY3874/agent.3874</value>
+    <value type="QString" >SSH_AGENT_PID=10474</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-fUVJx10056/agent.10056</value>
     <value type="QString" >USER=micke</value>
     <value type="QString" >WINDOWPATH=7</value>
     <value type="QString" >XCURSOR_THEME=oxy-white</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString" >XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1269875551.263671-1767499187</value>
+    <value type="QString" >XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1274634782.758692-455996639</value>
     <value type="QString" >XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
@@ -132,12 +132,12 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-qQfYvtZ5Ar,guid=7589b3497e1c443fb38d0a454bb0c360</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-eTllx95FtX,guid=701a5f31a63d6a4d19c9179b4bf9621f</value>
     <value type="QString" >DESKTOP_SESSION=kde</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0</value>
     <value type="QString" >DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString" >GPG_AGENT_INFO=/tmp/gpg-oXGlaQ/S.gpg-agent:4000:1</value>
+    <value type="QString" >GPG_AGENT_INFO=/tmp/gpg-zZy0ay/S.gpg-agent:10477:1</value>
     <value type="QString" >GS_LIB=/home/micke/.fonts</value>
     <value type="QString" >GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/micke/.gtkrc-2.0:/home/micke/.gtkrc-2.0-kde4:/home/micke/.kde/share/config/gtkrc-2.0</value>
     <value type="QString" >GTK_MODULES=canberra-gtk-module</value>
@@ -156,16 +156,16 @@
     <value type="QString" >PWD=/home/micke</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_PLUGIN_PATH=/home/micke/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString" >SESSION_MANAGER=local/beavis:/tmp/.ICE-unix/4098</value>
+    <value type="QString" >SESSION_MANAGER=local/beavis:/tmp/.ICE-unix/12090</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=0</value>
-    <value type="QString" >SSH_AGENT_PID=3999</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-OhCgJY3874/agent.3874</value>
+    <value type="QString" >SSH_AGENT_PID=10474</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-fUVJx10056/agent.10056</value>
     <value type="QString" >USER=micke</value>
     <value type="QString" >WINDOWPATH=7</value>
     <value type="QString" >XCURSOR_THEME=oxy-white</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString" >XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1269875551.263671-1767499187</value>
+    <value type="QString" >XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1274634782.758692-455996639</value>
     <value type="QString" >XDM_MANAGED=method=classic</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >

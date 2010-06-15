@@ -167,6 +167,8 @@
 #define CURRENT_DISPLAY_SHUTDOWN_VIEW	3
 //! Current display power meter view
 #define CURRENT_DISPLAY_POWERMETER_VIEW 4
+//! Current display is some selection of some sort, for example rotator direction
+#define CURRENT_DISPLAY_SETTING	5
 
 //! The time from when a pulse sensor change occured to the actual change does happen, in ms
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250
@@ -251,6 +253,8 @@ typedef struct {
 	unsigned char current_display_level;
 	/*! 0 = openASC logo, 1 = antenna info, 2 = menu system, 3 = shutdown view */
 	unsigned char current_display;
+	/*! Previous display */
+	unsigned char prev_display;
 	
 	/*! The currently selected RX antenna, -1 if none selected */
 	unsigned char selected_rx_antenna;

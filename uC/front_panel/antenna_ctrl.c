@@ -391,7 +391,10 @@ unsigned int antenna_ctrl_get_direction(unsigned char index) {
  *  \param  ant_index The index of the antenna
  *  \return The address of the rotator */
 unsigned char antenna_ctrl_get_rotator_addr(unsigned char ant_index) {
-	return(current_antennas.rotator_addr[ant_index]);
+	if (current_antennas.antenna_flag[ant_index] & (1<<ANTENNA_ROTATOR_FLAG))
+		return(current_antennas.rotator_addr[ant_index]);
+	else
+		return(0);
 }
 
 /*! \brief Set the antenna flags
@@ -516,4 +519,11 @@ unsigned int antenna_ctrl_get_max_rotation(unsigned char ant_index) {
  *  \return The sub meny type */
 unsigned char antenna_ctrl_get_sub_menu_type(unsigned char ant_index) {
 	return(current_antennas.sub_menu_type[ant_index]);
+}
+
+unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index) {
+	if (current_antennas.antenna_flag[ant_index] & (1<<ANTENNA_ROTATOR_FLAG))
+		return(current_antennas.rotator_sub_addr[ant_index]);
+	else
+		return(0);
 }

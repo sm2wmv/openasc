@@ -31,6 +31,7 @@
 #include "led_control.h"
 #include "radio_interface.h"
 #include "sub_menu.h"
+#include "display.h"
 #include "../global.h"
 
 #include "../internal_comm.h"

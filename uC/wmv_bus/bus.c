@@ -78,8 +78,34 @@ unsigned int counter_130us = 0;
 void bus_init(void) {
 	rx_queue_init();
 	tx_queue_init();
-
-	#ifndef DEVICE_TYPE_COMPUTER
+	
+	#ifdef DEVICE_TYPE_DRIVER_UNIT
+		//57.600kpbs
+		bus_usart_init(15);
+	#endif
+		
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
+		//57.600kpbs
+		bus_usart_init(15);
+	#endif
+	
+			
+	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+		//57.600kpbs
+		bus_usart_init(15);
+	#endif
+	
+	#ifdef DEVICE_TYPE_GENERAL_IO
+		//57.600kpbs
+		bus_usart_init(15);
+	#endif
+	
+	#ifdef DEVICE_TYPE_ROTATOR_UNIT
+			//57.600kpbs
+		bus_usart_init(7);
+	#endif
+			
+	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 		//57.600kpbs
 		bus_usart_init(15);
 	#endif

@@ -73,6 +73,22 @@ void ext_ctrl_fet2_deactivate(void) {
 	PORTC &= ~(1<<FET2_BIT);
 }
 
+void ext_ctrl_fet3_activate(void) {
+	PORTC |= (1<<FET3_BIT);
+}
+
+void ext_ctrl_fet3_deactivate(void) {
+	PORTC &= ~(1<<FET3_BIT);
+}
+
+void ext_ctrl_fet4_activate(void) {
+	PORTC |= (1<<FET4_BIT);
+}
+
+void ext_ctrl_fet4_deactivate(void) {
+	PORTC &= ~(1<<FET4_BIT);
+}
+
 void ext_ctrl_set_io_dir(unsigned char bit, unsigned char dir) {
 	if (dir == 1)
 		DDRA |= (1<<bit);

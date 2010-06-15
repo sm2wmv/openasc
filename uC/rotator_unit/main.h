@@ -26,8 +26,6 @@
 //! The size of the TX queue in buffers
 #define BUS_TX_QUEUE_SIZE	10
 
-#define ROTATOR_STATUS_UPDATE_INTERVAL	1000
-
 //! Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE			0
 //! The rotator is currently standing still
@@ -86,7 +84,7 @@
 #define EVENT_QUEUE_ACTIVATE_BREAK_ID	4
 
 #define AD_VAL_POLL_INTERVAL						100
-#define ROTATOR_STATUS_UPDATE_INTERVAL	200
+#define ROTATOR_STATUS_UPDATE_INTERVAL	500
 
 #define FLAG_POLL_AD			0
 #define FLAG_SEND_STATUS	1
@@ -118,6 +116,8 @@ typedef struct {
 	unsigned int rotation_max;
 	//! Rotator break delay, the delay between rotation and the break is put in/out (seconds)
 	unsigned char rotation_break_delay;
+	//! Rotator scale value
+	double ad_scale_value;
 } struct_settings;
 
 //! Struct of the current rotator status

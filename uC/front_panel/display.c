@@ -429,7 +429,7 @@ void display_update_radio_freq(void) {
 			display_view(VIEW_ANTENNAS);
 		}
 		
-		glcd_update_all();
+		//glcd_update_all();
 	}
 }
 

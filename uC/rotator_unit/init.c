@@ -21,7 +21,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define OCR0_1MS	14
+#define OCR0_1MS	7
 
 /*
   * Initialize timer0 to use the main crystal clock and the output
@@ -43,7 +43,7 @@ void init_timer_2(void) {
 	TCNT2 = 0;
 	TCCR2 = (1<<WGM21) | (0<<WGM20) | (0<<CS22) | (1<<CS21) | (1<<CS20); //Normal operation, toggle on compare, prescale clk/64	
 	TIFR |= (1<<OCF2);
-	OCR2 = 30;	//Will trigger an interrupt each with an interval of 130us
+	OCR2 = 15; //Will trigger an interrupt each with an interval of 130us
 	TIMSK |= (1<<OCIE2);
 }
 
