@@ -123,53 +123,55 @@ void activate_output(unsigned char from_addr, unsigned char index, unsigned char
 * \param from_addr The device that sent the request of deactivating the output
 * \param index The index of which output to deactivate */
 void deactivate_output(unsigned char from_addr, unsigned char index) {
-	driver_status.driver_output_state &= ~(1<<(index-1));
-	driver_status.driver_output_owner[index-1] = from_addr;
-	driver_status.driver_output_type[index-1] = 0;
+	if (from_addr == driver_status.driver_output_owner[index-1]) {
+		driver_status.driver_output_state &= ~(1<<(index-1));
+		driver_status.driver_output_owner[index-1] = 0;
+		driver_status.driver_output_type[index-1] = 0;
 
-	switch (index) {
-		case 1 :	PORTB &= ~(1<<4);
-							break;
-		case 2 :	PORTB &= ~(1<<5);
-							break;
-		case 3 :	PORTB &= ~(1<<6);
-							break;
-		case 4 :	PORTB &= ~(1<<7);
-							break;
-		case 5 :	PORTG &= ~(1<<3);
-							break;
-		case 6 :	PORTG &= ~(1<<4);
-							break;
-		case 7 :	PORTD &= ~(1<<4);
-							break;
-		case 8 :	PORTD &= ~(1<<5);
-							break;
-		case 9 :	PORTD &= ~(1<<6);
-							break;
-		case 10 :	PORTD &= ~(1<<7);
-							break;
-		case 11 :	PORTC &= ~(1<<0);
-							break;
-		case 12 :	PORTC &= ~(1<<1);
-							break;
-		case 13 :	PORTC &= ~(1<<2);
-							break;
-		case 14 :	PORTC &= ~(1<<3);
-							break;
-		case 15 :	PORTC &= ~(1<<4);
-							break;
-		case 16 :	PORTC &= ~(1<<5);
-							break;
-		case 17 :	PORTC &= ~(1<<6);
-							break;
-		case 18 :	PORTC &= ~(1<<7);
-							break;
-		case 19 :	PORTG &= ~(1<<2);
-							break;
-		case 20 :	PORTA &= ~(1<<7);
-							break;
-		default: 
-							break;
+		switch (index) {
+			case 1 :	PORTB &= ~(1<<4);
+								break;
+			case 2 :	PORTB &= ~(1<<5);
+								break;
+			case 3 :	PORTB &= ~(1<<6);
+								break;
+			case 4 :	PORTB &= ~(1<<7);
+								break;
+			case 5 :	PORTG &= ~(1<<3);
+								break;
+			case 6 :	PORTG &= ~(1<<4);
+								break;
+			case 7 :	PORTD &= ~(1<<4);
+								break;
+			case 8 :	PORTD &= ~(1<<5);
+								break;
+			case 9 :	PORTD &= ~(1<<6);
+								break;
+			case 10 :	PORTD &= ~(1<<7);
+								break;
+			case 11 :	PORTC &= ~(1<<0);
+								break;
+			case 12 :	PORTC &= ~(1<<1);
+								break;
+			case 13 :	PORTC &= ~(1<<2);
+								break;
+			case 14 :	PORTC &= ~(1<<3);
+								break;
+			case 15 :	PORTC &= ~(1<<4);
+								break;
+			case 16 :	PORTC &= ~(1<<5);
+								break;
+			case 17 :	PORTC &= ~(1<<6);
+								break;
+			case 18 :	PORTC &= ~(1<<7);
+								break;
+			case 19 :	PORTG &= ~(1<<2);
+								break;
+			case 20 :	PORTA &= ~(1<<7);
+								break;
+			default: 
+								break;
+		}
 	}
 }
 
