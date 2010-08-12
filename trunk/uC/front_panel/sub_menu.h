@@ -54,4 +54,6 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos);
 void sub_menu_deactivate_all(void);
 void sub_menu_activate_all(void);
 
+void sub_menu_set_array_dir(unsigned char dir_nr);
+
 #endif

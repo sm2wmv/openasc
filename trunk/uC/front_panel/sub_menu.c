@@ -80,7 +80,7 @@ unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos) {
 		return(current_sub_menu_array[ant_index].direction_name[pos]);
 	}
 	
-	return("   ");
+	return((unsigned char*)"   ");
 }
 
 /*! \brief Get the current position of the sub menu cursor
@@ -143,7 +143,7 @@ void sub_menu_pos_up(unsigned char ant_index) {
  *  \param ant_index The index of the antenna you wish to send the string of 
  *  \param pos The sub menu position we wish to send the output str of */
 void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
-	unsigned char activate_cmd, deactivate_cmd, deactivate_all_cmd;
+	unsigned char activate_cmd=0, deactivate_cmd=0, deactivate_all_cmd=0;
 	unsigned char length = 0;
 	
 	switch (ant_index) {
@@ -258,4 +258,25 @@ void sub_menu_activate_all(void) {
 	
 	if (antenna_ctrl_get_sub_menu_type(3) != SUBMENU_NONE)
 		sub_menu_send_data_to_bus(3,0);
+}
+
+/*! \brief This function will activate the first sub menu direction found in the antennas 
+ *  \param dir_nr Which direction we wish to set */
+void sub_menu_set_array_dir(unsigned char dir_nr) {
+	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
+		sub_menu_set_current_pos(0,dir_nr);
+		sub_menu_send_data_to_bus(0,dir_nr);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_VERT_ARRAY) {
+		sub_menu_set_current_pos(1,dir_nr);
+		sub_menu_send_data_to_bus(1,dir_nr);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_VERT_ARRAY) {
+		sub_menu_set_current_pos(2,dir_nr);
+		sub_menu_send_data_to_bus(2,dir_nr);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
+		sub_menu_set_current_pos(3,dir_nr);
+		sub_menu_send_data_to_bus(3,dir_nr);
+	}
 }

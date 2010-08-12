@@ -333,7 +333,8 @@ int main(void) {
 	
 	PORTA |= (1<<3);
 	
-	//ps2_keyboard_send(0xF4);
+	ps2_keyboard_send(0xF4);
+	
 	delay_ms(100);
 	
 	while(1) {
@@ -366,7 +367,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		btn_on_off_last_state = 0;
 	}
 	
-	/*if (counter_ps2 > 250) {
+	if (counter_ps2 > 250) {
 		ps2.started = 0;
 		ps2.bit_count = 0;
 		ps2.data = 0;
@@ -375,7 +376,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	}
 	
 	counter_ps2++;
-	*/
+	
 	internal_comm_1ms_timer();
 }
 
@@ -385,7 +386,7 @@ ISR(SIG_OVERFLOW0) {
 }
 
 ISR(SIG_INTERRUPT6) {
-	/*if (!ps2.transmit) {
+	if (!ps2.transmit) {
 		if ((PINE & (1<<6)) == 0) {
 			if (ps2.started == 0) {
 				if ((PINA & (1<<3)) == 0) {
@@ -458,5 +459,5 @@ ISR(SIG_INTERRUPT6) {
 					usart1_transmit('N');
 			}
 		}
-	}*/
+	}
 }

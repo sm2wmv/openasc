@@ -231,6 +231,30 @@ void event_handler_process_ps2(unsigned char key_code) {
 		case EXT_CTRL_TOGGLE_RX_ANT_MODE:
 			event_rxant_button_pressed();
 			break;
+		case EXT_CTRL_SET_ARRAY_DIR1:
+			sub_menu_set_array_dir(0);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR2:
+			sub_menu_set_array_dir(1);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR3:
+			sub_menu_set_array_dir(2);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR4:
+			sub_menu_set_array_dir(3);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR5:
+			sub_menu_set_array_dir(4);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR6:
+			sub_menu_set_array_dir(5);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR7:
+			sub_menu_set_array_dir(6);
+			break;
+		case EXT_CTRL_SET_ARRAY_DIR8:
+			sub_menu_set_array_dir(7);
+			break;
 		default:
 			break;
 	}
