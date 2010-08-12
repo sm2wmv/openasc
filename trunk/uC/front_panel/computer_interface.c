@@ -773,7 +773,8 @@ ISR(SIG_USART1_RECV) {
 	else {
 		//TODO: Implement a buffer which does save the data sent from the computer and then after the box has receieved its answer
 		//      that data will be sent.
-		if (radio_get_cat_status() == 0)
-			usart3_transmit(data);
+		//if (radio_get_cat_status() == 0)
+		usart3_transmit(data);
+		usart1_transmit(data);
 	}
 }

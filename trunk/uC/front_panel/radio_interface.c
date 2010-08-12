@@ -67,7 +67,7 @@ void radio_interface_init(void) {
 	
 	radio_status.box_sent_request = 0;
 	
-	if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) | (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
+	if (radio_settings.cat_enabled == 1) {
 		switch (radio_settings.baudrate) {
 			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
 																				usart1_init(766, radio_settings.stopbits);
@@ -425,6 +425,10 @@ unsigned char radio_get_cat_status(void) {
 	return(radio_status.box_sent_request);
 }
 
+unsigned char radio_get_cat_enabled(void) {
+	return(radio_settings.cat_enabled);
+}
+
 ISR(SIG_USART3_DATA) {
 }
 
@@ -485,5 +489,5 @@ ISR(SIG_USART3_RECV) {
 	}
 	*/
 //	if (radio_get_cat_status() == 0)
-		usart1_transmit(data);
+	usart1_transmit(data);
 }

@@ -698,11 +698,11 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			flags |= antenna_ctrl_get_rotator_flags(i);
 		}
 		
-		if (flags & (1<<FLAG_NO_ROTATION))
+/*		if (flags & (1<<FLAG_NO_ROTATION))
 			led_set_rotation_active(LED_STATE_OFF);
 		else
 			led_set_rotation_active(LED_STATE_ON);
-		
+	*/	
 		if (status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) {
 			if (main_flags & (1<<FLAG_LAST_ANTENNA_BLINK)) {
 				main_flags &= ~(1<<FLAG_LAST_ANTENNA_BLINK);
