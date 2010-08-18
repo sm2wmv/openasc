@@ -53,10 +53,6 @@
 //! Screensaver timeout
 #define DISPLAY_SCREENSAVER_TIMEOUT	5000
 
-//! The limit (in ms) of the radio communication timeout. If this limit is reached the 
-//! radio rx buffers will be cleared
-#define RADIO_RX_DATA_TIMEOUT	10
-
 //! Indicate that radio is enabled or disabled
 #define PTT_RADIO_BIT	0
 //! Indicate that amp is enabled or disabled

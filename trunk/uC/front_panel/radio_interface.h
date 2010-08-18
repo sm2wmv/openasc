@@ -89,6 +89,10 @@
 //! Serial baudrate 57600 baud
 #define RADIO_SERIAL_BAUDRATE_57600	8
 
+//! The limit (in ms) of the radio communication timeout. If this limit is reached the 
+//! radio rx buffers will be cleared
+#define RADIO_RX_DATA_TIMEOUT	10
+
 //! Radio settings struct
 typedef struct {
 	//! The size of this structure
@@ -126,11 +130,10 @@ typedef struct {
 	unsigned int new_freq;	
 	//! The radios current band
 	unsigned char current_band;
-	/*! Variable which is set if the openASC box has sent a request to the radio, used to know
-	   	if we can just redirect the data from the radio to the computer or if it should be thrown away */
-	unsigned char box_sent_request;
 } struct_radio_status;
 	
+	
+void radio_interface_1ms_tick(void);
 void radio_process_tasks(void);
 	
 void radio_interface_init(void);
@@ -181,9 +184,7 @@ void radio_tx_deactive(void);
 
 unsigned char radio_get_ptt_status(void);
 
-unsigned char radio_get_cat_status(void);
 void radio_communicaton_timeout(void);
-
 unsigned char radio_get_cat_enabled(void);
 
 #endif

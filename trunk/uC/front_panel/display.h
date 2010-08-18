@@ -32,11 +32,11 @@
 //! Macro that clears the rotator area of the LCD
 #define CLEAR_ROTATOR_AREA()	glcd_clear_area(90,128,0,56)
 //! Macro that clears the radio frequency area of the LCD
-#define CLEAR_RADIO_FREQ_AREA()	glcd_clear_area(90,128,58,64)
+#define CLEAR_RADIO_FREQ_AREA()	glcd_clear_area(78,128,58,64)
 //! Macro that clears the RX antenna area
-#define CLEAR_RX_ANTENNA_AREA() glcd_clear_area(0,90,58,64)
+#define CLEAR_RX_ANTENNA_AREA() glcd_clear_area(0,70,58,64)
 //! Macro that clears the rotator area
-#define CLEAR_SET_ROTATOR_AREA() glcd_clear_area(0,80,58,64)
+#define CLEAR_SET_ROTATOR_AREA() glcd_clear_area(0,71,58,64)
 //! Macro that clears the sub menu array direction area
 #define CLEAR_SET_SUB_MENU_ARRAY_AREA() glcd_clear_area(44,84,35,64)
 
