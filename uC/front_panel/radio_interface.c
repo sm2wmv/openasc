@@ -56,8 +56,8 @@ unsigned char radio_flags;
 //! Flag which does indicate if the radio is transmitting, amp is active etc
 unsigned char ptt_status = 0;
 
-//! \brief External variable of the radio rx data counter used for a timeout
-extern unsigned char radio_rx_data_counter;
+//! \brief Variable of the radio rx data counter used for a timeout
+unsigned char radio_rx_data_counter;
 
 /*! \brief Initialize the radio interface */
 void radio_interface_init(void) {
@@ -65,8 +65,11 @@ void radio_interface_init(void) {
 	radio_serial_rx_buffer = (unsigned char *)malloc(RADIO_SERIAL_RX_BUFFER_LENGTH);
 	radio_serial_rx_buffer_start = radio_serial_rx_buffer;
 	
-	radio_status.box_sent_request = 0;
+	radio_rx_data_counter = 0;
 	
+//	usart1_init(191, 2);
+//	usart3_init(191, 2);
+
 	if (radio_settings.cat_enabled == 1) {
 		switch (radio_settings.baudrate) {
 			case RADIO_SERIAL_BAUDRATE_1200 : usart3_init(766, radio_settings.stopbits);
@@ -223,6 +226,9 @@ unsigned char radio_poll_status(void) {
 				usart3_transmit(0x03);
 				usart3_transmit(0xFD);
 			}
+			else if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
+				usart3_sendstring("IF;",3);
+			}
 			
 			//We update frequency directly after the request has been sent. This means we probably don't see the update at once
 			//but it will still atleast update
@@ -245,20 +251,11 @@ unsigned int radio_parse_freq(unsigned char *freq_data, unsigned char length, un
 	unsigned int freq=0;
 	
 	if (radio_model == RADIO_MODEL_KENWOOD) {
-		//TODO: Not tested
-
-		for (unsigned char i=3;i<8;i++) {
-			if (i == 3)
-				freq = *(freq_data - 48) * 10000;
-			else if (i == 4)
-				freq += *(freq_data - 48) * 1000;
-			else if (i == 5)
-				freq += *(freq_data - 48) * 100;
-			else if (i == 6)
-				freq += *(freq_data - 48) * 10;
-			else
-				freq += *(freq_data - 48);
-		}
+		freq = (freq_data[5] - 48) * 10000;
+		freq += (freq_data[6] - 48) * 1000;
+		freq += (freq_data[7] - 48) * 100;
+		freq += (freq_data[8] - 48) * 10;
+		freq += (freq_data[9] - 48);
 	}
 	else if (radio_model == RADIO_MODEL_ICOM) {
 		//TODO: Not tested
@@ -415,18 +412,19 @@ void radio_interface_load_eeprom(void) {
     used for the CAT decoding */
 void radio_communicaton_timeout(void) {
 	radio_serial_rx_buffer = radio_serial_rx_buffer_start;
-	
-	radio_status.box_sent_request = 0;
-}
-
-/*! This function will tell us if the openASC box has sent any request to the radio 
-    \return 1 if a request has been sent, 0 otherwise */
-unsigned char radio_get_cat_status(void) {
-	return(radio_status.box_sent_request);
 }
 
 unsigned char radio_get_cat_enabled(void) {
 	return(radio_settings.cat_enabled);
+}
+
+void radio_interface_1ms_tick(void) {
+	if (radio_rx_data_counter >= RADIO_RX_DATA_TIMEOUT) {
+		radio_communicaton_timeout();
+		radio_rx_data_counter = 0;
+	}
+	else
+		radio_rx_data_counter++;
 }
 
 ISR(SIG_USART3_DATA) {
@@ -437,14 +435,16 @@ ISR(SIG_USART3_RECV) {
 	//TODO: Redo all this, so that we just buffer all characters received and do the processing
 	//of the data from the main loop instead. That way we will save the amount of time spent in the interrupt
 	
-	unsigned char data = UDR3;
+	char data = UDR3;
 	
 	radio_rx_data_counter = 0;
 	
-	//if ((radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) || (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON)) {
-		/*if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
+	usart1_transmit(data);
+	
+	if (radio_settings.interface_type == RADIO_INTERFACE_CAT_POLL) {
+		if (radio_settings.radio_model == RADIO_MODEL_KENWOOD) {
 			if (data == ';') {
-				if (strncmp((char*)radio_serial_rx_buffer_start,"IF",2)) {
+				if ((radio_serial_rx_buffer_start[0] == 'I') && (radio_serial_rx_buffer_start[1] == 'F')) {
 					radio_status.current_freq = radio_parse_freq(radio_serial_rx_buffer_start,radio_serial_rx_buffer_start-radio_serial_rx_buffer,RADIO_MODEL_KENWOOD);
 					radio_status.current_band = radio_freq_to_band(radio_status.current_freq);
 				}
@@ -455,9 +455,8 @@ ISR(SIG_USART3_RECV) {
 				else
 					*(radio_serial_rx_buffer++) = data;
 			}
-		}*/
-		/*
-		if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
+		}
+		else if (radio_settings.radio_model == RADIO_MODEL_ICOM) {
 			if (data == 0xFD) {
 				if ((radio_serial_rx_buffer_start[0] == 0xFE) && (radio_serial_rx_buffer_start[1] == 0xFE)) {
 					//TODO: Consider moving the parsing etc outside of the interrupt, to make the interrupt take as little time as possible
@@ -473,9 +472,7 @@ ISR(SIG_USART3_RECV) {
 								radio_flags |= (1<<RADIO_FLAG_FREQ_CHANGED);
 						}
 					
-						radio_serial_rx_buffer = radio_serial_rx_buffer_start;
-						
-						radio_status.box_sent_request = 0;
+						radio_serial_rx_buffer = radio_serial_rx_buffer_start;	
 					}
 				}
 			}
@@ -487,7 +484,4 @@ ISR(SIG_USART3_RECV) {
 			}
 		}
 	}
-	*/
-//	if (radio_get_cat_status() == 0)
-	usart1_transmit(data);
 }

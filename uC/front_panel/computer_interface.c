@@ -723,7 +723,7 @@ ISR(SIG_USART1_DATA) {
 
 /*! \brief Interrupt when a character is received over the UART. If computer setup mode is active it will parse the incoming data, otherwise it is used for CAT control */
 ISR(SIG_USART1_RECV) {
-	unsigned char data = UDR1;
+	char data = UDR1;
 
 	//Check if the openASC is in setup mode
 	if (computer_interface_is_active()) {
@@ -775,6 +775,5 @@ ISR(SIG_USART1_RECV) {
 		//      that data will be sent.
 		//if (radio_get_cat_status() == 0)
 		usart3_transmit(data);
-		usart1_transmit(data);
 	}
 }

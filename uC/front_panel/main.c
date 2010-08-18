@@ -68,8 +68,6 @@ struct_setting settings;
 //! Used to disable/enable all polling of radios, buttons etc, used for shutdown
 unsigned char device_online = 0;
 
-//! Counter to keep track of when a character for the CAT was last received
-unsigned char radio_rx_data_counter = 0;
 //! Counter which counts up each time a compare0 interrupt has occured
 unsigned int counter_compare0 = 0;
 //! Counter which is used to keep track of when we last received a sync message from the bus
@@ -393,8 +391,8 @@ int main(void){
 			 
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
-		//radio_interface_init();
-		init_usart_computer();
+		radio_interface_init();
+//		init_usart_computer();
 	}
 	else {
 		//Init the computer communication
@@ -637,12 +635,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	if ((device_started == 1) && (bus_is_master())) {
 		counter_sync++;
 	}
-	
-	if (radio_rx_data_counter >= RADIO_RX_DATA_TIMEOUT) {
-		radio_communicaton_timeout();
-		
-		radio_rx_data_counter = 0;
-	}
 
 	if (counter_poll_rotary_encoder >= INTERVAL_POLL_ROTARY_ENCODER) {
 		main_flags |= (1<<FLAG_POLL_PULSE_SENSOR);
@@ -683,8 +675,9 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_ping_interval++;
 	counter_ms++;
 	counter_event_timer++;
-	radio_rx_data_counter++;
 
+	radio_interface_1ms_tick();
+	
 	//This will blink the NEW BAND LED, if the new band is not the same as the old one
 	if ((counter_ms % 250) == 0) {
 		main_flags |= (1<<FLAG_BLINK_BAND_LED);
