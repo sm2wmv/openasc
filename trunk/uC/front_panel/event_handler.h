@@ -153,6 +153,14 @@
 //! Ext ctrl - Reset the amplifier
 #define EXT_CTRL_AMPLIFIER_RESET	36
 
+//! Ext ctrl - Rotate the last antenna clock wise
+#define EXT_CTRL_ROTATE_CW	37
+//! Ext ctrl - Rotate the last antenna counter clock wise
+#define EXT_CTRL_ROTATE_CCW 38
+
+//! Ext ctrl - Select band portion
+#define EXT_CTRL_SEL_BAND_PORTION 39
+
 void event_set_error(unsigned char error_type, unsigned char state);
 unsigned char event_get_errors(void);
 unsigned char event_get_error_state(unsigned char error_type);

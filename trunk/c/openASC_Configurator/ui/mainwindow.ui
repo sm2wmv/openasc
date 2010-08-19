@@ -3164,6 +3164,9 @@ a function to it</string>
         </layout>
        </widget>
        <widget class="QGroupBox" name="groupBoxAmplifierControl">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>255</x>
@@ -3321,7 +3324,7 @@ a function to it</string>
         <widget class="QLabel" name="labelButtonsAUX">
          <property name="geometry">
           <rect>
-           <x>15</x>
+           <x>10</x>
            <y>30</y>
            <width>52</width>
            <height>15</height>
@@ -3334,9 +3337,9 @@ a function to it</string>
         <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>10</x>
            <y>45</y>
-           <width>196</width>
+           <width>225</width>
            <height>56</height>
           </rect>
          </property>
@@ -3352,7 +3355,7 @@ a function to it</string>
            <widget class="QComboBox" name="comboBoxButtonAUX1">
             <property name="minimumSize">
              <size>
-              <width>150</width>
+              <width>180</width>
               <height>0</height>
              </size>
             </property>
@@ -3369,7 +3372,7 @@ a function to it</string>
            <widget class="QComboBox" name="comboBoxButtonAUX2">
             <property name="minimumSize">
              <size>
-              <width>150</width>
+              <width>180</width>
               <height>0</height>
              </size>
             </property>
