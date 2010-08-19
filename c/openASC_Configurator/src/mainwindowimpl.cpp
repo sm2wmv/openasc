@@ -35,6 +35,10 @@ void MainWindowImpl::listExtButtonFunctionsLoad() {
 
 		listExtButtonFunctions << "Amplifier toggle ON/OFF" << "Amplifier toggle standby" << "Amplifier tune" << "Amplifier reset";
 
+		listExtButtonFunctions << "Rotate last antenna CW" << "Rotate last antenna CCW";
+
+		listExtButtonFunctions << "Select band portion";
+
 		comboBoxExtKeypadFunc->addItems(listExtButtonFunctions);
 		comboBoxButtonAUX1->addItems(listExtButtonFunctions);
 		comboBoxButtonAUX2->addItems(listExtButtonFunctions);
