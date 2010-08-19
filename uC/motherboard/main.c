@@ -42,8 +42,13 @@
 //! Macro to put PS2 DATA output HIGH
 #define PS2_DATA_HIGH	PORTA |= (1<<3)
 
+#define PS2_DEBUG 1
+
 //! Counter used for the PS/2 decoding
 unsigned char temp_count = 0;
+
+//! PS2 send counter
+unsigned int ps2_send_counter = 0;
 
 //! The driver output state
 unsigned int driver_output_state = 0;
@@ -375,6 +380,15 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		counter_ps2 = 0;
 	}
 	
+	//So that if the keyboard has been unplugged and plugged in again it will start working
+	//after maximum time of one minute
+	if (ps2_send_counter > 60000) {
+		ps2_keyboard_send(0xF4);
+
+		ps2_send_counter = 0;
+	}
+	
+	ps2_send_counter++;
 	counter_ps2++;
 	
 	internal_comm_1ms_timer();

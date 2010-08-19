@@ -177,6 +177,7 @@ void band_ctrl_change_band(unsigned char band) {
 		band_ctrl_deactivate_all();
 	
 		sub_menu_deactivate_all();
+		led_set_submenu(LED_STATE_OFF);
 		led_set_rxant(LED_STATE_OFF);
 		set_knob_function(KNOB_FUNCTION_AUTO);
 		

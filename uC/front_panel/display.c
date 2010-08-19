@@ -303,7 +303,7 @@ void display_view(unsigned char mode) {
 /*! \brief Show the current selected RX ant 
  *  \param ant_index The antenna index of which antenna that is selected and should be shown  */
 void display_show_rx_ant(unsigned char ant_index) {
-	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
+	if ((status.current_display_level == DISPLAY_LEVEL_BAND) || (status.current_display_level == DISPLAY_LEVEL_SUBMENU)) {	
 		CLEAR_RX_ANTENNA_AREA();
 
 		if ((antenna_ctrl_get_rx_antenna_count() >= ant_index) && (ant_index != 0)) {
@@ -313,7 +313,7 @@ void display_show_rx_ant(unsigned char ant_index) {
 			
 			glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_SIX_DOT, temp, strlen(temp));
 		}
-		else {
+		else if (status.current_display_level == DISPLAY_LEVEL_BAND) {
 			display_view(VIEW_ANTENNAS);
 		}
 		
@@ -442,7 +442,7 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 		
 		if (sub_menu_type == SUBMENU_VERT_ARRAY) {
 			CLEAR_SET_SUB_MENU_ARRAY_AREA();
-			
+
 			sprintf((char *)temp, "%s",antenna_ctrl_get_antenna_text(ant_index));
 			display_text_center_adjust(3, temp, strlen(temp), FONT_NINE_DOT);
 			
@@ -451,6 +451,9 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 			
 			sprintf((char *)temp, "%s",sub_menu_get_text(ant_index, sub_menu_get_current_pos(ant_index)));
 			display_text_center_adjust(38, temp, strlen(temp), FONT_FIFTEEN_DOT);
+
+			if (status.selected_rx_antenna != 0)
+				display_show_rx_ant(status.selected_rx_antenna);
 			
 			glcd_update_all();
 		}

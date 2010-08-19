@@ -187,6 +187,8 @@ void event_rotate_button_pressed(void);
 void event_rxant_button_pressed(void);
 void event_aux2_button_pressed(void);
 
+void event_process_task(unsigned char task_index);
+
 void __inline__ event_set_rx_antenna(unsigned char ant_index);
 
 #endif
