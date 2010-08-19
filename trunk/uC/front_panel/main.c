@@ -184,14 +184,17 @@ void set_tx_ant_leds(void) {
  *  \param function Which type of action should occur when the knob is turned */
 void set_knob_function(unsigned char function) {
 	if (function == KNOB_FUNCTION_AUTO) {
-		//The auto selects the knob function we feel is most useful
-		if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL)
-			status.knob_function = KNOB_FUNCTION_SELECT_BAND;
+		if ((status.knob_prev_function == KNOB_FUNCTION_NONE) || (status.knob_prev_function == status.knob_function)) {
+			if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL)
+				status.knob_function = KNOB_FUNCTION_SELECT_BAND;
+		}
 		else
-			status.knob_function = KNOB_FUNCTION_NONE;
+			status.knob_function = status.knob_prev_function;
 	} 
-	else
+	else {
+		status.knob_prev_function = status.knob_function;
 		status.knob_function = function;
+	}
 }
 
 /*! \brief Save runtime settings etc to the EEPROM */
@@ -392,7 +395,7 @@ int main(void){
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
 		radio_interface_init();
-//		init_usart_computer();
+		//init_usart_computer();
 	}
 	else {
 		//Init the computer communication

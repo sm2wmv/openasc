@@ -256,6 +256,8 @@ typedef struct {
 	unsigned char selected_rx_antenna;
 	/*! Knob function */
 	unsigned char knob_function;
+	/*! The previous knob function */
+	unsigned char knob_prev_function;
 	/*! Which antenna to rotate */
 	unsigned char antenna_to_rotate;
 	/*! Rotator resolution chosen */

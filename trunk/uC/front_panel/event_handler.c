@@ -1,4 +1,4 @@
-/*! \file front_panel/event_handler.c '
+/*! \fi<le front_panel/event_handler.c '
  *  \brief Event handler of various things
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
@@ -204,15 +204,19 @@ void event_handler_process_ps2(unsigned char key_code) {
 	
 	unsigned char curr_task = ext_key_get_assignment(func_index);
 	
+	event_process_task(curr_task);
+}
+
+void event_process_task(unsigned char task_index) {
 	/* Requires that we dont change the order of the functions */
-	if ((curr_task >= EXT_CTRL_SEL_RX_ANT1) && (curr_task <= EXT_CTRL_SEL_RX_ANT10)) {
-		event_set_rx_antenna(curr_task);
+	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT10)) {
+		event_set_rx_antenna(task_index);
 		return;
 	}	
 	
 	//TODO: Continue with implementation of ext keypad functions
 	
-	switch(curr_task) {
+	switch(task_index) {
 		case EXT_CTRL_SEL_NONE:
 			//Do nothing
 			break;
@@ -257,7 +261,7 @@ void event_handler_process_ps2(unsigned char key_code) {
 			break;
 		default:
 			break;
-	}
+	}	
 }
 
 /*! \brief The pulse sensor was turned up */
@@ -413,19 +417,19 @@ void event_poll_buttons(void) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 					if (status.selected_band != BAND_UNDEFINED) {
-						status.prev_display = status.current_display;
 						status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
 						status.current_display_level = DISPLAY_LEVEL_BAND;
+						status.prev_display = status.current_display;
 					}
-					else
+					else {
 						status.prev_display = status.current_display;
 						status.current_display = CURRENT_DISPLAY_LOGO;
-						
-						led_set_menu(LED_STATE_OFF);
+					}
+					
+					led_set_menu(LED_STATE_OFF);
 				}
 				else {
 					menu_reset();
-					
 					status.prev_display = status.current_display;
 					status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
 					led_set_menu(LED_STATE_ON);
@@ -434,6 +438,7 @@ void event_poll_buttons(void) {
 				main_update_display();
 			}
 		}
+
 	
 		if (btn_status & (1<<	FLAG_BUTTON_PULSE_BIT)) {
 			if (status.buttons_current_state & (1<<	FLAG_BUTTON_PULSE_BIT)) {
@@ -807,6 +812,9 @@ void event_sub_button_pressed(void) {
 					glcd_clear();
 					display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
 				}
+			}
+			else if (status.knob_function != KNOB_FUNCTION_SET_SUBMENU) {
+				set_knob_function(KNOB_FUNCTION_SET_SUBMENU);
 			}
 			else {
 				led_set_submenu(LED_STATE_OFF);
