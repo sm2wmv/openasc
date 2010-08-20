@@ -491,7 +491,7 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 	rxAntennas.sendSettings(serialPort);
 	
 	addDebugLine("Sending Ext input settings");
-	//extInput.sendSettings(serialPort);
+	extInput.sendSettings(serialPort);
 
 	addDebugLine("Sending main settings");
 	settingsClass.sendSettings(serialPort);
