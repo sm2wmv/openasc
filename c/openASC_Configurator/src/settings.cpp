@@ -88,7 +88,6 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
 
-
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
 }
