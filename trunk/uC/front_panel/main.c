@@ -394,8 +394,8 @@ int main(void){
 			 
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
-		radio_interface_init();
-		//init_usart_computer();
+		//radio_interface_init();
+		init_usart_computer();
 	}
 	else {
 		//Init the computer communication
@@ -486,6 +486,9 @@ int main(void){
 	
 	main_set_device_online(1);
 	
+	for (int i=0;i<17;i++)
+		printf("EXT_CTRL[%i]: %i\n", i, ext_key_get_assignment(i));
+			
 	while(1) {
 		if (!rx_queue_is_empty())
 			event_bus_parse_message();
