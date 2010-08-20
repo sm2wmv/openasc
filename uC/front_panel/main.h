@@ -133,6 +133,10 @@
 #define SUB_MENU_ARRAY_STR_SIZE		10
 //! The size of the name of a 4-SQ
 #define SUB_MENU_ARRAY_NAME_SIZE  4
+//! The max size of the sub menu array output str size
+#define SUB_MENU_STACK_STR_SIZE 10
+//! The size of the name of a stack
+#define SUB_MENU_STACK_NAME_SIZE 4
 
 //! The delimiter that seperates the outputs from which address they should be sent to
 #define OUTPUT_ADDR_DELIMITER			0xFF

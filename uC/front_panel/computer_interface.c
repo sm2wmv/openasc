@@ -219,6 +219,8 @@ struct_radio_settings *radio_settings_ptr;
 
 //! Pointer to an area which we crate space when configuring the sub menu (array)
 struct_sub_menu_array *sub_menu_array_ptr[4];
+	
+struct_sub_menu_stack *sub_menu_stack_ptr[4];
 
 //! Address which we call when we wish to reboot the device (jumps to the bootloader area)
 void (*bootloader_start)(void) = (void *)0x1FE00;
@@ -391,7 +393,7 @@ void computer_interface_parse_data(void) {
 						sub_menu_array_ptr[(int)computer_comm.rx_buffer[1]]->direction_count = computer_comm.rx_buffer[2];
 					}
 					else if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer[1]] == SUBMENU_STACK) {
-					
+						sub_menu_stack_ptr[(int)computer_comm.rx_buffer[1]]->comb_count = computer_comm.rx_buffer[2];
 					}
 					
 					computer_interface_send_ack();
@@ -403,6 +405,12 @@ void computer_interface_parse_data(void) {
 						
 						sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;
 					}
+					else if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_STACK) {
+						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
+							sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->comb_name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
+						
+						sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->comb_name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;	
+					}
 					
 					computer_interface_send_ack();
 					break;
@@ -412,6 +420,12 @@ void computer_interface_parse_data(void) {
 						
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->output_str_dir[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
+					}
+					else if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_STACK) {
+						sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->output_str_comb_length[(int)computer_comm.rx_buffer_start[2]] = computer_comm.rx_buffer_start[3];
+						
+						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
+							sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->output_str_comb[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
 					}
 					
 					computer_interface_send_ack();
@@ -425,8 +439,11 @@ void computer_interface_parse_data(void) {
 						if (antenna_ptr->sub_menu_type[ant_index] == SUBMENU_VERT_ARRAY) {
 							eeprom_save_ant_sub_menu_array_structure(computer_comm.rx_buffer_start[1]+1, ant_index, sub_menu_array_ptr[ant_index]);
 						}
+						else if (antenna_ptr->sub_menu_type[ant_index] == SUBMENU_STACK) {
+							eeprom_save_ant_sub_menu_stack_structure(computer_comm.rx_buffer_start[1]+1, ant_index, sub_menu_stack_ptr[ant_index]);
+						}
 					}
-					
+
 					//Reset the content of the antenna_ptr
 					memset(antenna_ptr,0,sizeof(struct_antenna));
 					computer_interface_send_ack();
@@ -694,6 +711,9 @@ void computer_interface_activate_setup(void) {
 	
 	for (unsigned char i=0;i<4;i++)
 		sub_menu_array_ptr[i] = (struct_sub_menu_array *)malloc(sizeof(struct_sub_menu_array));
+	
+	for (unsigned char i=0;i<4;i++)
+		sub_menu_stack_ptr[i] = (struct_sub_menu_stack *)malloc(sizeof(struct_sub_menu_stack));
 	
 	ptt_sequencer_ptr->ptt_input = 0;
 }
