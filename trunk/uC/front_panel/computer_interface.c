@@ -172,14 +172,6 @@
 //! CTRL command: Set the sequencer radio sense input values
 #define CTRL_SET_SEQUENCER_RADIO_SENSE	0x04
 
-//! CTRL command: Set the external inputs
-#define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS		0x05
-//! CTRL command: Save the external input settings
-#define CTRL_SET_DEVICE_SETTINGS_SAVE					0x07
-
-/*! CTRL command: Set the external keypad function */
-#define CTRL_SET_EXT_KEYPAD_FUNCTIONS			0x01
-
 //! Computer interface communication struct
 typedef struct {
 	//! The serial tx buffer
