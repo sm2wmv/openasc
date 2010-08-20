@@ -203,7 +203,6 @@ void event_handler_process_ps2(unsigned char key_code) {
 		func_index = 16;
 	
 	unsigned char curr_task = ext_key_get_assignment(func_index);
-	
 	event_process_task(curr_task);
 }
 
@@ -400,12 +399,14 @@ void event_poll_buttons(void) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON4_TX_BIT))
 				event_tx_button4_pressed();
 		}
-			if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
+		
+		if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
 			event_rotate_button_pressed();
 		}
 		
 		if (btn_status & (1<<FLAG_BUTTON_RXANT_BIT)) {
-			event_rxant_button_pressed();
+			if (status.buttons_current_state & (1<<FLAG_BUTTON_RXANT_BIT))
+				event_rxant_button_pressed();
 		}
 	
 		if (btn_status & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
@@ -839,44 +840,42 @@ void event_sub_button_pressed(void) {
 
 /*! \brief Perform the action of RX antenna button if it was pressed */
 void event_rxant_button_pressed(void) {
-	if (status.buttons_current_state & (1<<FLAG_BUTTON_RXANT_BIT)) {
-		if (antenna_ctrl_get_rx_antenna_count() != 0) {
+	if (antenna_ctrl_get_rx_antenna_count() != 0) {
+			
+			//If the RX ANT isn't active we enter this part, also if the rx antenna is active but knob selection is on another function
+		if (((status.function_status & (1<<FUNC_STATUS_RXANT)) == 0) || ((status.function_status & (1<<FUNC_STATUS_RXANT)) && (status.knob_function != KNOB_FUNCTION_RX_ANT))) {
+			status.selected_rx_antenna = status.last_rx_antenna;
+			
+			//If no antenna is selected, then we select the first one, or if the selected rx antenna for some reason is more than the number of antennas available.
+			if ((status.selected_rx_antenna == 0) || (status.selected_rx_antenna > antenna_ctrl_get_rx_antenna_count()))
+				status.selected_rx_antenna = 1;
+			
+			status.function_status |= (1<<FUNC_STATUS_RXANT);
+			
+			led_set_rxant(LED_STATE_ON);
 				
-				//If the RX ANT isn't active we enter this part, also if the rx antenna is active but knob selection is on another function
-			if (((status.function_status & (1<<FUNC_STATUS_RXANT)) == 0) || ((status.function_status & (1<<FUNC_STATUS_RXANT)) && (status.knob_function != KNOB_FUNCTION_RX_ANT))) {
-				status.selected_rx_antenna = status.last_rx_antenna;
+			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 				
-				//If no antenna is selected, then we select the first one, or if the selected rx antenna for some reason is more than the number of antennas available.
-				if ((status.selected_rx_antenna == 0) || (status.selected_rx_antenna > antenna_ctrl_get_rx_antenna_count()))
-					status.selected_rx_antenna = 1;
+			antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
 				
-				status.function_status |= (1<<FUNC_STATUS_RXANT);
-				
-				led_set_rxant(LED_STATE_ON);
-					
-				main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-					
-				antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
-					
-				set_knob_function(KNOB_FUNCTION_RX_ANT);
-			}
-			else {
-				led_set_rxant(LED_STATE_OFF);
-				led_set_rotate(LED_STATE_OFF);
-					
-				set_knob_function(KNOB_FUNCTION_AUTO);
-					
-				status.last_rx_antenna = status.selected_rx_antenna;
-				status.selected_rx_antenna = 0;
-				antenna_ctrl_change_rx_ant(0);
-
-				status.function_status &= ~(1<<FUNC_STATUS_RXANT);
-				main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-			}
+			set_knob_function(KNOB_FUNCTION_RX_ANT);
 		}
-		else	//If we don't have any antennas to choose we always have the LED off
+		else {
 			led_set_rxant(LED_STATE_OFF);
+			led_set_rotate(LED_STATE_OFF);
+				
+			set_knob_function(KNOB_FUNCTION_AUTO);
+				
+			status.last_rx_antenna = status.selected_rx_antenna;
+			status.selected_rx_antenna = 0;
+			antenna_ctrl_change_rx_ant(0);
+
+			status.function_status &= ~(1<<FUNC_STATUS_RXANT);
+			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+		}
 	}
+	else	//If we don't have any antennas to choose we always have the LED off
+		led_set_rxant(LED_STATE_OFF);
 }
 
 /*! \brief Perform the action of Rotate button if it was pressed */

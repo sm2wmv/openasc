@@ -92,74 +92,74 @@
 #define EXT_CTRL_SEL_RX_ANT10				10
 
 //! Ext ctrl - Toggle TX antenna combination #1
-#define EXT_CTRL_TOGGLE_TX_ANT1			9
+#define EXT_CTRL_TOGGLE_TX_ANT1			11
 //! Ext ctrl - Toggle TX antenna combination #2
-#define EXT_CTRL_TOGGLE_TX_ANT2			10
+#define EXT_CTRL_TOGGLE_TX_ANT2			12
 //! Ext ctrl - Toggle TX antenna combination #3
-#define EXT_CTRL_TOGGLE_TX_ANT3			11
+#define EXT_CTRL_TOGGLE_TX_ANT3			13
 //! Ext ctrl - Toggle TX antenna combination #4
-#define EXT_CTRL_TOGGLE_TX_ANT4			12
+#define EXT_CTRL_TOGGLE_TX_ANT4			14
 
 //! Ext ctrl - Toggle RX antenna combination #1
-#define EXT_CTRL_TOGGLE_RX_ANT1			13
+#define EXT_CTRL_TOGGLE_RX_ANT1			15
 //! Ext ctrl - Toggle RX antenna combination #2
-#define EXT_CTRL_TOGGLE_RX_ANT2			14
+#define EXT_CTRL_TOGGLE_RX_ANT2			16
 //! Ext ctrl - Toggle RX antenna combination #3
-#define EXT_CTRL_TOGGLE_RX_ANT3			15
+#define EXT_CTRL_TOGGLE_RX_ANT3			17
 //! Ext ctrl - Toggle RX antenna combination #4
-#define EXT_CTRL_TOGGLE_RX_ANT4			16
+#define EXT_CTRL_TOGGLE_RX_ANT4			18
 
 //! Ext ctrl - Toggle RX antenna enabled
-#define EXT_CTRL_TOGGLE_RX_ANT_MODE	17
+#define EXT_CTRL_TOGGLE_RX_ANT_MODE	19
 //! Ext ctrl - Toggle TX/RX mode on/off
-#define EXT_CTRL_TOGGLE_TXRX_MODE		18
+#define EXT_CTRL_TOGGLE_TXRX_MODE		20
 
 //! Ext ctrl - Select array direction #1
-#define EXT_CTRL_SET_ARRAY_DIR1			19
+#define EXT_CTRL_SET_ARRAY_DIR1			21
 //! Ext ctrl - Select array direction #2
-#define EXT_CTRL_SET_ARRAY_DIR2			20
+#define EXT_CTRL_SET_ARRAY_DIR2			22
 //! Ext ctrl - Select array direction #3
-#define EXT_CTRL_SET_ARRAY_DIR3			21
+#define EXT_CTRL_SET_ARRAY_DIR3			23
 //! Ext ctrl - Select array direction #4
-#define EXT_CTRL_SET_ARRAY_DIR4			22
+#define EXT_CTRL_SET_ARRAY_DIR4			24
 //! Ext ctrl - Select array direction #5
-#define EXT_CTRL_SET_ARRAY_DIR5			23
+#define EXT_CTRL_SET_ARRAY_DIR5			25
 //! Ext ctrl - Select array direction #6
-#define EXT_CTRL_SET_ARRAY_DIR6			24
+#define EXT_CTRL_SET_ARRAY_DIR6			26
 //! Ext ctrl - Select array direction #7
-#define EXT_CTRL_SET_ARRAY_DIR7			25
+#define EXT_CTRL_SET_ARRAY_DIR7			27
 //! Ext ctrl - Select array direction #8
-#define EXT_CTRL_SET_ARRAY_DIR8			26
+#define EXT_CTRL_SET_ARRAY_DIR8			28
 
 //! Ext ctrl - Select stack combo #1
-#define EXT_CTRL_SET_STACK_COMB1			27
+#define EXT_CTRL_SET_STACK_COMB1			29
 //! Ext ctrl - Select stack combo #2
-#define EXT_CTRL_SET_STACK_COMB2			28
+#define EXT_CTRL_SET_STACK_COMB2			30
 //! Ext ctrl - Select stack combo #3
-#define EXT_CTRL_SET_STACK_COMB3			29
+#define EXT_CTRL_SET_STACK_COMB3			31
 //! Ext ctrl - Select stack combo #4
-#define EXT_CTRL_SET_STACK_COMB4			30
+#define EXT_CTRL_SET_STACK_COMB4			32
 //! Ext ctrl - Select stack combo #5
-#define EXT_CTRL_SET_STACK_COMB5			31
+#define EXT_CTRL_SET_STACK_COMB5			33
 //! Ext ctrl - Select stack combo #6
-#define EXT_CTRL_SET_STACK_COMB6			32
+#define EXT_CTRL_SET_STACK_COMB6			34
 
 //! Ext ctrl - Toggle the amplifier on/off
-#define EXT_CTRL_AMPLIFIER_TOGGLE_ON_OFF	33
+#define EXT_CTRL_AMPLIFIER_TOGGLE_ON_OFF	35
 //! Ext ctrl - Toggle the amplifier standby
-#define EXT_CTRL_AMPLIFIER_TOGGLE_STANDBY	34
+#define EXT_CTRL_AMPLIFIER_TOGGLE_STANDBY	36
 //! Ext ctrl - Tune the amplifier to the correct band
-#define EXT_CTRL_AMPLIFIER_TUNE	35
+#define EXT_CTRL_AMPLIFIER_TUNE	37
 //! Ext ctrl - Reset the amplifier
-#define EXT_CTRL_AMPLIFIER_RESET	36
+#define EXT_CTRL_AMPLIFIER_RESET	38
 
 //! Ext ctrl - Rotate the last antenna clock wise
-#define EXT_CTRL_ROTATE_CW	37
+#define EXT_CTRL_ROTATE_CW	39
 //! Ext ctrl - Rotate the last antenna counter clock wise
-#define EXT_CTRL_ROTATE_CCW 38
+#define EXT_CTRL_ROTATE_CCW 40
 
 //! Ext ctrl - Select band portion
-#define EXT_CTRL_SEL_BAND_PORTION 39
+#define EXT_CTRL_SEL_BAND_PORTION 41
 
 void event_set_error(unsigned char error_type, unsigned char state);
 unsigned char event_get_errors(void);

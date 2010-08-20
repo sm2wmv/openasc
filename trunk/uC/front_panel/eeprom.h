@@ -79,6 +79,8 @@ void eeprom_save_runtime_settings(struct_runtime_settings *content);
 void eeprom_get_runtime_settings(struct_runtime_settings *data);
 void eeprom_get_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data);
 
+void eeprom_get_ant_sub_menu_stack_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_stack *data);
+
 void eeprom_get_antenna_data(struct_antenna *data, unsigned char band);
 void eeprom_get_band_data(unsigned char band, struct_band *data);
 
@@ -99,5 +101,7 @@ void eeprom_save_settings_structure(struct_setting *data);
 void eeprom_save_ptt_data(struct_ptt *data);
 
 void eeprom_save_ant_sub_menu_array_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_array *data);
+
+void eeprom_save_ant_sub_menu_stack_structure(unsigned char band_index, unsigned char ant_index, struct_sub_menu_stack *data);
 
 #endif

@@ -39,6 +39,14 @@ typedef struct {
 	unsigned char output_str_dir[8][SUB_MENU_ARRAY_STR_SIZE];
 } struct_sub_menu_array;
 
+typedef struct {
+	unsigned int struct_size;
+	unsigned char comb_count;
+	unsigned char comb_name[6][SUB_MENU_STACK_NAME_SIZE];
+	unsigned char output_str_comb_length[6];
+	unsigned char output_str_comb[6][SUB_MENU_STACK_STR_SIZE];
+} struct_sub_menu_stack;
+
 void sub_menu_load(unsigned char band_index);
 unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos);
 

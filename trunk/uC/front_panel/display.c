@@ -457,6 +457,18 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 			
 			glcd_update_all();
 		}
+		else if (sub_menu_type == SUBMENU_STACK) {
+			CLEAR_SET_SUB_MENU_ARRAY_AREA();
+			
+			sprintf((char *)temp, "%s",antenna_ctrl_get_antenna_text(ant_index));
+			display_text_center_adjust(3, temp, strlen(temp), FONT_NINE_DOT);
+			
+			sprintf((char *)temp, "Stack control");
+			display_text_center_adjust(19, temp, strlen(temp), FONT_NINE_DOT);
+			
+			sprintf((char *)temp, "%s",sub_menu_get_text(ant_index, sub_menu_get_current_pos(ant_index)));
+			display_text_center_adjust(38, temp, strlen(temp), FONT_FIFTEEN_DOT);
+		}
 	}
 }
 

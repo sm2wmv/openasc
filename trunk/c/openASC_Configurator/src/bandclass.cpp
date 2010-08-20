@@ -614,6 +614,12 @@ void BandClass::sendSettings(CommClass& serialPort) {
 				tx_buff[2] = subMenu4SQ[i].directionCount;
 		}
 
+		if (subMenuType[i] == SUBMENU_STACK) {
+			tx_buff[0] = CTRL_SET_ANT_SUB_MENU_DATA;
+			tx_buff[1] = i;
+			tx_buff[2] = subMenuStack[i].combinationCount;
+		}
+
 		serialPort.addTXMessage(CTRL_SET_ANT_DATA,3,tx_buff);
 	}
 
@@ -640,6 +646,35 @@ void BandClass::sendSettings(CommClass& serialPort) {
 						temp.insert(0,CTRL_SET_ANT_SUB_MENU_OUTPUT_STR);
 						temp.insert(1,i);
 						temp.insert(2,dirIndex);
+						temp.insert(3,len);
+
+						for (int x=0;x<temp.count();x++)
+								tx_buff[x] = temp.at(x);
+
+						serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
+				}
+		}
+
+		if (subMenuType[i] == SUBMENU_STACK) {
+				for (int combIndex=0;combIndex<6;combIndex++) {
+						tx_buff[0] = CTRL_SET_ANT_SUB_MENU_TEXT;
+						tx_buff[1] = i; //Antenna index
+						tx_buff[2] = combIndex;
+						tx_buff[3] = subMenuStack[i].combinationName[combIndex].length();
+
+						for (int x=0;x<subMenuStack[i].combinationName[combIndex].length();x++) {
+								tx_buff[4+x] = subMenuStack[i].combinationName[combIndex].at(x).toAscii();
+						}
+
+						serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
+				}
+
+				for (int combIndex=0;combIndex<6;combIndex++) {
+						QByteArray temp = strConvertToOutputStr(subMenuStack[i].combinationOutputStr[combIndex]);
+						int len = temp.count();
+						temp.insert(0,CTRL_SET_ANT_SUB_MENU_OUTPUT_STR);
+						temp.insert(1,i);
+						temp.insert(2,combIndex);
 						temp.insert(3,len);
 
 						for (int x=0;x<temp.count();x++)

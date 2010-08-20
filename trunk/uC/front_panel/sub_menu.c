@@ -46,6 +46,9 @@
 //! Current sub menu array
 struct_sub_menu_array current_sub_menu_array[4];
 
+//! Current sub menu stack
+struct_sub_menu_stack current_sub_menu_stack[4];
+
 //! Which option is currently selected of the sub menu options
 unsigned char curr_option_selected[4] = {0,0,0,0};
 
@@ -68,6 +71,9 @@ void sub_menu_load(unsigned char band_index) {
 		if (sub_menu_type[i] == SUBMENU_VERT_ARRAY) {
 			eeprom_get_ant_sub_menu_array_structure(band_index, i, &current_sub_menu_array[i]);
 		}
+		else if (sub_menu_type[i] == SUBMENU_STACK) {
+			eeprom_get_ant_sub_menu_stack_structure(band_index, i, &current_sub_menu_stack[i]);
+		}
 	}
 }
 
@@ -78,6 +84,9 @@ void sub_menu_load(unsigned char band_index) {
 unsigned char *sub_menu_get_text(unsigned char ant_index, unsigned char pos) {
 	if (antenna_ctrl_get_sub_menu_type(ant_index) == SUBMENU_VERT_ARRAY) {
 		return(current_sub_menu_array[ant_index].direction_name[pos]);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(ant_index) == SUBMENU_STACK) {
+		return(current_sub_menu_stack[ant_index].comb_name[pos]);
 	}
 	
 	return((unsigned char*)"   ");
@@ -125,6 +134,12 @@ void sub_menu_pos_down(unsigned char ant_index) {
 		else
 			sub_menu_set_current_pos(ant_index,current_sub_menu_array[ant_index].direction_count-1);
 	}
+	else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) { 
+		if (sub_menu_get_current_pos(ant_index) > 0)
+			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
+		else
+			sub_menu_set_current_pos(ant_index,current_sub_menu_stack[ant_index].comb_count-1);
+	}
 }
 
 /*! \brief This function should be called when we wish to increase the selected sub menu option 
@@ -132,6 +147,12 @@ void sub_menu_pos_down(unsigned char ant_index) {
 void sub_menu_pos_up(unsigned char ant_index) {
 	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
 		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_array[ant_index].direction_count - 1)
+			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
+		else
+			sub_menu_set_current_pos(ant_index,0);
+	}
+	else if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_stack[ant_index].comb_count - 1)
 			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
 		else
 			sub_menu_set_current_pos(ant_index,0);
@@ -279,4 +300,6 @@ void sub_menu_set_array_dir(unsigned char dir_nr) {
 		sub_menu_set_current_pos(3,dir_nr);
 		sub_menu_send_data_to_bus(3,dir_nr);
 	}
+	
+	main_update_display();
 }
