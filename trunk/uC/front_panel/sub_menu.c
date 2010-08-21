@@ -151,7 +151,7 @@ void sub_menu_pos_up(unsigned char ant_index) {
 		else
 			sub_menu_set_current_pos(ant_index,0);
 	}
-	else if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+	else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) {
 		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_stack[ant_index].comb_count - 1)
 			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
 		else
@@ -167,34 +167,64 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 	unsigned char activate_cmd=0, deactivate_cmd=0, deactivate_all_cmd=0;
 	unsigned char length = 0;
 	
+	unsigned char out_str[SUB_MENU_ARRAY_STR_SIZE];
+	
 	switch (ant_index) {
 		case 0:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT;
 			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS;
 			
-			length = current_sub_menu_array[0].output_str_dir_length[pos];
+			if (sub_menu_get_type(0) == SUBMENU_VERT_ARRAY) {
+				length = current_sub_menu_array[0].output_str_dir_length[pos];
+				memcpy(out_str,current_sub_menu_array[0].output_str_dir[pos],length);
+			}
+			else if (sub_menu_get_type(0) == SUBMENU_STACK) {
+				length = current_sub_menu_stack[0].output_str_comb_length[pos];
+				memcpy(out_str,current_sub_menu_stack[0].output_str_comb[pos],length);
+			}
 			break;
 		case 1:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT;
 			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS;
 			
-			length = current_sub_menu_array[1].output_str_dir_length[pos];
+			if (sub_menu_get_type(1) == SUBMENU_VERT_ARRAY) {
+				length = current_sub_menu_array[1].output_str_dir_length[pos];
+				memcpy(out_str,current_sub_menu_array[1].output_str_dir[pos],length);
+			}
+			else if (sub_menu_get_type(1) == SUBMENU_STACK) {
+				length = current_sub_menu_stack[1].output_str_comb_length[pos];
+				memcpy(out_str,current_sub_menu_stack[1].output_str_comb[pos],length);
+			}
 			break;
 		case 2:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT;
 			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS;
 			
-			length = current_sub_menu_array[2].output_str_dir_length[pos];
+			if (sub_menu_get_type(2) == SUBMENU_VERT_ARRAY) {
+				length = current_sub_menu_array[2].output_str_dir_length[pos];
+				memcpy(out_str,current_sub_menu_array[2].output_str_dir[pos],length);
+			}
+			else if (sub_menu_get_type(2) == SUBMENU_STACK) {
+				length = current_sub_menu_stack[2].output_str_comb_length[pos];
+				memcpy(out_str,current_sub_menu_stack[2].output_str_comb[pos],length);
+			}
 			break;
 		case 3:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT;
 			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS;
 			
-			length = current_sub_menu_array[3].output_str_dir_length[pos];
+			if (sub_menu_get_type(3) == SUBMENU_VERT_ARRAY) {
+				length = current_sub_menu_array[3].output_str_dir_length[pos];
+				memcpy(out_str,current_sub_menu_array[3].output_str_dir[pos],length);
+			}
+			else if (sub_menu_get_type(3) == SUBMENU_STACK) {
+				length = current_sub_menu_stack[3].output_str_comb_length[pos];
+				memcpy(out_str,current_sub_menu_stack[3].output_str_comb[pos],length);
+			}
 			break;
 		default:
 			break;
@@ -213,12 +243,12 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 		current_activated_sub_outputs_length[ant_index] = 0;
 		
 		while(i<length) {
-			if (current_sub_menu_array[ant_index].output_str_dir[pos][i] == OUTPUT_ADDR_DELIMITER) {
+			if (out_str[i] == OUTPUT_ADDR_DELIMITER) {
 				//Will add which address the message was sent to
-				current_activated_sub_outputs[ant_index][addr_count++] = current_sub_menu_array[ant_index].output_str_dir[pos][i+1];
+				current_activated_sub_outputs[ant_index][addr_count++] = out_str[i+1];
 				
-				if (current_sub_menu_array[ant_index].output_str_dir[pos][i+1] != 0x00) {
-					bus_add_tx_message(bus_get_address(), current_sub_menu_array[ant_index].output_str_dir[pos][i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), activate_cmd, count-start_pos, temp+start_pos);
+				if (out_str[i+1] != 0x00) {
+					bus_add_tx_message(bus_get_address(), out_str[i+1], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), activate_cmd, count-start_pos, temp+start_pos);
 				}
 				else
 					internal_comm_add_tx_message(activate_cmd,count-start_pos, (char *)(temp+start_pos));
@@ -227,7 +257,7 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 				i++;
 			} 
 			else {
-				temp[count] = current_sub_menu_array[ant_index].output_str_dir[pos][i];
+				temp[count] = out_str[i];
 				count++;
 			}
 			
@@ -299,6 +329,30 @@ void sub_menu_set_array_dir(unsigned char dir_nr) {
 	else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
 		sub_menu_set_current_pos(3,dir_nr);
 		sub_menu_send_data_to_bus(3,dir_nr);
+	}
+	
+	main_update_display();
+}
+
+/*! \brief This function will activate the first sub menu combination found in the antennas 
+ *  \param dir_nr Which direction we wish to set */
+void sub_menu_set_stack_comb(unsigned char comb_nr) {
+	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_STACK) {
+		status.sub_menu_antenna_index = 0;
+		sub_menu_set_current_pos(0,comb_nr);
+		sub_menu_send_data_to_bus(0,comb_nr);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_STACK) {
+		sub_menu_set_current_pos(1,comb_nr);
+		sub_menu_send_data_to_bus(1,comb_nr);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_STACK) {
+		sub_menu_set_current_pos(2,comb_nr);
+		sub_menu_send_data_to_bus(2,comb_nr);
+	}
+	else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_STACK) {
+		sub_menu_set_current_pos(3,comb_nr);
+		sub_menu_send_data_to_bus(3,comb_nr);
 	}
 	
 	main_update_display();

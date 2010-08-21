@@ -394,8 +394,8 @@ int main(void){
 			 
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
-		//radio_interface_init();
-		init_usart_computer();
+		radio_interface_init();
+		//init_usart_computer();
 	}
 	else {
 		//Init the computer communication

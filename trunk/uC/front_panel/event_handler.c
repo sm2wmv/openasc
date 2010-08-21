@@ -158,6 +158,8 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 void __inline__ event_set_rx_antenna(unsigned char ant_index) {
 	status.selected_rx_antenna = ant_index;
 	
+	status.last_rx_antenna = status.selected_rx_antenna;
+		
 	antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
 	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 }
@@ -258,6 +260,24 @@ void event_process_task(unsigned char task_index) {
 		case EXT_CTRL_SET_ARRAY_DIR8:
 			sub_menu_set_array_dir(7);
 			break;
+		case EXT_CTRL_SET_STACK_COMB1:
+			sub_menu_set_stack_comb(0);
+			break;
+		case EXT_CTRL_SET_STACK_COMB2:
+			sub_menu_set_stack_comb(1);
+			break;
+		case EXT_CTRL_SET_STACK_COMB3:
+			sub_menu_set_stack_comb(2);
+			break;
+		case EXT_CTRL_SET_STACK_COMB4:
+			sub_menu_set_stack_comb(3);
+			break;
+		case EXT_CTRL_SET_STACK_COMB5:
+			sub_menu_set_stack_comb(4);
+			break;
+		case EXT_CTRL_SET_STACK_COMB6:
+			sub_menu_set_stack_comb(5);
+			break;
 		default:
 			break;
 	}	
@@ -276,6 +296,8 @@ void event_pulse_sensor_up(void) {
 				status.selected_rx_antenna++;
 			else
 				status.selected_rx_antenna = 1;
+			
+			status.last_rx_antenna = status.selected_rx_antenna;
 		
 			//Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
 			main_flags |= (1<<FLAG_CHANGE_RX_ANT);
@@ -318,6 +340,8 @@ void event_pulse_sensor_down(void) {
 			else
 				status.selected_rx_antenna = antenna_ctrl_get_rx_antenna_count();
 		
+			status.last_rx_antenna = status.selected_rx_antenna;
+			
 			//Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
 			main_flags |= (1<<FLAG_CHANGE_RX_ANT);
 			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
@@ -804,14 +828,18 @@ void event_sub_button_pressed(void) {
 							
 				if (sub_menu_get_count() == 1) {
 					for (unsigned char i=0;i<4;i++)
-						if (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY)
+						if ((antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY) || (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_STACK))
 							status.sub_menu_antenna_index = i;
 					
 					status.prev_display = status.current_display;
 					status.current_display_level = DISPLAY_LEVEL_SUBMENU;
 					
 					glcd_clear();
-					display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
+					
+					if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_VERT_ARRAY)
+						display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
+					else if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_STACK)
+						display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_STACK);
 				}
 			}
 			else if (status.knob_function != KNOB_FUNCTION_SET_SUBMENU) {
@@ -841,7 +869,6 @@ void event_sub_button_pressed(void) {
 /*! \brief Perform the action of RX antenna button if it was pressed */
 void event_rxant_button_pressed(void) {
 	if (antenna_ctrl_get_rx_antenna_count() != 0) {
-			
 			//If the RX ANT isn't active we enter this part, also if the rx antenna is active but knob selection is on another function
 		if (((status.function_status & (1<<FUNC_STATUS_RXANT)) == 0) || ((status.function_status & (1<<FUNC_STATUS_RXANT)) && (status.knob_function != KNOB_FUNCTION_RX_ANT))) {
 			status.selected_rx_antenna = status.last_rx_antenna;

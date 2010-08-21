@@ -39,6 +39,8 @@
 #define CLEAR_SET_ROTATOR_AREA() glcd_clear_area(0,71,58,64)
 //! Macro that clears the sub menu array direction area
 #define CLEAR_SET_SUB_MENU_ARRAY_AREA() glcd_clear_area(44,84,35,64)
+//! Macro that clears the sub menu stack
+#define CLEAR_SET_SUB_MENU_STACK_AREA() glcd_clear_area(14,114,35,64)
 
 
 #define DISPLAY_SCREENSAVER_DEF_CONTRAST	20
