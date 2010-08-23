@@ -67,8 +67,8 @@ void radio_interface_init(void) {
 	
 	radio_rx_data_counter = 0;
 	
-//	usart1_init(191, 2);
-//	usart3_init(191, 2);
+	//usart1_init(191, 2);
+	//usart3_init(191, 2);
 
 	if (radio_settings.cat_enabled == 1) {
 		switch (radio_settings.baudrate) {
