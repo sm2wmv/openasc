@@ -133,6 +133,24 @@ unsigned char ext_key_get_assignment(unsigned char index) {
 	return(settings.ext_key_assignments[index]);
 }
 
+/*! Get information if a band change is OK to do
+ *  \return 1 if the band change is OK, 0 if not */
+unsigned char main_band_change_ok(void) {
+	return(1);
+}
+
+/*! Get the key assignment index of the aux buttons
+ *  \param buttonIndex Which button we wish to get the function index from
+ *  \return The current task index, can be found in event_handler.h */
+unsigned char main_get_aux_button(unsigned char buttonIndex) {
+	if (buttonIndex == 1)
+		return(settings.aux1_button_func);
+	else if (buttonIndex == 2)
+		return(settings.aux2_button_func);
+	
+	return(0);
+}
+
 /*! Set the key assignment task
  *  \param index The index of which task we wish to set
  *  \param func The function we wish to assign to the assignment index */

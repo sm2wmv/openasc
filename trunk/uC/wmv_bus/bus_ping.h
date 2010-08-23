@@ -35,6 +35,7 @@ typedef struct {
 	void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data);
 	bus_struct_ping_status *bus_ping_get_failed_ping(void);
 	unsigned char bus_ping_get_failed_count(void);
+	
 	bus_struct_ping_status *bus_ping_get_ping_data(unsigned char index);
-
+	unsigned char bus_ping_device_type(unsigned char index);
 #endif

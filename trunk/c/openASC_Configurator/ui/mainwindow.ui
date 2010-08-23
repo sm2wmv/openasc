@@ -212,6 +212,9 @@
              <property name="enabled">
               <bool>true</bool>
              </property>
+             <property name="currentIndex">
+              <number>2</number>
+             </property>
              <item>
               <property name="text">
                <string>1200</string>
@@ -283,6 +286,9 @@
             <widget class="QComboBox" name="comboBoxRadioStopbits">
              <property name="enabled">
               <bool>true</bool>
+             </property>
+             <property name="currentIndex">
+              <number>1</number>
              </property>
              <item>
               <property name="text">

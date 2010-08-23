@@ -128,34 +128,38 @@ unsigned char sub_menu_get_type(unsigned char ant_index) {
 /*! \brief This function should be called when we wish to decrease the selected sub menu option 
  *  \param ant_index Which antenna we wish to decrease the sub menu position of */
 void sub_menu_pos_down(unsigned char ant_index) {
-	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
-		if (sub_menu_get_current_pos(ant_index) > 0)
-			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
-		else
-			sub_menu_set_current_pos(ant_index,current_sub_menu_array[ant_index].direction_count-1);
-	}
-	else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) { 
-		if (sub_menu_get_current_pos(ant_index) > 0)
-			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
-		else
-			sub_menu_set_current_pos(ant_index,current_sub_menu_stack[ant_index].comb_count-1);
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+		if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+			if (sub_menu_get_current_pos(ant_index) > 0)
+				sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
+			else
+				sub_menu_set_current_pos(ant_index,current_sub_menu_array[ant_index].direction_count-1);
+		}
+		else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) { 
+			if (sub_menu_get_current_pos(ant_index) > 0)
+				sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
+			else
+				sub_menu_set_current_pos(ant_index,current_sub_menu_stack[ant_index].comb_count-1);
+		}
 	}
 }
 
 /*! \brief This function should be called when we wish to increase the selected sub menu option 
  *  \param ant_index Which antenna we wish to increase the sub menu position of */
 void sub_menu_pos_up(unsigned char ant_index) {
-	if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
-		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_array[ant_index].direction_count - 1)
-			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
-		else
-			sub_menu_set_current_pos(ant_index,0);
-	}
-	else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) {
-		if (sub_menu_get_current_pos(ant_index) < current_sub_menu_stack[ant_index].comb_count - 1)
-			sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
-		else
-			sub_menu_set_current_pos(ant_index,0);
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+		if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+			if (sub_menu_get_current_pos(ant_index) < current_sub_menu_array[ant_index].direction_count - 1)
+				sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
+			else
+				sub_menu_set_current_pos(ant_index,0);
+		}
+		else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) {
+			if (sub_menu_get_current_pos(ant_index) < current_sub_menu_stack[ant_index].comb_count - 1)
+				sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
+			else
+				sub_menu_set_current_pos(ant_index,0);
+		}
 	}
 }
 
@@ -274,86 +278,94 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 
 /*! \brief Will deactivate all currently selected outputs which has been sent out on the bus */
 void sub_menu_deactivate_all(void) {
-	if (current_activated_sub_outputs_length[0] > 0) {
-		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[0], current_activated_sub_outputs_length[0], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS);
-		current_activated_sub_outputs_length[0] = 0;
-	}
-	
-	if (current_activated_sub_outputs_length[1] > 0) {
-		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[1], current_activated_sub_outputs_length[1], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS);
-		current_activated_sub_outputs_length[1] = 0;
-	}
-	
-	if (current_activated_sub_outputs_length[2] > 0) {
-		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[2], current_activated_sub_outputs_length[2], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS);
-		current_activated_sub_outputs_length[2] = 0;
-	}
-	
-	if (current_activated_sub_outputs_length[3] > 0) {
-		antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[3], current_activated_sub_outputs_length[3], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS);
-		current_activated_sub_outputs_length[3] = 0;
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {	
+		if (current_activated_sub_outputs_length[0] > 0) {
+			antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[0], current_activated_sub_outputs_length[0], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS);
+			current_activated_sub_outputs_length[0] = 0;
+		}
+		
+		if (current_activated_sub_outputs_length[1] > 0) {
+			antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[1], current_activated_sub_outputs_length[1], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS);
+			current_activated_sub_outputs_length[1] = 0;
+		}
+		
+		if (current_activated_sub_outputs_length[2] > 0) {
+			antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[2], current_activated_sub_outputs_length[2], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS);
+			current_activated_sub_outputs_length[2] = 0;
+		}
+		
+		if (current_activated_sub_outputs_length[3] > 0) {
+			antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[3], current_activated_sub_outputs_length[3], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS);
+			current_activated_sub_outputs_length[3] = 0;
+		}
 	}
 }
 
 /*! \brief This function will go through the sub menus and if there is one configured it will activae its default option which is index 0 */
 void sub_menu_activate_all(void) {
-	//Activate all the sub menu options avaible for default position #0
-	if (antenna_ctrl_get_sub_menu_type(0) != SUBMENU_NONE)
-		sub_menu_send_data_to_bus(0,0);
-	
-	if (antenna_ctrl_get_sub_menu_type(1) != SUBMENU_NONE)	
-		sub_menu_send_data_to_bus(1,0);
-	
-	if (antenna_ctrl_get_sub_menu_type(2) != SUBMENU_NONE)	
-		sub_menu_send_data_to_bus(2,0);
-	
-	if (antenna_ctrl_get_sub_menu_type(3) != SUBMENU_NONE)
-		sub_menu_send_data_to_bus(3,0);
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {	
+		//Activate all the sub menu options avaible for default position #0
+		if (antenna_ctrl_get_sub_menu_type(0) != SUBMENU_NONE)
+			sub_menu_send_data_to_bus(0,0);
+		
+		if (antenna_ctrl_get_sub_menu_type(1) != SUBMENU_NONE)	
+			sub_menu_send_data_to_bus(1,0);
+		
+		if (antenna_ctrl_get_sub_menu_type(2) != SUBMENU_NONE)	
+			sub_menu_send_data_to_bus(2,0);
+		
+		if (antenna_ctrl_get_sub_menu_type(3) != SUBMENU_NONE)
+			sub_menu_send_data_to_bus(3,0);
+	}
 }
 
 /*! \brief This function will activate the first sub menu direction found in the antennas 
  *  \param dir_nr Which direction we wish to set */
 void sub_menu_set_array_dir(unsigned char dir_nr) {
-	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
-		sub_menu_set_current_pos(0,dir_nr);
-		sub_menu_send_data_to_bus(0,dir_nr);
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+		if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
+			sub_menu_set_current_pos(0,dir_nr);
+			sub_menu_send_data_to_bus(0,dir_nr);
+		}
+		else if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_VERT_ARRAY) {
+			sub_menu_set_current_pos(1,dir_nr);
+			sub_menu_send_data_to_bus(1,dir_nr);
+		}
+		else if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_VERT_ARRAY) {
+			sub_menu_set_current_pos(2,dir_nr);
+			sub_menu_send_data_to_bus(2,dir_nr);
+		}
+		else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
+			sub_menu_set_current_pos(3,dir_nr);
+			sub_menu_send_data_to_bus(3,dir_nr);
+		}
+		
+		main_update_display();
 	}
-	else if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_VERT_ARRAY) {
-		sub_menu_set_current_pos(1,dir_nr);
-		sub_menu_send_data_to_bus(1,dir_nr);
-	}
-	else if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_VERT_ARRAY) {
-		sub_menu_set_current_pos(2,dir_nr);
-		sub_menu_send_data_to_bus(2,dir_nr);
-	}
-	else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
-		sub_menu_set_current_pos(3,dir_nr);
-		sub_menu_send_data_to_bus(3,dir_nr);
-	}
-	
-	main_update_display();
 }
 
 /*! \brief This function will activate the first sub menu combination found in the antennas 
  *  \param dir_nr Which direction we wish to set */
 void sub_menu_set_stack_comb(unsigned char comb_nr) {
-	if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_STACK) {
-		status.sub_menu_antenna_index = 0;
-		sub_menu_set_current_pos(0,comb_nr);
-		sub_menu_send_data_to_bus(0,comb_nr);
-	}
-	else if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_STACK) {
-		sub_menu_set_current_pos(1,comb_nr);
-		sub_menu_send_data_to_bus(1,comb_nr);
-	}
-	else if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_STACK) {
-		sub_menu_set_current_pos(2,comb_nr);
-		sub_menu_send_data_to_bus(2,comb_nr);
-	}
-	else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_STACK) {
-		sub_menu_set_current_pos(3,comb_nr);
-		sub_menu_send_data_to_bus(3,comb_nr);
-	}
-	
-	main_update_display();
+	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+		if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_STACK) {
+			status.sub_menu_antenna_index = 0;
+			sub_menu_set_current_pos(0,comb_nr);
+			sub_menu_send_data_to_bus(0,comb_nr);
+		}
+		else if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_STACK) {
+			sub_menu_set_current_pos(1,comb_nr);
+			sub_menu_send_data_to_bus(1,comb_nr);
+		}
+		else if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_STACK) {
+			sub_menu_set_current_pos(2,comb_nr);
+			sub_menu_send_data_to_bus(2,comb_nr);
+		}
+		else if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_STACK) {
+			sub_menu_set_current_pos(3,comb_nr);
+			sub_menu_send_data_to_bus(3,comb_nr);
+		}
+		
+		main_update_display();
+	}	
 }

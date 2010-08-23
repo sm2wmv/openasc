@@ -17,11 +17,16 @@ class ExternalInputClass {
 		
 		void setButtonFunction(int funcIndex);
 		int getButtonFunction();
+
+		void setAUXFunc(unsigned char index, unsigned char funcIndex);
+		int getAUXFunc(unsigned char index);
 	private:
 
 	protected:
 		int currSelectedButtonIndex;
 		int buttonFunction[17];
+		int buttonAUX1Func;
+		int buttonAUX2Func;
 };
 
 #endif // __EXTERNAL_INPUTCLASS_H__

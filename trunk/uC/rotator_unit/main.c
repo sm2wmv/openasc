@@ -122,7 +122,27 @@ void bus_parse_message(void) {
 					event_add_message(rotator_activate_break,rotator_settings.rotation_break_delay,EVENT_QUEUE_ACTIVATE_BREAK_ID);
 				}
 			}
-
+			break;
+		case BUS_CMD_ROTATOR_ACTIVATE_CAL:
+			//Rotator calibration mode activated
+			break;
+		case BUS_CMD_ROTATOR_DEACTIVATE_CAL:
+			//Rotator calibration mode deactivated
+			break;
+		case BUS_CMD_ROTATOR_SET_CCW_LIMIT:
+			//Set the CCW limit
+			break;
+		case BUS_CMD_ROTATOR_SET_CW_LIMIT:
+			//Set the CW limit
+			break;
+		case BUS_CMD_ROTATOR_CAL_SETTINGS:
+			//Calibration settings
+			break;
+		case BUS_CMD_ROTATOR_STORE_CAL:
+			//Store calibration data in the eeprom
+			break;
+		case BUS_CMD_ROTATOR_CLEAR_CAL:
+			//Clear the rotator calibration settings
 			break;
 		default:
 			break;
