@@ -314,6 +314,8 @@ void computer_interface_parse_data(void) {
 			computer_interface_send_ack();
 			computer_interface_deactivate_setup();
 			
+			bootloader_start();
+			
 			do {
 				wdt_enable(WDTO_15MS);
 				for(;;){}
@@ -403,13 +405,13 @@ void computer_interface_parse_data(void) {
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
 						
-						sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;
+						sub_menu_array_ptr[(int)computer_comm.rx_buffer_start[1]]->direction_name[(int)computer_comm.rx_buffer_start[2]][(int)computer_comm.rx_buffer_start[3]] = 0;
 					}
 					else if (antenna_ptr->sub_menu_type[(int)computer_comm.rx_buffer_start[1]] == SUBMENU_STACK) {
 						for (unsigned char i=0;i<computer_comm.rx_buffer_start[3];i++)
 							sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->comb_name[(int)computer_comm.rx_buffer_start[2]][i] = computer_comm.rx_buffer_start[4+i];
 						
-						sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->comb_name[(int)computer_comm.rx_buffer_start[2]][computer_comm.rx_buffer_start[3]] = 0;	
+						sub_menu_stack_ptr[(int)computer_comm.rx_buffer_start[1]]->comb_name[(int)computer_comm.rx_buffer_start[2]][(int)computer_comm.rx_buffer_start[3]] = 0;	
 					}
 					
 					computer_interface_send_ack();
@@ -603,6 +605,10 @@ void computer_interface_parse_data(void) {
 						settings_ptr->ext_key_assignments[i] = computer_comm.rx_buffer_start[i+1];
 					}
 					
+					//Set the aux button functions
+					settings_ptr->aux1_button_func = computer_comm.rx_buffer_start[18];
+					settings_ptr->aux2_button_func = computer_comm.rx_buffer_start[19];
+					
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_OTHER:
@@ -727,6 +733,14 @@ void computer_interface_deactivate_setup(void) {
 	free(rx_antenna_ptr);
 	free(band_ptr);
 	free(radio_settings_ptr);
+	free(settings_ptr);
+	
+	for (unsigned char i=0;i<4;i++)
+		free(sub_menu_array_ptr[i]);
+	
+	for (unsigned char i=0;i<4;i++)
+		free(sub_menu_stack_ptr[i]);
+	
 }
 
 ISR(SIG_USART1_DATA) {
@@ -783,9 +797,6 @@ ISR(SIG_USART1_RECV) {
 		}
 	}
 	else {
-		//TODO: Implement a buffer which does save the data sent from the computer and then after the box has receieved its answer
-		//      that data will be sent.
-		//if (radio_get_cat_status() == 0)
 		usart3_transmit(data);
 	}
 }

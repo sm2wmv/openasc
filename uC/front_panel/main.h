@@ -219,6 +219,10 @@ typedef struct {
 	//! and is saved in the various boxes so that they are aware of which TX ACTIVE input they should listen to
 	//! 0 = None, 1-7 inputs
 	unsigned char ptt_interlock_input;
+	//! AUX1 button function, same kind of function indexes as the external key assignments
+	unsigned char aux1_button_func;
+	//! AUX2 button function, same kind of function indexes as the external key assignments
+	unsigned char aux2_button_func;
 } struct_setting;
 
 //! This struct only contains information that is temporary
@@ -319,5 +323,9 @@ void main_set_inhibit_state(enum enum_inhibit_state state);
 void send_ping(void);
 
 void main_set_device_online(unsigned char state);
+
+unsigned char main_get_aux_button(unsigned char buttonIndex);
+
+unsigned char main_band_change_ok(void);
 
 #endif

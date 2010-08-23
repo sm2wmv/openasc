@@ -48,6 +48,7 @@
 #include "../internal_comm.h"
 #include "errors.h"
 #include "sub_menu.h"
+#include "computer_interface.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -280,7 +281,23 @@ void event_process_task(unsigned char task_index) {
 			break;
 		default:
 			break;
-	}	
+	}
+	
+	if (task_index == EXT_CTRL_SEL_BAND_PORTION) {
+		if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || (radio_interface_get_interface() == RADIO_INTERFACE_BCD)) {
+			if (status.current_band_portion == BAND_HIGH)
+				status.new_band_portion = BAND_LOW;
+			else
+				status.new_band_portion = BAND_HIGH;
+	
+			if (status.new_band_portion != status.current_band_portion) {
+				status.current_band_portion = status.new_band_portion;
+					
+				display_update_radio_freq();
+				band_ctrl_change_band_portion(status.current_band_portion);
+			}
+		}
+	}
 }
 
 /*! \brief The pulse sensor was turned up */
@@ -506,6 +523,11 @@ void event_poll_buttons(void) {
 					main_update_display();
 				}
 			}
+		}
+
+		if (btn_status & (1<<FLAG_BUTTON_AUX1_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON_AUX1_BIT))
+				event_aux1_button_pressed();
 		}
 		
 		if (btn_status & (1<<FLAG_BUTTON_AUX2_BIT)) {
@@ -799,22 +821,14 @@ void event_tx_button4_pressed(void) {
 	}
 }
 
+/*! \brief Perform the actions that should be done when AUX 1 button is pressed */
+void event_aux1_button_pressed(void) {
+	event_process_task(main_get_aux_button(1));
+}
 
 /*! \brief Perform the actions that should be done when AUX 2 button is pressed */
 void event_aux2_button_pressed(void) {
-	if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || (radio_interface_get_interface() == RADIO_INTERFACE_BCD)) {
-		if (status.current_band_portion == BAND_HIGH)
-			status.new_band_portion = BAND_LOW;
-		else
-			status.new_band_portion = BAND_HIGH;
-
-		if (status.new_band_portion != status.current_band_portion) {
-			status.current_band_portion = status.new_band_portion;
-				
-			display_update_radio_freq();
-			band_ctrl_change_band_portion(status.current_band_portion);
-		}
-	}
+	event_process_task(main_get_aux_button(2));
 }
 
 /*! \brief Perform the actions that should be done when the SUB menu button is pressed */

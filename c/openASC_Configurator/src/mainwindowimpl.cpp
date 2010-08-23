@@ -37,7 +37,7 @@ void MainWindowImpl::listExtButtonFunctionsLoad() {
 
 		listExtButtonFunctions << "Rotate last antenna CW" << "Rotate last antenna CCW";
 
-		listExtButtonFunctions << "Select band portion";
+		listExtButtonFunctions << "Select band portion" << "Change band up" << "Change band down";
 
 		comboBoxExtKeypadFunc->addItems(listExtButtonFunctions);
 		comboBoxButtonAUX1->addItems(listExtButtonFunctions);
@@ -171,6 +171,9 @@ void MainWindowImpl::loadInitialGUIValues() {
 			radioButtonPTTInterlockInput6->setChecked(true);
 	else if (settingsClass.getPTTInterlockInput() == 7)
 			radioButtonPTTInterlockInput7->setChecked(true);
+
+	comboBoxButtonAUX1->setCurrentIndex(extInput.getAUXFunc(1));
+	comboBoxButtonAUX2->setCurrentIndex(extInput.getAUXFunc(2));
 
 	comboBoxRotatorsReload();
 }
@@ -452,6 +455,8 @@ void MainWindowImpl::actionExitConfModeTriggered() {
 		if (serialPort.isOpen()) {
 		serialPort.addTXMessage(CTRL_REBOOT,0,0);
 		statusbar->showMessage("Exit configuration mode",STATUSBAR_MESSAGE_TIME);
+
+		serialPort.closePort();
 	}
 }
 
@@ -1290,6 +1295,14 @@ void MainWindowImpl::radioButtonPTTInterlockInput7Clicked(bool state) {
 				settingsClass.setPTTInterlockInput(7);
 }
 
+void MainWindowImpl::comboBoxButtonAUX1IndexChanged(int funcIndex) {
+	extInput.setAUXFunc(1,funcIndex);
+}
+
+void MainWindowImpl::comboBoxButtonAUX2IndexChanged(int funcIndex) {
+	extInput.setAUXFunc(2,funcIndex);
+}
+
 void MainWindowImpl::setupConnections() {
 	/* RADIO INTERFACE START */
 	connect(comboBoxRadioType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioTypeCurrentIndexChanged(int)));
@@ -1426,6 +1439,9 @@ void MainWindowImpl::setupConnections() {
 	
 	connect(comboBoxExtKeypadFunc, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxExtKeypadFuncIndexChanged(int)));
 	
+	connect(comboBoxButtonAUX1, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxButtonAUX1IndexChanged(int)));
+	connect(comboBoxButtonAUX2, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxButtonAUX2IndexChanged(int)));
+
 	connect(spinBoxNetworkAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxNetworkAddressValueChanged(int)));
 	connect(checkBoxNetworkIsMaster, SIGNAL(clicked(bool)), this, SLOT(checkBoxNetworkIsMasterClicked(bool)));
 	connect(spinBoxNetworkNrOfDevices, SIGNAL(valueChanged(int)), this, SLOT(spinBoxNetworkNrOfDevicesValueChanged(int)));

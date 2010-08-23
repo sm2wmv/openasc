@@ -132,6 +132,10 @@
 #define BUS_CMD_ROTATOR_STORE_CAL	0x6B
 /*! Rotator clear calibration data */
 #define BUS_CMD_ROTATOR_CLEAR_CAL	0x6C
+/*! Rotator calibration settings */
+#define BUS_CMD_ROTATOR_CAL_SETTINGS 0x6D
+/*! Rotator clear the azimuth angle to zero degrees, used primary for pulse sensors that need to be reset */
+#define BUS_CMD_ROTATOR_CLEAR_ANGLE  0x6E
 
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70

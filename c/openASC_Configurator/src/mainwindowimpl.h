@@ -167,6 +167,9 @@ private slots:
 	
 	void comboBoxExtKeypadFuncIndexChanged(int funcIndex);
 	
+	void comboBoxButtonAUX1IndexChanged(int funcIndex);
+	void comboBoxButtonAUX2IndexChanged(int funcIndex);
+
 	void spinBoxNetworkAddressValueChanged(int newValue);
 	void checkBoxNetworkIsMasterClicked(bool state);
 	void spinBoxNetworkNrOfDevicesValueChanged(int newValue);

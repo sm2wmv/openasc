@@ -160,6 +160,10 @@
 
 //! Ext ctrl - Select band portion
 #define EXT_CTRL_SEL_BAND_PORTION 41
+//! Ext ctrl - Change band up
+#define EXT_CTRL_CHANGE_BAND_UP		42
+//! Ext ctrl - Change band down
+#define EXT_CTRL_CHANGE_BAND_DOWN 43
 
 void event_set_error(unsigned char error_type, unsigned char state);
 unsigned char event_get_errors(void);
@@ -185,6 +189,8 @@ void event_tx_button3_pressed(void);
 void event_tx_button4_pressed(void);
 void event_rotate_button_pressed(void);
 void event_rxant_button_pressed(void);
+
+void event_aux1_button_pressed(void);
 void event_aux2_button_pressed(void);
 
 void event_process_task(unsigned char task_index);

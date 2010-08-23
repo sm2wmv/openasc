@@ -63,5 +63,6 @@ void sub_menu_deactivate_all(void);
 void sub_menu_activate_all(void);
 
 void sub_menu_set_array_dir(unsigned char dir_nr);
+void sub_menu_set_stack_comb(unsigned char comb_nr);
 
 #endif
