@@ -24,9 +24,8 @@
 typedef struct {
 	unsigned char pickup_type; 
 	//! The value which the read RMS voltage should be multiplied with
-	unsigned int fwd_scale_value[10]; //All HF bands + 6m
-	//! The value which the read RMS voltage should be multiplied with
-	unsigned int ref_scale_value[10];	//All HF bands + 6m
+	double scale_value[9]; //All HF bands
+	double scale_constant[9];
 } struct_coupler_settings;
 
 typedef struct {
@@ -35,9 +34,9 @@ typedef struct {
 	//! Current A/D value for the ref power
 	unsigned int curr_ref_ad_value;
 	//! Current forward power (in Watts)
-	unsigned int curr_fwd_power;
+	double curr_fwd_power;
 	//! Current reflected power (in Watts)
-	unsigned int curr_ref_power;
+	double curr_ref_power;
 	//! Current VSWR
 	double curr_vswr;
 } struct_status;
