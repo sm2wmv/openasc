@@ -86,6 +86,8 @@ unsigned char read_ext_configuration(void) {
 	return(~(PIND >> 3) & 0x07);
 }
 
+unsigned int last_pwr_change_interval = 5000;
+
 int main(void) {
 	cli();
 	
@@ -120,34 +122,43 @@ int main(void) {
 	//Timer with interrupts each ms
 	init_timer_0();
 	
+	current_coupler.scale_value[0] = 27.29; //160
+	current_coupler.scale_value[1] = 27.93; //80
+	current_coupler.scale_value[2] = 27.83; //40
+	current_coupler.scale_value[3] = 27.83; //30
+	current_coupler.scale_value[4] = 27.47; //20
+	current_coupler.scale_value[5] = 27.47; //17
+	current_coupler.scale_value[6] = 28.07; //15
+	current_coupler.scale_value[7] = 28.07; //12
+	current_coupler.scale_value[8] = 28.9; //10
+	
+	current_coupler.scale_constant[0] = 9.88; //160
+	current_coupler.scale_constant[1] = 8.73; //80
+	current_coupler.scale_constant[2] = 8.16; //40
+	current_coupler.scale_constant[3] = 8.16; //30
+	current_coupler.scale_constant[4] = 8.6; //20
+	current_coupler.scale_constant[5] = 8.6; //17
+	current_coupler.scale_constant[6] = 9.9; //15
+	current_coupler.scale_constant[7] = 9.9; //12
+	current_coupler.scale_constant[8] = 8.9; //10	
+	
 	a2dSetPrescaler(ADC_PRESCALE_DIV16);
 	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
-	
-	current_coupler.fwd_scale_value[0] = 3782;
-	current_coupler.ref_scale_value[0] = 3782;
 	
 	current_coupler.pickup_type = read_ext_configuration();
 	
 	unsigned char data[7];
 	unsigned int temp_vswr;
 	
-	status.curr_fwd_power = 0;
+	status.curr_fwd_power = 10;
 	
 	device_id = DEVICE_ID_POWERMETER_PICKUP;
-	
-	unsigned int last_pwr_change_interval = 0;
 	
 	//TEMP
 	fdevopen((void*)bus_usart_transmit, (void*)bus_usart_receive_loopback);
 	
 	sei();
 	
-	double fwd_volt;
-	double ref_volt;
-	double fwd_db_val;
-	double fwd_pwr;
-	double ref_db_val;
-		
 	while(1) {
 		if (!rx_queue_is_empty()) {
 			bus_parse_message();
@@ -159,7 +170,7 @@ int main(void) {
 		
 		//If this device should act as master it should send out a SYNC command
 		//and also the number of devices (for the time slots) that are active on the bus
-		/*if (bus_is_master()) {
+		if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
 				unsigned char temp = bus_get_device_count();
 			
@@ -174,58 +185,35 @@ int main(void) {
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
 				counter_ping_interval = 0;
 			}
-		}*/
+		}
+		
 		
 		if (poll_curr_power == 1) {
 			read_state();
 			
-			
-			
-			printf("FWD A/D VAL: %i\n",status.curr_fwd_ad_value);
-			printf("REF A/D VAL: %i\n",status.curr_ref_ad_value);
-			
-			fwd_volt = ((2.56f/1024)*status.curr_fwd_ad_value);
-			ref_volt = ((2.56f/1024)*status.curr_ref_ad_value);
-			
-			fwd_db_val = 40.5*(fwd_volt-1);
-			
-			
-			printf("FWD VOLTAGE: %.5f volts\n",fwd_volt);
-			printf("REF VOLTAGE: %.5f volts\n",ref_volt);
-			printf("dB fwd: %.1f dB\n",fwd_db_val);
+			input_calculate_power();
+			input_calculate_vswr();
 		
-			fwd_pwr = pow(10,fwd_db_val/10)/1000;
-			
-			printf("Pout: %.1f\n", fwd_pwr);
-			printf("\n\n");
-			//bus_add_tx_message(
-			
-			/*status.curr_fwd_power = 12543;
-			status.curr_ref_power = 405;
-			status.curr_vswr = 1.25f;
-				*/
-			//This is to decrease the traffic on the bus from power meters which are currently not active
-/*			if ((status.curr_fwd_power < NO_FWD_PWR_LIMIT) && (last_pwr_change_interval >= 20)) {
-				pwr_meter_sleep = 1;
-			}
-			else if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
-				update_status = 1;
-				pwr_meter_sleep = 0;
+			if (status.curr_fwd_power > 5) {
 				last_pwr_change_interval = 0;
+				
+			if (pwr_meter_sleep == 1)
+				pwr_meter_sleep = 0;
 			}
-				*/
-			last_pwr_change_interval++;
+			else
+				last_pwr_change_interval++;
+	
 			poll_curr_power = 0;
 		}
 		
 		/* If the update_status flag is set, we should sample the current power values
 		   and send them over the bus as a broadcast message */
-		/*if (update_status == 1) {
+		if (update_status == 1) {
 			data[0] = current_coupler.pickup_type;
-			data[1] = (status.curr_fwd_power >> 8) & 0xFF;
-			data[2] = (status.curr_fwd_power & 0xFF);
-			data[3] = (status.curr_ref_power >> 8) & 0xFF;
-			data[4] = (status.curr_ref_power & 0xFF);
+			data[1] = ((unsigned int)status.curr_fwd_power >> 8) & 0xFF;
+			data[2] = ((unsigned int)status.curr_fwd_power & 0xFF);
+			data[3] = ((unsigned int)status.curr_ref_power >> 8) & 0xFF;
+			data[4] = ((unsigned int)status.curr_ref_power & 0xFF);
 				
 			temp_vswr = (unsigned int)(status.curr_vswr * 100);
 			
@@ -235,7 +223,7 @@ int main(void) {
 			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data);
 			
 			update_status = 0;
-		}*/
+		}
 	}
 }
 
@@ -256,6 +244,10 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	
 	if ((counter_compare0 % POWER_POLL_INTERVAL) == 0) {
 		poll_curr_power = 1;
+	}
+
+	if (last_pwr_change_interval > (POWER_LAST_CHANGE_TIME/POWER_POLL_INTERVAL)) {
+		pwr_meter_sleep = 1;
 	}
 
 	counter_sync++;
