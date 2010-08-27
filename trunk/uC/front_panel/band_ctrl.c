@@ -79,11 +79,13 @@ void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 					current_band_activated_outputs[addr_count++] = addr;
 					current_band_activated_outputs_length++;
 
-					if (addr != 0x00)
+					if (addr != 0x00) {
 						bus_add_tx_message(bus_get_address(), addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT, count-start_pos, temp+start_pos);
-					else
+					}
+					else {									
 						internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
-	
+					}
+					
 					start_pos += count;
 					i++;
 				}
@@ -101,12 +103,14 @@ void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 					current_band_activated_outputs[addr_count++] = addr;
 					current_band_activated_outputs_length++;
 
-					if (addr != 0x00)
+					if (addr != 0x00) {
 						bus_add_tx_message(bus_get_address(), addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT, count-start_pos, temp+start_pos);
-					else
+					}
+					else {
 						internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
-	
-					start_pos += count;
+					}
+					
+					start_pos = count;
 					i++;
 				}
 				else {

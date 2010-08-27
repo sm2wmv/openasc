@@ -257,7 +257,7 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 				else
 					internal_comm_add_tx_message(activate_cmd,count-start_pos, (char *)(temp+start_pos));
 
-				start_pos += count;
+				start_pos = count;
 				i++;
 			} 
 			else {

@@ -164,7 +164,7 @@ void antenna_ctrl_send_ant_data_to_bus(void) {
 					else
 						internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
 	
-					start_pos += count;
+					start_pos = count;
 					i++;
 				} 
 				else {
@@ -212,7 +212,7 @@ void antenna_ctrl_send_rx_ant_data_to_bus(unsigned char antenna_index) {
 				else
 					internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT,count-start_pos, (char *)(temp+start_pos));
 			
-				start_pos += count;
+				start_pos = count;
 				i++;
 			}
 			else {
@@ -256,7 +256,7 @@ void antenna_ctrl_send_rx_ant_band_data_to_bus(char index) {
 					else
 						internal_comm_add_tx_message(BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT, count-start_pos, (char *)(temp+start_pos));
 		
-					start_pos += count;
+					start_pos = count;
 					i++;
 				}
 				else {
