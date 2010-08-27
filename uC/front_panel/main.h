@@ -24,7 +24,7 @@
 #define _MAIN_H_
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "0.1b\0"
+#define FIRMWARE_REV "0.3b\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -128,7 +128,7 @@
 //! The max size of the output combination length
 #define ANTENNA_OUTPUT_COMB_SIZE	10
 //! The max size of the band output str
-#define BAND_OUTPUT_STR_SIZE			10
+#define BAND_OUTPUT_STR_SIZE			15
 //! The max size of the sub menu array output str size
 #define SUB_MENU_ARRAY_STR_SIZE		10
 //! The size of the name of a 4-SQ

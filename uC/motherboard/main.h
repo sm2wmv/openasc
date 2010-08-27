@@ -53,4 +53,19 @@ typedef struct {
 	unsigned char prev_cmd;
 } PS2_STRUCT;
 
+/*!Structure of the driver output status. It contains information of which address
+ * an output was activated/deactivated from last and also it's status */
+typedef struct {
+	//! The address of the device that last changed the status of the output */
+	unsigned char driver_output_owner[20];	//The address of the last device to change the status
+	//! The type of message that activated the output
+	unsigned char driver_output_type[20];	
+	//! The address of the device that last changed the status of the output */
+	unsigned char driver_output_new_owner[20];	//The address of the last device to change the status
+	//! The type of message that activated the output
+	unsigned char driver_output_new_type[20];
+	//! The state of the driver output if it's high or low
+	unsigned long driver_output_state;
+} driver_status_struct;
+
 #endif

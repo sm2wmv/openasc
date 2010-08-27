@@ -55,7 +55,7 @@ void init_ports(void)
 {
 	DDRA = 0xFF;
 	DDRB = 0x0F;
-	DDRC = 0xFC;
+	DDRC = 0xFF;
 	DDRD = 0x0E;
 	DDRF = 0x30;
 	

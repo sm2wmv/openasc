@@ -44,6 +44,8 @@
 
 #define PS2_DEBUG 1
 
+driver_status_struct driver_status;
+
 //! Counter used for the PS/2 decoding
 unsigned char temp_count = 0;
 
@@ -80,13 +82,16 @@ void __inline__ tiny_delay(void) {
 /*! \brief Activate a driver output
 * This function is used to activate an output on the relay driver output in the openASC
 * It controls both the sink and source output at the same time.
+* \param from_addr Dummy byte to make it compatible with the driver units
 * \param index The index of which output to activate (1-12)
 * \param type The command that did activate this output
 */
-void activate_output(unsigned char index, unsigned char type) {
-	driver_output_state |= (1<<(index-1));
-	driver_output_type[index-1] = type;
-	
+void activate_output(unsigned char from_addr, unsigned char index, unsigned char type) {
+	driver_status.driver_output_state |= (1<<(index-1));
+	driver_status.driver_output_owner[index-1] = from_addr;
+
+	driver_status.driver_output_type[index-1] = type;
+
 	switch (index) {
 		case 1 :	PORTC |= (1<<DRIVER_OUTPUT_1);
 							break;
@@ -120,12 +125,14 @@ void activate_output(unsigned char index, unsigned char type) {
 /*! \brief Deactivate a driver output
 * This function is used to deactivate an output on the relay outputs
 * It controls both the sink and source output at the same time.
+* \param from_addr Dummy byte to make it compatible with the driver units
 * \param index The index of which output to activate (1-12)
 */
-void deactivate_output(unsigned char index) {
-	driver_output_state &= ~(1<<(index-1));
-	driver_output_type[index-1] = 0;
-	
+void deactivate_output(unsigned char from_addr, unsigned char index) {
+	driver_status.driver_output_state &= ~(1<<(index-1));
+	driver_status.driver_output_owner[index-1] = 0;
+	driver_status.driver_output_type[index-1] = 0;
+
 	switch (index) {
 		case 1 :	PORTC &= ~(1<<DRIVER_OUTPUT_1);
 							break;
@@ -160,11 +167,15 @@ void deactivate_output(unsigned char index) {
  *  \param message The message that we wish to parse */
 void parse_internal_comm_message(UC_MESSAGE message) {
 	char temp=0;
+	unsigned char from_addr = 0;
 	
 	#ifdef INT_COMM_DEBUG	
 		printf("P: 0x%02X\n",message.cmd);	
+		
+		for (int i=0;i<message.length;i++)
+			printf("[%i]: %i\n",i,message.data[i]);
 	#endif
-
+		
 	switch(message.cmd) {
 		case UC_COMM_MSG_ACK:
 			internal_comm_message_acked();
@@ -175,41 +186,114 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 		case INT_COMM_REDIRECT_DATA:
 			computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
 			break;
-		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT :
+		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
-				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
-				deactivate_output(message.data[i]);
+				deactivate_output(from_addr,message.data[i]);
 			break;
-		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT: 
+		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
-				activate_output(message	.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
-				activate_output(message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
 			break;
+		case BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_GET_STATUS:
+	
+			break;	
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS:
-			for (unsigned char i=1;i<=12;i++)
-				deactivate_output(i);
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_owner[i-1] == from_addr)
+					deactivate_output(from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS:
-			for (unsigned char i=1;i<=12;i++)
-				if (driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
-					deactivate_output(i);
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
+					deactivate_output(from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT:
-			for (unsigned char i=1;i<=12;i++)
-				if (driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
-					deactivate_output(i);
+			for (unsigned char i=0;i<message.length;i++)
+				deactivate_output(from_addr,message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				deactivate_output(from_addr,message.data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS:
-			for (unsigned char i=1;i<=12;i++)
-				if (driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
-					deactivate_output(i);
-			break;		
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				deactivate_output(from_addr,message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				deactivate_output(from_addr,message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				deactivate_output(from_addr,message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT:
+			for (unsigned char i=0;i<message.length;i++)
+				deactivate_output(from_addr,message.data[i]);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS:
+			for (unsigned char i=1;i<=20;i++)
+				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT)
+					deactivate_output(from_addr,i);
+			break;
 		case INT_COMM_AUX_CHANGE_OUTPUT_PIN:
 			switch(message.data[0]) {
 				case AUX_X11_PIN3: 

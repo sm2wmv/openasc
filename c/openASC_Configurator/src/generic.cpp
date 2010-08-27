@@ -35,7 +35,7 @@ QByteArray strConvertToOutputStr(QString str) {
 		byteArray.append(OUTPUT_ADDR_DELIMITER);
 		byteArray.append(addr);
 	}
-	
+
 	return(byteArray);
 }
 
