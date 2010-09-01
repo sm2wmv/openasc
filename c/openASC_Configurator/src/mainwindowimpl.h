@@ -178,6 +178,7 @@ private slots:
 	void spinBoxPowerMeterSWRValueChanged(double);
 	void spinBoxPowerMeterUpdateRateTextValueChanged(int);
 	void spinBoxPowerMeterUpdateRateBargraphValueChanged(int);
+	void comboBoxPowerMeterTextViewIndexChanged(int value);
 
 	void radioButtonPTTInterlockNoneClicked(bool);
 	void radioButtonPTTInterlockInput1Clicked(bool);

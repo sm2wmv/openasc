@@ -144,6 +144,7 @@ MainWindow::MainWindow(QWidget *parent)
 		settings.metersUpdateRate = 100;
 
 		rescaleMeters(PICKUP_TYPE_15000W);
+
 		pickupStatus.fwdPower = 12500;
 		pickupStatus.refPower = 250;
 

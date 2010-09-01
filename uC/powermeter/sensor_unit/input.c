@@ -46,9 +46,9 @@ void input_calculate_power(void) {
 
 	fwd_volt = ((2.56f/1.024)*status.curr_fwd_ad_value);
 	ref_volt = ((2.56f/1.024)*status.curr_ref_ad_value);
-
-	fwd_dbm_val = (fwd_volt-620)/current_coupler.scale_value[4] - current_coupler.scale_constant[4];
-	ref_dbm_val = (ref_volt-490)/current_coupler.scale_value[4] - current_coupler.scale_constant[4];
+	
+	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.scale_value[4] - current_coupler.scale_constant[4];
+	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.scale_value[4] - current_coupler.scale_constant[4];
 			
 	status.curr_fwd_power = pow(10,fwd_dbm_val/10)/1000;
 	status.curr_ref_power = pow(10,ref_dbm_val/10)/1000;

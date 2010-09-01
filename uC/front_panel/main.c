@@ -456,7 +456,7 @@ int main(void){
 	bus_init();
 
 	//Init the power meter
-	powermeter_init(settings.powermeter_address, settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph, settings.powermeter_vswr_limit);
+	powermeter_init(settings.powermeter_address, settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph, settings.powermeter_vswr_limit,settings.powermeter_text_view);
 	
 	if (settings.network_device_is_master == 1) {
 		bus_set_is_master(1,settings.network_device_count);

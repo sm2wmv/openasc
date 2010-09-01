@@ -154,6 +154,7 @@ void MainWindowImpl::loadInitialGUIValues() {
 	doubleSpinBoxPowerMeterSWR->setValue(settingsClass.getPowerMeterVSWRAlarm());
 	spinBoxPowerMeterUpdateRateText->setValue(settingsClass.getPowerMeterUpdateRateText());
 	spinBoxPowerMeterUpdateRateBargraph->setValue(settingsClass.getPowerMeterUpdateRateBargraph());
+	comboBoxPowerMeterTextView->setCurrentIndex(settingsClass.getPowerMeterTextView());
 
 	if (settingsClass.getPTTInterlockInput() == 0)
 			radioButtonPTTInterlockNone->setChecked(true);
@@ -1251,6 +1252,10 @@ void MainWindowImpl::spinBoxPowerMeterUpdateRateTextValueChanged(int rate) {
 		settingsClass.setPowerMeterUpdateRateText(rate);
 }
 
+void MainWindowImpl::comboBoxPowerMeterTextViewIndexChanged(int value) {
+	settingsClass.setPowerMeterTextView(value);
+}
+
 void MainWindowImpl::spinBoxPowerMeterUpdateRateBargraphValueChanged(int rate) {
 		settingsClass.setPowerMeterUpdateRateBargraph(rate);
 }
@@ -1450,6 +1455,7 @@ void MainWindowImpl::setupConnections() {
 	connect(doubleSpinBoxPowerMeterSWR, SIGNAL(valueChanged(double)), this, SLOT(spinBoxPowerMeterSWRValueChanged(double)));
 	connect(spinBoxPowerMeterUpdateRateText, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateTextValueChanged(int)));
 	connect(spinBoxPowerMeterUpdateRateBargraph, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateBargraphValueChanged(int)));
+	connect(comboBoxPowerMeterTextView, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxPowerMeterTextViewIndexChanged(int)));
 
 	connect(radioButtonPTTInterlockNone, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockNoneClicked(bool)));
 	connect(radioButtonPTTInterlockInput1, SIGNAL(clicked(bool)), this, SLOT(radioButtonPTTInterlockInput1Clicked(bool)));

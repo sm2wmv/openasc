@@ -23,6 +23,28 @@
 #ifndef _POWERMETER_H_
 #define _POWERMETER_H_
 
+//! Show the peak power on the text display
+#define POWERMETER_TEXT_VIEW_PEAK	0
+//! Show the average power on the text display
+#define POWERMETER_TEXT_VIEW_AVG	1
+
+/*! 150w pickup configuration */
+#define PICKUP_TYPE_150W        0
+/*! 1000w pickup configuration */
+#define PICKUP_TYPE_1000W       1
+/*! 1500w pickup configuration */
+#define PICKUP_TYPE_1500W       2
+/*! 2000w pickup configuration */
+#define PICKUP_TYPE_2000W       3
+/*! 3000w pickup configuration */
+#define PICKUP_TYPE_3000W       4
+/*! 5000w pickup configuration */
+#define PICKUP_TYPE_5000W       5
+/*! 10000w pickup configuration */
+#define PICKUP_TYPE_10000W      6
+/*! 15000w pickup configuration */
+#define PICKUP_TYPE_15000W      7
+
 //! Struct which contains information of the power meter status
 typedef struct {
 	//! Current forward power in watts
@@ -41,8 +63,8 @@ typedef struct {
 	unsigned int vswr_limit;
 } powermeter_struct;
 
-void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr);
-void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit);
+void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr, unsigned char type);
+void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit, unsigned char text_view_mode);
 void powermeter_process_tasks(void);
 void powermeter_1ms_tick(void);
 
