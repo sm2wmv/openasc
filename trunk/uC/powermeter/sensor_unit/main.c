@@ -38,6 +38,8 @@ unsigned char pwr_meter_sleep = 0;
 //! The device ID of the power meter
 unsigned char device_id;
 
+unsigned int last_pwr_change_interval = 5000;
+
 /*! \brief Parse a message and exectute the proper commands
  * This function is used to parse a message that was receieved on the bus that is located
  * in the RX queue. */
@@ -52,9 +54,6 @@ void bus_parse_message(void) {
 		
 	}
 	else {
-		if (bus_message.cmd == BUS_CMD_POWERMETER_CALIBRATE) {
-			//TODO: The calibration commands
-		}
 	}
 	
 	//Drop the message from the RX queue
@@ -86,7 +85,28 @@ unsigned char read_ext_configuration(void) {
 	return(~(PIND >> 3) & 0x07);
 }
 
-unsigned int last_pwr_change_interval = 5000;
+void init_calib_values(void) {
+	current_coupler.scale_value[0] = PICKUP_SCALE_VALUE_160M; //160
+	current_coupler.scale_value[1] = PICKUP_SCALE_VALUE_80M; //80
+	current_coupler.scale_value[2] = PICKUP_SCALE_VALUE_40M; //40
+	current_coupler.scale_value[3] = PICKUP_SCALE_VALUE_30M; //30
+	current_coupler.scale_value[4] = PICKUP_SCALE_VALUE_20M; //20
+	current_coupler.scale_value[5] = PICKUP_SCALE_VALUE_17M; //17
+	current_coupler.scale_value[6] = PICKUP_SCALE_VALUE_15M; //15
+	current_coupler.scale_value[7] = PICKUP_SCALE_VALUE_12M; //12
+	current_coupler.scale_value[8] = PICKUP_SCALE_VALUE_10M; //10
+	
+	current_coupler.scale_constant[0] = PICKUP_SCALE_CONSTANT_160M; //160
+	current_coupler.scale_constant[1] = PICKUP_SCALE_CONSTANT_80M; //80
+	current_coupler.scale_constant[2] = PICKUP_SCALE_CONSTANT_40M; //40
+	current_coupler.scale_constant[3] = PICKUP_SCALE_CONSTANT_30M; //30
+	current_coupler.scale_constant[4] = PICKUP_SCALE_CONSTANT_20M; //20
+	current_coupler.scale_constant[5] = PICKUP_SCALE_CONSTANT_17M; //17
+	current_coupler.scale_constant[6] = PICKUP_SCALE_CONSTANT_15M; //15
+	current_coupler.scale_constant[7] = PICKUP_SCALE_CONSTANT_12M; //12
+	current_coupler.scale_constant[8] = PICKUP_SCALE_CONSTANT_10M; //10
+	//Pickup type is set externally with jumpers
+}
 
 int main(void) {
 	cli();
@@ -111,6 +131,8 @@ int main(void) {
 		//Initialize the communication bus	
 	bus_init();
 	
+	init_calib_values();
+	
 	if (bus_get_address() == 0x01)
 		bus_set_is_master(1,DEF_NR_DEVICES);
 	else
@@ -121,26 +143,6 @@ int main(void) {
 	
 	//Timer with interrupts each ms
 	init_timer_0();
-	
-	current_coupler.scale_value[0] = 27.29; //160
-	current_coupler.scale_value[1] = 27.93; //80
-	current_coupler.scale_value[2] = 27.83; //40
-	current_coupler.scale_value[3] = 27.83; //30
-	current_coupler.scale_value[4] = 27.47; //20
-	current_coupler.scale_value[5] = 27.47; //17
-	current_coupler.scale_value[6] = 28.07; //15
-	current_coupler.scale_value[7] = 28.07; //12
-	current_coupler.scale_value[8] = 28.9; //10
-	
-	current_coupler.scale_constant[0] = 9.88; //160
-	current_coupler.scale_constant[1] = 8.73; //80
-	current_coupler.scale_constant[2] = 8.16; //40
-	current_coupler.scale_constant[3] = 8.16; //30
-	current_coupler.scale_constant[4] = 8.6; //20
-	current_coupler.scale_constant[5] = 8.6; //17
-	current_coupler.scale_constant[6] = 9.9; //15
-	current_coupler.scale_constant[7] = 9.9; //12
-	current_coupler.scale_constant[8] = 8.9; //10	
 	
 	a2dSetPrescaler(ADC_PRESCALE_DIV16);
 	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
@@ -194,7 +196,7 @@ int main(void) {
 			input_calculate_power();
 			input_calculate_vswr();
 		
-			if (status.curr_fwd_power > 5) {
+			if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
 				last_pwr_change_interval = 0;
 				
 			if (pwr_meter_sleep == 1)

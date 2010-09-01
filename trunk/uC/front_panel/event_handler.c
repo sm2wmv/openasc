@@ -49,6 +49,7 @@
 #include "errors.h"
 #include "sub_menu.h"
 #include "computer_interface.h"
+#include "powermeter.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -1018,6 +1019,9 @@ void event_bus_parse_message(void) {
 				}
 			}
 		}
+	}
+	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
+		powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 	}
 	
 	//Drop the message

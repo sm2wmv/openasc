@@ -20,6 +20,35 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
+#include "main.h"
+
+/*! Calibration parameters */
+#ifdef PICKUP_UNIT_ID_1
+	#define PICKUP_SCALE_VALUE_160M 27.29
+	#define	PICKUP_SCALE_VALUE_80M  27.93
+	#define	PICKUP_SCALE_VALUE_40M 	27.83; //40
+	#define	PICKUP_SCALE_VALUE_30M 	27.83; //30
+	#define	PICKUP_SCALE_VALUE_20M 	27.47; //20
+	#define	PICKUP_SCALE_VALUE_17M 	27.47; //17
+	#define	PICKUP_SCALE_VALUE_15M 	28.07; //15
+	#define	PICKUP_SCALE_VALUE_12M 	28.07; //12
+	#define	PICKUP_SCALE_VALUE_10M 	28.9; //10
+
+	#define PICKUP_SCALE_CONSTANT_160M	9.88; //160
+	#define PICKUP_SCALE_CONSTANT_80M		8.73; //80
+	#define PICKUP_SCALE_CONSTANT_40M		8.16; //40
+	#define PICKUP_SCALE_CONSTANT_30M		8.16; //30
+	#define PICKUP_SCALE_CONSTANT_20M		8.6; //20
+	#define PICKUP_SCALE_CONSTANT_17M		8.6; //17
+	#define PICKUP_SCALE_CONSTANT_15M		9.9; //15
+	#define PICKUP_SCALE_CONSTANT_12M		9.9; //12
+	#define PICKUP_SCALE_CONSTANT_10M		8.9; //10
+		
+	//How many mV that we have while having no input on the power meter
+	#define PICKUP_FWD_0DBM_CONST_VOLTAGE 620
+	#define PICKUP_REF_0DBM_CONST_VOLTAGE 490
+#endif
+
 //! Struct which contains information of the pickup type
 typedef struct {
 	unsigned char pickup_type; 

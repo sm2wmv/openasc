@@ -259,7 +259,7 @@ void WMVBusClient::stopProcess() {
 
 int WMVBusClient::openPort(QString dev) {
 	serialPort = new QextSerialPort(dev);
-	serialPort->setBaudRate(BAUD115200);
+	serialPort->setBaudRate(BAUD57600);
 	serialPort->setDataBits(DATA_8);
 	serialPort->setFlowControl(FLOW_OFF);
 	serialPort->setParity(PAR_NONE);

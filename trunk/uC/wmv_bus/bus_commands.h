@@ -139,7 +139,5 @@
 
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70
-/*! PowerMeter calibration command */
-#define BUS_CMD_POWERMETER_CALIBRATE	0x71
 
 #endif

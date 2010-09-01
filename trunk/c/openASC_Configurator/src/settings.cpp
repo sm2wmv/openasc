@@ -10,6 +10,7 @@ SettingsClass::SettingsClass() {
 	powerMeterVSWRAlarmValue = 0;
 	powerMeterUpdateRateText = 0;
 	powerMeterUpdateRateBargraph = 0;
+	powerMeterTextView = 0;
 
 	pttInterlockInput = 0;
 }
@@ -30,6 +31,7 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("PowerMeterVSWRAlarmValue",powerMeterVSWRAlarmValue);
 	settings.setValue("PowerMeterDisplayUpdateRateText",powerMeterUpdateRateText);
 	settings.setValue("PowerMeterDisplayUpdateRateBargraph",powerMeterUpdateRateBargraph);
+	settings.setValue("PowerMeterTextView",powerMeterTextView);
 
 	settings.setValue("PTTInterlockInput",pttInterlockInput);
 
@@ -50,6 +52,7 @@ void SettingsClass::loadSettings(QSettings& settings) {
 	powerMeterVSWRAlarmValue = settings.value("PowerMeterVSWRAlarmValue").toDouble();
 	powerMeterUpdateRateText = settings.value("PowerMeterDisplayUpdateRateText").toInt();
 	powerMeterUpdateRateBargraph = settings.value("PowerMeterDisplayUpdateRateBargraph").toInt();
+	powerMeterTextView = settings.value("PowerMeterTextView").toInt();
 
 	pttInterlockInput = settings.value("PTTInterlockInput").toInt();
 
@@ -59,7 +62,7 @@ void SettingsClass::loadSettings(QSettings& settings) {
 }
 
 void SettingsClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[8];
+	unsigned char tx_buff[15];
 		
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_NETWORK;
 	tx_buff[1] = networkAddress;
@@ -72,7 +75,7 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 4, tx_buff);
 
-/*	tx_buff[0] = CTRL_SET_POWERMETER_SETTINGS;
+	tx_buff[0] = CTRL_SET_POWERMETER_SETTINGS;
 	tx_buff[1] = powerMeterAddress;
 	tx_buff[2] = ((unsigned int)(powerMeterVSWRAlarmValue * 100) & 0xFF00) >> 8;
 	tx_buff[3] = (unsigned int)(powerMeterVSWRAlarmValue * 100) & 0x00FF;
@@ -80,9 +83,10 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[5] = (powerMeterUpdateRateText & 0x00FF);
 	tx_buff[6] = (powerMeterUpdateRateBargraph >> 8);
 	tx_buff[7] = (powerMeterUpdateRateBargraph & 0x00FF);
+	tx_buff[8] = powerMeterTextView;
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 8, tx_buff);
-*/
+	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 9, tx_buff);
+
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_OTHER;
 	tx_buff[1] = pttInterlockInput;
 
@@ -154,4 +158,12 @@ void SettingsClass::setNumberOfDevices(int deviceCount) {
 
 int SettingsClass::getNumberOfDevices() {
 	return(nrOfDevices);
+}
+
+int SettingsClass::getPowerMeterTextView() {
+	return(powerMeterTextView);
+}
+
+void SettingsClass::setPowerMeterTextView(int value) {
+	powerMeterTextView = value;
 }

@@ -45,20 +45,68 @@ unsigned int counter_powermeter_update_text=0;
 //! The counter which keeps track of when we should update the power meter bargraph
 unsigned int counter_powermeter_update_bargraph=0;
 
+unsigned char text_view_mode = 0;
+unsigned char pickup_type = 0;
+
+double fwd_scale_value = 0;
+double ref_scale_value = 0;
+
 /*! \brief Initialize the power meter
  *  \param pickup_addr The address of the powermeter unit that sends the information
  *  \param text_update_rate How often we should refresh the text on the display
  *  \param bargraph_update_rate How often we should update the bargraph of the display
- *  \param vswr_limit What is the SWR limit of the device, when this is exceeded we shut down the possibility to PTT */
-void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit) {
+ *  \param vswr_limit What is the SWR limit of the device, when this is exceeded we shut down the possibility to PTT 
+ *  \param text_view Which kind of data is shown on the text display */
+void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit, unsigned char text_view) {
 	powermeter_status.curr_fwd_pwr_value = 0;
 	powermeter_status.curr_ref_pwr_value = 0;
 	powermeter_status.curr_vswr_value = 0;
-	
+		
 	powermeter_status.pickup_addr = pickup_addr;
 	powermeter_status.text_update_rate = text_update_rate;
 	powermeter_status.bargraph_update_rate = bargraph_update_rate;
 	powermeter_status.vswr_limit = vswr_limit;
+	text_view_mode = text_view;
+	
+	#ifdef PICKUP_TYPE_150W
+		fwd_scale_value = 0.667;
+		ref_scale_value = 0.667;
+	#endif
+		
+	#ifdef PICKUP_TYPE_1000W
+		fwd_scale_value = 0.1;
+		ref_scale_value = 0.1;
+	#endif
+
+	#ifdef PICKUP_TYPE_1500W
+		fwd_scale_value = 0.0667;
+		ref_scale_value = 0.0667;
+	#endif
+
+	#ifdef PICKUP_TYPE_2000W
+		fwd_scale_value = 0.05;
+		ref_scale_value = 0.05;
+	#endif
+
+	#ifdef PICKUP_TYPE_3000W
+		fwd_scale_value = 0.033;
+		ref_scale_value = 0.033;
+	#endif
+		
+	#ifdef PICKUP_TYPE_5000W
+		fwd_scale_value = 0.02;
+		ref_scale_value = 0.02;
+	#endif
+		
+	#ifdef PICKUP_TYPE_10000W
+		fwd_scale_value = 0.01;
+		ref_scale_value = 0.01;
+	#endif
+
+	#ifdef PICKUP_TYPE_15000W
+		fwd_scale_value = 0.0067;
+		ref_scale_value = 0.0067;
+	#endif
 }
 
 /*! \brief Activate the power meter display 
@@ -82,15 +130,18 @@ void powermeter_set_active(unsigned char state) {
 /*! \brief Update the values of the power meter
  *  \param fwd_pwr The current forward power in watts
  *  \param ref_pwr The current reflected power in watts
- *  \param vswr The current VSWR value, for example 151 means 1.51:1 in VSWR */
-void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr) {
+ *  \param vswr The current VSWR value, for example 151 means 1.51:1 in VSWR 
+ *  \param type Which kind of pickup type it is */
+void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr, unsigned char type) {
 	powermeter_status.curr_fwd_pwr_value = fwd_pwr;
 	powermeter_status.curr_ref_pwr_value = ref_pwr;
 	powermeter_status.curr_vswr_value = vswr;
+	pickup_type = type;
 }
 
 /*! \brief This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc */
 void powermeter_process_tasks(void) {
+	//TODO: Fix so that it shows peak or average power according to the settings	
 	if (powermeter_flags & (1<<POWERMETER_FLAG_ACTIVE)) {
 		if (counter_powermeter_update_text >= powermeter_status.text_update_rate) {
 			display_show_powermeter_text(powermeter_status.curr_fwd_pwr_value,powermeter_status.curr_ref_pwr_value,powermeter_status.curr_vswr_value);
@@ -99,7 +150,7 @@ void powermeter_process_tasks(void) {
 		}
 		
 		if (counter_powermeter_update_bargraph >= powermeter_status.bargraph_update_rate) {
-			display_show_powermeter_bargraph(70, 20);
+			display_show_powermeter_bargraph(powermeter_status.curr_fwd_pwr_value*fwd_scale_value, powermeter_status.curr_ref_pwr_value*ref_scale_value);
 			
 			counter_powermeter_update_bargraph = 0;
 		}

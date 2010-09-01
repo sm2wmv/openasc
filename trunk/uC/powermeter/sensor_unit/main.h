@@ -16,6 +16,8 @@
  *  is meant to be used for auto-scaling the power meter limits.
  */
 
+#define PICKUP_UNIT_ID_1
+
 //! The size of the RX queue in buffers
 #define BUS_RX_QUEUE_SIZE 10
 //! The size of the TX queue in buffers
