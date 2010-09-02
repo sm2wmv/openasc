@@ -132,6 +132,7 @@ void radio_ptt_active(void) {
 		
 		ptt_status |= (1<<RADIO_FLAG_RADIO_PTT);
 		main_update_ptt_status();
+		powermeter_set_active(1);
 	}
 }
 
@@ -142,6 +143,7 @@ void radio_ptt_deactive(void) {
 	
 	ptt_status &= ~(1<<RADIO_FLAG_RADIO_PTT);
 	main_update_ptt_status();
+	powermeter_set_active(0);
 }
 
 /*! \brief Set the TX ACTIVE output to high */
