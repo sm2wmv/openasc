@@ -147,7 +147,7 @@ int main(void) {
 	a2dSetPrescaler(ADC_PRESCALE_DIV16);
 	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
 	
-	current_coupler.pickup_type = read_ext_configuration();
+	current_coupler.pickup_type = 0;//read_ext_configuration();
 	
 	unsigned char data[7];
 	unsigned int temp_vswr;

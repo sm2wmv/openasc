@@ -47,6 +47,8 @@ unsigned char last_ref_val = 0;
 //! Memory area used for printing variables to the display
 char *temp_ptr = NULL;
 
+char power_temp_str[7];
+
 /*! \brief Display the shutdown in progress screen */
 void display_shutdown_view(void) {
 	glcd_clear();
@@ -576,13 +578,19 @@ void display_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_p
  *  \param vswr The current VSWR, for example 151 means 1.51:1 */
 void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr) {
 	//TODO: Insert the real values here
-	display_text_right_adjust(125,3,"8470W",5,FONT_NINE_DOT);
-	display_text_right_adjust(80,34,"150W",4,FONT_NINE_DOT);
-	display_text_right_adjust(125,45,"1.3:1",5,FONT_NINE_DOT);
+	sprintf(power_temp_str,"%5iW",fwd_power);
+	display_text_right_adjust(125,3,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
+	sprintf(power_temp_str,"%3iW",ref_power);
+	display_text_right_adjust(80,34,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
+	sprintf(power_temp_str,"%i.%02i:1",(vswr/100),(vswr%100));
+	display_text_right_adjust(125,45,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
 }
 
 /*! \brief This function will show the power meter display */
 void display_show_powermeter(void) {
+	last_fwd_val = 0;
+	last_ref_val = 0;
+	
 	glcd_rectangle(0,0,28,128);
 	glcd_rectangle(0,32,28,128);
 

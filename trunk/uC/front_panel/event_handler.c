@@ -1021,6 +1021,7 @@ void event_bus_parse_message(void) {
 		}
 	}
 	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
+		printf("DATA[0]: %i\n",bus_message.data[0]);
 		powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 	}
 	

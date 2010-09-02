@@ -46,7 +46,7 @@ unsigned int counter_powermeter_update_text=0;
 unsigned int counter_powermeter_update_bargraph=0;
 
 unsigned char text_view_mode = 0;
-unsigned char pickup_type = 0;
+unsigned char pickup_type = 99;
 
 double fwd_scale_value = 0;
 double ref_scale_value = 0;
@@ -67,46 +67,6 @@ void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, u
 	powermeter_status.bargraph_update_rate = bargraph_update_rate;
 	powermeter_status.vswr_limit = vswr_limit;
 	text_view_mode = text_view;
-	
-	#ifdef PICKUP_TYPE_150W
-		fwd_scale_value = 0.667;
-		ref_scale_value = 0.667;
-	#endif
-		
-	#ifdef PICKUP_TYPE_1000W
-		fwd_scale_value = 0.1;
-		ref_scale_value = 0.1;
-	#endif
-
-	#ifdef PICKUP_TYPE_1500W
-		fwd_scale_value = 0.0667;
-		ref_scale_value = 0.0667;
-	#endif
-
-	#ifdef PICKUP_TYPE_2000W
-		fwd_scale_value = 0.05;
-		ref_scale_value = 0.05;
-	#endif
-
-	#ifdef PICKUP_TYPE_3000W
-		fwd_scale_value = 0.033;
-		ref_scale_value = 0.033;
-	#endif
-		
-	#ifdef PICKUP_TYPE_5000W
-		fwd_scale_value = 0.02;
-		ref_scale_value = 0.02;
-	#endif
-		
-	#ifdef PICKUP_TYPE_10000W
-		fwd_scale_value = 0.01;
-		ref_scale_value = 0.01;
-	#endif
-
-	#ifdef PICKUP_TYPE_15000W
-		fwd_scale_value = 0.0067;
-		ref_scale_value = 0.0067;
-	#endif
 }
 
 /*! \brief Activate the power meter display 
@@ -136,6 +96,48 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	powermeter_status.curr_fwd_pwr_value = fwd_pwr;
 	powermeter_status.curr_ref_pwr_value = ref_pwr;
 	powermeter_status.curr_vswr_value = vswr;
+	
+	if (type != pickup_type) {
+		switch(type) {
+			case PICKUP_TYPE_150W:
+				fwd_scale_value = 0.667;
+				ref_scale_value = 6.67;
+				break;
+			case PICKUP_TYPE_1000W:
+				fwd_scale_value = 0.1;
+				ref_scale_value = 1;
+				break;
+			case PICKUP_TYPE_1500W:
+				fwd_scale_value = 0.0667;
+				ref_scale_value = 0.667;
+				break;
+			case PICKUP_TYPE_2000W:
+				fwd_scale_value = 0.05;
+				ref_scale_value = 0.5;
+				break;
+			case PICKUP_TYPE_3000W:
+				fwd_scale_value = 0.033;
+				ref_scale_value = 0.33;
+				break;
+			case PICKUP_TYPE_5000W:
+				fwd_scale_value = 0.02;
+				ref_scale_value = 0.2;
+				break;
+			case PICKUP_TYPE_10000W:
+				fwd_scale_value = 0.01;
+				ref_scale_value = 0.1;
+				break;
+			case PICKUP_TYPE_15000W:
+				fwd_scale_value = 0.0067;
+				ref_scale_value = 0.067;
+				break;
+			default:
+				fwd_scale_value = 0;
+				ref_scale_value = 0;
+				break;
+		}
+	}
+	
 	pickup_type = type;
 }
 
@@ -148,13 +150,15 @@ void powermeter_process_tasks(void) {
 			
 			counter_powermeter_update_text = 0;
 		}
-		
+			
 		if (counter_powermeter_update_bargraph >= powermeter_status.bargraph_update_rate) {
 			display_show_powermeter_bargraph(powermeter_status.curr_fwd_pwr_value*fwd_scale_value, powermeter_status.curr_ref_pwr_value*ref_scale_value);
 			
 			counter_powermeter_update_bargraph = 0;
 		}
 	}
+	
+	glcd_update_all();
 }
 
 /*! \brief This function should be called at 1 ms intervals. It is to keep track of update rates etc for the display */
