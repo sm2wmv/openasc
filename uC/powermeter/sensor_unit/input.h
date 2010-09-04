@@ -24,37 +24,47 @@
 
 /*! Calibration parameters */
 #ifdef PICKUP_UNIT_ID_1
-	#define PICKUP_SCALE_VALUE_160M 27.29
-	#define	PICKUP_SCALE_VALUE_80M  27.93
-	#define	PICKUP_SCALE_VALUE_40M 	27.83; //40
-	#define	PICKUP_SCALE_VALUE_30M 	27.83; //30
-	#define	PICKUP_SCALE_VALUE_20M 	27.47; //20
-	#define	PICKUP_SCALE_VALUE_17M 	27.47; //17
-	#define	PICKUP_SCALE_VALUE_15M 	28.07; //15
-	#define	PICKUP_SCALE_VALUE_12M 	28.07; //12
-	#define	PICKUP_SCALE_VALUE_10M 	28.9; //10
+	#define PICKUP_SCALE_FWD_VALUE_160M 26.42
+	#define	PICKUP_SCALE_FWD_VALUE_80M  27.36
+	#define	PICKUP_SCALE_FWD_VALUE_40M  27.26
+	#define	PICKUP_SCALE_FWD_VALUE_20M 	26.74
+	#define	PICKUP_SCALE_FWD_VALUE_15M 	27.01
+	#define	PICKUP_SCALE_FWD_VALUE_10M 	27.36
 
-	#define PICKUP_SCALE_CONSTANT_160M	9.88; //160
-	#define PICKUP_SCALE_CONSTANT_80M		8.73; //80
-	#define PICKUP_SCALE_CONSTANT_40M		8.16; //40
-	#define PICKUP_SCALE_CONSTANT_30M		8.16; //30
-	#define PICKUP_SCALE_CONSTANT_20M		8.6; //20
-	#define PICKUP_SCALE_CONSTANT_17M		8.6; //17
-	#define PICKUP_SCALE_CONSTANT_15M		9.9; //15
-	#define PICKUP_SCALE_CONSTANT_12M		9.9; //12
-	#define PICKUP_SCALE_CONSTANT_10M		8.9; //10
+	#define PICKUP_SCALE_FWD_CONSTANT_160M	5.1
+	#define PICKUP_SCALE_FWD_CONSTANT_80M		3.13
+	#define PICKUP_SCALE_FWD_CONSTANT_40M		3.13
+	#define PICKUP_SCALE_FWD_CONSTANT_20M		3.74
+	#define PICKUP_SCALE_FWD_CONSTANT_15M		2.55
+	#define PICKUP_SCALE_FWD_CONSTANT_10M		1.06
+
+	#define PICKUP_SCALE_REF_VALUE_160M 26.65
+	#define	PICKUP_SCALE_REF_VALUE_80M  26.4
+	#define	PICKUP_SCALE_REF_VALUE_40M  25.93
+	#define	PICKUP_SCALE_REF_VALUE_20M 	25.45
+	#define	PICKUP_SCALE_REF_VALUE_15M 	28.88
+	#define	PICKUP_SCALE_REF_VALUE_10M 	26.37
+
+	#define PICKUP_SCALE_REF_CONSTANT_160M	17.06
+	#define PICKUP_SCALE_REF_CONSTANT_80M		15.14
+	#define PICKUP_SCALE_REF_CONSTANT_40M		14.01
+	#define PICKUP_SCALE_REF_CONSTANT_20M		16.91
+	#define PICKUP_SCALE_REF_CONSTANT_15M		-7.65
+	#define PICKUP_SCALE_REF_CONSTANT_10M		15.74
 		
 	//How many mV that we have while having no input on the power meter
-	#define PICKUP_FWD_0DBM_CONST_VOLTAGE 620
-	#define PICKUP_REF_0DBM_CONST_VOLTAGE 490
+	#define PICKUP_FWD_0DBM_CONST_VOLTAGE 645
+	#define PICKUP_REF_0DBM_CONST_VOLTAGE 475
 #endif
 
 //! Struct which contains information of the pickup type
 typedef struct {
 	unsigned char pickup_type; 
 	//! The value which the read RMS voltage should be multiplied with
-	double scale_value[9]; //All HF bands
-	double scale_constant[9];
+	double fwd_scale_value[6]; //All HF bands
+	double fwd_scale_constant[6];
+	double ref_scale_value[6]; //All HF bands
+	double ref_scale_constant[6];	
 } struct_coupler_settings;
 
 typedef struct {

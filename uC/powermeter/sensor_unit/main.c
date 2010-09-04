@@ -86,25 +86,34 @@ unsigned char read_ext_configuration(void) {
 }
 
 void init_calib_values(void) {
-	current_coupler.scale_value[0] = PICKUP_SCALE_VALUE_160M; //160
-	current_coupler.scale_value[1] = PICKUP_SCALE_VALUE_80M; //80
-	current_coupler.scale_value[2] = PICKUP_SCALE_VALUE_40M; //40
-	current_coupler.scale_value[3] = PICKUP_SCALE_VALUE_30M; //30
-	current_coupler.scale_value[4] = PICKUP_SCALE_VALUE_20M; //20
-	current_coupler.scale_value[5] = PICKUP_SCALE_VALUE_17M; //17
-	current_coupler.scale_value[6] = PICKUP_SCALE_VALUE_15M; //15
-	current_coupler.scale_value[7] = PICKUP_SCALE_VALUE_12M; //12
-	current_coupler.scale_value[8] = PICKUP_SCALE_VALUE_10M; //10
+	current_coupler.fwd_scale_value[0] = PICKUP_SCALE_FWD_VALUE_160M; //160
+	current_coupler.fwd_scale_value[1] = PICKUP_SCALE_FWD_VALUE_80M; //80
+	current_coupler.fwd_scale_value[2] = PICKUP_SCALE_FWD_VALUE_40M; //40
+	current_coupler.fwd_scale_value[3] = PICKUP_SCALE_FWD_VALUE_20M; //20
+	current_coupler.fwd_scale_value[4] = PICKUP_SCALE_FWD_VALUE_15M; //15
+	current_coupler.fwd_scale_value[5] = PICKUP_SCALE_FWD_VALUE_10M; //10
 	
-	current_coupler.scale_constant[0] = PICKUP_SCALE_CONSTANT_160M; //160
-	current_coupler.scale_constant[1] = PICKUP_SCALE_CONSTANT_80M; //80
-	current_coupler.scale_constant[2] = PICKUP_SCALE_CONSTANT_40M; //40
-	current_coupler.scale_constant[3] = PICKUP_SCALE_CONSTANT_30M; //30
-	current_coupler.scale_constant[4] = PICKUP_SCALE_CONSTANT_20M; //20
-	current_coupler.scale_constant[5] = PICKUP_SCALE_CONSTANT_17M; //17
-	current_coupler.scale_constant[6] = PICKUP_SCALE_CONSTANT_15M; //15
-	current_coupler.scale_constant[7] = PICKUP_SCALE_CONSTANT_12M; //12
-	current_coupler.scale_constant[8] = PICKUP_SCALE_CONSTANT_10M; //10
+	current_coupler.fwd_scale_constant[0] = PICKUP_SCALE_FWD_CONSTANT_160M; //160
+	current_coupler.fwd_scale_constant[1] = PICKUP_SCALE_FWD_CONSTANT_80M; //80
+	current_coupler.fwd_scale_constant[2] = PICKUP_SCALE_FWD_CONSTANT_40M; //40
+	current_coupler.fwd_scale_constant[3] = PICKUP_SCALE_FWD_CONSTANT_20M; //20
+	current_coupler.fwd_scale_constant[4] = PICKUP_SCALE_FWD_CONSTANT_15M; //15
+	current_coupler.fwd_scale_constant[5] = PICKUP_SCALE_FWD_CONSTANT_10M; //10
+
+	current_coupler.ref_scale_value[0] = PICKUP_SCALE_REF_VALUE_160M; //160
+	current_coupler.ref_scale_value[1] = PICKUP_SCALE_REF_VALUE_80M; //80
+	current_coupler.ref_scale_value[2] = PICKUP_SCALE_REF_VALUE_40M; //40
+	current_coupler.ref_scale_value[3] = PICKUP_SCALE_REF_VALUE_20M; //20
+	current_coupler.ref_scale_value[4] = PICKUP_SCALE_REF_VALUE_15M; //15
+	current_coupler.ref_scale_value[5] = PICKUP_SCALE_REF_VALUE_10M; //10
+	
+	current_coupler.ref_scale_constant[0] = PICKUP_SCALE_REF_CONSTANT_160M; //160
+	current_coupler.ref_scale_constant[1] = PICKUP_SCALE_REF_CONSTANT_80M; //80
+	current_coupler.ref_scale_constant[2] = PICKUP_SCALE_REF_CONSTANT_40M; //40
+	current_coupler.ref_scale_constant[3] = PICKUP_SCALE_REF_CONSTANT_20M; //20
+	current_coupler.ref_scale_constant[4] = PICKUP_SCALE_REF_CONSTANT_15M; //15
+	current_coupler.ref_scale_constant[5] = PICKUP_SCALE_REF_CONSTANT_10M; //10
+
 	//Pickup type is set externally with jumpers
 }
 
@@ -144,7 +153,7 @@ int main(void) {
 	//Timer with interrupts each ms
 	init_timer_0();
 	
-	a2dSetPrescaler(ADC_PRESCALE_DIV16);
+	a2dSetPrescaler(ADC_PRESCALE_DIV64);
 	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
 	
 	current_coupler.pickup_type = 0;//read_ext_configuration();
@@ -189,13 +198,12 @@ int main(void) {
 			}
 		}
 		
-		
 		if (poll_curr_power == 1) {
 			read_state();
 			
 			input_calculate_power();
 			input_calculate_vswr();
-		
+
 			if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
 				last_pwr_change_interval = 0;
 				
@@ -211,18 +219,20 @@ int main(void) {
 		/* If the update_status flag is set, we should sample the current power values
 		   and send them over the bus as a broadcast message */
 		if (update_status == 1) {
-			data[0] = current_coupler.pickup_type;
-			data[1] = ((unsigned int)status.curr_fwd_power >> 8) & 0xFF;
-			data[2] = ((unsigned int)status.curr_fwd_power & 0xFF);
-			data[3] = ((unsigned int)status.curr_ref_power >> 8) & 0xFF;
-			data[4] = ((unsigned int)status.curr_ref_power & 0xFF);
+			#ifndef CAL_MODE
+				data[0] = current_coupler.pickup_type;
+				data[1] = ((unsigned int)status.curr_fwd_power >> 8) & 0xFF;
+				data[2] = ((unsigned int)status.curr_fwd_power & 0xFF);
+				data[3] = ((unsigned int)status.curr_ref_power >> 8) & 0xFF;
+				data[4] = ((unsigned int)status.curr_ref_power & 0xFF);
+					
+				temp_vswr = (unsigned int)(status.curr_vswr * 100);
 				
-			temp_vswr = (unsigned int)(status.curr_vswr * 100);
-			
-			data[5] = (temp_vswr >> 8) & 0xFF;
-			data[6] = (temp_vswr & 0xFF);
-			
-			bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data);
+				data[5] = (temp_vswr >> 8) & 0xFF;
+				data[6] = (temp_vswr & 0xFF);
+				
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data);
+			#endif
 			
 			update_status = 0;
 		}
