@@ -118,22 +118,21 @@ void init_calib_values(void) {
 }
 
 unsigned char get_band(unsigned int freq) {
-	unsigned char band = 0;
+	//Default band configuration would be for 20m
+	unsigned char band = 3;
 	
-	if ((freq >=0) && (freq < 2500))
+	if ((freq >= 0) && (freq < 2500))
 		band = 0;
-	else if ((freq >=2500) && (freq < 5000))
+	else if ((freq >= 2500) && (freq < 5000))
 		band = 1;
-	else if ((freq >=5000) && (freq < 12000))
+	else if ((freq >= 5000) && (freq < 12000))
 		band = 2;
-	else if ((freq >=12000) && (freq < 20000))
+	else if ((freq >= 12000) && (freq < 20000))
 		band = 3;
-	else if ((freq >=20000) && (freq < 23000))
+	else if ((freq >= 20000) && (freq < 23000))
 		band = 4;
-	else if ((freq >=23000) && (freq < 40000))
+	else if (freq >= 23000)
 		band = 5;
-	else
-		return(3);
 	
 	return(band);
 }
@@ -156,9 +155,6 @@ int main(void) {
 	
 	delay_ms(100);
 	
-	//Read the current configuration
-	current_coupler.pickup_type = (~(PIND >>3) & 0x07);
-	
 	/* Read the external address of the device */
 	bus_set_address(BUS_BASE_ADDR+read_ext_addr());
 
@@ -171,9 +167,7 @@ int main(void) {
 	
 		//Initialize the communication bus	
 	bus_init();
-	
-	init_calib_values();
-	
+
 	if (bus_get_address() == 0x01)
 		bus_set_is_master(1,DEF_NR_DEVICES);
 	else
@@ -188,12 +182,16 @@ int main(void) {
 	a2dSetPrescaler(ADC_PRESCALE_DIV64);
 	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
 	
-	current_coupler.pickup_type = 0;//read_ext_configuration();
+	//Read the current configuration
+	current_coupler.pickup_type = read_ext_configuration;
+	
+	//Load the calibration values
+	init_calib_values();
 	
 	unsigned char data[7];
 	unsigned int temp_vswr;
 	
-	status.curr_fwd_power = 10;
+	//status.curr_fwd_power = 10;
 	
 	device_id = DEVICE_ID_POWERMETER_PICKUP;
 	

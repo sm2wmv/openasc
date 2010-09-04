@@ -452,7 +452,6 @@ int main(void){
 	/* Read the external address of the device */
 	bus_set_address(settings.network_address);
 	
-	
 	bus_init();
 
 	//Init the power meter

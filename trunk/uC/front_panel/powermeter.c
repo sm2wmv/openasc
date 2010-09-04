@@ -2,7 +2,7 @@
  *  \brief Power meter
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-05-12
+ *  \date 2010-09-04
  *  \code #include "front_panel/powermeter.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
@@ -139,6 +139,12 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	}
 	
 	pickup_type = type;
+}
+
+/*! Retrieve the powermeter pickup address
+ *  \return The address for the pickup */
+unsigned char powermeter_get_address(void) {
+	return(powermeter_status.pickup_addr);
 }
 
 /*! \brief This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc */

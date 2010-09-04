@@ -2,7 +2,7 @@
  *  \brief Power meter functions
  *  \ingroup front_panel_group 
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-05-12
+ *  \date 2010-09-04
  *  \code #include "front_panel/powermeter.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
@@ -69,6 +69,7 @@ typedef struct {
 
 void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr, unsigned char type);
 void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit, unsigned char text_view_mode);
+unsigned char powermeter_get_address(void);
 void powermeter_process_tasks(void);
 void powermeter_1ms_tick(void);
 
