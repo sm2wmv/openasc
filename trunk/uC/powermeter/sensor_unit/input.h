@@ -78,6 +78,10 @@ typedef struct {
 	double curr_ref_power;
 	//! Current VSWR
 	double curr_vswr;
+	//! Current band
+	unsigned char curr_band;
+	//! Current freq
+	unsigned int curr_freq;
 } struct_status;
 
 struct_coupler_settings current_coupler;

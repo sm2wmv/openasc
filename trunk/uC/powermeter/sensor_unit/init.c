@@ -18,6 +18,14 @@ void init_timer_0(void) {
 	OCR0   = OCR0_1MS;                     /* match in aprox 1 ms,  */
 }
 
+void init_timer_1(void) {
+	TCCR1B |= (1<<ICNC1) | (1<<CS10); //start with prescaller 8, rising edge ICP1
+	TIFR |= (1<<ICF1);
+	TCNT1 = 0;
+	TIMSK |= (1<<TICIE1);//|(1<<TOIE1);
+	TCCR1A = 0;
+}
+
 /*!Initializes timer 2, used for the communication bus and the interrupt is caught in bus.c
  */
 void init_timer_2(void) {
