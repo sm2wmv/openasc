@@ -47,9 +47,25 @@ void input_calculate_power(void) {
 	fwd_volt = ((2.56f/1.024)*status.curr_fwd_ad_value);
 	ref_volt = ((2.56f/1.024)*status.curr_ref_ad_value);
 	
-	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.scale_value[4] - current_coupler.scale_constant[4];
-	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.scale_value[4] - current_coupler.scale_constant[4];
+	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[3] - current_coupler.fwd_scale_constant[3];
+	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.ref_scale_value[3] - current_coupler.ref_scale_constant[3];
 			
 	status.curr_fwd_power = pow(10,fwd_dbm_val/10)/1000;
 	status.curr_ref_power = pow(10,ref_dbm_val/10)/1000;
+	
+	#ifdef CAL_MODE
+		printf("FWD VOLT: %.1fmV\n",fwd_volt);
+		printf("REF VOLT: %.1fmV\n",ref_volt);
+		
+		printf("\n\n");
+		printf("FWD dBm: %.1fdBm\n",fwd_dbm_val);
+		printf("REF dBm: %.1fdBm\n",ref_dbm_val);
+		
+		printf("FWD dBm(2): %.1fdBm\n",fwd_dbm_val-50);
+		printf("REF dBm(2): %.1fdBm\n",ref_dbm_val-50);		
+		
+		printf("FWD PWR: %.1f\n",status.curr_fwd_power);
+		printf("REF PWR: %.1f\n",status.curr_fwd_power);
+		printf("VSWR: %.2f\n",status.curr_vswr);
+	#endif
 }
