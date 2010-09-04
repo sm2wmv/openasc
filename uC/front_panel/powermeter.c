@@ -101,35 +101,35 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 		switch(type) {
 			case PICKUP_TYPE_150W:
 				fwd_scale_value = 0.667;
-				ref_scale_value = 6.67;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_1000W:
 				fwd_scale_value = 0.1;
-				ref_scale_value = 1;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_1500W:
 				fwd_scale_value = 0.0667;
-				ref_scale_value = 0.667;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_2000W:
 				fwd_scale_value = 0.05;
-				ref_scale_value = 0.5;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_3000W:
 				fwd_scale_value = 0.033;
-				ref_scale_value = 0.33;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_5000W:
 				fwd_scale_value = 0.02;
-				ref_scale_value = 0.2;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_10000W:
 				fwd_scale_value = 0.01;
-				ref_scale_value = 0.1;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			case PICKUP_TYPE_15000W:
 				fwd_scale_value = 0.0067;
-				ref_scale_value = 0.067;
+				ref_scale_value = fwd_scale_value*REF_SCALE_PARAM;
 				break;
 			default:
 				fwd_scale_value = 0;

@@ -21,6 +21,8 @@
 /* All these flags should be put together in one variable to save space, however 
    this is not needed on this device since it will never run out of RAM anyway */ 
 
+unsigned int curr_icp = 0, last_icp = 0, icp_mutex = 0;
+
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned int counter_compare0 = 0;
 //! Counter to keep track of when to send a ping out on the bus
@@ -113,8 +115,38 @@ void init_calib_values(void) {
 	current_coupler.ref_scale_constant[3] = PICKUP_SCALE_REF_CONSTANT_20M; //20
 	current_coupler.ref_scale_constant[4] = PICKUP_SCALE_REF_CONSTANT_15M; //15
 	current_coupler.ref_scale_constant[5] = PICKUP_SCALE_REF_CONSTANT_10M; //10
+}
 
-	//Pickup type is set externally with jumpers
+unsigned char get_band(unsigned int freq) {
+	unsigned char band = 0;
+	
+	if ((freq >=0) && (freq < 2500))
+		band = 0;
+	else if ((freq >=2500) && (freq < 5000))
+		band = 1;
+	else if ((freq >=5000) && (freq < 12000))
+		band = 2;
+	else if ((freq >=12000) && (freq < 20000))
+		band = 3;
+	else if ((freq >=20000) && (freq < 23000))
+		band = 4;
+	else if ((freq >=23000) && (freq < 40000))
+		band = 5;
+	else
+		return(3);
+	
+	return(band);
+}
+
+unsigned int get_freq(void) {
+	unsigned int last_time=0,curr_time=0,freq=0;
+	//We wait as long as icp_mutex is set
+	while(icp_mutex == 1) {}
+	last_time = last_icp;
+	curr_time = curr_icp;
+	
+	freq = (14746 / ((curr_time - last_time) / 10)) * 16;
+	return(freq);
 }
 
 int main(void) {
@@ -200,7 +232,9 @@ int main(void) {
 		
 		if (poll_curr_power == 1) {
 			read_state();
-			
+			status.curr_freq = get_freq();
+			status.curr_band = get_band(status.curr_freq);
+		
 			input_calculate_power();
 			input_calculate_vswr();
 
@@ -265,4 +299,21 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
+}
+
+unsigned char count_ticks = 0;
+
+ISR(TIMER1_CAPT_vect) {
+	icp_mutex = 1;
+	
+	if (count_ticks > 10) {
+		last_icp = curr_icp;
+		curr_icp = ICR1;
+		
+		count_ticks = 0;
+	}
+	
+	count_ticks++;
+	
+	icp_mutex = 0;
 }

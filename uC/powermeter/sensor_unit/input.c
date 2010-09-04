@@ -24,17 +24,13 @@
 #include "input.h"
 
 double input_calculate_vswr(void) {
-	
 	double temp = 0;
 	if ((status.curr_fwd_power > 0.1) && (status.curr_ref_power > 0.1)) {
 		double constant = (double)sqrt((double)status.curr_ref_power/(double)status.curr_fwd_power);
-	
 		temp = (1.0f+constant)/(1.0f-constant);
-	
+		
 		return(temp);
 	}
-	
-	
 	return(0);
 }
 
@@ -44,11 +40,12 @@ void input_calculate_power(void) {
 	double fwd_dbm_val;
 	double ref_dbm_val;
 
+	//TODO: Try to optimize the calculations a bit
 	fwd_volt = ((2.56f/1.024)*status.curr_fwd_ad_value);
 	ref_volt = ((2.56f/1.024)*status.curr_ref_ad_value);
 	
-	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[3] - current_coupler.fwd_scale_constant[3];
-	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.ref_scale_value[3] - current_coupler.ref_scale_constant[3];
+	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[status.curr_band] - current_coupler.fwd_scale_constant[status.curr_band];
+	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.ref_scale_value[status.curr_band] - current_coupler.ref_scale_constant[status.curr_band];
 			
 	status.curr_fwd_power = pow(10,fwd_dbm_val/10)/1000;
 	status.curr_ref_power = pow(10,ref_dbm_val/10)/1000;

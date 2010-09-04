@@ -45,6 +45,10 @@
 /*! 15000w pickup configuration */
 #define PICKUP_TYPE_15000W      7
 
+//! How much we scale the reflected bargraph compared to the forward. 3 for example means that if forward max
+//! is 1500w the reflected max will be 1500w/3 = 500w
+#define REF_SCALE_PARAM 3
+
 //! Struct which contains information of the power meter status
 typedef struct {
 	//! Current forward power in watts
