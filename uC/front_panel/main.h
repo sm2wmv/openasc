@@ -2,7 +2,7 @@
  *  \brief Main file of the front panel
  *  \defgroup front_panel_group Front panel
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-01-25
+ *  \date 2010-09-04
  *  \code #include "front_panel/main.h" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV

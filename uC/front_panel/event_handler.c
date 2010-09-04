@@ -1,8 +1,8 @@
-/*! \fi<le front_panel/event_handler.c '
+/*! \file front_panel/event_handler.c '
  *  \brief Event handler of various things
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-01-25
+ *  \date 2010-09-04
  *  \code #include "front_panel/event_handler.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <avr/io.h>x
+#include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
 
@@ -1021,8 +1021,9 @@ void event_bus_parse_message(void) {
 		}
 	}
 	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
-		printf("DATA[0]: %i\n",bus_message.data[0]);
-		powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
+		//Lets check if the data is meant for us or if we should just ignore it
+		if (bus_message.from_addr == powermeter_get_address())
+			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 	}
 	
 	//Drop the message
