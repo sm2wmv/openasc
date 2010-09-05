@@ -325,9 +325,8 @@ void main_set_inhibit_state(enum enum_inhibit_state state);
 void send_ping(void);
 
 void main_set_device_online(unsigned char state);
-
 unsigned char main_get_aux_button(unsigned char buttonIndex);
-
 unsigned char main_band_change_ok(void);
+void clear_screensaver_timer(void);
 
 #endif

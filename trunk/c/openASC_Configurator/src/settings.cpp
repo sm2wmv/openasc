@@ -8,8 +8,8 @@ SettingsClass::SettingsClass() {
 
 	powerMeterAddress = 0;
 	powerMeterVSWRAlarmValue = 0;
-	powerMeterUpdateRateText = 0;
-	powerMeterUpdateRateBargraph = 0;
+	powerMeterUpdateRateText = 500;
+	powerMeterUpdateRateBargraph = 200;
 	powerMeterTextView = 0;
 
 	pttInterlockInput = 0;
