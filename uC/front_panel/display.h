@@ -43,7 +43,7 @@
 #define CLEAR_SET_SUB_MENU_STACK_AREA() glcd_clear_area(14,114,35,64)
 
 
-#define DISPLAY_SCREENSAVER_DEF_CONTRAST	20
+#define DISPLAY_SCREENSAVER_DEF_CONTRAST	0
 
 /**************** Text positions ****************/
 //! The position of the frequency text X position

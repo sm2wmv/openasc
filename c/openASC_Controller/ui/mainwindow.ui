@@ -232,6 +232,9 @@
           <height>26</height>
          </rect>
         </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
         <item>
          <property name="text">
           <string>None</string>
@@ -880,7 +883,7 @@
      <x>0</x>
      <y>0</y>
      <width>634</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">

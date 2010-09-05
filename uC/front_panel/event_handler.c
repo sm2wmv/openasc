@@ -128,9 +128,9 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
 				display_shutdown_view();
 
-				delay_s(2);
-
-				bootloader_start();
+				//TODO: Fix so that we just reboot the device and don't shut it down
+				event_add_message((void *)shutdown_device,3000,0);
+				//bootloader_start();
 			}
 			
 			break;
@@ -211,6 +211,8 @@ void event_handler_process_ps2(unsigned char key_code) {
 }
 
 void event_process_task(unsigned char task_index) {
+	clear_screensaver_timer();
+	
 	/* Requires that we dont change the order of the functions */
 	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT10)) {
 		event_set_rx_antenna(task_index);
@@ -303,6 +305,8 @@ void event_process_task(unsigned char task_index) {
 
 /*! \brief The pulse sensor was turned up */
 void event_pulse_sensor_up(void) {
+	clear_screensaver_timer();
+	
 	if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 		menu_action(MENU_SCROLL_UP);
 	}
@@ -346,6 +350,8 @@ void event_pulse_sensor_up(void) {
 
 /*! \brief The pulse sensor was turned down */
 void event_pulse_sensor_down(void) {
+	clear_screensaver_timer();
+	
 	if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 		menu_action(MENU_SCROLL_DOWN);
 	}
@@ -553,6 +559,8 @@ void event_poll_ext_device(void) {
 
 /*! \brief Perform the action of TX antenna button 1 if it was pressed */
 void event_tx_button1_pressed(void) {
+	clear_screensaver_timer();
+	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
 			unsigned char new_ant_comb = status.selected_ant;
@@ -621,6 +629,8 @@ void event_tx_button1_pressed(void) {
 
 /*! \brief Perform the action of TX antenna button 2 if it was pressed */
 void event_tx_button2_pressed(void) {
+	clear_screensaver_timer();
+	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_EXIST_FLAG)) {
 			unsigned char new_ant_comb = status.selected_ant;
@@ -688,6 +698,8 @@ void event_tx_button2_pressed(void) {
 
 /*! \brief Perform the action of TX antenna button 3 if it was pressed */
 void event_tx_button3_pressed(void) {
+	clear_screensaver_timer();
+	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_EXIST_FLAG)) {
 			unsigned char new_ant_comb = status.selected_ant;
@@ -756,6 +768,8 @@ void event_tx_button3_pressed(void) {
 
 /*! \brief Perform the action of TX antenna button 4 if it was pressed */
 void event_tx_button4_pressed(void) {
+	clear_screensaver_timer();
+	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_EXIST_FLAG)) {
 			unsigned char new_ant_comb = status.selected_ant;	
@@ -834,6 +848,8 @@ void event_aux2_button_pressed(void) {
 
 /*! \brief Perform the actions that should be done when the SUB menu button is pressed */
 void event_sub_button_pressed(void) {
+	clear_screensaver_timer();
+	
 	if (status.buttons_current_state & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
 		if (sub_menu_get_count() != 0) {
 			if ((status.function_status & (1<<FUNC_STATUS_SUBMENU)) == 0) {
@@ -883,6 +899,8 @@ void event_sub_button_pressed(void) {
 
 /*! \brief Perform the action of RX antenna button if it was pressed */
 void event_rxant_button_pressed(void) {
+	clear_screensaver_timer();
+	
 	if (antenna_ctrl_get_rx_antenna_count() != 0) {
 			//If the RX ANT isn't active we enter this part, also if the rx antenna is active but knob selection is on another function
 		if (((status.function_status & (1<<FUNC_STATUS_RXANT)) == 0) || ((status.function_status & (1<<FUNC_STATUS_RXANT)) && (status.knob_function != KNOB_FUNCTION_RX_ANT))) {
@@ -922,6 +940,7 @@ void event_rxant_button_pressed(void) {
 
 /*! \brief Perform the action of Rotate button if it was pressed */
 void event_rotate_button_pressed(void) {
+	clear_screensaver_timer();
 	unsigned char rotator_count=0, rotator_index=0;
 	
 	for (unsigned char i=0;i<4;i++)
@@ -1037,6 +1056,8 @@ void event_bus_parse_message(void) {
 /*! \brief Parse an external event and perform the proper action
  *  \param ext_event_status The status of the external "hardware" event flags */
 void event_parse_ext_event(unsigned int ext_event_status) {
+	clear_screensaver_timer();
+	
 	if (ext_event_status & (1<<STATUS_FOOTSWITCH_BIT)) {
 		if (status.ext_devices_current_state & (1<<STATUS_FOOTSWITCH_BIT))
 			sequencer_footsw_released();
