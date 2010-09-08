@@ -21,7 +21,7 @@
 /* All these flags should be put together in one variable to save space, however 
    this is not needed on this device since it will never run out of RAM anyway */ 
 
-unsigned int curr_icp = 0, last_icp = 0, icp_mutex = 0;
+unsigned int curr_icp = 270, last_icp = 0, icp_mutex = 0;
 
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned int counter_compare0 = 0;
@@ -41,6 +41,13 @@ unsigned char pwr_meter_sleep = 0;
 unsigned char device_id;
 
 unsigned int last_pwr_change_interval = 5000;
+
+#define ICP_ARRAY_SIZE	3
+
+unsigned int icp_array[ICP_ARRAY_SIZE];
+unsigned char icp_array_pos = 0;
+
+
 
 /*! \brief Parse a message and exectute the proper commands
  * This function is used to parse a message that was receieved on the bus that is located
@@ -119,9 +126,9 @@ void init_calib_values(void) {
 
 unsigned char get_band(unsigned int freq) {
 	//Default band configuration would be for 20m
-	unsigned char band = 3;
+	unsigned char band = status.curr_band;
 	
-	if ((freq >= 0) && (freq < 2500))
+	if ((freq >= 1000) && (freq < 2500))
 		band = 0;
 	else if ((freq >= 2500) && (freq < 5000))
 		band = 1;
@@ -138,13 +145,24 @@ unsigned char get_band(unsigned int freq) {
 }
 
 unsigned int get_freq(void) {
-	unsigned int last_time=0,curr_time=0,freq=0;
-	//We wait as long as icp_mutex is set
-	while(icp_mutex == 1) {}
-	last_time = last_icp;
-	curr_time = curr_icp;
+	unsigned int freq = 0;
+	unsigned char state = 1;
+
+	icp_mutex = 1;
+	for (unsigned char i=0;i<ICP_ARRAY_SIZE-1;i++) {
+		if ((icp_array[i] > (icp_array[i+1]+2)) || (icp_array[i] < (icp_array[i+1]-2))) {
+			
+			state = 0;
+			break;
+		}
+	}
+
+	if (state == 1) {
+		freq = (14746/icp_array[0]) * 256;
+	}
+
+	icp_mutex = 0;
 	
-	freq = (14746 / ((curr_time - last_time) / 10)) * 16;
 	return(freq);
 }
 
@@ -163,6 +181,10 @@ int main(void) {
 	that is based on the external address of the device */
 	delay_ms(bus_get_address());
 	
+	//Default band 20m
+	for (unsigned char i=0;i<ICP_ARRAY_SIZE;i++)
+		icp_array[i] = 270;
+	
 	a2dInit();
 	
 		//Initialize the communication bus	
@@ -172,6 +194,8 @@ int main(void) {
 		bus_set_is_master(1,DEF_NR_DEVICES);
 	else
 		bus_set_is_master(0,0);
+	
+	init_timer_1();
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();
@@ -183,7 +207,7 @@ int main(void) {
 	a2dSetReference(ADC_REFERENCE_256V);	//Set the 2.56V internal reference
 	
 	//Read the current configuration
-	current_coupler.pickup_type = read_ext_configuration;
+	current_coupler.pickup_type = read_ext_configuration();
 	
 	//Load the calibration values
 	init_calib_values();
@@ -209,24 +233,26 @@ int main(void) {
 			bus_check_tx_status();
 		}
 		
-		//If this device should act as master it should send out a SYNC command
-		//and also the number of devices (for the time slots) that are active on the bus
-		if (bus_is_master()) {
-			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-				unsigned char temp = bus_get_device_count();
+		#ifndef CAL_MODE
+			//If this device should act as master it should send out a SYNC command
+			//and also the number of devices (for the time slots) that are active on the bus
+			if (bus_is_master()) {
+				if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+					unsigned char temp = bus_get_device_count();
+				
+					bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
+					counter_sync = 0;
+				}
+			}
 			
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, &temp);
-				counter_sync = 0;
+			if (bus_allowed_to_send()) {
+			//Check if a ping message should be sent out on the bus
+				if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+					bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
+					counter_ping_interval = 0;
+				}
 			}
-		}
-		
-		if (bus_allowed_to_send()) {
-		//Check if a ping message should be sent out on the bus
-			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
-				counter_ping_interval = 0;
-			}
-		}
+		#endif
 		
 		if (poll_curr_power == 1) {
 			read_state();
@@ -239,8 +265,10 @@ int main(void) {
 			if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
 				last_pwr_change_interval = 0;
 				
-			if (pwr_meter_sleep == 1)
-				pwr_meter_sleep = 0;
+				if (pwr_meter_sleep == 1) {
+					update_status	= 1;	//Make sure we send out power info at once, otherwise it might take upto 1s
+					pwr_meter_sleep = 0;
+				}
 			}
 			else
 				last_pwr_change_interval++;
@@ -299,19 +327,18 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_compare0++;
 }
 
-unsigned char count_ticks = 0;
-
 ISR(TIMER1_CAPT_vect) {
-	icp_mutex = 1;
-	
-	if (count_ticks > 10) {
-		last_icp = curr_icp;
-		curr_icp = ICR1;
+	if (icp_mutex == 0) {
+		curr_icp = ICR1 - last_icp;
+		last_icp = ICR1;
 		
-		count_ticks = 0;
+		if (icp_array_pos < ICP_ARRAY_SIZE) {
+			icp_array[icp_array_pos] = curr_icp;
+			icp_array_pos++;
+		}
+		else {
+			icp_array[0] = curr_icp;
+			icp_array_pos = 1;
+		}
 	}
-	
-	count_ticks++;
-	
-	icp_mutex = 0;
 }

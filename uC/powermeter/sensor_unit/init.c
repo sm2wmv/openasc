@@ -19,7 +19,7 @@ void init_timer_0(void) {
 }
 
 void init_timer_1(void) {
-	TCCR1B |= (1<<ICNC1) | (1<<CS10); //start with prescaller 8, rising edge ICP1
+	TCCR1B |= (1<<ICNC1) | (0<<CS12)| (0<<CS11)| (1<<CS10); //start with prescaller 8, rising edge ICP1
 	TIFR |= (1<<ICF1);
 	TCNT1 = 0;
 	TIMSK |= (1<<TICIE1);//|(1<<TOIE1);

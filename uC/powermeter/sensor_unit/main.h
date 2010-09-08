@@ -25,13 +25,25 @@
 //! The size of the TX queue in buffers
 #define BUS_TX_QUEUE_SIZE	10
 
-//! The transmit interval of the power in ms, used when the meter is considered as active */
-#define POWER_TRANSMIT_INTERVAL1 100
-//! The transmit interval of the power in ms, used when the meter is considered as not active */
-#define POWER_TRANSMIT_INTERVAL2 2000
+#ifndef CAL_MODE
+	//! The transmit interval of the power in ms, used when the meter is considered as active */
+	#define POWER_TRANSMIT_INTERVAL1 100
+	//! The transmit interval of the power in ms, used when the meter is considered as not active */
+	#define POWER_TRANSMIT_INTERVAL2 2000
 
-//! The interval which the units polls the power */
-#define POWER_POLL_INTERVAL	100
+	//! The interval which the units polls the power */
+	#define POWER_POLL_INTERVAL	100
+#endif
+
+#ifdef CAL_MODE
+	//! The transmit interval of the power in ms, used when the meter is considered as active */
+	#define POWER_TRANSMIT_INTERVAL1 1000
+	//! The transmit interval of the power in ms, used when the meter is considered as not active */
+	#define POWER_TRANSMIT_INTERVAL2 2000
+
+	//! The interval which the units polls the power */
+	#define POWER_POLL_INTERVAL	1000
+#endif	
 
 #define POWER_LAST_CHANGE_TIME 1000
 
