@@ -50,7 +50,7 @@ void input_calculate_power(void) {
 	status.curr_fwd_power = pow(10,fwd_dbm_val/10)/1000;
 	status.curr_ref_power = pow(10,ref_dbm_val/10)/1000;
 	
-	#ifdef CAL_MODE
+/*	#ifdef CAL_MODE
 		printf("FWD VOLT: %.1fmV\n",fwd_volt);
 		printf("REF VOLT: %.1fmV\n",ref_volt);
 		
@@ -60,9 +60,12 @@ void input_calculate_power(void) {
 		
 		printf("FWD dBm(2): %.1fdBm\n",fwd_dbm_val-50);
 		printf("REF dBm(2): %.1fdBm\n",ref_dbm_val-50);		
+	
 		
+		printf("FREQ: %ukHz\n",status.curr_freq);
+		printf("BAND: %i\n",status.curr_band);
 		printf("FWD PWR: %.1f\n",status.curr_fwd_power);
 		printf("REF PWR: %.1f\n",status.curr_fwd_power);
 		printf("VSWR: %.2f\n",status.curr_vswr);
-	#endif
+	#endif*/
 }
