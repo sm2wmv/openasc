@@ -678,14 +678,14 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	if (!display_screensaver_mode()) {
+	/*if (!display_screensaver_mode()) {
 		if (counter_screensaver_timeout >= DISPLAY_SCREENSAVER_TIMEOUT) {
 			event_add_message((void*)display_update_screensaver, 0,0);
 			display_set_backlight(DISPLAY_SCREENSAVER_DEF_CONTRAST);
 			
 			counter_screensaver_timeout = 0;
 		}
-	}
+	}*/
 	
 	counter_last_pulse_event++;
 	counter_poll_rotary_encoder++;

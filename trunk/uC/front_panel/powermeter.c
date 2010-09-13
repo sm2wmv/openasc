@@ -155,16 +155,18 @@ void powermeter_process_tasks(void) {
 			display_show_powermeter_text(powermeter_status.curr_fwd_pwr_value,powermeter_status.curr_ref_pwr_value,powermeter_status.curr_vswr_value);
 			
 			counter_powermeter_update_text = 0;
-		}
 			
+			//glcd_update_all();
+		}
+
 		if (counter_powermeter_update_bargraph >= powermeter_status.bargraph_update_rate) {
 			display_show_powermeter_bargraph(powermeter_status.curr_fwd_pwr_value*fwd_scale_value, powermeter_status.curr_ref_pwr_value*ref_scale_value);
 			
 			counter_powermeter_update_bargraph = 0;
+			
+			//glcd_update_all();
 		}
 	}
-	
-	glcd_update_all();
 }
 
 /*! \brief This function should be called at 1 ms intervals. It is to keep track of update rates etc for the display */

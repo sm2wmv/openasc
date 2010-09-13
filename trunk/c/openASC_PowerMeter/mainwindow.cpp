@@ -140,8 +140,8 @@ MainWindow::MainWindow(QWidget *parent)
 		setupConnections();
 
 		//Dummy variables, should be set from settings
-		settings.textUpdateRate = 400;
-		settings.metersUpdateRate = 100;
+		settings.textUpdateRate = 500;
+		settings.metersUpdateRate = 200;
 
 		rescaleMeters(PICKUP_TYPE_15000W);
 
@@ -149,7 +149,7 @@ MainWindow::MainWindow(QWidget *parent)
 		pickupStatus.refPower = 250;
 
 		//Just for testing
-		timerTestValueChange->start(50);
+		timerTestValueChange->start(100);
 
 		timerTextUpdate->start(settings.textUpdateRate);
 		timerMetersUpdate->start(settings.metersUpdateRate);
