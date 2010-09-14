@@ -42,12 +42,10 @@ unsigned char device_id;
 
 unsigned int last_pwr_change_interval = 5000;
 
-#define ICP_ARRAY_SIZE	3
+#define ICP_ARRAY_SIZE			3
 
 unsigned int icp_array[ICP_ARRAY_SIZE];
 unsigned char icp_array_pos = 0;
-
-
 
 /*! \brief Parse a message and exectute the proper commands
  * This function is used to parse a message that was receieved on the bus that is located
@@ -260,7 +258,6 @@ int main(void) {
 			status.curr_band = get_band(status.curr_freq);
 		
 			input_calculate_power();
-			input_calculate_vswr();
 
 			if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
 				last_pwr_change_interval = 0;
@@ -280,6 +277,10 @@ int main(void) {
 		   and send them over the bus as a broadcast message */
 		if (update_status == 1) {
 			#ifndef CAL_MODE
+				//Calculate the VSWR, this is not needed during each power update, only
+				//just before we send the data
+				input_calculate_vswr();
+			
 				data[0] = current_coupler.pickup_type;
 				data[1] = ((unsigned int)status.curr_fwd_power >> 8) & 0xFF;
 				data[2] = ((unsigned int)status.curr_fwd_power & 0xFF);

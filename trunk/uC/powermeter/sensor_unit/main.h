@@ -18,7 +18,7 @@
 
 //#define CAL_MODE	1
 
-#define PICKUP_UNIT_ID_1
+#define PICKUP_UNIT_ID_2
 
 //! The size of the RX queue in buffers
 #define BUS_RX_QUEUE_SIZE 10
@@ -27,12 +27,12 @@
 
 #ifndef CAL_MODE
 	//! The transmit interval of the power in ms, used when the meter is considered as active */
-	#define POWER_TRANSMIT_INTERVAL1 100
+	#define POWER_TRANSMIT_INTERVAL1 200
 	//! The transmit interval of the power in ms, used when the meter is considered as not active */
 	#define POWER_TRANSMIT_INTERVAL2 2000
 
 	//! The interval which the units polls the power */
-	#define POWER_POLL_INTERVAL	100
+	#define POWER_POLL_INTERVAL	40
 #endif
 
 #ifdef CAL_MODE

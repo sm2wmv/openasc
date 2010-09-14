@@ -23,6 +23,15 @@
 
 #include "input.h"
 
+#define FWD_PWR_ARRAY_SIZE	10
+#define REF_PWR_ARRAY_SIZE	10
+
+unsigned int fwd_pwr_array[FWD_PWR_ARRAY_SIZE];
+unsigned char fwd_pwr_array_pos = 0;
+
+unsigned int ref_pwr_array[REF_PWR_ARRAY_SIZE];
+unsigned char ref_pwr_array_pos = 0;
+
 double input_calculate_vswr(void) {
 	double temp = 0;
 	if ((status.curr_fwd_power > 0.1) && (status.curr_ref_power > 0.1)) {
@@ -40,15 +49,35 @@ void input_calculate_power(void) {
 	double fwd_dbm_val;
 	double ref_dbm_val;
 
+	unsigned char fwd_pwr_large_val_index=0;
+	unsigned int fwd_pwr_large_val=0;
+
 	//TODO: Try to optimize the calculations a bit
 	fwd_volt = ((2.56f/1.024)*status.curr_fwd_ad_value);
 	ref_volt = ((2.56f/1.024)*status.curr_ref_ad_value);
 	
-	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[status.curr_band] - current_coupler.fwd_scale_constant[status.curr_band];
+	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[status.curr_band] - current_coupler.fwd_scale_constant[status.curr_band] + 27;
 	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.ref_scale_value[status.curr_band] - current_coupler.ref_scale_constant[status.curr_band];
-			
-	status.curr_fwd_power = pow(10,fwd_dbm_val/10)/1000;
-	status.curr_ref_power = pow(10,ref_dbm_val/10)/1000;
+	
+	if (fwd_pwr_array_pos >= FWD_PWR_ARRAY_SIZE)
+		fwd_pwr_array_pos = 0;
+
+	if (ref_pwr_array_pos >= REF_PWR_ARRAY_SIZE)
+		ref_pwr_array_pos = 0;
+
+	
+	fwd_pwr_array[fwd_pwr_array_pos++] = pow(10,fwd_dbm_val/10)/1000;
+	ref_pwr_array[ref_pwr_array_pos++] = pow(10,ref_dbm_val/10)/1000;
+	
+	for (unsigned char i=0;i<FWD_PWR_ARRAY_SIZE;i++)
+		if (fwd_pwr_array[i] > fwd_pwr_large_val) {
+			fwd_pwr_large_val_index = i;
+			fwd_pwr_large_val = fwd_pwr_array[i];
+		}
+
+
+	status.curr_fwd_power = fwd_pwr_array[fwd_pwr_large_val_index];
+	status.curr_ref_power = ref_pwr_array[fwd_pwr_large_val_index];
 	
 	#ifdef CAL_MODE
 		printf("FWD VOLT: %.1fmV\n",fwd_volt);
