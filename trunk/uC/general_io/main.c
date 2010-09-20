@@ -48,6 +48,10 @@ unsigned int counter_sync=0;
 //! Counter to keep track of when to send a ping out on the bus
 unsigned int counter_ping_interval=0;
 
+
+static int curr_heading[3] = {0, 5, 10};
+
+
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
@@ -58,6 +62,16 @@ void bus_parse_message(void) {
 		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
+	else if (bus_message.cmd == BUS_CMD_ROTATOR_SET_ANGLE) {
+		unsigned char subaddr = bus_message.data[0];
+		if ((subaddr >= 1) && (subaddr <= 3))
+		{
+			unsigned int new_dir;
+			new_dir = bus_message.data[1] << 8;
+			new_dir |= bus_message.data[2];
+			curr_heading[subaddr-1] = new_dir;
+		}
+	}
 	else {
 	
 	}
@@ -137,7 +151,24 @@ int main(void)
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
 				//Check if the device is a POS or NEG driver module
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
-
+				
+				unsigned char data[6];
+				data[0] = DEVICE_ID_ROTATOR_UNIT;
+				int i;
+				for (i=0; i<3; ++i) {
+					if (++curr_heading[i] >= 360) {
+						curr_heading[i] = 0;
+					}
+					
+					data[1] = i+1;	/* sub-address */
+					data[2] = (curr_heading[i] >> 8);	  /* Hi curr heading */
+					data[3] = (curr_heading[i] & 0xff);  /* Lo curr heading */
+					data[4] = 0;	/* Hi target heading */
+					data[5] = 0;	/* Lo target heading */
+					bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
+								BUS_CMD_ROTATOR_STATUS_UPDATE, sizeof(data), data);
+				}
+				
 				counter_ping_interval = 0;
 			}
 		}
