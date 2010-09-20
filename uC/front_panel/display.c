@@ -76,7 +76,7 @@ unsigned char display_screensaver_mode(void) {
 void display_update_screensaver(void) {
 	//If the temp_ptr hasn't been initialized then we need to allocate the memory for it
 	if (temp_ptr == NULL)
-		temp_ptr = (char *)malloc(8);
+		temp_ptr = (char *)malloc(9);
 
 	if (screensaver_mode == 0)
 		screensaver_mode = 1;
@@ -154,7 +154,7 @@ void display_antennas(unsigned char band) {
 	//Check if the antenna is in use by another device, in that case
 	//we indicate that on the display. Otherwise we just print as usual
 	if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_IN_USE_FLAG)) {
-		char temp[strlen(antenna_ctrl_get_antenna_text(0))+2];
+		char temp[strlen(antenna_ctrl_get_antenna_text(0))+3];
 		sprintf(temp,"(%s)",antenna_ctrl_get_antenna_text(0));
 		glcd_text(DISPLAY_TEXT_ANT1_X_POS, DISPLAY_TEXT_ANT1_Y_POS, FONT_NINE_DOT,temp,antenna_ctrl_get_antenna_text_length(0));
 	}
@@ -162,7 +162,7 @@ void display_antennas(unsigned char band) {
 		glcd_text(DISPLAY_TEXT_ANT1_X_POS, DISPLAY_TEXT_ANT1_Y_POS, FONT_NINE_DOT,antenna_ctrl_get_antenna_text(0),antenna_ctrl_get_antenna_text_length(0));
 
 	if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_IN_USE_FLAG)) {
-		char temp[strlen(antenna_ctrl_get_antenna_text(1))+2];
+		char temp[strlen(antenna_ctrl_get_antenna_text(1))+3];
 		sprintf(temp,"(%s)",antenna_ctrl_get_antenna_text(1));
 		glcd_text(DISPLAY_TEXT_ANT2_X_POS, DISPLAY_TEXT_ANT2_Y_POS, FONT_NINE_DOT,temp,antenna_ctrl_get_antenna_text_length(1));
 	}
@@ -170,7 +170,7 @@ void display_antennas(unsigned char band) {
 		glcd_text(DISPLAY_TEXT_ANT2_X_POS, DISPLAY_TEXT_ANT2_Y_POS, FONT_NINE_DOT,antenna_ctrl_get_antenna_text(1),antenna_ctrl_get_antenna_text_length(1));
 
 	if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_IN_USE_FLAG)) {
-		char temp[strlen(antenna_ctrl_get_antenna_text(2))+2];
+		char temp[strlen(antenna_ctrl_get_antenna_text(2))+3];
 		sprintf(temp,"(%s)",antenna_ctrl_get_antenna_text(2));
 		glcd_text(DISPLAY_TEXT_ANT3_X_POS, DISPLAY_TEXT_ANT3_Y_POS, FONT_NINE_DOT,temp,antenna_ctrl_get_antenna_text_length(2));
 	}
@@ -178,7 +178,7 @@ void display_antennas(unsigned char band) {
 		glcd_text(DISPLAY_TEXT_ANT3_X_POS, DISPLAY_TEXT_ANT3_Y_POS, FONT_NINE_DOT,antenna_ctrl_get_antenna_text(2),antenna_ctrl_get_antenna_text_length(2));
 
 	if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_IN_USE_FLAG)) {
-		char temp[strlen(antenna_ctrl_get_antenna_text(3))+2];
+		char temp[strlen(antenna_ctrl_get_antenna_text(3))+3];
 		sprintf(temp,"(%s)",antenna_ctrl_get_antenna_text(3));
 		glcd_text(DISPLAY_TEXT_ANT4_X_POS, DISPLAY_TEXT_ANT4_Y_POS, FONT_NINE_DOT,temp,antenna_ctrl_get_antenna_text_length(3));
 	}
@@ -193,7 +193,7 @@ void display_antennas(unsigned char band) {
  * \param band The band you wish to show the rotators direction */
 void display_rotator_directions(unsigned char band) {
 	CLEAR_ROTATOR_AREA();
-	char temp_dir[7];
+	char temp_dir[8];
 	
 	if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_ROTATOR_FLAG)) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(0));
@@ -310,7 +310,7 @@ void display_show_rx_ant(unsigned char ant_index) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
 
 		if ((antenna_ctrl_get_rx_antenna_count() >= ant_index) && (ant_index != 0)) {
-			char temp[strlen(antenna_ctrl_get_rx_antenna_name(ant_index-1))+4];
+			char temp[strlen(antenna_ctrl_get_rx_antenna_name(ant_index-1))+5];
 			
 			sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(ant_index-1));
 			
@@ -331,7 +331,7 @@ void display_show_rx_ant(unsigned char ant_index) {
 void display_show_set_heading(unsigned int rotator_heading, unsigned char view_360_deg) {
 	if (status.current_display_level == DISPLAY_LEVEL_BAND) {	
 		glcd_clear();
-		char temp[7];
+		char temp[8];
 		char size = 0;
 		
 		if (view_360_deg == 1) {
@@ -393,7 +393,7 @@ void display_update_radio_freq(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
 		if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() != RADIO_INTERFACE_BCD)) {
 			if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {
-				char temp_str[14];
+				char temp_str[15];
 				char temp_bandport = '?';
 				
 				unsigned char temp_port = radio_get_band_portion();
@@ -445,7 +445,7 @@ void display_update_radio_freq(void) {
  *  \param sub_menu_type Which type of sub menu it is */
 void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type) {
 	if (status.current_display_level == DISPLAY_LEVEL_SUBMENU) {
-		char temp[10];
+		char temp[12];
 		
 		if (sub_menu_type == SUBMENU_VERT_ARRAY) {
 			CLEAR_SET_SUB_MENU_ARRAY_AREA();
@@ -463,7 +463,7 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 				CLEAR_RX_ANTENNA_AREA();
 
 				if ((antenna_ctrl_get_rx_antenna_count() >= status.selected_rx_antenna) && (status.selected_rx_antenna != 0)) {
-					char temp[strlen(antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1))+4];
+					char temp[strlen(antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1))+5];
 			
 					sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1));
 			
@@ -489,7 +489,7 @@ void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type)
 				CLEAR_RX_ANTENNA_AREA();
 
 				if ((antenna_ctrl_get_rx_antenna_count() >= status.selected_rx_antenna) && (status.selected_rx_antenna != 0)) {
-					char temp[strlen(antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1))+4];
+					char temp[strlen(antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1))+5];
 			
 					sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1));
 			
