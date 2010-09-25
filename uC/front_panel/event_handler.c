@@ -1014,7 +1014,7 @@ void event_bus_parse_message(void) {
 	else if (bus_message.cmd == BUS_CMD_ROTATOR_STATUS_UPDATE) {
 		for (unsigned char i=0;i<4;i++) {
 			if (antenna_ctrl_get_rotator_addr(i) == bus_message.from_addr) {
-				if (antenna_ctrl_get_rotator_sub_addr(i) == 0) {
+				if (antenna_ctrl_get_rotator_sub_addr(i) == bus_message.data[1]) {
 					unsigned int curr_heading = 0;
 					
 					curr_heading = bus_message.data[2]<<8;
@@ -1023,18 +1023,6 @@ void event_bus_parse_message(void) {
 					antenna_ctrl_set_direction(curr_heading,i);
 					
 					main_update_display();
-				}
-				else {
-					if (antenna_ctrl_get_rotator_sub_addr(i) == bus_message.data[1]) {
-						unsigned int curr_heading = 0;
-						
-						curr_heading = bus_message.data[2]<<8;
-						curr_heading += bus_message.data[3];
-	
-						antenna_ctrl_set_direction(curr_heading,i);
-						
-						main_update_display();
-					}
 				}
 			}
 		}

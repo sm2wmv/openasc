@@ -193,7 +193,7 @@ void display_antennas(unsigned char band) {
  * \param band The band you wish to show the rotators direction */
 void display_rotator_directions(unsigned char band) {
 	CLEAR_ROTATOR_AREA();
-	char temp_dir[8];
+	char temp_dir[9];
 	
 	if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_ROTATOR_FLAG)) {
 		sprintf((char *)temp_dir,"%3i deg",antenna_ctrl_get_direction(0));
