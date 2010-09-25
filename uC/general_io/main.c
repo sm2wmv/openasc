@@ -38,6 +38,9 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
+#define ADC_CHANNELS		3
+#define ADC_INTERVAL		33
+
 //! Contains info of the driver type
 unsigned char device_id;
 
@@ -47,9 +50,25 @@ unsigned int counter_compare0 = 0;
 unsigned int counter_sync=0;
 //! Counter to keep track of when to send a ping out on the bus
 unsigned int counter_ping_interval=0;
+//! Counter to keep track of when to poll the ADC
+unsigned int counter_adc_interval = 0;
+//! Selected ADC channel
+static uint8_t adc_ch = 0;
+
+static int current_heading[ADC_CHANNELS] = {0, 0, 0};
+static int target_heading[ADC_CHANNELS] = {-1, -1, -1};
+static int8_t rotate_dir[ADC_CHANNELS] = {0, 0, 0};
 
 
-static int curr_heading[3] = {0, 5, 10};
+static void init_adc(void) {
+    /* ADC right adjust result.   */
+    /* AREF as reference voltage */
+  ADMUX = 0;
+  
+    /* ADC interrupt enable */
+    /* ADC prescaler division factor 128 */
+  ADCSRA = _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+}
 
 
 /*! \brief Parse a message and exectute the proper commands
@@ -64,12 +83,25 @@ void bus_parse_message(void) {
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_ROTATOR_SET_ANGLE) {
 		unsigned char subaddr = bus_message.data[0];
-		if ((subaddr >= 1) && (subaddr <= 3))
-		{
+		if (subaddr <= 2) {
 			unsigned int new_dir;
 			new_dir = bus_message.data[1] << 8;
 			new_dir |= bus_message.data[2];
-			curr_heading[subaddr-1] = new_dir;
+			if (new_dir > 1023) {
+				new_dir = 1023;
+			}
+			if (new_dir > current_heading[subaddr]) {
+				target_heading[subaddr] = new_dir;
+				rotate_dir[subaddr] = 1;
+			}
+			else if (new_dir < current_heading[subaddr]) {
+				target_heading[subaddr] = new_dir;
+				rotate_dir[subaddr] = -1;
+			}
+			else {
+				target_heading[subaddr] = -1;
+				rotate_dir[subaddr] = 0;
+			}
 		}
 	}
 	else {
@@ -123,6 +155,8 @@ int main(void)
 	//Timer with interrupts each ms
 	init_timer_0();
 	
+	init_adc();
+	
 	device_id = DEVICE_ID_GENERAL_IO;
 	
 	sei();
@@ -156,15 +190,16 @@ int main(void)
 				data[0] = DEVICE_ID_ROTATOR_UNIT;
 				int i;
 				for (i=0; i<3; ++i) {
-					if (++curr_heading[i] >= 360) {
-						curr_heading[i] = 0;
+					int target = current_heading[i];
+					if (target_heading[i] != -1) {
+						target = target_heading[i];
 					}
 					
-					data[1] = i+1;	/* sub-address */
-					data[2] = (curr_heading[i] >> 8);	  /* Hi curr heading */
-					data[3] = (curr_heading[i] & 0xff);  /* Lo curr heading */
-					data[4] = 0;	/* Hi target heading */
-					data[5] = 0;	/* Lo target heading */
+					data[1] = i;															/* Sub address */
+					data[2] = (current_heading[i] >> 8);	  /* Hi current heading */
+					data[3] = (current_heading[i] & 0xff);  /* Lo current heading */
+					data[4] = (target >> 8);								/* Hi target heading */
+					data[5] = (target & 0xff);							/* Lo target heading */
 					bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
 								BUS_CMD_ROTATOR_STATUS_UPDATE, sizeof(data), data);
 				}
@@ -172,16 +207,67 @@ int main(void)
 				counter_ping_interval = 0;
 			}
 		}
+		
+		if (counter_adc_interval >= ADC_INTERVAL) {
+			counter_adc_interval = 0;
+			
+				/* Check if the reqested heading has been reached */
+			if (target_heading[adc_ch] >= 0) {
+				if (((rotate_dir[adc_ch] < 0) && (current_heading[adc_ch] <= target_heading[adc_ch])) ||
+						((rotate_dir[adc_ch] > 0) && (current_heading[adc_ch] >= target_heading[adc_ch]))) {
+					target_heading[adc_ch] = -1;
+					rotate_dir[adc_ch] = 0;
+				}
+			}
+			
+				/* Set the relays according to the rotate_dir variable */
+			uint8_t portc = PORTC;
+			if (rotate_dir[adc_ch] < 0) {
+				portc &= ~_BV(4-adc_ch*2);
+				portc |= _BV(5-adc_ch*2);
+			}
+			else if (rotate_dir[adc_ch] > 0) {
+				portc &= ~_BV(5-adc_ch*2);
+				portc |= _BV(4-adc_ch*2);
+			}
+			else {
+				portc &= ~(_BV(4-adc_ch*2) | _BV(5-adc_ch*2));
+			}
+			PORTC = portc;
+	
+				/* Switch to next ADC channel and start a conversion. */
+			if (++adc_ch == ADC_CHANNELS) {
+				adc_ch = 0;
+			}
+			ADMUX = (ADMUX & 0xf0) | adc_ch;
+			ADCSRA |= (_BV(ADEN) | _BV(ADSC));
+		}
 	}
 	
-	return (0);
+	return 0;
 }
+
 
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
+	counter_adc_interval++;
 	
 	bus_ping_tick();
 }
+
+
+
+/*! \brief Interrupt service routine for ADC conversion finished */
+SIGNAL(SIG_ADC) {
+    /* Read the ADC conversion result */
+  uint16_t val = ADCL;
+	val |= ADCH << 8;
+	current_heading[adc_ch] = val;
+	
+    /* Turn off ADC clock (saves power) */
+  ADCSRA &= ~_BV(ADEN);
+}
+
