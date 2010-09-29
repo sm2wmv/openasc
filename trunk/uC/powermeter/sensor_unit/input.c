@@ -56,7 +56,7 @@ void input_calculate_power(void) {
 	fwd_volt = ((2.56f/1.024)*status.curr_fwd_ad_value);
 	ref_volt = ((2.56f/1.024)*status.curr_ref_ad_value);
 	
-	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[status.curr_band] - current_coupler.fwd_scale_constant[status.curr_band] + 27;
+	fwd_dbm_val = (fwd_volt-PICKUP_FWD_0DBM_CONST_VOLTAGE)/current_coupler.fwd_scale_value[status.curr_band] - current_coupler.fwd_scale_constant[status.curr_band];
 	ref_dbm_val = (ref_volt-PICKUP_REF_0DBM_CONST_VOLTAGE)/current_coupler.ref_scale_value[status.curr_band] - current_coupler.ref_scale_constant[status.curr_band];
 	
 	if (fwd_pwr_array_pos >= FWD_PWR_ARRAY_SIZE)
@@ -80,6 +80,8 @@ void input_calculate_power(void) {
 	status.curr_ref_power = ref_pwr_array[fwd_pwr_large_val_index];
 	
 	#ifdef CAL_MODE
+		input_calculate_vswr();
+	
 		printf("FWD VOLT: %.1fmV\n",fwd_volt);
 		printf("REF VOLT: %.1fmV\n",ref_volt);
 		

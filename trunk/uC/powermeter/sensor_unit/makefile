@@ -60,7 +60,7 @@ TARGET = main
 
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP
-BASE_ADDRESS = 0
+BASE_ADDRESS = 10
 
 #Root directories
 WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_tx_queue.c ../../wmv_bus/bus_rx_queue.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c
