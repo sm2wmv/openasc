@@ -19,8 +19,8 @@ class SettingsClass {
 		void setNumberOfDevices(int deviceCount);
 		int getNumberOfDevices();
 
-		void setPowerMeterAddress(unsigned char address);
-		unsigned char getPowerMeterAddress(void);
+		void setPowerMeterAddress(unsigned char band, unsigned char address);
+		unsigned char getPowerMeterAddress(unsigned char band);
 		void setPowerMeterVSWRAlarm(double swr);
 		double getPowerMeterVSWRAlarm(void);
 		void setPowerMeterUpdateRateText(unsigned int rate);
@@ -35,11 +35,10 @@ class SettingsClass {
 		int networkAddress;
 		bool deviceIsMaster;
 		int nrOfDevices;
-		unsigned char powerMeterAddress;
+		unsigned char powerMeterAddress[9];
 		double powerMeterVSWRAlarmValue;
 		unsigned int powerMeterUpdateRateText;
 		unsigned int powerMeterUpdateRateBargraph;
-		unsigned int powerMeterTextView;
 		unsigned char pttInterlockInput; //0 = disabled, 1-7 -> ptt inputs
 	protected:
 };

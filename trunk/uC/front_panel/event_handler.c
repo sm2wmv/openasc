@@ -104,35 +104,29 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			internal_comm_message_nacked();
 			break;
 		case INT_COMM_TURN_DEVICE_OFF:
-			if (!computer_interface_is_active()) {
-				//TODO: Problem with delay here, need to wait until everything is shut off
-				//This solution is pretty uggly...do it some other way?
-				status.prev_display = status.current_display;
-				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
-				display_shutdown_view();
-				
-				main_save_settings();
-				
-				band_ctrl_change_band(BAND_UNDEFINED);
-				
-				main_set_device_online(0);
-				
-				//TODO: Send global shutdown broadcast message three times
-				
-				send_ping();
-				
-				event_add_message((void *)shutdown_device,3000,0);
-			}
-			else {
-				status.prev_display = status.current_display;
-				status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
-				display_shutdown_view();
-
-				//TODO: Fix so that we just reboot the device and don't shut it down
-				event_add_message((void *)shutdown_device,3000,0);
-				//bootloader_start();
-			}
+			//TODO: Problem with delay here, need to wait until everything is shut off
+			//This solution is pretty uggly...do it some other way?
+			status.prev_display = status.current_display;
+			status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
+			display_shutdown_view();
 			
+			main_save_settings();
+			
+			band_ctrl_change_band(BAND_UNDEFINED);
+			
+			main_set_device_online(0);
+			
+			//TODO: Send global shutdown broadcast message three times
+			
+			send_ping();
+			
+			if (computer_interface_is_active()) {
+				delay_s(3);
+				led_set_error(LED_STATE_ON);
+				internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
+			}
+			else
+				event_add_message((void *)shutdown_device,3000,0);
 			break;
 		case INT_COMM_PS2_KEYPRESSED:
 			event_handler_process_ps2(message.data[0]);
@@ -1029,7 +1023,9 @@ void event_bus_parse_message(void) {
 	}
 	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
 		//Lets check if the data is meant for us or if we should just ignore it
-		if (bus_message.from_addr == powermeter_get_address())
+		if ((runtime_settings.powermeter_address == 0x00) && (bus_message.from_addr == main_get_powermeter_address(status.selected_band)))
+			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
+		else if (runtime_settings.powermeter_address == bus_message.from_addr)
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 	}
 	

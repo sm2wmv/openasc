@@ -57,8 +57,6 @@ typedef struct {
 	unsigned int curr_ref_pwr_value;
 	//! VSWR represented as an integer, 152 means 1.52:1 in SWR
 	unsigned int curr_vswr_value;
-	//! Address of the power meter pickup
-	unsigned char pickup_addr;
 	//! The update in ms of the text on the display
 	unsigned int text_update_rate;
 	//! The update rate in ms of the bargraph
@@ -68,8 +66,7 @@ typedef struct {
 } powermeter_struct;
 
 void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr, unsigned char type);
-void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit, unsigned char text_view_mode);
-unsigned char powermeter_get_address(void);
+void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit);
 void powermeter_process_tasks(void);
 void powermeter_1ms_tick(void);
 

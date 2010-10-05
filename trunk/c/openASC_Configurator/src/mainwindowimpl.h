@@ -174,11 +174,12 @@ private slots:
 	void checkBoxNetworkIsMasterClicked(bool state);
 	void spinBoxNetworkNrOfDevicesValueChanged(int newValue);
 	
+	void checkBoxPowerMeterAllBandsClicked(bool state);
+	void comboBoxPowerMeterBandChanged(int index);
 	void spinBoxPowerMeterAdressValueChanged(int);
 	void spinBoxPowerMeterSWRValueChanged(double);
 	void spinBoxPowerMeterUpdateRateTextValueChanged(int);
 	void spinBoxPowerMeterUpdateRateBargraphValueChanged(int);
-	void comboBoxPowerMeterTextViewIndexChanged(int value);
 
 	void radioButtonPTTInterlockNoneClicked(bool);
 	void radioButtonPTTInterlockInput1Clicked(bool);

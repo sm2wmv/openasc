@@ -126,6 +126,13 @@ void event_add_message(void (*func), unsigned int offset, unsigned char id) {
 	event_queue_add(event);
 }
 
+/*! Get the power meter address
+ *  \param band Which band we wish to get the address of
+ *  \return the address */
+unsigned char main_get_powermeter_address(unsigned char band) {
+	return(settings.powermeter_address[band]);
+}
+
 /*! Get the key assignment index
  *  \param index The index of which task we wish to check
  *  \return The current task index, can be found in event_handler.h */
@@ -392,7 +399,7 @@ int main(void){
 	//Init the backlight PWM
 	init_backlight();
 	
-	runtime_settings.lcd_backlight_value = 20;
+	runtime_settings.powermeter_address = 0; //Set powermeter address to AUTO
 	
 	display_set_backlight(runtime_settings.lcd_backlight_value);
 		
@@ -455,7 +462,7 @@ int main(void){
 	bus_init();
 
 	//Init the power meter
-	powermeter_init(settings.powermeter_address, settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph, settings.powermeter_vswr_limit,settings.powermeter_text_view);
+	powermeter_init(settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph, settings.powermeter_vswr_limit);
 	
 	if (settings.network_device_is_master == 1) {
 		bus_set_is_master(1,settings.network_device_count);

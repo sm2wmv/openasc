@@ -45,28 +45,24 @@ unsigned int counter_powermeter_update_text=0;
 //! The counter which keeps track of when we should update the power meter bargraph
 unsigned int counter_powermeter_update_bargraph=0;
 
-unsigned char text_view_mode = 0;
 unsigned char pickup_type = 99;
 
 double fwd_scale_value = 0;
 double ref_scale_value = 0;
 
 /*! \brief Initialize the power meter
- *  \param pickup_addr The address of the powermeter unit that sends the information
  *  \param text_update_rate How often we should refresh the text on the display
  *  \param bargraph_update_rate How often we should update the bargraph of the display
  *  \param vswr_limit What is the SWR limit of the device, when this is exceeded we shut down the possibility to PTT 
  *  \param text_view Which kind of data is shown on the text display */
-void powermeter_init(unsigned char pickup_addr, unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit, unsigned char text_view) {
+void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit) {
 	powermeter_status.curr_fwd_pwr_value = 0;
 	powermeter_status.curr_ref_pwr_value = 0;
 	powermeter_status.curr_vswr_value = 0;
 		
-	powermeter_status.pickup_addr = pickup_addr;
 	powermeter_status.text_update_rate = text_update_rate;
 	powermeter_status.bargraph_update_rate = bargraph_update_rate;
 	powermeter_status.vswr_limit = vswr_limit;
-	text_view_mode = text_view;
 }
 
 /*! \brief Activate the power meter display 
@@ -139,12 +135,6 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	}
 	
 	pickup_type = type;
-}
-
-/*! Retrieve the powermeter pickup address
- *  \return The address for the pickup */
-unsigned char powermeter_get_address(void) {
-	return(powermeter_status.pickup_addr);
 }
 
 /*! \brief This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc */

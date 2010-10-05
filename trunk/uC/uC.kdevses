@@ -1,31 +1,37 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="8" >
+ <DocsAndViews NumberOfDocuments="10" >
   <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="" line="960" Type="Source" />
+   <View0 Encoding="" line="126" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/band_ctrl.c" >
-   <View0 Encoding="" line="178" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/makefile" >
+   <View0 Encoding="" line="0" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/band_ctrl.h" >
-   <View0 Encoding="" line="62" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.h" >
+   <View0 Encoding="" line="191" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.h" >
-   <View0 Encoding="" line="93" Type="Source" />
+  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/computer_interface.c" >
+   <View0 Encoding="" line="622" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/display.c" >
-   <View0 Encoding="" line="307" Type="Source" />
+  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/errors.h" >
+   <View0 Encoding="" line="0" Type="Source" />
   </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.c" >
-   <View0 Encoding="" line="385" Type="Source" />
+  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/powermeter.c" >
+   <View0 Encoding="" line="47" Type="Source" />
   </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.h" >
-   <View0 Encoding="" line="226" Type="Source" />
+  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/powermeter.h" >
+   <View0 Encoding="" line="62" Type="Source" />
   </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/eeprom.c" >
-   <View0 Encoding="" line="99" Type="Source" />
+  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.c" >
+   <View0 Encoding="" line="196" Type="Source" />
   </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/menu.c" >
+   <View0 Encoding="" line="139" Type="Source" />
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/menu.h" >
+   <View0 Encoding="" line="70" Type="Source" />
+  </Doc9>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
