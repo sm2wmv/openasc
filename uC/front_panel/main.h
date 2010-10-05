@@ -208,7 +208,7 @@ typedef struct {
 	//! The external keypad assignments
 	unsigned char ext_key_assignments[17];
 	//! The powermeter address
-	unsigned char powermeter_address;
+	unsigned char powermeter_address[9];	//We can have one power meter address for each band
 	//! The powermeter VSWR alarm limit (250 means 2.5:1)
 	unsigned int powermeter_vswr_limit;
 	//! The powermeter update rate on the display text (0 means it's disabled, both text and bargraph)
@@ -292,6 +292,8 @@ typedef struct {
 	unsigned char inhibit_state;
 	//! Band change mode
 	unsigned char band_change_mode;
+	//! Powermeter address
+	unsigned char powermeter_address;
 } struct_runtime_settings;
 
 /* Different views */
@@ -328,5 +330,7 @@ void main_set_device_online(unsigned char state);
 unsigned char main_get_aux_button(unsigned char buttonIndex);
 unsigned char main_band_change_ok(void);
 void clear_screensaver_timer(void);
+
+unsigned char main_get_powermeter_address(unsigned char band);
 
 #endif

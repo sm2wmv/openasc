@@ -617,16 +617,17 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_ack();
 					break;					
 				case CTRL_SET_POWERMETER_SETTINGS:
-						settings_ptr->powermeter_address = computer_comm.rx_buffer_start[1];
-						settings_ptr->powermeter_vswr_limit = (computer_comm.rx_buffer_start[2] << 8);
-						settings_ptr->powermeter_vswr_limit += computer_comm.rx_buffer_start[3];
-						settings_ptr->powermeter_update_rate_text = (computer_comm.rx_buffer_start[4] << 8);
-						settings_ptr->powermeter_update_rate_text += computer_comm.rx_buffer_start[5];
-						settings_ptr->powermeter_update_rate_bargraph = (computer_comm.rx_buffer_start[6] << 8);
-						settings_ptr->powermeter_update_rate_bargraph += computer_comm.rx_buffer_start[7];
-						settings_ptr->powermeter_text_view = computer_comm.rx_buffer_start[8];
-						
-						computer_interface_send_ack();
+					for (unsigned char i=0;i<9;i++)
+						settings_ptr->powermeter_address[i] = computer_comm.rx_buffer_start[1+i];
+					
+					settings_ptr->powermeter_vswr_limit = (computer_comm.rx_buffer_start[10] << 8);
+					settings_ptr->powermeter_vswr_limit += computer_comm.rx_buffer_start[11];
+					settings_ptr->powermeter_update_rate_text = (computer_comm.rx_buffer_start[12] << 8);
+					settings_ptr->powermeter_update_rate_text += computer_comm.rx_buffer_start[13];
+					settings_ptr->powermeter_update_rate_bargraph = (computer_comm.rx_buffer_start[14] << 8);
+					settings_ptr->powermeter_update_rate_bargraph += computer_comm.rx_buffer_start[15];
+					
+					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_SAVE:
 					eeprom_save_settings_structure(settings_ptr);

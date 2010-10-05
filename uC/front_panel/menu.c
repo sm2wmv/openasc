@@ -40,7 +40,7 @@
 #define MENU_OPTION_LEFT_POS 13
 
 //! Number of options in the menu system
-#define MENU_OPTIONS	7
+#define MENU_OPTIONS	8
 
 //! Menu options - Errors
 const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}};
@@ -71,6 +71,7 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_BACKLIGHT_LEVEL, "Backlight", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_SHOW_ACTIVITY, "Network activity", NULL, 0,MENU_OPTION_TYPE_NONE},
 {MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL},
 };
 
@@ -99,6 +100,12 @@ void menu_show_text(struct_menu_text menu_text) {
 		}
 	}
 	else if (menu_text.pos == MENU_POS_SHOW_ACTIVITY) {
+		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
+		
+		//Draw a seperation line between the options and the header
+		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
+		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+		
 		//TODO: Implement to show the ping list and make it possible to scroll down the list
 	}
 	else {
@@ -125,14 +132,26 @@ void menu_show_text(struct_menu_text menu_text) {
 		}
 		else if (menu_text.option_type == MENU_OPTION_TYPE_SCROLL_NUMBERS) {
 			if (menu_text.pos == MENU_POS_BACKLIGHT_LEVEL) {
-				char temp[10];
+				char temp[11];
 				sprintf(temp,"Level %3i",runtime_settings.lcd_backlight_value);
 	
 				glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
 				
 				if (current_menu_level == 1)
 					glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
-				}
+			}
+			else if (menu_text.pos == MENU_POS_SHOW_POWERMETER_ADDR) {
+				char temp[14];
+				if (runtime_settings.powermeter_address == 0x00)
+					sprintf(temp,"Address: AUTO");
+				else
+					sprintf(temp,"Address: %3i",runtime_settings.powermeter_address);
+	
+				glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
+				
+				if (current_menu_level == 1)
+					glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);				
+			}
 		}
 	}
 	
@@ -190,6 +209,10 @@ void menu_action(unsigned char menu_action_type) {
 
 					display_set_backlight(runtime_settings.lcd_backlight_value);
 				}
+				else if (menu_system_text[current_menu_pos].pos == MENU_POS_SHOW_POWERMETER_ADDR) {
+					if (runtime_settings.powermeter_address < 0xFF)
+						runtime_settings.powermeter_address++;
+				}
 			}
 		}
 		
@@ -213,6 +236,10 @@ void menu_action(unsigned char menu_action_type) {
 						runtime_settings.lcd_backlight_value--;
 
 					display_set_backlight(runtime_settings.lcd_backlight_value);
+				}
+				else if (menu_system_text[current_menu_pos].pos == MENU_POS_SHOW_POWERMETER_ADDR) {
+					if (runtime_settings.powermeter_address > 0)
+						runtime_settings.powermeter_address--;
 				}
 			}
 		}
