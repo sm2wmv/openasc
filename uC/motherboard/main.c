@@ -381,7 +381,8 @@ void ps2_keyboard_send(unsigned char cmd) {
 /*! \brief Process a keystroke
  *  \param key_code The key code which was received */
 void ps2_process_key(unsigned char key_code) {
-	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
+	printf("key_code: %i\n",key_code);
+	//internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 
 //! Main function of the motherboard
@@ -515,6 +516,9 @@ ISR(SIG_INTERRUPT6) {
 				if (ps2.prev_cmd == 0xF0) {
 					ps2_process_key(ps2.data);
 				}
+				
+				if (ps2.data != 0x00)
+					printf("data: %i\n",ps2.data);
 				
 				ps2.prev_cmd = ps2.data;
 				

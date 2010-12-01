@@ -107,6 +107,13 @@ unsigned char device_started = 0;
 //! Clear the screensaver timer
 void clear_screensaver_timer(void) {
 	counter_screensaver_timeout = 0;
+	
+	if (display_screensaver_mode()) {
+		display_disable_screensaver();
+		display_set_backlight(runtime_settings.lcd_backlight_value);
+		
+		main_update_display();
+	}
 }
 
 /*! Add a message to the event queue which will be run at the correct time
@@ -416,7 +423,10 @@ int main(void){
 	//The first argument will be called each time a message should be parsed
 	//The second argument will be called each time a character should be sent
 	internal_comm_init((void *)event_internal_comm_parse_message, (void *)usart0_transmit);
-			 
+
+	//Init the realtime clock
+	ds1307_init();
+	
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
 		//radio_interface_init();
@@ -444,9 +454,6 @@ int main(void){
 	}
 	
 	band_ctrl_load_band_limits();
-
-	//Init the realtime clock
-	ds1307_init();
 			
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
@@ -685,20 +692,25 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	/*if (!display_screensaver_mode()) {
+	if (!display_screensaver_mode()) {
 		if (counter_screensaver_timeout >= DISPLAY_SCREENSAVER_TIMEOUT) {
+			display_enable_screensaver();
+
 			event_add_message((void*)display_update_screensaver, 0,0);
 			display_set_backlight(DISPLAY_SCREENSAVER_DEF_CONTRAST);
 			
 			counter_screensaver_timeout = 0;
 		}
-	}*/
+	}
 	
 	counter_last_pulse_event++;
 	counter_poll_rotary_encoder++;
 	counter_poll_buttons++;
 	counter_poll_ext_devices++;	
-	counter_screensaver_timeout++;
+	
+	if ((counter_ms % 1000) == 0)
+		counter_screensaver_timeout++;
+	
 	counter_ping_interval++;
 	counter_ms++;
 	counter_event_timer++;
