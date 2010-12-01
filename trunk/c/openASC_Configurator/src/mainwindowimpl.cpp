@@ -2,6 +2,7 @@
 #include <qsettings.h>
 #include <qfiledialog.h>
 #include <QStringList>
+#include <QDateTime>
 
 #include "mainwindowimpl.h"
 #include "submenuimpl.h"
@@ -516,6 +517,22 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 	serialPort.addTXMessage(CTRL_SET_SEQUENCER_SETTINGS,CTRL_SET_SEQUENCER_SAVE);
 
 	/* SEQUENCER -> THESE MUST BE SENT TOGETHER END */
+
+	unsigned char tx_buf[7];
+
+	QDate date = QDate::currentDate();
+	QTime time = QTime::currentTime();	
+	
+	tx_buf[0] = time.second();
+	tx_buf[1] = time.minute();
+	tx_buf[2] = time.hour();
+	tx_buf[3] = date.dayOfWeek();
+	tx_buf[4] = date.day();
+	tx_buf[5] = date.month();
+	//This need to be changed, when we cross over to year 3xxx ;-)
+	tx_buf[6] = (date.year()-2000);
+
+	serialPort.addTXMessage(CTRL_SET_TIME,7,tx_buf);
 
 	serialPort.addTXMessage(CTRL_DONE,0,0);
 		

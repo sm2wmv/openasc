@@ -3,6 +3,9 @@ avrlibdefs.h
 avrlibtypes.h
 delay.c
 delay.h
+documentation
+documentation/latex
+documentation/latex/Makefile
 driver_unit
 driver_unit/board.h
 driver_unit/global.h
@@ -140,6 +143,8 @@ powermeter/sensor_unit/main.c
 powermeter/sensor_unit/main.h
 powermeter/sensor_unit/makefile
 rotator_unit
+rotator_unit/a2d.c
+rotator_unit/a2d.h
 rotator_unit/board.h
 rotator_unit/ext_control.c
 rotator_unit/ext_control.h

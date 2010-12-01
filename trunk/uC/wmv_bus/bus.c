@@ -244,7 +244,7 @@ void bus_set_is_master(unsigned char state, unsigned char count) {
 }
 
 /*! \brief Send an NOT acknowledge 
- *  \param to_addr Which address we wish to send the ping to
+ *  \param to_addr Which address we wish to send the nack to
  *  \param error_type Why was the message nacked, see bus.h for more information about BUS errors */
 void bus_send_nack(unsigned char to_addr, unsigned char error_type) {
 	if (to_addr != BUS_BROADCAST_ADDR)

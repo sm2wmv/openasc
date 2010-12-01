@@ -64,14 +64,36 @@ void ds1307_set_time(char *data) {
 	//our time adjustment
 	allowed_to_read = 0;
 		
+	unsigned char b0=0,b1=0;
+		
 	*(time_data+0) = 0x00;							//REG ADDR 0
-	*(time_data+1) = *(data+0) & 0x7F;	// seconds, enable oscillator (bit 7=0)
-  *(time_data+2) = *(data+1);				// minute
-  *(time_data+3) = *(data+2);				// hour
-  *(time_data+4) = *(data+3);				// Day 
-  *(time_data+5) = *(data+4);				// Date
-  *(time_data+6) = *(data+5);				// month
-  *(time_data+7) = *(data+6);				// year
+	
+	b1 = data[0] / 10;
+	b0 = (data[0] - 10*b1) + (b1<<4);
+	*(time_data+1) = b0 & 0x7F;	// seconds, enable oscillator (bit 7=0)
+  
+	b1 = data[1] / 10;
+	b0 = (data[1] - 10*b1) + (b1<<4);
+	*(time_data+2) = b0;					// minute
+  
+	b1 = data[2] / 10;
+	b0 = (data[2] - 10*b1) + (b1<<4);
+	*(time_data+3) = b0; 				// hour
+	
+  *(time_data+4) = *(data+3);					// Day 
+	
+	b1 = data[4] / 10;
+	b0 = (data[4] - 10*b1) + (b1<<4);	
+	*(time_data+5) = b0;					// Date
+	
+	b1 = data[5] / 10;
+	b0 = (data[5] - 10*b1) + (b1<<4);	
+
+	*(time_data+6) = b0;					// month
+	
+	b1 = data[6] / 10;
+	b0 = (data[6] - 10*b1) + (b1<<4);	
+	*(time_data+7) = b0;					// year
 	*(time_data+8) = 0x00;
 	
 	i2cMasterSend(DS1307_ADDR,9,(unsigned char *)time_data);

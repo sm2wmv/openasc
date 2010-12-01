@@ -1,5 +1,9 @@
-v Fix the internal communication so it works properly
-v Fix so that we can select BCD decoding while CAT also works
-v Fix so that we can reboot the box from the menu system
-v Make it possible to reboot the device from the setup mode
- 
+Most important implementations
+------------------------------
+* Implement so that PTT is locked until we know all antennas have been switched properly
+* Band interlock, if a band that is in use is tried to be activated, we enter no band selected
+* Implement so that certain errors can lock the PTT
+* Implement high VSWR error
+* Fix the TX active control option on the driver cards
+* Finish the ping implementation!
+

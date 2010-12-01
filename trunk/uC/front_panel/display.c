@@ -72,25 +72,35 @@ unsigned char display_screensaver_mode(void) {
 	return(screensaver_mode);
 }
 
+/*! \brief Set the mode of the screensaver to disabled
+ */
+void display_disable_screensaver(void) {
+	screensaver_mode = 0;
+}
+
+/*! \brief Set the mode of the screensaver to enable
+ */
+void display_enable_screensaver(void) {
+	screensaver_mode = 1;
+}
+
 /*! \brief Updates the screensaver which consist of a clock */
 void display_update_screensaver(void) {
-	//If the temp_ptr hasn't been initialized then we need to allocate the memory for it
-	if (temp_ptr == NULL)
-		temp_ptr = (char *)malloc(9);
-
-	if (screensaver_mode == 0)
-		screensaver_mode = 1;
-
-	ds1307_read();
-
-	sprintf((char *)temp_ptr,"%02i:%02i:%02i",ds1307_get_hours(),ds1307_get_minutes(),ds1307_get_seconds());
-
-	glcd_clear();
-	glcd_text(8, 23, FONT_EIGHTEEN_DOT,temp_ptr,strlen(temp_ptr));
-	glcd_update_all();
-
-	if (screensaver_mode == 1)
-		event_add_message((void*)display_update_screensaver, 250, 0);
+	if (screensaver_mode == 1) {
+		//If the temp_ptr hasn't been initialized then we need to allocate the memory for it
+		if (temp_ptr == NULL)
+			temp_ptr = (char *)malloc(9);
+	
+		ds1307_read();
+	
+		sprintf((char *)temp_ptr,"%02i:%02i:%02i",ds1307_get_hours(),ds1307_get_minutes(),ds1307_get_seconds());
+	
+		glcd_clear();
+		glcd_text(8, 23, FONT_EIGHTEEN_DOT,temp_ptr,strlen(temp_ptr));
+		glcd_update_all();
+		
+		event_add_message((void*)display_update_screensaver, 980, 0);
+	}
 }
 
 /** \brief Set the backlight level of the LCD

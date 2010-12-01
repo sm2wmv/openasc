@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'setupdialog.ui'
 **
-** Created: Mon Sep 13 11:10:52 2010
+** Created: Sun Nov 14 23:13:29 2010
 **      by: Qt User Interface Compiler version 4.5.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

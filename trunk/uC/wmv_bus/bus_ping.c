@@ -103,6 +103,6 @@ bus_struct_ping_status *bus_ping_get_ping_data(unsigned char index) {
 /*! \brief Returns the device type of a certain ping data structure
  *  \param index The index of the device type we wish to retrieve from the list
  *  \return The device type of the specified index */
-unsigned char bus_ping_device_type(unsigned char index) {
+unsigned char bus_ping_get_device_type(unsigned char index) {
 	return(ping_list[index].device_type);
 }
