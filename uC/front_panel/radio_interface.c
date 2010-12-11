@@ -37,6 +37,7 @@
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 #include "../global.h"
+#include "powermeter.h"
 
 //! Serial receive buffer
 unsigned char *radio_serial_rx_buffer;
@@ -132,7 +133,9 @@ void radio_ptt_active(void) {
 		
 		ptt_status |= (1<<RADIO_FLAG_RADIO_PTT);
 		main_update_ptt_status();
-		powermeter_set_active(1);
+		
+		if ((runtime_settings.powermeter_address == 0x00) && (main_get_powermeter_address(status.selected_band) != 0x00))
+			powermeter_set_active(1);
 	}
 }
 
@@ -143,10 +146,12 @@ void radio_ptt_deactive(void) {
 	
 	ptt_status &= ~(1<<RADIO_FLAG_RADIO_PTT);
 	main_update_ptt_status();
-	powermeter_set_active(0);
+	
+	if ((runtime_settings.powermeter_address == 0x00) && (main_get_powermeter_address(status.selected_band) != 0x00))
+		powermeter_set_active(0);
 }
 
-/*! \brief Set the TX ACTIVE output to high */
+/*! \brief Enable the TX ACTIVE output */
 void radio_tx_active(void) {
 	PORTG |= (1<<TX_ACTIVE_OUTPUT_BIT);
 	
@@ -154,7 +159,7 @@ void radio_tx_active(void) {
 	main_update_ptt_status();
 }
 
-/*! \brief Set the TX ACTIVE output to high */
+/*! \brief Disable the TX ACTIVE output */
 void radio_tx_deactive(void) {
 	/* Deactivate the PTT to the radio */
 	PORTG &= ~(1<<TX_ACTIVE_OUTPUT_BIT);
@@ -462,7 +467,6 @@ ISR(SIG_USART3_RECV) {
 			if (data == 0xFD) {
 				if ((radio_serial_rx_buffer_start[0] == 0xFE) && (radio_serial_rx_buffer_start[1] == 0xFE)) {
 					//TODO: Consider moving the parsing etc outside of the interrupt, to make the interrupt take as little time as possible
-					//TODO: Implement the buffering of the incoming data from the computer while we are processing some kind of request sent to the radio in poll mode
 					
 					//Is the data frequency data or something else?
 					if ((radio_serial_rx_buffer_start[3] == radio_settings.civ_addr) && (radio_serial_rx_buffer_start[4] == 0x03)) {

@@ -9,11 +9,17 @@
 
 #include <QtNetwork>
 #include <QTcpSocket>
+#include <QTimer>
 
-#define INTERFACE_TYPE_SERIAL_PORT	1
-#define INTERFACE_TYPE_NETWORK			2
+#define INTERFACE_TYPE_SERIAL	1
+#define INTERFACE_TYPE_TCP		2
 
-//
+typedef struct {
+	unsigned char currentBand;
+	unsigned char currentAntennas;
+	unsigned char currentRXAntennas;
+} status_struct;
+
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
 public:
@@ -24,6 +30,11 @@ public:
 		void pushButtonPressed(unsigned char button);
 private:
 		int interfaceType;
+		QTimer *timerPollRXQueue;
+		QTimer *timerPollStatus;
+		void getRXAntennaInfo();
+		void getTXAntennaInfo();
+		status_struct status;
 protected:
 private slots:
 public slots:
@@ -35,6 +46,8 @@ public slots:
 		void pushButtonTX3Clicked(bool state);
 		void pushButtonTX4Clicked(bool state);
 
+		void comboBoxBandIndexChanged(int index);
+
 		void pushButtonRXAnt1Clicked(bool state);
 		void pushButtonRXAnt2Clicked(bool state);
 		void pushButtonRXAnt3Clicked(bool state);
@@ -45,6 +58,11 @@ public slots:
 		void pushButtonRXAnt8Clicked(bool state);
 		void pushButtonRXAnt9Clicked(bool state);
 		void pushButtonRXAnt10Clicked(bool state);
+
+		void pushButtonRXAntClicked(bool state);
+
+		void timerPollRXQueueUpdate();
+		void timerPollStatusUpdate();
 
 		void actionSettingsEditTriggered();
 };

@@ -1506,6 +1506,10 @@ void MainWindowImpl::setupConnections() {
 	connect(comboBoxAntennaRotator4, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAntennaRotator4IndexChanged(int)));
 }
 
+void MainWindowImpl::showInformationDialog(QString caption, QString text) {
+	qDebug("poop");
+}
+
 MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
 	setupUi(this);
 

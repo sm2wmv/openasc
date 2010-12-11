@@ -280,7 +280,7 @@ void  bus_resend_message(void) {
 			led_set_error(LED_STATE_ON);
 			
 			//Set the error flag
-			event_set_error(ERROR_TYPE_BUS_RESEND,1);
+			error_handler_set(ERROR_TYPE_BUS_RESEND,1,0);
 		#endif
 			
 		tx_queue_drop();
@@ -455,6 +455,17 @@ ISR(ISR_BUS_USART_RECV) {
 								bus_ping_new_stamp(bus_new_message.from_addr, bus_new_message.data[0], bus_new_message.length-1, (unsigned char *)(bus_new_message.data+1));
 							else
 								bus_ping_new_stamp(bus_new_message.from_addr, bus_new_message.data[0], 0, 0);
+							
+							//If the device is a driver unit or a general I/O card, we also add the message to the message queue
+							#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+								if (bus_new_message.data[0] == DEVICE_ID_MAINBOX)
+									bus_add_new_message();
+							#endif
+								
+							#ifdef DEVICE_TYPE_GENERAL_IO
+								if (bus_new_message.data[0] == DEVICE_ID_MAINBOX)
+									bus_add_new_message();
+							#endif
 						}
 						else {
 							bus_add_new_message();
@@ -555,7 +566,7 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 		counter_sync_timeout = 0;
 		
 		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-			event_set_error(ERROR_TYPE_BUS_SYNC,1);
+			error_handler_set(ERROR_TYPE_BUS_SYNC,1,0);
 			led_set_error(LED_STATE_ON);
 		#endif
 	}

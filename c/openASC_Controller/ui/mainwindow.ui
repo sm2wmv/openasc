@@ -83,7 +83,7 @@
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt1">
            <property name="text">
-            <string>Bev @5 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -93,7 +93,7 @@
          <item row="1" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt2">
            <property name="text">
-            <string>Bev @45 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -103,7 +103,7 @@
          <item row="2" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt3">
            <property name="text">
-            <string>Bev @80 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -113,7 +113,7 @@
          <item row="3" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt4">
            <property name="text">
-            <string>Bev @120 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -123,7 +123,7 @@
          <item row="4" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt5">
            <property name="text">
-            <string>Bev @180 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -133,7 +133,7 @@
          <item row="5" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt6">
            <property name="text">
-            <string>Bev @260 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -143,17 +143,7 @@
          <item row="6" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt7">
            <property name="text">
-            <string>Bev @300 deg</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <widget class="QPushButton" name="pushButtonRXAnt8">
-           <property name="text">
-            <string>Bev @315 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -163,7 +153,7 @@
          <item row="8" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt9">
            <property name="text">
-            <string>Bev @330 deg</string>
+            <string/>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -172,6 +162,16 @@
          </item>
          <item row="9" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt10">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QPushButton" name="pushButtonRXAnt8">
            <property name="text">
             <string/>
            </property>
@@ -233,16 +233,11 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <item>
          <property name="text">
           <string>None</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Auto</string>
          </property>
         </item>
         <item>
@@ -288,6 +283,11 @@
         <item>
          <property name="text">
           <string>10m</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Auto</string>
          </property>
         </item>
        </widget>
@@ -402,7 +402,7 @@
             </font>
            </property>
            <property name="text">
-            <string>6/6/6el</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -438,7 +438,7 @@
             </font>
            </property>
            <property name="text">
-            <string>315 deg</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -502,7 +502,7 @@
             </font>
            </property>
            <property name="text">
-            <string>5/5el</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -522,7 +522,7 @@
             </font>
            </property>
            <property name="text">
-            <string>180 deg</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -586,7 +586,7 @@
             </font>
            </property>
            <property name="text">
-            <string>4el</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -606,7 +606,7 @@
             </font>
            </property>
            <property name="text">
-            <string>220 deg</string>
+            <string/>
            </property>
           </widget>
          </item>

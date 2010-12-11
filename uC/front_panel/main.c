@@ -50,6 +50,7 @@
 #include "rotary_encoder.h"
 #include "event_handler.h"
 #include "powermeter.h"
+#include "errors.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -114,6 +115,22 @@ void clear_screensaver_timer(void) {
 		
 		main_update_display();
 	}
+}
+
+void main_set_band_change_mode(unsigned char mode) {
+	runtime_settings.band_change_mode = mode;
+}
+
+unsigned char main_get_current_band(void) {
+	return(status.selected_band);
+}
+
+void main_set_new_band(unsigned char band) {
+	status.current_band_portion = BAND_LOW;
+	band_ctrl_change_band(band);
+					
+	display_update_radio_freq();
+	send_ping();
 }
 
 /*! Add a message to the event queue which will be run at the correct time
@@ -287,6 +304,10 @@ void main_update_ptt_status(void) {
 	if (radio_get_ptt_status() != 0)
 		state = 2;
 	
+	if (error_handler_is_ptt_locked() == 1) {
+		state = 3;
+	}
+	
 	//Comment this part for testing outside the bus
 	//if (event_get_errors() != 0)
 	//	state = 1;
@@ -304,6 +325,10 @@ void main_update_ptt_status(void) {
 	else if (state == 2) {
 		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND_RADIO_TX);
 		led_set_ptt(LED_STATE_PTT_ACTIVE);
+	}
+	else if (state == 3) {
+		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+		led_set_ptt(LED_STATE_PTT_INHIBIT);
 	}
 }
 
@@ -511,10 +536,8 @@ int main(void){
 	DDRB |= (1<<1);
 	
 	ping_message[0] = DEVICE_ID_MAINBOX;
-	ping_message[1] = 0x00;//settings.ptt_interlock_input;
-	
-	device_started = 1;
-	
+	ping_message[1] = settings.ptt_interlock_input;
+
 	main_set_device_online(1);
 	
 	while(1) {
@@ -537,15 +560,6 @@ int main(void){
 					
 					send_ping();
 				}
-				
-				/*if (radio_interface_get_interface() != RADIO_INTERFACE_BCD) {
-					if (radio_get_band_portion() != status.current_band_portion) {
-						status.new_band_portion = radio_get_band_portion();
-						status.current_band_portion = status.new_band_portion;
-						
-						band_ctrl_change_band_portion(status.new_band_portion);
-					}
-				}*/
 			}
 			
 		//Poll the buttons
@@ -659,6 +673,8 @@ int main(void){
 			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}
+		
+		event_check_pings();
 	}
 }
 

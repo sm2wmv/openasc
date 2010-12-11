@@ -62,6 +62,8 @@ typedef struct{
 //! The band limits, an array with size 9
 struct_band_limits band_limits[9];
 
+unsigned char band_ctrl_check_address_in_use(unsigned char addr);
+
 void band_ctrl_load_band_limits(void);
 
 unsigned int band_ctrl_get_low_portion_low(unsigned char band);

@@ -63,7 +63,7 @@ void tx_queue_add(BUS_MESSAGE message) {
 			led_set_error(LED_STATE_ON);
 			
 			//Set the error flag
-			event_set_error(ERROR_TYPE_BUS_TX_QUEUE_FULL,1);
+			error_handler_set(ERROR_TYPE_BUS_TX_QUEUE_FULL,1,0);
 
 		}	
 	#endif

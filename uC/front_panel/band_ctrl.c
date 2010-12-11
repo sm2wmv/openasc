@@ -50,6 +50,20 @@ unsigned char current_band_activated_outputs[BAND_OUTPUT_STR_SIZE];
 //! The number of devices we have activated outputs on
 unsigned char current_band_activated_outputs_length = 0;
 
+/*! \brief Function which goes through the different addresses of cards that have been activated and compares it to the sent in address
+    \param addr The address we wish to check if it is activated 
+    \return 1 if the address is in use, 0 if not */
+unsigned char band_ctrl_check_address_in_use(unsigned char addr) {
+	unsigned char ret_val = 0;
+	
+	for (unsigned char i=0;i<current_band_activated_outputs_length;i++) {
+		if (current_band_activated_outputs[i] == addr)
+			ret_val = 1;
+	}
+	
+	return(ret_val);
+}
+
 /*! \brief Send the output string for the current band to the bus */
 void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 	if (status.selected_band != BAND_UNDEFINED) {
@@ -192,7 +206,6 @@ void band_ctrl_change_band(unsigned char band) {
 			status.function_status &= ~(1<<FUNC_STATUS_RXANT);
 			
 			if (band != BAND_UNDEFINED) {
-				//TODO: Change to correct band portion
 				band_ctrl_send_band_data_to_bus(status.current_band_portion);
 				
 				//Send RX antenna band data to the bus

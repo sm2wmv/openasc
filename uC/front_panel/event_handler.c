@@ -50,6 +50,7 @@
 #include "sub_menu.h"
 #include "computer_interface.h"
 #include "powermeter.h"
+#include "../wmv_bus/bus_ping.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -58,34 +59,22 @@
 
 extern unsigned int main_flags;
 
-//! Contains the errors which are set
-unsigned int flag_errors = 0;
+/*! \brief Function which goes through the ping list and checks if something has happened */
+void event_check_pings(void) {
 
-/*! \brief Set that an error has occured 
- *  \param error_type The type of error that has occured, defines can be found in errors.h
- *  \param state State of the error */
-void event_set_error(unsigned char error_type, unsigned char state) {
-	if (state == 0)
-		flag_errors &= ~(1<<error_type);
-	else
-		flag_errors |= (1<<error_type);
-	
-	main_update_ptt_status();
-}
-
-/*! \brief Retrieve the state error flags */
-unsigned char event_get_errors(void) {
-	return(flag_errors);
-}
-
-/*! \brief Retrieve the state of a specific error type
- *  \param error_type Which kind of error we wish to check the state for
- *  \return The current state of this error */
-unsigned char event_get_error_state(unsigned char error_type) {
-	if (flag_errors & (1<<error_type))
-		return(1);
-
-	return(0);
+	if (bus_ping_get_failed_count() > 0) {
+		bus_struct_ping_status ping_data = bus_ping_get_failed_ping();
+		
+		if ((ping_data.device_type == DEVICE_ID_DRIVER_POS) && (ping_data.device_type == DEVICE_ID_DRIVER_NEG) && (ping_data.device_type == DEVICE_ID_GENERAL_IO)) {
+			if (antenna_ctrl_check_address_in_use(ping_data.addr) == 1) {
+				error_handler_set(ERROR_TYPE_ANT_PING_TIMEOUT,1,ping_data.addr);
+			}
+			
+			if (band_ctrl_check_address_in_use(ping_data.addr) == 1) {
+				error_handler_set(ERROR_TYPE_BAND_PING_TIMEOUT,1,ping_data.addr);
+			}
+		}
+	}
 }
 
 /*! \brief Function which will parse the internal communication message 
@@ -402,7 +391,7 @@ void event_update_display(void) {
 		glcd_print_picture();
 	}
 	else if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
-		menu_show();
+		menu_show(0);
 	}
 	else if (status.current_display == CURRENT_DISPLAY_SETTING) {
 		
@@ -488,11 +477,7 @@ void event_poll_buttons(void) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM)
 					menu_action(MENU_BUTTON_PRESSED);
 				else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
-					status.current_band_portion = BAND_LOW;
-					band_ctrl_change_band(status.new_band);
-					
-					display_update_radio_freq();
-					send_ping();
+					main_set_new_band(status.new_band);
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
 					if (status.antenna_to_rotate != 0) {

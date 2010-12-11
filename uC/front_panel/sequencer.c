@@ -43,9 +43,6 @@
 //! \brief The computer PTT input is active
 #define PTT_ACTIVE_COMPUTER_RTS		2
 
-//TODO: Fix so that we don't get problems with having computer AND footswitch PTTed at the same time if
-//      the different amp/radio/inhibit are enabled on different inputs...THIS IS VERY IMPORTANT THAT IT WORKS
-//      PROPERLY!!! Maybe solution is to only use FIRST WINS?
 //TODO: Finish the radio sense input stuff
 
 //! The status of the PTT, see defines above

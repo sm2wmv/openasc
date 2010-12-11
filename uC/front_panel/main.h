@@ -115,6 +115,8 @@
 #define KNOB_FUNCTION_AUTO				4
 //! Knob function set submenu option
 #define KNOB_FUNCTION_SET_SUBMENU	5
+//! Knob function set menu options
+#define KNOB_FUNCTION_SET_MENU		6
 
 //! RX antenna name length
 #define RX_ANTENNA_NAME_LENGTH				15
@@ -262,7 +264,7 @@ typedef struct {
 	/*! Previous display */
 	unsigned char prev_display;
 	
-	/*! The currently selected RX antenna, -1 if none selected */
+	/*! The currently selected RX antenna */
 	unsigned char selected_rx_antenna;
 	/*! Knob function */
 	unsigned char knob_function;
@@ -332,5 +334,9 @@ unsigned char main_band_change_ok(void);
 void clear_screensaver_timer(void);
 
 unsigned char main_get_powermeter_address(unsigned char band);
+
+void main_set_band_change_mode(unsigned char mode);
+void main_set_new_band(unsigned char band);
+unsigned char main_get_current_band(void);
 
 #endif

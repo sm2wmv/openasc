@@ -23,6 +23,12 @@
 #ifndef _REMOTE_CONTROL_H_
 #define _REMOTE_CONTROL_H_
 
+/*! Remote control description 
+ *  REMOTE_CONTROL_RX_ANT_TEXT -> ant1 text REMOTE_CONTROL_TEXT_SEPERATOR ant2 text REMOTE_CONTROL_TEXT_SEPERATOR ant3 text
+ *  REMOTE_CONTROL_ANT_TEXT -> ant1 text REMOTE_CONTROL_ANT_TEXT ant2 text REMOTE_CONTROL_ANT_TEXT ant3 text REMOTE_CONTROL_ANT_TEXT ant4 text
+
+*/
+
 void remote_control_activate_remote_mode(void);
 void remote_control_deactivate_remote_mode(void);
 unsigned char remote_control_get_remote_mode(void);
@@ -39,5 +45,13 @@ void remote_control_parse_button(unsigned char button);
 #define REMOTE_CONTROL_BUTTON_PRESSED		0x10
 //! Command for sending rx antenna button texts
 #define REMOTE_CONTROL_RX_ANT_TEXT			0x11
+
+#define REMOTE_CONTROL_BUTTON_PRESSED		0x10
+#define REMOTE_CONTROL_RX_ANT_TEXT			0x11
+#define REMOTE_CONTROL_ANT_TEXT					0x12
+#define REMOTE_CONTROL_GET_STATUS				0x13
+#define REMOTE_CONTROL_CHANGE_BAND			0x14
+
+#define REMOTE_CONTROL_TEXT_SEPERATOR	0xFC
 
 #endif

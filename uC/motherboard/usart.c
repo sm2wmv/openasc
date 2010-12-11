@@ -116,7 +116,7 @@ void usart1_init(unsigned int baudrate) {
 	/* Set frame format: 8data, no parity & 1 stop bits */
 	UCSR1C = (0<<UMSEL0) | (0<<USBS0) | (1<<UCSZ1) | (1<<UCSZ0) | (0<<UCSZ2);
 	/* Enable receiver and transmitter */
-	UCSR1B = (1<<RXEN1) | (1<<TXEN1);
+	UCSR1B = (1<<RXEN1) | (1<<TXEN1) | (1<<RXCIE1);
 }
 
 /*! \brief Send a character to the USART

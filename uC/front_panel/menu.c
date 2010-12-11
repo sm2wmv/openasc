@@ -43,7 +43,7 @@
 #define MENU_OPTIONS	8
 
 //! Menu options - Errors
-const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}};
+const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"}};
 
 
 const struct_menu_option menu_misc[] = {{"Reboot"}};
@@ -89,11 +89,10 @@ void menu_show_text(struct_menu_text menu_text) {
 		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
 		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 		
-		unsigned char flags = event_get_errors();
 		unsigned char count = 0;
 		
 		for (int i=0;i<NR_OF_ERRORS;i++) {
-			if (flags & (1<<i)) {
+			if (error_handler_get_state(i)) {
 				glcd_text(MENU_OPTION_LEFT_POS,18+count*10,FONT_SEVEN_DOT,menu_errors[i].text,strlen(menu_errors[i].text));
 				count++;
 			}
@@ -183,7 +182,9 @@ void menu_reset(void) {
 }
 
 /*! \brief Shows the menu */
-void menu_show(void) {
+void menu_show(unsigned char pos) {
+	current_menu_pos = pos;
+	
 	menu_show_text(menu_system_text[current_menu_pos]);
 }
 
@@ -216,7 +217,7 @@ void menu_action(unsigned char menu_action_type) {
 			}
 		}
 		
-		menu_show();
+		menu_show(current_menu_pos);
 	}
 	else if (menu_action_type == MENU_SCROLL_DOWN) {
 		if (current_menu_level == 0) {
@@ -244,16 +245,12 @@ void menu_action(unsigned char menu_action_type) {
 			}
 		}
 		
-		menu_show();
+		menu_show(current_menu_pos);
 	}
 	else if (menu_action_type == MENU_BUTTON_PRESSED) {
 		if (current_menu_level == 0) {
 			if (current_menu_pos == MENU_POS_SHOW_ERRORS) {
-				unsigned char flags = event_get_errors();
-				
-				for (unsigned char i=0;i<NR_OF_ERRORS;i++)
-					if (flags & (1<<i))
-						event_set_error(i,0);
+				error_handler_clear_all();
 				
 				led_set_error(LED_STATE_OFF);
 			}	
@@ -290,6 +287,6 @@ void menu_action(unsigned char menu_action_type) {
 			}
 		}
 		
-		menu_show();
+		menu_show(current_menu_pos);
 	}
 }

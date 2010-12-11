@@ -63,7 +63,7 @@ void bus_ping_tick(void) {
 
 /*! \brief This function will return a ping which has failed and will mark it that it has been reported 
  *  \return A pointer to a structure of type bus_struct_ping_status which contains information of the failed ping */
-bus_struct_ping_status *bus_ping_get_failed_ping(void) {
+bus_struct_ping_status bus_ping_get_failed_ping(void) {
 	unsigned char temp=255;
 	
 	for (unsigned char i=0;i<DEF_NR_DEVICES;i++)
@@ -74,9 +74,7 @@ bus_struct_ping_status *bus_ping_get_failed_ping(void) {
 		}
 		
 	if (temp != 255)
-		return(&ping_list[temp]);
-	else
-		return(NULL);
+		return(ping_list[temp]);
 }
 
 /*! \brief Goes through the ping list and checks how many has timed out
@@ -96,8 +94,8 @@ unsigned char bus_ping_get_failed_count(void) {
 /*! \brief Returns a ping data structure
  *  \param index The index of the ping structure we wish to retrieve from the list
  *  \return The ping data structure */
-bus_struct_ping_status *bus_ping_get_ping_data(unsigned char index) {
-	return(&ping_list[index]);
+bus_struct_ping_status bus_ping_get_ping_data(unsigned char index) {
+	return(ping_list[index]);
 }
 
 /*! \brief Returns the device type of a certain ping data structure

@@ -30,6 +30,7 @@
 #include "display.h"
 #include "glcd.h"
 #include "main.h"
+#include "errors.h"
 
 #define POWERMETER_FLAG_ACTIVE 					0
 
@@ -93,6 +94,11 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	powermeter_status.curr_ref_pwr_value = ref_pwr;
 	powermeter_status.curr_vswr_value = vswr;
 	
+	//Check if the VSWR is too high
+	if ((powermeter_status.vswr_limit != 0) && (vswr >= powermeter_status.vswr_limit)) {
+		error_handler_set(ERROR_TYPE_HIGH_VSWR,1,vswr);
+	}
+	
 	if (type != pickup_type) {
 		switch(type) {
 			case PICKUP_TYPE_150W:
@@ -139,7 +145,6 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 
 /*! \brief This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc */
 void powermeter_process_tasks(void) {
-	//TODO: Fix so that it shows peak or average power according to the settings	
 	if (powermeter_flags & (1<<POWERMETER_FLAG_ACTIVE)) {
 		if (counter_powermeter_update_text >= powermeter_status.text_update_rate) {
 			display_show_powermeter_text(powermeter_status.curr_fwd_pwr_value,powermeter_status.curr_ref_pwr_value,powermeter_status.curr_vswr_value);
