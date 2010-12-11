@@ -28,6 +28,7 @@ public:
 	void loadInitialGUIValues();
 	MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 	void addDebugLine(QString str);
+	void showInformationDialog(QString caption, QString text);
 private:
 	void setupConnections();
 	void lineEditRXAntennaOutputs(QString str, int index);

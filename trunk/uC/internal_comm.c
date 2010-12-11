@@ -184,8 +184,16 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 	for (unsigned char i=0;i<length;i++) {
 		new_mess.checksum += data[i];
 		new_mess.data[i] = data[i];
+		
+		#ifdef INT_COMM_DEBUG
+			printf("0x%02X ",new_mess.data[i]);
+		#endif
 	}
 	
+	#ifdef INT_COMM_DEBUG
+		printf("\n");
+	#endif
+
 	int_comm_tx_queue_add(new_mess);
 }
 
@@ -224,7 +232,7 @@ void internal_comm_resend(void) {
 			led_set_error(LED_STATE_ON);
 			
 			//Set the error flag
-			event_set_error(ERROR_TYPE_INT_COMM_RESEND,1);
+			error_handler_set(ERROR_TYPE_INT_COMM_RESEND,1,0);
 		#endif
 			
 		#ifdef INT_COMM_DEBUG
@@ -316,12 +324,12 @@ ISR(ISR_INTERNAL_COMM_USART_DATA) {
 
 /*! \brief Function which should be called each ms */
 void internal_comm_1ms_timer(void) {
-	if ((uc_com.char_count > 0) && (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)) {
+	if ((uc_com.char_count > 0) & (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)) {
 		counter_rx_timeout = 0;
 		internal_comm_reset_rx();
 	}
 		
-	if ((msg_not_acked == 1) && (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)) {
+	if ((msg_not_acked == 1) & (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)) {
 		counter_tx_timeout = 0;
 		
 		internal_comm_resend();

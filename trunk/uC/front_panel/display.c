@@ -587,7 +587,6 @@ void display_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_p
  *  \param ref_power Reflected power in watts
  *  \param vswr The current VSWR, for example 151 means 1.51:1 */
 void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr) {
-	//TODO: Insert the real values here
 	sprintf(power_temp_str,"%5iW",fwd_power);
 	display_text_right_adjust(125,3,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
 	sprintf(power_temp_str,"%3iW",ref_power);

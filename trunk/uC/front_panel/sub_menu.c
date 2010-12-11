@@ -41,7 +41,6 @@
 #include "../wmv_bus/bus_commands.h"
 
 //TODO: Fix the implementation if more than one antenna has got a sub menu, should be done in event_handler.c
-//TODO: Maybe fix so that we are able to select RX antennas while in the sub menu of an ARRAY?
 
 //! Current sub menu array
 struct_sub_menu_array current_sub_menu_array[4];

@@ -333,6 +333,15 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			}
 			
 			break;
+		case INT_COMM_PC_CTRL:
+			computer_interface_send(message.data[0],message.length-1,message.data+1);
+			break;
+		case INT_COMM_PC_CTRL_ACK:
+			computer_interface_send_ack();
+			break;
+		case INT_COMM_PC_CTRL_NACK:
+			computer_interface_send_nack();
+			break;
 		case INT_COMM_GET_BAND_BCD_STATUS:
 			//Read the status of the BCD input on the top floor and return it
 			/* PF0 - Input  - BCD input Bit 2
@@ -372,7 +381,6 @@ void ps2_keyboard_send(unsigned char cmd) {
 	tiny_delay();
 	tiny_delay();
 	PS2_DATA_LOW;
-	tiny_delay();
 	DDRE &= ~(1<<6);
 	PS2_CLK_HIGH;
 	ps2.bit_count = 0;
@@ -403,13 +411,13 @@ int main(void) {
 	init_timer_0();
 	
 	//115.2kbaud
-	usart1_init(7);
+	usart1_init(47);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 	
 	//19.2kbaud - internal comm
 	usart0_init(47);
 	
-	printf("Motherboard started\n");
+	//printf("Motherboard started\n");
 	
 	sei();
 
@@ -423,13 +431,15 @@ int main(void) {
 	
 	PORTA |= (1<<3);
 	
+	ps2_keyboard_send(0xFF);
 	ps2_keyboard_send(0xF4);
+	ps2_keyboard_send(0xFF);
 	
 	delay_ms(100);
 	
 	while(1) {
-		//computer_interface_send_data();
-		//computer_interface_parse_data();
+		computer_interface_send_data();
+		computer_interface_parse_data();
 		
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
 		internal_comm_poll_rx_queue();
@@ -464,6 +474,8 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		
 		counter_ps2 = 0;
 	}
+	
+	computer_interface_1ms_tick();
 	
 	//So that if the keyboard has been unplugged and plugged in again it will start working
 	//after maximum time of one minute
@@ -517,9 +529,6 @@ ISR(SIG_INTERRUPT6) {
 					ps2_process_key(ps2.data);
 				}
 				
-				if (ps2.data != 0x00)
-					printf("data: %i\n",ps2.data);
-				
 				ps2.prev_cmd = ps2.data;
 				
 				return;
@@ -554,11 +563,6 @@ ISR(SIG_INTERRUPT6) {
 			if (ps2.bit_count == 11) {
 				ps2.tx_data = 0;
 				ps2.transmit = 0;
-
-				if ((PINA & (1<<3)) == 0)
-					usart1_transmit('A');
-				else
-					usart1_transmit('N');
 			}
 		}
 	}

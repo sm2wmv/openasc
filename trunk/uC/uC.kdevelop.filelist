@@ -40,6 +40,7 @@ front_panel/eeprom.c
 front_panel/eeprom.h
 front_panel/eeprom_m24.c
 front_panel/eeprom_m24.h
+front_panel/errors.c
 front_panel/errors.h
 front_panel/event_handler.c
 front_panel/event_handler.h

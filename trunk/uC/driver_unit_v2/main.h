@@ -58,4 +58,6 @@ typedef struct {
 //! Driver status for output ON
 #define DRIVER_STATUS_ON	1
 
+unsigned char get_ptt_interlock_input(unsigned char index);
+
 #endif

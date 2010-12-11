@@ -2,7 +2,7 @@
  *  \brief List of error codes
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-01-25
+ *  \date 2010-12-04
  *  \code #include "front_panel/errors.h" \endcode
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
@@ -24,7 +24,7 @@
 #define _ERRORS_H_
 
 //! Define which tells us how many different error types that currently exist
-#define NR_OF_ERRORS	5
+#define NR_OF_ERRORS	8
 
 //! Error that the bus had to resend a message more times than the max limit
 #define ERROR_TYPE_BUS_RESEND						0
@@ -36,5 +36,35 @@
 #define ERROR_TYPE_BUS_RX_QUEUE_FULL		3
 //! Internal communication resend fail
 #define ERROR_TYPE_INT_COMM_RESEND			4
+//! Ping timeout error, which means that a device, which is used by THIS openASC box has stopped to respond
+//! However not all type of cards generate these errors. This is mainly an error for the driver cards which are
+//! very critical for the whole system
+#define ERROR_TYPE_ANT_PING_TIMEOUT			5
+//! Ping timeout error, which means that a device, which is used by THIS openASC box has stopped to respond
+//! However not all type of cards generate these errors. This is mainly an error for the driver cards which are
+//! very critical for the whole system
+#define ERROR_TYPE_BAND_PING_TIMEOUT		6
+//! VSWR error
+#define ERROR_TYPE_HIGH_VSWR						7
+
+/*! \brief Set the error flag of a certain error type
+ *  \param error_type The type of error that has occured, defines can be found in errors.h
+ *  \param state State of the error 
+ *  \param data Some additional information of the error */
+void error_handler_set(unsigned char error_type, unsigned char state, unsigned int data);
+
+/*! \brief Clear all the errors
+ *  \return The number of errors that were cleared */
+unsigned char error_handler_clear_all(void);
+
+/*! \brief Clear an error of a certain type
+ *  \param error_type The type of error that has occured, defines can be found in errors.h */
+void error_handler_clear(unsigned char error_type);
+
+/*! \brief Clear an error of a certain type
+ *  \return 1 if the ptt is locked, 0 if not */
+unsigned char error_handler_is_ptt_locked(void);
+
+unsigned char error_handler_get_state(unsigned char error_type);
 
 #endif

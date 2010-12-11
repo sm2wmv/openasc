@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "commclass.h"
 
-//#define DEBUG
+//#define DEBUG	1
 
 CommClass::CommClass() {
 	threadActive = false;
@@ -32,9 +32,11 @@ int CommClass::openPort(QString deviceName) {
 	serialPort->setFlowControl(FLOW_OFF);
 	serialPort->setParity(PAR_NONE);
 	serialPort->setStopBits(STOP_1);
+
 	sent_count = 0;
+
 	lastMessageAcked = true;
-	
+
 	interfaceType = INTERFACE_TYPE_SERIAL;
 
 	//Sets the timeout between each character read to 50 us
@@ -42,6 +44,7 @@ int CommClass::openPort(QString deviceName) {
 	
 	if (serialPort->open(QIODevice::ReadWrite)) {
 		serialPort->flush();
+
 		return(0);
 	} else {
 		return(1);
@@ -55,57 +58,29 @@ int CommClass::openPort(QString address, quint16 port) {
 
 	sent_count = 0;
 	lastMessageAcked = true;
-
-	interfaceType = INTERFACE_TYPE_TCP;
 }
 
 void CommClass::parseRXQueue() {
+
+}
+
+int CommClass::getRXQueueSize() {
+	return(rxQueue.size());
+}
+
+QByteArray CommClass::getRXQueueFirst() {
 	QByteArray temp = rxQueue.first();
 	rxQueue.removeFirst();
-	
-	unsigned char cmd = (unsigned char)temp.at(0);
-	unsigned char length = (unsigned char)temp.at(1);
-	unsigned char data[length];
-	
-	for (int i=0;i<length;i++)
-		data[i] = temp.at(i+2);
-	
-	switch(cmd) {
-		case CTRL_GET_FIRMWARE_REV:
-			qDebug("Firmware rev: %s",data);
-			
-			if (txQueue.size() > 0)
-				txQueue.removeFirst();
-	
-			lastMessageAcked = true;
-			break;
-		case COMPUTER_COMM_ACK:
-			#ifdef DEBUG
-				qDebug("ACKED");
-			#endif
-				if (txQueue.size() > 0)
-					txQueue.removeFirst();
-	
-				lastMessageAcked = true;
-			break;
-		case COMPUTER_COMM_NACK:
-			#ifdef DEBUG
-				qDebug("NACK!!");
-				exit(0);
-			#endif
-			break;
-	}
+
+	return(temp);
 }
 
 void CommClass::run() {
 	threadActive = true;
 	
 	while(threadActive) {
-		//receiveMsg();
-		
-		if (rxQueue.size() > 0)
-			parseRXQueue();
-		
+		receiveMsg();
+
 		checkTXQueue();
 		
 		QThread::usleep(100);
@@ -142,18 +117,30 @@ void CommClass::receiveMsg() {
 	
 	for (int i=0;i<receivedMessage.size();i++) {
 		if (i>0)
-			if ((((unsigned char)receivedMessage.at(i)) == 0xFE) && (((unsigned char)receivedMessage.at(i)) == 0xFE)) {
+			if ((((unsigned char)receivedMessage.at(i)) == 0xFE) && (((unsigned char)receivedMessage.at(i-1)) == 0xFE)) {
 				for (int x=i;x<receivedMessage.size();x++) {
 					if (((unsigned char)receivedMessage.at(x) == 0xFD) && ((unsigned char)receivedMessage.at(i+2) == (x-i-3))) {
-						rxQueue.append(receivedMessage.mid(i+1,(unsigned char)receivedMessage.at(i+2)+2));
-/*						for (int x=0;x<receivedMessage.size();x++)
-							qDebug("%i - 0x%02X ",x,(unsigned char)receivedMessage.at(x));*/
-						
+
+						if ((unsigned char)receivedMessage.at(i+1) == COMPUTER_COMM_ACK) {
+							if (txQueue.size() > 0)
+								txQueue.removeFirst();
+
+							lastMessageAcked = true;
+						}
+						else if ((unsigned char)receivedMessage.at(i+1) == COMPUTER_COMM_NACK) {
+							qDebug("NACK");
+						}
+						else {
+							rxQueue.append(receivedMessage.mid(i+1,(unsigned char)receivedMessage.at(i+2)+2));
+
+							if (txQueue.size() > 0)
+								txQueue.removeFirst();
+
+							lastMessageAcked = true;
+						}
+
 						receivedMessage.remove(i-1,(unsigned char)receivedMessage.at(i+2)+5);
 						
-						/*for (int x=0;x<receivedMessage.size();x++)
-							qDebug("%i - 0x%02X ",x,(unsigned char)receivedMessage.at(x));
-						*/
 						return;
 					}
 				}
@@ -165,21 +152,43 @@ bool CommClass::isOpen() {
 	return(serialPort->isOpen());
 }
 
+void CommClass::sendNACK() {
+	char data[5];
+	data[0] = (char)0xFE;
+	data[1] = (char)0xFE;
+	data[2] = (char)COMPUTER_COMM_NACK;
+	data[3] = (char)0x00;
+	data[4] = (char)0xFD;
+
+	sendMessage(data,5);
+}
+
+void CommClass::sendACK() {
+	char data[5];
+	data[0] = (char)0xFE;
+	data[1] = (char)0xFE;
+	data[2] = (char)COMPUTER_COMM_ACK;
+	data[3] = (char)0x00;
+	data[4] = (char)0xFD;
+
+	sendMessage(data,5);
+}
+
 void CommClass::sendMessage(char *data, int length) {
-	if (interfaceType == INTERFACE_TYPE_SERIAL)
+	if (interfaceType == INTERFACE_TYPE_SERIAL){
 		serialPort->write(data,length);
+	}
 	else if (interfaceType == INTERFACE_TYPE_TCP) {
 		client.write(data,length);
-		printf("SENT1");
 	}
 }
 
 void CommClass::sendMessage(QByteArray& data) {
-	if (interfaceType == INTERFACE_TYPE_SERIAL)
+	if (interfaceType == INTERFACE_TYPE_SERIAL) {
 		serialPort->write(data);
+	}
 	else if (interfaceType == INTERFACE_TYPE_TCP) {
 		client.write(data);
-		printf("SENT2");
 	}
 }
 

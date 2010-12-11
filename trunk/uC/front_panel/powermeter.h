@@ -69,5 +69,6 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit);
 void powermeter_process_tasks(void);
 void powermeter_1ms_tick(void);
+void powermeter_set_active(unsigned char state);
 
 #endif

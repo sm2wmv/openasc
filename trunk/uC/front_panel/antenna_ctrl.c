@@ -64,6 +64,30 @@ unsigned char current_band_activated_outputs_rx[RX_ANTENNA_BAND_OUTPUT_STR_LENGT
 //! How many devices we have activated rx antenna band outputs on
 unsigned char current_band_activated_outputs_rx_length = 0;
 
+/*! \brief Function which goes through the different addresses of cards that have been activated and compares it to the sent in address
+    \param addr The address we wish to check if it is activated 
+    \return 1 if the address is in use, 0 if not */
+unsigned char antenna_ctrl_check_address_in_use(unsigned char addr) {
+	unsigned char ret_val = 0;
+	
+	for (unsigned char i=0;i<current_activated_ant_outputs_length;i++) {
+		if (current_activated_ant_outputs[i] == addr)
+			ret_val = 1;
+	}
+	
+	for (unsigned char i=0;i<current_activated_rx_ant_outputs_length;i++) {
+		if (current_activated_rx_ant_outputs[i] == addr)
+			ret_val = 1;
+	}	
+		
+	for (unsigned char i=0;i<current_band_activated_outputs_rx_length;i++) {
+		if (current_band_activated_outputs_rx[i] == addr)
+			ret_val = 1;
+	}	
+	
+	return(ret_val);
+}
+
 unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
 	unsigned char result = 0;
 
@@ -133,6 +157,10 @@ void antenna_ctrl_deactivate_outputs(unsigned char *addresses, unsigned char len
  * \return The selected antenna combination, for example 1 means antenna 1, 3 means antenna 1 and 2 (binary representation) */
 unsigned char antenna_ctrl_antenna_selected(void) {
 	return(status.selected_ant & 0x0F);
+}
+
+unsigned char antenna_ctrl_rx_antenna_selected(void) {
+	return(status.selected_rx_antenna);
 }
 
 /*! \brief Send the output string for the current antenna to the bus */

@@ -1,5 +1,6 @@
 #include "src/settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include "mainwindowimpl.h"
 
 SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::SettingsDialog) {
 		m_ui->setupUi(this);
@@ -14,11 +15,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
 
 		settings.endGroup();
 
-		if (iDeviceInterfaceType == 1) {				
+		if (iDeviceInterfaceType == INTERFACE_TYPE_TCP) {
 				m_ui->groupBoxNetwork->setChecked(true);
 				m_ui->groupBoxCOM->setChecked(false);
 		}
-		else if (iDeviceInterfaceType == 2) {
+		else if (iDeviceInterfaceType == INTERFACE_TYPE_SERIAL) {
 				m_ui->groupBoxCOM->setChecked(true);
 				m_ui->groupBoxNetwork->setChecked(false);
 		}
@@ -45,14 +46,14 @@ void SettingsDialog::changeEvent(QEvent *e) {
 void SettingsDialog::groupboxNetworkClicked(bool state) {
 		if (state == true) {
 				m_ui->groupBoxCOM->setChecked(false);
-				iDeviceInterfaceType = 1;
+				iDeviceInterfaceType = INTERFACE_TYPE_TCP;
 		}
 }
 
 void SettingsDialog::groupBoxCOMClicked(bool state) {
 		if (state == true) {
 				m_ui->groupBoxNetwork->setChecked(false);
-				iDeviceInterfaceType = 2;
+				iDeviceInterfaceType = INTERFACE_TYPE_SERIAL;
 		}
 }
 
@@ -79,3 +80,20 @@ void SettingsDialog::btnOKClicked() {
 void SettingsDialog::btnCancelClicked() {
 		this->hide();
 }
+
+QString SettingsDialog::getCOMDeviceName(void) {
+	return(strCOMDeviceName);
+}
+
+QString SettingsDialog::getNetworkIPAddress(void) {
+	return(strNetworkIPAddress);
+}
+
+int SettingsDialog::getNetworkPort(void) {
+	return(iNetworkPort);
+}
+
+int SettingsDialog::getDeviceInterfaceType(void) {
+	return(iDeviceInterfaceType);
+}
+

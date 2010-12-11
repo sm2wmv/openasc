@@ -165,9 +165,7 @@
 //! Ext ctrl - Change band down
 #define EXT_CTRL_CHANGE_BAND_DOWN 43
 
-void event_set_error(unsigned char error_type, unsigned char state);
-unsigned char event_get_errors(void);
-unsigned char event_get_error_state(unsigned char error_type);
+void event_check_pings(void);
 
 void event_internal_comm_parse_message(UC_MESSAGE message);
 void event_handler_process_ps2(unsigned char key_code);

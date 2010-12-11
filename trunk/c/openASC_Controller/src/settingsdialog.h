@@ -16,9 +16,12 @@ class SettingsDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(SettingsDialog)
 public:
-    explicit SettingsDialog(QWidget *parent = 0);
-    virtual ~SettingsDialog();
-
+	explicit SettingsDialog(QWidget *parent = 0);
+	virtual ~SettingsDialog();
+	QString getCOMDeviceName(void);
+	QString getNetworkIPAddress(void);
+	int getNetworkPort(void);
+	int getDeviceInterfaceType(void);
 protected:
     virtual void changeEvent(QEvent *e);
 

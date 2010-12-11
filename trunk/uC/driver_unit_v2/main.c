@@ -57,6 +57,9 @@ unsigned int counter_ping_interval=0;
 //! Flag which is set when we wish to poll the PTT status
 unsigned char check_ptt_status = 0;
 
+unsigned char deactivate_output_list[20];
+unsigned char deactivate_output_list_len = 0;
+
 /*! \brief Activate a driver output
 * This function is used to activate an output on the driver unit. It will remember
 * which device that sent the request for an activation so that the driver_unit will
@@ -175,6 +178,33 @@ void deactivate_output(unsigned char from_addr, unsigned char index) {
 	}
 }
 
+/*! \brief Checks the ping queue to see if any openASC box has stopped responding. If so we shut down all the outputs that it has activated */
+void check_pings(void) {
+	if (bus_ping_get_failed_count() > 0) {
+		bus_struct_ping_status ping_data = bus_ping_get_failed_ping();
+		
+		if (ping_data.device_type == DEVICE_ID_MAINBOX) {
+			for (unsigned char i=0;i<20;i++) {
+				if (driver_status.driver_output_owner[i] == ping_data.addr) {
+					deactivate_output_list[i] = ping_data.addr;
+					deactivate_output_list_len++;
+				}
+			}
+		}
+	}
+}
+
+/*! \brief Get the number the TX active signal is connected to
+ *  \param addr The address of the device
+ *  \return The ptt interlock input, 0 = none or 1-7*/
+unsigned char get_ptt_interlock_input(unsigned char addr) {
+	for (unsigned char i=0;i<7;i++)
+		if (driver_status.ptt_interlock_input[i] == addr)
+			return(i+1);
+
+	return(0);
+}
+
 /*! \brief Retrieve the temperature from the LM76 sensor
 * This function is used to retrieve the temperature from the LM76 sensor that
 * does exist on the driver_unit.
@@ -197,13 +227,12 @@ void bus_parse_message(void) {
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_PING) {
+		//TODO: This needs to be read from the ping list
 		//If the ping is coming from a mainbox, we need to save ptt input information for the interlock
 		if (bus_message.data[0] == DEVICE_ID_MAINBOX) {
 			//Check so that the PTT interlock input is <> 0
 			if (bus_message.data[1] != 0) {
 				if (bus_message.from_addr != driver_status.ptt_interlock_input[bus_message.data[1]-1]) {
-					//TODO: Make code to confirm this by sending a question to the openASC box that this value is actually correct
-					//      That way we are absolutely sure that this setting sent is 100% correct
 					driver_status.ptt_interlock_input[bus_message.data[1]] = bus_message.from_addr;
 				}
 			}
@@ -463,8 +492,25 @@ int main(void)
 			
 			check_ptt_status = 0;
 		}
+		
+		check_pings();
+		
+		//This is done like this to make sure that no PTT line is pulled while the driver card
+		//deactivates the outputs
+		if (deactivate_output_list_len > 0) {
+			for (unsigned char i=0;i<20;i++) {
+				if (deactivate_output_list[i] != 0)
+					if (get_ptt_interlock_input(deactivate_output_list[i]) != 0) {
+						if ((get_ptt_status() & (1<<get_ptt_interlock_input(deactivate_output_list[i])-1)) == 0) {
+							deactivate_output(deactivate_output_list[i],i+1);
+							deactivate_output_list[i] = 0;
+							deactivate_output_list_len--;
+						}
+					}
+			}
+		}
 	}
-	
+
 	return (0);
 }
 

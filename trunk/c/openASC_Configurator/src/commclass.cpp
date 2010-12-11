@@ -18,8 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "commclass.h"
-
-//#define DEBUG
+#include "mainwindowimpl.h"
 
 CommClass::CommClass() {
 	threadActive = false;
@@ -89,8 +88,8 @@ void CommClass::parseRXQueue() {
 				txQueue.removeFirst();
 			
 			lastMessageAcked = true;
+			qDebug("DONE - Data sent successfully");
 
-			qDebug("DONE");
 			break;
 	}
 }

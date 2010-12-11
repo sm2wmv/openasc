@@ -42,5 +42,9 @@
 #define INT_COMM_PS2_KEYPRESSED							0xC5
 //! Command used to transfer commands from the PC to the front panel and vice versa
 #define INT_COMM_PC_CTRL										0xC6
+//! Command to tell the computer that the last package was ACKED ok
+#define INT_COMM_PC_CTRL_ACK								0xC7
+//! Command to tell the computer that the last package was NACKED
+#define INT_COMM_PC_CTRL_NACK								0xC8
 
 #endif

@@ -80,7 +80,7 @@ typedef struct {
 //! Menu flag button pressed
 #define MENU_BUTTON_PRESSED	2
 
-void menu_show(void);
+void menu_show(unsigned char pos);
 void menu_action(unsigned char menu_action_type);
 void menu_init(void);
 void menu_reset(void);

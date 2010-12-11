@@ -50,7 +50,7 @@
 #define COMPUTER_RX_BUFFER_LENGTH	128
 
 //! The length of the computer RX BUFFER
-#define COMPUTER_TX_BUFFER_LENGTH	20
+#define COMPUTER_TX_BUFFER_LENGTH	25
 
 //! The number of bytes the fixed part of the data structure takes up
 #define COMPUTER_INTERFACE_FIXED_SIZE	5
@@ -63,9 +63,6 @@
 #define COMPUTER_COMM_ACK				0xFA
 //! The serial NOT acknowledge of the computer communication protocol
 #define COMPUTER_COMM_NACK			0xFB
-
-//! Command which is used just to redirect data from the USB to the front panel
-#define COMPUTER_COMM_REDIRECT_DATA					0x10
 
 //! Flag to see if the preamble was found
 #define COMPUTER_COMM_FLAG_FOUND_PREAMBLE	1
@@ -101,6 +98,11 @@ computer_comm_struct computer_comm;
 
 //! The bootloader start address
 void (*bootloader_start)(void) = (void *)0x1FE00;
+
+unsigned int counter_1ms = 0;
+unsigned int counter_computer_interface_rx_timeout = 0;
+
+unsigned char computer_comm_prev_data = 0;
 
 //! \brief Initialize the communication interface towards the computer
 void computer_interface_init(void) {
@@ -174,11 +176,8 @@ void computer_interface_send_nack(void) {
 /*! \brief Parse the data in the rx_buffer and execute the proper functions */
 void computer_interface_parse_data(void) {
 	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF)) {
-		
-		if (computer_comm.command == INT_COMM_REDIRECT_DATA) {
+		if (computer_comm.command == INT_COMM_PC_CTRL) {
 			internal_comm_add_tx_message(INT_COMM_PC_CTRL, computer_comm.length, (void *)computer_comm.rx_buffer_start);
-			
-			computer_interface_send_ack();
 		}
 		else
 			computer_interface_send_nack();
@@ -187,6 +186,24 @@ void computer_interface_parse_data(void) {
 		computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF);
 		computer_comm.rx_buffer = computer_comm.rx_buffer_start;
 	}
+}
+
+void computer_interface_1ms_tick(void) {
+	if (counter_computer_interface_rx_timeout > COMPUTER_INTERFACE_RX_TIMEOUT) {
+		computer_comm_prev_data = 0;
+		computer_comm.rx_buffer = computer_comm.rx_buffer_start;
+		
+		computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_FOUND_PREAMBLE);
+		computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF);
+		
+		computer_comm.count = 0;
+		computer_comm.length = 0;
+		
+		counter_computer_interface_rx_timeout = 0;
+	}
+	
+	counter_1ms++;
+	counter_computer_interface_rx_timeout++;
 }
 
 ISR(SIG_USART1_DATA) {
@@ -208,10 +225,10 @@ ISR(SIG_USART1_RECV) {
 		}
 		else {
 			switch(computer_comm.count) {
-				case 0:	
+				case 0:
 					computer_comm.command = data;
 					break;
-				case 1: 
+				case 1:
 					computer_comm.length += data;
 					break;
 				default:
@@ -222,8 +239,7 @@ ISR(SIG_USART1_RECV) {
 			computer_comm.count++;
 		}
 	}
-	else if ((computer_comm.rx_buffer - computer_comm.rx_buffer_start > 0) && (data == COMPUTER_COMM_PREAMBLE)
-							&& (*(computer_comm.rx_buffer-1) == COMPUTER_COMM_PREAMBLE)) {
+	else if ((computer_comm_prev_data == COMPUTER_COMM_PREAMBLE) && (data == COMPUTER_COMM_PREAMBLE)) {
 		computer_comm.rx_buffer = computer_comm.rx_buffer_start;
 		computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF);
 		computer_comm.flags |= (1<<COMPUTER_COMM_FLAG_FOUND_PREAMBLE);
@@ -240,5 +256,6 @@ ISR(SIG_USART1_RECV) {
 		}
 	}
 	
+	computer_comm_prev_data = data;
 //	usart3_transmit(data);
 }

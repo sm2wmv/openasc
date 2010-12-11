@@ -26,8 +26,10 @@
 #include <avr/interrupt.h>
 #include <string.h>
 
+#include "../global.h"
 #include "event_handler.h"
 #include "remote_control.h"
+#include "antenna_ctrl.h"
 
 //! Flag that the remote control is active
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
@@ -54,10 +56,7 @@ unsigned char remote_control_get_remote_mode(void) {
 /*! \brief Parse a button press event, will perform an action depending on which button we wish to press
  *  \param button The button we wish to press */
 void remote_control_parse_button(unsigned char button) {
-	switch (button) {
-		default:
-			break;
-	}
+	event_process_task(button);
 }
 
 /*! \brief Parse a remote control command and perform the proper action
@@ -65,17 +64,69 @@ void remote_control_parse_button(unsigned char button) {
  *  \param length The length of the data
  *  \param data The data content */
 void remote_control_parse_command(unsigned char command, unsigned char length, char *data) {
-	switch(command) {
-		case REMOTE_CONTROL_ACTIVATE_MODE:
-			remote_control_activate_remote_mode();
-			break;
-		case REMOTE_CONTROL_DEACTIVATE_MODE:
-			remote_control_deactivate_remote_mode();
-		case REMOTE_CONTROL_BUTTON_PRESSED:
-			if (length > 0)
-				remote_control_parse_button(data[0]);
-			break;
-		default:
-			break;
+	if (command == REMOTE_CONTROL_ACTIVATE_MODE) {
+		remote_control_activate_remote_mode();
+		
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL_ACK,0,0);
+	}
+	else if (command == REMOTE_CONTROL_DEACTIVATE_MODE) {
+		remote_control_deactivate_remote_mode();
+		
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL_ACK,0,0);
+	}
+	else if (command == REMOTE_CONTROL_BUTTON_PRESSED) {
+		if (length > 0)
+			remote_control_parse_button(data[0]);
+		
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL_ACK,0,0);
+	}
+	else if (command == REMOTE_CONTROL_RX_ANT_TEXT) {
+		char buf[RX_ANTENNA_NAME_LENGTH+3];
+		unsigned char buffer_pos=0;
+
+		buffer_pos=0;
+		buf[buffer_pos++] = REMOTE_CONTROL_RX_ANT_TEXT;
+			
+		buf[buffer_pos++] = data[0]; //Antenna index
+		memcpy(&buf[buffer_pos],antenna_ctrl_get_rx_antenna_name(data[0]),strlen(antenna_ctrl_get_rx_antenna_name(data[0])));
+		buffer_pos += strlen(antenna_ctrl_get_rx_antenna_name(data[0]));
+		buf[buffer_pos] = 0;
+
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL, buffer_pos, &buf);
+	}
+	else if (command == REMOTE_CONTROL_ANT_TEXT) {
+		unsigned char buf[ANTENNA_TEXT_SIZE+3];
+		unsigned char buffer_pos=0;
+		
+		buf[buffer_pos++] = REMOTE_CONTROL_ANT_TEXT;
+			
+		buf[buffer_pos++] = data[0];	//Antenna index
+		memcpy(&buf[buffer_pos],antenna_ctrl_get_antenna_text(data[0]),antenna_ctrl_get_antenna_text_length(data[0]));
+		buffer_pos += antenna_ctrl_get_antenna_text_length(data[0]);
+		buf[buffer_pos] = 0;
+			
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL, buffer_pos, &buf);
+	}
+	else if (command == REMOTE_CONTROL_CHANGE_BAND) {
+		if (data[0] <= BAND_10M) {
+			main_set_band_change_mode(BAND_CHANGE_MODE_MANUAL);
+			main_set_new_band(data[0]);
+		}
+		else {
+			main_set_band_change_mode(BAND_CHANGE_MODE_AUTO);
+		}
+		
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL_ACK,0,0);
+	}
+	else if (command == REMOTE_CONTROL_GET_STATUS) {
+		unsigned char buf[4];
+		unsigned char buffer_pos = 0;
+		
+		buf[buffer_pos++] = REMOTE_CONTROL_GET_STATUS;
+		buf[buffer_pos++] = main_get_current_band();
+		buf[buffer_pos++] = antenna_ctrl_antenna_selected();
+		buf[buffer_pos++] = antenna_ctrl_rx_antenna_selected();
+		
+		internal_comm_add_tx_message(INT_COMM_PC_CTRL, 4, &buf);
 	}
 }

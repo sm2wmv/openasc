@@ -102,6 +102,8 @@ typedef struct {
 	unsigned char default_antenna;
 } struct_antenna;
 
+unsigned char antenna_ctrl_check_address_in_use(unsigned char addr);
+
 void antenna_ctrl_deactivate_all_rx_band(void);
 
 void antenna_ctrl_send_ant_data_to_bus(void);
@@ -148,7 +150,10 @@ unsigned char antenna_ctrl_get_sub_menu_type(unsigned char ant_index);
 void antenna_ctrl_deactivate_all(void);
 
 void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading);
+
 unsigned char antenna_ctrl_antenna_selected(void);
+unsigned char antenna_ctrl_rx_antenna_selected(void);
+
 unsigned char antenna_ctrl_get_rotatable(void);
 unsigned int antenna_ctrl_get_start_heading(unsigned char ant_index);
 unsigned int antenna_ctrl_get_max_rotation(unsigned char ant_index);
