@@ -1,6 +1,8 @@
 # KDevelop Custom Project File List
 avrlibdefs.h
 avrlibtypes.h
+comm_interface.c
+comm_interface.h
 delay.c
 delay.h
 documentation
