@@ -269,37 +269,66 @@ void MainWindowImpl::timerPollRXQueueUpdate() {
 			if (data[2] != status.currentRXAntennas) {
 				status.currentRXAntennas = data[2];
 
-				pushButtonRXAnt1->setChecked(false);
-				pushButtonRXAnt2->setChecked(false);
-				pushButtonRXAnt3->setChecked(false);
-				pushButtonRXAnt4->setChecked(false);
-				pushButtonRXAnt5->setChecked(false);
-				pushButtonRXAnt6->setChecked(false);
-				pushButtonRXAnt7->setChecked(false);
-				pushButtonRXAnt8->setChecked(false);
-				pushButtonRXAnt9->setChecked(false);
-				pushButtonRXAnt10->setChecked(false);
+				/*QFont boldFont;
+				boldFont.setBold(true);
 
-				if (status.currentRXAntennas == 1)
-					pushButtonRXAnt1->setChecked(true);
-				else if (status.currentRXAntennas == 2)
-					pushButtonRXAnt2->setChecked(true);
-				else if (status.currentRXAntennas == 3)
-					pushButtonRXAnt3->setChecked(true);
-				else if (status.currentRXAntennas == 4)
-					pushButtonRXAnt4->setChecked(true);
-				else if (status.currentRXAntennas == 5)
-					pushButtonRXAnt5->setChecked(true);
-				else if (status.currentRXAntennas == 6)
-					pushButtonRXAnt6->setChecked(true);
-				else if (status.currentRXAntennas == 7)
-					pushButtonRXAnt7->setChecked(true);
-				else if (status.currentRXAntennas == 8)
-					pushButtonRXAnt8->setChecked(true);
-				else if (status.currentRXAntennas == 9)
-					pushButtonRXAnt9->setChecked(true);
-				else if (status.currentRXAntennas == 10)
-					pushButtonRXAnt10->setChecked(true);
+				QFont regularFont;
+				regularFont.setBold(false);
+
+				pushButtonRXAnt1->setFont(regularFont);
+				pushButtonRXAnt2->setFont(regularFont);
+				pushButtonRXAnt3->setFont(regularFont);
+				pushButtonRXAnt4->setFont(regularFont);
+				pushButtonRXAnt5->setFont(regularFont);
+				pushButtonRXAnt6->setFont(regularFont);
+				pushButtonRXAnt7->setFont(regularFont);
+				pushButtonRXAnt8->setFont(regularFont);
+				pushButtonRXAnt9->setFont(regularFont);
+				pushButtonRXAnt10->setFont(regularFont);
+*/
+				if (status.currentRXAntennas == 0) {
+					labelCurrentRXAntenna->setText("");
+				}
+				else if (status.currentRXAntennas == 1) {
+					//pushButtonRXAnt1->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt1->text());
+				}
+				else if (status.currentRXAntennas == 2) {
+				//	pushButtonRXAnt2->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt2->text());
+				}
+				else if (status.currentRXAntennas == 3) {
+					//pushButtonRXAnt3->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt3->text());
+				}
+				else if (status.currentRXAntennas == 4) {
+					//pushButtonRXAnt4->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt4->text());
+				}
+				else if (status.currentRXAntennas == 5) {
+					//pushButtonRXAnt5->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt5->text());
+				}
+				else if (status.currentRXAntennas == 6) {
+					//pushButtonRXAnt6->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt6->text());
+				}
+				else if (status.currentRXAntennas == 7) {
+					//pushButtonRXAnt7->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt7->text());
+				}
+				else if (status.currentRXAntennas == 8) {
+					//pushButtonRXAnt8->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt8->text());
+				}
+				else if (status.currentRXAntennas == 9) {
+					//pushButtonRXAnt9->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt9->text());
+				}
+				else if (status.currentRXAntennas == 10) {
+					//pushButtonRXAnt10->setFont(boldFont);
+					labelCurrentRXAntenna->setText(pushButtonRXAnt10->text());
+				}
 			}
 		}
 	}

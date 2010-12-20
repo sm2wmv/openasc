@@ -23,7 +23,9 @@ HEADERS = src/mainwindowimpl.h \
     src/qextserialport.h \
     src/rotatordialog.h \
     src/mapviewwidget.h \
-    src/settingsdialog.h
+    src/settingsdialog.h \
+    src/commands.h \
+    src/comminterface.h
 SOURCES = src/mainwindowimpl.cpp \
     src/main.cpp \
     src/generic.cpp \
@@ -33,4 +35,5 @@ SOURCES = src/mainwindowimpl.cpp \
     src/rotatordialog.cpp \
     src/mapviewwidget.cpp \
     src/commclass.cpp \
-    src/settingsdialog.cpp
+    src/settingsdialog.cpp \
+    src/comminterface.cpp

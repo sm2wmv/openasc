@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>634</width>
-    <height>436</height>
+    <width>590</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -17,6 +17,105 @@
   <property name="windowTitle">
    <string>openASC remote controller v0.1</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#frameMain {
+	border: none;
+	background-color: rgb(113,113,113)
+}
+QLabel {
+	color: rgb(255, 255, 255)
+}
+
+QComboBox {
+color: #333;
+border: 2px solid #555;
+border-radius: 5px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 80px;
+}
+
+#frameMain QPushButton {
+color: #333;
+border: 2px solid #555;
+border-radius: 11px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 80px;
+}
+#frameMain QPushButton:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+#frameMain QPushButton:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}
+
+ QMenu {
+     background-color: white;
+     margin: 2px; /* some spacing around the menu */
+ }
+
+ QMenu::item {
+     padding: 2px 25px 2px 20px;
+     border: 1px solid transparent; /* reserve space for selection border */
+ }
+
+ QMenu::item:selected {
+     border-color: darkblue;
+     background: rgba(100, 100, 100, 150);
+ }
+
+ QMenu::icon:checked { /* appearance of a 'checked' icon */
+     background: gray;
+     border: 1px inset gray;
+     position: absolute;
+     top: 1px;
+     right: 1px;
+     bottom: 1px;
+     left: 1px;
+ }
+
+ QMenu::separator {
+     height: 1px;
+     background: silver;
+     margin-left: 5px;
+     margin-right: 5px;
+ }
+
+ QMenu::indicator {
+     width: 13px;
+     height: 13px;
+ }
+
+ QMenuBar {
+     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                       stop:0 lightgray, stop:1 darkgray);
+ }
+
+ QMenuBar::item {
+     spacing: 3px; /* spacing between menu bar items */
+     padding: 1px 4px;
+     background: transparent;
+     border-radius: 4px;
+ }
+
+ QMenuBar::item:selected { /* when selected using mouse or keyboard */
+     background: #a8a8a8;
+ }
+
+ QMenuBar::item:pressed {
+     background: #888888;
+ }
+</string>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
@@ -24,6 +123,9 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QFrame" name="frameMain">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -76,17 +178,28 @@
           <x>10</x>
           <y>30</y>
           <width>127</width>
-          <height>344</height>
+          <height>346</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt1">
+           <property name="font">
+            <font>
+             <underline>false</underline>
+            </font>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -96,7 +209,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -106,7 +219,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -116,7 +229,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -126,7 +239,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -136,7 +249,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -146,7 +259,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -156,7 +269,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -166,7 +279,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -176,7 +289,7 @@
             <string/>
            </property>
            <property name="checkable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -298,7 +411,7 @@
          <x>160</x>
          <y>85</y>
          <width>405</width>
-         <height>175</height>
+         <height>216</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -337,7 +450,7 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>383</width>
+          <width>530</width>
           <height>136</height>
          </rect>
         </property>
@@ -800,6 +913,56 @@
          </item>
         </layout>
        </widget>
+       <widget class="QLabel" name="labelRXAntennas3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>170</y>
+          <width>86</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>RX Antenna:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="labelCurrentRXAntenna">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>170</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
       </widget>
       <widget class="QFrame" name="frameMisc">
        <property name="geometry">
@@ -821,7 +984,7 @@
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>65</width>
+          <width>94</width>
           <height>29</height>
          </rect>
         </property>
@@ -847,9 +1010,9 @@
        <widget class="QPushButton" name="pushButtonRXAnt">
         <property name="geometry">
          <rect>
-          <x>75</x>
+          <x>110</x>
           <y>20</y>
-          <width>65</width>
+          <width>94</width>
           <height>29</height>
          </rect>
         </property>
@@ -873,6 +1036,32 @@
         </property>
        </widget>
       </widget>
+      <widget class="QTextEdit" name="textEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>305</y>
+         <width>405</width>
+         <height>171</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>395</y>
+         <width>145</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -882,8 +1071,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>634</width>
-     <height>23</height>
+     <width>590</width>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">
@@ -905,8 +1094,15 @@
     </property>
     <addaction name="actionWindowsRotators"/>
    </widget>
+   <widget class="QMenu" name="menuCommands">
+    <property name="title">
+     <string>Commands</string>
+    </property>
+    <addaction name="actionClearErrors"/>
+   </widget>
    <addaction name="menuNetwork"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuCommands"/>
    <addaction name="menuWindows"/>
   </widget>
   <action name="actionWindowsRotators">
@@ -941,6 +1137,11 @@
    </property>
    <property name="visible">
     <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionClearErrors">
+   <property name="text">
+    <string>Clear Errors</string>
    </property>
   </action>
  </widget>
