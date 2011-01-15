@@ -26,6 +26,7 @@
 #include "board.h"
 #include "usart.h"
 #include "init.h"
+#include "computer_interface.h"
 #include "../delay.h"
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
@@ -92,7 +93,7 @@ void activate_output(unsigned char from_addr, unsigned char index, unsigned char
 
 	driver_status.driver_output_type[index-1] = type;
 
-	switch (index) {
+switch (index) {
 		case 1 :	PORTC |= (1<<DRIVER_OUTPUT_1);
 							break;
 		case 2 :	PORTC |= (1<<DRIVER_OUTPUT_2);
@@ -184,7 +185,7 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			internal_comm_message_nacked();
 			break;
 		case INT_COMM_REDIRECT_DATA:
-			computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
+			//computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
 			for (unsigned char i=0;i<message.length;i++)
@@ -334,13 +335,13 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			
 			break;
 		case INT_COMM_PC_CTRL:
-			computer_interface_send(message.data[0],message.length-1,message.data+1);
+			//computer_interface_send(message.data[0],message.length-1,message.data+1);
 			break;
 		case INT_COMM_PC_CTRL_ACK:
-			computer_interface_send_ack();
+			//computer_interface_send_ack();
 			break;
 		case INT_COMM_PC_CTRL_NACK:
-			computer_interface_send_nack();
+			//computer_interface_send_nack();
 			break;
 		case INT_COMM_GET_BAND_BCD_STATUS:
 			//Read the status of the BCD input on the top floor and return it
@@ -360,6 +361,9 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 			//Will drop the voltage to the input relay
 			PORTB &= ~(1<<7);
 			break;
+    case INT_COMM_PC_SEND_TO_ADDR:
+      computer_interface_tx_message(message.length,message.data);
+      break;
 		default:
 			break;
 	}
@@ -410,7 +414,7 @@ int main(void) {
 	init_ports();
 	init_timer_0();
 	
-	//115.2kbaud
+	//19.2kbaud - computer comm
 	usart1_init(47);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 	

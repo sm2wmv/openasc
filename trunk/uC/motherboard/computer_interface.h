@@ -27,9 +27,7 @@
 void computer_interface_init(void);
 void computer_interface_send_data(void);
 void computer_interface_parse_data(void);
-void computer_interface_send_ack(void);
-void computer_interface_send_nack(void);
-
 void computer_interface_1ms_tick(void);
+void computer_interface_tx_message(unsigned char length, char *data);
 
 #endif

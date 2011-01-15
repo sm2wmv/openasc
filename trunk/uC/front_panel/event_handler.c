@@ -59,6 +59,8 @@
 
 extern unsigned int main_flags;
 
+unsigned char ascii_comm_device_addr = 0;
+
 /*! \brief Function which goes through the ping list and checks if something has happened */
 void event_check_pings(void) {
 
@@ -133,6 +135,14 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 				printf("RX BCD STATUS\n");
 			#endif
 			break;
+    case INT_COMM_PC_CONNECT_TO_ADDR:
+      ascii_comm_device_addr = message.data[0];
+      break;
+    case INT_COMM_PC_SEND_TO_ADDR:
+      if (ascii_comm_device_addr != 0x00) {
+        bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,message.data);
+      }
+      break;
 		default:
 			break;
 	}
@@ -446,6 +456,8 @@ void event_poll_buttons(void) {
 		
 	//Check if the MENU button has been pressed
 		if (btn_status & (1<<FLAG_BUTTON_MENU_BIT)) {
+      clear_screensaver_timer();
+      
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 					if (status.selected_band != BAND_UNDEFINED) {
@@ -473,6 +485,8 @@ void event_poll_buttons(void) {
 
 	
 		if (btn_status & (1<<	FLAG_BUTTON_PULSE_BIT)) {
+      clear_screensaver_timer();
+      
 			if (status.buttons_current_state & (1<<	FLAG_BUTTON_PULSE_BIT)) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM)
 					menu_action(MENU_BUTTON_PRESSED);
@@ -496,6 +510,8 @@ void event_poll_buttons(void) {
 					}
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
+          clear_screensaver_timer();
+          
 					//If we press the rotary knob while selecting sub menu we exit the sub menu. This
 					//is so that the function is equal to other functions of the device
 					led_set_submenu(LED_STATE_OFF);
@@ -920,6 +936,7 @@ void event_rxant_button_pressed(void) {
 /*! \brief Perform the action of Rotate button if it was pressed */
 void event_rotate_button_pressed(void) {
 	clear_screensaver_timer();
+  
 	unsigned char rotator_count=0, rotator_index=0;
 	
 	for (unsigned char i=0;i<4;i++)
@@ -1013,6 +1030,9 @@ void event_bus_parse_message(void) {
 		else if (runtime_settings.powermeter_address == bus_message.from_addr)
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 	}
+  else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
+    internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, bus_message.data);
+  }
 	
 	//Drop the message
 	rx_queue_drop();
