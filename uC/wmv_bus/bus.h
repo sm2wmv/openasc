@@ -120,7 +120,7 @@
 //!The default number of devices
 #define DEF_NR_DEVICES	25
 
-//! The startup time for the device. This is so that all units dont send ping at the same time
+//! The startup time for the device. This is so that all units dont send ping at the same time (in ms)
 #define DEFAULT_STARTUP_DELAY 90
 
 /*! The preamble of the BUS message */

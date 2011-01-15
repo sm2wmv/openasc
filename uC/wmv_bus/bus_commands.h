@@ -140,4 +140,7 @@
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70
 
+/*! Bus command for ASCII comm transfer of data */
+#define BUS_CMD_ASCII_DATA  0x80
+
 #endif

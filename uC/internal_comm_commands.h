@@ -46,5 +46,9 @@
 #define INT_COMM_PC_CTRL_ACK								0xC7
 //! Command to tell the computer that the last package was NACKED
 #define INT_COMM_PC_CTRL_NACK								0xC8
+//! Command which tells the front panel to send and receive ASCII data to a certain device on the bus
+#define INT_COMM_PC_CONNECT_TO_ADDR         0xD0
+//! Command to send data to a device
+#define INT_COMM_PC_SEND_TO_ADDR            0xD1
 
 #endif
