@@ -105,11 +105,34 @@ void bus_parse_message(void) {
 		}
 	}
 	else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
+		bus_add_tx_message(bus_get_address(),
+											 bus_message.from_addr,
+											 (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
+											 BUS_CMD_ASCII_DATA,
+											 8,
+											 (unsigned char *)"\r\nDATA: "
+											 );
+		bus_add_tx_message(bus_get_address(),
+											 bus_message.from_addr,
+											 (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
+											 BUS_CMD_ASCII_DATA,
+											 bus_message.length,
+											 bus_message.data
+											 );
+		bus_add_tx_message(bus_get_address(),
+											 bus_message.from_addr,
+											 (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
+											 BUS_CMD_ASCII_DATA,
+											 2,
+											 (unsigned char *)"\r\n"
+											 );
 
+		/*
 		if ((bus_message.data[0] == 'H') && (bus_message.data[1] == 'E')) {
 			//REPLY, this message will be sent out on the USB port on the openASC box
 			bus_add_tx_message(bus_get_address(), bus_message.from_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,9,"HOPPSAN\r\n");
 		}
+		*/
 	}
 	else {
 	
