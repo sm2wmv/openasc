@@ -39,35 +39,45 @@
 #include "../internal_comm_commands.h"
 
 //! The length of the computer RX BUFFER
-#define COMPUTER_RX_BUFFER_LENGTH	128
+#define COMPUTER_RX_BUFFER_LENGTH	15
 
-//! The length of the computer RX BUFFER
+//! The length of the computer TX BUFFER
 #define COMPUTER_TX_BUFFER_LENGTH	25
+
+//! The maximum number of command arguments, including command name
+#define MAX_CMD_ARGS 5
 
 //! Character for enter
 #define CHAR_ENTER 13
 //! Character for space
 #define CHAR_SPACE 32
+//! Character for ESC
+#define CHAR_ESC 27
+//! Character for backspace
+#define CHAR_BS 8
 
 //! Counter with 1 ms ticks
-unsigned int counter_1ms = 0;
+static unsigned int counter_1ms = 0;
 //! Flag if the RX data should be parsed
-unsigned char parse_rx_data = 0;
+static unsigned char parse_rx_data = 0;
 //! Flag if there is a message to be sent
-unsigned char send_tx_data = 0;
+static unsigned char send_tx_data = 0;
 //! The current position in the RX buffer
-unsigned char rx_buffer_pos = 0;
+static unsigned char rx_buffer_pos = 0;
 //! The current position in the TX buffer
-unsigned char tx_buffer_pos = 0;
+static unsigned char tx_buffer_pos = 0;
 //! The length of the current tx message
-unsigned char tx_data_length = 0;
+static unsigned char tx_data_length = 0;
 //! The length of the current rx message
-unsigned char rx_data_length = 0;
+static unsigned char rx_data_length = 0;
+//! Indicate if we are in command mode or transparent communications mode
+static unsigned char command_mode = 1;
 
 //! The rx buffer of length COMPUTER_RX_BUFFER_LENGTH
-unsigned char rx_data_buffer[COMPUTER_RX_BUFFER_LENGTH];
+static unsigned char rx_data_buffer[COMPUTER_RX_BUFFER_LENGTH+1];
 //! The tx buffer of length COMPUTER_TX_BUFFER_LENGTH
-unsigned char tx_data_buffer[COMPUTER_TX_BUFFER_LENGTH];
+static unsigned char tx_data_buffer[COMPUTER_TX_BUFFER_LENGTH];
+
 
 void computer_interface_send_data(void) {
   if (send_tx_data) {
@@ -81,50 +91,78 @@ void computer_interface_send_data(void) {
 }
 
 void computer_interface_parse_data(void) {
-  //! REMEMBER THAT NO MESSAGES CAN NOT BE OVER 15 CHARACTERS IN LENGTH!
-  
   if (parse_rx_data) {
     parse_rx_data = 0;
     rx_buffer_pos = 0;
     
-    unsigned char pos = 0;
-    unsigned char cmd_len = 0;
-    char cmd[5];
-    
-    if (rx_data_length == 0) {
-      printf("\n\rcmd: ");
-      
-      return; 
-    }
+		if (!command_mode)
+		{
+			if (rx_data_length > 0) {
+				internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, rx_data_length,
+																		 (char *)rx_data_buffer);
+			}
+			return;
+		}
 
-    //Get the command
-    while(pos < rx_data_length) {
-      if (rx_data_buffer[pos] != CHAR_SPACE) {
-        cmd[pos] = rx_data_buffer[pos];
-      }
-      else
-        break;
-      
-      pos++;
+			// Get the command and its arguments
+		unsigned char argc = 0;
+		char *argv[MAX_CMD_ARGS];
+		argv[0] = NULL;
+    unsigned char pos = 0;
+    for (pos=0; pos < rx_data_length; ++pos) {
+			if (argv[argc] == NULL) {
+				if (rx_data_buffer[pos] != CHAR_SPACE) {
+					argv[argc] = (char*)(rx_data_buffer + pos);
+				}
+			}
+			else {
+				if (rx_data_buffer[pos] == CHAR_SPACE) {
+					rx_data_buffer[pos] = '\0';
+					if (argc >= MAX_CMD_ARGS-1) {
+						break;
+					}
+					++argc;
+					argv[argc] = NULL;
+				}
+			}
     }
-       
-    cmd[pos] = 0;
-    
-    printf("cmd: %s\n\r",cmd);
-    
-    if (strcmp(cmd,"c") == 0) {
-      //Fix so that it parses the right addr etc
-      char temp = 1;
-      
-      internal_comm_add_tx_message(INT_COMM_PC_CONNECT_TO_ADDR, 1, &temp);
-    }
-    else if (strcmp(cmd,"t") == 0) {
-      //Just testing to send data
-      internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR,6,"HEJSAN");
-    }
-    else {
-      printf("?\n\r");
-    }
+    if (argv[argc] != NULL) {
+			++argc;
+		}
+		
+		printf("\r\n");
+		
+    if (argc > 0)
+		{
+			/*
+			printf("\r\n");
+			for (pos=0; pos<argc; ++pos)
+			{
+				printf("argv[%i]: %s\n\r", pos, argv[pos]);
+			}
+			*/
+			
+			if ((strcmp(argv[0], "addr") == 0) && (argc == 2)) {
+				char addr = atoi(argv[1]);
+				printf("--- Setting remote address to %d\r\n", addr);
+				internal_comm_add_tx_message(INT_COMM_PC_CONNECT_TO_ADDR, 1, &addr);
+			}
+			else if (strcmp(argv[0], "conv") == 0) {
+				printf("--- Entering conversation mode.\r\n"
+							 "--- Use ESC to return to command mode\r\n");
+				command_mode = 0;
+				return;
+			}
+			else if (strcmp(argv[0], "help") == 0) {
+				printf("--- addr <card address> - Set remote card address\r\n");
+				printf("--- conv                - Enter conversation mode\r\n");
+			}
+			else {
+				printf("--- Unknown or malformed command: %s\r\n", argv[0]);
+			}
+		}
+		
+		printf("cmd: ");
   }
 }
 
@@ -155,18 +193,29 @@ ISR(SIG_USART1_DATA) {
 ISR(SIG_USART1_RECV) {
 	unsigned char data = UDR1;
 
-  usart1_transmit(data);
-  
   if (data == CHAR_ENTER) {
     rx_data_length = rx_buffer_pos;
     rx_data_buffer[rx_buffer_pos] = 0;
     parse_rx_data = 1;
   }
-  else {  
-    if (rx_buffer_pos <= (COMPUTER_RX_BUFFER_LENGTH-1))
-      rx_data_buffer[rx_buffer_pos++] = data;
-    else {
-      rx_buffer_pos = 0;
+  else if (data == CHAR_ESC) {
+		command_mode = 1;
+		rx_data_length = 0;
+		rx_buffer_pos = 0;
+		parse_rx_data = 1;
+	}
+	else if (data == CHAR_BS) {
+		if (rx_buffer_pos > 0)
+		{
+			usart1_transmit(CHAR_BS);
+			usart1_transmit(CHAR_SPACE);
+			usart1_transmit(CHAR_BS);
+			--rx_buffer_pos;
+		}
+	}
+  else {
+    if (rx_buffer_pos < COMPUTER_RX_BUFFER_LENGTH) {
+			usart1_transmit(data);
       rx_data_buffer[rx_buffer_pos++] = data;
     }
   }
