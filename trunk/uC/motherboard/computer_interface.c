@@ -133,6 +133,7 @@ void computer_interface_tx_message(unsigned char length, char *data) {
     tx_data_buffer[i] = data[i];
   
   tx_data_buffer[length] = 0;
+  tx_data_length = length;
   
   send_tx_data = 1;
 }
