@@ -2,7 +2,7 @@
 #include "mapviewwidget.h"
 #include <math.h>
 
-#define PI 3.1456
+#define PI 3.1415
 
 void RotatorDialog::loadMap(QString path) {
 	for (int i=0;i<4;i++) {
