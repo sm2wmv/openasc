@@ -22,6 +22,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
@@ -38,8 +40,10 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
-#define ADC_CHANNELS		3
-#define ADC_INTERVAL		33
+#define ADC_CHANNELS					3
+#define ADC_INTERVAL					33
+#define MAX_ASCII_CMD_ARGS 	5
+
 
 //! Contains info of the driver type
 unsigned char device_id;
@@ -68,6 +72,90 @@ static void init_adc(void) {
     /* ADC interrupt enable */
     /* ADC prescaler division factor 128 */
   ADCSRA = _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+}
+
+
+static void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
+{
+	char str[41];
+	
+	va_list ap;
+	va_start(ap, fmt);
+	int len = vsnprintf(str, sizeof(str), fmt, ap);
+	va_end(ap);
+
+	if (len >= sizeof(str)-1) {
+		strcpy(str + sizeof(str) - 6, "...\r\n");
+		len = sizeof(str)-1;
+	}
+	
+	char *ptr = str;
+	while (len > 0) {
+		unsigned char len_to_send = len < 15 ? len : 15;
+		bus_add_tx_message(bus_get_address(),
+											to_addr,
+											(1<<BUS_MESSAGE_FLAGS_NEED_ACK),
+											BUS_CMD_ASCII_DATA,
+											len_to_send,
+											(unsigned char *)ptr
+											);
+		len -= len_to_send;
+		ptr += len_to_send;
+	}
+}
+
+
+static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
+{
+	char data[16];
+	memcpy(data, bus_message->data, bus_message->length);
+	data[bus_message->length] = '\0';
+	
+		// Get the command and its arguments
+	unsigned char argc = 0;
+	char *argv[MAX_ASCII_CMD_ARGS];
+	argv[0] = NULL;
+	unsigned char pos = 0;
+	for (pos=0; pos < bus_message->length; ++pos) {
+		if (argv[argc] == NULL) {
+			if (data[pos] != ' ') {
+				argv[argc] = (char*)(data + pos);
+			}
+		}
+		else {
+			if (data[pos] == ' ') {
+				data[pos] = '\0';
+				if (argc >= MAX_ASCII_CMD_ARGS-1) {
+					break;
+				}
+				++argc;
+				argv[argc] = NULL;
+			}
+		}
+	}
+	if (argv[argc] != NULL) {
+		++argc;
+	}
+	
+	send_ascii_data(bus_message->from_addr, "\r\n");
+	
+	if (argc > 0) {
+		if (strcmp(argv[0], "help") == 0) {
+			send_ascii_data(bus_message->from_addr,
+											"No help available\r\n");
+		}
+		else if (strcmp(argv[0], "cwl") == 0) {
+
+		}
+		else if (strcmp(argv[0], "ccwl") == 0) {
+			
+		}
+		else {
+			send_ascii_data(bus_message->from_addr, "Huh?\r\n");
+		}
+	}
+
+	send_ascii_data(bus_message->from_addr, "%d> ", bus_get_address());
 }
 
 
@@ -105,34 +193,7 @@ void bus_parse_message(void) {
 		}
 	}
 	else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
-		bus_add_tx_message(bus_get_address(),
-											 bus_message.from_addr,
-											 (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-											 BUS_CMD_ASCII_DATA,
-											 8,
-											 (unsigned char *)"\r\nDATA: "
-											 );
-		bus_add_tx_message(bus_get_address(),
-											 bus_message.from_addr,
-											 (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-											 BUS_CMD_ASCII_DATA,
-											 bus_message.length,
-											 bus_message.data
-											 );
-		bus_add_tx_message(bus_get_address(),
-											 bus_message.from_addr,
-											 (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-											 BUS_CMD_ASCII_DATA,
-											 2,
-											 (unsigned char *)"\r\n"
-											 );
-
-		/*
-		if ((bus_message.data[0] == 'H') && (bus_message.data[1] == 'E')) {
-			//REPLY, this message will be sent out on the USB port on the openASC box
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,9,"HOPPSAN\r\n");
-		}
-		*/
+		parse_ascii_cmd(&bus_message);
 	}
 	else {
 	
