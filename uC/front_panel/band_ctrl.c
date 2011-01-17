@@ -164,7 +164,7 @@ void band_ctrl_change_band_portion(unsigned char band_portion) {
 void band_ctrl_change_band(unsigned char band) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		//Check if the band change is allowed
-		if (main_band_change_ok() == 1) {
+		if (main_band_change_ok(status.new_band) == 1) {
 			status.selected_ant = 0;
 			
 			status.selected_band = band;

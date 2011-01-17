@@ -166,8 +166,9 @@ unsigned char ext_key_get_assignment(unsigned char index) {
 
 /*! Get information if a band change is OK to do
  *  \return 1 if the band change is OK, 0 if not */
-unsigned char main_band_change_ok(void) {
-	return(1);
+unsigned char main_band_change_ok(unsigned char new_band) {
+	//Check if the new band is in use by some other unit
+  return(1);
 }
 
 /*! Get the key assignment index of the aux buttons

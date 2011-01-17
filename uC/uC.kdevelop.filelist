@@ -85,6 +85,14 @@ general_io/init.h
 general_io/main.c
 general_io/main.h
 general_io/makefile
+general_io_support
+general_io_support/board.h
+general_io_support/global.h
+general_io_support/init.c
+general_io_support/init.h
+general_io_support/main.c
+general_io_support/main.h
+general_io_support/makefile
 global.h
 i2c.c
 i2c.h
