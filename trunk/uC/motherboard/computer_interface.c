@@ -97,10 +97,8 @@ void computer_interface_parse_data(void) {
     
 		if (!command_mode)
 		{
-			if (rx_data_length > 0) {
-				internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, rx_data_length,
-																		 (char *)rx_data_buffer);
-			}
+			internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, rx_data_length,
+																	 (char *)rx_data_buffer);
 			return;
 		}
 
@@ -151,6 +149,7 @@ void computer_interface_parse_data(void) {
 				printf("--- Entering conversation mode.\r\n"
 							 "--- Use ESC to return to command mode\r\n");
 				command_mode = 0;
+				internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, 0, NULL);
 				return;
 			}
 			else if (strcmp(argv[0], "help") == 0) {
