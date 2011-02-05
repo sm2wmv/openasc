@@ -115,10 +115,22 @@
 	#define ISR_BUS_TIMER_OVERFLOW	SIG_OVERFLOW2
 #endif
  
+#ifdef DEVICE_TYPE_AMP_CTRL_BOARD
+#include "../4cx1500b/ctrl_board/main.h"
+#define ISR_BUS_USART_DATA  SIG_USART2_DATA
+#define ISR_BUS_USART_RECV  SIG_USART2_RECV
+#define ISR_BUS_USART_TRANS SIG_USART2_TRANS
+      
+#define ISR_BUS_TIMER_COMPARE   SIG_OUTPUT_COMPARE2A
+#define ISR_BUS_TIMER_OVERFLOW  SIG_OVERFLOW2
+#endif
+ 
 /******* BUS specifics ********/
 
-//!The default number of devices
-#define DEF_NR_DEVICES	25
+#ifndef DEVICE_TYPE_AMP_CTRL_BOARD
+  //!The default number of devices
+  #define DEF_NR_DEVICES	25
+#endif
 
 //! The startup time for the device. This is so that all units dont send ping at the same time (in ms)
 #define DEFAULT_STARTUP_DELAY 90
