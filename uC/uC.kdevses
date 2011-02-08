@@ -1,16 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="3" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/general_io_support/main.c" >
-   <View0 Encoding="UTF-8" line="33" Type="Source" />
+ <DocsAndViews NumberOfDocuments="4" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/4cx1500b/ctrl_board/main.c" >
+   <View0 Encoding="UTF-8" line="102" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.c" >
-   <View0 Encoding="UTF-8" line="0" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/4cx1500b/ctrl_board/motor_control.c" >
+   <View0 Encoding="UTF-8" line="35" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/motherboard/computer_interface.c" >
-   <View0 Encoding="UTF-8" line="0" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/4cx1500b/ctrl_board/motor_control.h" >
+   <View0 Encoding="UTF-8" line="86" Type="Source" />
   </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/4cx1500b/ctrl_board/board.h" >
+   <View0 Encoding="UTF-8" line="116" Type="Source" />
+  </Doc3>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
