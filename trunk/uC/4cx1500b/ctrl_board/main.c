@@ -173,7 +173,7 @@ int main(void){
 			}
 		}
     
-    motor_control_process();	
+    motor_control_process();
 /*		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();

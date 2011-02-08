@@ -1,8 +1,5 @@
 # KDevelop Custom Project File List
 4cx1500b
-4cx1500b/board.h
-4cx1500b/computer_interface.c
-4cx1500b/computer_interface.h
 4cx1500b/ctrl_board
 4cx1500b/ctrl_board/board.h
 4cx1500b/ctrl_board/init.c
@@ -14,23 +11,6 @@
 4cx1500b/ctrl_board/motor_control.h
 4cx1500b/ctrl_board/usart.c
 4cx1500b/ctrl_board/usart.h
-4cx1500b/fonts.c
-4cx1500b/fonts.h
-4cx1500b/glcd.c
-4cx1500b/glcd.h
-4cx1500b/init.c
-4cx1500b/init.h
-4cx1500b/ks0108.c
-4cx1500b/ks0108.h
-4cx1500b/ks0108conf.h
-4cx1500b/main.c
-4cx1500b/main.h
-4cx1500b/makefile
-4cx1500b/pictures.h
-4cx1500b/sequencer.c
-4cx1500b/sequencer.h
-4cx1500b/usart.c
-4cx1500b/usart.h
 avrlibdefs.h
 avrlibtypes.h
 delay.c
