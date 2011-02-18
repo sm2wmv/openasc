@@ -34,6 +34,9 @@ static struct_stepper_motor stepper_motor[3];
 //! milli-second counter
 static unsigned int counter_ms = 0;
 
+static unsigned int motor_limit_up[3] = {MOTOR1_LIMIT_UP,MOTOR2_LIMIT_UP,MOTOR3_LIMIT_UP};
+static unsigned int motor_limit_down[3] = {MOTOR1_LIMIT_DOWN,MOTOR2_LIMIT_DOWN,MOTOR3_LIMIT_DOWN};
+
 /*! \brief Motor control init */
 void motor_control_init(void) {
   for (unsigned char i=0;i<3;i++) {
@@ -143,24 +146,36 @@ void motor_control_process(void) {
       stepper_motor[i].next_tick += MOTOR_CONTROL_STEP_DELAY;
       
       if (stepper_motor[i].current_dir == MOTOR_DIR_DOWN) {
-        if (stepper_motor[i].current_phase > 0)
-          stepper_motor[i].current_phase--;
-        else
-          stepper_motor[i].current_phase = 3;
+				if (get_ad_curr_val(i) > motor_limit_down[i]) {
+					if (stepper_motor[i].current_phase > 0)
+						stepper_motor[i].current_phase--;
+					else
+						stepper_motor[i].current_phase = 3;
+				}
+				else {
+					stepper_motor[i].current_dir = MOTOR_DIR_NONE;
+				}
       }
       else if (stepper_motor[i].current_dir == MOTOR_DIR_UP) {
-        if (stepper_motor[i].current_phase < 3)
-          stepper_motor[i].current_phase++;
-        else
-          stepper_motor[i].current_phase = 0;
+				if (get_ad_curr_val(i) <= motor_limit_up[i]) {
+					if (stepper_motor[i].current_phase < 3)
+						stepper_motor[i].current_phase++;
+					else
+						stepper_motor[i].current_phase = 0;
+				}
+				else {
+					stepper_motor[i].current_dir = MOTOR_DIR_NONE;
+				}					
       }
       
-      if (i == 0)
-        motor_control_step_motor1();
-      else if (i == 1)
-        motor_control_step_motor2();
-      else if (i == 2)
-        motor_control_step_motor3();
+			if (stepper_motor[i].current_dir != MOTOR_DIR_NONE) {
+				if (i == 0)
+					motor_control_step_motor1();
+				else if (i == 1)
+					motor_control_step_motor2();
+				else if (i == 2)
+					motor_control_step_motor3();
+			}
     }
   }
 }

@@ -49,12 +49,15 @@
 #define DEVICE_ID_AMP_CTRL_BOX     2
 #define DEVICE_ID_AMP_POWERMETER   3
 
+#define AD_CONV_INTERVAL	10
+
 //!Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE      0
 //! Flag which indicates that the device has started properly
 #define FLAG_DEVICE_STARTED       1
 
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
+unsigned int get_ad_curr_val(unsigned char ch);
 void send_ping(void);
 
 #endif
