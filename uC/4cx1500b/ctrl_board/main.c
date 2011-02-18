@@ -32,6 +32,7 @@
 #include "usart.h"
 #include "init.h"
 #include "motor_control.h"
+#include "a2d.h"
 
 #include "../../delay.h"
 #include "../../global.h"
@@ -58,10 +59,16 @@ static unsigned int counter_ms = 0;
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 static unsigned int counter_event_timer = 0;
 
+static unsigned char counter_ad_conversion = 0;
+
 //! Ping message of the openASC device
 static unsigned char ping_message[3];
 
 static unsigned char main_flags = 0;
+
+static unsigned char ad_curr_ch = 0;
+static unsigned char ad_conv_started = 0;
+static unsigned int ad_curr_val[8] = {0,0,0,0,0,0,0,0};
 
 void bus_parse_message(void) {
    
@@ -113,6 +120,9 @@ int main(void){
 	
 	/* Initialize various hardware resources */
 	init_ports();
+
+	//Initialize the A/D converter
+	a2dInit();
 	
 	delay_ms(250);
 
@@ -149,6 +159,10 @@ int main(void){
 
   main_flags |= (1<<FLAG_DEVICE_STARTED);
   
+	//Load the current position of the pots - IMPORTANT!!
+	for (unsigned char i=0;i<2;i++)
+		ad_curr_val[i] = a2dConvert10bit(i);
+	
 	while(1) {
 		if (!rx_queue_is_empty())
 			bus_parse_message();
@@ -179,7 +193,33 @@ int main(void){
 			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}*/
+		
+		//Read the values of the A/D
+		if (ad_conv_started == 0) {
+			if (counter_ad_conversion >= AD_CONV_INTERVAL) {
+				a2dSetChannel(ad_curr_ch);
+				a2dStartConvert();
+				ad_conv_started = 1;
+			}
+		}
+		else {
+			if (a2dIsComplete() == 1) {
+				ad_curr_val[ad_curr_ch] = a2dGet10bitVal();
+				ad_conv_started = 0;
+				
+				if (ad_curr_ch < 2)
+					ad_curr_ch++;
+				else {
+					ad_curr_ch = 0;
+					counter_ad_conversion = 0;
+				}
+			}
+		}
 	}
+}
+
+unsigned int get_ad_curr_val(unsigned char ch) {
+	return(ad_curr_val[ch]);
 }
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
@@ -196,6 +236,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
       //main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
+	counter_ad_conversion++;
+		
 	counter_ping_interval++;
 	counter_ms++;
 	counter_event_timer++;

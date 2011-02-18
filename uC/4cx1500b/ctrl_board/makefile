@@ -67,7 +67,7 @@ WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_tx_queue.c ../../wmv_bus/bus
 GLOBAL_ROUTINES = ../../delay.c ../../event_queue.c 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c motor_control.c
+SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c motor_control.c a2d.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s

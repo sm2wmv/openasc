@@ -74,6 +74,14 @@
 #define MOTOR_DIR_DOWN  1
 #define MOTOR_DIR_UP    2
 
+#define MOTOR1_LIMIT_DOWN	100
+#define MOTOR2_LIMIT_DOWN	100
+#define MOTOR3_LIMIT_DOWN	100
+
+#define MOTOR1_LIMIT_UP 900
+#define MOTOR2_LIMIT_UP 900
+#define MOTOR3_LIMIT_UP 900
+
 typedef struct {
   //! The current position of the stepper motor
   unsigned int current_pos;
