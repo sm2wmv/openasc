@@ -57,7 +57,8 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 void bus_ping_tick(void) {
 	//Goes through the ping list and increase their last ping_time with 1ms
 	for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
-		ping_list[i].time_last_ping++;
+    if (ping_list[i].addr != 0)
+		  ping_list[i].time_last_ping++;
 	}
 }
 
@@ -84,8 +85,8 @@ unsigned char bus_ping_get_failed_count(void) {
 	
 	//Goes through the ping list and check how many failed pings there is
 	for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
-		if (ping_list[i].time_last_ping > BUS_PING_TIMEOUT_LIMIT)
-			count++;
+		if ((ping_list[i].time_last_ping > BUS_PING_TIMEOUT_LIMIT) && ((ping_list[i].flags & (1<<PING_FLAG_PROCESSED)) == 0))
+      count++;
 	}
 	
 	return(count);
@@ -103,4 +104,13 @@ bus_struct_ping_status bus_ping_get_ping_data(unsigned char index) {
  *  \return The device type of the specified index */
 unsigned char bus_ping_get_device_type(unsigned char index) {
 	return(ping_list[index].device_type);
+}
+
+/*! \brief Clears a ping address, used when a unit is shut down
+ *  \param addr The address of the unit */
+void bus_ping_clear_device(unsigned char addr) {
+  ping_list[addr-1].addr = 0;
+  ping_list[addr-1].device_type = 0;
+  ping_list[addr-1].time_last_ping = 0;
+  ping_list[addr-1].flags = 0;  
 }

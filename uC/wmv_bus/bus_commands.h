@@ -143,4 +143,6 @@
 /*! Bus command for ASCII comm transfer of data */
 #define BUS_CMD_ASCII_DATA  0x80
 
+#define BUS_CMD_SHUTTING_DOWN 0xF0
+
 #endif

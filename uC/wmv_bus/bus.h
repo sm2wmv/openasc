@@ -125,6 +125,17 @@
 #define ISR_BUS_TIMER_OVERFLOW  SIG_OVERFLOW2
 #endif
  
+ 
+#ifdef DEVICE_TYPE_AMP_CTRL_BOX
+#include "../4cx1500b/ctrl_box_front/main.h"
+#define ISR_BUS_USART_DATA  SIG_USART2_DATA
+#define ISR_BUS_USART_RECV  SIG_USART2_RECV
+#define ISR_BUS_USART_TRANS SIG_USART2_TRANS
+      
+#define ISR_BUS_TIMER_COMPARE   SIG_OUTPUT_COMPARE2A
+#define ISR_BUS_TIMER_OVERFLOW  SIG_OVERFLOW2
+#endif
+
 /******* BUS specifics ********/
 
 #ifndef DEVICE_TYPE_AMP_CTRL_BOARD
@@ -166,7 +177,7 @@
 #define DEVICE_ID_GENERAL_IO_SUPPORT  8
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
-#define BUS_MAX_RESENDS	10
+#define BUS_MAX_RESENDS	4
 
 /*! The interval between each status message (time is in ms) */
 #define BUS_DEVICE_STATUS_MESSAGE_INTERVAL	1500
@@ -182,7 +193,7 @@
 
 /*! The timeout limit between a message that was sent to when it will be a resend, this is counted as 
     number of wraparounds on the bus, ie 5 would mean 5 wraparounds */
-#define BUS_ACK_WRAPAROUND_LIMIT 10
+#define BUS_ACK_WRAPAROUND_LIMIT 5
 
 /*! Timeout limit for how long it can take without receiving a message before the buffer is cleared, this is counted as
     time, 5 would mean 5 * 130 us */

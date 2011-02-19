@@ -109,6 +109,12 @@ void bus_init(void) {
 		//57.600kpbs
 		bus_usart_init(15);
 	#endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+    //57.600kpbs
+    bus_usart_init(15);
+  #endif
+    
 
 	bus_status.flags = 0;
 
@@ -440,6 +446,11 @@ ISR(ISR_BUS_USART_RECV) {
 	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
 			unsigned char data = UDR;
 	#endif		
+      
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+      unsigned char data = UDR2;
+  #endif
+      
 	
 	bus_status.char_count++;
 
@@ -472,6 +483,9 @@ ISR(ISR_BUS_USART_RECV) {
 							#endif
 						}
 						else {
+              if (bus_new_message.cmd == BUS_CMD_SHUTTING_DOWN)
+                bus_ping_clear_device(bus_new_message.from_addr);
+              
 							bus_add_new_message();
 					
 							if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))

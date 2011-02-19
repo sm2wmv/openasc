@@ -117,6 +117,11 @@ void clear_screensaver_timer(void) {
 	}
 }
 
+//This function is just used at startup
+void main_enable_device(void) {
+  device_online = 1;
+}
+
 void main_set_band_change_mode(unsigned char mode) {
 	runtime_settings.band_change_mode = mode;
 }
@@ -167,7 +172,19 @@ unsigned char ext_key_get_assignment(unsigned char index) {
 /*! Get information if a band change is OK to do
  *  \return 1 if the band change is OK, 0 if not */
 unsigned char main_band_change_ok(unsigned char new_band) {
-	//Check if the new band is in use by some other unit
+  bus_struct_ping_status ping_list;
+  
+  for (unsigned char i=0;i<bus_get_device_count();i++) {
+    if (bus_ping_get_device_type(i) == DEVICE_ID_MAINBOX) {
+      ping_list = bus_ping_get_ping_data(i);
+      
+      if ((new_band != 0) && (ping_list.data[1] == new_band)) {
+        return(0);
+      }
+    }
+  }
+
+  //The band isn't in use, OK to change
   return(1);
 }
 
@@ -194,12 +211,11 @@ void ext_key_set_assignment(unsigned char index, unsigned char func) {
 void event_run(void) {
 	if (event_in_queue()) {
 		EVENT_MESSAGE event = event_queue_get();
-		
+    
+    event_queue_drop();
+    
 		//Run the function in the event queue
 		event.func();
-	
-		//When the function has been run we drop the message
-		event_queue_drop();
 	}
 }
 
@@ -281,7 +297,7 @@ void load_settings(void) {
  *  is used at various places to make the sequencing etc safe. */
 void main_update_ptt_status(void) {
 	unsigned char state = 0;
-	
+    
 	//Check that there is an antenna on the current band
 	if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG))
 		state = 0;
@@ -308,7 +324,15 @@ void main_update_ptt_status(void) {
 	if (error_handler_is_ptt_locked() == 1) {
 		state = 3;
 	}
-	
+  
+  if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 1)
+    state = 3;
+  else if (event_queue_check_id(EVENT_TYPE_ANT_CHANGE_PTT_LOCK) == 1)
+    state = 3;
+  else if (event_queue_check_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK) == 1)
+    state = 3;
+  
+
 	//Comment this part for testing outside the bus
 	//if (event_get_errors() != 0)
 	//	state = 1;
@@ -455,8 +479,8 @@ int main(void){
 	
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
-		//radio_interface_init();
-		init_usart_computer();
+		radio_interface_init();
+		//init_usart_computer();
 	}
 	else {
 		//Init the computer communication
@@ -538,8 +562,12 @@ int main(void){
 	
 	ping_message[0] = DEVICE_ID_MAINBOX;
 	ping_message[1] = settings.ptt_interlock_input;
-
-	main_set_device_online(1);
+ 
+	//main_set_device_online(1);
+  
+  //This will make the box enabled after 3 seconds, this is so that we have recieved all the pings from different units
+  //so that we know which band they are on, before we enter a band ourself.
+  event_add_message((void *)main_enable_device,3000,0);
 	
 	while(1) {
 		if (!rx_queue_is_empty())
@@ -634,6 +662,17 @@ int main(void){
 			}
 		
 			if (main_flags & (1<<FLAG_PROCESS_SUBMENU_CHANGE)) {
+        
+        if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
+          main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+          led_set_ptt(LED_STATE_PTT_INHIBIT);
+        
+          if (event_queue_check_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK) != 0)
+            event_queue_drop_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);      
+          
+          event_add_message((void *)main_update_ptt_status, SUBMENU_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);
+        }
+        
 				sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
 			
 				main_flags &= ~(1<<FLAG_CHANGE_SUBMENU);

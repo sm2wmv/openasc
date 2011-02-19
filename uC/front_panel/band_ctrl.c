@@ -33,6 +33,7 @@
 #include "sub_menu.h"
 #include "display.h"
 #include "../global.h"
+#include "../event_queue.h"
 
 #include "../internal_comm.h"
 
@@ -163,7 +164,16 @@ void band_ctrl_change_band_portion(unsigned char band_portion) {
  *  \param band The band we wish to change to */
 void band_ctrl_change_band(unsigned char band) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
-		//Check if the band change is allowed
+    
+    if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) != 0)
+      event_queue_drop_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK);
+    
+    main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+    led_set_ptt(LED_STATE_PTT_INHIBIT);
+    
+    event_add_message((void *)main_update_ptt_status, BAND_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_BAND_CHANGE_PTT_LOCK);
+    
+    //Check if the band change is allowed
 		if (main_band_change_ok(status.new_band) == 1) {
 			status.selected_ant = 0;
 			
@@ -215,17 +225,15 @@ void band_ctrl_change_band(unsigned char band) {
 				//Activate all default sub menu options
 				sub_menu_activate_all();
 			}
-				
-			main_update_ptt_status();
-			
+      
 			//Update the display
 			main_update_display();
 		}
 		else {
-			//What should we do if the band is already in use?
-			//Print "Band in use" on the screen?
-			//Maybe deselect all antennas so the RX gets quiet, also disable the radio PTT
-		}
+      //Lets change to band undefined, as long as we are not allowed in on the band we want
+      status.new_band = BAND_UNDEFINED;
+      band_ctrl_change_band(BAND_UNDEFINED);
+    }
 	}
 }
 

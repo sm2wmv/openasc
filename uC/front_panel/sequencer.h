@@ -23,29 +23,6 @@
 #ifndef _SEQUENCER_H_
 #define _SEQUENCER_H_
 
-/*! Sequencer message types, this is used to we can keep track of different
-    messages in the event queue. So if an event is aborted we can easily just 
-    remove the upcoming events from the queue, that doesn't need to be executed */
-
-//! Event that the radio should be PTT:ed from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_ON	1
-//! Event that the inhibit output should be on
-#define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_ON		2
-//! Event that the radio should be PTT:ed from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_RADIO_ON			3
-//! Event that the amp should be PTT:ed from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_AMP_ON				4
-//! Event that the inhibit should be activated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_OFF	5
-//! Event that the TX active output should be off
-#define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF		6
-//! Event that the radio should be deactivated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_RADIO_OFF			7
-//! Event that the amp should be deactivated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_AMP_OFF				8
-//! Event that the inhibit should be deactiated from footswitch
-#define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF		9
-
 //! Flag bit offset for the footswitch
 #define PTT_INPUT_FOOTSWITCH						0
 //! Flag bit offset for the radio sense on the upper floor

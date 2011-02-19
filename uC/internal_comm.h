@@ -54,6 +54,21 @@
 	#define	INTERNAL_COMM_UDR							UDR0
 #endif
 
+//! if the device is a frontpanel we need to set the proper USARTs used
+#ifdef DEVICE_TYPE_AMP_CTRL_BOX
+  #define ISR_INTERNAL_COMM_USART_RECV  SIG_USART0_RECV
+  #define ISR_INTERNAL_COMM_USART_DATA  SIG_USART0_DATA
+    
+  #define INTERNAL_COMM_UDR             UDR0
+#endif
+
+#ifdef DEVICE_TYPE_AMP_CTRL_BOX_MOTHERBOARD
+  #define ISR_INTERNAL_COMM_USART_RECV  SIG_USART0_RECV
+  #define ISR_INTERNAL_COMM_USART_DATA  SIG_USART0_DATA
+    
+  #define INTERNAL_COMM_UDR             UDR0
+#endif
+
 /*
 	| PREAMBLE | PREAMBLE | CHECKSUM | CMD | LENGTH | DATA[0] | DATA[1] | .. | POSTAMBLE |
 */
