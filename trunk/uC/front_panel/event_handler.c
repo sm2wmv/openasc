@@ -51,6 +51,7 @@
 #include "computer_interface.h"
 #include "powermeter.h"
 #include "../wmv_bus/bus_ping.h"
+#include "../event_queue.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -76,7 +77,7 @@ void event_check_pings(void) {
 				error_handler_set(ERROR_TYPE_BAND_PING_TIMEOUT,1,ping_data.addr);
 			}
 		}
-	}
+  }
 }
 
 /*! \brief Function which will parse the internal communication message 
@@ -105,11 +106,12 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 			
 			band_ctrl_change_band(BAND_UNDEFINED);
 			
-			main_set_device_online(0);
-			
-			//TODO: Send global shutdown broadcast message three times
-			
-			send_ping();
+      send_ping();
+      
+			//TODO: Send global shutdown message
+      bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0 ,BUS_CMD_SHUTTING_DOWN,0,0);
+      
+      main_set_device_online(0);
 			
 			if (computer_interface_is_active()) {
 				delay_s(3);
@@ -377,6 +379,7 @@ void event_pulse_sensor_down(void) {
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
 			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+        
 				sub_menu_pos_down(status.sub_menu_antenna_index);
 				
 				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
@@ -552,13 +555,28 @@ void event_poll_ext_device(void) {
 	status.ext_devices_last_state = status.ext_devices_current_state;
 }
 
+void __inline__ event_handler_set_ptt_status(void) {
+  if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
+    main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+    led_set_ptt(LED_STATE_PTT_INHIBIT);
+        
+    if (event_queue_check_id(EVENT_TYPE_ANT_CHANGE_PTT_LOCK))
+      event_queue_drop_id(EVENT_TYPE_ANT_CHANGE_PTT_LOCK);
+    
+    event_add_message((void *)main_update_ptt_status, ANT_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_ANT_CHANGE_PTT_LOCK);
+  }
+}
+
 /*! \brief Perform the action of TX antenna button 1 if it was pressed */
 void event_tx_button1_pressed(void) {
 	clear_screensaver_timer();
 	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
-		if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
-			unsigned char new_ant_comb = status.selected_ant;
+    if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
+			
+      event_handler_set_ptt_status();
+      
+      unsigned char new_ant_comb = status.selected_ant;
 			
 			if ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0) {
 				if (status.selected_ant & (1<<0)) {
@@ -617,8 +635,6 @@ void event_tx_button1_pressed(void) {
 				set_tx_ant_leds();
 			}
 		}
-		
-		main_update_ptt_status();
 	}
 }
 
@@ -628,7 +644,10 @@ void event_tx_button2_pressed(void) {
 	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_EXIST_FLAG)) {
-			unsigned char new_ant_comb = status.selected_ant;
+      
+      event_handler_set_ptt_status();
+      
+      unsigned char new_ant_comb = status.selected_ant;
 			
 			if ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0) {
 				if (status.selected_ant & (1<<1)) {
@@ -685,9 +704,7 @@ void event_tx_button2_pressed(void) {
 				
 				set_tx_ant_leds();
 			}
-		}
-		
-		main_update_ptt_status();
+    }
 	}
 }
 
@@ -697,7 +714,10 @@ void event_tx_button3_pressed(void) {
 	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_EXIST_FLAG)) {
-			unsigned char new_ant_comb = status.selected_ant;
+      
+      event_handler_set_ptt_status();
+      
+      unsigned char new_ant_comb = status.selected_ant;
 	
 			if ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0) {
 				if (status.selected_ant & (1<<2)) {
@@ -756,8 +776,6 @@ void event_tx_button3_pressed(void) {
 				set_tx_ant_leds();
 			}
 		}
-		
-		main_update_ptt_status();
 	}
 }
 
@@ -767,6 +785,9 @@ void event_tx_button4_pressed(void) {
 	
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 		if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_EXIST_FLAG)) {
+      
+      event_handler_set_ptt_status();
+
 			unsigned char new_ant_comb = status.selected_ant;	
 			
 			if ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0) {
@@ -825,9 +846,7 @@ void event_tx_button4_pressed(void) {
 				
 				set_tx_ant_leds();
 			}
-		}
-		
-		main_update_ptt_status();
+  	}
 	}
 }
 
@@ -1031,7 +1050,7 @@ void event_bus_parse_message(void) {
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 	}
   else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
-    internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, bus_message.data);
+    internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
   }
 	
 	//Drop the message

@@ -185,6 +185,14 @@
 //! Sub menu type stack
 #define SUBMENU_STACK				2
 
+//! How long the PTT is locked after a band change (in ms)
+#define BAND_CHANGE_PTT_LOCK_TIME 1000
+//! How long the PTT is locked after an antenna change (in ms)
+#define ANT_CHANGE_PTT_LOCK_TIME 300
+//! How long the PTT is locked after a sub menu change (in ms)
+#define SUBMENU_CHANGE_PTT_LOCK_TIME 300
+
+
 /****************************************************************/
 
 //! Different inhibit states

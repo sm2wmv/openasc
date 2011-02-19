@@ -31,7 +31,6 @@
 #include "internal_comm_rx_queue.h"
 #include "internal_comm_tx_queue.h"
 
-
 #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 	#include "../front_panel/led_control.h"
 	#include "../front_panel/errors.h"

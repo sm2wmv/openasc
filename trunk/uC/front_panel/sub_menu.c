@@ -30,9 +30,11 @@
 #include "main.h"
 #include "eeprom.h"
 #include "band_ctrl.h"
+#include "led_control.h"
 
 #include "../global.h"
 #include "../internal_comm.h"
+#include "../event_queue.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -128,6 +130,8 @@ unsigned char sub_menu_get_type(unsigned char ant_index) {
  *  \param ant_index Which antenna we wish to decrease the sub menu position of */
 void sub_menu_pos_down(unsigned char ant_index) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+    sub_menu_set_ptt_status();
+    
 		if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
 			if (sub_menu_get_current_pos(ant_index) > 0)
 				sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)-1);
@@ -147,6 +151,8 @@ void sub_menu_pos_down(unsigned char ant_index) {
  *  \param ant_index Which antenna we wish to increase the sub menu position of */
 void sub_menu_pos_up(unsigned char ant_index) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+    sub_menu_set_ptt_status();
+    
 		if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
 			if (sub_menu_get_current_pos(ant_index) < current_sub_menu_array[ant_index].direction_count - 1)
 				sub_menu_set_current_pos(ant_index, sub_menu_get_current_pos(ant_index)+1);
@@ -278,6 +284,9 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 /*! \brief Will deactivate all currently selected outputs which has been sent out on the bus */
 void sub_menu_deactivate_all(void) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {	
+    
+    sub_menu_set_ptt_status();
+       
 		if (current_activated_sub_outputs_length[0] > 0) {
 			antenna_ctrl_deactivate_outputs(current_activated_sub_outputs[0], current_activated_sub_outputs_length[0], BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS);
 			current_activated_sub_outputs_length[0] = 0;
@@ -303,7 +312,10 @@ void sub_menu_deactivate_all(void) {
 /*! \brief This function will go through the sub menus and if there is one configured it will activae its default option which is index 0 */
 void sub_menu_activate_all(void) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {	
-		//Activate all the sub menu options avaible for default position #0
+		
+    sub_menu_set_ptt_status();
+        
+    //Activate all the sub menu options avaible for default position #0
 		if (antenna_ctrl_get_sub_menu_type(0) != SUBMENU_NONE)
 			sub_menu_send_data_to_bus(0,0);
 		
@@ -322,6 +334,9 @@ void sub_menu_activate_all(void) {
  *  \param dir_nr Which direction we wish to set */
 void sub_menu_set_array_dir(unsigned char dir_nr) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+    
+    sub_menu_set_ptt_status();
+            
 		if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
 			sub_menu_set_current_pos(0,dir_nr);
 			sub_menu_send_data_to_bus(0,dir_nr);
@@ -347,6 +362,9 @@ void sub_menu_set_array_dir(unsigned char dir_nr) {
  *  \param dir_nr Which direction we wish to set */
 void sub_menu_set_stack_comb(unsigned char comb_nr) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+    
+    sub_menu_set_ptt_status();
+        
 		if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_STACK) {
 			status.sub_menu_antenna_index = 0;
 			sub_menu_set_current_pos(0,comb_nr);
@@ -367,4 +385,16 @@ void sub_menu_set_stack_comb(unsigned char comb_nr) {
 		
 		main_update_display();
 	}	
+}
+
+void __inline__ sub_menu_set_ptt_status(void) {
+  if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
+    main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+    led_set_ptt(LED_STATE_PTT_INHIBIT);
+        
+    if (event_queue_check_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK) != 0)
+      event_queue_drop_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);      
+      
+    event_add_message((void *)main_update_ptt_status, SUBMENU_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);
+  }
 }

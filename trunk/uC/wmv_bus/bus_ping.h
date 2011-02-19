@@ -36,6 +36,8 @@ typedef struct {
 	bus_struct_ping_status bus_ping_get_failed_ping(void);
 	unsigned char bus_ping_get_failed_count(void);
 	
+  void bus_ping_clear_device(unsigned char addr);
+  
 	bus_struct_ping_status bus_ping_get_ping_data(unsigned char index);
 	unsigned char bus_ping_get_device_type(unsigned char index);
 #endif

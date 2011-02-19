@@ -65,4 +65,6 @@ void sub_menu_activate_all(void);
 void sub_menu_set_array_dir(unsigned char dir_nr);
 void sub_menu_set_stack_comb(unsigned char comb_nr);
 
+void __inline__ sub_menu_set_ptt_status(void);
+
 #endif

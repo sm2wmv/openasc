@@ -24,7 +24,7 @@
 #define _ERRORS_H_
 
 //! Define which tells us how many different error types that currently exist
-#define NR_OF_ERRORS	8
+#define NR_OF_ERRORS	9
 
 //! Error that the bus had to resend a message more times than the max limit
 #define ERROR_TYPE_BUS_RESEND						0
@@ -46,6 +46,9 @@
 #define ERROR_TYPE_BAND_PING_TIMEOUT		6
 //! VSWR error
 #define ERROR_TYPE_HIGH_VSWR						7
+//! VSWR error
+#define ERROR_TYPE_BAND_IN_USE          8
+
 
 /*! \brief Set the error flag of a certain error type
  *  \param error_type The type of error that has occured, defines can be found in errors.h
