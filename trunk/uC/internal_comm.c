@@ -215,7 +215,7 @@ void internal_comm_message_nacked(void) {
 
 /*! \brief Will trigger a resend of the last message */
 void internal_comm_resend(void) {
-	if (resend_count < UC_COMM_RESEND_COUNT) {
+  if (resend_count < UC_COMM_RESEND_COUNT) {
 		if (msg_not_acked == 1) {
 			internal_comm_send_message(int_comm_tx_queue_get());
 			

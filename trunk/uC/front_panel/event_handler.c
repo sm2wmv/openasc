@@ -58,6 +58,9 @@
 
 //#define ERROR_DEBUG
 
+unsigned char parse_uc_cmd = 0;
+static UC_MESSAGE new_uc_message;
+
 extern unsigned int main_flags;
 
 unsigned char ascii_comm_device_addr = 0;
@@ -124,9 +127,6 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 		case INT_COMM_PS2_KEYPRESSED:
 			event_handler_process_ps2(message.data[0]);
 			break;
-		case INT_COMM_PC_CTRL:
-			remote_control_parse_command(message.data[0],(unsigned char)message.data[1], (char *)(message.data+2));
-			break;
 		case INT_COMM_GET_BAND_BCD_STATUS:
 			if (message.data[0] != radio_get_current_band()) {
 				if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
@@ -144,10 +144,22 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
       if (ascii_comm_device_addr != 0x00) {
         bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,message.data);
       }
+      else {
+        new_uc_message = message;
+        parse_uc_cmd = 1;
+      }
       break;
 		default:
 			break;
 	}
+}
+
+void event_handler_check_uc_cmd(void) {
+  if (parse_uc_cmd == 1) {
+    remote_control_parse_ascii_cmd(&new_uc_message);
+    
+    parse_uc_cmd = 0;  
+  }
 }
 
 /*! \brief Set an RX antenna. Will set the proper flags and call the antenna_ctrl_change_rx_ant function

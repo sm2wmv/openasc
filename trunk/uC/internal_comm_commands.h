@@ -40,12 +40,6 @@
 #define INT_COMM_GET_BAND_BCD_STATUS				0xC4
 //! A key was pressed on the external PS2 keypad
 #define INT_COMM_PS2_KEYPRESSED							0xC5
-//! Command used to transfer commands from the PC to the front panel and vice versa
-#define INT_COMM_PC_CTRL										0xC6
-//! Command to tell the computer that the last package was ACKED ok
-#define INT_COMM_PC_CTRL_ACK								0xC7
-//! Command to tell the computer that the last package was NACKED
-#define INT_COMM_PC_CTRL_NACK								0xC8
 //! Command which tells the front panel to send and receive ASCII data to a certain device on the bus
 #define INT_COMM_PC_CONNECT_TO_ADDR         0xD0
 //! Command to send data to a device

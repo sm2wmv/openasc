@@ -36,6 +36,8 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
 
 void remote_control_parse_button(unsigned char button);
 
+void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message);
+
 //! Command to activate the remote control mode
 #define REMOTE_CONTROL_ACTIVATE_MODE		0x01
 //! Command to deactivate the remote control mode

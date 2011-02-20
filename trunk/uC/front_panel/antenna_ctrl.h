@@ -138,6 +138,7 @@ void antenna_ctrl_set_rx_antenna_data(struct_rx_antennas *data);
 unsigned char antenna_ctrl_get_rx_antenna_count(void);
 
 char* antenna_ctrl_get_rx_antenna_name(unsigned char ant_index);
+unsigned char antenna_ctrl_get_rx_antenna_name_length(unsigned char ant_index);
 char* antenna_ctrl_get_rx_antenna_output_str(unsigned char ant_index);
 
 void antenna_ctrl_ant_read_eeprom(unsigned char band_index);
