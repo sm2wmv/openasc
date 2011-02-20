@@ -43,7 +43,7 @@
 //! Macro to put PS2 DATA output HIGH
 #define PS2_DATA_HIGH	PORTA |= (1<<3)
 
-#define PS2_DEBUG 1
+//#define PS2_DEBUG 1
 
 driver_status_struct driver_status;
 
@@ -333,15 +333,6 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 					break;
 			}
 			
-			break;
-		case INT_COMM_PC_CTRL:
-			//computer_interface_send(message.data[0],message.length-1,message.data+1);
-			break;
-		case INT_COMM_PC_CTRL_ACK:
-			//computer_interface_send_ack();
-			break;
-		case INT_COMM_PC_CTRL_NACK:
-			//computer_interface_send_nack();
 			break;
 		case INT_COMM_GET_BAND_BCD_STATUS:
 			//Read the status of the BCD input on the top floor and return it

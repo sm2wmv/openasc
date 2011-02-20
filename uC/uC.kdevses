@@ -1,34 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="9" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="UTF-8" line="79" Type="Source" />
+ <DocsAndViews NumberOfDocuments="2" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/remote_control.c" >
+   <View0 Encoding="UTF-8" line="144" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/wmv_bus/bus_ping.h" >
-   <View0 Encoding="UTF-8" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.c" >
+   <View0 Encoding="UTF-8" line="494" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/wmv_bus/bus.h" >
-   <View0 Encoding="UTF-8" Type="Source" />
-  </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/wmv_bus/bus_commands.h" >
-   <View0 Encoding="UTF-8" Type="Source" />
-  </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/wmv_bus/bus.c" >
-   <View0 Encoding="UTF-8" line="488" Type="Source" />
-  </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/wmv_bus/bus_ping.c" >
-   <View0 Encoding="UTF-8" Type="Source" />
-  </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="UTF-8" line="480" Type="Source" />
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/event_queue.h" >
-   <View0 Encoding="UTF-8" Type="Source" />
-  </Doc7>
-  <Doc8 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/display.c" >
-   <View0 Encoding="UTF-8" line="57" Type="Source" />
-  </Doc8>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

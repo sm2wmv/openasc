@@ -132,14 +132,6 @@ void computer_interface_parse_data(void) {
 		
     if (argc > 0)
 		{
-			/*
-			printf("\r\n");
-			for (pos=0; pos<argc; ++pos)
-			{
-				printf("argv[%i]: %s\n\r", pos, argv[pos]);
-			}
-			*/
-			
 			if ((strcmp(argv[0], "addr") == 0) && (argc == 2)) {
 				char addr = atoi(argv[1]);
 				printf("--- Setting remote address to %d\r\n", addr);
@@ -155,7 +147,13 @@ void computer_interface_parse_data(void) {
 			else if (strcmp(argv[0], "help") == 0) {
 				printf("--- addr <card address> - Set remote card address\r\n");
 				printf("--- conv                - Enter conversation mode\r\n");
+        printf("--- rc                  - Set remote control\r\n");
 			}
+      else if (strcmp(argv[0], "rc") == 0) {
+        char addr = 0;
+        printf("--- remote control mode\r\n");
+        internal_comm_add_tx_message(INT_COMM_PC_CONNECT_TO_ADDR, 1, &addr);
+      }
 			else {
 				printf("--- Unknown or malformed command: %s\r\n", argv[0]);
 			}

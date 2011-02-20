@@ -591,6 +591,8 @@ int main(void){
 				}
 			}
 			
+      event_handler_check_uc_cmd();
+      
 		//Poll the buttons
 			if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
 				event_poll_buttons();

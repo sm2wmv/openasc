@@ -500,6 +500,13 @@ char* antenna_ctrl_get_rx_antenna_name(unsigned char ant_index) {
 	return(rx_antennas.name[ant_index]);
 }
 
+/*! \brief Retrieve the length of the  rx antenna name
+ *  \param ant_index The index of the antenna
+ *  \return The length of the name */
+unsigned char antenna_ctrl_get_rx_antenna_name_length(unsigned char ant_index) {
+  return(rx_antennas.name_length[ant_index]);
+}
+
 /*! \brief Retrieve the rx antenna output str
  *  \param ant_index The index of the antenna
  *  \return The output str of the rx antenna sent in */
