@@ -528,9 +528,12 @@ void event_poll_buttons(void) {
 				
 						set_knob_function(KNOB_FUNCTION_AUTO);
 					
-						glcd_clear();
-						main_update_display();
-					}
+            status.prev_display = status.current_display;
+            status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+        
+            glcd_clear();
+            main_update_display();
+          }
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
           clear_screensaver_timer();
@@ -1009,6 +1012,10 @@ void event_rotate_button_pressed(void) {
 					status.antenna_to_rotate = rotator_index+1;
 					status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
+          status.function_status |= (1<<FUNC_STATUS_ROTATE);
+          
+          led_set_rotate(LED_STATE_ON);
+          
 					status.new_beamheading = antenna_ctrl_get_direction(rotator_index);
 					set_knob_function(KNOB_FUNCTION_SET_HEADING);
 					
