@@ -19,9 +19,9 @@
 #include <avr/signal.h>
 #include <avr/interrupt.h>
 
-#include "../../global.h"
-#include "../../avrlibdefs.h"
-#include "../../avrlibtypes.h"
+#include "../global.h"
+#include "../avrlibdefs.h"
+#include "../avrlibtypes.h"
 #include "a2d.h"
 
 // global variables

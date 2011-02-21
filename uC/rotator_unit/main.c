@@ -65,6 +65,107 @@ unsigned char timer_flags = 0;
 
 unsigned int counter_ad_poll = 0;
 
+void rotator_set_no_rotation(void) {
+  if (((main_flags & (1<<FLAG_ROTATION_CW)) == 0) && ((main_flags & (1<<FLAG_ROTATION_CW)) == 0))
+    main_flags |= (1<<FLAG_NO_ROTATION);
+}
+
+void rotator_release_break(void) {
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET1))
+    ext_ctrl_fet1_activate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
+    ext_ctrl_fet2_activate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
+    ext_ctrl_relay1_activate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
+    ext_ctrl_relay2_activate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY3))
+    ext_ctrl_relay3_activate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY4))
+    ext_ctrl_relay4_activate();
+}
+
+void rotator_activate_break(void) {
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET1))
+    ext_ctrl_fet1_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
+    ext_ctrl_fet2_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET3))
+    ext_ctrl_fet3_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET4))
+    ext_ctrl_fet4_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
+    ext_ctrl_relay1_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
+    ext_ctrl_relay2_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY3))
+    ext_ctrl_relay3_deactivate();
+  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY4))
+    ext_ctrl_relay4_deactivate();
+}
+
+void rotator_rotate_cw(void) {
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET1))
+    ext_ctrl_fet1_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
+    ext_ctrl_fet2_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET3))
+    ext_ctrl_fet3_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET4))
+    ext_ctrl_fet4_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
+    ext_ctrl_relay1_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))
+    ext_ctrl_relay2_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY3))
+    ext_ctrl_relay3_activate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY4))
+    ext_ctrl_relay4_activate();
+}
+
+void rotator_rotate_ccw(void) {
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET1))
+    ext_ctrl_fet1_activate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET2))
+    ext_ctrl_fet2_activate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY1))
+    ext_ctrl_relay1_activate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY2))
+    ext_ctrl_relay2_activate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY3))
+    ext_ctrl_relay3_activate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
+    ext_ctrl_relay4_activate();
+}
+
+void rotator_stop(void) {
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET1))
+    ext_ctrl_fet1_deactivate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
+    ext_ctrl_fet2_deactivate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
+    ext_ctrl_relay1_deactivate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))
+    ext_ctrl_relay2_deactivate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY3))
+    ext_ctrl_relay3_deactivate();
+  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY4))
+    ext_ctrl_relay4_deactivate();
+    
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET1))
+    ext_ctrl_fet1_deactivate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET2))
+    ext_ctrl_fet2_deactivate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY1))
+    ext_ctrl_relay1_deactivate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY2))
+    ext_ctrl_relay2_deactivate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY3))
+    ext_ctrl_relay3_deactivate();
+  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
+    ext_ctrl_relay4_deactivate();    
+}
+
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
@@ -98,30 +199,36 @@ void bus_parse_message(void) {
 			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_STATUS, 6, temp);
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CW:
-			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
+      if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
 				event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
 				event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        
+        main_flags &= ~(1<<FLAG_NO_ROTATION);
+        main_flags |= (1<<FLAG_ROTATION_CW); 
 			}
-			
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CCW:
-			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
+      if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
 				event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
 				event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
-			}
-			
+        
+        main_flags &= ~(1<<FLAG_NO_ROTATION);
+        main_flags |= (1<<FLAG_ROTATION_CCW);
+			}	
+      		
 			break;
 		case BUS_CMD_ROTATOR_STOP:
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
-				if (main_flags & (1<<FLAG_ROTATION_CW)) {
-					rotator_stop_cw();
-					event_add_message(rotator_activate_break,rotator_settings.rotation_break_delay,EVENT_QUEUE_ACTIVATE_BREAK_ID);
-				}
-				else if (main_flags & (1<<FLAG_ROTATION_CCW)) {
-					rotator_stop_ccw();
-					event_add_message(rotator_activate_break,rotator_settings.rotation_break_delay,EVENT_QUEUE_ACTIVATE_BREAK_ID);
-				}
-			}
+        if (((main_flags & (1<<FLAG_ROTATION_CCW)) != 0) || ((main_flags & (1<<FLAG_ROTATION_CW)) != 0)) {
+          rotator_stop();
+          
+				  event_add_message(rotator_activate_break,rotator_settings.rotation_break_delay,EVENT_QUEUE_ACTIVATE_BREAK_ID);
+          event_add_message(rotator_set_no_rotation, rotator_settings.rotation_delay, EVENT_QUEUE_ROTATION_ALLOWED);
+            
+          main_flags &= ~(1<<FLAG_ROTATION_CW);
+          main_flags &= ~(1<<FLAG_ROTATION_CCW);
+        }
+      }
 			break;
 		case BUS_CMD_ROTATOR_ACTIVATE_CAL:
 			//Rotator calibration mode activated
@@ -212,13 +319,13 @@ void init_dummy_values(void) {
 	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
 	
 	rotator_settings.ad_conv_average = 10;	//Samples 10 times and takes an average of that
-	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
+	rotator_settings.rotation_delay = 100;	//Rotation delay is 10 seconds before any action after a rotation
 	rotator_settings.rotation_degree_max = 450;
 	rotator_settings.rotation_start_angle = 20;
 	rotator_settings.rotation_min = 100;
 	rotator_settings.rotation_max = 900;
 	rotator_settings.ad_scale_value = rotator_settings.rotation_degree_max / (rotator_settings.rotation_max - rotator_settings.rotation_min);
-	rotator_settings.rotation_break_delay = 1;
+	rotator_settings.rotation_break_delay = 10;
 	
 	main_flags = 0;	
 	main_flags |= (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
@@ -388,7 +495,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
-			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+      main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
 	//If the value equals the half of it's range then

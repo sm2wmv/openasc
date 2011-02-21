@@ -31,6 +31,7 @@
 #include "ext_control.h"
 #include "a2d.h"
 #include "../delay.h"
+#include "rotator_ctrl.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -65,100 +66,4 @@ void rotator_rotate_to(int heading) {
 	rotator_rotate_cw();
 }
 
-void rotator_release_break(void) {
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET1))
-		ext_ctrl_fet1_activate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
-		ext_ctrl_fet2_activate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
-		ext_ctrl_relay1_activate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
-		ext_ctrl_relay2_activate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY3))
-		ext_ctrl_relay3_activate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY4))
-		ext_ctrl_relay4_activate();
-}
 
-void rotator_activate_break(void) {
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET1))
-		ext_ctrl_fet1_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
-		ext_ctrl_fet2_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET3))
-		ext_ctrl_fet3_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET4))
-		ext_ctrl_fet4_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
-		ext_ctrl_relay1_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
-		ext_ctrl_relay2_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY3))
-		ext_ctrl_relay3_deactivate();
-	if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY4))
-		ext_ctrl_relay4_deactivate();
-}
-
-void rotator_rotate_cw(void) {
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET1))
-			ext_ctrl_fet1_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
-			ext_ctrl_fet2_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET3))
-			ext_ctrl_fet3_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET4))
-			ext_ctrl_fet4_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
-			ext_ctrl_relay1_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))
-			ext_ctrl_relay2_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY3))
-			ext_ctrl_relay3_activate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY4))
-			ext_ctrl_relay4_activate();
-}
-
-void rotator_rotate_ccw(void) {
-		if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET1))
-			ext_ctrl_fet1_activate();
-		if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET2))
-			ext_ctrl_fet2_activate();
-		if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY1))
-			ext_ctrl_relay1_activate();
-		if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY2))
-			ext_ctrl_relay2_activate();
-		if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY3))
-			ext_ctrl_relay3_activate();
-		if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
-			ext_ctrl_relay4_activate();
-}
-
-void rotator_stop_cw(void) {
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET1))
-			ext_ctrl_fet1_deactivate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
-			ext_ctrl_fet2_deactivate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
-			ext_ctrl_relay1_deactivate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))
-			ext_ctrl_relay2_deactivate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY3))
-			ext_ctrl_relay3_deactivate();
-		if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY4))
-			ext_ctrl_relay4_deactivate();
-}
-
-void rotator_stop_ccw(void) {
-	if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET1))
-		ext_ctrl_fet1_deactivate();
-	if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET2))
-		ext_ctrl_fet2_deactivate();
-	if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY1))
-		ext_ctrl_relay1_deactivate();
-	if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY2))
-		ext_ctrl_relay2_deactivate();
-	if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY3))
-		ext_ctrl_relay3_deactivate();
-	if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
-		ext_ctrl_relay4_deactivate();
-}

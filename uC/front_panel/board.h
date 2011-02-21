@@ -126,7 +126,7 @@
  *
  * PORTG
  * =====================================================================================
- * PG0 - Input  -  AUX Button 1
+ * PG0 - Input  - AUX Button 1
  * PG1 - Input  - AUX Button 2
  * PG2 - Input  - Rotary button
  * PG3 - Input  - 32.768kHz crystal

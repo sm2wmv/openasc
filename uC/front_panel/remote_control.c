@@ -39,7 +39,7 @@
 //! Flags used in the remote control
 unsigned char remote_control_flags;
 
-unsigned char linefeed[3] = {"\r\n\0"};
+char linefeed[3] = {"\r\n\0"};
 
 /*! \brief Activate the remote control mode */
 void remote_control_activate_remote_mode(void) {
@@ -189,7 +189,6 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
     else if (strcmp_P(argv[0], PSTR("info")) == 0) {
       char line[7][25];
       
-      char band[4];
       unsigned char cnt = 0;
       unsigned char line_nr = 0;
       

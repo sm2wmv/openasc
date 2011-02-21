@@ -94,6 +94,12 @@ int ih_poll_buttons(void) {
 			
 			DDRG &= ~(1<<BUTTON_AUX2_BIT);
 			PORTG |= (1<<BUTTON_AUX2_BIT);
+      
+      DDRG |= (1<<BUTTON_AUX1_BIT);
+      PORTG |= (1<<BUTTON_AUX1_BIT);
+      
+      DDRG &= ~(1<<BUTTON_AUX1_BIT);
+      PORTG |= (1<<BUTTON_AUX1_BIT);      
 	}
 	
 	return(temp);

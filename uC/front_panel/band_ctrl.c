@@ -221,7 +221,7 @@ void band_ctrl_change_band(unsigned char band) {
 				//Send RX antenna band data to the bus
 				antenna_ctrl_send_rx_ant_band_data_to_bus(band);
 				antenna_ctrl_select_default_ant();
-				
+        
 				//Activate all default sub menu options
 				sub_menu_activate_all();
 			}
