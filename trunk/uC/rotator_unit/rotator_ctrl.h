@@ -21,13 +21,13 @@
 #ifndef _ROTATOR_CTRL_H_
 #define _ROTATOR_CTRL_H_
 
-/*void rotator_release_break(void);
+void rotator_release_break(void);
 void rotator_activate_break(void);
 
 void rotator_rotate_cw(void);
 void rotator_rotate_ccw(void);
 void rotator_stop(void);
-*/
+
 
 void rotator_rotate_to(int heading);
 double rotator_get_multiplier(void);

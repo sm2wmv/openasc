@@ -171,6 +171,8 @@
 #define CURRENT_DISPLAY_POWERMETER_VIEW 4
 //! Current display is some selection of some sort, for example rotator direction
 #define CURRENT_DISPLAY_SETTING	5
+//! Current display is some selection of some sort, for example rotator direction
+#define CURRENT_DISPLAY_SCREENSAVER 6
 
 //! The time from when a pulse sensor change occured to the actual change does happen, in ms
 #define PULSE_SENSOR_RX_ANT_CHANGE_LIMIT	250

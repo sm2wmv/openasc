@@ -65,6 +65,8 @@ extern unsigned int main_flags;
 
 unsigned char ascii_comm_device_addr = 0;
 
+static unsigned char ant_rotating_indicator = 0;
+
 /*! \brief Function which goes through the ping list and checks if something has happened */
 void event_check_pings(void) {
 
@@ -1068,10 +1070,21 @@ void event_bus_parse_message(void) {
 					
 					curr_heading = bus_message.data[2]<<8;
 					curr_heading += bus_message.data[3];
+         	
+          if (antenna_ctrl_get_direction(i) != curr_heading) {
+            antenna_ctrl_set_direction(curr_heading,i);
+						main_update_display();
+          }
 
-					antenna_ctrl_set_direction(curr_heading,i);
-					
-					main_update_display();
+          if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))
+            ant_rotating_indicator |= (1<<i);
+          else 
+            ant_rotating_indicator &= ~(1<<i);
+          
+          if (ant_rotating_indicator != 0) 
+            led_set_rotation_active(LED_STATE_ON);
+          else
+            led_set_rotation_active(LED_STATE_OFF);
 				}
 			}
 		}
