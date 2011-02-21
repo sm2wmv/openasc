@@ -324,8 +324,6 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 
 /*! \brief Rotate the last rotatable antenna clockwise */
 void antenna_ctrl_rotate_cw(void) {
-  printf("ROTATE CW\n");
-  
   if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
     bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CW, 0, NULL);
   }
@@ -333,8 +331,6 @@ void antenna_ctrl_rotate_cw(void) {
 
 /*! \brief Rotate the last rotatable antenna counter-clockwise */
 void antenna_ctrl_rotate_ccw(void) {
-  printf("ROTATE CCW\n");
-    
   if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
     bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CCW, 0, NULL);
   }
@@ -342,8 +338,6 @@ void antenna_ctrl_rotate_ccw(void) {
 
 /*! \brief Stop rotation of the last antenna */
 void antenna_ctrl_rotate_stop(void) {
-  printf("ROTATE STOP\n");  
-  
   if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
     bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_STOP, 0, NULL);
   }

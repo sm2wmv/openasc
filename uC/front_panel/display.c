@@ -76,12 +76,18 @@ unsigned char display_screensaver_mode(void) {
  */
 void display_disable_screensaver(void) {
 	screensaver_mode = 0;
+  
+  status.current_display = status.prev_display;
+  status.prev_display = CURRENT_DISPLAY_SCREENSAVER;
 }
 
 /*! \brief Set the mode of the screensaver to enable
  */
 void display_enable_screensaver(void) {
 	screensaver_mode = 1;
+  
+  status.prev_display = status.current_display;
+  status.current_display = CURRENT_DISPLAY_SCREENSAVER;
 }
 
 /*! \brief Updates the screensaver which consist of a clock */
