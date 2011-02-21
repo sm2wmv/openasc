@@ -152,6 +152,12 @@ void antenna_ctrl_deactivate_all(void);
 
 void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading);
 
+void antenna_ctrl_rotate_cw(void);
+void antenna_ctrl_rotate_ccw(void);
+void antenna_ctrl_rotate_stop(void);
+
+void antenna_ctrl_rotate_set_ant_index(char ant_index);
+
 unsigned char antenna_ctrl_antenna_selected(void);
 unsigned char antenna_ctrl_rx_antenna_selected(void);
 

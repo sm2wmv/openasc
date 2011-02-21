@@ -64,6 +64,9 @@ unsigned char current_band_activated_outputs_rx[RX_ANTENNA_BAND_OUTPUT_STR_LENGT
 //! How many devices we have activated rx antenna band outputs on
 unsigned char current_band_activated_outputs_rx_length = 0;
 
+//! The last antenna that was rotated (-1 = none)
+char last_rotated_antenna = -1;
+
 /*! \brief Function which goes through the different addresses of cards that have been activated and compares it to the sent in address
     \param addr The address we wish to check if it is activated 
     \return 1 if the address is in use, 0 if not */
@@ -315,6 +318,39 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	
 	bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[ant_index], 
 										 (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_SET_ANGLE, sizeof(new_dir), new_dir);
+  
+  last_rotated_antenna = ant_index;
+}
+
+/*! \brief Rotate the last rotatable antenna clockwise */
+void antenna_ctrl_rotate_cw(void) {
+  printf("ROTATE CW\n");
+  
+  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
+    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CW, 0, NULL);
+  }
+}
+
+/*! \brief Rotate the last rotatable antenna counter-clockwise */
+void antenna_ctrl_rotate_ccw(void) {
+  printf("ROTATE CCW\n");
+    
+  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
+    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CCW, 0, NULL);
+  }
+}
+
+/*! \brief Stop rotation of the last antenna */
+void antenna_ctrl_rotate_stop(void) {
+  printf("ROTATE STOP\n");  
+  
+  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
+    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_STOP, 0, NULL);
+  }
+}
+
+void antenna_ctrl_rotate_set_ant_index(char ant_index) {
+  last_rotated_antenna = ant_index;
 }
 
 /*! \brief Function used to change an rx antenna 
@@ -530,6 +566,17 @@ void antenna_ctrl_select_default_ant(void) {
  *  \param band_index The band index */
 void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
 	eeprom_get_antenna_data(&current_antennas, band_index);
+  
+  last_rotated_antenna = -1;
+        
+  unsigned char rotatable = antenna_ctrl_get_rotatable();
+  
+  for (unsigned char i=0;i<4;i++) {
+    if ((rotatable & (1<<i)) != 0) {
+      last_rotated_antenna = i;
+      break;
+    }
+  }
 }
 
 /*! \brief Read the eeprom for the rx antenna settings  */

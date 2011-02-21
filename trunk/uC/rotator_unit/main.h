@@ -82,6 +82,7 @@
 #define EVENT_QUEUE_ROTATE_STOP_ID		2
 #define EVENT_QUEUE_RELEASE_BREAK_ID	3
 #define EVENT_QUEUE_ACTIVATE_BREAK_ID	4
+#define EVENT_QUEUE_ROTATION_ALLOWED  5
 
 #define AD_VAL_POLL_INTERVAL						100
 #define ROTATOR_STATUS_UPDATE_INTERVAL	500
@@ -114,7 +115,7 @@ typedef struct {
 	unsigned int rotation_min;
 	//! Start rotation input value, max
 	unsigned int rotation_max;
-	//! Rotator break delay, the delay between rotation and the break is put in/out (seconds)
+	//! Rotator break delay, the delay between rotation and the break is put in/out (x100ms)
 	unsigned char rotation_break_delay;
 	//! Rotator scale value
 	double ad_scale_value;
@@ -141,6 +142,7 @@ typedef struct {
 struct_rotator_status rotator_status;
 struct_settings rotator_settings;
 
+void rotator_set_no_rotation(void);
 void bus_parse_message(void);
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned char read_ext_addr(void);

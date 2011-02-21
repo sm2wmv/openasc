@@ -244,8 +244,6 @@ void led_set_all(enum enum_led_state state) {
 		led_set_rotate(LED_STATE_OFF);
 		led_set_aux(LED_STATE_OFF);
 		led_set_menu(LED_STATE_OFF);
-		PORTG &= ~(1<<0);
-		PORTG &= ~(1<<1);
 		led_set_band(BAND_UNDEFINED);
 	}
 }

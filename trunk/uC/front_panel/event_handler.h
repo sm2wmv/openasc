@@ -165,6 +165,7 @@
 //! Ext ctrl - Change band down
 #define EXT_CTRL_CHANGE_BAND_DOWN 43
 
+
 #define MAX_ASCII_CMD_ARGS  5
 
 void event_check_pings(void);
@@ -192,6 +193,9 @@ void event_rxant_button_pressed(void);
 
 void event_aux1_button_pressed(void);
 void event_aux2_button_pressed(void);
+
+void event_aux1_button_released(void);
+void event_aux2_button_released(void);
 
 void event_process_task(unsigned char task_index);
 

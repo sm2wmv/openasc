@@ -289,6 +289,12 @@ void event_process_task(unsigned char task_index) {
 		case EXT_CTRL_SET_STACK_COMB6:
 			sub_menu_set_stack_comb(5);
 			break;
+    case EXT_CTRL_ROTATE_CW:
+      antenna_ctrl_rotate_cw();
+      break;
+    case EXT_CTRL_ROTATE_CCW:
+      antenna_ctrl_rotate_ccw();
+      break;
 		default:
 			break;
 	}
@@ -543,13 +549,17 @@ void event_poll_buttons(void) {
 		}
 
 		if (btn_status & (1<<FLAG_BUTTON_AUX1_BIT)) {
-			if (status.buttons_current_state & (1<<FLAG_BUTTON_AUX1_BIT))
+			if ((status.buttons_current_state & (1<<FLAG_BUTTON_AUX1_BIT)) != 0)
 				event_aux1_button_pressed();
+      else
+        event_aux1_button_released();
 		}
 		
 		if (btn_status & (1<<FLAG_BUTTON_AUX2_BIT)) {
-			if (status.buttons_current_state & (1<<FLAG_BUTTON_AUX2_BIT))
+			if ((status.buttons_current_state & (1<<FLAG_BUTTON_AUX2_BIT)) != 0)
 				event_aux2_button_pressed();
+      else
+        event_aux2_button_released();
 		}
 	}
 	
@@ -864,12 +874,24 @@ void event_tx_button4_pressed(void) {
 
 /*! \brief Perform the actions that should be done when AUX 1 button is pressed */
 void event_aux1_button_pressed(void) {
-	event_process_task(main_get_aux_button(1));
+  event_process_task(main_get_aux_button(1));
 }
 
 /*! \brief Perform the actions that should be done when AUX 2 button is pressed */
 void event_aux2_button_pressed(void) {
 	event_process_task(main_get_aux_button(2));
+}
+
+/*! \brief Perform the actions that should be done when AUX 1 button is pressed */
+void event_aux1_button_released(void) {
+  if ((main_get_aux_button(1) == EXT_CTRL_ROTATE_CW) || (main_get_aux_button(1) == EXT_CTRL_ROTATE_CCW))
+    antenna_ctrl_rotate_stop();
+}
+
+/*! \brief Perform the actions that should be done when AUX 2 button is pressed */
+void event_aux2_button_released(void) {
+  if ((main_get_aux_button(2) == EXT_CTRL_ROTATE_CW) || (main_get_aux_button(2) == EXT_CTRL_ROTATE_CCW))
+    antenna_ctrl_rotate_stop();
 }
 
 /*! \brief Perform the actions that should be done when the SUB menu button is pressed */
