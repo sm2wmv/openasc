@@ -95,7 +95,7 @@
 #define UC_SERIAL_RX_BUFFER_LENGTH	20
 
 //! The size the data sent between the two devices can be maximum
-#define UC_MESSAGE_DATA_SIZE	25
+#define UC_MESSAGE_DATA_SIZE	15
 
 //! After this many ms it will reset the rx flags (in ms) (change back to 25?)
 #define UC_COMM_RX_TIMEOUT	10
