@@ -39,7 +39,7 @@
 //! The size of the RX queue in buffers
 #define BUS_RX_QUEUE_SIZE 10
 //! The size of the TX queue in buffers
-#define BUS_TX_QUEUE_SIZE	25
+#define BUS_TX_QUEUE_SIZE	15
 
 //! This flag is to indicate that the antenna exist
 #define ANTENNA_EXIST_FLAG		0
