@@ -219,6 +219,15 @@ void event_run(void) {
 	}
 }
 
+void main_process_lock(unsigned char status) {
+  if (status == 1) {
+    sequencer_lock_all();
+    
+    main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+    led_set_ptt(LED_STATE_PTT_INHIBIT);
+  }
+}
+
 /*! \brief Sets the flag that the display should be updated */
 void main_update_display(void) {
 	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
@@ -562,8 +571,6 @@ int main(void){
 	
 	ping_message[0] = DEVICE_ID_MAINBOX;
 	ping_message[1] = settings.ptt_interlock_input;
- 
-	//main_set_device_online(1);
   
   //This will make the box enabled after 3 seconds, this is so that we have recieved all the pings from different units
   //so that we know which band they are on, before we enter a band ourself.

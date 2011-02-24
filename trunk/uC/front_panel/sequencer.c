@@ -231,3 +231,26 @@ unsigned char sequencer_get_radio_sense(void) {
 	else
 		return(0);
 }
+
+void sequencer_lock_all(void) {
+  if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_RADIO_ON) == 0) {
+    event_add_message((void *)radio_ptt_deactive, ptt_sequencer.footswitch.radio_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_RADIO_OFF);
+  }
+  
+  if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_AMP_ON) == 0) {
+    event_add_message((void *)radio_amp_ptt_deactive, ptt_sequencer.footswitch.amp_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_AMP_OFF);
+  }
+  
+  if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_ON) == 0) {
+    event_add_message((void *)radio_tx_deactive, ptt_sequencer.footswitch.antennas_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_OFF);
+  }
+      
+  if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_INHIBIT_ON) == 0) {
+    if ((ptt_sequencer.ptt_input & (1<<PTT_INPUT_INHIBIT_POLARITY)) == 0) //Inhibit polarity = active low
+      event_add_message((void *)radio_inhibit_high, ptt_sequencer.footswitch.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
+    else
+      event_add_message((void *)radio_inhibit_low, ptt_sequencer.footswitch.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
+  }
+  
+  ptt_active = 0;
+}

@@ -349,4 +349,6 @@ void main_set_band_change_mode(unsigned char mode);
 void main_set_new_band(unsigned char band);
 unsigned char main_get_current_band(void);
 
+void main_process_lock(unsigned char status);
+
 #endif
