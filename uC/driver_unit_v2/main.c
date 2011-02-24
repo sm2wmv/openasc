@@ -60,6 +60,10 @@ unsigned char check_ptt_status = 0;
 unsigned char deactivate_output_list[20];
 unsigned char deactivate_output_list_len = 0;
 
+unsigned char ptt_status_prev = 0;
+unsigned char ptt_status_current = 0;
+unsigned char ptt_polarity = 0;
+
 /*! \brief Activate a driver output
 * This function is used to activate an output on the driver unit. It will remember
 * which device that sent the request for an activation so that the driver_unit will
@@ -182,7 +186,7 @@ void deactivate_output(unsigned char from_addr, unsigned char index) {
 void check_pings(void) {
 	if (bus_ping_get_failed_count() > 0) {
 		bus_struct_ping_status ping_data = bus_ping_get_failed_ping();
-		
+
 		if (ping_data.device_type == DEVICE_ID_MAINBOX) {
 			for (unsigned char i=0;i<20;i++) {
 				if (driver_status.driver_output_owner[i] == ping_data.addr) {
@@ -233,7 +237,7 @@ void bus_parse_message(void) {
 			//Check so that the PTT interlock input is <> 0
 			if (bus_message.data[1] != 0) {
 				if (bus_message.from_addr != driver_status.ptt_interlock_input[bus_message.data[1]-1]) {
-					driver_status.ptt_interlock_input[bus_message.data[1]] = bus_message.from_addr;
+					driver_status.ptt_interlock_input[bus_message.data[1]-1] = bus_message.from_addr;
 				}
 			}
 			else {
@@ -458,6 +462,11 @@ int main(void)
 
 	unsigned char device_count = bus_get_device_count();
 
+  if (PINE & (1<<6))
+    ptt_polarity = 1; //Active low
+  else
+    ptt_polarity = 0; //Active high
+  
 	while(1) {
 		if (!rx_queue_is_empty()) {
 			bus_parse_message();
@@ -488,8 +497,18 @@ int main(void)
 		//Check the PTT inputs
 		if (check_ptt_status) {
 			//Set the PTT leds
-			set_ptt_led_status(get_ptt_status());
-			
+      if (ptt_polarity == 1)
+        ptt_status_current = ~get_ptt_status();
+      else
+        ptt_status_current = get_ptt_status();
+      
+      if (ptt_status_current != ptt_status_prev) {
+        //Fix the visual
+        set_ptt_led_status(ptt_status_current);
+        
+        ptt_status_prev = ptt_status_current;
+      }
+      
 			check_ptt_status = 0;
 		}
 		
@@ -499,14 +518,18 @@ int main(void)
 		//deactivates the outputs
 		if (deactivate_output_list_len > 0) {
 			for (unsigned char i=0;i<20;i++) {
-				if (deactivate_output_list[i] != 0)
-					if (get_ptt_interlock_input(deactivate_output_list[i]) != 0) {
-						if ((get_ptt_status() & (1<<get_ptt_interlock_input(deactivate_output_list[i])-1)) == 0) {
-							deactivate_output(deactivate_output_list[i],i+1);
-							deactivate_output_list[i] = 0;
-							deactivate_output_list_len--;
-						}
-					}
+				if (deactivate_output_list[i] != 0) {
+          unsigned char tmp_ptt_input = get_ptt_interlock_input(deactivate_output_list[i]);
+      
+          if ((tmp_ptt_input != 0) && ((ptt_status_current & (1<<(tmp_ptt_input-1))) != 0)) {
+            
+          }
+          else {
+            deactivate_output(deactivate_output_list[i],i+1);
+            deactivate_output_list[i] = 0;
+            deactivate_output_list_len--;
+          }
+        }
 			}
 		}
 	}

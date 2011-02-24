@@ -114,7 +114,7 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_OTHER;
 	tx_buff[1] = pttInterlockInput;
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
+	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 2, tx_buff);
 
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);

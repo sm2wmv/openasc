@@ -63,6 +63,9 @@ void error_handler_set(unsigned char error_type, unsigned char state, unsigned i
 	
 	if (error_list[error_type].flags & (1<<ERROR_FLAG_LOCK_PTT)) {
 		lock_status = 1;
+    
+    main_process_lock(1);
+    
 		main_update_ptt_status();
 	}
 	
