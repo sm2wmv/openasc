@@ -167,12 +167,14 @@ void event_handler_check_uc_cmd(void) {
 /*! \brief Set an RX antenna. Will set the proper flags and call the antenna_ctrl_change_rx_ant function
  *  \param ant_index The index of the RX antenna we wish to chose */
 void __inline__ event_set_rx_antenna(unsigned char ant_index) {
-	status.selected_rx_antenna = ant_index;
-	
-	status.last_rx_antenna = status.selected_rx_antenna;
-		
-	antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
-	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+  if (ant_index <= antenna_ctrl_get_rx_antenna_count()) {
+    status.selected_rx_antenna = ant_index;
+	  
+	  status.last_rx_antenna = status.selected_rx_antenna;
+		  
+	  antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
+	  main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+  }
 }
 
 /*! \brief Process an PS2 event 
@@ -224,7 +226,7 @@ void event_process_task(unsigned char task_index) {
 	
 	/* Requires that we dont change the order of the functions */
 	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT10)) {
-		event_set_rx_antenna(task_index);
+    event_set_rx_antenna(task_index);
 		return;
 	}	
 	
@@ -296,6 +298,9 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_ROTATE_CCW:
       antenna_ctrl_rotate_ccw();
+      break;
+    case EXT_CTRL_SEL_RX_NONE:
+      event_set_rx_antenna(0);
       break;
 		default:
 			break;
@@ -431,6 +436,11 @@ void event_update_display(void) {
 	}
 }
 
+/*! \brief The TX/RX mode button was pressed */
+void event_txrx_mode_pressed(void) {
+  clear_screensaver_timer();
+}
+
 /*! \brief Function which will poll all buttons and perform the proper action depending on their state */
 void event_poll_buttons(void) {
 	status.buttons_current_state = ih_poll_buttons();
@@ -463,8 +473,14 @@ void event_poll_buttons(void) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON4_TX_BIT))
 				event_tx_button4_pressed();
 		}
-		
-		if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
+    
+    //Checks if the status of this antenna button was changed
+    if (btn_status & (1<<FLAG_BUTTON_TXRX_BIT)) {
+      if (status.buttons_current_state & (1<<FLAG_BUTTON_TXRX_BIT))
+        event_txrx_mode_pressed();
+    }    
+        
+    if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
 			event_rotate_button_pressed();
 		}
 		

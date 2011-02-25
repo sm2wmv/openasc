@@ -32,6 +32,7 @@
 #include "remote_control.h"
 #include "antenna_ctrl.h"
 #include "band_ctrl.h"
+#include "sub_menu.h"
 
 //! Flag that the remote control is active
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
@@ -40,6 +41,7 @@
 unsigned char remote_control_flags;
 
 char linefeed[3] = {"\r\n\0"};
+char huh[7] = {"Huh?\r\n\0"};
 
 /*! \brief Activate the remote control mode */
 void remote_control_activate_remote_mode(void) {
@@ -104,7 +106,6 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
   }
 }
 
-
 void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
   char data[16];
   memcpy(data, uc_message->data, uc_message->length);
@@ -142,138 +143,228 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
     if (strcmp(argv[0], "help") == 0) {
       send_ascii_data(0,"No help\r\n");
     }
-    else if (strcmp_P(argv[0], PSTR("a1")) == 0) {
-      remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT1);
+    else if (strcmp(argv[0], "ant") == 0) {
+      if (argc > 1) {
+        if (strcmp(argv[1],"1") == 0)
+          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT1);
+        else if (strcmp(argv[1],"2") == 0)
+          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT2);
+        else if (strcmp(argv[1],"3") == 0)
+          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT3);
+        else if (strcmp(argv[1],"4") == 0)
+          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT4);
+      }
+      else {
+        send_ascii_data(0, huh);
+      }
     }
-    else if (strcmp_P(argv[0], PSTR("a2")) == 0) {
-      remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT2);
+    else if (strcmp_P(argv[0],PSTR("rxant")) == 0) {
+      if (argc > 1) {
+        if (strcmp(argv[1],"1") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT1);
+        else if (strcmp(argv[1],"2") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT2);
+        else if (strcmp(argv[1],"3") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT3);
+        else if (strcmp(argv[1],"4") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT4);
+        else if (strcmp(argv[1],"5") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT5);
+        else if (strcmp(argv[1],"6") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT6);
+        else if (strcmp(argv[1],"7") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT7);
+        else if (strcmp(argv[1],"8") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT8);
+        else if (strcmp(argv[1],"9") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT9);
+        else if (strcmp(argv[1],"10") == 0)
+          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT10);
+        else
+          remote_control_parse_button(EXT_CTRL_SEL_RX_NONE);
+      }
+      else {
+        remote_control_parse_button(EXT_CTRL_TOGGLE_RX_ANT_MODE);
+      }
     }
-    else if (strcmp_P(argv[0], PSTR("a3")) == 0) {
-      remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT3);
+    else if (strcmp_P(argv[0], PSTR("array")) == 0) {
+      if (argc > 1) {
+        if (strcmp(argv[1],"1") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR1);
+        else if (strcmp(argv[1],"2") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR2);
+        else if (strcmp(argv[1],"3") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR3);
+        else if (strcmp(argv[1],"4") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR4);
+        else
+          send_ascii_data(0, huh);
+      }
     }
-    else if (strcmp_P(argv[0], PSTR("a4")) == 0) {
-      remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT4);
+    else if (strcmp_P(argv[0], PSTR("stack")) == 0) {
+      if (argc > 1) {
+        if (strcmp(argv[1],"1") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB1);
+        else if (strcmp(argv[1],"2") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB2);
+        else if (strcmp(argv[1],"3") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB3);
+        else if (strcmp(argv[1],"4") == 0)
+          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB4);
+        else
+          send_ascii_data(0, huh);
+      }
     }
     else if (strcmp_P(argv[0], PSTR("band")) == 0) {
       if (strcmp_P(argv[1], PSTR("160")) == 0) {
-        band_ctrl_change_band(BAND_160M);
+        main_set_new_band(BAND_160M);
       }
       else if (strcmp_P(argv[1], PSTR("80")) == 0) {
-        band_ctrl_change_band(BAND_80M);
+        main_set_new_band(BAND_80M);
       }
       else if (strcmp_P(argv[1], PSTR("40")) == 0) {
-        band_ctrl_change_band(BAND_40M);
+        main_set_new_band(BAND_40M);
       }
       else if (strcmp_P(argv[1], PSTR("30")) == 0) {
-        band_ctrl_change_band(BAND_30M);
+        main_set_new_band(BAND_30M);
       }
       else if (strcmp_P(argv[1], PSTR("20")) == 0) {
-        band_ctrl_change_band(BAND_20M);
+        main_set_new_band(BAND_20M);
       }
       else if (strcmp_P(argv[1], PSTR("17")) == 0) {
-        band_ctrl_change_band(BAND_17M);
+        main_set_new_band(BAND_17M);
       }
       else if (strcmp_P(argv[1], PSTR("15")) == 0) {
-        band_ctrl_change_band(BAND_15M);
+        main_set_new_band(BAND_15M);
       }                        
       else if (strcmp_P(argv[1], PSTR("12")) == 0) {
-        band_ctrl_change_band(BAND_12M);
+        main_set_new_band(BAND_12M);
       }      
       else if (strcmp_P(argv[1], PSTR("10")) == 0) {
-        band_ctrl_change_band(BAND_10M);
+        main_set_new_band(BAND_10M);
       }
       else {
-        send_ascii_data(0, "Huh?\r\n");
+        send_ascii_data(0, huh);
       }
     }
     else if (strcmp_P(argv[0], PSTR("info")) == 0) {
-      char line[7][25];
+      char line[10][25];
+      
+      for (unsigned char i=0;i<10;i++)
+        for (unsigned char j=0;j<25;j++)
+          line[i][j] = 0;
       
       unsigned char cnt = 0;
       unsigned char line_nr = 0;
       
       strcpy_P(line[line_nr], PSTR("Band: "));
+      
       if (status.selected_band == BAND_160M) {
-        strcpy_P(line[line_nr]+6, PSTR("160m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("160m\r\n"));
       }
       else if (status.selected_band == BAND_80M) {
-        strcpy_P(line[line_nr]+6, PSTR("80m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("80m\r\n"));
       }
       else if (status.selected_band == BAND_40M) {
-        strcpy_P(line[line_nr]+6, PSTR("40m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("40m\r\n"));
       }
       else if (status.selected_band == BAND_30M) {
-        strcpy_P(line[line_nr]+6, PSTR("30m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("30m\r\n"));
       }
       else if (status.selected_band == BAND_20M) {
-        strcpy_P(line[line_nr]+6, PSTR("20m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("20m\r\n"));
       }
       else if (status.selected_band == BAND_17M) {
-        strcpy_P(line[line_nr]+6, PSTR("17m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("17m\r\n"));
       }
       else if (status.selected_band == BAND_15M) {
-        strcpy_P(line[line_nr]+6, PSTR("15m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("15m\r\n"));
       }
       else if (status.selected_band == BAND_12M) {
-        strcpy_P(line[line_nr]+6, PSTR("12m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("12m\r\n"));
       }
       else if (status.selected_band == BAND_10M) {
-        strcpy_P(line[line_nr]+6, PSTR("10m\n\r"));
+        strcpy_P(line[line_nr]+6, PSTR("10m\r\n"));
       }
+      else
+        strcpy_P(line[line_nr]+6, PSTR("None\r\n"));
 
       
       line_nr++;
       
-      for (int i=0;i<4;i++) {
-        if (antenna_ctrl_get_antenna_text_length(i) > 0) {
-          if ((status.selected_ant & (1<<i)) != 0) {
-            if (i == 0)
-              strcpy_P(line[line_nr], PSTR("  A1: *"));
-            else if (i == 1)
-              strcpy_P(line[line_nr], PSTR("  A2: *"));
-            else if (i == 2)
-              strcpy_P(line[line_nr], PSTR("  A3: *"));
-            else if (i == 3)
-              strcpy_P(line[line_nr], PSTR("  A4: *"));
+      if (status.selected_band != BAND_UNDEFINED) {
+        for (int i=0;i<4;i++) {
+          if (antenna_ctrl_get_antenna_text_length(i) > 0) {
+            if ((status.selected_ant & (1<<i)) != 0) {
+              if (i == 0)
+                strcpy_P(line[line_nr], PSTR(" A1: *"));
+              else if (i == 1)
+                strcpy_P(line[line_nr], PSTR(" A2: *"));
+              else if (i == 2)
+                strcpy_P(line[line_nr], PSTR(" A3: *"));
+              else if (i == 3)
+                strcpy_P(line[line_nr], PSTR(" A4: *"));
+              
+              cnt = 6;
+            }
+            else {
+              if (i == 0)
+                strcpy_P(line[line_nr], PSTR(" A1: "));
+              else if (i == 1)
+                strcpy_P(line[line_nr], PSTR(" A2: "));
+              else if (i == 2)
+                strcpy_P(line[line_nr], PSTR(" A3: "));
+              else if (i == 3)
+                strcpy_P(line[line_nr], PSTR(" A4: "));
+              
+              cnt = 5;
+            }
             
-            cnt = 7;
-          }
-          else {
-            if (i == 0)
-              strcpy_P(line[line_nr], PSTR("  A1: "));
-            else if (i == 1)
-              strcpy_P(line[line_nr], PSTR("  A2: "));
-            else if (i == 2)
-              strcpy_P(line[line_nr], PSTR("  A3: "));
-            else if (i == 3)
-              strcpy_P(line[line_nr], PSTR("  A4: "));
+            strncpy((char *)(line[line_nr]+cnt),antenna_ctrl_get_antenna_text(i), antenna_ctrl_get_antenna_text_length(i));
             
-            cnt = 6;
+            if (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY) {
+              for (unsigned char c=antenna_ctrl_get_antenna_text_length(i);c<10;c++) {
+                line[line_nr][c+cnt] = ' ';
+              }
+              
+              cnt += 10 - antenna_ctrl_get_antenna_text_length(i);
+              
+              cnt+= sprintf((char *)(line[line_nr]+cnt+antenna_ctrl_get_antenna_text_length(i))," - (%s)",sub_menu_get_text(i,sub_menu_get_current_pos(i)));
+            }
+
+            strcpy((char *)(line[line_nr]+antenna_ctrl_get_antenna_text_length(i)+cnt),"\r\n");
+            
+            line_nr++;
           }
-          
-          strcpy(line[1+i]+cnt, antenna_ctrl_get_antenna_text(i));
-          strcpy(line[1+i]+cnt+antenna_ctrl_get_antenna_text_length(i), linefeed);
-          
-          line_nr++;
         }
-      }
-
-      strcpy_P(line[line_nr],PSTR("RX ant: "));
-      if (antenna_ctrl_rx_antenna_selected() == 0) {
-        strcpy_P(line[line_nr]+8,PSTR("None\n\r\0")); 
-      }
-      else {
-        strcpy(line[line_nr]+8,antenna_ctrl_get_rx_antenna_name(antenna_ctrl_rx_antenna_selected()-1));
-        strcpy(line[line_nr]+8+antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1),linefeed);
+  
+        strncpy_P((char *)line[line_nr],PSTR("RX ant: \r\n"),10);
+        
+        if (antenna_ctrl_rx_antenna_selected() == 0) {
+          strcpy_P((char *)(line[line_nr]+8),PSTR("None\r\n")); 
+        }
+        else {
+          strncpy((char *)(line[line_nr]+8),antenna_ctrl_get_rx_antenna_name(antenna_ctrl_rx_antenna_selected()-1),antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1));
+          strcpy((char *)(line[line_nr]+8+antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1)),linefeed);
+        }
+        
+        line_nr++;
+        
+        if (status.function_status & (1<<FUNC_STATUS_RXANT)) {
+          strcpy_P(line[line_nr],PSTR("RX ant ON\r\n"));
+        }
+        else
+          strcpy_P(line[line_nr],PSTR("RX ant OFF\r\n"));
+        
+        line_nr++;
       }
       
-      line_nr++;
-      
-      for (int i=0;i<line_nr;i++)
+      for (int i=0;i<line_nr;i++) {
         send_ascii_data(0, line[i]);
+      }
     }
     else {
-      send_ascii_data(0, "Huh?\r\n");
+      send_ascii_data(0, huh);
     }
   }
 

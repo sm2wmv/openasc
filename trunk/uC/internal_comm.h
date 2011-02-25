@@ -92,10 +92,10 @@
 #define UC_COMM_MSG_NACK				0xFB
 
 //! The length of the serial rx buffer used for communication between the uCs
-#define UC_SERIAL_RX_BUFFER_LENGTH	20
+#define UC_SERIAL_RX_BUFFER_LENGTH	25
 
 //! The size the data sent between the two devices can be maximum
-#define UC_MESSAGE_DATA_SIZE	15
+#define UC_MESSAGE_DATA_SIZE	20
 
 //! After this many ms it will reset the rx flags (in ms) (change back to 25?)
 #define UC_COMM_RX_TIMEOUT	10

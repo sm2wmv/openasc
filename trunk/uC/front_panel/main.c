@@ -20,6 +20,8 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//#define DEBUG_COMPUTER_USART_ENABLED
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <avr/io.h>
@@ -131,7 +133,9 @@ unsigned char main_get_current_band(void) {
 }
 
 void main_set_new_band(unsigned char band) {
-	status.current_band_portion = BAND_LOW;
+  status.new_band = band;
+  
+  status.current_band_portion = BAND_LOW;
 	band_ctrl_change_band(band);
 					
 	display_update_radio_freq();
@@ -298,6 +302,8 @@ void load_settings(void) {
 	
 	//Load all the sequencer settings
 	sequencer_load_eeprom();
+  
+  status.txrx_mode = 0;
 }
 
 /*! \brief Function which updates the status of the PTT
@@ -488,8 +494,13 @@ int main(void){
 	
 	if (!computer_interface_is_active()) {
 		//Initialize the radio interface
-		radio_interface_init();
-		//init_usart_computer();
+    #ifndef DEBUG_COMPUTER_USART_ENABLED
+      radio_interface_init();
+    #endif
+      
+    #ifdef DEBUG_COMPUTER_USART_ENABLED
+		  init_usart_computer();
+    #endif
 	}
 	else {
 		//Init the computer communication

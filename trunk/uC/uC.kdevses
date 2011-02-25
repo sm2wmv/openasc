@@ -1,16 +1,31 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="3" >
-  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="UTF-8" line="482" Type="Source" />
+ <DocsAndViews NumberOfDocuments="8" >
+  <Doc0 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
+   <View0 Encoding="UTF-8" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="UTF-8" line="520" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/remote_control.c" >
+   <View0 Encoding="UTF-8" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.c" >
-   <View0 Encoding="UTF-8" line="300" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/sub_menu.c" >
+   <View0 Encoding="UTF-8" line="339" Type="Source" />
   </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/sub_menu.h" >
+   <View0 Encoding="UTF-8" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/antenna_ctrl.h" >
+   <View0 Encoding="UTF-8" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/display.c" >
+   <View0 Encoding="UTF-8" line="461" Type="Source" />
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/driver_unit_v2/board.h" >
+   <View0 Encoding="UTF-8" line="0" Type="Source" />
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/micke/projects/openASC_google/trunk/uC/front_panel/main.c" >
+   <View0 Encoding="UTF-8" line="22" Type="Source" />
+  </Doc7>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
