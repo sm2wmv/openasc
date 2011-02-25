@@ -231,8 +231,7 @@ void band_ctrl_change_band(unsigned char band) {
 		}
 		else {
       //Lets change to band undefined, as long as we are not allowed in on the band we want
-      status.new_band = BAND_UNDEFINED;
-      band_ctrl_change_band(BAND_UNDEFINED);
+      main_set_new_band(BAND_UNDEFINED);
     }
 	}
 }

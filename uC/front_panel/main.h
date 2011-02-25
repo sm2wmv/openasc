@@ -251,7 +251,9 @@ typedef struct {
 	unsigned char ext_devices_last_state;
 	
 	//! Bit 0-3 = TX, Bit 4-7 = RX
-	unsigned char selected_ant;	
+	unsigned char selected_ant;
+  //! 
+  unsigned char txrx_mode;
 	//! The currently selected band
 	unsigned char selected_band;
 	//! The variable for changing to a new band

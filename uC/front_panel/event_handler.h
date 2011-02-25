@@ -172,6 +172,8 @@
 #define EXT_CTRL_CHANGE_BAND_UP		42
 //! Ext ctrl - Change band down
 #define EXT_CTRL_CHANGE_BAND_DOWN 43
+//! Ext ctrl - Set no RX ant
+#define EXT_CTRL_SEL_RX_NONE 44
 
 
 #define MAX_ASCII_CMD_ARGS  5
@@ -210,5 +212,7 @@ void event_process_task(unsigned char task_index);
 void __inline__ event_set_rx_antenna(unsigned char ant_index);
 
 void event_handler_check_uc_cmd(void);
+
+void event_txrx_mode_pressed(void);
 
 #endif
