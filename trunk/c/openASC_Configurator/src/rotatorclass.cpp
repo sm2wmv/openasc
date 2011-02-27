@@ -60,10 +60,11 @@ void RotatorClass::loadSettings(QSettings& settings) {
 	degreesList.clear();
 	indexList.clear();
 	
-	lastIndex = settings.value("LastRotatorIndex").toInt();
-	
+
 	settings.beginGroup("RotatorSettings");
-	
+
+	lastIndex = settings.value("LastRotatorIndex").toInt();
+
 	int size = settings.beginReadArray("Rotator");
 	
 	for (int i=0;i<size;i++) {
