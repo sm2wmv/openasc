@@ -599,13 +599,13 @@ int main(void){
 		if (device_online == 1) {
 			if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
 				if (radio_get_current_band() != status.selected_band) {
-					status.new_band_portion = BAND_LOW;
-					status.current_band_portion = status.new_band_portion;
-					
-					status.new_band = radio_get_current_band();
-					band_ctrl_change_band(status.new_band);
-					
-					send_ping();
+					if (main_band_change_ok(radio_get_current_band()) == 1) {
+						main_set_new_band(radio_get_current_band());
+					}
+					else {
+						if (status.selected_band != BAND_UNDEFINED)
+							main_set_new_band(BAND_UNDEFINED);
+					}
 				}
 			}
 			
