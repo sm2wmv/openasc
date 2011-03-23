@@ -161,8 +161,8 @@
           <rect>
            <x>10</x>
            <y>60</y>
-           <width>90</width>
-           <height>15</height>
+           <width>106</width>
+           <height>16</height>
           </rect>
          </property>
          <property name="text">
@@ -189,7 +189,7 @@
            <rect>
             <x>15</x>
             <y>20</y>
-            <width>138</width>
+            <width>145</width>
             <height>87</height>
            </rect>
           </property>
@@ -377,7 +377,7 @@
           <rect>
            <x>10</x>
            <y>225</y>
-           <width>126</width>
+           <width>135</width>
            <height>44</height>
           </rect>
          </property>
@@ -2345,7 +2345,7 @@
            <rect>
             <x>15</x>
             <y>25</y>
-            <width>177</width>
+            <width>190</width>
             <height>77</height>
            </rect>
           </property>
@@ -3313,7 +3313,7 @@ a function to it</string>
           <rect>
            <x>10</x>
            <y>25</y>
-           <width>170</width>
+           <width>184</width>
            <height>58</height>
           </rect>
          </property>
@@ -3411,7 +3411,7 @@ a function to it</string>
           <rect>
            <x>10</x>
            <y>45</y>
-           <width>226</width>
+           <width>227</width>
            <height>56</height>
           </rect>
          </property>
@@ -3496,7 +3496,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>654</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">

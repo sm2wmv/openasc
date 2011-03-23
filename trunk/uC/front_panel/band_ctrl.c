@@ -174,7 +174,7 @@ void band_ctrl_change_band(unsigned char band) {
     event_add_message((void *)main_update_ptt_status, BAND_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_BAND_CHANGE_PTT_LOCK);
     
     //Check if the band change is allowed
-		if (main_band_change_ok(status.new_band) == 1) {
+		if (main_band_change_ok(band) == 1) {
 			status.selected_ant = 0;
 			
 			status.selected_band = band;

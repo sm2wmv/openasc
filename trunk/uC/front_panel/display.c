@@ -599,11 +599,11 @@ void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power
 	display_text_right_adjust(80,34,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
 	
 	if (vswr != 0) {
-		sprintf(power_temp_str,"%i.%01i:1",(vswr/100),(vswr%100));
+		sprintf(power_temp_str,"%i.%02i:1",(vswr/100),(vswr%100));
 		display_text_right_adjust(125,45,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
 	}
 	else //If we have VSWR as 0 we just clear that area instead of writing out 0.0:1
-		display_text_right_adjust(125,45,"     ",5,FONT_NINE_DOT);
+		display_text_right_adjust(125,45,"      ",6,FONT_NINE_DOT);
 }
 
 /*! \brief This function will show the power meter display */

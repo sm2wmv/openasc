@@ -384,8 +384,8 @@ void ps2_keyboard_send(unsigned char cmd) {
 /*! \brief Process a keystroke
  *  \param key_code The key code which was received */
 void ps2_process_key(unsigned char key_code) {
-	printf("key_code: %i\n",key_code);
-	//internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
+	//printf("key_code: %i\n",key_code);
+	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 
 //! Main function of the motherboard
@@ -425,11 +425,8 @@ int main(void) {
 	delay_ms(200);
 	
 	PORTA |= (1<<3);
-	
-	ps2_keyboard_send(0xFF);
+
 	ps2_keyboard_send(0xF4);
-	ps2_keyboard_send(0xFF);
-	
 	delay_ms(100);
 	
 	while(1) {

@@ -1114,7 +1114,7 @@ void event_bus_parse_message(void) {
 	}
 	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
 		//Lets check if the data is meant for us or if we should just ignore it
-		if ((runtime_settings.powermeter_address == 0x00) && (bus_message.from_addr == main_get_powermeter_address(status.selected_band)))
+		if ((runtime_settings.powermeter_address == 0x00) && (bus_message.from_addr == main_get_powermeter_address(status.selected_band-1)))
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 		else if (runtime_settings.powermeter_address == bus_message.from_addr)
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
