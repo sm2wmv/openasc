@@ -22,8 +22,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
 
 #include "main.h"
 #include "init.h"
@@ -39,6 +42,8 @@
 #include "../wmv_bus/bus_rx_queue.h"
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
+
+#define MAX_ASCII_CMD_ARGS  5
 
 unsigned char device_id=0;
 
@@ -68,6 +73,130 @@ unsigned int counter_ad_poll = 0;
 void rotator_set_no_rotation(void) {
   if (((main_flags & (1<<FLAG_ROTATION_CW)) == 0) && ((main_flags & (1<<FLAG_ROTATION_CW)) == 0))
     main_flags |= (1<<FLAG_NO_ROTATION);
+}
+
+static void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
+{
+  char str[41];
+  
+  va_list ap;
+  va_start(ap, fmt);
+  int len = vsnprintf(str, sizeof(str), fmt, ap);
+  va_end(ap);
+
+  if (len >= sizeof(str)-1) {
+    strcpy(str + sizeof(str) - 6, "...\r\n");
+    len = sizeof(str)-1;
+  }
+  
+  char *ptr = str;
+  while (len > 0) {
+    unsigned char len_to_send = len < 15 ? len : 15;
+    bus_add_tx_message(bus_get_address(),
+                      to_addr,
+                      (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
+                      BUS_CMD_ASCII_DATA,
+                      len_to_send,
+                      (unsigned char *)ptr
+                      );
+    len -= len_to_send;
+    ptr += len_to_send;
+  }
+}
+
+
+static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
+{
+  char data[16];
+  memcpy(data, bus_message->data, bus_message->length);
+  data[bus_message->length] = '\0';
+  
+    // Get the command and its arguments
+  unsigned char argc = 0;
+  char *argv[MAX_ASCII_CMD_ARGS];
+  argv[0] = NULL;
+  unsigned char pos = 0;
+  for (pos=0; pos < bus_message->length; ++pos) {
+    if (argv[argc] == NULL) {
+      if (data[pos] != ' ') {
+        argv[argc] = (char*)(data + pos);
+      }
+    }
+    else {
+      if (data[pos] == ' ') {
+        data[pos] = '\0';
+        if (argc >= MAX_ASCII_CMD_ARGS-1) {
+          break;
+        }
+        ++argc;
+        argv[argc] = NULL;
+      }
+    }
+  }
+  if (argv[argc] != NULL) {
+    ++argc;
+  }
+  
+  send_ascii_data(bus_message->from_addr, "\r\n");
+  
+  if (argc > 0) {
+    if (strcmp(argv[0], "help") == 0) {
+      send_ascii_data(bus_message->from_addr,
+                      "No help available\r\n");
+    }
+    else if (strcmp(argv[0], "cwl") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: cwl <degree>\r\n");
+      }
+      else {
+        rotator_settings.rotation_start_angle = atoi(argv[1]);
+        
+        send_ascii_data(bus_message->from_addr,"CWL set\r\n");
+      }
+    }
+    else if (strcmp(argv[0], "ccwl") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: ccwl <degree>\r\n");
+      }
+      else {
+        rotator_settings.rotation_stop_angle = atoi(argv[1]);
+        
+        send_ascii_data(bus_message->from_addr,"CCWL set\r\n");
+      }
+    }
+    else if (strcmp(argv[0], "brkdelay") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: brkdelay <ms/100>\r\n");
+      }
+      else {
+        rotator_settings.rotation_break_delay = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"Rotator break delay set\r\n");
+      }
+    }
+    else if (strcmp(argv[0], "rotdelay") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: rotdelay <seconds>\r\n");
+      }
+      else {
+        rotator_settings.rotation_delay = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"Rotation delay set\r\n");
+      }
+    }
+    else if (strcmp(argv[0], "save") == 0) {
+      //This will cause a bus resend, how to fix it?
+      eeprom_write_block(&rotator_settings, (const void *)1, sizeof(rotator_settings));
+      send_ascii_data(bus_message->from_addr,"Saved settings\r\n");
+    }
+    else {
+      send_ascii_data(bus_message->from_addr, "Huh?\r\n");
+    }
+  }
+
+  send_ascii_data(bus_message->from_addr, "%d> ", bus_get_address());
 }
 
 /*! \brief Parse a message and exectute the proper commands
@@ -134,49 +263,8 @@ void bus_parse_message(void) {
         }
       }
 			break;
-		case BUS_CMD_ROTATOR_ACTIVATE_CAL:
-			//Rotator calibration mode activated
-			break;
-		case BUS_CMD_ROTATOR_DEACTIVATE_CAL:
-			//Rotator calibration mode deactivated
-			break;
-		case BUS_CMD_ROTATOR_SET_CCW_LIMIT:
-			//Set the CCW limit
-			break;
-		case BUS_CMD_ROTATOR_SET_CW_LIMIT:
-			//Set the CW limit
-			break;
-		case BUS_CMD_ROTATOR_CAL_SETTINGS:
-			//Calibration settings
-			break;
-		case BUS_CMD_ROTATOR_STORE_CAL:
-			//Store calibration data in the eeprom
-			break;
-		case BUS_CMD_ROTATOR_CLEAR_CAL:
-			//Clear the rotator calibration settings
-			break;
     case BUS_CMD_ASCII_DATA:
-      bus_add_tx_message(bus_get_address(),
-                         bus_message.from_addr,
-                         (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-                          BUS_CMD_ASCII_DATA,
-                          8,
-                          (unsigned char *)"\r\nDATA: "
-                        );
-      bus_add_tx_message(bus_get_address(),
-                         bus_message.from_addr,
-                         (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-                          BUS_CMD_ASCII_DATA,
-                          bus_message.length,
-                          bus_message.data
-                        );
-      bus_add_tx_message(bus_get_address(),
-                         bus_message.from_addr,
-                         (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-                          BUS_CMD_ASCII_DATA,
-                          2,
-                          (unsigned char *)"\r\n"
-                        );
+      parse_ascii_cmd(&bus_message);
       break;
 		default:
 			break;
@@ -222,13 +310,11 @@ void init_dummy_values(void) {
 	rotator_settings.ccw_output = (1<<ROTATION_OUTPUT_RELAY2);
 	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
 	
-	rotator_settings.ad_conv_average = 10;	//Samples 10 times and takes an average of that
-	rotator_settings.rotation_delay = 100;	//Rotation delay is 10 seconds before any action after a rotation
-	rotator_settings.rotation_degree_max = 450;
+	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
 	rotator_settings.rotation_start_angle = 20;
+  rotator_settings.rotation_stop_angle = 500;
 	rotator_settings.rotation_min = 100;
 	rotator_settings.rotation_max = 900;
-	rotator_settings.ad_scale_value = rotator_settings.rotation_degree_max / (rotator_settings.rotation_max - rotator_settings.rotation_min);
 	rotator_settings.rotation_break_delay = 10;
 	
 	main_flags = 0;	
@@ -297,7 +383,9 @@ int main(void)
 	
 	sei();
 	
-	init_dummy_values();
+	//init_dummy_values();
+  
+  eeprom_read_block(&rotator_settings, (const void *)1, sizeof(rotator_settings));
 	
 	/*if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
 		event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
