@@ -39,10 +39,6 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
-double rotator_get_multiplier(void) {
-	return((double)((double)(rotator_settings.rotation_max) - (double)(rotator_settings.rotation_min)) / (double)(rotator_settings.rotation_degree_max));
-}
-
 /*typedef struct {
 	//! The current heading of the rotator (curr sample)
 	unsigned int curr_heading;

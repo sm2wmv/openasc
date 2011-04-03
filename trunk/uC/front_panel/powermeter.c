@@ -96,7 +96,9 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	
 	//Check if the VSWR is too high
 	if ((powermeter_status.vswr_limit != 0) && (vswr >= powermeter_status.vswr_limit)) {
-		error_handler_set(ERROR_TYPE_HIGH_VSWR,1,vswr);
+		//Check so that we are actually transmitting
+    if (main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND_RADIO_TX)
+      error_handler_set(ERROR_TYPE_HIGH_VSWR,1,vswr);
 	}
 	
 	if (type != pickup_type) {

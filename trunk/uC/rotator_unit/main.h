@@ -102,23 +102,19 @@ typedef struct {
 	unsigned char ccw_output;
 	//! Break release outputs (hardwired mode)
 	unsigned char break_output;
-	//! A/D conversion average number
-	unsigned char ad_conv_average;
 	//! Rotation delay, in seconds. This is the time after a rotation has been
 	//! excecuted before another rotation can start
 	unsigned char rotation_delay;
-	//! Max rotation degree value (450 degrees for YAESU etc)
-	unsigned int rotation_degree_max;
-	//! The starting point of the rotator heading, can be set to negative numbers
-	int rotation_start_angle;
+	//! The end point of the rotator heading
+	unsigned int rotation_stop_angle;
+	//! The starting point of the rotator heading
+	unsigned int rotation_start_angle;
 	//! Start rotation input value, min, this should be set at rotation_start_angle
 	unsigned int rotation_min;
 	//! Start rotation input value, max
 	unsigned int rotation_max;
-	//! Rotator break delay, the delay between rotation and the break is put in/out (x100ms)
+	//! Rotator break delay, the delay between rotation and the break is put in/out (x100 ms)
 	unsigned char rotation_break_delay;
-	//! Rotator scale value
-	double ad_scale_value;
 } struct_settings;
 
 //! Struct of the current rotator status

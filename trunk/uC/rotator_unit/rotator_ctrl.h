@@ -30,6 +30,6 @@ void rotator_stop(void);
 
 
 void rotator_rotate_to(int heading);
-double rotator_get_multiplier(void);
+
 
 #endif

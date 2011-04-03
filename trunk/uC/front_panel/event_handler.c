@@ -1096,7 +1096,9 @@ void event_bus_parse_message(void) {
          	
           if (antenna_ctrl_get_direction(i) != curr_heading) {
             antenna_ctrl_set_direction(curr_heading,i);
-						main_update_display();
+						
+            if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO)
+              main_update_display();
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))
@@ -1121,8 +1123,7 @@ void event_bus_parse_message(void) {
 	}
   else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
     internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
-  }
-	
+  }	
 	//Drop the message
 	rx_queue_drop();
 	
