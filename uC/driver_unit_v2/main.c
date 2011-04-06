@@ -184,7 +184,7 @@ void deactivate_output(unsigned char from_addr, unsigned char index) {
 
 /*! \brief Checks the ping queue to see if any openASC box has stopped responding. If so we shut down all the outputs that it has activated */
 void check_pings(void) {
-	if (bus_ping_get_failed_count() > 0) {
+/*	if (bus_ping_get_failed_count() > 0) {
 		bus_struct_ping_status ping_data = bus_ping_get_failed_ping();
 
 		if (ping_data.device_type == DEVICE_ID_MAINBOX) {
@@ -195,7 +195,7 @@ void check_pings(void) {
 				}
 			}
 		}
-	}
+	}*/
 }
 
 /*! \brief Get the number the TX active signal is connected to
@@ -512,8 +512,8 @@ int main(void)
 			check_ptt_status = 0;
 		}
 		
-		check_pings();
-		
+		//check_pings();
+		/*
 		//This is done like this to make sure that no PTT line is pulled while the driver card
 		//deactivates the outputs
 		if (deactivate_output_list_len > 0) {
@@ -531,7 +531,7 @@ int main(void)
           }
         }
 			}
-		}
+		}*/
 	}
 
 	return (0);
