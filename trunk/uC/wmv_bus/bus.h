@@ -126,6 +126,16 @@
 #endif
  
  
+#ifdef DEVICE_TYPE_STN_CTRL_BOARD
+  #include "../station_ctrl_board/main.h"
+  #define ISR_BUS_USART_DATA  SIG_USART2_DATA
+  #define ISR_BUS_USART_RECV  SIG_USART2_RECV
+  #define ISR_BUS_USART_TRANS SIG_USART2_TRANS
+        
+  #define ISR_BUS_TIMER_COMPARE   SIG_OUTPUT_COMPARE2A
+  #define ISR_BUS_TIMER_OVERFLOW  SIG_OVERFLOW2
+#endif
+ 
 #ifdef DEVICE_TYPE_AMP_CTRL_BOX
 #include "../4cx1500b/ctrl_box_front/main.h"
 #define ISR_BUS_USART_DATA  SIG_USART2_DATA
@@ -175,6 +185,8 @@
 #define DEVICE_ID_GENERAL_IO				  7
 //! Device ID for the General I/O card - Support operator card
 #define DEVICE_ID_GENERAL_IO_SUPPORT  8
+//! Device ID for the Station control board
+#define DEVICE_ID_STN_CTRL_BOARD      9
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
 #define BUS_MAX_RESENDS	4
