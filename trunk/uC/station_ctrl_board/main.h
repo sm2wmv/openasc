@@ -41,15 +41,9 @@
 //! The size of the TX queue in buffers
 #define BUS_TX_QUEUE_SIZE	25
 
-#define DEF_NR_DEVICES  3
+#define DEF_NR_DEVICES  25
 
-#define BUS_ADDR 0x01
-
-#define DEVICE_ID_AMP_CTRL_BOARD   1
-#define DEVICE_ID_AMP_CTRL_BOX     2
-#define DEVICE_ID_AMP_POWERMETER   3
-
-#define AD_CONV_INTERVAL	10
+#define BUS_ADDR 
 
 //!Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE      0
