@@ -423,6 +423,10 @@ ISR(ISR_BUS_USART_RECV) {
 		unsigned char data = UDR2;
 	#endif
 
+  #ifdef DEVICE_TYPE_STN_CTRL_BOARD
+    unsigned char data = UDR2;
+  #endif
+
   #ifdef DEVICE_TYPE_AMP_CTRL_BOARD
     unsigned char data = UDR2;
   #endif
