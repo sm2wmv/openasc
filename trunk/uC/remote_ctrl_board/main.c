@@ -31,7 +31,7 @@
 #include "board.h"
 #include "usart.h"
 #include "init.h"
-#include "a2d.h"
+#include "computer_interface.h"
 
 #include "../delay.h"
 #include "../global.h"
@@ -141,6 +141,8 @@ int main(void){
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();
 
+  computer_interface_init();
+  
 	sei();
 	
   ping_message[0] = DEVICE_ID_STN_CTRL_BOARD;
@@ -161,6 +163,9 @@ int main(void){
 				counter_sync = 0;
 			}
 		}
+		
+		computer_interface_parse_data();
+    computer_interface_send_data();
 
 		if (bus_allowed_to_send()) {
 		//Check if a ping message should be sent out on the bus
@@ -205,6 +210,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		
 		counter_event_timer = 0;
 	}
+	
+	computer_interface_1ms_tick();
 	
 	bus_ping_tick();
 }
