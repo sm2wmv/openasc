@@ -127,7 +127,7 @@
  
  
 #ifdef DEVICE_TYPE_STN_CTRL_BOARD
-  #include "../station_ctrl_board/main.h"
+  #include "../remote_ctrl_board/main.h"
   #define ISR_BUS_USART_DATA  SIG_USART2_DATA
   #define ISR_BUS_USART_RECV  SIG_USART2_RECV
   #define ISR_BUS_USART_TRANS SIG_USART2_TRANS

@@ -1,4 +1,4 @@
-/*! \file station_ctrl_board_group/main.h
+/*! \file station_ctrl_board/main.h
  *  \brief Main file of the station control board
  *  \defgroup station_ctrl_board_group Station control board
  *  \author Mikael Larsmark, SM2WMV
@@ -24,7 +24,7 @@
 #define _MAIN_H_
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "0.1b\0"
+#define FIRMWARE_REV "0.1b"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -43,7 +43,7 @@
 
 #define DEF_NR_DEVICES  25
 
-#define BUS_ADDR 
+#define BUS_ADDR 12
 
 //!Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE      0
@@ -51,7 +51,6 @@
 #define FLAG_DEVICE_STARTED       1
 
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
-unsigned int get_ad_curr_val(unsigned char ch);
 void send_ping(void);
 
 #endif
