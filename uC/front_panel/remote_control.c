@@ -33,6 +33,8 @@
 #include "antenna_ctrl.h"
 #include "band_ctrl.h"
 #include "sub_menu.h"
+#include "errors.h"
+#include "led_control.h"
 
 //! Flag that the remote control is active
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
@@ -245,6 +247,37 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       }
       else {
         send_ascii_data(0, huh);
+      }
+    }
+    else if (strcmp_P(argv[0], PSTR("errors")) == 0) {
+      if (argc > 1) {
+        if (strcmp_P(argv[1], PSTR("clear")) == 0) {
+          error_handler_clear_all();
+          led_set_error(LED_STATE_OFF);
+        }
+      }
+      else {
+        unsigned char error_count = 0;
+        char line[NR_OF_ERRORS][20];
+        
+        //Show the current errors
+        if (error_handler_get_state(ERROR_TYPE_BUS_RESEND) != 0) {
+          strcpy_P(line[error_count], PSTR("Bus resend\r\n"));
+          error_count++;
+        }
+        else if (error_handler_get_state(ERROR_TYPE_BUS_SYNC) != 0) {
+          strcpy_P(line[error_count], PSTR("Sync error\r\n"));
+          error_count++;
+        }
+
+        if (error_count == 0) {
+          strcpy_P(line[error_count], PSTR("No errors\r\n"));
+          error_count++;
+        }
+        
+        for (int i=0;i<error_count;i++) {
+          send_ascii_data(0, line[i]);
+        }
       }
     }
     else if (strcmp_P(argv[0], PSTR("info")) == 0) {
