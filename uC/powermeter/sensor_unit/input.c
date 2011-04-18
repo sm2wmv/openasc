@@ -26,10 +26,10 @@
 #define FWD_PWR_ARRAY_SIZE	10
 #define REF_PWR_ARRAY_SIZE	10
 
-unsigned int fwd_pwr_array[FWD_PWR_ARRAY_SIZE];
+double fwd_pwr_array[FWD_PWR_ARRAY_SIZE];
 unsigned char fwd_pwr_array_pos = 0;
 
-unsigned int ref_pwr_array[REF_PWR_ARRAY_SIZE];
+double ref_pwr_array[REF_PWR_ARRAY_SIZE];
 unsigned char ref_pwr_array_pos = 0;
 
 double input_calculate_vswr(void) {
@@ -96,7 +96,7 @@ void input_calculate_power(void) {
 		printf("FREQ: %ukHz\n",status.curr_freq);
 		printf("BAND: %i\n",status.curr_band);
 		printf("FWD PWR: %.1f\n",status.curr_fwd_power);
-		printf("REF PWR: %.1f\n",status.curr_fwd_power);
+		printf("REF PWR: %.1f\n",status.curr_ref_power);
 		printf("VSWR: %.2f\n",status.curr_vswr);
 	#endif
 }
