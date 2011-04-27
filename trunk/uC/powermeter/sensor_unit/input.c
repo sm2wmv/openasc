@@ -72,12 +72,12 @@ void input_calculate_power(void) {
 	for (unsigned char i=0;i<FWD_PWR_ARRAY_SIZE;i++)
 		if (fwd_pwr_array[i] > fwd_pwr_large_val) {
 			fwd_pwr_large_val_index = i;
-			fwd_pwr_large_val = fwd_pwr_array[i];
+			fwd_pwr_large_val = fwd_pwr_array[i]*PICKUP_FWD_SCALE_FACTOR;
 		}
 
 
-	status.curr_fwd_power = fwd_pwr_array[fwd_pwr_large_val_index];
-	status.curr_ref_power = ref_pwr_array[fwd_pwr_large_val_index];
+	status.curr_fwd_power = fwd_pwr_array[fwd_pwr_large_val_index]*PICKUP_FWD_SCALE_FACTOR;
+	status.curr_ref_power = ref_pwr_array[fwd_pwr_large_val_index]*PICKUP_REF_SCALE_FACTOR;
 	
 	#ifdef CAL_MODE
 		input_calculate_vswr();
