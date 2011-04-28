@@ -1,31 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="8" >
-  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
-   <View0 Encoding="UTF-8" line="22" Type="Source" />
+ <DocsAndViews NumberOfDocuments="4" >
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/main.c" >
+   <View0 Encoding="" line="233" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/band_ctrl.c" >
-   <View0 Encoding="" line="176" Type="Source" />
+  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/input.h" >
+   <View0 Encoding="" line="104" Type="Source" />
   </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/event_handler.c" >
-   <View0 Encoding="" line="425" Type="Source" />
+  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/input.c" >
+   <View0 Encoding="" line="102" Type="Source" />
   </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/radio_interface.c" >
-   <View0 Encoding="" line="455" Type="Source" />
+  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/makefile" >
+   <View0 Encoding="" line="34" Type="Source" />
   </Doc3>
-  <Doc4 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/display.c" >
-   <View0 Encoding="" line="266" Type="Source" />
-  </Doc4>
-  <Doc5 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/motherboard/main.c" >
-   <View0 Encoding="" line="464" Type="Source" />
-  </Doc5>
-  <Doc6 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC/trunk/uC/motherboard/main.c" >
-   <View0 Encoding="UTF-8" line="391" Type="Source" />
-  </Doc6>
-  <Doc7 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.h" >
-   <View0 Encoding="" line="53" Type="Source" />
-  </Doc7>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

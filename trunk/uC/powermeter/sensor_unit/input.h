@@ -57,6 +57,9 @@
 	//How many mV that we have while having no input on the power meter
 	#define PICKUP_FWD_0DBM_CONST_VOLTAGE 357.5
 	#define PICKUP_REF_0DBM_CONST_VOLTAGE 272.5
+	
+	#define PICKUP_FWD_SCALE_FACTOR	1.0
+	#define PICKUP_REF_SCALE_FACTOR	1.0
 #endif
 
 #ifdef PICKUP_UNIT_ID_2
