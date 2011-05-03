@@ -39,6 +39,8 @@
 //! The uc_com struct
 struct_uc_com uc_com;
 
+unsigned int timer = 0;
+
 //! Where we save any new uc_comm message
 UC_MESSAGE uc_new_message;
 
@@ -123,7 +125,7 @@ void internal_comm_send_ack(void) {
 	f_ptr_tx(UC_COMM_MSG_PREAMBLE);
 	f_ptr_tx(checksum);
 	f_ptr_tx(UC_COMM_MSG_ACK);
-	f_ptr_tx(0);
+	f_ptr_tx(0); 
 	f_ptr_tx(UC_COMM_MSG_POSTAMBLE);
 	
 	counter_tx_timeout = 0;
@@ -220,7 +222,7 @@ void internal_comm_resend(void) {
 			internal_comm_send_message(int_comm_tx_queue_get());
 			
 			#ifdef INT_COMM_DEBUG
-				printf("RS\n");
+				printf("RS: %i\n",timer);
 			#endif
 			
 			resend_count++;
@@ -244,6 +246,21 @@ void internal_comm_resend(void) {
 		resend_count = 0;
 		msg_not_acked = 0;
 	}
+}
+
+/*! \brief Goes through the TX queue and checks if a certain command exists 
+ *  \param cmd The command we wish to check if it exists in the queue *
+ *  \return 1 if it exist in the queue, 0 if not */
+unsigned char internal_comm_check_cmd_in_tx_queue(unsigned char cmd) {
+    unsigned char ret_val = 0;
+  
+  for (unsigned char i=0;i<int_comm_tx_queue_size();i++)
+    if (int_comm_tx_queue_get_pos(i).cmd == cmd) {
+      ret_val = 1;
+      break;
+    }
+    
+  return(ret_val);
 }
 
 //! Interrupt when a byte has been received from the UART
@@ -323,12 +340,14 @@ ISR(ISR_INTERNAL_COMM_USART_DATA) {
 
 /*! \brief Function which should be called each ms */
 void internal_comm_1ms_timer(void) {
-	if ((uc_com.char_count > 0) & (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)) {
+	if ((uc_com.char_count > 0) && (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)) {
 		counter_rx_timeout = 0;
 		internal_comm_reset_rx();
 	}
 		
-	if ((msg_not_acked == 1) & (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)) {
+	timer++;
+		
+	if ((msg_not_acked == 1) && (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)) {
 		counter_tx_timeout = 0;
 		
 		internal_comm_resend();

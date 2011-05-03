@@ -24,7 +24,7 @@
 #define _MAIN_H_
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "0.4b\0"
+#define FIRMWARE_REV "0.41b\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -64,6 +64,8 @@
 #define BAND_CHANGE_MODE_MANUAL		0
 //! Band changes are done automatically
 #define BAND_CHANGE_MODE_AUTO			1
+
+#define CRITICAL_CMD_CHANGE_TAIL_TIME 50
 
 /****************************************************************/
 
@@ -292,6 +294,11 @@ typedef struct {
 	
 	/*! The sub menu antenna index we are changing */
 	unsigned char sub_menu_antenna_index;
+  
+  /*! The current critical cmd state */
+  unsigned char curr_critical_cmd_state;
+  /*! The last critical cmd state */
+  unsigned char last_critical_cmd_state;
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM

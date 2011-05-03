@@ -62,12 +62,8 @@ EVENT_MESSAGE event_list[EVENT_LIST_SIZE];
 //! Event that the inhibit should be deactiated from footswitch
 #define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF    9
 
-//! Event of PTT activation after an band change
-#define EVENT_TYPE_BAND_CHANGE_PTT_LOCK 20
-//! Event of PTT activation after an antenna change
-#define EVENT_TYPE_ANT_CHANGE_PTT_LOCK 21
-//! Event of PTT activation after a sub menu change
-#define EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK 21
+/*! We will update the PTT status after this has run */
+#define EVENT_TYPE_CRITICAL_CMD_UPDATE  10
 
 void event_queue_init(void);
 char event_queue_add(EVENT_MESSAGE event);

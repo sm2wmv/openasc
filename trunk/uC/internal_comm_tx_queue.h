@@ -33,10 +33,12 @@ typedef struct tx_linked_list {
 } int_comm_tx_queue_struct;
 
 void int_comm_tx_queue_add(UC_MESSAGE message);
+UC_MESSAGE int_comm_tx_queue_get_pos(unsigned char pos);
 UC_MESSAGE int_comm_tx_queue_get(void);
 void int_comm_tx_queue_drop(void);
 void int_comm_tx_queue_dropall(void);
 void int_comm_tx_queue_init(void);
 unsigned char int_comm_tx_queue_is_empty(void);
+unsigned char int_comm_tx_queue_size(void);
 
 #endif

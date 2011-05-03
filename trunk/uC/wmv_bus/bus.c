@@ -369,6 +369,21 @@ void bus_add_rx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 	rx_queue_add(bus_message);
 }
 
+/*! \brief Goes through the TX queue and checks if a certain command exists 
+ *  \param cmd The command we wish to check if it exists in the queue *
+ *  \return 1 if it exist in the queue, 0 if not */
+unsigned char bus_check_cmd_in_tx_queue(unsigned char cmd) {
+  unsigned char ret_val = 0;
+  
+  for (unsigned char i=0;i<tx_queue_size();i++)
+    if (tx_queue_get_pos(i).cmd == cmd) {
+      ret_val = 1;
+      break;
+    }
+    
+  return(ret_val);
+}
+
 /*! \brief Adds the message bus_new_message into the RX queue */
 void bus_add_new_message(void) {
 	rx_queue_add(bus_new_message);

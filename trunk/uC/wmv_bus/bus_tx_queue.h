@@ -32,5 +32,6 @@ void tx_queue_dropall(void);
 void tx_queue_init(void);
 unsigned char tx_queue_is_empty(void);
 unsigned char tx_queue_size(void);
+BUS_MESSAGE tx_queue_get_pos(unsigned char pos);
 
 #endif

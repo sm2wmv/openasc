@@ -27,7 +27,6 @@
 
 void init_timer_0(void);
 void init_ports(void);
-void init_usart(void);
 
 #endif
 

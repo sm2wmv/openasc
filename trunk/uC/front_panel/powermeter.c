@@ -73,13 +73,18 @@ void powermeter_set_active(unsigned char state) {
 		powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
 		
 		glcd_clear();
-		display_show_powermeter();
+		status.prev_display = status.current_display;
+    status.current_display = CURRENT_DISPLAY_POWERMETER_VIEW;
+    display_show_powermeter();
 		glcd_update_all();
 	}
 	else {
 		powermeter_flags &= ~(1<<POWERMETER_FLAG_ACTIVE);
 		
 		glcd_clear();
+       
+    status.current_display = status.prev_display;
+    status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
 		main_update_display();
 	}
 }

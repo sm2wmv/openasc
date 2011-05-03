@@ -80,6 +80,10 @@ void tx_queue_add(BUS_MESSAGE message) {
 		tx_queue.first = 0;
 }
 
+BUS_MESSAGE tx_queue_get_pos(unsigned char pos) {
+  return(tx_queue.message[tx_queue.first+pos]);
+}
+
 /*!\brief Retrieve the first message from the FIFO TX queue.
 * \return The first message in the queue
 */

@@ -28,14 +28,6 @@
 //! Used for timer compare to match 1 ms
 #define OCR0_1MS	14
 
-/*! \brief Initializes the USART for the communication bus*/
-void init_usart(void)
-{
-	//Init USART to 57.6kBaud at 14.7456 MHz (communication bus)
-	usart0_init(15);
-	fdevopen((void*)usart0_transmit, (void*)usart0_receive_loopback);
-}
-
 /*! Initialize timer0 to use the main crystal clock and the output
   * compare interrupt feature to generate an interrupt approximately
   * once per millisecond to use as a general purpose time base.

@@ -31,10 +31,13 @@
 //! The TX queue
 int_comm_tx_queue_struct int_comm_tx_queue;
 
+unsigned char int_comm_tx_queue_curr_size = 0;
+
 /*! Initialize the internal communication TX queue */
 void int_comm_tx_queue_init(void) {
 	int_comm_tx_queue.first = 0;
 	int_comm_tx_queue.last = 0;
+  int_comm_tx_queue_curr_size = 0;
 }
 
 /*! \brief Insert a message into the TX queue (FIFO)
@@ -51,6 +54,16 @@ void int_comm_tx_queue_add(UC_MESSAGE message) {
 	
 	if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
 		int_comm_tx_queue.first = 0;
+  
+  int_comm_tx_queue_curr_size++;
+}
+
+/*!\brief Retrieve the pos message from the FIFO TX queue.
+ * \return The [pos] message in the queue
+ */
+UC_MESSAGE int_comm_tx_queue_get_pos(unsigned char pos) {
+  //Return the message (content of the first node)
+  return(int_comm_tx_queue.message[int_comm_tx_queue.first+pos]);
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.
@@ -68,6 +81,8 @@ void int_comm_tx_queue_drop(void) {
 	
 	if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
 		int_comm_tx_queue.first = 0;
+  
+  int_comm_tx_queue_curr_size--;
 }
 
 /*! \brief Erase all content in the TX queue
@@ -76,6 +91,7 @@ void int_comm_tx_queue_drop(void) {
 void int_comm_tx_queue_dropall(void) {
 	int_comm_tx_queue.first = 0;
 	int_comm_tx_queue.last = 0;
+  int_comm_tx_queue_curr_size = 0;
 }
 
 /*! \brief Check if the queue is empty
@@ -86,4 +102,8 @@ unsigned char int_comm_tx_queue_is_empty(void) {
 		return(1);
 	else
 		return(0);
+}
+
+unsigned char int_comm_tx_queue_size(void) {
+  return(int_comm_tx_queue_curr_size);
 }

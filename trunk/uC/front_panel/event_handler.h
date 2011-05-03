@@ -215,4 +215,6 @@ void event_handler_check_uc_cmd(void);
 
 void event_txrx_mode_pressed(void);
 
+unsigned char event_check_critical_cmd_list(void);
+
 #endif
