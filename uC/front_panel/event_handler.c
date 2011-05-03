@@ -391,6 +391,7 @@ void event_pulse_sensor_up(void) {
 				sub_menu_pos_up(status.sub_menu_antenna_index);
 				
 				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
+        glcd_clear();
 				display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
 			}
 		}
@@ -435,8 +436,10 @@ void event_pulse_sensor_down(void) {
 			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
         
 				sub_menu_pos_down(status.sub_menu_antenna_index);
-				
+          
 				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
+
+        glcd_clear();
 				display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
 			}
 		}
