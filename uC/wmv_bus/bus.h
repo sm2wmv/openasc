@@ -189,7 +189,7 @@
 #define DEVICE_ID_STN_CTRL_BOARD      9
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
-#define BUS_MAX_RESENDS	4
+#define BUS_MAX_RESENDS	8
 
 /*! The interval between each status message (time is in ms) */
 #define BUS_DEVICE_STATUS_MESSAGE_INTERVAL	1500
@@ -201,7 +201,7 @@
 
 /*! This limit is used to detect if it was too long ago since we receieved a SYNC message
  *  from the master. If so it will stop with all outgoing communication. */
-#define BUS_SYNC_TIMEOUT_LIMIT 3200
+#define BUS_SYNC_TIMEOUT_LIMIT 5000
 
 /*! The timeout limit between a message that was sent to when it will be a resend, this is counted as 
     number of wraparounds on the bus, ie 5 would mean 5 wraparounds */
@@ -345,5 +345,6 @@ unsigned char bus_get_device_count(void);
 void bus_set_device_count(unsigned char device_count);
 unsigned char bus_allowed_to_send(void);
 void bus_check_tx_status(void);
+unsigned char bus_check_cmd_in_tx_queue(unsigned char cmd);
 
 #endif

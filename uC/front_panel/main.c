@@ -65,6 +65,8 @@
 
 //#define ERROR_DEBUG 1
 
+//#define DEBUG_COMPUTER_USART_ENABLED 1
+
 //! Settings struct
 struct_setting settings;
 
@@ -340,13 +342,9 @@ void main_update_ptt_status(void) {
 		state = 3;
 	}
   
-  if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 1)
+  if (status.curr_critical_cmd_state != 0)
     state = 3;
-  else if (event_queue_check_id(EVENT_TYPE_ANT_CHANGE_PTT_LOCK) == 1)
-    state = 3;
-  else if (event_queue_check_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK) == 1)
-    state = 3;
-  
+
 
 	//Comment this part for testing outside the bus
 	//if (event_get_errors() != 0)
@@ -461,7 +459,9 @@ int main(void){
 	status.new_band_portion = BAND_LOW;
 	status.sub_menu_antenna_index = 0;
 	status.rotator_step_resolution = 5;
-		
+  status.last_critical_cmd_state = 99;	
+  status.curr_critical_cmd_state = 1;
+  
 	//Load all settings from the EEPROM	
 	load_settings();
 	
@@ -587,6 +587,10 @@ int main(void){
   //so that we know which band they are on, before we enter a band ourself.
   event_add_message((void *)main_enable_device,3000,0);
 	
+  #ifdef DEBUG_COMPUTER_USART_ENABLED
+    printf("openASC started in USART debug mode\n");
+  #endif
+  
 	while(1) {
 		if (!rx_queue_is_empty())
 			event_bus_parse_message();
@@ -623,12 +627,12 @@ int main(void){
 				main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
 			}
 		
-		//Update the display
-		if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
-			event_update_display();
-			
-			main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
-		}
+      //Update the display
+      if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
+        event_update_display();
+        
+        main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
+      }
 		
 			if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
 				int val = rotary_encoder_poll();
@@ -683,7 +687,7 @@ int main(void){
 		
 			if (main_flags & (1<<FLAG_PROCESS_SUBMENU_CHANGE)) {
         
-        if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
+/*        if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
           main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
           led_set_ptt(LED_STATE_PTT_INHIBIT);
         
@@ -691,7 +695,7 @@ int main(void){
             event_queue_drop_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);      
           
           event_add_message((void *)main_update_ptt_status, SUBMENU_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);
-        }
+        }*/
         
 				sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
 			
@@ -721,6 +725,19 @@ int main(void){
 		
 			radio_process_tasks();
 		}
+
+    status.curr_critical_cmd_state = event_check_critical_cmd_list();
+
+    //Checks the message queues if we are allowed to PTT or not
+		if (status.curr_critical_cmd_state != status.last_critical_cmd_state) {
+      status.last_critical_cmd_state = status.curr_critical_cmd_state;
+      
+      if (status.curr_critical_cmd_state == 0) {
+        event_add_message((void *)main_update_ptt_status, CRITICAL_CMD_CHANGE_TAIL_TIME, EVENT_TYPE_CRITICAL_CMD_UPDATE);
+      }
+      else
+        main_update_ptt_status();
+    }
 			
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
 		internal_comm_poll_rx_queue();
@@ -840,13 +857,15 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) {
-		if (counter_poll_radio >= (radio_interface_get_poll_interval() * 10)) {
-			main_flags |= (1<<FLAG_POLL_RADIO);
+    if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+      if (counter_poll_radio >= (radio_interface_get_poll_interval() * 10)) {
+        main_flags |= (1<<FLAG_POLL_RADIO);
+        
+        counter_poll_radio = 0;
+      }
 			
-			counter_poll_radio = 0;
-		}
-			
-		counter_poll_radio++;
+      counter_poll_radio++;
+    }
 	}
 	
 	//If the value equals the half of it's range then

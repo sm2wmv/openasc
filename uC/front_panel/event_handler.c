@@ -67,6 +67,35 @@ unsigned char ascii_comm_device_addr = 0;
 
 static unsigned char ant_rotating_indicator = 0;
 
+//! Critical command list, none of these tasks can be in any queue if we are gonna let the radio PTT
+unsigned char critical_cmd_list[] = {BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT, BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT, 
+                                     BUS_CMD_DRIVER_DEACTIVATE_BAND_OUTPUT, BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS,
+                                     BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS, BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT, BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT, 
+                                     BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT, BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT, BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT,
+                                     BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT,BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT,BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT,
+                                     BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS, BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS, 
+                                     BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS, BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS};
+
+/*! \brief This function goes through the bus and internal communcation queue to check if certain commands exist 
+ *  \return 1 if a command in the command list is in either queue and 0 if not */
+unsigned char event_check_critical_cmd_list(void) {
+  unsigned char ret_val = 0;
+  
+  for (unsigned char i=0;i<sizeof(critical_cmd_list);i++) {
+    if (bus_check_cmd_in_tx_queue(critical_cmd_list[i]) != 0) {
+      ret_val = 1;
+      break;
+    }
+    
+    if (internal_comm_check_cmd_in_tx_queue(critical_cmd_list[i]) != 0) {
+      ret_val = 1;
+      break;
+    }
+  }
+
+  return(ret_val);
+}
+
 /*! \brief Function which goes through the ping list and checks if something has happened */
 void event_check_pings(void) {
 
@@ -417,13 +446,15 @@ void event_pulse_sensor_down(void) {
 /*! \brief Function to be called if we wish to update the display */
 void event_update_display(void) {
 	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
-		//Should we show the RX antenna?
-		if (status.function_status & (1<<FUNC_STATUS_RXANT))
-			display_show_rx_ant(status.selected_rx_antenna);
-		else
-			display_show_rx_ant(0);
-			
-		display_update(status.selected_band, status.selected_ant);
+		if (status.current_display_level == DISPLAY_LEVEL_BAND) {
+      //Should we show the RX antenna?
+      if (status.function_status & (1<<FUNC_STATUS_RXANT))
+        display_show_rx_ant(status.selected_rx_antenna);
+      else
+        display_show_rx_ant(0);
+        
+      display_update(status.selected_band, status.selected_ant);
+    }
 	}
 	else if (status.current_display == CURRENT_DISPLAY_LOGO) {
 		glcd_print_picture();
@@ -599,7 +630,7 @@ void event_poll_ext_device(void) {
 }
 
 void __inline__ event_handler_set_ptt_status(void) {
-  if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
+/*  if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
     main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
     led_set_ptt(LED_STATE_PTT_INHIBIT);
         
@@ -607,7 +638,7 @@ void __inline__ event_handler_set_ptt_status(void) {
       event_queue_drop_id(EVENT_TYPE_ANT_CHANGE_PTT_LOCK);
     
     event_add_message((void *)main_update_ptt_status, ANT_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_ANT_CHANGE_PTT_LOCK);
-  }
+  }*/
 }
 
 /*! \brief Perform the action of TX antenna button 1 if it was pressed */
@@ -672,7 +703,11 @@ void event_tx_button1_pressed(void) {
 				status.antenna_to_rotate = 1;
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
-				status.new_beamheading = antenna_ctrl_get_direction(0);
+				status.new_beamheading = antenna_ctrl_get_direction(0);        
+
+        status.prev_display = status.current_display;
+        status.current_display = CURRENT_DISPLAY_SETTING;        
+
 				display_show_set_heading(status.new_beamheading, 0);
 				
 				set_tx_ant_leds();
@@ -743,7 +778,11 @@ void event_tx_button2_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
 				status.new_beamheading = antenna_ctrl_get_direction(1);
-				display_show_set_heading(status.new_beamheading, 0);
+        
+        status.prev_display = status.current_display;
+        status.current_display = CURRENT_DISPLAY_SETTING;        
+
+        display_show_set_heading(status.new_beamheading, 0);
 				
 				set_tx_ant_leds();
 			}
@@ -814,6 +853,10 @@ void event_tx_button3_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
 				status.new_beamheading = antenna_ctrl_get_direction(3);
+        
+        status.prev_display = status.current_display;
+        status.current_display = CURRENT_DISPLAY_SETTING;
+        
 				display_show_set_heading(status.new_beamheading, 0);
 				
 				set_tx_ant_leds();
@@ -885,6 +928,10 @@ void event_tx_button4_pressed(void) {
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
 				status.new_beamheading = antenna_ctrl_get_direction(3);
+        
+        status.prev_display = status.current_display;
+        status.current_display = CURRENT_DISPLAY_SETTING;
+        
 				display_show_set_heading(status.new_beamheading, 0);
 				
 				set_tx_ant_leds();

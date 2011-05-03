@@ -409,8 +409,8 @@ int main(void) {
 	usart1_init(47);
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 	
-	//19.2kbaud - internal comm
-	usart0_init(47);
+	//57.6kbaud - internal comm
+	usart0_init(15);
 	
 	//printf("Motherboard started\n");
 	

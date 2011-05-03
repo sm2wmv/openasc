@@ -164,14 +164,8 @@ void band_ctrl_change_band_portion(unsigned char band_portion) {
  *  \param band The band we wish to change to */
 void band_ctrl_change_band(unsigned char band) {
 	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
-    
-    if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) != 0)
-      event_queue_drop_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK);
-    
     main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
     led_set_ptt(LED_STATE_PTT_INHIBIT);
-    
-    event_add_message((void *)main_update_ptt_status, BAND_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_BAND_CHANGE_PTT_LOCK);
     
     //Check if the band change is allowed
 		if (main_band_change_ok(band) == 1) {
@@ -227,7 +221,7 @@ void band_ctrl_change_band(unsigned char band) {
 			}
       
 			//Update the display
-			main_update_display();
+			event_add_message((void*)main_update_display,200,0);
 		}
 		else {
       //Lets change to band undefined, as long as we are not allowed in on the band we want
