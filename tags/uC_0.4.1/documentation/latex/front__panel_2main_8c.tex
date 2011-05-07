@@ -1,0 +1,373 @@
+\hypertarget{front__panel_2main_8c}{
+\section{front\_\-panel/main.c File Reference}
+\label{front__panel_2main_8c}\index{front\_\-panel/main.c@{front\_\-panel/main.c}}
+}
+Main file of the front panel.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$avr/wdt.h$>$}\par
+{\tt \#include \char`\"{}main.h\char`\"{}}\par
+{\tt \#include \char`\"{}board.h\char`\"{}}\par
+{\tt \#include \char`\"{}usart.h\char`\"{}}\par
+{\tt \#include \char`\"{}init.h\char`\"{}}\par
+{\tt \#include \char`\"{}display.h\char`\"{}}\par
+{\tt \#include \char`\"{}glcd.h\char`\"{}}\par
+{\tt \#include \char`\"{}ks0108.h\char`\"{}}\par
+{\tt \#include \char`\"{}led\_\-control.h\char`\"{}}\par
+{\tt \#include \char`\"{}../delay.h\char`\"{}}\par
+{\tt \#include \char`\"{}../i2c.h\char`\"{}}\par
+{\tt \#include \char`\"{}../global.h\char`\"{}}\par
+{\tt \#include \char`\"{}../event\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}interrupt\_\-handler.h\char`\"{}}\par
+{\tt \#include \char`\"{}eeprom.h\char`\"{}}\par
+{\tt \#include \char`\"{}ds1307.h\char`\"{}}\par
+{\tt \#include \char`\"{}computer\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}antenna\_\-ctrl.h\char`\"{}}\par
+{\tt \#include \char`\"{}eeprom\_\-m24.h\char`\"{}}\par
+{\tt \#include \char`\"{}radio\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}menu.h\char`\"{}}\par
+{\tt \#include \char`\"{}rotary\_\-encoder.h\char`\"{}}\par
+{\tt \#include \char`\"{}event\_\-handler.h\char`\"{}}\par
+{\tt \#include \char`\"{}powermeter.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-ping.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-rx\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-tx\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-commands.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm\_\-commands.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2main_8c_377a7390dced5545ba617c922da8e416}{
+void \hyperlink{front__panel_2main_8c_377a7390dced5545ba617c922da8e416}{clear\_\-screensaver\_\-timer} (void)}
+\label{front__panel_2main_8c_377a7390dced5545ba617c922da8e416}
+
+\begin{CompactList}\small\item\em Clear the screensaver timer. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2main_8c_f496e941a90c0dab928b545c26d30dcc}{event\_\-add\_\-message} (void($\ast$func), unsigned int offset, unsigned char id)
+\item 
+unsigned char \hyperlink{front__panel_2main_8c_f3d6009270cd4a03b5dda580d73bed64}{ext\_\-key\_\-get\_\-assignment} (unsigned char index)
+\item 
+void \hyperlink{front__panel_2main_8c_f857f2bd1ba4cb025156687b9cf13b18}{ext\_\-key\_\-set\_\-assignment} (unsigned char index, unsigned char func)
+\item 
+\hypertarget{front__panel_2main_8c_2b7f1dd7db9356c199b9db7cb9934b71}{
+void \hyperlink{front__panel_2main_8c_2b7f1dd7db9356c199b9db7cb9934b71}{event\_\-run} (void)}
+\label{front__panel_2main_8c_2b7f1dd7db9356c199b9db7cb9934b71}
+
+\begin{CompactList}\small\item\em Run the first function in the event queue. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_2c307bda82ec7f710fadd8606b25e15a}{
+void \hyperlink{front__panel_2main_8c_2c307bda82ec7f710fadd8606b25e15a}{main\_\-update\_\-display} (void)}
+\label{front__panel_2main_8c_2c307bda82ec7f710fadd8606b25e15a}
+
+\begin{CompactList}\small\item\em Sets the flag that the display should be updated. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_f227e695e9a635cfb68434663e8f5edb}{
+void \hyperlink{front__panel_2main_8c_f227e695e9a635cfb68434663e8f5edb}{shutdown\_\-device} (void)}
+\label{front__panel_2main_8c_f227e695e9a635cfb68434663e8f5edb}
+
+\begin{CompactList}\small\item\em Send a message to the motherboard that the openASC box should be shut off. Will deactivate the power supply relay. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_79c949b6a0edc880ea71fe05b28967ab}{
+void \hyperlink{front__panel_2main_8c_79c949b6a0edc880ea71fe05b28967ab}{set\_\-tx\_\-ant\_\-leds} (void)}
+\label{front__panel_2main_8c_79c949b6a0edc880ea71fe05b28967ab}
+
+\begin{CompactList}\small\item\em Set the TX antenna leds according to the status of status.selected\_\-ant. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2main_8c_fd9ab4725abe99a112bd35bbba063389}{set\_\-knob\_\-function} (unsigned char function)
+\begin{CompactList}\small\item\em Set the rotary knob function. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_f2a186dd8c8b709c034fdc89befd9486}{
+void \hyperlink{front__panel_2main_8c_f2a186dd8c8b709c034fdc89befd9486}{main\_\-save\_\-settings} (void)}
+\label{front__panel_2main_8c_f2a186dd8c8b709c034fdc89befd9486}
+
+\begin{CompactList}\small\item\em Save runtime settings etc to the EEPROM. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_8e470dddd9c49dad31fe155e6eff9fbc}{
+void \hyperlink{front__panel_2main_8c_8e470dddd9c49dad31fe155e6eff9fbc}{load\_\-settings} (void)}
+\label{front__panel_2main_8c_8e470dddd9c49dad31fe155e6eff9fbc}
+
+\begin{CompactList}\small\item\em Load all settings from the EEPROM. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_b07bb29d6209caf66d9510c77909473f}{
+void \hyperlink{front__panel_2main_8c_b07bb29d6209caf66d9510c77909473f}{main\_\-update\_\-ptt\_\-status} (void)}
+\label{front__panel_2main_8c_b07bb29d6209caf66d9510c77909473f}
+
+\begin{CompactList}\small\item\em Function which updates the status of the PTT This function will check various sources if it is for example OK to transmit or not. This function also updates the color of the PTT led. It does also set the \hyperlink{front__panel_2main_8c_a8f632e39dd9c50749fa281cad87ddb0}{main\_\-set\_\-inhibit\_\-state()} status which is used at various places to make the sequencing etc safe. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2main_8c_a8f632e39dd9c50749fa281cad87ddb0}{main\_\-set\_\-inhibit\_\-state} (enum \hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}{enum\_\-inhibit\_\-state} state)
+\begin{CompactList}\small\item\em Set the inhibit state This function is used to set the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. \item\end{CompactList}\item 
+enum \hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}{enum\_\-inhibit\_\-state} \hyperlink{front__panel_2main_8c_33e0e0ca61cfd86443ceb19d5c7ce50b}{main\_\-get\_\-inhibit\_\-state} (void)
+\begin{CompactList}\small\item\em Get the inhibit state This function is used to get the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_c03f611309a40dc9133d7164da7308e7}{
+void \hyperlink{front__panel_2main_8c_c03f611309a40dc9133d7164da7308e7}{send\_\-ping} (void)}
+\label{front__panel_2main_8c_c03f611309a40dc9133d7164da7308e7}
+
+\begin{CompactList}\small\item\em Send a ping message out on the bus. \item\end{CompactList}\item 
+int \hyperlink{front__panel_2main_8c_840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\item 
+\hyperlink{front__panel_2main_8c_6487fa69328f91a45dbf78404d093c09}{ISR} (SIG\_\-OUTPUT\_\-COMPARE0A)
+\item 
+\hyperlink{front__panel_2main_8c_6265f456d8af4a996aefb1e29b8ce6a4}{ISR} (SIG\_\-OVERFLOW0)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2main_8c_45cdb6ee21b25826f1f46da72d13652f}{
+\hyperlink{structstruct__setting}{struct\_\-setting} \hyperlink{front__panel_2main_8c_45cdb6ee21b25826f1f46da72d13652f}{settings}}
+\label{front__panel_2main_8c_45cdb6ee21b25826f1f46da72d13652f}
+
+\begin{CompactList}\small\item\em Settings struct. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2main_8c_71155d68bb0faa5b2976b5bec28ca0ca}{radio\_\-rx\_\-data\_\-counter} = 0
+\begin{CompactList}\small\item\em Counter to keep track of when a character for the CAT was last received. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_f9cecdd922128d66e61541bac7dd6a56}{
+unsigned int \hyperlink{front__panel_2main_8c_f9cecdd922128d66e61541bac7dd6a56}{counter\_\-compare0} = 0}
+\label{front__panel_2main_8c_f9cecdd922128d66e61541bac7dd6a56}
+
+\begin{CompactList}\small\item\em Counter which counts up each time a compare0 interrupt has occured. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_74878c125411662a50fddaae20fef5fc}{
+unsigned int \hyperlink{front__panel_2main_8c_74878c125411662a50fddaae20fef5fc}{counter\_\-sync} = 32000}
+\label{front__panel_2main_8c_74878c125411662a50fddaae20fef5fc}
+
+\begin{CompactList}\small\item\em Counter which is used to keep track of when we last received a sync message from the bus. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_b459d9899a5a57fee757bdf768ae0f1d}{
+unsigned char \hyperlink{front__panel_2main_8c_b459d9899a5a57fee757bdf768ae0f1d}{counter\_\-poll\_\-buttons} = 0}
+\label{front__panel_2main_8c_b459d9899a5a57fee757bdf768ae0f1d}
+
+\begin{CompactList}\small\item\em Counter which keeps track of when we should poll the buttons. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_ce5f1d51457b79a08ce23ccc1cc79850}{
+unsigned char \hyperlink{front__panel_2main_8c_ce5f1d51457b79a08ce23ccc1cc79850}{counter\_\-poll\_\-ext\_\-devices} = 0}
+\label{front__panel_2main_8c_ce5f1d51457b79a08ce23ccc1cc79850}
+
+\begin{CompactList}\small\item\em Counter which keeps track of when we should poll the external inputs. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_cba472ca1b146ad135cd6dd5c374ed07}{
+unsigned int \hyperlink{front__panel_2main_8c_cba472ca1b146ad135cd6dd5c374ed07}{counter\_\-screensaver\_\-timeout} = 0}
+\label{front__panel_2main_8c_cba472ca1b146ad135cd6dd5c374ed07}
+
+\begin{CompactList}\small\item\em Counter which keeps track of the screensaver timeout. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_358c5643835429082b4aeea9c0365896}{
+unsigned int \hyperlink{front__panel_2main_8c_358c5643835429082b4aeea9c0365896}{counter\_\-ping\_\-interval} = 0}
+\label{front__panel_2main_8c_358c5643835429082b4aeea9c0365896}
+
+\begin{CompactList}\small\item\em Counter which keeps track of when we should send out a ping to the communication bus. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_9bc13a5444bb062f5af4c85eecf43f7f}{
+unsigned int \hyperlink{front__panel_2main_8c_9bc13a5444bb062f5af4c85eecf43f7f}{counter\_\-ms} = 0}
+\label{front__panel_2main_8c_9bc13a5444bb062f5af4c85eecf43f7f}
+
+\begin{CompactList}\small\item\em Counter which counts up each millisecond. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_bfb33efba7c4a6e1bf5640e51f3bf1ee}{
+unsigned char \hyperlink{front__panel_2main_8c_bfb33efba7c4a6e1bf5640e51f3bf1ee}{counter\_\-poll\_\-rotary\_\-encoder} = 0}
+\label{front__panel_2main_8c_bfb33efba7c4a6e1bf5640e51f3bf1ee}
+
+\begin{CompactList}\small\item\em Counter which keeps track when we should poll the rotary encoder. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_bfc70d8e59d7b1062ba894f0265ca5e3}{
+unsigned int \hyperlink{front__panel_2main_8c_bfc70d8e59d7b1062ba894f0265ca5e3}{counter\_\-poll\_\-radio} = 0}
+\label{front__panel_2main_8c_bfc70d8e59d7b1062ba894f0265ca5e3}
+
+\begin{CompactList}\small\item\em Counter which keeps track of when we should poll the radio. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_2e2286fc2770ff02888b87d6196416f3}{
+unsigned int \hyperlink{front__panel_2main_8c_2e2286fc2770ff02888b87d6196416f3}{counter\_\-last\_\-pulse\_\-event} = 0}
+\label{front__panel_2main_8c_2e2286fc2770ff02888b87d6196416f3}
+
+\begin{CompactList}\small\item\em Counter which keeps track of when the last pulse event did occur. This is used to sense if we should change rx antennas. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_1c6f4d9e23495dc8b553c9466064676f}{
+unsigned int \hyperlink{front__panel_2main_8c_1c6f4d9e23495dc8b553c9466064676f}{counter\_\-event\_\-timer} = 0}
+\label{front__panel_2main_8c_1c6f4d9e23495dc8b553c9466064676f}
+
+\begin{CompactList}\small\item\em After the counter reaches half of it's limit we remove that number from it by calling the function \hyperlink{event__queue_8c_d7ae30db0c54e95fe9ebbd3423e5c9bb}{event\_\-queue\_\-wrap()}. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_4e659bfe570f8e58593672bc9a8d22a7}{
+unsigned char \hyperlink{front__panel_2main_8c_4e659bfe570f8e58593672bc9a8d22a7}{device\_\-count} = 0}
+\label{front__panel_2main_8c_4e659bfe570f8e58593672bc9a8d22a7}
+
+\begin{CompactList}\small\item\em The number of devices on the bus. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_fad4a528127d6ffd202af4be4da8a803}{
+unsigned int \hyperlink{front__panel_2main_8c_fad4a528127d6ffd202af4be4da8a803}{main\_\-flags} = 0}
+\label{front__panel_2main_8c_fad4a528127d6ffd202af4be4da8a803}
+
+\begin{CompactList}\small\item\em Different flags, description is found in main.h. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_aeac8023fdbbfe15ef041910c44bc48f}{
+unsigned char \hyperlink{front__panel_2main_8c_aeac8023fdbbfe15ef041910c44bc48f}{ping\_\-message} \mbox{[}3\mbox{]}}
+\label{front__panel_2main_8c_aeac8023fdbbfe15ef041910c44bc48f}
+
+\begin{CompactList}\small\item\em Ping message of the openASC device. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8c_0e96ec0b2f381b9e6d75d1ccee5850be}{
+unsigned char \hyperlink{front__panel_2main_8c_0e96ec0b2f381b9e6d75d1ccee5850be}{device\_\-started} = 0}
+\label{front__panel_2main_8c_0e96ec0b2f381b9e6d75d1ccee5850be}
+
+\begin{CompactList}\small\item\em Variable to check if the device has actually gone through all init steps. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Main file of the front panel. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/main.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{front__panel_2main_8c-source}{main.c}.
+
+\subsection{Function Documentation}
+\hypertarget{front__panel_2main_8c_f496e941a90c0dab928b545c26d30dcc}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!event\_\-add\_\-message@{event\_\-add\_\-message}}
+\index{event\_\-add\_\-message@{event\_\-add\_\-message}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{event\_\-add\_\-message}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-add\_\-message (void $\ast$ {\em func}, \/  unsigned int {\em offset}, \/  unsigned char {\em id})}}
+\label{front__panel_2main_8c_f496e941a90c0dab928b545c26d30dcc}
+
+
+Add a message to the event queue which will be run at the correct time \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em func}]A function pointer to the function we want to run \item[{\em offset}]the time in ms when we want our function to be run \item[{\em id}]Which type of event this is \end{description}
+\end{Desc}
+
+
+Definition at line 115 of file main.c.
+
+References counter\_\-event\_\-timer, event\_\-in\_\-queue(), and event\_\-queue\_\-add().
+
+Referenced by display\_\-update\_\-screensaver(), event\_\-internal\_\-comm\_\-parse\_\-message(), sequencer\_\-computer\_\-rts\_\-activated(), sequencer\_\-computer\_\-rts\_\-deactivated(), sequencer\_\-footsw\_\-pressed(), and sequencer\_\-footsw\_\-released().\hypertarget{front__panel_2main_8c_f3d6009270cd4a03b5dda580d73bed64}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!ext\_\-key\_\-get\_\-assignment@{ext\_\-key\_\-get\_\-assignment}}
+\index{ext\_\-key\_\-get\_\-assignment@{ext\_\-key\_\-get\_\-assignment}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{ext\_\-key\_\-get\_\-assignment}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char ext\_\-key\_\-get\_\-assignment (unsigned char {\em index})}}
+\label{front__panel_2main_8c_f3d6009270cd4a03b5dda580d73bed64}
+
+
+Get the key assignment index \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of which task we wish to check \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The current task index, can be found in \hyperlink{event__handler_8h}{event\_\-handler.h} \end{Desc}
+
+
+Definition at line 131 of file main.c.
+
+References struct\_\-setting::ext\_\-key\_\-assignments.
+
+Referenced by event\_\-handler\_\-process\_\-ps2().\hypertarget{front__panel_2main_8c_f857f2bd1ba4cb025156687b9cf13b18}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!ext\_\-key\_\-set\_\-assignment@{ext\_\-key\_\-set\_\-assignment}}
+\index{ext\_\-key\_\-set\_\-assignment@{ext\_\-key\_\-set\_\-assignment}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{ext\_\-key\_\-set\_\-assignment}]{\setlength{\rightskip}{0pt plus 5cm}void ext\_\-key\_\-set\_\-assignment (unsigned char {\em index}, \/  unsigned char {\em func})}}
+\label{front__panel_2main_8c_f857f2bd1ba4cb025156687b9cf13b18}
+
+
+Set the key assignment task \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of which task we wish to set \item[{\em func}]The function we wish to assign to the assignment index \end{description}
+\end{Desc}
+
+
+Definition at line 138 of file main.c.
+
+References struct\_\-setting::ext\_\-key\_\-assignments.\hypertarget{front__panel_2main_8c_6265f456d8af4a996aefb1e29b8ce6a4}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!ISR@{ISR}}
+\index{ISR@{ISR}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{ISR}]{\setlength{\rightskip}{0pt plus 5cm}ISR (SIG\_\-OVERFLOW0)}}
+\label{front__panel_2main_8c_6265f456d8af4a996aefb1e29b8ce6a4}
+
+
+Output overflow 0 interrupt 
+
+Definition at line 748 of file main.c.\hypertarget{front__panel_2main_8c_6487fa69328f91a45dbf78404d093c09}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!ISR@{ISR}}
+\index{ISR@{ISR}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{ISR}]{\setlength{\rightskip}{0pt plus 5cm}ISR (SIG\_\-OUTPUT\_\-COMPARE0A)}}
+\label{front__panel_2main_8c_6487fa69328f91a45dbf78404d093c09}
+
+
+Output compare 0 interrupt - \char`\"{}called\char`\"{} with 1ms intervals 
+
+Definition at line 620 of file main.c.
+
+References antenna\_\-ctrl\_\-get\_\-rotatable(), antenna\_\-ctrl\_\-get\_\-rotator\_\-flags(), struct\_\-runtime\_\-settings::band\_\-change\_\-mode, BAND\_\-CHANGE\_\-MODE\_\-AUTO, bus\_\-is\_\-master(), bus\_\-ping\_\-tick(), counter\_\-event\_\-timer, counter\_\-last\_\-pulse\_\-event, counter\_\-ms, counter\_\-ping\_\-interval, counter\_\-poll\_\-buttons, counter\_\-poll\_\-ext\_\-devices, counter\_\-poll\_\-radio, counter\_\-poll\_\-rotary\_\-encoder, counter\_\-screensaver\_\-timeout, counter\_\-sync, device\_\-started, event\_\-in\_\-queue(), event\_\-queue\_\-get(), event\_\-queue\_\-wrap(), FLAG\_\-BLINK\_\-BAND\_\-LED, FLAG\_\-CHANGE\_\-RX\_\-ANT, FLAG\_\-CHANGE\_\-SUBMENU, FLAG\_\-LAST\_\-ANTENNA\_\-BLINK, FLAG\_\-NO\_\-ROTATION, FLAG\_\-POLL\_\-BUTTONS, FLAG\_\-POLL\_\-EXT\_\-DEVICES, FLAG\_\-POLL\_\-PULSE\_\-SENSOR, FLAG\_\-POLL\_\-RADIO, FLAG\_\-PROCESS\_\-RX\_\-ANT\_\-CHANGE, FLAG\_\-PROCESS\_\-SUBMENU\_\-CHANGE, FLAG\_\-RUN\_\-EVENT\_\-QUEUE, FUNC\_\-STATUS\_\-SELECT\_\-ANT\_\-ROTATE, struct\_\-status::function\_\-status, internal\_\-comm\_\-1ms\_\-timer(), INTERVAL\_\-POLL\_\-BUTTONS, INTERVAL\_\-POLL\_\-EXT\_\-DEVICES, INTERVAL\_\-POLL\_\-ROTARY\_\-ENCODER, led\_\-set\_\-rotation\_\-active(), led\_\-set\_\-tx\_\-ant(), LED\_\-STATE\_\-OFF, LED\_\-STATE\_\-ON, main\_\-flags, powermeter\_\-1ms\_\-tick(), struct\_\-setting::powermeter\_\-address, PULSE\_\-SENSOR\_\-RX\_\-ANT\_\-CHANGE\_\-LIMIT, PULSE\_\-SENSOR\_\-SUBMENU\_\-CHANGE\_\-LIMIT, radio\_\-communicaton\_\-timeout(), radio\_\-interface\_\-get\_\-poll\_\-interval(), radio\_\-rx\_\-data\_\-counter, RADIO\_\-RX\_\-DATA\_\-TIMEOUT, runtime\_\-settings, and status.\hypertarget{front__panel_2main_8c_840291bc02cba5474a4cb46a9b9566fe}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!main@{main}}
+\index{main@{main}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (void)}}
+\label{front__panel_2main_8c_840291bc02cba5474a4cb46a9b9566fe}
+
+
+Main function of the front panel 
+
+Definition at line 293 of file main.c.
+
+References struct\_\-runtime\_\-settings::amplifier\_\-ptt\_\-output, antenna\_\-ctrl\_\-change\_\-rx\_\-ant(), struct\_\-runtime\_\-settings::band\_\-change\_\-mode, BAND\_\-CHANGE\_\-MODE\_\-AUTO, BAND\_\-CHANGE\_\-MODE\_\-MANUAL, band\_\-ctrl\_\-change\_\-band(), band\_\-ctrl\_\-change\_\-band\_\-portion(), band\_\-ctrl\_\-load\_\-band\_\-limits(), bus\_\-add\_\-tx\_\-message(), bus\_\-allowed\_\-to\_\-send(), BUS\_\-BROADCAST\_\-ADDR, bus\_\-check\_\-tx\_\-status(), BUS\_\-CMD\_\-SYNC, BUS\_\-DEVICE\_\-STATUS\_\-MESSAGE\_\-INTERVAL, bus\_\-get\_\-address(), bus\_\-init(), bus\_\-is\_\-master(), BUS\_\-MASTER\_\-SYNC\_\-INTERVAL, bus\_\-set\_\-address(), bus\_\-set\_\-is\_\-master(), struct\_\-status::buttons\_\-current\_\-state, struct\_\-status::buttons\_\-last\_\-state, computer\_\-interface\_\-activate\_\-setup(), computer\_\-interface\_\-deactivate\_\-setup(), computer\_\-interface\_\-init(), computer\_\-interface\_\-is\_\-active(), computer\_\-interface\_\-parse\_\-data(), computer\_\-interface\_\-send\_\-data(), counter\_\-last\_\-pulse\_\-event, counter\_\-ping\_\-interval, counter\_\-sync, struct\_\-status::current\_\-band\_\-portion, device\_\-count, DEVICE\_\-ID\_\-MAINBOX, device\_\-started, display\_\-set\_\-backlight(), display\_\-setup\_\-view(), ds1307\_\-init(), eeprom\_\-create\_\-table(), eeprom\_\-read\_\-startup\_\-byte(), eeprom\_\-read\_\-table(), eeprom\_\-save\_\-runtime\_\-settings(), eeprom\_\-write\_\-startup\_\-byte(), event\_\-bus\_\-parse\_\-message(), event\_\-internal\_\-comm\_\-parse\_\-message(), event\_\-poll\_\-buttons(), event\_\-poll\_\-ext\_\-device(), event\_\-pulse\_\-sensor\_\-down(), event\_\-pulse\_\-sensor\_\-up(), event\_\-run(), event\_\-update\_\-display(), struct\_\-status::ext\_\-devices\_\-current\_\-state, struct\_\-status::ext\_\-devices\_\-last\_\-state, FLAG\_\-BLINK\_\-BAND\_\-LED, FLAG\_\-CHANGE\_\-RX\_\-ANT, FLAG\_\-CHANGE\_\-SUBMENU, FLAG\_\-LAST\_\-BAND\_\-BLINK, FLAG\_\-POLL\_\-BUTTONS, FLAG\_\-POLL\_\-EXT\_\-DEVICES, FLAG\_\-POLL\_\-PULSE\_\-SENSOR, FLAG\_\-POLL\_\-RADIO, FLAG\_\-PROCESS\_\-RX\_\-ANT\_\-CHANGE, FLAG\_\-PROCESS\_\-SUBMENU\_\-CHANGE, FLAG\_\-RUN\_\-EVENT\_\-QUEUE, FLAG\_\-UPDATE\_\-DISPLAY, glcd\_\-init(), i2c\_\-init(), ih\_\-poll\_\-ext\_\-devices(), INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND, struct\_\-runtime\_\-settings::inhibit\_\-state, init\_\-backlight(), init\_\-ports(), init\_\-timer\_\-0(), init\_\-timer\_\-2(), init\_\-usart(), init\_\-usart\_\-computer(), internal\_\-comm\_\-init(), internal\_\-comm\_\-poll\_\-rx\_\-queue(), internal\_\-comm\_\-poll\_\-tx\_\-queue(), KNOB\_\-FUNCTION\_\-AUTO, struct\_\-runtime\_\-settings::lcd\_\-backlight\_\-value, led\_\-set\_\-all(), led\_\-set\_\-band(), led\_\-set\_\-band\_\-none(), led\_\-set\_\-ptt(), LED\_\-STATE\_\-OFF, LED\_\-STATE\_\-ON, LED\_\-STATE\_\-PTT\_\-INHIBIT, load\_\-settings(), main\_\-flags, main\_\-set\_\-inhibit\_\-state(), menu\_\-init(), struct\_\-setting::network\_\-address, struct\_\-setting::network\_\-device\_\-count, struct\_\-setting::network\_\-device\_\-is\_\-master, struct\_\-status::new\_\-band, struct\_\-status::new\_\-band\_\-portion, ping\_\-message, struct\_\-setting::powermeter\_\-address, powermeter\_\-init(), powermeter\_\-process\_\-tasks(), struct\_\-setting::powermeter\_\-update\_\-rate\_\-bargraph, struct\_\-setting::powermeter\_\-update\_\-rate\_\-text, struct\_\-setting::powermeter\_\-vswr\_\-limit, radio\_\-get\_\-band\_\-portion(), radio\_\-get\_\-current\_\-band(), RADIO\_\-INTERFACE\_\-BCD, radio\_\-interface\_\-get\_\-interface(), RADIO\_\-INTERFACE\_\-MANUAL, radio\_\-poll\_\-status(), radio\_\-process\_\-tasks(), struct\_\-runtime\_\-settings::radio\_\-ptt\_\-output, rotary\_\-encoder\_\-poll(), struct\_\-status::rotator\_\-step\_\-resolution, runtime\_\-settings, rx\_\-queue\_\-is\_\-empty(), struct\_\-status::selected\_\-band, struct\_\-status::selected\_\-rx\_\-antenna, send\_\-ping(), set\_\-knob\_\-function(), status, struct\_\-status::sub\_\-menu\_\-antenna\_\-index, sub\_\-menu\_\-get\_\-current\_\-pos(), sub\_\-menu\_\-send\_\-data\_\-to\_\-bus(), tx\_\-queue\_\-dropall(), tx\_\-queue\_\-is\_\-empty(), and usart0\_\-transmit().\hypertarget{front__panel_2main_8c_33e0e0ca61cfd86443ceb19d5c7ce50b}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!main\_\-get\_\-inhibit\_\-state@{main\_\-get\_\-inhibit\_\-state}}
+\index{main\_\-get\_\-inhibit\_\-state@{main\_\-get\_\-inhibit\_\-state}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{main\_\-get\_\-inhibit\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf enum\_\-inhibit\_\-state} main\_\-get\_\-inhibit\_\-state (void)}}
+\label{front__panel_2main_8c_33e0e0ca61cfd86443ceb19d5c7ce50b}
+
+
+Get the inhibit state This function is used to get the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. 
+
+\begin{Desc}
+\item[Returns:]The current inhibit status \end{Desc}
+
+
+Definition at line 280 of file main.c.
+
+References struct\_\-runtime\_\-settings::inhibit\_\-state, and runtime\_\-settings.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), event\_\-pulse\_\-sensor\_\-down(), event\_\-pulse\_\-sensor\_\-up(), event\_\-tx\_\-button1\_\-pressed(), event\_\-tx\_\-button2\_\-pressed(), event\_\-tx\_\-button3\_\-pressed(), event\_\-tx\_\-button4\_\-pressed(), radio\_\-poll\_\-status(), sequencer\_\-computer\_\-rts\_\-activated(), and sequencer\_\-footsw\_\-pressed().\hypertarget{front__panel_2main_8c_a8f632e39dd9c50749fa281cad87ddb0}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!main\_\-set\_\-inhibit\_\-state@{main\_\-set\_\-inhibit\_\-state}}
+\index{main\_\-set\_\-inhibit\_\-state@{main\_\-set\_\-inhibit\_\-state}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{main\_\-set\_\-inhibit\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}void main\_\-set\_\-inhibit\_\-state (enum {\bf enum\_\-inhibit\_\-state} {\em state})}}
+\label{front__panel_2main_8c_a8f632e39dd9c50749fa281cad87ddb0}
+
+
+Set the inhibit state This function is used to set the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state we wish to set the inhibit status to \end{description}
+\end{Desc}
+
+
+Definition at line 272 of file main.c.
+
+References struct\_\-runtime\_\-settings::inhibit\_\-state, and runtime\_\-settings.
+
+Referenced by main(), and main\_\-update\_\-ptt\_\-status().\hypertarget{front__panel_2main_8c_fd9ab4725abe99a112bd35bbba063389}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!set\_\-knob\_\-function@{set\_\-knob\_\-function}}
+\index{set\_\-knob\_\-function@{set\_\-knob\_\-function}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{set\_\-knob\_\-function}]{\setlength{\rightskip}{0pt plus 5cm}void set\_\-knob\_\-function (unsigned char {\em function})}}
+\label{front__panel_2main_8c_fd9ab4725abe99a112bd35bbba063389}
+
+
+Set the rotary knob function. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em function}]Which type of action should occur when the knob is turned \end{description}
+\end{Desc}
+
+
+Definition at line 178 of file main.c.
+
+References struct\_\-runtime\_\-settings::band\_\-change\_\-mode, BAND\_\-CHANGE\_\-MODE\_\-MANUAL, struct\_\-status::knob\_\-function, KNOB\_\-FUNCTION\_\-AUTO, KNOB\_\-FUNCTION\_\-NONE, KNOB\_\-FUNCTION\_\-SELECT\_\-BAND, runtime\_\-settings, and status.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), event\_\-poll\_\-buttons(), event\_\-rotate\_\-button\_\-pressed(), event\_\-rxant\_\-button\_\-pressed(), event\_\-sub\_\-button\_\-pressed(), main(), and menu\_\-action().
+
+\subsection{Variable Documentation}
+\hypertarget{front__panel_2main_8c_71155d68bb0faa5b2976b5bec28ca0ca}{
+\index{front\_\-panel/main.c@{front\_\-panel/main.c}!radio\_\-rx\_\-data\_\-counter@{radio\_\-rx\_\-data\_\-counter}}
+\index{radio\_\-rx\_\-data\_\-counter@{radio\_\-rx\_\-data\_\-counter}!front_panel/main.c@{front\_\-panel/main.c}}
+\subsubsection[{radio\_\-rx\_\-data\_\-counter}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf radio\_\-rx\_\-data\_\-counter} = 0}}
+\label{front__panel_2main_8c_71155d68bb0faa5b2976b5bec28ca0ca}
+
+
+Counter to keep track of when a character for the CAT was last received. 
+
+External variable of the radio rx data counter used for a timeout. 
+
+Definition at line 69 of file main.c.
+
+Referenced by ISR().

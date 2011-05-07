@@ -1,0 +1,116 @@
+\hypertarget{i2c_8c}{
+\section{i2c.c File Reference}
+\label{i2c_8c}\index{i2c.c@{i2c.c}}
+}
+I2C interface using AVR Two-Wire Interface (TWI) hardware.  
+
+
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include \char`\"{}i2c.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{i2c_8c_5730d9445429351b9f750084c5cb5aae}{
+void \hyperlink{i2c_8c_5730d9445429351b9f750084c5cb5aae}{i2c\_\-init} (void)}
+\label{i2c_8c_5730d9445429351b9f750084c5cb5aae}
+
+\begin{CompactList}\small\item\em Initialize I2C (TWI) interface. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_76e6337a028e244f7ec422d9a183c4e5}{
+void \hyperlink{i2c_8c_76e6337a028e244f7ec422d9a183c4e5}{i2cSetBitrate} (unsigned int bitrateKHz)}
+\label{i2c_8c_76e6337a028e244f7ec422d9a183c4e5}
+
+\begin{CompactList}\small\item\em Set the I2C transaction bitrate (in KHz). \item\end{CompactList}\item 
+\hypertarget{i2c_8c_0ba254a77965df9f7def3a600821fba9}{
+void \hyperlink{i2c_8c_0ba254a77965df9f7def3a600821fba9}{i2cSetLocalDeviceAddr} (unsigned char deviceAddr, unsigned char genCallEn)}
+\label{i2c_8c_0ba254a77965df9f7def3a600821fba9}
+
+\begin{CompactList}\small\item\em Set the local (AVR processor's) I2C device address. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_dfd7495b35629ffec15ed245106ee4fb}{
+void \hyperlink{i2c_8c_dfd7495b35629ffec15ed245106ee4fb}{i2cSetSlaveReceiveHandler} (void($\ast$i2cSlaveRx\_\-func)(unsigned char receiveDataLength, unsigned char $\ast$recieveData))}
+\label{i2c_8c_dfd7495b35629ffec15ed245106ee4fb}
+
+\begin{CompactList}\small\item\em Set the user function which handles receiving (incoming) data as a slave. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_8d7320d952d93dd77a4b837b3c66e4e8}{
+void \hyperlink{i2c_8c_8d7320d952d93dd77a4b837b3c66e4e8}{i2cSetSlaveTransmitHandler} (unsigned char($\ast$i2cSlaveTx\_\-func)(unsigned char transmitDataLengthMax, unsigned char $\ast$transmitData))}
+\label{i2c_8c_8d7320d952d93dd77a4b837b3c66e4e8}
+
+\begin{CompactList}\small\item\em Set the user function which handles transmitting (outgoing) data as a slave. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_95c4ba205513049cec14f6b6ece74e26}{
+void \hyperlink{i2c_8c_95c4ba205513049cec14f6b6ece74e26}{i2cSendStart} (void)}
+\label{i2c_8c_95c4ba205513049cec14f6b6ece74e26}
+
+\begin{CompactList}\small\item\em Send an I2C start condition in Master mode. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_247f5bc08e93acd289dc2da561e7df86}{
+void \hyperlink{i2c_8c_247f5bc08e93acd289dc2da561e7df86}{i2cSendStop} (void)}
+\label{i2c_8c_247f5bc08e93acd289dc2da561e7df86}
+
+\begin{CompactList}\small\item\em Send an I2C stop condition in Master mode. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_d8fed02ed6b35c47bae40e3d416da3b6}{
+void \hyperlink{i2c_8c_d8fed02ed6b35c47bae40e3d416da3b6}{i2cWaitForComplete} (void)}
+\label{i2c_8c_d8fed02ed6b35c47bae40e3d416da3b6}
+
+\begin{CompactList}\small\item\em Wait for current I2C operation to complete. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_9496352bbfeb53c358f4dfd053497f33}{
+void \hyperlink{i2c_8c_9496352bbfeb53c358f4dfd053497f33}{i2cSendByte} (unsigned char data)}
+\label{i2c_8c_9496352bbfeb53c358f4dfd053497f33}
+
+\begin{CompactList}\small\item\em Send an (address$|$R/W) combination or a data byte over I2C. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_8aad5acbeb8f87e48f68a462f17cff8e}{
+void \hyperlink{i2c_8c_8aad5acbeb8f87e48f68a462f17cff8e}{i2cReceiveByte} (unsigned char ackFlag)}
+\label{i2c_8c_8aad5acbeb8f87e48f68a462f17cff8e}
+
+\begin{CompactList}\small\item\em Receive a data byte over I2C. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_e8c8d7280f22d6f5debfc05ee587c4a0}{
+unsigned char \hyperlink{i2c_8c_e8c8d7280f22d6f5debfc05ee587c4a0}{i2cGetReceivedByte} (void)}
+\label{i2c_8c_e8c8d7280f22d6f5debfc05ee587c4a0}
+
+\begin{CompactList}\small\item\em Pick up the data that was received with \hyperlink{i2c_8c_8aad5acbeb8f87e48f68a462f17cff8e}{i2cReceiveByte()}. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_0fa890a3316094b53fc4abd655d65cc5}{
+unsigned char \hyperlink{i2c_8c_0fa890a3316094b53fc4abd655d65cc5}{i2cGetStatus} (void)}
+\label{i2c_8c_0fa890a3316094b53fc4abd655d65cc5}
+
+\begin{CompactList}\small\item\em Get current I2c bus status from TWSR. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_7f2f47f78bdc73cd105287228915a889}{
+void \hyperlink{i2c_8c_7f2f47f78bdc73cd105287228915a889}{i2cMasterSend} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8c_7f2f47f78bdc73cd105287228915a889}
+
+\begin{CompactList}\small\item\em send I2C data to a device on the bus \item\end{CompactList}\item 
+\hypertarget{i2c_8c_eb98a4159704996e6510169fb7489cb4}{
+void \hyperlink{i2c_8c_eb98a4159704996e6510169fb7489cb4}{i2cMasterReceive} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8c_eb98a4159704996e6510169fb7489cb4}
+
+\begin{CompactList}\small\item\em receive I2C data from a device on the bus \item\end{CompactList}\item 
+\hypertarget{i2c_8c_9d89fe409cdca325571d3588b1607c2b}{
+unsigned char \hyperlink{i2c_8c_9d89fe409cdca325571d3588b1607c2b}{i2cMasterSendNI} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8c_9d89fe409cdca325571d3588b1607c2b}
+
+\begin{CompactList}\small\item\em send I2C data to a device on the bus (non-interrupt based) \item\end{CompactList}\item 
+\hypertarget{i2c_8c_e2c3a1a05c77dd5641cedf073fc67599}{
+unsigned char \hyperlink{i2c_8c_e2c3a1a05c77dd5641cedf073fc67599}{i2cMasterReceiveNI} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8c_e2c3a1a05c77dd5641cedf073fc67599}
+
+\begin{CompactList}\small\item\em receive I2C data from a device on the bus (non-interrupt based) \item\end{CompactList}\item 
+\hypertarget{i2c_8c_76216358046f104b52928cb3841a144e}{
+\hyperlink{i2c_8c_76216358046f104b52928cb3841a144e}{SIGNAL} (SIG\_\-2WIRE\_\-SERIAL)}
+\label{i2c_8c_76216358046f104b52928cb3841a144e}
+
+\begin{CompactList}\small\item\em I2C (TWI) interrupt service routine. \item\end{CompactList}\item 
+\hypertarget{i2c_8c_d890542992e78f23dcd3307e1fd1411c}{
+eI2cStateType \hyperlink{i2c_8c_d890542992e78f23dcd3307e1fd1411c}{i2cGetState} (void)}
+\label{i2c_8c_d890542992e78f23dcd3307e1fd1411c}
+
+\begin{CompactList}\small\item\em Get the current high-level state of the I2C interface. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+I2C interface using AVR Two-Wire Interface (TWI) hardware. 
+
+\begin{Desc}
+\item[Author:]Pascal Stang and Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2008-04-13 \end{Desc}
+
+
+Definition in file \hyperlink{i2c_8c-source}{i2c.c}.

@@ -1,0 +1,240 @@
+\hypertarget{motherboard_2main_8c}{
+\section{motherboard/main.c File Reference}
+\label{motherboard_2main_8c}\index{motherboard/main.c@{motherboard/main.c}}
+}
+Main file of the motherboard.  
+
+
+{\tt \#include $<$avr/parity.h$>$}\par
+{\tt \#include \char`\"{}main.h\char`\"{}}\par
+{\tt \#include \char`\"{}board.h\char`\"{}}\par
+{\tt \#include \char`\"{}usart.h\char`\"{}}\par
+{\tt \#include \char`\"{}init.h\char`\"{}}\par
+{\tt \#include \char`\"{}../delay.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm\_\-commands.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-commands.h\char`\"{}}\par
+{\tt \#include \char`\"{}computer\_\-interface.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{motherboard_2main_8c_0645187179f3c83ffea3abae0e20df90}{
+\#define \hyperlink{motherboard_2main_8c_0645187179f3c83ffea3abae0e20df90}{PS2\_\-CLK\_\-LOW}~PORTE \&= $\sim$(1$<$$<$6)}
+\label{motherboard_2main_8c_0645187179f3c83ffea3abae0e20df90}
+
+\begin{CompactList}\small\item\em Macro to put PS2 CLK output LOW. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_624a835d0ecff286d2662fade61c89f2}{
+\#define \hyperlink{motherboard_2main_8c_624a835d0ecff286d2662fade61c89f2}{PS2\_\-CLK\_\-HIGH}~PORTE $|$= (1$<$$<$6)}
+\label{motherboard_2main_8c_624a835d0ecff286d2662fade61c89f2}
+
+\begin{CompactList}\small\item\em Macro to put PS2 CLK output HIGH. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_c96509a579e26993b9ec073121ed3c8c}{
+\#define \hyperlink{motherboard_2main_8c_c96509a579e26993b9ec073121ed3c8c}{PS2\_\-DATA\_\-LOW}~PORTA \&= $\sim$(1$<$$<$3)}
+\label{motherboard_2main_8c_c96509a579e26993b9ec073121ed3c8c}
+
+\begin{CompactList}\small\item\em Macro to put PS2 DATA output LOW. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_decbf0fd290956c3f69b773185a9bd36}{
+\#define \hyperlink{motherboard_2main_8c_decbf0fd290956c3f69b773185a9bd36}{PS2\_\-DATA\_\-HIGH}~PORTA $|$= (1$<$$<$3)}
+\label{motherboard_2main_8c_decbf0fd290956c3f69b773185a9bd36}
+
+\begin{CompactList}\small\item\em Macro to put PS2 DATA output HIGH. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{motherboard_2main_8c_264e77848dd4c925796b593feb4dda0a}{
+void \_\-\_\-inline\_\-\_\- \hyperlink{motherboard_2main_8c_264e77848dd4c925796b593feb4dda0a}{tiny\_\-delay} (void)}
+\label{motherboard_2main_8c_264e77848dd4c925796b593feb4dda0a}
+
+\begin{CompactList}\small\item\em Tiny delay function. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2main_8c_ff96f665386bb6bba252e63b82728165}{activate\_\-output} (unsigned char index, unsigned char type)
+\begin{CompactList}\small\item\em Activate a driver output This function is used to activate an output on the relay driver output in the openASC It controls both the sink and source output at the same time. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2main_8c_2e358b38854ff3ff44bdf128bd1784fe}{deactivate\_\-output} (unsigned char index)
+\begin{CompactList}\small\item\em Deactivate a driver output This function is used to deactivate an output on the relay outputs It controls both the sink and source output at the same time. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2main_8c_db69cd2915eba594be660f98fee83fba}{parse\_\-internal\_\-comm\_\-message} (\hyperlink{structUC__MESSAGE}{UC\_\-MESSAGE} message)
+\begin{CompactList}\small\item\em Parse an internal communication message. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2main_8c_3d62b6c019982bb7be2b6623850a9c71}{ps2\_\-keyboard\_\-send} (unsigned char cmd)
+\begin{CompactList}\small\item\em Send a command to the PS/2 keyboard output/input. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2main_8c_71bb3e6e7c60c6191db9d92d40520aae}{ps2\_\-process\_\-key} (unsigned char key\_\-code)
+\begin{CompactList}\small\item\em Process a keystroke. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_840291bc02cba5474a4cb46a9b9566fe}{
+int \hyperlink{motherboard_2main_8c_840291bc02cba5474a4cb46a9b9566fe}{main} (void)}
+\label{motherboard_2main_8c_840291bc02cba5474a4cb46a9b9566fe}
+
+\begin{CompactList}\small\item\em Main function of the motherboard. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_6761d1f0a3be0ccdce714cb9c7cbdcc3}{
+\hyperlink{motherboard_2main_8c_6761d1f0a3be0ccdce714cb9c7cbdcc3}{ISR} (SIG\_\-OUTPUT\_\-COMPARE0)}
+\label{motherboard_2main_8c_6761d1f0a3be0ccdce714cb9c7cbdcc3}
+
+\begin{CompactList}\small\item\em Output compare 0 interrupt - \char`\"{}called\char`\"{} with 1ms intervals. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_6265f456d8af4a996aefb1e29b8ce6a4}{
+\hyperlink{motherboard_2main_8c_6265f456d8af4a996aefb1e29b8ce6a4}{ISR} (SIG\_\-OVERFLOW0)}
+\label{motherboard_2main_8c_6265f456d8af4a996aefb1e29b8ce6a4}
+
+\begin{CompactList}\small\item\em Output overflow 0 interrupt. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_25b41d0110943ffe35447b0ef86705f2}{
+\textbf{ISR} (SIG\_\-INTERRUPT6)}
+\label{motherboard_2main_8c_25b41d0110943ffe35447b0ef86705f2}
+
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{motherboard_2main_8c_19b27fd1c38a09015d7bed34a759dd9f}{
+unsigned char \hyperlink{motherboard_2main_8c_19b27fd1c38a09015d7bed34a759dd9f}{temp\_\-count} = 0}
+\label{motherboard_2main_8c_19b27fd1c38a09015d7bed34a759dd9f}
+
+\begin{CompactList}\small\item\em Counter used for the PS/2 decoding. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_afec53b949c6346e7c297ba6cd8273ab}{
+unsigned int \hyperlink{motherboard_2main_8c_afec53b949c6346e7c297ba6cd8273ab}{driver\_\-output\_\-state} = 0}
+\label{motherboard_2main_8c_afec53b949c6346e7c297ba6cd8273ab}
+
+\begin{CompactList}\small\item\em The driver output state. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_ad8bdf5222ef9f3579dcfc36348ff4ce}{
+unsigned int \hyperlink{motherboard_2main_8c_ad8bdf5222ef9f3579dcfc36348ff4ce}{driver\_\-output\_\-type} \mbox{[}12\mbox{]}}
+\label{motherboard_2main_8c_ad8bdf5222ef9f3579dcfc36348ff4ce}
+
+\begin{CompactList}\small\item\em The type of driver output. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_9072966d1510479cbdd4b136acd07ae7}{
+unsigned char \hyperlink{motherboard_2main_8c_9072966d1510479cbdd4b136acd07ae7}{btn\_\-on\_\-off\_\-last\_\-state} = 1}
+\label{motherboard_2main_8c_9072966d1510479cbdd4b136acd07ae7}
+
+\begin{CompactList}\small\item\em Variable used to keep track of the last state of the ON/OFF button so we can see when it has been pressed and released. \item\end{CompactList}\item 
+unsigned int \hyperlink{motherboard_2main_8c_0f7d68356477471c8e53e58e4275efab}{counter\_\-time\_\-start} = 0
+\item 
+\hypertarget{motherboard_2main_8c_ececec1f402fa8742057406822d15f2b}{
+unsigned int \hyperlink{motherboard_2main_8c_ececec1f402fa8742057406822d15f2b}{counter\_\-ps2} = 0}
+\label{motherboard_2main_8c_ececec1f402fa8742057406822d15f2b}
+
+\begin{CompactList}\small\item\em Counter which keeps track of the PS/2 decoding. \item\end{CompactList}\item 
+\hypertarget{motherboard_2main_8c_419435aeb5981618ec9bac66f4b9d6dc}{
+\hyperlink{structPS2__STRUCT}{PS2\_\-STRUCT} \hyperlink{motherboard_2main_8c_419435aeb5981618ec9bac66f4b9d6dc}{ps2}}
+\label{motherboard_2main_8c_419435aeb5981618ec9bac66f4b9d6dc}
+
+\begin{CompactList}\small\item\em PS/2 struct. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Main file of the motherboard. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "motherboard/main.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{motherboard_2main_8c-source}{main.c}.
+
+\subsection{Function Documentation}
+\hypertarget{motherboard_2main_8c_ff96f665386bb6bba252e63b82728165}{
+\index{motherboard/main.c@{motherboard/main.c}!activate\_\-output@{activate\_\-output}}
+\index{activate\_\-output@{activate\_\-output}!motherboard/main.c@{motherboard/main.c}}
+\subsubsection[{activate\_\-output}]{\setlength{\rightskip}{0pt plus 5cm}void activate\_\-output (unsigned char {\em index}, \/  unsigned char {\em type})}}
+\label{motherboard_2main_8c_ff96f665386bb6bba252e63b82728165}
+
+
+Activate a driver output This function is used to activate an output on the relay driver output in the openASC It controls both the sink and source output at the same time. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of which output to activate (1-12) \item[{\em type}]The command that did activate this output \end{description}
+\end{Desc}
+
+
+Definition at line 79 of file main.c.
+
+References DRIVER\_\-OUTPUT\_\-1, DRIVER\_\-OUTPUT\_\-10, DRIVER\_\-OUTPUT\_\-11, DRIVER\_\-OUTPUT\_\-12, DRIVER\_\-OUTPUT\_\-2, DRIVER\_\-OUTPUT\_\-3, DRIVER\_\-OUTPUT\_\-4, DRIVER\_\-OUTPUT\_\-5, DRIVER\_\-OUTPUT\_\-6, DRIVER\_\-OUTPUT\_\-7, DRIVER\_\-OUTPUT\_\-8, DRIVER\_\-OUTPUT\_\-9, driver\_\-output\_\-state, and driver\_\-output\_\-type.\hypertarget{motherboard_2main_8c_2e358b38854ff3ff44bdf128bd1784fe}{
+\index{motherboard/main.c@{motherboard/main.c}!deactivate\_\-output@{deactivate\_\-output}}
+\index{deactivate\_\-output@{deactivate\_\-output}!motherboard/main.c@{motherboard/main.c}}
+\subsubsection[{deactivate\_\-output}]{\setlength{\rightskip}{0pt plus 5cm}void deactivate\_\-output (unsigned char {\em index})}}
+\label{motherboard_2main_8c_2e358b38854ff3ff44bdf128bd1784fe}
+
+
+Deactivate a driver output This function is used to deactivate an output on the relay outputs It controls both the sink and source output at the same time. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of which output to activate (1-12) \end{description}
+\end{Desc}
+
+
+Definition at line 118 of file main.c.
+
+References DRIVER\_\-OUTPUT\_\-1, DRIVER\_\-OUTPUT\_\-10, DRIVER\_\-OUTPUT\_\-11, DRIVER\_\-OUTPUT\_\-12, DRIVER\_\-OUTPUT\_\-2, DRIVER\_\-OUTPUT\_\-3, DRIVER\_\-OUTPUT\_\-4, DRIVER\_\-OUTPUT\_\-5, DRIVER\_\-OUTPUT\_\-6, DRIVER\_\-OUTPUT\_\-7, DRIVER\_\-OUTPUT\_\-8, DRIVER\_\-OUTPUT\_\-9, driver\_\-output\_\-state, and driver\_\-output\_\-type.\hypertarget{motherboard_2main_8c_db69cd2915eba594be660f98fee83fba}{
+\index{motherboard/main.c@{motherboard/main.c}!parse\_\-internal\_\-comm\_\-message@{parse\_\-internal\_\-comm\_\-message}}
+\index{parse\_\-internal\_\-comm\_\-message@{parse\_\-internal\_\-comm\_\-message}!motherboard/main.c@{motherboard/main.c}}
+\subsubsection[{parse\_\-internal\_\-comm\_\-message}]{\setlength{\rightskip}{0pt plus 5cm}void parse\_\-internal\_\-comm\_\-message ({\bf UC\_\-MESSAGE} {\em message})}}
+\label{motherboard_2main_8c_db69cd2915eba594be660f98fee83fba}
+
+
+Parse an internal communication message. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em message}]The message that we wish to parse \end{description}
+\end{Desc}
+
+
+Definition at line 154 of file main.c.
+
+References activate\_\-output(), AUX\_\-X11\_\-PIN3, AUX\_\-X11\_\-PIN4, AUX\_\-X11\_\-PIN5, AUX\_\-X11\_\-PIN8, AUX\_\-X11\_\-PIN9, BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT, BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT, BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT, BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS, BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS, BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS, BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT, BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT, UC\_\-MESSAGE::cmd, computer\_\-interface\_\-send(), UC\_\-MESSAGE::data, deactivate\_\-output(), driver\_\-output\_\-type, INT\_\-COMM\_\-AUX\_\-CHANGE\_\-OUTPUT\_\-PIN, INT\_\-COMM\_\-GET\_\-BAND\_\-BCD\_\-STATUS, INT\_\-COMM\_\-PULL\_\-THE\_\-PLUG, INT\_\-COMM\_\-REDIRECT\_\-DATA, internal\_\-comm\_\-add\_\-tx\_\-message(), and UC\_\-MESSAGE::length.
+
+Referenced by main().\hypertarget{motherboard_2main_8c_3d62b6c019982bb7be2b6623850a9c71}{
+\index{motherboard/main.c@{motherboard/main.c}!ps2\_\-keyboard\_\-send@{ps2\_\-keyboard\_\-send}}
+\index{ps2\_\-keyboard\_\-send@{ps2\_\-keyboard\_\-send}!motherboard/main.c@{motherboard/main.c}}
+\subsubsection[{ps2\_\-keyboard\_\-send}]{\setlength{\rightskip}{0pt plus 5cm}void ps2\_\-keyboard\_\-send (unsigned char {\em cmd})}}
+\label{motherboard_2main_8c_3d62b6c019982bb7be2b6623850a9c71}
+
+
+Send a command to the PS/2 keyboard output/input. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em cmd}]The command we wish to send \end{description}
+\end{Desc}
+
+
+Definition at line 279 of file main.c.
+
+References PS2\_\-STRUCT::bit\_\-count, PS2\_\-STRUCT::parity, PS2\_\-CLK\_\-HIGH, PS2\_\-CLK\_\-LOW, PS2\_\-DATA\_\-HIGH, PS2\_\-DATA\_\-LOW, tiny\_\-delay(), PS2\_\-STRUCT::transmit, and PS2\_\-STRUCT::tx\_\-data.\hypertarget{motherboard_2main_8c_71bb3e6e7c60c6191db9d92d40520aae}{
+\index{motherboard/main.c@{motherboard/main.c}!ps2\_\-process\_\-key@{ps2\_\-process\_\-key}}
+\index{ps2\_\-process\_\-key@{ps2\_\-process\_\-key}!motherboard/main.c@{motherboard/main.c}}
+\subsubsection[{ps2\_\-process\_\-key}]{\setlength{\rightskip}{0pt plus 5cm}void ps2\_\-process\_\-key (unsigned char {\em key\_\-code})}}
+\label{motherboard_2main_8c_71bb3e6e7c60c6191db9d92d40520aae}
+
+
+Process a keystroke. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em key\_\-code}]The key code which was received \end{description}
+\end{Desc}
+
+
+Definition at line 301 of file main.c.
+
+References INT\_\-COMM\_\-PS2\_\-KEYPRESSED, and internal\_\-comm\_\-add\_\-tx\_\-message().
+
+\subsection{Variable Documentation}
+\hypertarget{motherboard_2main_8c_0f7d68356477471c8e53e58e4275efab}{
+\index{motherboard/main.c@{motherboard/main.c}!counter\_\-time\_\-start@{counter\_\-time\_\-start}}
+\index{counter\_\-time\_\-start@{counter\_\-time\_\-start}!motherboard/main.c@{motherboard/main.c}}
+\subsubsection[{counter\_\-time\_\-start}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int {\bf counter\_\-time\_\-start} = 0}}
+\label{motherboard_2main_8c_0f7d68356477471c8e53e58e4275efab}
+
+
+Counter which keeps track of how long time ago it was since we started the box. This is used at startup so that we ignore button actions on the ON/OFF button for a certain time at startup 
+
+Definition at line 58 of file main.c.
+
+Referenced by ISR().

@@ -1,0 +1,354 @@
+\hypertarget{front__panel_2usart_8c}{
+\section{front\_\-panel/usart.c File Reference}
+\label{front__panel_2usart_8c}\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}}
+}
+USART routines.  
+
+
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{front__panel_2usart_8c_482841a880dc7de7f575b6d2f6297b39}{usart0\_\-init} (unsigned int baudrate)
+\begin{CompactList}\small\item\em Initiliaze the USART0 for the communication bus This function is used to initialize the USART which a baudrate that needs to be sent in as a parameter Use the baudrate settings specified in the ATMEGA2560 baudrate setting. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2usart_8c_7f7ecde7294f4f2f1876cdbd83fcfba9}{usart0\_\-transmit} (char data)
+\begin{CompactList}\small\item\em Send a character to the USART0 Send a single character to the USART used for the communication bus. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_112a22f41602b42bacbdb0ffac04a59e}{usart0\_\-sendstring} (char $\ast$data, unsigned char length)
+\begin{CompactList}\small\item\em Send a string of characters to the USART0 Send a string of characters to the USART used for the communication bus. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_3d365b96b6297b6163936bdcffc7f008}{usart0\_\-receive} (void)
+\begin{CompactList}\small\item\em Retrieve one character from the USART0 Retrieve one character from the USART. This function will wait until there is a character in the USART RX buffer. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_a397c495b75a8bbfba1128f73a3982c7}{usart0\_\-receive\_\-loopback} (void)
+\begin{CompactList}\small\item\em The USART0 recieve loopback This function does wait for a character in the RX buffer and returns it to the transmit buffer. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_4d13995e1d38d3f790237fa5ca309737}{poll\_\-usart0\_\-receive} (void)
+\begin{CompactList}\small\item\em Retrieve one character from the USART0 Retrieve one character from the USART. With this function you will need to poll the USART, it does NOT wait until a character is in the buffer. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2usart_8c_18080740d2fbefd2cbc4cecebc0a03e8}{usart1\_\-init} (unsigned int baudrate, unsigned char stopbits)
+\begin{CompactList}\small\item\em Initiliaze the USART1 for the interface towards the computer This function is used to initialize the USART which a baudrate that needs to be sent in as a parameter Use the baudrate settings specified in the ATMEGA2560 baudrate setting. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_e16b326eb2d237f0e2e6365254fb7387}{usart1\_\-transmit} (char data)
+\begin{CompactList}\small\item\em Send a character to the USART1 Send a single character to the USART used for the communication bus. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_2dc2350f52fc5e6d4579f6e24f477ab2}{usart1\_\-sendstring} (char $\ast$data, unsigned char length)
+\begin{CompactList}\small\item\em Send a string of characters to the USART1 Send a string of characters to the USART used for the communication bus. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_ef7249709ccfaf69979236bc31c3b184}{usart1\_\-receive} (void)
+\begin{CompactList}\small\item\em Retrieve one character from the USART1 Retrieve one character from the USART. This function will wait until there is a character in the USART RX buffer. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_86add9375c019696ca7631ee20f2d6d6}{usart1\_\-receive\_\-loopback} (void)
+\begin{CompactList}\small\item\em The USART1 recieve loopback This function does wait for a character in the RX buffer and returns it to the transmit buffer. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_b1455e6900de4811aed2ae872667e154}{poll\_\-usart1\_\-receive} (void)
+\begin{CompactList}\small\item\em Retrieve one character from the USART1 Retrieve one character from the USART. With this function you will need to poll the USART, it does NOT wait until a character is in the buffer. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2usart_8c_737a455ab98e3eafc4f691fb77e5ddd5}{usart3\_\-init} (unsigned int baudrate, unsigned char stopbits)
+\begin{CompactList}\small\item\em Initiliaze the USART3 for the radio interface This function is used to initialize the USART which a baudrate that needs to be sent in as a parameter Use the baudrate settings specified in the ATMEGA2560 baudrate setting. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_ef08b8e629ed117a8bf7262a83548ea2}{usart3\_\-transmit} (char data)
+\begin{CompactList}\small\item\em Send a character to the USART3 Send a single character to the USART used for the communication bus. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_3c476e093c500e5dafb7b4677a98742b}{usart3\_\-sendstring} (char $\ast$data, unsigned char length)
+\begin{CompactList}\small\item\em Send a string of characters to the USART3 Send a string of characters to the USART used for the communication bus. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_a9a6cf649ff75289fb3ca3d9114a47a2}{usart3\_\-receive} (void)
+\begin{CompactList}\small\item\em Retrieve one character from the USART3 Retrieve one character from the USART. This function will wait until there is a character in the USART RX buffer. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_cbb273d9217581fc0b6c38ad206237cd}{usart3\_\-receive\_\-loopback} (void)
+\begin{CompactList}\small\item\em The USART3 recieve loopback This function does wait for a character in the RX buffer and returns it to the transmit buffer. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2usart_8c_51b9db764a1df58608ed38196a7ff0c2}{poll\_\-usart3\_\-receive} (void)
+\begin{CompactList}\small\item\em Retrieve one character from the USART3 Retrieve one character from the USART. With this function you will need to poll the USART, it does NOT wait until a character is in the buffer. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+USART routines. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/usart.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{front__panel_2usart_8c-source}{usart.c}.
+
+\subsection{Function Documentation}
+\hypertarget{front__panel_2usart_8c_4d13995e1d38d3f790237fa5ca309737}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!poll\_\-usart0\_\-receive@{poll\_\-usart0\_\-receive}}
+\index{poll\_\-usart0\_\-receive@{poll\_\-usart0\_\-receive}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{poll\_\-usart0\_\-receive}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char poll\_\-usart0\_\-receive (void)}}
+\label{front__panel_2usart_8c_4d13995e1d38d3f790237fa5ca309737}
+
+
+Retrieve one character from the USART0 Retrieve one character from the USART. With this function you will need to poll the USART, it does NOT wait until a character is in the buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 100 of file usart.c.\hypertarget{front__panel_2usart_8c_b1455e6900de4811aed2ae872667e154}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!poll\_\-usart1\_\-receive@{poll\_\-usart1\_\-receive}}
+\index{poll\_\-usart1\_\-receive@{poll\_\-usart1\_\-receive}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{poll\_\-usart1\_\-receive}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char poll\_\-usart1\_\-receive (void)}}
+\label{front__panel_2usart_8c_b1455e6900de4811aed2ae872667e154}
+
+
+Retrieve one character from the USART1 Retrieve one character from the USART. With this function you will need to poll the USART, it does NOT wait until a character is in the buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 185 of file usart.c.\hypertarget{front__panel_2usart_8c_51b9db764a1df58608ed38196a7ff0c2}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!poll\_\-usart3\_\-receive@{poll\_\-usart3\_\-receive}}
+\index{poll\_\-usart3\_\-receive@{poll\_\-usart3\_\-receive}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{poll\_\-usart3\_\-receive}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char poll\_\-usart3\_\-receive (void)}}
+\label{front__panel_2usart_8c_51b9db764a1df58608ed38196a7ff0c2}
+
+
+Retrieve one character from the USART3 Retrieve one character from the USART. With this function you will need to poll the USART, it does NOT wait until a character is in the buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 270 of file usart.c.\hypertarget{front__panel_2usart_8c_482841a880dc7de7f575b6d2f6297b39}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart0\_\-init@{usart0\_\-init}}
+\index{usart0\_\-init@{usart0\_\-init}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart0\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void usart0\_\-init (unsigned int {\em baudrate})}}
+\label{front__panel_2usart_8c_482841a880dc7de7f575b6d2f6297b39}
+
+
+Initiliaze the USART0 for the communication bus This function is used to initialize the USART which a baudrate that needs to be sent in as a parameter Use the baudrate settings specified in the ATMEGA2560 baudrate setting. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em baudrate}]The baudrate param from the ATMEGA2560 datasheet. \end{description}
+\end{Desc}
+
+
+Definition at line 34 of file usart.c.
+
+Referenced by init\_\-usart(), and main().\hypertarget{front__panel_2usart_8c_3d365b96b6297b6163936bdcffc7f008}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart0\_\-receive@{usart0\_\-receive}}
+\index{usart0\_\-receive@{usart0\_\-receive}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart0\_\-receive}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart0\_\-receive (void)}}
+\label{front__panel_2usart_8c_3d365b96b6297b6163936bdcffc7f008}
+
+
+Retrieve one character from the USART0 Retrieve one character from the USART. This function will wait until there is a character in the USART RX buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 73 of file usart.c.\hypertarget{front__panel_2usart_8c_a397c495b75a8bbfba1128f73a3982c7}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart0\_\-receive\_\-loopback@{usart0\_\-receive\_\-loopback}}
+\index{usart0\_\-receive\_\-loopback@{usart0\_\-receive\_\-loopback}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart0\_\-receive\_\-loopback}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart0\_\-receive\_\-loopback (void)}}
+\label{front__panel_2usart_8c_a397c495b75a8bbfba1128f73a3982c7}
+
+
+The USART0 recieve loopback This function does wait for a character in the RX buffer and returns it to the transmit buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 85 of file usart.c.
+
+Referenced by init\_\-usart().\hypertarget{front__panel_2usart_8c_112a22f41602b42bacbdb0ffac04a59e}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart0\_\-sendstring@{usart0\_\-sendstring}}
+\index{usart0\_\-sendstring@{usart0\_\-sendstring}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart0\_\-sendstring}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart0\_\-sendstring (char $\ast$ {\em data}, \/  unsigned char {\em length})}}
+\label{front__panel_2usart_8c_112a22f41602b42bacbdb0ffac04a59e}
+
+
+Send a string of characters to the USART0 Send a string of characters to the USART used for the communication bus. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]The string of characters you wish to send \item[{\em length}]The length of the string you wish to send \end{description}
+\end{Desc}
+
+
+Definition at line 60 of file usart.c.\hypertarget{front__panel_2usart_8c_7f7ecde7294f4f2f1876cdbd83fcfba9}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart0\_\-transmit@{usart0\_\-transmit}}
+\index{usart0\_\-transmit@{usart0\_\-transmit}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart0\_\-transmit}]{\setlength{\rightskip}{0pt plus 5cm}void usart0\_\-transmit (char {\em data})}}
+\label{front__panel_2usart_8c_7f7ecde7294f4f2f1876cdbd83fcfba9}
+
+
+Send a character to the USART0 Send a single character to the USART used for the communication bus. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]The character you want to send \end{description}
+\end{Desc}
+
+
+Definition at line 48 of file usart.c.
+
+Referenced by init\_\-usart(), main(), usart0\_\-receive\_\-loopback(), usart0\_\-sendstring(), usart1\_\-receive\_\-loopback(), and usart3\_\-receive\_\-loopback().\hypertarget{front__panel_2usart_8c_18080740d2fbefd2cbc4cecebc0a03e8}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart1\_\-init@{usart1\_\-init}}
+\index{usart1\_\-init@{usart1\_\-init}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart1\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void usart1\_\-init (unsigned int {\em baudrate}, \/  unsigned char {\em stopbits})}}
+\label{front__panel_2usart_8c_18080740d2fbefd2cbc4cecebc0a03e8}
+
+
+Initiliaze the USART1 for the interface towards the computer This function is used to initialize the USART which a baudrate that needs to be sent in as a parameter Use the baudrate settings specified in the ATMEGA2560 baudrate setting. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em baudrate}]The baudrate param from the ATMEGA2560 datasheet. \item[{\em stopbits}]The number of stopbits. \end{description}
+\end{Desc}
+
+
+Definition at line 112 of file usart.c.
+
+Referenced by init\_\-usart\_\-computer(), main(), and radio\_\-interface\_\-init().\hypertarget{front__panel_2usart_8c_ef7249709ccfaf69979236bc31c3b184}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart1\_\-receive@{usart1\_\-receive}}
+\index{usart1\_\-receive@{usart1\_\-receive}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart1\_\-receive}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart1\_\-receive (void)}}
+\label{front__panel_2usart_8c_ef7249709ccfaf69979236bc31c3b184}
+
+
+Retrieve one character from the USART1 Retrieve one character from the USART. This function will wait until there is a character in the USART RX buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 158 of file usart.c.\hypertarget{front__panel_2usart_8c_86add9375c019696ca7631ee20f2d6d6}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart1\_\-receive\_\-loopback@{usart1\_\-receive\_\-loopback}}
+\index{usart1\_\-receive\_\-loopback@{usart1\_\-receive\_\-loopback}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart1\_\-receive\_\-loopback}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart1\_\-receive\_\-loopback (void)}}
+\label{front__panel_2usart_8c_86add9375c019696ca7631ee20f2d6d6}
+
+
+The USART1 recieve loopback This function does wait for a character in the RX buffer and returns it to the transmit buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 170 of file usart.c.
+
+Referenced by init\_\-usart\_\-computer(), and main().\hypertarget{front__panel_2usart_8c_2dc2350f52fc5e6d4579f6e24f477ab2}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart1\_\-sendstring@{usart1\_\-sendstring}}
+\index{usart1\_\-sendstring@{usart1\_\-sendstring}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart1\_\-sendstring}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart1\_\-sendstring (char $\ast$ {\em data}, \/  unsigned char {\em length})}}
+\label{front__panel_2usart_8c_2dc2350f52fc5e6d4579f6e24f477ab2}
+
+
+Send a string of characters to the USART1 Send a string of characters to the USART used for the communication bus. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]The string of characters you wish to send \item[{\em length}]The length of the string you wish to send \end{description}
+\end{Desc}
+
+
+Definition at line 145 of file usart.c.\hypertarget{front__panel_2usart_8c_e16b326eb2d237f0e2e6365254fb7387}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart1\_\-transmit@{usart1\_\-transmit}}
+\index{usart1\_\-transmit@{usart1\_\-transmit}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart1\_\-transmit}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart1\_\-transmit (char {\em data})}}
+\label{front__panel_2usart_8c_e16b326eb2d237f0e2e6365254fb7387}
+
+
+Send a character to the USART1 Send a single character to the USART used for the communication bus. 
+
+Send a character to the USART Send a single character to the USART used for the communication bus.
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]The character you want to send \end{description}
+\end{Desc}
+
+
+Definition at line 132 of file usart.c.
+
+Referenced by computer\_\-interface\_\-send\_\-data(), init\_\-usart\_\-computer(), ISR(), main(), usart1\_\-receive\_\-loopback(), and usart1\_\-sendstring().\hypertarget{front__panel_2usart_8c_737a455ab98e3eafc4f691fb77e5ddd5}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart3\_\-init@{usart3\_\-init}}
+\index{usart3\_\-init@{usart3\_\-init}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart3\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void usart3\_\-init (unsigned int {\em baudrate}, \/  unsigned char {\em stopbits})}}
+\label{front__panel_2usart_8c_737a455ab98e3eafc4f691fb77e5ddd5}
+
+
+Initiliaze the USART3 for the radio interface This function is used to initialize the USART which a baudrate that needs to be sent in as a parameter Use the baudrate settings specified in the ATMEGA2560 baudrate setting. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em baudrate}]The baudrate param from the ATMEGA2560 datasheet. \item[{\em stopbits}]The number of stopbits. \end{description}
+\end{Desc}
+
+
+Definition at line 197 of file usart.c.
+
+Referenced by radio\_\-interface\_\-init().\hypertarget{front__panel_2usart_8c_a9a6cf649ff75289fb3ca3d9114a47a2}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart3\_\-receive@{usart3\_\-receive}}
+\index{usart3\_\-receive@{usart3\_\-receive}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart3\_\-receive}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart3\_\-receive (void)}}
+\label{front__panel_2usart_8c_a9a6cf649ff75289fb3ca3d9114a47a2}
+
+
+Retrieve one character from the USART3 Retrieve one character from the USART. This function will wait until there is a character in the USART RX buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 243 of file usart.c.\hypertarget{front__panel_2usart_8c_cbb273d9217581fc0b6c38ad206237cd}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart3\_\-receive\_\-loopback@{usart3\_\-receive\_\-loopback}}
+\index{usart3\_\-receive\_\-loopback@{usart3\_\-receive\_\-loopback}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart3\_\-receive\_\-loopback}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart3\_\-receive\_\-loopback (void)}}
+\label{front__panel_2usart_8c_cbb273d9217581fc0b6c38ad206237cd}
+
+
+The USART3 recieve loopback This function does wait for a character in the RX buffer and returns it to the transmit buffer. 
+
+\begin{Desc}
+\item[Returns:]The character from the RX USART buffer \end{Desc}
+
+
+Definition at line 255 of file usart.c.
+
+References usart0\_\-transmit().\hypertarget{front__panel_2usart_8c_3c476e093c500e5dafb7b4677a98742b}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart3\_\-sendstring@{usart3\_\-sendstring}}
+\index{usart3\_\-sendstring@{usart3\_\-sendstring}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart3\_\-sendstring}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart3\_\-sendstring (char $\ast$ {\em data}, \/  unsigned char {\em length})}}
+\label{front__panel_2usart_8c_3c476e093c500e5dafb7b4677a98742b}
+
+
+Send a string of characters to the USART3 Send a string of characters to the USART used for the communication bus. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]The string of characters you wish to send \item[{\em length}]The length of the string you wish to send \end{description}
+\end{Desc}
+
+
+Definition at line 230 of file usart.c.
+
+References usart3\_\-transmit().\hypertarget{front__panel_2usart_8c_ef08b8e629ed117a8bf7262a83548ea2}{
+\index{front\_\-panel/usart.c@{front\_\-panel/usart.c}!usart3\_\-transmit@{usart3\_\-transmit}}
+\index{usart3\_\-transmit@{usart3\_\-transmit}!front_panel/usart.c@{front\_\-panel/usart.c}}
+\subsubsection[{usart3\_\-transmit}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char usart3\_\-transmit (char {\em data})}}
+\label{front__panel_2usart_8c_ef08b8e629ed117a8bf7262a83548ea2}
+
+
+Send a character to the USART3 Send a single character to the USART used for the communication bus. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]The character you want to send \end{description}
+\end{Desc}
+
+
+Definition at line 217 of file usart.c.
+
+Referenced by ISR(), radio\_\-poll\_\-status(), and usart3\_\-sendstring().

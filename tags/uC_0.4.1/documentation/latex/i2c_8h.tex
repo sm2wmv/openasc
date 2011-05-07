@@ -1,0 +1,285 @@
+\hypertarget{i2c_8h}{
+\section{i2c.h File Reference}
+\label{i2c_8h}\index{i2c.h@{i2c.h}}
+}
+I2C interface using AVR Two-Wire Interface (TWI) hardware.  
+
+
+{\tt \#include \char`\"{}global.h\char`\"{}}\par
+{\tt \#include \char`\"{}i2cconf.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{i2c_8h_8ec630c2063d0353c53d140b99382d80}{
+\#define \textbf{TW\_\-START}~0x08}
+\label{i2c_8h_8ec630c2063d0353c53d140b99382d80}
+
+\item 
+\hypertarget{i2c_8h_8dce3e4b7e35355a8add9ed63d1fa3ab}{
+\#define \textbf{TW\_\-REP\_\-START}~0x10}
+\label{i2c_8h_8dce3e4b7e35355a8add9ed63d1fa3ab}
+
+\item 
+\hypertarget{i2c_8h_85cae14b4190042335d25ed9a1b72369}{
+\#define \textbf{TW\_\-MT\_\-SLA\_\-ACK}~0x18}
+\label{i2c_8h_85cae14b4190042335d25ed9a1b72369}
+
+\item 
+\hypertarget{i2c_8h_ca64b973c51d6548a962c1d7cae0663e}{
+\#define \textbf{TW\_\-MT\_\-SLA\_\-NACK}~0x20}
+\label{i2c_8h_ca64b973c51d6548a962c1d7cae0663e}
+
+\item 
+\hypertarget{i2c_8h_4c28186053b5298305b131ad3e1111f7}{
+\#define \textbf{TW\_\-MT\_\-DATA\_\-ACK}~0x28}
+\label{i2c_8h_4c28186053b5298305b131ad3e1111f7}
+
+\item 
+\hypertarget{i2c_8h_91c107a74d268f8578d866ed1bbbd4f3}{
+\#define \textbf{TW\_\-MT\_\-DATA\_\-NACK}~0x30}
+\label{i2c_8h_91c107a74d268f8578d866ed1bbbd4f3}
+
+\item 
+\hypertarget{i2c_8h_5959251c4bd80f48b5a029447d86adb3}{
+\#define \textbf{TW\_\-MT\_\-ARB\_\-LOST}~0x38}
+\label{i2c_8h_5959251c4bd80f48b5a029447d86adb3}
+
+\item 
+\hypertarget{i2c_8h_d85222308836bfbe099255662ffb510c}{
+\#define \textbf{TW\_\-MR\_\-ARB\_\-LOST}~0x38}
+\label{i2c_8h_d85222308836bfbe099255662ffb510c}
+
+\item 
+\hypertarget{i2c_8h_c16504b87d15d83b97bb0ce61577bb40}{
+\#define \textbf{TW\_\-MR\_\-SLA\_\-ACK}~0x40}
+\label{i2c_8h_c16504b87d15d83b97bb0ce61577bb40}
+
+\item 
+\hypertarget{i2c_8h_655325b6f8a1818103b126cc3774d8e8}{
+\#define \textbf{TW\_\-MR\_\-SLA\_\-NACK}~0x48}
+\label{i2c_8h_655325b6f8a1818103b126cc3774d8e8}
+
+\item 
+\hypertarget{i2c_8h_3c8c79b2ecb8d22358839890161cc33b}{
+\#define \textbf{TW\_\-MR\_\-DATA\_\-ACK}~0x50}
+\label{i2c_8h_3c8c79b2ecb8d22358839890161cc33b}
+
+\item 
+\hypertarget{i2c_8h_532f0ffa12f684346c74a5cbec15950e}{
+\#define \textbf{TW\_\-MR\_\-DATA\_\-NACK}~0x58}
+\label{i2c_8h_532f0ffa12f684346c74a5cbec15950e}
+
+\item 
+\hypertarget{i2c_8h_0ecd2ca38d00279194460e65028a0533}{
+\#define \textbf{TW\_\-ST\_\-SLA\_\-ACK}~0xA8}
+\label{i2c_8h_0ecd2ca38d00279194460e65028a0533}
+
+\item 
+\hypertarget{i2c_8h_1064659d0758206d43d69cd582d1f5da}{
+\#define \textbf{TW\_\-ST\_\-ARB\_\-LOST\_\-SLA\_\-ACK}~0xB0}
+\label{i2c_8h_1064659d0758206d43d69cd582d1f5da}
+
+\item 
+\hypertarget{i2c_8h_2de84bf7cbf1cd7ae43a6e0f0eeca719}{
+\#define \textbf{TW\_\-ST\_\-DATA\_\-ACK}~0xB8}
+\label{i2c_8h_2de84bf7cbf1cd7ae43a6e0f0eeca719}
+
+\item 
+\hypertarget{i2c_8h_cc1837317b1d45e9bb49b8e83cfe6d42}{
+\#define \textbf{TW\_\-ST\_\-DATA\_\-NACK}~0xC0}
+\label{i2c_8h_cc1837317b1d45e9bb49b8e83cfe6d42}
+
+\item 
+\hypertarget{i2c_8h_f92d03d0051d47f5b9375f0ef9293d64}{
+\#define \textbf{TW\_\-ST\_\-LAST\_\-DATA}~0xC8}
+\label{i2c_8h_f92d03d0051d47f5b9375f0ef9293d64}
+
+\item 
+\hypertarget{i2c_8h_9e9e761d674793772e6b3f77fc9d7fab}{
+\#define \textbf{TW\_\-SR\_\-SLA\_\-ACK}~0x60}
+\label{i2c_8h_9e9e761d674793772e6b3f77fc9d7fab}
+
+\item 
+\hypertarget{i2c_8h_1c3ed5ed345d17972002b9fd07f4f829}{
+\#define \textbf{TW\_\-SR\_\-ARB\_\-LOST\_\-SLA\_\-ACK}~0x68}
+\label{i2c_8h_1c3ed5ed345d17972002b9fd07f4f829}
+
+\item 
+\hypertarget{i2c_8h_6eb3b4230887a8b73d7787ff231ea911}{
+\#define \textbf{TW\_\-SR\_\-GCALL\_\-ACK}~0x70}
+\label{i2c_8h_6eb3b4230887a8b73d7787ff231ea911}
+
+\item 
+\hypertarget{i2c_8h_4756103341a65e0e3889996cdf15b2fa}{
+\#define \textbf{TW\_\-SR\_\-ARB\_\-LOST\_\-GCALL\_\-ACK}~0x78}
+\label{i2c_8h_4756103341a65e0e3889996cdf15b2fa}
+
+\item 
+\hypertarget{i2c_8h_c50f1a59c74c3109d4913dbecfb472c1}{
+\#define \textbf{TW\_\-SR\_\-DATA\_\-ACK}~0x80}
+\label{i2c_8h_c50f1a59c74c3109d4913dbecfb472c1}
+
+\item 
+\hypertarget{i2c_8h_6c0fa701fe9d96b0b7df29e8af154f94}{
+\#define \textbf{TW\_\-SR\_\-DATA\_\-NACK}~0x88}
+\label{i2c_8h_6c0fa701fe9d96b0b7df29e8af154f94}
+
+\item 
+\hypertarget{i2c_8h_4abaad098fd92bed63719ffb01802c8d}{
+\#define \textbf{TW\_\-SR\_\-GCALL\_\-DATA\_\-ACK}~0x90}
+\label{i2c_8h_4abaad098fd92bed63719ffb01802c8d}
+
+\item 
+\hypertarget{i2c_8h_42234278f9b01b9af75dbbc617b97890}{
+\#define \textbf{TW\_\-SR\_\-GCALL\_\-DATA\_\-NACK}~0x98}
+\label{i2c_8h_42234278f9b01b9af75dbbc617b97890}
+
+\item 
+\hypertarget{i2c_8h_98d2570f965790884cf1774e716ec629}{
+\#define \textbf{TW\_\-SR\_\-STOP}~0xA0}
+\label{i2c_8h_98d2570f965790884cf1774e716ec629}
+
+\item 
+\hypertarget{i2c_8h_bcff70642634cb53e9d8e93872f70c90}{
+\#define \textbf{TW\_\-NO\_\-INFO}~0xF8}
+\label{i2c_8h_bcff70642634cb53e9d8e93872f70c90}
+
+\item 
+\hypertarget{i2c_8h_90d373160b1d0a3f0c454af83c57df71}{
+\#define \textbf{TW\_\-BUS\_\-ERROR}~0x00}
+\label{i2c_8h_90d373160b1d0a3f0c454af83c57df71}
+
+\item 
+\hypertarget{i2c_8h_81c7d817d47c3125f0c7104a250761e1}{
+\#define \textbf{TWCR\_\-CMD\_\-MASK}~0x0F}
+\label{i2c_8h_81c7d817d47c3125f0c7104a250761e1}
+
+\item 
+\hypertarget{i2c_8h_496d253a5d6725e74ab16d67d99eb6ca}{
+\#define \textbf{TWSR\_\-STATUS\_\-MASK}~0xF8}
+\label{i2c_8h_496d253a5d6725e74ab16d67d99eb6ca}
+
+\item 
+\hypertarget{i2c_8h_57d0c95ccd7c129288743e9674a9e96d}{
+\#define \textbf{I2C\_\-OK}~0x00}
+\label{i2c_8h_57d0c95ccd7c129288743e9674a9e96d}
+
+\item 
+\hypertarget{i2c_8h_c923905ff3112b396d5587df28ac1cea}{
+\#define \textbf{I2C\_\-ERROR\_\-NODEV}~0x01}
+\label{i2c_8h_c923905ff3112b396d5587df28ac1cea}
+
+\end{CompactItemize}
+\subsection*{Enumerations}
+\begin{CompactItemize}
+\item 
+enum \textbf{eI2cStateType} \{ \par
+\textbf{I2C\_\-IDLE} =  0, 
+\textbf{I2C\_\-BUSY} =  1, 
+\textbf{I2C\_\-MASTER\_\-TX} =  2, 
+\textbf{I2C\_\-MASTER\_\-RX} =  3, 
+\par
+\textbf{I2C\_\-SLAVE\_\-TX} =  4, 
+\textbf{I2C\_\-SLAVE\_\-RX} =  5
+ \}
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{i2c_8h_5730d9445429351b9f750084c5cb5aae}{
+void \hyperlink{i2c_8h_5730d9445429351b9f750084c5cb5aae}{i2c\_\-init} (void)}
+\label{i2c_8h_5730d9445429351b9f750084c5cb5aae}
+
+\begin{CompactList}\small\item\em Initialize I2C (TWI) interface. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_76e6337a028e244f7ec422d9a183c4e5}{
+void \hyperlink{i2c_8h_76e6337a028e244f7ec422d9a183c4e5}{i2cSetBitrate} (unsigned int bitrateKHz)}
+\label{i2c_8h_76e6337a028e244f7ec422d9a183c4e5}
+
+\begin{CompactList}\small\item\em Set the I2C transaction bitrate (in KHz). \item\end{CompactList}\item 
+\hypertarget{i2c_8h_0ba254a77965df9f7def3a600821fba9}{
+void \hyperlink{i2c_8h_0ba254a77965df9f7def3a600821fba9}{i2cSetLocalDeviceAddr} (unsigned char deviceAddr, unsigned char genCallEn)}
+\label{i2c_8h_0ba254a77965df9f7def3a600821fba9}
+
+\begin{CompactList}\small\item\em Set the local (AVR processor's) I2C device address. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_dfd7495b35629ffec15ed245106ee4fb}{
+void \hyperlink{i2c_8h_dfd7495b35629ffec15ed245106ee4fb}{i2cSetSlaveReceiveHandler} (void($\ast$i2cSlaveRx\_\-func)(unsigned char receiveDataLength, unsigned char $\ast$recieveData))}
+\label{i2c_8h_dfd7495b35629ffec15ed245106ee4fb}
+
+\begin{CompactList}\small\item\em Set the user function which handles receiving (incoming) data as a slave. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_8d7320d952d93dd77a4b837b3c66e4e8}{
+void \hyperlink{i2c_8h_8d7320d952d93dd77a4b837b3c66e4e8}{i2cSetSlaveTransmitHandler} (unsigned char($\ast$i2cSlaveTx\_\-func)(unsigned char transmitDataLengthMax, unsigned char $\ast$transmitData))}
+\label{i2c_8h_8d7320d952d93dd77a4b837b3c66e4e8}
+
+\begin{CompactList}\small\item\em Set the user function which handles transmitting (outgoing) data as a slave. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_95c4ba205513049cec14f6b6ece74e26}{
+void \hyperlink{i2c_8h_95c4ba205513049cec14f6b6ece74e26}{i2cSendStart} (void)}
+\label{i2c_8h_95c4ba205513049cec14f6b6ece74e26}
+
+\begin{CompactList}\small\item\em Send an I2C start condition in Master mode. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_247f5bc08e93acd289dc2da561e7df86}{
+void \hyperlink{i2c_8h_247f5bc08e93acd289dc2da561e7df86}{i2cSendStop} (void)}
+\label{i2c_8h_247f5bc08e93acd289dc2da561e7df86}
+
+\begin{CompactList}\small\item\em Send an I2C stop condition in Master mode. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_d8fed02ed6b35c47bae40e3d416da3b6}{
+void \hyperlink{i2c_8h_d8fed02ed6b35c47bae40e3d416da3b6}{i2cWaitForComplete} (void)}
+\label{i2c_8h_d8fed02ed6b35c47bae40e3d416da3b6}
+
+\begin{CompactList}\small\item\em Wait for current I2C operation to complete. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_9496352bbfeb53c358f4dfd053497f33}{
+void \hyperlink{i2c_8h_9496352bbfeb53c358f4dfd053497f33}{i2cSendByte} (unsigned char data)}
+\label{i2c_8h_9496352bbfeb53c358f4dfd053497f33}
+
+\begin{CompactList}\small\item\em Send an (address$|$R/W) combination or a data byte over I2C. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_8aad5acbeb8f87e48f68a462f17cff8e}{
+void \hyperlink{i2c_8h_8aad5acbeb8f87e48f68a462f17cff8e}{i2cReceiveByte} (unsigned char ackFlag)}
+\label{i2c_8h_8aad5acbeb8f87e48f68a462f17cff8e}
+
+\begin{CompactList}\small\item\em Receive a data byte over I2C. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_e8c8d7280f22d6f5debfc05ee587c4a0}{
+unsigned char \hyperlink{i2c_8h_e8c8d7280f22d6f5debfc05ee587c4a0}{i2cGetReceivedByte} (void)}
+\label{i2c_8h_e8c8d7280f22d6f5debfc05ee587c4a0}
+
+\begin{CompactList}\small\item\em Pick up the data that was received with \hyperlink{i2c_8c_8aad5acbeb8f87e48f68a462f17cff8e}{i2cReceiveByte()}. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_0fa890a3316094b53fc4abd655d65cc5}{
+unsigned char \hyperlink{i2c_8h_0fa890a3316094b53fc4abd655d65cc5}{i2cGetStatus} (void)}
+\label{i2c_8h_0fa890a3316094b53fc4abd655d65cc5}
+
+\begin{CompactList}\small\item\em Get current I2c bus status from TWSR. \item\end{CompactList}\item 
+\hypertarget{i2c_8h_7f2f47f78bdc73cd105287228915a889}{
+void \hyperlink{i2c_8h_7f2f47f78bdc73cd105287228915a889}{i2cMasterSend} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8h_7f2f47f78bdc73cd105287228915a889}
+
+\begin{CompactList}\small\item\em send I2C data to a device on the bus \item\end{CompactList}\item 
+\hypertarget{i2c_8h_eb98a4159704996e6510169fb7489cb4}{
+void \hyperlink{i2c_8h_eb98a4159704996e6510169fb7489cb4}{i2cMasterReceive} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8h_eb98a4159704996e6510169fb7489cb4}
+
+\begin{CompactList}\small\item\em receive I2C data from a device on the bus \item\end{CompactList}\item 
+\hypertarget{i2c_8h_9d89fe409cdca325571d3588b1607c2b}{
+unsigned char \hyperlink{i2c_8h_9d89fe409cdca325571d3588b1607c2b}{i2cMasterSendNI} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8h_9d89fe409cdca325571d3588b1607c2b}
+
+\begin{CompactList}\small\item\em send I2C data to a device on the bus (non-interrupt based) \item\end{CompactList}\item 
+\hypertarget{i2c_8h_e2c3a1a05c77dd5641cedf073fc67599}{
+unsigned char \hyperlink{i2c_8h_e2c3a1a05c77dd5641cedf073fc67599}{i2cMasterReceiveNI} (unsigned char deviceAddr, unsigned char length, unsigned char $\ast$data)}
+\label{i2c_8h_e2c3a1a05c77dd5641cedf073fc67599}
+
+\begin{CompactList}\small\item\em receive I2C data from a device on the bus (non-interrupt based) \item\end{CompactList}\item 
+\hypertarget{i2c_8h_d890542992e78f23dcd3307e1fd1411c}{
+eI2cStateType \hyperlink{i2c_8h_d890542992e78f23dcd3307e1fd1411c}{i2cGetState} (void)}
+\label{i2c_8h_d890542992e78f23dcd3307e1fd1411c}
+
+\begin{CompactList}\small\item\em Get the current high-level state of the I2C interface. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+I2C interface using AVR Two-Wire Interface (TWI) hardware. 
+
+\begin{Desc}
+\item[Author:]Pascal Stang and Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2008-04-13 \end{Desc}
+
+
+Definition in file \hyperlink{i2c_8h-source}{i2c.h}.

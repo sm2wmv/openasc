@@ -1,0 +1,142 @@
+\hypertarget{menu_8h}{
+\section{front\_\-panel/menu.h File Reference}
+\label{menu_8h}\index{front\_\-panel/menu.h@{front\_\-panel/menu.h}}
+}
+Menu system.  
+
+
+{\tt \#include $<$avr/pgmspace.h$>$}\par
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+struct \hyperlink{structstruct__menu__option}{struct\_\-menu\_\-option}
+\begin{CompactList}\small\item\em Struct of a menu option. \item\end{CompactList}\item 
+struct \hyperlink{structstruct__menu__text}{struct\_\-menu\_\-text}
+\begin{CompactList}\small\item\em Menu text structs. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{menu_8h_514c1d6bd8ba15f4a600523b59dcc934}{
+\#define \hyperlink{menu_8h_514c1d6bd8ba15f4a600523b59dcc934}{MENU\_\-OPTION\_\-TYPE\_\-NORMAL}~0}
+\label{menu_8h_514c1d6bd8ba15f4a600523b59dcc934}
+
+\begin{CompactList}\small\item\em Menu type option normal, regular choices. \item\end{CompactList}\item 
+\hypertarget{menu_8h_74de97c9e72eb130ce4571ed9baae400}{
+\#define \hyperlink{menu_8h_74de97c9e72eb130ce4571ed9baae400}{MENU\_\-OPTION\_\-TYPE\_\-SCROLL\_\-NUMBERS}~1}
+\label{menu_8h_74de97c9e72eb130ce4571ed9baae400}
+
+\begin{CompactList}\small\item\em Menu type scroll numbers, for example increase/decrease a value. \item\end{CompactList}\item 
+\hypertarget{menu_8h_389c243167cbb2b96413c97c781b1a78}{
+\#define \hyperlink{menu_8h_389c243167cbb2b96413c97c781b1a78}{MENU\_\-OPTION\_\-TYPE\_\-NONE}~99}
+\label{menu_8h_389c243167cbb2b96413c97c781b1a78}
+
+\begin{CompactList}\small\item\em No menu option. \item\end{CompactList}\item 
+\hypertarget{menu_8h_91bf75f30c8aa245093fcf9c4d18c263}{
+\#define \hyperlink{menu_8h_91bf75f30c8aa245093fcf9c4d18c263}{MENU\_\-POS\_\-BAND\_\-MODE}~0}
+\label{menu_8h_91bf75f30c8aa245093fcf9c4d18c263}
+
+\begin{CompactList}\small\item\em Show band change mode, auto or manual. \item\end{CompactList}\item 
+\hypertarget{menu_8h_769a1edabc15b0b393a77f8c91cf688d}{
+\#define \hyperlink{menu_8h_769a1edabc15b0b393a77f8c91cf688d}{MENU\_\-POS\_\-RADIO\_\-PTT}~1}
+\label{menu_8h_769a1edabc15b0b393a77f8c91cf688d}
+
+\begin{CompactList}\small\item\em Show the radio output ptt ON/OFF. \item\end{CompactList}\item 
+\hypertarget{menu_8h_b7e85126ae7bef81276c7a5e94f5bde2}{
+\#define \hyperlink{menu_8h_b7e85126ae7bef81276c7a5e94f5bde2}{MENU\_\-POS\_\-AMP\_\-PTT}~2}
+\label{menu_8h_b7e85126ae7bef81276c7a5e94f5bde2}
+
+\begin{CompactList}\small\item\em Show the amplifier output ptt ON/OFF. \item\end{CompactList}\item 
+\hypertarget{menu_8h_78b7e87b3deb051504c0beaa7f42a2ce}{
+\#define \hyperlink{menu_8h_78b7e87b3deb051504c0beaa7f42a2ce}{MENU\_\-POS\_\-BACKLIGHT\_\-LEVEL}~3}
+\label{menu_8h_78b7e87b3deb051504c0beaa7f42a2ce}
+
+\begin{CompactList}\small\item\em Change the backlight level of the LCD. \item\end{CompactList}\item 
+\hypertarget{menu_8h_3bc0cb0d0340a1526c42e7be53d3fe6c}{
+\#define \hyperlink{menu_8h_3bc0cb0d0340a1526c42e7be53d3fe6c}{MENU\_\-POS\_\-SHOW\_\-ACTIVITY}~4}
+\label{menu_8h_3bc0cb0d0340a1526c42e7be53d3fe6c}
+
+\begin{CompactList}\small\item\em Show network actvitity. \item\end{CompactList}\item 
+\hypertarget{menu_8h_391d2c7b7bac25f78d1a9b911da6d8e8}{
+\#define \hyperlink{menu_8h_391d2c7b7bac25f78d1a9b911da6d8e8}{MENU\_\-POS\_\-MISC}~5}
+\label{menu_8h_391d2c7b7bac25f78d1a9b911da6d8e8}
+
+\begin{CompactList}\small\item\em Show MISC menu. \item\end{CompactList}\item 
+\hypertarget{menu_8h_c9d43bc8518f3daa1f932e265d1e3442}{
+\#define \hyperlink{menu_8h_c9d43bc8518f3daa1f932e265d1e3442}{MENU\_\-POS\_\-SHOW\_\-ERRORS}~6}
+\label{menu_8h_c9d43bc8518f3daa1f932e265d1e3442}
+
+\begin{CompactList}\small\item\em Show the error menu. \item\end{CompactList}\item 
+\hypertarget{menu_8h_eead942297cdbdfe509b6251ad7515db}{
+\#define \hyperlink{menu_8h_eead942297cdbdfe509b6251ad7515db}{MENU\_\-SCROLL\_\-UP}~0}
+\label{menu_8h_eead942297cdbdfe509b6251ad7515db}
+
+\begin{CompactList}\small\item\em Menu flag scroll up. \item\end{CompactList}\item 
+\hypertarget{menu_8h_158ea1f2b4e05ef932af64171eacc58b}{
+\#define \hyperlink{menu_8h_158ea1f2b4e05ef932af64171eacc58b}{MENU\_\-SCROLL\_\-DOWN}~1}
+\label{menu_8h_158ea1f2b4e05ef932af64171eacc58b}
+
+\begin{CompactList}\small\item\em Menu flag scroll down. \item\end{CompactList}\item 
+\hypertarget{menu_8h_9231bd742ab812fc70144216dd75a91b}{
+\#define \hyperlink{menu_8h_9231bd742ab812fc70144216dd75a91b}{MENU\_\-BUTTON\_\-PRESSED}~2}
+\label{menu_8h_9231bd742ab812fc70144216dd75a91b}
+
+\begin{CompactList}\small\item\em Menu flag button pressed. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{menu_8h_82d0bc5ed88880b96974496b879fa22b}{
+void \hyperlink{menu_8h_82d0bc5ed88880b96974496b879fa22b}{menu\_\-show} (void)}
+\label{menu_8h_82d0bc5ed88880b96974496b879fa22b}
+
+\begin{CompactList}\small\item\em Shows the menu. \item\end{CompactList}\item 
+void \hyperlink{menu_8h_ab3a4e9c95a954ba8155fd54eaeda6f4}{menu\_\-action} (unsigned char menu\_\-action\_\-type)
+\item 
+\hypertarget{menu_8h_06928afa5c7f6b2572306f21cd7d2d31}{
+void \hyperlink{menu_8h_06928afa5c7f6b2572306f21cd7d2d31}{menu\_\-init} (void)}
+\label{menu_8h_06928afa5c7f6b2572306f21cd7d2d31}
+
+\begin{CompactList}\small\item\em Initialize the menu system. \item\end{CompactList}\item 
+\hypertarget{menu_8h_214b6d30aba6a9bd92470ca0047d524c}{
+void \hyperlink{menu_8h_214b6d30aba6a9bd92470ca0047d524c}{menu\_\-reset} (void)}
+\label{menu_8h_214b6d30aba6a9bd92470ca0047d524c}
+
+\begin{CompactList}\small\item\em Function will reset to init values, like menu level etc. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Menu system. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/menu.h " 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{menu_8h-source}{menu.h}.
+
+\subsection{Function Documentation}
+\hypertarget{menu_8h_ab3a4e9c95a954ba8155fd54eaeda6f4}{
+\index{menu.h@{menu.h}!menu\_\-action@{menu\_\-action}}
+\index{menu\_\-action@{menu\_\-action}!menu.h@{menu.h}}
+\subsubsection[{menu\_\-action}]{\setlength{\rightskip}{0pt plus 5cm}void menu\_\-action (unsigned char {\em menu\_\-action\_\-type})}}
+\label{menu_8h_ab3a4e9c95a954ba8155fd54eaeda6f4}
+
+
+This function will handle an menu action \char`\"{}event\char`\"{} \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em menu\_\-action\_\-type}]Which action did occur? \end{description}
+\end{Desc}
+
+
+Definition at line 173 of file menu.c.
+
+References struct\_\-runtime\_\-settings::amplifier\_\-ptt\_\-output, struct\_\-runtime\_\-settings::band\_\-change\_\-mode, BAND\_\-CHANGE\_\-MODE\_\-AUTO, BAND\_\-CHANGE\_\-MODE\_\-MANUAL, bootloader\_\-start, current\_\-menu\_\-level, current\_\-menu\_\-option\_\-selected, current\_\-menu\_\-pos, display\_\-set\_\-backlight(), event\_\-get\_\-errors(), event\_\-set\_\-error(), KNOB\_\-FUNCTION\_\-AUTO, struct\_\-runtime\_\-settings::lcd\_\-backlight\_\-value, led\_\-set\_\-error(), LED\_\-STATE\_\-OFF, MENU\_\-BUTTON\_\-PRESSED, MENU\_\-OPTION\_\-TYPE\_\-NORMAL, MENU\_\-OPTION\_\-TYPE\_\-SCROLL\_\-NUMBERS, MENU\_\-OPTIONS, MENU\_\-POS\_\-AMP\_\-PTT, MENU\_\-POS\_\-BACKLIGHT\_\-LEVEL, MENU\_\-POS\_\-BAND\_\-MODE, MENU\_\-POS\_\-MISC, MENU\_\-POS\_\-RADIO\_\-PTT, MENU\_\-POS\_\-SHOW\_\-ERRORS, MENU\_\-SCROLL\_\-DOWN, MENU\_\-SCROLL\_\-UP, menu\_\-show(), NR\_\-OF\_\-ERRORS, struct\_\-runtime\_\-settings::radio\_\-ptt\_\-output, runtime\_\-settings, and set\_\-knob\_\-function().
+
+Referenced by event\_\-poll\_\-buttons(), event\_\-pulse\_\-sensor\_\-down(), and event\_\-pulse\_\-sensor\_\-up().

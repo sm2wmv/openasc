@@ -1,0 +1,527 @@
+\hypertarget{front__panel_2computer__interface_8c}{
+\section{front\_\-panel/computer\_\-interface.c File Reference}
+\label{front__panel_2computer__interface_8c}\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}}
+}
+Interface towards the computer.  
+
+
+{\tt \#include $<$avr/wdt.h$>$}\par
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include $<$avr/eeprom.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include \char`\"{}computer\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}radio\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}usart.h\char`\"{}}\par
+{\tt \#include \char`\"{}ds1307.h\char`\"{}}\par
+{\tt \#include \char`\"{}antenna\_\-ctrl.h\char`\"{}}\par
+{\tt \#include \char`\"{}eeprom.h\char`\"{}}\par
+{\tt \#include \char`\"{}led\_\-control.h\char`\"{}}\par
+{\tt \#include \char`\"{}sequencer.h\char`\"{}}\par
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+struct \hyperlink{structcomputer__comm__struct}{computer\_\-comm\_\-struct}
+\begin{CompactList}\small\item\em Computer interface communication struct. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2computer__interface_8c_177e760ecbd6138e6b316b679450701d}{
+\#define \hyperlink{front__panel_2computer__interface_8c_177e760ecbd6138e6b316b679450701d}{COMPUTER\_\-RX\_\-BUFFER\_\-LENGTH}~128}
+\label{front__panel_2computer__interface_8c_177e760ecbd6138e6b316b679450701d}
+
+\begin{CompactList}\small\item\em The length of the computer RX BUFFER. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_1fa763e0afc3151e5ad7f4ae506fba54}{
+\#define \hyperlink{front__panel_2computer__interface_8c_1fa763e0afc3151e5ad7f4ae506fba54}{COMPUTER\_\-TX\_\-BUFFER\_\-LENGTH}~20}
+\label{front__panel_2computer__interface_8c_1fa763e0afc3151e5ad7f4ae506fba54}
+
+\begin{CompactList}\small\item\em The length of the computer RX BUFFER. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_c5cab13bdc854d2eda353362215304b1}{
+\#define \hyperlink{front__panel_2computer__interface_8c_c5cab13bdc854d2eda353362215304b1}{COMPUTER\_\-INTERFACE\_\-FIXED\_\-SIZE}~5}
+\label{front__panel_2computer__interface_8c_c5cab13bdc854d2eda353362215304b1}
+
+\begin{CompactList}\small\item\em The fixed size of the computer interface structure (PREAMBLE, POSTAMBLE etc). \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_f42b42a9982edeb88e6f535e87790200}{
+\#define \hyperlink{front__panel_2computer__interface_8c_f42b42a9982edeb88e6f535e87790200}{COMPUTER\_\-COMM\_\-PREAMBLE}~0xFE}
+\label{front__panel_2computer__interface_8c_f42b42a9982edeb88e6f535e87790200}
+
+\begin{CompactList}\small\item\em The preamble of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_79d277377da6e2a3ef7fcdfa6431e629}{
+\#define \hyperlink{front__panel_2computer__interface_8c_79d277377da6e2a3ef7fcdfa6431e629}{COMPUTER\_\-COMM\_\-POSTAMBLE}~0xFD}
+\label{front__panel_2computer__interface_8c_79d277377da6e2a3ef7fcdfa6431e629}
+
+\begin{CompactList}\small\item\em The postamble of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_78784130f5b44761a3802457eb54fd99}{
+\#define \hyperlink{front__panel_2computer__interface_8c_78784130f5b44761a3802457eb54fd99}{COMPUTER\_\-COMM\_\-ACK}~0xFA}
+\label{front__panel_2computer__interface_8c_78784130f5b44761a3802457eb54fd99}
+
+\begin{CompactList}\small\item\em The serial acknowledge of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_81138c4ab5f390454012ebc94c4272e0}{
+\#define \hyperlink{front__panel_2computer__interface_8c_81138c4ab5f390454012ebc94c4272e0}{COMPUTER\_\-COMM\_\-NACK}~0xFB}
+\label{front__panel_2computer__interface_8c_81138c4ab5f390454012ebc94c4272e0}
+
+\begin{CompactList}\small\item\em The serial NOT acknowledge of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_90dd8d00f4e37302f43125f471a5bc4e}{
+\#define \hyperlink{front__panel_2computer__interface_8c_90dd8d00f4e37302f43125f471a5bc4e}{COMPUTER\_\-COMM\_\-FLAG\_\-SETUP\_\-MODE}~0}
+\label{front__panel_2computer__interface_8c_90dd8d00f4e37302f43125f471a5bc4e}
+
+\begin{CompactList}\small\item\em Flag to see if the setup mode is activated. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_3328b5d8fc749a88780f912d8865ca59}{
+\#define \hyperlink{front__panel_2computer__interface_8c_3328b5d8fc749a88780f912d8865ca59}{COMPUTER\_\-COMM\_\-FLAG\_\-FOUND\_\-PREAMBLE}~1}
+\label{front__panel_2computer__interface_8c_3328b5d8fc749a88780f912d8865ca59}
+
+\begin{CompactList}\small\item\em Flag to see if the preamble was found. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_b44ef2de50440f855fcef690956e56b2}{
+\#define \hyperlink{front__panel_2computer__interface_8c_b44ef2de50440f855fcef690956e56b2}{COMPUTER\_\-COMM\_\-FLAG\_\-DATA\_\-IN\_\-RX\_\-BUF}~2}
+\label{front__panel_2computer__interface_8c_b44ef2de50440f855fcef690956e56b2}
+
+\begin{CompactList}\small\item\em Flag to see that there is data in the rx buffer. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_0eae76320a420903eb89464a5a1c501d}{
+\#define \hyperlink{front__panel_2computer__interface_8c_0eae76320a420903eb89464a5a1c501d}{COMPUTER\_\-COMM\_\-ENTER\_\-BOOTLOADER}~0x01}
+\label{front__panel_2computer__interface_8c_0eae76320a420903eb89464a5a1c501d}
+
+\begin{CompactList}\small\item\em Command to force the openASC box into bootloader mode. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_062e9b952b451478df6d63fe3b028bb3}{
+\#define \hyperlink{front__panel_2computer__interface_8c_062e9b952b451478df6d63fe3b028bb3}{CTRL\_\-REBOOT}~0x02}
+\label{front__panel_2computer__interface_8c_062e9b952b451478df6d63fe3b028bb3}
+
+\begin{CompactList}\small\item\em CTRL command: Reboot the device. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_fc87eaa9410ebcd2bd39c9312915533d}{
+\#define \hyperlink{front__panel_2computer__interface_8c_fc87eaa9410ebcd2bd39c9312915533d}{CTRL\_\-GET\_\-FIRMWARE\_\-REV}~0x03}
+\label{front__panel_2computer__interface_8c_fc87eaa9410ebcd2bd39c9312915533d}
+
+\begin{CompactList}\small\item\em CTRL command: Retrieve the firmware revision. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_92810a0151446979268cad866b6d42fd}{
+\#define \hyperlink{front__panel_2computer__interface_8c_92810a0151446979268cad866b6d42fd}{CTRL\_\-DONE}~0x04}
+\label{front__panel_2computer__interface_8c_92810a0151446979268cad866b6d42fd}
+
+\begin{CompactList}\small\item\em This function just replies with the same command, this is so we can see when something has been finished. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_d30e736542d197042f911c28d17d66fa}{
+\#define \hyperlink{front__panel_2computer__interface_8c_d30e736542d197042f911c28d17d66fa}{CTRL\_\-SET\_\-TIME}~0x10}
+\label{front__panel_2computer__interface_8c_d30e736542d197042f911c28d17d66fa}
+
+\begin{CompactList}\small\item\em CTRL section: Set the time of the realtime clock. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_2de6c9d4ccfc714bc352479fb0aa5fd6}{
+\#define \hyperlink{front__panel_2computer__interface_8c_2de6c9d4ccfc714bc352479fb0aa5fd6}{CTRL\_\-SET\_\-ANT\_\-DATA}~0x11}
+\label{front__panel_2computer__interface_8c_2de6c9d4ccfc714bc352479fb0aa5fd6}
+
+\begin{CompactList}\small\item\em CTRL section: Set the TX antenna settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_59f4474df9c65190f7f72115acb0ac83}{
+\#define \hyperlink{front__panel_2computer__interface_8c_59f4474df9c65190f7f72115acb0ac83}{CTRL\_\-CREATE\_\-EEPROM\_\-TABLE}~0x12}
+\label{front__panel_2computer__interface_8c_59f4474df9c65190f7f72115acb0ac83}
+
+\begin{CompactList}\small\item\em CTRL section: Create an EEPROM table. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_6e92a57a0ad0979e16b19a0a0e697e49}{
+\#define \hyperlink{front__panel_2computer__interface_8c_6e92a57a0ad0979e16b19a0a0e697e49}{CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA}~0x13}
+\label{front__panel_2computer__interface_8c_6e92a57a0ad0979e16b19a0a0e697e49}
+
+\begin{CompactList}\small\item\em CTRL section: Set the RX antenna settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_0879e4540f3dcd29cc0f0f0691238789}{
+\#define \hyperlink{front__panel_2computer__interface_8c_0879e4540f3dcd29cc0f0f0691238789}{CTRL\_\-SET\_\-RADIO\_\-SETTINGS}~0x14}
+\label{front__panel_2computer__interface_8c_0879e4540f3dcd29cc0f0f0691238789}
+
+\begin{CompactList}\small\item\em CTRL section: Set the radio settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_e9a18ca119ab4b5c02abdddbfb60f96c}{
+\#define \hyperlink{front__panel_2computer__interface_8c_e9a18ca119ab4b5c02abdddbfb60f96c}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS}~0x15}
+\label{front__panel_2computer__interface_8c_e9a18ca119ab4b5c02abdddbfb60f96c}
+
+\begin{CompactList}\small\item\em CTRL section: Set the device settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_e3bc81ebb80b9db3f0d9466f4a56debe}{
+\#define \hyperlink{front__panel_2computer__interface_8c_e3bc81ebb80b9db3f0d9466f4a56debe}{CTRL\_\-SET\_\-BAND\_\-DATA}~0x16}
+\label{front__panel_2computer__interface_8c_e3bc81ebb80b9db3f0d9466f4a56debe}
+
+\begin{CompactList}\small\item\em CTRL section: Set the band data settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_95f6ea8459dfe67c5336cc802ec0a78a}{
+\#define \hyperlink{front__panel_2computer__interface_8c_95f6ea8459dfe67c5336cc802ec0a78a}{CTRL\_\-SET\_\-EXT\_\-INPUT}~0x17}
+\label{front__panel_2computer__interface_8c_95f6ea8459dfe67c5336cc802ec0a78a}
+
+\begin{CompactList}\small\item\em CTRL section: Set the external input settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_959952233d31663e4c8a18e826dbe86c}{
+\#define \hyperlink{front__panel_2computer__interface_8c_959952233d31663e4c8a18e826dbe86c}{CTRL\_\-SET\_\-SEQUENCER\_\-SETTINGS}~0x18}
+\label{front__panel_2computer__interface_8c_959952233d31663e4c8a18e826dbe86c}
+
+\begin{CompactList}\small\item\em CTRL section: Set the sequencer settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_0181055c9ae0068635ccd40989c1039a}{
+\#define \hyperlink{front__panel_2computer__interface_8c_0181055c9ae0068635ccd40989c1039a}{CTRL\_\-SET\_\-RADIO\_\-SETTINGS\_\-SAVE}~0x01}
+\label{front__panel_2computer__interface_8c_0181055c9ae0068635ccd40989c1039a}
+
+\begin{CompactList}\small\item\em CTRL command: Save the radio settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_8ad135623cc0fe5a264d2218ce39254e}{
+\#define \hyperlink{front__panel_2computer__interface_8c_8ad135623cc0fe5a264d2218ce39254e}{CTRL\_\-SET\_\-RADIO\_\-SETTINGS\_\-ALL}~0x02}
+\label{front__panel_2computer__interface_8c_8ad135623cc0fe5a264d2218ce39254e}
+
+\begin{CompactList}\small\item\em CTRL command: Set all antenna settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_e5dcc2e5df3f8762a4abcaec16168aeb}{
+\#define \hyperlink{front__panel_2computer__interface_8c_e5dcc2e5df3f8762a4abcaec16168aeb}{CTRL\_\-SET\_\-ANT\_\-DATA\_\-SAVE}~0x01}
+\label{front__panel_2computer__interface_8c_e5dcc2e5df3f8762a4abcaec16168aeb}
+
+\begin{CompactList}\small\item\em CTRL command: Save the antenna information data to the EEPROM. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_758d58290635babe2cf53eed0f17272a}{
+\#define \hyperlink{front__panel_2computer__interface_8c_758d58290635babe2cf53eed0f17272a}{CTRL\_\-SET\_\-ANT\_\-DATA\_\-TEXT}~0x02}
+\label{front__panel_2computer__interface_8c_758d58290635babe2cf53eed0f17272a}
+
+\begin{CompactList}\small\item\em CTRL command: Set the antenna text. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_7c83ce17827f05ea0ad0ffad48ce4671}{
+\#define \hyperlink{front__panel_2computer__interface_8c_7c83ce17827f05ea0ad0ffad48ce4671}{CTRL\_\-SET\_\-ANT\_\-DATA\_\-SUB\_\-MENU\_\-TYPE}~0x03}
+\label{front__panel_2computer__interface_8c_7c83ce17827f05ea0ad0ffad48ce4671}
+
+\begin{CompactList}\small\item\em CTRL command: Set the antenna sub menu type. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_2f61310ad1cfb36a68d40c56818a0313}{
+\#define \hyperlink{front__panel_2computer__interface_8c_2f61310ad1cfb36a68d40c56818a0313}{CTRL\_\-SET\_\-ANT\_\-DATA\_\-ANT\_\-FLAGS}~0x04}
+\label{front__panel_2computer__interface_8c_2f61310ad1cfb36a68d40c56818a0313}
+
+\begin{CompactList}\small\item\em CTRL command: Set the antenna flags. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_14527bb96b5a3250c14ac1a45e4391dd}{
+\#define \hyperlink{front__panel_2computer__interface_8c_14527bb96b5a3250c14ac1a45e4391dd}{CTRL\_\-SET\_\-ANT\_\-DATA\_\-COMB\_\-ALLOWED}~0x05}
+\label{front__panel_2computer__interface_8c_14527bb96b5a3250c14ac1a45e4391dd}
+
+\begin{CompactList}\small\item\em CTRL command: Set the output combination allowed. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_27e8f68c6a779449d8f2a03a3f5f186c}{
+\#define \hyperlink{front__panel_2computer__interface_8c_27e8f68c6a779449d8f2a03a3f5f186c}{CTRL\_\-SET\_\-ANT\_\-DATA\_\-ANT\_\-OUT\_\-STR}~0x06}
+\label{front__panel_2computer__interface_8c_27e8f68c6a779449d8f2a03a3f5f186c}
+
+\begin{CompactList}\small\item\em CTRL command: Set the antenna output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_8d4e3638d80da40e5dbfb8a3408ecb98}{
+\#define \hyperlink{front__panel_2computer__interface_8c_8d4e3638d80da40e5dbfb8a3408ecb98}{CTRL\_\-SET\_\-ANT\_\-ROTATOR\_\-DATA}~0x07}
+\label{front__panel_2computer__interface_8c_8d4e3638d80da40e5dbfb8a3408ecb98}
+
+\begin{CompactList}\small\item\em CTRL command: Set the rotator information. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_9dbc0ce5b123effca901a73989936baf}{
+\#define \hyperlink{front__panel_2computer__interface_8c_9dbc0ce5b123effca901a73989936baf}{CTRL\_\-SET\_\-ANT\_\-DEFAULT\_\-INDEX}~0x08}
+\label{front__panel_2computer__interface_8c_9dbc0ce5b123effca901a73989936baf}
+
+\begin{CompactList}\small\item\em CTRL command: Set the default antenna index. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_6474d31925bcaced6912cc23d31d0075}{
+\#define \hyperlink{front__panel_2computer__interface_8c_6474d31925bcaced6912cc23d31d0075}{CTRL\_\-SET\_\-ANT\_\-SUB\_\-MENU\_\-DATA}~0x09}
+\label{front__panel_2computer__interface_8c_6474d31925bcaced6912cc23d31d0075}
+
+\begin{CompactList}\small\item\em CTRL command: Set the sub menu data. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_2c4e9d931b5bec5f2d3f4fab6328dfef}{
+\#define \hyperlink{front__panel_2computer__interface_8c_2c4e9d931b5bec5f2d3f4fab6328dfef}{CTRL\_\-SET\_\-ANT\_\-SUB\_\-MENU\_\-TEXT}~0x0A}
+\label{front__panel_2computer__interface_8c_2c4e9d931b5bec5f2d3f4fab6328dfef}
+
+\begin{CompactList}\small\item\em CTRL command: Set the sub menu data, text. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_b9aff99d1a9993d1dec3d77517011a73}{
+\#define \hyperlink{front__panel_2computer__interface_8c_b9aff99d1a9993d1dec3d77517011a73}{CTRL\_\-SET\_\-ANT\_\-SUB\_\-MENU\_\-OUTPUT\_\-STR}~0x0B}
+\label{front__panel_2computer__interface_8c_b9aff99d1a9993d1dec3d77517011a73}
+
+\begin{CompactList}\small\item\em CTRL command: Set the sub menu data, output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_8c32c2dfc64a1731cfd4f7e36c354160}{
+\#define \hyperlink{front__panel_2computer__interface_8c_8c32c2dfc64a1731cfd4f7e36c354160}{CTRL\_\-SET\_\-BAND\_\-DATA\_\-LIMITS}~0x01}
+\label{front__panel_2computer__interface_8c_8c32c2dfc64a1731cfd4f7e36c354160}
+
+\begin{CompactList}\small\item\em CTRL command: Set the band data limits. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_4133623f6094a7dd9999fd8de746bdac}{
+\#define \hyperlink{front__panel_2computer__interface_8c_4133623f6094a7dd9999fd8de746bdac}{CTRL\_\-SET\_\-BAND\_\-DATA\_\-LOW\_\-OUT\_\-STR}~0x02}
+\label{front__panel_2computer__interface_8c_4133623f6094a7dd9999fd8de746bdac}
+
+\begin{CompactList}\small\item\em CTRL command: Set the band low portion output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_05af896b795b79c6ab737b8ff8c08be8}{
+\#define \hyperlink{front__panel_2computer__interface_8c_05af896b795b79c6ab737b8ff8c08be8}{CTRL\_\-SET\_\-BAND\_\-DATA\_\-HIGH\_\-OUT\_\-STR}~0x03}
+\label{front__panel_2computer__interface_8c_05af896b795b79c6ab737b8ff8c08be8}
+
+\begin{CompactList}\small\item\em CTRL command: Set the band high portion output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_0f37dd2cfa7d5bbc5ad3ed4f4fb83c70}{
+\#define \hyperlink{front__panel_2computer__interface_8c_0f37dd2cfa7d5bbc5ad3ed4f4fb83c70}{CTRL\_\-SET\_\-BAND\_\-DATA\_\-SAVE}~0x07}
+\label{front__panel_2computer__interface_8c_0f37dd2cfa7d5bbc5ad3ed4f4fb83c70}
+
+\begin{CompactList}\small\item\em CTRL command: Save the band data settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_446b12f63e4258ae14503f37cc703029}{
+\#define \hyperlink{front__panel_2computer__interface_8c_446b12f63e4258ae14503f37cc703029}{CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-TEXT}~0x01}
+\label{front__panel_2computer__interface_8c_446b12f63e4258ae14503f37cc703029}
+
+\begin{CompactList}\small\item\em CTRL command: Set the RX antenna text. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_15141bb65c3b6768e3ed5d7915f167a2}{
+\#define \hyperlink{front__panel_2computer__interface_8c_15141bb65c3b6768e3ed5d7915f167a2}{CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-ANT\_\-OUT\_\-STR}~0x02}
+\label{front__panel_2computer__interface_8c_15141bb65c3b6768e3ed5d7915f167a2}
+
+\begin{CompactList}\small\item\em CTRL command: Set the RX antenna output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_3a316320043db15931baad1921049546}{
+\#define \hyperlink{front__panel_2computer__interface_8c_3a316320043db15931baad1921049546}{CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-BAND\_\-OUT\_\-STR}~0x03}
+\label{front__panel_2computer__interface_8c_3a316320043db15931baad1921049546}
+
+\begin{CompactList}\small\item\em CTRL command: Set the RX antenna band output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_c242388a98d2419a1ca69d7254ab8f5e}{
+\#define \hyperlink{front__panel_2computer__interface_8c_c242388a98d2419a1ca69d7254ab8f5e}{CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-SAVE}~0x07}
+\label{front__panel_2computer__interface_8c_c242388a98d2419a1ca69d7254ab8f5e}
+
+\begin{CompactList}\small\item\em CTRL command: Save the RX antenna settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_a39e8d2a475b8325fe656632a073a925}{
+\#define \hyperlink{front__panel_2computer__interface_8c_a39e8d2a475b8325fe656632a073a925}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-NETWORK}~0x01}
+\label{front__panel_2computer__interface_8c_a39e8d2a475b8325fe656632a073a925}
+
+\begin{CompactList}\small\item\em CTRL command: Network settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_4867ff51a0dab2a8cf5e96078db62803}{
+\#define \hyperlink{front__panel_2computer__interface_8c_4867ff51a0dab2a8cf5e96078db62803}{CTRL\_\-SET\_\-POWERMETER\_\-SETTINGS}~0x02}
+\label{front__panel_2computer__interface_8c_4867ff51a0dab2a8cf5e96078db62803}
+
+\begin{CompactList}\small\item\em CTRL command: Powermeter settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_790861bc50802b32e7382cde678d3cf6}{
+\#define \hyperlink{front__panel_2computer__interface_8c_790861bc50802b32e7382cde678d3cf6}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-OTHER}~0x03}
+\label{front__panel_2computer__interface_8c_790861bc50802b32e7382cde678d3cf6}
+
+\begin{CompactList}\small\item\em CTRL command: Various settings. \item\end{CompactList}\item 
+\#define \hyperlink{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}~0x04
+\begin{CompactList}\small\item\em CTRL command: External input settings. \item\end{CompactList}\item 
+\#define \hyperlink{front__panel_2computer__interface_8c_3824de7fed48ab3d3bb81d2994c23389}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}~0x07
+\begin{CompactList}\small\item\em CTRL command: Save data to eeprom. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_013a8ba6a540bcb3c4de42a40605127e}{
+\#define \hyperlink{front__panel_2computer__interface_8c_013a8ba6a540bcb3c4de42a40605127e}{CTRL\_\-SET\_\-SEQUENCER\_\-SAVE}~0x01}
+\label{front__panel_2computer__interface_8c_013a8ba6a540bcb3c4de42a40605127e}
+
+\begin{CompactList}\small\item\em CTRL command: Save the sequencer settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_71abac16187c7f6794b77bc99c3adad8}{
+\#define \hyperlink{front__panel_2computer__interface_8c_71abac16187c7f6794b77bc99c3adad8}{CTRL\_\-SET\_\-SEQUENCER\_\-FOOTSWITCH}~0x02}
+\label{front__panel_2computer__interface_8c_71abac16187c7f6794b77bc99c3adad8}
+
+\begin{CompactList}\small\item\em CTRL command: Set the sequencer footswitch input values. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_a95468227d719516b6bba01019a7a789}{
+\#define \hyperlink{front__panel_2computer__interface_8c_a95468227d719516b6bba01019a7a789}{CTRL\_\-SET\_\-SEQUENCER\_\-COMPUTER}~0x03}
+\label{front__panel_2computer__interface_8c_a95468227d719516b6bba01019a7a789}
+
+\begin{CompactList}\small\item\em CTRL command: Set the sequencer computer input values. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_d860a4ec2326607d90203c0447d82b84}{
+\#define \hyperlink{front__panel_2computer__interface_8c_d860a4ec2326607d90203c0447d82b84}{CTRL\_\-SET\_\-SEQUENCER\_\-RADIO\_\-SENSE}~0x04}
+\label{front__panel_2computer__interface_8c_d860a4ec2326607d90203c0447d82b84}
+
+\begin{CompactList}\small\item\em CTRL command: Set the sequencer radio sense input values. \item\end{CompactList}\item 
+\#define \hyperlink{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}~0x05
+\begin{CompactList}\small\item\em CTRL command: External input settings. \item\end{CompactList}\item 
+\#define \hyperlink{front__panel_2computer__interface_8c_3824de7fed48ab3d3bb81d2994c23389}{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}~0x07
+\begin{CompactList}\small\item\em CTRL command: Save data to eeprom. \item\end{CompactList}\item 
+\#define \hyperlink{front__panel_2computer__interface_8c_9c1d31c240623ce7c76c943a360c5778}{CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS}~0x01
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2computer__interface_8c_2daa9000653d78a4e7ec343234048b9e}{
+void \hyperlink{front__panel_2computer__interface_8c_2daa9000653d78a4e7ec343234048b9e}{computer\_\-interface\_\-init} (void)}
+\label{front__panel_2computer__interface_8c_2daa9000653d78a4e7ec343234048b9e}
+
+\begin{CompactList}\small\item\em Initialize the communication interface towards the computer. Will initialize buffers etc. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_4df89fd1efe2e5b7ec86f054d5833370}{
+void \hyperlink{front__panel_2computer__interface_8c_4df89fd1efe2e5b7ec86f054d5833370}{computer\_\-interface\_\-send\_\-data} (void)}
+\label{front__panel_2computer__interface_8c_4df89fd1efe2e5b7ec86f054d5833370}
+
+\begin{CompactList}\small\item\em Function which will send data from the tx\_\-buffer to the uart. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2computer__interface_8c_7c53e9fead9d7ca1b0101612bebe4074}{computer\_\-interface\_\-send} (unsigned char command, unsigned int length, char $\ast$data)
+\begin{CompactList}\small\item\em Function which will add data to the tx\_\-buffer. Function also sets the flag indicating that the data should be sent. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_29cfab0f9c81f589bca0c8ca89eca528}{
+void \hyperlink{front__panel_2computer__interface_8c_29cfab0f9c81f589bca0c8ca89eca528}{computer\_\-interface\_\-send\_\-ack} (void)}
+\label{front__panel_2computer__interface_8c_29cfab0f9c81f589bca0c8ca89eca528}
+
+\begin{CompactList}\small\item\em Function which will add an ACK message to the tx\_\-buffer. Also sets a flag that indicates data ready to be sent. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_81b35fd58a0da5fd4ccd4039f9100ba5}{
+void \hyperlink{front__panel_2computer__interface_8c_81b35fd58a0da5fd4ccd4039f9100ba5}{computer\_\-interface\_\-send\_\-nack} (void)}
+\label{front__panel_2computer__interface_8c_81b35fd58a0da5fd4ccd4039f9100ba5}
+
+\begin{CompactList}\small\item\em Function which will add an NACK message to the tx\_\-buffer. Also sets a flag that indicates data ready to be sent. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2computer__interface_8c_02eb4c158dd37c93a92a27804bf90e43}{computer\_\-interface\_\-parse\_\-data} (void)
+\begin{CompactList}\small\item\em Function which will parse the data in the rx\_\-buffer and process the command. \item\end{CompactList}\item 
+unsigned char \hyperlink{front__panel_2computer__interface_8c_8eb6680447ca0e3ed88c26ac3ede2fc1}{computer\_\-interface\_\-is\_\-active} (void)
+\begin{CompactList}\small\item\em Retrieve the status if the computer interface is active. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_ff35dbb7772f15bcaebcde0aa10d81c3}{
+void \hyperlink{front__panel_2computer__interface_8c_ff35dbb7772f15bcaebcde0aa10d81c3}{computer\_\-interface\_\-activate\_\-setup} (void)}
+\label{front__panel_2computer__interface_8c_ff35dbb7772f15bcaebcde0aa10d81c3}
+
+\begin{CompactList}\small\item\em Activate the setup mode of the device. Will mainly just create various buffers needed to store settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_5176e3b7186a6f2a0daa68b0c08208b5}{
+void \hyperlink{front__panel_2computer__interface_8c_5176e3b7186a6f2a0daa68b0c08208b5}{computer\_\-interface\_\-deactivate\_\-setup} (void)}
+\label{front__panel_2computer__interface_8c_5176e3b7186a6f2a0daa68b0c08208b5}
+
+\begin{CompactList}\small\item\em Function which will deactivate the computer setup mode, this will clear up memory space of the allocated buffers in the \hyperlink{front__panel_2computer__interface_8c_ff35dbb7772f15bcaebcde0aa10d81c3}{computer\_\-interface\_\-activate\_\-setup()} function. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_ead8a2d0f2fad193376380086353350a}{
+\textbf{ISR} (SIG\_\-USART1\_\-DATA)}
+\label{front__panel_2computer__interface_8c_ead8a2d0f2fad193376380086353350a}
+
+\item 
+\hypertarget{front__panel_2computer__interface_8c_4b9b2d010652d3ee8d2df8984f9e79ba}{
+\hyperlink{front__panel_2computer__interface_8c_4b9b2d010652d3ee8d2df8984f9e79ba}{ISR} (SIG\_\-USART1\_\-RECV)}
+\label{front__panel_2computer__interface_8c_4b9b2d010652d3ee8d2df8984f9e79ba}
+
+\begin{CompactList}\small\item\em Interrupt when a character is received over the UART. If computer setup mode is active it will parse the incoming data, otherwise it is used for CAT control. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2computer__interface_8c_50338b5fd07f8ad1c4f279c3f01c43a3}{
+\hyperlink{structcomputer__comm__struct}{computer\_\-comm\_\-struct} \hyperlink{front__panel_2computer__interface_8c_50338b5fd07f8ad1c4f279c3f01c43a3}{computer\_\-comm}}
+\label{front__panel_2computer__interface_8c_50338b5fd07f8ad1c4f279c3f01c43a3}
+
+\begin{CompactList}\small\item\em Computer communication structure. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_99a496fce3b20b99eee7cfa7bf3a58a8}{
+\hyperlink{structstruct__antenna}{struct\_\-antenna} $\ast$ \hyperlink{front__panel_2computer__interface_8c_99a496fce3b20b99eee7cfa7bf3a58a8}{antenna\_\-ptr}}
+\label{front__panel_2computer__interface_8c_99a496fce3b20b99eee7cfa7bf3a58a8}
+
+\begin{CompactList}\small\item\em Pointer to an area which we create space when configuring the antenna data. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_8ad5dbeb74e27c74173fafc0c7314b63}{
+\hyperlink{structstruct__rx__antennas}{struct\_\-rx\_\-antennas} $\ast$ \hyperlink{front__panel_2computer__interface_8c_8ad5dbeb74e27c74173fafc0c7314b63}{rx\_\-antenna\_\-ptr}}
+\label{front__panel_2computer__interface_8c_8ad5dbeb74e27c74173fafc0c7314b63}
+
+\begin{CompactList}\small\item\em Pointer to an area which we create space when configuring the rx antenna data. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_f68c36d8f52738d3148c46f20bb31fe4}{
+\hyperlink{structstruct__band}{struct\_\-band} $\ast$ \hyperlink{front__panel_2computer__interface_8c_f68c36d8f52738d3148c46f20bb31fe4}{band\_\-ptr}}
+\label{front__panel_2computer__interface_8c_f68c36d8f52738d3148c46f20bb31fe4}
+
+\begin{CompactList}\small\item\em Pointer to an area which we create space when configuring the band data. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_132a222dddbd53f72809323e52158517}{
+\hyperlink{structstruct__setting}{struct\_\-setting} $\ast$ \hyperlink{front__panel_2computer__interface_8c_132a222dddbd53f72809323e52158517}{settings\_\-ptr}}
+\label{front__panel_2computer__interface_8c_132a222dddbd53f72809323e52158517}
+
+\begin{CompactList}\small\item\em Pointer to an area which we create space when configuring the settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_470442d4f55ef9c89b4e1d1f2455ed7b}{
+\hyperlink{structstruct__ptt}{struct\_\-ptt} $\ast$ \hyperlink{front__panel_2computer__interface_8c_470442d4f55ef9c89b4e1d1f2455ed7b}{ptt\_\-sequencer\_\-ptr}}
+\label{front__panel_2computer__interface_8c_470442d4f55ef9c89b4e1d1f2455ed7b}
+
+\begin{CompactList}\small\item\em Pointer to an area which we create space when configuring the ptt\_\-sequencer. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_4aed5fab0bf7fc0913e2a62d89f1de3a}{
+\hyperlink{structstruct__radio__settings}{struct\_\-radio\_\-settings} $\ast$ \hyperlink{front__panel_2computer__interface_8c_4aed5fab0bf7fc0913e2a62d89f1de3a}{radio\_\-settings\_\-ptr}}
+\label{front__panel_2computer__interface_8c_4aed5fab0bf7fc0913e2a62d89f1de3a}
+
+\begin{CompactList}\small\item\em Pointer to an area which we crate space when configuring the radio settings. \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_f19646b0e0f91e1e7bddb1b259403408}{
+\hyperlink{structstruct__sub__menu__array}{struct\_\-sub\_\-menu\_\-array} $\ast$ \hyperlink{front__panel_2computer__interface_8c_f19646b0e0f91e1e7bddb1b259403408}{sub\_\-menu\_\-array\_\-ptr} \mbox{[}4\mbox{]}}
+\label{front__panel_2computer__interface_8c_f19646b0e0f91e1e7bddb1b259403408}
+
+\begin{CompactList}\small\item\em Pointer to an area which we crate space when configuring the sub menu (array). \item\end{CompactList}\item 
+\hypertarget{front__panel_2computer__interface_8c_eb7cc7d2c59a8b0f67c12945cbdd59d3}{
+void($\ast$ \hyperlink{front__panel_2computer__interface_8c_eb7cc7d2c59a8b0f67c12945cbdd59d3}{bootloader\_\-start} )(void) = (void $\ast$)0x1FE00}
+\label{front__panel_2computer__interface_8c_eb7cc7d2c59a8b0f67c12945cbdd59d3}
+
+\begin{CompactList}\small\item\em Address which we call when we wish to reboot the device (jumps to the bootloader area). \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Interface towards the computer. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/computer_interface.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{front__panel_2computer__interface_8c-source}{computer\_\-interface.c}.
+
+\subsection{Define Documentation}
+\hypertarget{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}}
+\index{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS~0x05}}
+\label{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}
+
+
+CTRL command: External input settings. 
+
+CTRL command: Set the external inputs. 
+
+Definition at line 176 of file computer\_\-interface.c.\hypertarget{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}}
+\index{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS~0x04}}
+\label{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}
+
+
+CTRL command: External input settings. 
+
+CTRL command: Set the external inputs. 
+
+Definition at line 176 of file computer\_\-interface.c.
+
+Referenced by computer\_\-interface\_\-parse\_\-data().\hypertarget{front__panel_2computer__interface_8c_3824de7fed48ab3d3bb81d2994c23389}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}}
+\index{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}]{\setlength{\rightskip}{0pt plus 5cm}\#define CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE~0x07}}
+\label{front__panel_2computer__interface_8c_3824de7fed48ab3d3bb81d2994c23389}
+
+
+CTRL command: Save data to eeprom. 
+
+CTRL command: Save the external input settings. 
+
+Definition at line 178 of file computer\_\-interface.c.\hypertarget{front__panel_2computer__interface_8c_3824de7fed48ab3d3bb81d2994c23389}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}}
+\index{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE@{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE}]{\setlength{\rightskip}{0pt plus 5cm}\#define CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE~0x07}}
+\label{front__panel_2computer__interface_8c_3824de7fed48ab3d3bb81d2994c23389}
+
+
+CTRL command: Save data to eeprom. 
+
+CTRL command: Save the external input settings. 
+
+Definition at line 178 of file computer\_\-interface.c.
+
+Referenced by computer\_\-interface\_\-parse\_\-data().\hypertarget{front__panel_2computer__interface_8c_9c1d31c240623ce7c76c943a360c5778}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS@{CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS}}
+\index{CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS@{CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS}]{\setlength{\rightskip}{0pt plus 5cm}\#define CTRL\_\-SET\_\-EXT\_\-KEYPAD\_\-FUNCTIONS~0x01}}
+\label{front__panel_2computer__interface_8c_9c1d31c240623ce7c76c943a360c5778}
+
+
+CTRL command: Set the external keypad function 
+
+Definition at line 181 of file computer\_\-interface.c.
+
+\subsection{Function Documentation}
+\hypertarget{front__panel_2computer__interface_8c_8eb6680447ca0e3ed88c26ac3ede2fc1}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!computer\_\-interface\_\-is\_\-active@{computer\_\-interface\_\-is\_\-active}}
+\index{computer\_\-interface\_\-is\_\-active@{computer\_\-interface\_\-is\_\-active}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-is\_\-active}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char computer\_\-interface\_\-is\_\-active (void)}}
+\label{front__panel_2computer__interface_8c_8eb6680447ca0e3ed88c26ac3ede2fc1}
+
+
+Retrieve the status if the computer interface is active. 
+
+\begin{Desc}
+\item[Returns:]1 if it is active, 0 otherwise \end{Desc}
+
+
+Definition at line 686 of file computer\_\-interface.c.
+
+References COMPUTER\_\-COMM\_\-FLAG\_\-SETUP\_\-MODE, and computer\_\-comm\_\-struct::flags.
+
+Referenced by event\_\-internal\_\-comm\_\-parse\_\-message(), ISR(), and main().\hypertarget{front__panel_2computer__interface_8c_02eb4c158dd37c93a92a27804bf90e43}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!computer\_\-interface\_\-parse\_\-data@{computer\_\-interface\_\-parse\_\-data}}
+\index{computer\_\-interface\_\-parse\_\-data@{computer\_\-interface\_\-parse\_\-data}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-parse\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}void computer\_\-interface\_\-parse\_\-data (void)}}
+\label{front__panel_2computer__interface_8c_02eb4c158dd37c93a92a27804bf90e43}
+
+
+Function which will parse the data in the rx\_\-buffer and process the command. 
+
+
+
+Bit 0 = Footswitch Bit 1 = Radio sense lower floor Bit 2 = Radio sense upper floor Bit 3 = Computer RTS Bit 4 = Inverted radio sense Bit 5 = Inverted Computer RTS Bit 6 = Inhibit polarity (0=active low, 1=active high)
+
+unsigned char ptt\_\-input;
+
+Definition at line 304 of file computer\_\-interface.c.
+
+Referenced by main().\hypertarget{front__panel_2computer__interface_8c_7c53e9fead9d7ca1b0101612bebe4074}{
+\index{front\_\-panel/computer\_\-interface.c@{front\_\-panel/computer\_\-interface.c}!computer\_\-interface\_\-send@{computer\_\-interface\_\-send}}
+\index{computer\_\-interface\_\-send@{computer\_\-interface\_\-send}!front_panel/computer_interface.c@{front\_\-panel/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-send}]{\setlength{\rightskip}{0pt plus 5cm}void computer\_\-interface\_\-send (unsigned char {\em command}, \/  unsigned int {\em length}, \/  char $\ast$ {\em data})}}
+\label{front__panel_2computer__interface_8c_7c53e9fead9d7ca1b0101612bebe4074}
+
+
+Function which will add data to the tx\_\-buffer. Function also sets the flag indicating that the data should be sent. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em command}]The command we wish to sendchar( \item[{\em length}]Number of bytes of data to be sent (only size of the data variable) \item[{\em data}]The data we wish to send \end{description}
+\end{Desc}
+
+
+Definition at line 263 of file computer\_\-interface.c.
+
+References COMPUTER\_\-COMM\_\-POSTAMBLE, COMPUTER\_\-COMM\_\-PREAMBLE, COMPUTER\_\-INTERFACE\_\-FIXED\_\-SIZE, computer\_\-comm\_\-struct::data\_\-in\_\-tx\_\-buffer, computer\_\-comm\_\-struct::tx\_\-buffer, and computer\_\-comm\_\-struct::tx\_\-buffer\_\-length.
+
+Referenced by computer\_\-interface\_\-parse\_\-data(), and parse\_\-internal\_\-comm\_\-message().
