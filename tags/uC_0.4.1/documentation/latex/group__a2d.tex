@@ -1,0 +1,590 @@
+\hypertarget{group__a2d}{
+\section{A/D Converter Function Library (a2d.c)}
+\label{group__a2d}\index{A/D Converter Function Library (a2d.c)@{A/D Converter Function Library (a2d.c)}}
+}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{group__a2d_g94b219194cddc9869031a936b94bf536}{
+\#define \hyperlink{group__a2d_g94b219194cddc9869031a936b94bf536}{ADC\_\-PRESCALE\_\-DIV2}~0x00}
+\label{group__a2d_g94b219194cddc9869031a936b94bf536}
+
+\begin{CompactList}\small\item\em 0x01,0x00 -$>$ CPU clk/2 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g03ae0e14f20d17c74a4a539b7522328a}{
+\#define \hyperlink{group__a2d_g03ae0e14f20d17c74a4a539b7522328a}{ADC\_\-PRESCALE\_\-DIV4}~0x02}
+\label{group__a2d_g03ae0e14f20d17c74a4a539b7522328a}
+
+\begin{CompactList}\small\item\em 0x02 -$>$ CPU clk/4 \item\end{CompactList}\item 
+\hypertarget{group__a2d_gfc060b8cc9bc407394efc98930dd9b06}{
+\#define \hyperlink{group__a2d_gfc060b8cc9bc407394efc98930dd9b06}{ADC\_\-PRESCALE\_\-DIV8}~0x03}
+\label{group__a2d_gfc060b8cc9bc407394efc98930dd9b06}
+
+\begin{CompactList}\small\item\em 0x03 -$>$ CPU clk/8 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g588a7712025228700d3331fbb60b4aea}{
+\#define \hyperlink{group__a2d_g588a7712025228700d3331fbb60b4aea}{ADC\_\-PRESCALE\_\-DIV16}~0x04}
+\label{group__a2d_g588a7712025228700d3331fbb60b4aea}
+
+\begin{CompactList}\small\item\em 0x04 -$>$ CPU clk/16 \item\end{CompactList}\item 
+\hypertarget{group__a2d_gb3fd1406c04d98209cc1c17c77b8619a}{
+\#define \hyperlink{group__a2d_gb3fd1406c04d98209cc1c17c77b8619a}{ADC\_\-PRESCALE\_\-DIV32}~0x05}
+\label{group__a2d_gb3fd1406c04d98209cc1c17c77b8619a}
+
+\begin{CompactList}\small\item\em 0x05 -$>$ CPU clk/32 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g5ad4cc849977e40d0a2a98c304a4be7b}{
+\#define \hyperlink{group__a2d_g5ad4cc849977e40d0a2a98c304a4be7b}{ADC\_\-PRESCALE\_\-DIV64}~0x06}
+\label{group__a2d_g5ad4cc849977e40d0a2a98c304a4be7b}
+
+\begin{CompactList}\small\item\em 0x06 -$>$ CPU clk/64 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a3b}{
+\#define \hyperlink{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a3b}{ADC\_\-PRESCALE\_\-DIV128}~0x07}
+\label{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a3b}
+
+\begin{CompactList}\small\item\em 0x07 -$>$ CPU clk/128 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g624110d24f42aac3b062f18495e04b51}{
+\#define \textbf{ADC\_\-PRESCALE}~ADC\_\-PRESCALE\_\-DIV64}
+\label{group__a2d_g624110d24f42aac3b062f18495e04b51}
+
+\item 
+\hypertarget{group__a2d_g97010ca07f7fab62f9fb4b4c404e6a90}{
+\#define \textbf{ADC\_\-PRESCALE\_\-MASK}~0x07}
+\label{group__a2d_g97010ca07f7fab62f9fb4b4c404e6a90}
+
+\item 
+\hypertarget{group__a2d_g69a5e4e3dcfeec25908050a0d328788f}{
+\#define \hyperlink{group__a2d_g69a5e4e3dcfeec25908050a0d328788f}{ADC\_\-REFERENCE\_\-AREF}~0x00}
+\label{group__a2d_g69a5e4e3dcfeec25908050a0d328788f}
+
+\begin{CompactList}\small\item\em 0x00 -$>$ AREF pin, internal VREF turned off \item\end{CompactList}\item 
+\hypertarget{group__a2d_g9697b28b449eee80f6f6bd31c29eaa48}{
+\#define \hyperlink{group__a2d_g9697b28b449eee80f6f6bd31c29eaa48}{ADC\_\-REFERENCE\_\-AVCC}~0x01}
+\label{group__a2d_g9697b28b449eee80f6f6bd31c29eaa48}
+
+\begin{CompactList}\small\item\em 0x01 -$>$ AVCC pin, internal VREF turned off \item\end{CompactList}\item 
+\hypertarget{group__a2d_gac3a75f24755af19f114e475a4d6a074}{
+\#define \hyperlink{group__a2d_gac3a75f24755af19f114e475a4d6a074}{ADC\_\-REFERENCE\_\-RSVD}~0x02}
+\label{group__a2d_gac3a75f24755af19f114e475a4d6a074}
+
+\begin{CompactList}\small\item\em 0x02 -$>$ Reserved \item\end{CompactList}\item 
+\hypertarget{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242bf}{
+\#define \hyperlink{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242bf}{ADC\_\-REFERENCE\_\-256V}~0x03}
+\label{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242bf}
+
+\begin{CompactList}\small\item\em 0x03 -$>$ Internal 2.56V VREF \item\end{CompactList}\item 
+\hypertarget{group__a2d_g317868c528ebe27fbca094a8bc2d910c}{
+\#define \textbf{ADC\_\-REFERENCE}~ADC\_\-REFERENCE\_\-AVCC}
+\label{group__a2d_g317868c528ebe27fbca094a8bc2d910c}
+
+\item 
+\hypertarget{group__a2d_g53d0721356cf990529435064b39810ac}{
+\#define \textbf{ADC\_\-REFERENCE\_\-MASK}~0xC0}
+\label{group__a2d_g53d0721356cf990529435064b39810ac}
+
+\item 
+\hypertarget{group__a2d_g7dc684a9d3f21b2a52dc74aea546d724}{
+\#define \textbf{ADC\_\-MUX\_\-MASK}~0x1F}
+\label{group__a2d_g7dc684a9d3f21b2a52dc74aea546d724}
+
+\item 
+\hypertarget{group__a2d_g2d71a76ac15bb23ced9d330f6d288189}{
+\#define \textbf{ADC\_\-CH\_\-ADC0}~0x00}
+\label{group__a2d_g2d71a76ac15bb23ced9d330f6d288189}
+
+\item 
+\hypertarget{group__a2d_gdc9061197abf445aa2fdabfe6ab70d6f}{
+\#define \textbf{ADC\_\-CH\_\-ADC1}~0x01}
+\label{group__a2d_gdc9061197abf445aa2fdabfe6ab70d6f}
+
+\item 
+\hypertarget{group__a2d_g2983118526a60d8131ea24b076734dc9}{
+\#define \textbf{ADC\_\-CH\_\-ADC2}~0x02}
+\label{group__a2d_g2983118526a60d8131ea24b076734dc9}
+
+\item 
+\hypertarget{group__a2d_g0a668a769065eb671e703949ef772aa5}{
+\#define \textbf{ADC\_\-CH\_\-ADC3}~0x03}
+\label{group__a2d_g0a668a769065eb671e703949ef772aa5}
+
+\item 
+\hypertarget{group__a2d_g76e4beb0d4488c7a2854257ce6ee5efb}{
+\#define \textbf{ADC\_\-CH\_\-ADC4}~0x04}
+\label{group__a2d_g76e4beb0d4488c7a2854257ce6ee5efb}
+
+\item 
+\hypertarget{group__a2d_gf93d51a5c2da209e27f37ac2b26b1aa9}{
+\#define \textbf{ADC\_\-CH\_\-ADC5}~0x05}
+\label{group__a2d_gf93d51a5c2da209e27f37ac2b26b1aa9}
+
+\item 
+\hypertarget{group__a2d_gb260b92f5b040618c82c09154eb2fa82}{
+\#define \textbf{ADC\_\-CH\_\-ADC6}~0x06}
+\label{group__a2d_gb260b92f5b040618c82c09154eb2fa82}
+
+\item 
+\hypertarget{group__a2d_gb9748223968807824cc3d22300f21b8f}{
+\#define \textbf{ADC\_\-CH\_\-ADC7}~0x07}
+\label{group__a2d_gb9748223968807824cc3d22300f21b8f}
+
+\item 
+\hypertarget{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}{
+\#define \hyperlink{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}{ADC\_\-CH\_\-122V}~0x1E}
+\label{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}
+
+\begin{CompactList}\small\item\em 1.22V voltage reference \item\end{CompactList}\item 
+\hypertarget{group__a2d_g0ed7f039502e8a1065f0b4a6157fb753}{
+\#define \hyperlink{group__a2d_g0ed7f039502e8a1065f0b4a6157fb753}{ADC\_\-CH\_\-AGND}~0x1F}
+\label{group__a2d_g0ed7f039502e8a1065f0b4a6157fb753}
+
+\begin{CompactList}\small\item\em AGND. \item\end{CompactList}\item 
+\hypertarget{group__a2d_g1d0b3b606a92ff5d5e328e5ef1979c78}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-0\_\-DIFF10X}~0x08}
+\label{group__a2d_g1d0b3b606a92ff5d5e328e5ef1979c78}
+
+\item 
+\hypertarget{group__a2d_g8b2a5dcae180cd218d02f7a623790ef1}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-0\_\-DIFF10X}~0x09}
+\label{group__a2d_g8b2a5dcae180cd218d02f7a623790ef1}
+
+\item 
+\hypertarget{group__a2d_gb9f0b92dd2b67505c26233ada7205e3b}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-0\_\-DIFF200X}~0x0A}
+\label{group__a2d_gb9f0b92dd2b67505c26233ada7205e3b}
+
+\item 
+\hypertarget{group__a2d_gb31f08e45996680fef63c8e4c9125f5d}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-0\_\-DIFF200X}~0x0B}
+\label{group__a2d_gb31f08e45996680fef63c8e4c9125f5d}
+
+\item 
+\hypertarget{group__a2d_g03b2bd74b75fd0a659a927aad76002de}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF10X}~0x0C}
+\label{group__a2d_g03b2bd74b75fd0a659a927aad76002de}
+
+\item 
+\hypertarget{group__a2d_gf70e34012606f8a3d0e8afd3507c6fcb}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF10X}~0x0D}
+\label{group__a2d_gf70e34012606f8a3d0e8afd3507c6fcb}
+
+\item 
+\hypertarget{group__a2d_ga2678f0cab37f1a9c526679363460962}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF200X}~0x0E}
+\label{group__a2d_ga2678f0cab37f1a9c526679363460962}
+
+\item 
+\hypertarget{group__a2d_g8c54c7176365604c459ab8a06231d909}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF200X}~0x0F}
+\label{group__a2d_g8c54c7176365604c459ab8a06231d909}
+
+\item 
+\hypertarget{group__a2d_g1f7378bc96b9faff43a7b2c5639405c1}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-1\_\-DIFF1X}~0x10}
+\label{group__a2d_g1f7378bc96b9faff43a7b2c5639405c1}
+
+\item 
+\hypertarget{group__a2d_gb08fb3b8335d0134639b7cd37def4b48}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-1\_\-DIFF1X}~0x11}
+\label{group__a2d_gb08fb3b8335d0134639b7cd37def4b48}
+
+\item 
+\hypertarget{group__a2d_g9e466f0a78d4a76e060254fc2a9dae77}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-1\_\-DIFF1X}~0x12}
+\label{group__a2d_g9e466f0a78d4a76e060254fc2a9dae77}
+
+\item 
+\hypertarget{group__a2d_g5ca820abd164971170288e59fa41e2d9}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-1\_\-DIFF1X}~0x13}
+\label{group__a2d_g5ca820abd164971170288e59fa41e2d9}
+
+\item 
+\hypertarget{group__a2d_g9faea1861eb2bc2d916eb9fbfddeef38}{
+\#define \textbf{ADC\_\-CH\_\-4\_\-1\_\-DIFF1X}~0x14}
+\label{group__a2d_g9faea1861eb2bc2d916eb9fbfddeef38}
+
+\item 
+\hypertarget{group__a2d_g85a30293d96db3700b4b9be90c0fbb33}{
+\#define \textbf{ADC\_\-CH\_\-5\_\-1\_\-DIFF1X}~0x15}
+\label{group__a2d_g85a30293d96db3700b4b9be90c0fbb33}
+
+\item 
+\hypertarget{group__a2d_g4c657e2d57628fa1985d2ff38e165314}{
+\#define \textbf{ADC\_\-CH\_\-6\_\-1\_\-DIFF1X}~0x16}
+\label{group__a2d_g4c657e2d57628fa1985d2ff38e165314}
+
+\item 
+\hypertarget{group__a2d_g7f35bdea141f9aa32a07f4cb1d0ccd86}{
+\#define \textbf{ADC\_\-CH\_\-7\_\-1\_\-DIFF1X}~0x17}
+\label{group__a2d_g7f35bdea141f9aa32a07f4cb1d0ccd86}
+
+\item 
+\hypertarget{group__a2d_ga7bf0c13604c130feb76935e177124bb}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-2\_\-DIFF1X}~0x18}
+\label{group__a2d_ga7bf0c13604c130feb76935e177124bb}
+
+\item 
+\hypertarget{group__a2d_gad51db92aecbfe211871a3099d7fbd7e}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-2\_\-DIFF1X}~0x19}
+\label{group__a2d_gad51db92aecbfe211871a3099d7fbd7e}
+
+\item 
+\hypertarget{group__a2d_g71ceaea7dd64c28705ccdc84c09f9e48}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF1X}~0x1A}
+\label{group__a2d_g71ceaea7dd64c28705ccdc84c09f9e48}
+
+\item 
+\hypertarget{group__a2d_g13d286d6aa04046617a96eef9804c40a}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF1X}~0x1B}
+\label{group__a2d_g13d286d6aa04046617a96eef9804c40a}
+
+\item 
+\hypertarget{group__a2d_ga2fd7fa7726846b7399e0a9e8ca8254a}{
+\#define \textbf{ADC\_\-CH\_\-4\_\-2\_\-DIFF1X}~0x1C}
+\label{group__a2d_ga2fd7fa7726846b7399e0a9e8ca8254a}
+
+\item 
+\hypertarget{group__a2d_g92a15defe2e018615ed50b8e756d960c}{
+\#define \textbf{ADC\_\-CH\_\-5\_\-2\_\-DIFF1X}~0x1D}
+\label{group__a2d_g92a15defe2e018615ed50b8e756d960c}
+
+\item 
+\hypertarget{group__a2d_g94b219194cddc9869031a936b94bf536}{
+\#define \hyperlink{group__a2d_g94b219194cddc9869031a936b94bf536}{ADC\_\-PRESCALE\_\-DIV2}~0x00}
+\label{group__a2d_g94b219194cddc9869031a936b94bf536}
+
+\begin{CompactList}\small\item\em 0x01,0x00 -$>$ CPU clk/2 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g03ae0e14f20d17c74a4a539b7522328a}{
+\#define \hyperlink{group__a2d_g03ae0e14f20d17c74a4a539b7522328a}{ADC\_\-PRESCALE\_\-DIV4}~0x02}
+\label{group__a2d_g03ae0e14f20d17c74a4a539b7522328a}
+
+\begin{CompactList}\small\item\em 0x02 -$>$ CPU clk/4 \item\end{CompactList}\item 
+\hypertarget{group__a2d_gfc060b8cc9bc407394efc98930dd9b06}{
+\#define \hyperlink{group__a2d_gfc060b8cc9bc407394efc98930dd9b06}{ADC\_\-PRESCALE\_\-DIV8}~0x03}
+\label{group__a2d_gfc060b8cc9bc407394efc98930dd9b06}
+
+\begin{CompactList}\small\item\em 0x03 -$>$ CPU clk/8 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g588a7712025228700d3331fbb60b4aea}{
+\#define \hyperlink{group__a2d_g588a7712025228700d3331fbb60b4aea}{ADC\_\-PRESCALE\_\-DIV16}~0x04}
+\label{group__a2d_g588a7712025228700d3331fbb60b4aea}
+
+\begin{CompactList}\small\item\em 0x04 -$>$ CPU clk/16 \item\end{CompactList}\item 
+\hypertarget{group__a2d_gb3fd1406c04d98209cc1c17c77b8619a}{
+\#define \hyperlink{group__a2d_gb3fd1406c04d98209cc1c17c77b8619a}{ADC\_\-PRESCALE\_\-DIV32}~0x05}
+\label{group__a2d_gb3fd1406c04d98209cc1c17c77b8619a}
+
+\begin{CompactList}\small\item\em 0x05 -$>$ CPU clk/32 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g5ad4cc849977e40d0a2a98c304a4be7b}{
+\#define \hyperlink{group__a2d_g5ad4cc849977e40d0a2a98c304a4be7b}{ADC\_\-PRESCALE\_\-DIV64}~0x06}
+\label{group__a2d_g5ad4cc849977e40d0a2a98c304a4be7b}
+
+\begin{CompactList}\small\item\em 0x06 -$>$ CPU clk/64 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a3b}{
+\#define \hyperlink{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a3b}{ADC\_\-PRESCALE\_\-DIV128}~0x07}
+\label{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a3b}
+
+\begin{CompactList}\small\item\em 0x07 -$>$ CPU clk/128 \item\end{CompactList}\item 
+\hypertarget{group__a2d_g624110d24f42aac3b062f18495e04b51}{
+\#define \textbf{ADC\_\-PRESCALE}~ADC\_\-PRESCALE\_\-DIV64}
+\label{group__a2d_g624110d24f42aac3b062f18495e04b51}
+
+\item 
+\hypertarget{group__a2d_g97010ca07f7fab62f9fb4b4c404e6a90}{
+\#define \textbf{ADC\_\-PRESCALE\_\-MASK}~0x07}
+\label{group__a2d_g97010ca07f7fab62f9fb4b4c404e6a90}
+
+\item 
+\hypertarget{group__a2d_g69a5e4e3dcfeec25908050a0d328788f}{
+\#define \hyperlink{group__a2d_g69a5e4e3dcfeec25908050a0d328788f}{ADC\_\-REFERENCE\_\-AREF}~0x00}
+\label{group__a2d_g69a5e4e3dcfeec25908050a0d328788f}
+
+\begin{CompactList}\small\item\em 0x00 -$>$ AREF pin, internal VREF turned off \item\end{CompactList}\item 
+\hypertarget{group__a2d_g9697b28b449eee80f6f6bd31c29eaa48}{
+\#define \hyperlink{group__a2d_g9697b28b449eee80f6f6bd31c29eaa48}{ADC\_\-REFERENCE\_\-AVCC}~0x01}
+\label{group__a2d_g9697b28b449eee80f6f6bd31c29eaa48}
+
+\begin{CompactList}\small\item\em 0x01 -$>$ AVCC pin, internal VREF turned off \item\end{CompactList}\item 
+\hypertarget{group__a2d_gac3a75f24755af19f114e475a4d6a074}{
+\#define \hyperlink{group__a2d_gac3a75f24755af19f114e475a4d6a074}{ADC\_\-REFERENCE\_\-RSVD}~0x02}
+\label{group__a2d_gac3a75f24755af19f114e475a4d6a074}
+
+\begin{CompactList}\small\item\em 0x02 -$>$ Reserved \item\end{CompactList}\item 
+\hypertarget{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242bf}{
+\#define \hyperlink{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242bf}{ADC\_\-REFERENCE\_\-256V}~0x03}
+\label{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242bf}
+
+\begin{CompactList}\small\item\em 0x03 -$>$ Internal 2.56V VREF \item\end{CompactList}\item 
+\hypertarget{group__a2d_g317868c528ebe27fbca094a8bc2d910c}{
+\#define \textbf{ADC\_\-REFERENCE}~ADC\_\-REFERENCE\_\-AVCC}
+\label{group__a2d_g317868c528ebe27fbca094a8bc2d910c}
+
+\item 
+\hypertarget{group__a2d_g53d0721356cf990529435064b39810ac}{
+\#define \textbf{ADC\_\-REFERENCE\_\-MASK}~0xC0}
+\label{group__a2d_g53d0721356cf990529435064b39810ac}
+
+\item 
+\hypertarget{group__a2d_g7dc684a9d3f21b2a52dc74aea546d724}{
+\#define \textbf{ADC\_\-MUX\_\-MASK}~0x1F}
+\label{group__a2d_g7dc684a9d3f21b2a52dc74aea546d724}
+
+\item 
+\hypertarget{group__a2d_g2d71a76ac15bb23ced9d330f6d288189}{
+\#define \textbf{ADC\_\-CH\_\-ADC0}~0x00}
+\label{group__a2d_g2d71a76ac15bb23ced9d330f6d288189}
+
+\item 
+\hypertarget{group__a2d_gdc9061197abf445aa2fdabfe6ab70d6f}{
+\#define \textbf{ADC\_\-CH\_\-ADC1}~0x01}
+\label{group__a2d_gdc9061197abf445aa2fdabfe6ab70d6f}
+
+\item 
+\hypertarget{group__a2d_g2983118526a60d8131ea24b076734dc9}{
+\#define \textbf{ADC\_\-CH\_\-ADC2}~0x02}
+\label{group__a2d_g2983118526a60d8131ea24b076734dc9}
+
+\item 
+\hypertarget{group__a2d_g0a668a769065eb671e703949ef772aa5}{
+\#define \textbf{ADC\_\-CH\_\-ADC3}~0x03}
+\label{group__a2d_g0a668a769065eb671e703949ef772aa5}
+
+\item 
+\hypertarget{group__a2d_g76e4beb0d4488c7a2854257ce6ee5efb}{
+\#define \textbf{ADC\_\-CH\_\-ADC4}~0x04}
+\label{group__a2d_g76e4beb0d4488c7a2854257ce6ee5efb}
+
+\item 
+\hypertarget{group__a2d_gf93d51a5c2da209e27f37ac2b26b1aa9}{
+\#define \textbf{ADC\_\-CH\_\-ADC5}~0x05}
+\label{group__a2d_gf93d51a5c2da209e27f37ac2b26b1aa9}
+
+\item 
+\hypertarget{group__a2d_gb260b92f5b040618c82c09154eb2fa82}{
+\#define \textbf{ADC\_\-CH\_\-ADC6}~0x06}
+\label{group__a2d_gb260b92f5b040618c82c09154eb2fa82}
+
+\item 
+\hypertarget{group__a2d_gb9748223968807824cc3d22300f21b8f}{
+\#define \textbf{ADC\_\-CH\_\-ADC7}~0x07}
+\label{group__a2d_gb9748223968807824cc3d22300f21b8f}
+
+\item 
+\hypertarget{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}{
+\#define \hyperlink{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}{ADC\_\-CH\_\-122V}~0x1E}
+\label{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}
+
+\begin{CompactList}\small\item\em 1.22V voltage reference \item\end{CompactList}\item 
+\hypertarget{group__a2d_g0ed7f039502e8a1065f0b4a6157fb753}{
+\#define \hyperlink{group__a2d_g0ed7f039502e8a1065f0b4a6157fb753}{ADC\_\-CH\_\-AGND}~0x1F}
+\label{group__a2d_g0ed7f039502e8a1065f0b4a6157fb753}
+
+\begin{CompactList}\small\item\em AGND. \item\end{CompactList}\item 
+\hypertarget{group__a2d_g1d0b3b606a92ff5d5e328e5ef1979c78}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-0\_\-DIFF10X}~0x08}
+\label{group__a2d_g1d0b3b606a92ff5d5e328e5ef1979c78}
+
+\item 
+\hypertarget{group__a2d_g8b2a5dcae180cd218d02f7a623790ef1}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-0\_\-DIFF10X}~0x09}
+\label{group__a2d_g8b2a5dcae180cd218d02f7a623790ef1}
+
+\item 
+\hypertarget{group__a2d_gb9f0b92dd2b67505c26233ada7205e3b}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-0\_\-DIFF200X}~0x0A}
+\label{group__a2d_gb9f0b92dd2b67505c26233ada7205e3b}
+
+\item 
+\hypertarget{group__a2d_gb31f08e45996680fef63c8e4c9125f5d}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-0\_\-DIFF200X}~0x0B}
+\label{group__a2d_gb31f08e45996680fef63c8e4c9125f5d}
+
+\item 
+\hypertarget{group__a2d_g03b2bd74b75fd0a659a927aad76002de}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF10X}~0x0C}
+\label{group__a2d_g03b2bd74b75fd0a659a927aad76002de}
+
+\item 
+\hypertarget{group__a2d_gf70e34012606f8a3d0e8afd3507c6fcb}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF10X}~0x0D}
+\label{group__a2d_gf70e34012606f8a3d0e8afd3507c6fcb}
+
+\item 
+\hypertarget{group__a2d_ga2678f0cab37f1a9c526679363460962}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF200X}~0x0E}
+\label{group__a2d_ga2678f0cab37f1a9c526679363460962}
+
+\item 
+\hypertarget{group__a2d_g8c54c7176365604c459ab8a06231d909}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF200X}~0x0F}
+\label{group__a2d_g8c54c7176365604c459ab8a06231d909}
+
+\item 
+\hypertarget{group__a2d_g1f7378bc96b9faff43a7b2c5639405c1}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-1\_\-DIFF1X}~0x10}
+\label{group__a2d_g1f7378bc96b9faff43a7b2c5639405c1}
+
+\item 
+\hypertarget{group__a2d_gb08fb3b8335d0134639b7cd37def4b48}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-1\_\-DIFF1X}~0x11}
+\label{group__a2d_gb08fb3b8335d0134639b7cd37def4b48}
+
+\item 
+\hypertarget{group__a2d_g9e466f0a78d4a76e060254fc2a9dae77}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-1\_\-DIFF1X}~0x12}
+\label{group__a2d_g9e466f0a78d4a76e060254fc2a9dae77}
+
+\item 
+\hypertarget{group__a2d_g5ca820abd164971170288e59fa41e2d9}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-1\_\-DIFF1X}~0x13}
+\label{group__a2d_g5ca820abd164971170288e59fa41e2d9}
+
+\item 
+\hypertarget{group__a2d_g9faea1861eb2bc2d916eb9fbfddeef38}{
+\#define \textbf{ADC\_\-CH\_\-4\_\-1\_\-DIFF1X}~0x14}
+\label{group__a2d_g9faea1861eb2bc2d916eb9fbfddeef38}
+
+\item 
+\hypertarget{group__a2d_g85a30293d96db3700b4b9be90c0fbb33}{
+\#define \textbf{ADC\_\-CH\_\-5\_\-1\_\-DIFF1X}~0x15}
+\label{group__a2d_g85a30293d96db3700b4b9be90c0fbb33}
+
+\item 
+\hypertarget{group__a2d_g4c657e2d57628fa1985d2ff38e165314}{
+\#define \textbf{ADC\_\-CH\_\-6\_\-1\_\-DIFF1X}~0x16}
+\label{group__a2d_g4c657e2d57628fa1985d2ff38e165314}
+
+\item 
+\hypertarget{group__a2d_g7f35bdea141f9aa32a07f4cb1d0ccd86}{
+\#define \textbf{ADC\_\-CH\_\-7\_\-1\_\-DIFF1X}~0x17}
+\label{group__a2d_g7f35bdea141f9aa32a07f4cb1d0ccd86}
+
+\item 
+\hypertarget{group__a2d_ga7bf0c13604c130feb76935e177124bb}{
+\#define \textbf{ADC\_\-CH\_\-0\_\-2\_\-DIFF1X}~0x18}
+\label{group__a2d_ga7bf0c13604c130feb76935e177124bb}
+
+\item 
+\hypertarget{group__a2d_gad51db92aecbfe211871a3099d7fbd7e}{
+\#define \textbf{ADC\_\-CH\_\-1\_\-2\_\-DIFF1X}~0x19}
+\label{group__a2d_gad51db92aecbfe211871a3099d7fbd7e}
+
+\item 
+\hypertarget{group__a2d_g71ceaea7dd64c28705ccdc84c09f9e48}{
+\#define \textbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF1X}~0x1A}
+\label{group__a2d_g71ceaea7dd64c28705ccdc84c09f9e48}
+
+\item 
+\hypertarget{group__a2d_g13d286d6aa04046617a96eef9804c40a}{
+\#define \textbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF1X}~0x1B}
+\label{group__a2d_g13d286d6aa04046617a96eef9804c40a}
+
+\item 
+\hypertarget{group__a2d_ga2fd7fa7726846b7399e0a9e8ca8254a}{
+\#define \textbf{ADC\_\-CH\_\-4\_\-2\_\-DIFF1X}~0x1C}
+\label{group__a2d_ga2fd7fa7726846b7399e0a9e8ca8254a}
+
+\item 
+\hypertarget{group__a2d_g92a15defe2e018615ed50b8e756d960c}{
+\#define \textbf{ADC\_\-CH\_\-5\_\-2\_\-DIFF1X}~0x1D}
+\label{group__a2d_g92a15defe2e018615ed50b8e756d960c}
+
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{group__a2d_gd5a448cf42b0d27dccd39dd2ff10c191}{a2dInit} (void)
+\item 
+\hypertarget{group__a2d_g994ceed43d7aec7022b1eb764f59b68f}{
+void \hyperlink{group__a2d_g994ceed43d7aec7022b1eb764f59b68f}{a2dOff} (void)}
+\label{group__a2d_g994ceed43d7aec7022b1eb764f59b68f}
+
+\begin{CompactList}\small\item\em Turn off A/D converter. \item\end{CompactList}\item 
+void \hyperlink{group__a2d_gb062433b6cb21b50aa94e896bcd93b87}{a2dSetPrescaler} (unsigned char prescale)
+\item 
+void \hyperlink{group__a2d_g42bd5d9230c972339592df77a25d85ff}{a2dSetReference} (unsigned char ref)
+\item 
+\hypertarget{group__a2d_gef42c929bbdf795307bd60e83da80e58}{
+void \hyperlink{group__a2d_gef42c929bbdf795307bd60e83da80e58}{a2dSetChannel} (unsigned char ch)}
+\label{group__a2d_gef42c929bbdf795307bd60e83da80e58}
+
+\begin{CompactList}\small\item\em sets the a2d input channel \item\end{CompactList}\item 
+\hypertarget{group__a2d_g802949f5f047448a17a1cfb91ac1758e}{
+void \hyperlink{group__a2d_g802949f5f047448a17a1cfb91ac1758e}{a2dStartConvert} (void)}
+\label{group__a2d_g802949f5f047448a17a1cfb91ac1758e}
+
+\begin{CompactList}\small\item\em start a conversion on the current a2d input channel \item\end{CompactList}\item 
+\hypertarget{group__a2d_g1b77791393850966a323f0464d7694a2}{
+u08 \hyperlink{group__a2d_g1b77791393850966a323f0464d7694a2}{a2dIsComplete} (void)}
+\label{group__a2d_g1b77791393850966a323f0464d7694a2}
+
+\begin{CompactList}\small\item\em return TRUE if conversion is complete \item\end{CompactList}\item 
+unsigned short \hyperlink{group__a2d_ga7361811ca4e813838865bd87bf8e017}{a2dConvert10bit} (unsigned char ch)
+\item 
+unsigned char \hyperlink{group__a2d_gcc741350aaf6fdd70153838bf22ded02}{a2dConvert8bit} (unsigned char ch)
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+\begin{Code}\begin{verbatim} #include "a2d.h" 
+\end{verbatim}
+\end{Code}
+
+ \begin{Desc}
+\item[Overview]This library provides an easy interface to the analog-to-digital converter available on many AVR processors. Updated to support the ATmega128. \end{Desc}
+
+
+\subsection{Function Documentation}
+\hypertarget{group__a2d_ga7361811ca4e813838865bd87bf8e017}{
+\index{a2d@{a2d}!a2dConvert10bit@{a2dConvert10bit}}
+\index{a2dConvert10bit@{a2dConvert10bit}!a2d@{a2d}}
+\subsubsection[{a2dConvert10bit}]{\setlength{\rightskip}{0pt plus 5cm}unsigned short a2dConvert10bit (unsigned char {\em ch})}}
+\label{group__a2d_ga7361811ca4e813838865bd87bf8e017}
+
+
+Starts a conversion on A/D channel\# ch, returns the 10-bit value of the conversion when it is finished. 
+
+Definition at line 88 of file a2d.c.
+
+Referenced by a2dConvert8bit().\hypertarget{group__a2d_gcc741350aaf6fdd70153838bf22ded02}{
+\index{a2d@{a2d}!a2dConvert8bit@{a2dConvert8bit}}
+\index{a2dConvert8bit@{a2dConvert8bit}!a2d@{a2d}}
+\subsubsection[{a2dConvert8bit}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char a2dConvert8bit (unsigned char {\em ch})}}
+\label{group__a2d_gcc741350aaf6fdd70153838bf22ded02}
+
+
+Starts a conversion on A/D channel\# ch, returns the 8-bit value of the conversion when it is finished. 
+
+Definition at line 104 of file a2d.c.
+
+References a2dConvert10bit().\hypertarget{group__a2d_gd5a448cf42b0d27dccd39dd2ff10c191}{
+\index{a2d@{a2d}!a2dInit@{a2dInit}}
+\index{a2dInit@{a2dInit}!a2d@{a2d}}
+\subsubsection[{a2dInit}]{\setlength{\rightskip}{0pt plus 5cm}void a2dInit (void)}}
+\label{group__a2d_gd5a448cf42b0d27dccd39dd2ff10c191}
+
+
+Initializes the A/D converter. Turns ADC on and prepares it for use. 
+
+Definition at line 34 of file a2d.c.
+
+References a2dSetPrescaler(), and a2dSetReference().\hypertarget{group__a2d_gb062433b6cb21b50aa94e896bcd93b87}{
+\index{a2d@{a2d}!a2dSetPrescaler@{a2dSetPrescaler}}
+\index{a2dSetPrescaler@{a2dSetPrescaler}!a2d@{a2d}}
+\subsubsection[{a2dSetPrescaler}]{\setlength{\rightskip}{0pt plus 5cm}void a2dSetPrescaler (unsigned char {\em prescale})}}
+\label{group__a2d_gb062433b6cb21b50aa94e896bcd93b87}
+
+
+Sets the division ratio of the A/D converter clock. This function is automatically called from \hyperlink{group__a2d_gd5a448cf42b0d27dccd39dd2ff10c191}{a2dInit()} with a default value. 
+
+Definition at line 56 of file a2d.c.
+
+Referenced by a2dInit().\hypertarget{group__a2d_g42bd5d9230c972339592df77a25d85ff}{
+\index{a2d@{a2d}!a2dSetReference@{a2dSetReference}}
+\index{a2dSetReference@{a2dSetReference}!a2d@{a2d}}
+\subsubsection[{a2dSetReference}]{\setlength{\rightskip}{0pt plus 5cm}void a2dSetReference (unsigned char {\em ref})}}
+\label{group__a2d_g42bd5d9230c972339592df77a25d85ff}
+
+
+Configures which voltage reference the A/D converter uses. This function is automatically called from \hyperlink{group__a2d_gd5a448cf42b0d27dccd39dd2ff10c191}{a2dInit()} with a default value. 
+
+Definition at line 62 of file a2d.c.
+
+Referenced by a2dInit().

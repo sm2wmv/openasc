@@ -1,0 +1,47 @@
+\hypertarget{structbus__struct__ping__status}{
+\section{bus\_\-struct\_\-ping\_\-status Struct Reference}
+\label{structbus__struct__ping__status}\index{bus\_\-struct\_\-ping\_\-status@{bus\_\-struct\_\-ping\_\-status}}
+}
+Struct which contains information of the bus ping information.  
+
+
+{\tt \#include $<$bus\_\-ping.h$>$}
+
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{structbus__struct__ping__status_cd059e45d0f0af76f94230d2e0cf30ee}{
+unsigned char \hyperlink{structbus__struct__ping__status_cd059e45d0f0af76f94230d2e0cf30ee}{addr}}
+\label{structbus__struct__ping__status_cd059e45d0f0af76f94230d2e0cf30ee}
+
+\begin{CompactList}\small\item\em The address of the device. \item\end{CompactList}\item 
+\hypertarget{structbus__struct__ping__status_087fd50f1ebbcb5fa3cf0d55132f65b4}{
+unsigned char \hyperlink{structbus__struct__ping__status_087fd50f1ebbcb5fa3cf0d55132f65b4}{device\_\-type}}
+\label{structbus__struct__ping__status_087fd50f1ebbcb5fa3cf0d55132f65b4}
+
+\begin{CompactList}\small\item\em The type of device it is, see \hyperlink{bus_8h}{bus.h} for details. \item\end{CompactList}\item 
+\hypertarget{structbus__struct__ping__status_50c843fb2106e5edd9fb25f466b6a6f0}{
+unsigned int \hyperlink{structbus__struct__ping__status_50c843fb2106e5edd9fb25f466b6a6f0}{time\_\-last\_\-ping}}
+\label{structbus__struct__ping__status_50c843fb2106e5edd9fb25f466b6a6f0}
+
+\begin{CompactList}\small\item\em The time since the last ping did occur in ms. \item\end{CompactList}\item 
+\hypertarget{structbus__struct__ping__status_b5bb85a17c8b1259bb675719bdf4e8c1}{
+unsigned char \hyperlink{structbus__struct__ping__status_b5bb85a17c8b1259bb675719bdf4e8c1}{flags}}
+\label{structbus__struct__ping__status_b5bb85a17c8b1259bb675719bdf4e8c1}
+
+\begin{CompactList}\small\item\em Flags, see defines above. \item\end{CompactList}\item 
+\hypertarget{structbus__struct__ping__status_1c62266668b9359a8267f84c250d29b7}{
+unsigned char \hyperlink{structbus__struct__ping__status_1c62266668b9359a8267f84c250d29b7}{data} \mbox{[}2\mbox{]}}
+\label{structbus__struct__ping__status_1c62266668b9359a8267f84c250d29b7}
+
+\begin{CompactList}\small\item\em Data from the device, content varies depending on device\_\-id. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Struct which contains information of the bus ping information. 
+
+Definition at line 20 of file bus\_\-ping.h.
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+wmv\_\-bus/\hyperlink{bus__ping_8h}{bus\_\-ping.h}\end{CompactItemize}

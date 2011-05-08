@@ -1,0 +1,53 @@
+\hypertarget{structstruct__radio__status}{
+\section{struct\_\-radio\_\-status Struct Reference}
+\label{structstruct__radio__status}\index{struct\_\-radio\_\-status@{struct\_\-radio\_\-status}}
+}
+The radio status struct.  
+
+
+{\tt \#include $<$radio\_\-interface.h$>$}
+
+\subsection*{Public Attributes}
+\begin{CompactItemize}
+\item 
+\hypertarget{structstruct__radio__status_3f8dc694c438cf71f8879c0fe661112a}{
+unsigned int \hyperlink{structstruct__radio__status_3f8dc694c438cf71f8879c0fe661112a}{current\_\-freq}}
+\label{structstruct__radio__status_3f8dc694c438cf71f8879c0fe661112a}
+
+\begin{CompactList}\small\item\em The radios current frequency. \item\end{CompactList}\item 
+\hypertarget{structstruct__radio__status_2c9df774ad90bd5f802868461bed9a6b}{
+unsigned int \hyperlink{structstruct__radio__status_2c9df774ad90bd5f802868461bed9a6b}{new\_\-freq}}
+\label{structstruct__radio__status_2c9df774ad90bd5f802868461bed9a6b}
+
+\begin{CompactList}\small\item\em The radios new frequency. \item\end{CompactList}\item 
+\hypertarget{structstruct__radio__status_51620d924d529240f096bb7df96c1f11}{
+unsigned char \hyperlink{structstruct__radio__status_51620d924d529240f096bb7df96c1f11}{current\_\-band}}
+\label{structstruct__radio__status_51620d924d529240f096bb7df96c1f11}
+
+\begin{CompactList}\small\item\em The radios current band. \item\end{CompactList}\item 
+unsigned char \hyperlink{structstruct__radio__status_b4b33389742d5abd41dfdc7cb8df71b8}{box\_\-sent\_\-request}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The radio status struct. 
+
+Definition at line 122 of file radio\_\-interface.h.
+
+\subsection{Member Data Documentation}
+\hypertarget{structstruct__radio__status_b4b33389742d5abd41dfdc7cb8df71b8}{
+\index{struct\_\-radio\_\-status@{struct\_\-radio\_\-status}!box\_\-sent\_\-request@{box\_\-sent\_\-request}}
+\index{box\_\-sent\_\-request@{box\_\-sent\_\-request}!struct_radio_status@{struct\_\-radio\_\-status}}
+\subsubsection[{box\_\-sent\_\-request}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf struct\_\-radio\_\-status::box\_\-sent\_\-request}}}
+\label{structstruct__radio__status_b4b33389742d5abd41dfdc7cb8df71b8}
+
+
+Variable which is set if the openASC box has sent a request to the radio, used to know if we can just redirect the data from the radio to the computer or if it should be thrown away 
+
+Definition at line 131 of file radio\_\-interface.h.
+
+Referenced by radio\_\-communicaton\_\-timeout(), radio\_\-get\_\-cat\_\-status(), and radio\_\-interface\_\-init().
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+front\_\-panel/\hyperlink{radio__interface_8h}{radio\_\-interface.h}\end{CompactItemize}
