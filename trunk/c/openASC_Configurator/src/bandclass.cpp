@@ -550,10 +550,10 @@ void BandClass::sendSettings(CommClass& serialPort) {
 
 	tx_buff[0] = CTRL_SET_ANT_DATA_ANT_FLAGS;
 	tx_buff[1] = bandIndex;
-	tx_buff[2] = antennaFlags[0];
-	tx_buff[3] = antennaFlags[1];
-	tx_buff[4] = antennaFlags[2];
-	tx_buff[5] = antennaFlags[3];
+	tx_buff[2] = getFlagStatus(0);
+	tx_buff[3] = getFlagStatus(1);
+	tx_buff[4] = getFlagStatus(2);
+	tx_buff[5] = getFlagStatus(3);
 	
 	serialPort.addTXMessage(CTRL_SET_ANT_DATA,6,tx_buff);
 	

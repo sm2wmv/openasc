@@ -73,8 +73,14 @@ void powermeter_set_active(unsigned char state) {
 		powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
 		
 		glcd_clear();
-		status.prev_display = status.current_display;
+		
+    status.prev_display = status.current_display;
     status.current_display = CURRENT_DISPLAY_POWERMETER_VIEW;
+
+    printf("PRE curr_disp: %i\n",status.current_display);
+    printf("PRE Prev_disp: %i\n",status.prev_display);
+
+    
     display_show_powermeter();
 		glcd_update_all();
 	}
@@ -82,9 +88,20 @@ void powermeter_set_active(unsigned char state) {
 		powermeter_flags &= ~(1<<POWERMETER_FLAG_ACTIVE);
 		
 		glcd_clear();
-       
-    status.current_display = status.prev_display;
-    status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
+    
+    //Fixes so that the power meter display never gets "stuck" visible
+    if (status.current_display != status.prev_display) {
+      status.current_display = status.prev_display;
+      status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
+    }
+    else {
+        status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+        status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
+    }
+    
+    printf("REL curr_disp: %i\n",status.current_display);
+    printf("REL Prev_disp: %i\n",status.prev_display);    
+    
 		main_update_display();
 	}
 }

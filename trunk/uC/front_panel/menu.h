@@ -53,6 +53,8 @@ typedef struct {
 #define MENU_OPTION_TYPE_NORMAL					0
 //! Menu type scroll numbers, for example increase/decrease a value
 #define MENU_OPTION_TYPE_SCROLL_NUMBERS	1
+//! Menu type for just showing some information
+#define MENU_OPTION_TYPE_SHOW_INFO 2
 //! No menu option
 #define MENU_OPTION_TYPE_NONE						99
 
@@ -65,7 +67,7 @@ typedef struct {
 //! Change the backlight level of the LCD
 #define MENU_POS_BACKLIGHT_LEVEL	3
 //! Show network actvitity
-#define MENU_POS_SHOW_ACTIVITY		4
+#define MENU_POS_SHOW_FIRMWARE		4
 //! Show MISC menu
 #define MENU_POS_MISC        			5
 //! Show the power meter addresses

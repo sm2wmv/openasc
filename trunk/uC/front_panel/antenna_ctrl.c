@@ -544,7 +544,7 @@ char* antenna_ctrl_get_rx_antenna_output_str(unsigned char ant_index) {
 
 /*! \brief Function which will select the default antenna for this band if it is configured */
 void antenna_ctrl_select_default_ant(void) {
-	if (current_antennas.default_antenna == 0)
+  if (current_antennas.default_antenna == 0)
 		event_tx_button1_pressed();
 	else if (current_antennas.default_antenna == 1)
 		event_tx_button2_pressed();
@@ -569,6 +569,11 @@ void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
       break;
     }
   }
+/*  
+  printf("Comb allowed: %i\n",current_antennas.antenna_comb_allowed);
+  printf("Def ant index: %i\n",current_antennas.default_antenna);
+  printf("Flag antennas: %i\n",current_antennas.antenna_flag[0]);
+  printf("Flags %i\n",antenna_ctrl_get_flags(0));*/
 }
 
 /*! \brief Read the eeprom for the rx antenna settings  */

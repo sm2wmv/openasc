@@ -187,12 +187,14 @@ void band_ctrl_change_band(unsigned char band) {
 				band_ctrl_load_band(band);
 				
 				if (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM) {
-					status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+					status.prev_display = status.current_display;
+          status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
 					status.current_display_level = DISPLAY_LEVEL_BAND;
 				}
 			}
 			else {
 				if ((status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW) && (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM))
+          status.prev_display = status.current_display;
 					status.current_display = CURRENT_DISPLAY_LOGO;
 			}		
 			
