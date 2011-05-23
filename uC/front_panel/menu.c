@@ -69,7 +69,7 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_RADIO_PTT, "Radio PTT", (struct_menu_option *)menu_option_radio_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_AMP_PTT, "Amplifier PTT", (struct_menu_option *)menu_option_amp_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_BACKLIGHT_LEVEL, "Backlight", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
-{MENU_POS_SHOW_ACTIVITY, "Network activity", NULL, 0,MENU_OPTION_TYPE_NONE},
+{MENU_POS_SHOW_FIRMWARE, "Firmware", NULL, 0,MENU_OPTION_TYPE_NONE},
 {MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL},
@@ -98,14 +98,16 @@ void menu_show_text(struct_menu_text menu_text) {
 			}
 		}
 	}
-	else if (menu_text.pos == MENU_POS_SHOW_ACTIVITY) {
+	else if (menu_text.pos == MENU_POS_SHOW_FIRMWARE) {
 		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
 		
 		//Draw a seperation line between the options and the header
 		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
 		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 		
-		//TODO: Implement to show the ping list and make it possible to scroll down the list
+    char temp[30];
+    sprintf(temp,"Version: %s",FIRMWARE_REV);
+    glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
 	}
 	else {
 		//Show the "Menu" text
@@ -254,7 +256,7 @@ void menu_action(unsigned char menu_action_type) {
 				
 				led_set_error(LED_STATE_OFF);
 			}	
-			else
+			else if (menu_system_text[current_menu_pos].option_type != MENU_OPTION_TYPE_NONE)
 				current_menu_level = 1;
 		}
 		else {

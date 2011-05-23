@@ -491,7 +491,6 @@ void MainWindowImpl::actionSendSettingsTriggered() {
 
 	for (int i=0;i<9;i++) {
 		bandData[i].sendSettings(serialPort);
-		
 		addDebugLine("Sending bandData");
 	}
 	

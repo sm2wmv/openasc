@@ -458,6 +458,12 @@ void event_update_display(void) {
         
       display_update(status.selected_band, status.selected_ant);
     }
+    else if (status.current_display_level == DISPLAY_LEVEL_SUBMENU) {
+      if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_VERT_ARRAY)
+        display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
+      else if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_STACK)
+        display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_STACK);
+    }
 	}
 	else if (status.current_display == CURRENT_DISPLAY_LOGO) {
 		glcd_print_picture();
@@ -716,6 +722,8 @@ void event_tx_button1_pressed(void) {
 				set_tx_ant_leds();
 			}
 		}
+		
+		main_update_ptt_status();
 	}
 }
 
@@ -790,7 +798,9 @@ void event_tx_button2_pressed(void) {
 				set_tx_ant_leds();
 			}
     }
-	}
+    
+    main_update_ptt_status();
+  }
 }
 
 /*! \brief Perform the action of TX antenna button 3 if it was pressed */
@@ -865,6 +875,8 @@ void event_tx_button3_pressed(void) {
 				set_tx_ant_leds();
 			}
 		}
+		
+		main_update_ptt_status();
 	}
 }
 
@@ -940,6 +952,8 @@ void event_tx_button4_pressed(void) {
 				set_tx_ant_leds();
 			}
   	}
+  	
+  	main_update_ptt_status();
 	}
 }
 
