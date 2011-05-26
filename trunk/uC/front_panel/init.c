@@ -70,7 +70,7 @@ void init_timer_2(void) {
 void init_ports(void) {
 	/* Check the file board.h for info about ports */
 	DDRA = 0xFF;
-	DDRB = 0xD6;
+	DDRB = 0xD7;
 	DDRC = 0xD7;
 	DDRD = 0x5B;
 	DDRE = 0x26;
