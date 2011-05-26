@@ -225,12 +225,18 @@ void event_run(void) {
 	}
 }
 
-void main_process_lock(unsigned char status) {
-  if (status == 1) {
+void main_process_lock(unsigned char lock_status) {
+  if (lock_status == 1) {
     sequencer_lock_all();
     
     main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
-    led_set_ptt(LED_STATE_PTT_INHIBIT);
+    
+    if (status.alarm_output == 0) {
+      PORTB |= (1<<ALARM_OUTPUT_BIT);
+      status.alarm_output = 1;
+    }    
+    
+    led_set_ptt(LED_STATE_PTT_INHIBIT); 
   }
 }
 
