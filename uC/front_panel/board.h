@@ -61,7 +61,7 @@
  *
  * PORTB
  * =====================================================================================
- * PB0 - Output/Input - AUX X11 PIN 8
+ * PB0 - Output/Input - AUX X11 PIN 8 (ALARM output, high when PTT light is red, 0 otherwise)
  * PB1 - Output - SPI SCK (ISP)
  * PB2 - Output - SPI MOSI (ISP)
  * PB3 - Input  - SPI MISO (ISP)
@@ -340,5 +340,8 @@
 #define STATUS_USB2_DTR_BIT				4
 //! This bit shows the status of the USB RTS on USB port 2
 #define STATUS_USB2_RTS_BIT				5
+
+//! Alarm output bit
+#define ALARM_OUTPUT_BIT  0
 
 #endif

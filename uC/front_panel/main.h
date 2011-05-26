@@ -299,6 +299,8 @@ typedef struct {
   unsigned char curr_critical_cmd_state;
   /*! The last critical cmd state */
   unsigned char last_critical_cmd_state;
+  /*! Alarm state output */
+  unsigned char alarm_output;
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM

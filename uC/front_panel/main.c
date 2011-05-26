@@ -355,18 +355,38 @@ void main_update_ptt_status(void) {
 	if (state == 0) {
 		main_set_inhibit_state(INHIBIT_OK_TO_SEND);
 		led_set_ptt(LED_STATE_PTT_OK);
+    
+    if (status.alarm_output == 1)
+      PORTB &= ~(1<<ALARM_OUTPUT_BIT);
 	}
 	else if (state == 1) {
-		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+    main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
+
+    if (status.alarm_output == 0) {
+      PORTB |= (1<<ALARM_OUTPUT_BIT);
+      status.alarm_output = 1;
+    }
+    
 		led_set_ptt(LED_STATE_PTT_INHIBIT);
 	}
 	else if (state == 2) {
 		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND_RADIO_TX);
 		led_set_ptt(LED_STATE_PTT_ACTIVE);
+
+    if (status.alarm_output == 1) {
+      PORTB &= ~(1<<ALARM_OUTPUT_BIT);
+      status.alarm_output = 0;
+    }
 	}
 	else if (state == 3) {
 		main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
-		led_set_ptt(LED_STATE_PTT_INHIBIT);
+		
+    if (status.alarm_output == 0) {
+      PORTB |= (1<<ALARM_OUTPUT_BIT);
+      status.alarm_output = 1;
+    }
+    
+    led_set_ptt(LED_STATE_PTT_INHIBIT);
 	}
 }
 
@@ -461,6 +481,8 @@ int main(void){
 	status.rotator_step_resolution = 5;
   status.last_critical_cmd_state = 99;	
   status.curr_critical_cmd_state = 1;
+  status.alarm_output = (1<<ALARM_OUTPUT_BIT);
+  PORTB |= (1<<ALARM_OUTPUT_BIT);
   
 	//Load all settings from the EEPROM	
 	load_settings();
