@@ -77,9 +77,9 @@ void powermeter_set_active(unsigned char state) {
     status.prev_display = status.current_display;
     status.current_display = CURRENT_DISPLAY_POWERMETER_VIEW;
 
-    printf("PRE curr_disp: %i\n",status.current_display);
+/*    printf("PRE curr_disp: %i\n",status.current_display);
     printf("PRE Prev_disp: %i\n",status.prev_display);
-
+*/
     
     display_show_powermeter();
 		glcd_update_all();
@@ -99,9 +99,9 @@ void powermeter_set_active(unsigned char state) {
         status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
     }
     
-    printf("REL curr_disp: %i\n",status.current_display);
+  /*  printf("REL curr_disp: %i\n",status.current_display);
     printf("REL Prev_disp: %i\n",status.prev_display);    
-    
+    */
 		main_update_display();
 	}
 }
