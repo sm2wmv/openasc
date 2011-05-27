@@ -1,19 +1,10 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="4" >
-  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/main.c" >
-   <View0 Encoding="" line="233" Type="Source" />
+ <DocsAndViews NumberOfDocuments="1" >
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.h" >
+   <View0 Encoding="" line="59" Type="Source" />
   </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/input.h" >
-   <View0 Encoding="" line="104" Type="Source" />
-  </Doc1>
-  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/input.c" >
-   <View0 Encoding="" line="102" Type="Source" />
-  </Doc2>
-  <Doc3 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/powermeter/sensor_unit/makefile" >
-   <View0 Encoding="" line="34" Type="Source" />
-  </Doc3>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
