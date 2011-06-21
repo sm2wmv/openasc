@@ -20,8 +20,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//#define DEBUG_COMPUTER_USART_ENABLED
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <avr/io.h>
@@ -275,8 +273,10 @@ void set_knob_function(unsigned char function) {
 			if (runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL)
 				status.knob_function = KNOB_FUNCTION_SELECT_BAND;
 		}
-		else
+		else if (status.knob_prev_function != KNOB_FUNCTION_SET_SUBMENU)  //We don't want to change sub menu options by misstake
 			status.knob_function = status.knob_prev_function;
+    else
+      status.knob_function = KNOB_FUNCTION_NONE;
 	} 
 	else {
 		status.knob_prev_function = status.knob_function;
@@ -449,8 +449,7 @@ int main(void){
 		computer_interface_activate_setup();
 	}
 
-	
-	//Check if this is the first time we start the device, if so we need to initiate some
+  //Check if this is the first time we start the device, if so we need to initiate some
 	//data structures. To force this at startup just change the value that should be read and
 	//written to the EEPROM
 	if (eeprom_read_startup_byte() != 0x01) {
@@ -487,9 +486,15 @@ int main(void){
 	status.rotator_step_resolution = 5;
   status.last_critical_cmd_state = 99;	
   status.curr_critical_cmd_state = 1;
+  
   status.alarm_output = (1<<ALARM_OUTPUT_BIT);
   PORTB |= (1<<ALARM_OUTPUT_BIT);
   
+  
+  //!! Erase the external EEPROM. uncomment to do so !!
+  //eeprom_m24_write_block(0,32000,255);
+  //eeprom_write_startup_byte(0x00);  //Will force a configuration of the box at startup
+    
 	//Load all settings from the EEPROM	
 	load_settings();
 	
@@ -556,13 +561,12 @@ int main(void){
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
 	that is based on the external address of the device */	
-	delay_ms(7 * settings.network_address);
+	delay_ms(19 * settings.network_address);
 	
 	device_count = settings.network_device_count;
 	
 	//This must be done in this order for it to work properly!
-	/* Read the external address of the device */
-	bus_set_address(settings.network_address);
+  bus_set_address(settings.network_address);
 	
 	bus_init();
 
@@ -714,17 +718,6 @@ int main(void){
 			}
 		
 			if (main_flags & (1<<FLAG_PROCESS_SUBMENU_CHANGE)) {
-        
-/*        if (event_queue_check_id(EVENT_TYPE_BAND_CHANGE_PTT_LOCK) == 0) {
-          main_set_inhibit_state(INHIBIT_NOT_OK_TO_SEND);
-          led_set_ptt(LED_STATE_PTT_INHIBIT);
-        
-          if (event_queue_check_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK) != 0)
-            event_queue_drop_id(EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);      
-          
-          event_add_message((void *)main_update_ptt_status, SUBMENU_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_SUBMENU_CHANGE_PTT_LOCK);
-        }*/
-        
 				sub_menu_send_data_to_bus(status.sub_menu_antenna_index, sub_menu_get_current_pos(status.sub_menu_antenna_index));
 			
 				main_flags &= ~(1<<FLAG_CHANGE_SUBMENU);

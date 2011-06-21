@@ -323,7 +323,7 @@ void display_view(unsigned char mode) {
 void display_show_rx_ant(unsigned char ant_index) {
 	CLEAR_RX_ANTENNA_AREA();
 	
-  if ((status.current_display_level == DISPLAY_LEVEL_BAND) | (status.current_display_level == DISPLAY_LEVEL_SUBMENU)) {	
+  if ((status.current_display_level == DISPLAY_LEVEL_BAND) || (status.current_display_level == DISPLAY_LEVEL_SUBMENU)) {	
 
 		if ((antenna_ctrl_get_rx_antenna_count() >= ant_index) && (ant_index != 0)) {
 			char temp[strlen(antenna_ctrl_get_rx_antenna_name(ant_index-1))+5];
