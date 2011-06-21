@@ -540,9 +540,10 @@ void event_poll_buttons(void) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
 				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
 					if (status.selected_band != BAND_UNDEFINED) {
-						status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
+            status.prev_display = status.current_display;
+            
+            status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
 						status.current_display_level = DISPLAY_LEVEL_BAND;
-						status.prev_display = status.current_display;
 					}
 					else {
 						status.prev_display = status.current_display;
