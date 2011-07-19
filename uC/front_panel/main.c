@@ -63,8 +63,6 @@
 
 //#define ERROR_DEBUG 1
 
-//#define DEBUG_COMPUTER_USART_ENABLED 1
-
 //! Settings struct
 struct_setting settings;
 
@@ -114,8 +112,8 @@ void clear_screensaver_timer(void) {
 	if (display_screensaver_mode()) {
 		display_disable_screensaver();
 		display_set_backlight(runtime_settings.lcd_backlight_value);
-		
-		main_update_display();
+
+    main_update_display();
 	}
 }
 
@@ -463,7 +461,10 @@ int main(void){
 		runtime_settings.radio_ptt_output = 1;
 		runtime_settings.inhibit_state = 0;
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
-		
+    
+    for (unsigned char i=0;i<9;i++)
+      runtime_settings.antenna_disabled[i] = 0;
+    
 		//Write the settings to the EEPROM
 		eeprom_save_runtime_settings(&runtime_settings);
 		
@@ -497,7 +498,7 @@ int main(void){
     
 	//Load all settings from the EEPROM	
 	load_settings();
-	
+  
 	//Init the communzication routines between the computer and the openASC box
 	computer_interface_init();
 	

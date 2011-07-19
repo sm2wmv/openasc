@@ -283,8 +283,6 @@ void  bus_resend_message(void) {
 	}
 	else {
 		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-			led_set_error(LED_STATE_ON);
-			
 			//Set the error flag
 			error_handler_set(ERROR_TYPE_BUS_RESEND,1,0);
 		#endif
@@ -604,7 +602,6 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 		
 		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 			error_handler_set(ERROR_TYPE_BUS_SYNC,1,0);
-			led_set_error(LED_STATE_ON);
 		#endif
 	}
 

@@ -23,6 +23,8 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+//#define DEBUG_COMPUTER_USART_ENABLED 1
+
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.42b\0"
 
@@ -317,6 +319,8 @@ typedef struct {
 	unsigned char band_change_mode;
 	//! Powermeter address
 	unsigned char powermeter_address;
+  //! This is a runtime setting which makes it possible to cross out antennas
+  unsigned char antenna_disabled[9];
 } struct_runtime_settings;
 
 /* Different views */

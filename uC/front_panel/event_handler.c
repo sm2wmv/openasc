@@ -448,7 +448,7 @@ void event_pulse_sensor_down(void) {
 
 /*! \brief Function to be called if we wish to update the display */
 void event_update_display(void) {
-	if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
+  if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
 		if (status.current_display_level == DISPLAY_LEVEL_BAND) {
       //Should we show the RX antenna?
       if (status.function_status & (1<<FUNC_STATUS_RXANT))
@@ -549,6 +549,8 @@ void event_poll_buttons(void) {
 						status.prev_display = status.current_display;
 						status.current_display = CURRENT_DISPLAY_LOGO;
 					}
+					
+					glcd_clear();
 					
 					led_set_menu(LED_STATE_OFF);
 				}
@@ -655,7 +657,7 @@ void __inline__ event_handler_set_ptt_status(void) {
 void event_tx_button1_pressed(void) {
 	clear_screensaver_timer();
 	
-	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+	if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0)) == 0)) {
     if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
 			
       event_handler_set_ptt_status();
@@ -731,8 +733,8 @@ void event_tx_button1_pressed(void) {
 /*! \brief Perform the action of TX antenna button 2 if it was pressed */
 void event_tx_button2_pressed(void) {
 	clear_screensaver_timer();
-	
-	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+
+  if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<1)) == 0)) {
 		if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_EXIST_FLAG)) {
       
       event_handler_set_ptt_status();
@@ -808,7 +810,7 @@ void event_tx_button2_pressed(void) {
 void event_tx_button3_pressed(void) {
 	clear_screensaver_timer();
 	
-	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+	if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<2)) == 0)) {
 		if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_EXIST_FLAG)) {
       
       event_handler_set_ptt_status();
@@ -884,8 +886,8 @@ void event_tx_button3_pressed(void) {
 /*! \brief Perform the action of TX antenna button 4 if it was pressed */
 void event_tx_button4_pressed(void) {
 	clear_screensaver_timer();
-	
-	if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+  
+	if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<3)) == 0)) {
 		if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_EXIST_FLAG)) {
       
       event_handler_set_ptt_status();
@@ -1180,7 +1182,7 @@ void event_bus_parse_message(void) {
 		}
 	}
 	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
-		//Lets check if the data is meant for us or if we should just ignore it
+    //Lets check if the data is meant for us or if we should just ignore it
 		if ((runtime_settings.powermeter_address == 0x00) && (bus_message.from_addr == main_get_powermeter_address(status.selected_band-1)))
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 		else if (runtime_settings.powermeter_address == bus_message.from_addr)

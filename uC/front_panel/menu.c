@@ -40,7 +40,7 @@
 #define MENU_OPTION_LEFT_POS 13
 
 //! Number of options in the menu system
-#define MENU_OPTIONS	8
+#define MENU_OPTIONS	9
 
 //! Menu options - Errors
 const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"},{"Band in use"}};
@@ -73,6 +73,7 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_ANT_STATUS, "Antenna status", NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS}
 };
 
 /*! \brief Show the text of a menu on the display 
@@ -153,6 +154,44 @@ void menu_show_text(struct_menu_text menu_text) {
 				if (current_menu_level == 1)
 					glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);				
 			}
+			else if (menu_text.pos == MENU_POS_ANT_STATUS) {
+        char temp[20];
+        
+        sprintf(temp,"Comb value: %3i",runtime_settings.antenna_disabled[status.selected_band-1]);
+  
+        glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
+        
+        if (current_menu_level == 1)
+          glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
+        
+        if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0))
+          sprintf(temp,"A1: Disabled");
+        else
+          sprintf(temp,"A1: Enabled");
+        
+        glcd_text(MENU_OPTION_LEFT_POS,18+12,FONT_SEVEN_DOT,temp,strlen(temp));
+
+        if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<1))
+          sprintf(temp,"A2: Disabled");
+        else
+          sprintf(temp,"A2: Enabled");
+       
+        glcd_text(MENU_OPTION_LEFT_POS,18+12+9,FONT_SEVEN_DOT,temp,strlen(temp));
+
+        if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<2))
+          sprintf(temp,"A3: Disabled");
+        else
+          sprintf(temp,"A3: Enabled");
+        
+        glcd_text(MENU_OPTION_LEFT_POS,18+12+18,FONT_SEVEN_DOT,temp,strlen(temp));
+
+        if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<3))
+          sprintf(temp,"A4: Disabled");
+        else
+          sprintf(temp,"A4: Enabled");
+        
+        glcd_text(MENU_OPTION_LEFT_POS,18+12+27,FONT_SEVEN_DOT,temp,strlen(temp));
+      }
 		}
 	}
 	
@@ -186,7 +225,6 @@ void menu_reset(void) {
 /*! \brief Shows the menu */
 void menu_show(unsigned char pos) {
 	current_menu_pos = pos;
-	
 	menu_show_text(menu_system_text[current_menu_pos]);
 }
 
@@ -216,6 +254,11 @@ void menu_action(unsigned char menu_action_type) {
 					if (runtime_settings.powermeter_address < 0xFF)
 						runtime_settings.powermeter_address++;
 				}
+				else if (menu_system_text[current_menu_pos].pos == MENU_POS_ANT_STATUS) {
+          if (status.selected_band != 0)
+            if (runtime_settings.antenna_disabled[status.selected_band-1] < 15)
+              runtime_settings.antenna_disabled[status.selected_band-1]++;
+        }
 			}
 		}
 		
@@ -244,6 +287,12 @@ void menu_action(unsigned char menu_action_type) {
 					if (runtime_settings.powermeter_address > 0)
 						runtime_settings.powermeter_address--;
 				}
+        else if (menu_system_text[current_menu_pos].pos == MENU_POS_ANT_STATUS) {
+          if (status.selected_band != 0)
+            if (runtime_settings.antenna_disabled[status.selected_band-1] > 0)
+              runtime_settings.antenna_disabled[status.selected_band-1]--;
+        }
+
 			}
 		}
 		

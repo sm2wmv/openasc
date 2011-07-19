@@ -200,6 +200,56 @@ void display_antennas(unsigned char band) {
 	}
 	else	
 		glcd_text(DISPLAY_TEXT_ANT4_X_POS, DISPLAY_TEXT_ANT4_Y_POS, FONT_NINE_DOT,antenna_ctrl_get_antenna_text(3),antenna_ctrl_get_antenna_text_length(3));
+
+  if (runtime_settings.antenna_disabled[band-1] != 0) {
+    unsigned char x2 = 0;
+    
+    if ((runtime_settings.antenna_disabled[band-1] & (1<<0)) != 0) {
+     
+      if (antenna_ctrl_get_antenna_text_length(0) != 0) {
+        x2 = antenna_ctrl_get_antenna_text_length(0)*DISPLAY_TEXT_ANTENNA_WIDTH-1;
+    
+        if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_IN_USE_FLAG))
+          x2 += DISPLAY_TEXT_ANTENNA_IN_USE_ADDITION_WIDTH;
+
+        glcd_line(0,x2,DISPLAY_TEXT_ANT1_Y_POS+5);
+      }
+    }
+    
+    if ((runtime_settings.antenna_disabled[band-1] & (1<<1)) != 0) {
+      if (antenna_ctrl_get_antenna_text_length(1) != 0) {
+        x2 = antenna_ctrl_get_antenna_text_length(1)*DISPLAY_TEXT_ANTENNA_WIDTH-1;
+    
+        if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_IN_USE_FLAG))
+          x2 += DISPLAY_TEXT_ANTENNA_IN_USE_ADDITION_WIDTH;
+        
+        glcd_line(0,x2,DISPLAY_TEXT_ANT2_Y_POS+5);
+      }
+    }
+
+    if ((runtime_settings.antenna_disabled[band-1] & (1<<2)) != 0) {
+      if (antenna_ctrl_get_antenna_text_length(2) != 0) {
+        x2 = antenna_ctrl_get_antenna_text_length(2)*DISPLAY_TEXT_ANTENNA_WIDTH-1;
+    
+        if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_IN_USE_FLAG))
+          x2 += DISPLAY_TEXT_ANTENNA_IN_USE_ADDITION_WIDTH;
+        
+        glcd_line(0,x2,DISPLAY_TEXT_ANT3_Y_POS+5);
+      }
+    }
+
+    if ((runtime_settings.antenna_disabled[band-1] & (1<<3)) != 0) {
+      if (antenna_ctrl_get_antenna_text_length(3) != 0) {
+        x2 = antenna_ctrl_get_antenna_text_length(3)*DISPLAY_TEXT_ANTENNA_WIDTH-1;
+    
+        if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_IN_USE_FLAG))
+          x2 += DISPLAY_TEXT_ANTENNA_IN_USE_ADDITION_WIDTH;
+        
+        glcd_line(0,x2,DISPLAY_TEXT_ANT4_Y_POS+5);
+      }
+    }
+  }
+
 }
 
 /**
