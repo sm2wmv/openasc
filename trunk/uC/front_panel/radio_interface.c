@@ -134,7 +134,7 @@ void radio_ptt_active(void) {
 		ptt_status |= (1<<RADIO_FLAG_RADIO_PTT);
 		main_update_ptt_status();
 		
-		if ((runtime_settings.powermeter_address != 0x00) || (main_get_powermeter_address(status.selected_band) != 0x00))
+		if ((runtime_settings.powermeter_address != 0x00) || (main_get_powermeter_address(status.selected_band-1) != 0x00))
 			powermeter_set_active(1);
 	}
 }
@@ -147,8 +147,8 @@ void radio_ptt_deactive(void) {
 	ptt_status &= ~(1<<RADIO_FLAG_RADIO_PTT);
 	main_update_ptt_status();
 	
-	if ((runtime_settings.powermeter_address != 0x00) || (main_get_powermeter_address(status.selected_band) != 0x00))
-		powermeter_set_active(0);
+//	if ((runtime_settings.powermeter_address != 0x00) || (main_get_powermeter_address(status.selected_band-1) != 0x00))
+  powermeter_set_active(0);
 }
 
 /*! \brief Enable the TX ACTIVE output */

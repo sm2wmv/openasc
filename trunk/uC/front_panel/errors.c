@@ -69,13 +69,19 @@ void error_handler_set(unsigned char error_type, unsigned char state, unsigned i
 		main_update_ptt_status();
 	}
 	
+  led_set_error(LED_STATE_ON);
+	
 	if (error_list[error_type].flags & (1<<ERROR_FLAG_SHOW_ERROR_MENU)) {
-		menu_reset();
-		status.prev_display = status.current_display;
-		status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
-		led_set_menu(LED_STATE_ON);
+    clear_screensaver_timer();
+
+    menu_reset();
 		
-		menu_show(MENU_POS_SHOW_ERRORS);
+    status.prev_display = status.current_display;
+		status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
+    
+		led_set_menu(LED_STATE_ON);
+    
+    menu_show(MENU_POS_SHOW_ERRORS);
 	}
 }
 

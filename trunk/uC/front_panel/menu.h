@@ -55,6 +55,8 @@ typedef struct {
 #define MENU_OPTION_TYPE_SCROLL_NUMBERS	1
 //! Menu type for just showing some information
 #define MENU_OPTION_TYPE_SHOW_INFO 2
+//! Menu type for antenna enable/disable
+#define MENU_OPTION_ANT_DISABLE 3
 //! No menu option
 #define MENU_OPTION_TYPE_NONE						99
 
@@ -74,6 +76,8 @@ typedef struct {
 #define MENU_POS_SHOW_POWERMETER_ADDR 6
 //! Show the error menu 
 #define MENU_POS_SHOW_ERRORS     	7
+//! Show the ant disable/enable feature
+#define MENU_POS_ANT_STATUS       8
 
 //! Menu flag scroll up
 #define MENU_SCROLL_UP			0
