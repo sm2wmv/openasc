@@ -71,7 +71,7 @@ unsigned char timer_flags = 0;
 unsigned int counter_ad_poll = 0;
 
 void rotator_set_no_rotation(void) {
-  if (((main_flags & (1<<FLAG_ROTATION_CW)) == 0) && ((main_flags & (1<<FLAG_ROTATION_CW)) == 0))
+  if (((main_flags & (1<<FLAG_ROTATION_CW)) == 0) && ((main_flags & (1<<FLAG_ROTATION_CCW)) == 0))
     main_flags |= (1<<FLAG_NO_ROTATION);
 }
 
@@ -233,21 +233,21 @@ void bus_parse_message(void) {
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CW:
       if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
-				event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
-				event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
+        event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
         
         main_flags &= ~(1<<FLAG_NO_ROTATION);
         main_flags |= (1<<FLAG_ROTATION_CW); 
-			}
+      }
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CCW:
       if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
-				event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
-				event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
+        event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
         
         main_flags &= ~(1<<FLAG_NO_ROTATION);
         main_flags |= (1<<FLAG_ROTATION_CCW);
-			}	
+      }	
       		
 			break;
 		case BUS_CMD_ROTATOR_STOP:
@@ -317,8 +317,7 @@ void init_dummy_values(void) {
 	rotator_settings.rotation_max = 900;
 	rotator_settings.rotation_break_delay = 10;
 	
-	main_flags = 0;	
-	main_flags |= (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
+	main_flags = (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
 }
 
 /*! Run the first function in the event queue
@@ -392,6 +391,8 @@ int main(void)
 		event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay*10,EVENT_QUEUE_ROTATE_CW_ID);
 	}*/
 	
+  main_flags = (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
+  
 	unsigned char device_count = bus_get_device_count();
 	
 	unsigned char send_status[7];
