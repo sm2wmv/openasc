@@ -23,7 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#define DEBUG_COMPUTER_USART_ENABLED 1
+//#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.42b\0"
