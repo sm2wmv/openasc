@@ -41,8 +41,8 @@
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
-#define ADC_CHANNELS					3
-#define ADC_INTERVAL					33
+#define ADC_CHANNELS					5
+#define ADC_INTERVAL					20
 #define MAX_ASCII_CMD_ARGS 	5
 
 
@@ -60,9 +60,10 @@ unsigned int counter_adc_interval = 0;
 //! Selected ADC channel
 static uint8_t adc_ch = 0;
 
-static int current_heading[ADC_CHANNELS] = {0, 0, 0};
-static int target_heading[ADC_CHANNELS] = {-1, -1, -1};
-static int8_t rotate_dir[ADC_CHANNELS] = {0, 0, 0};
+static int current_heading[ADC_CHANNELS] = {0, 0, 0, 0, 0};
+static int target_heading[ADC_CHANNELS] = {-1, -1, -1, -1, -1};
+static int8_t rotate_dir[ADC_CHANNELS] = {0, 0, 0, 0, 0};
+static const int adc_mapping[ADC_CHANNELS] = {0, 2, 4, 1, 3};
 
 
 static void init_adc(void) {
@@ -172,7 +173,7 @@ void bus_parse_message(void) {
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_ROTATOR_SET_ANGLE) {
 		unsigned char subaddr = bus_message.data[0];
-		if (subaddr <= 2) {
+		if (subaddr < ADC_CHANNELS) {
 			unsigned int new_dir;
 			new_dir = bus_message.data[1] << 8;
 			new_dir |= bus_message.data[2];
@@ -191,6 +192,27 @@ void bus_parse_message(void) {
 				target_heading[subaddr] = -1;
 				rotate_dir[subaddr] = 0;
 			}
+		}
+	}
+	else if (bus_message.cmd == BUS_CMD_ROTATOR_ROTATE_CW) {
+		unsigned char subaddr = bus_message.data[0];
+		if (subaddr < ADC_CHANNELS) {
+				rotate_dir[subaddr] = 1;
+				target_heading[subaddr] = -1;
+		}
+	}
+	else if (bus_message.cmd == BUS_CMD_ROTATOR_ROTATE_CCW) {
+		unsigned char subaddr = bus_message.data[0];
+		if (subaddr < ADC_CHANNELS) {
+				rotate_dir[subaddr] = -1;
+				target_heading[subaddr] = -1;
+		}
+	}
+	else if (bus_message.cmd == BUS_CMD_ROTATOR_STOP) {
+		unsigned char subaddr = bus_message.data[0];
+		if (subaddr < ADC_CHANNELS) {
+				rotate_dir[subaddr] = 0;
+				target_heading[subaddr] = -1;
 		}
 	}
 	else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
@@ -281,7 +303,7 @@ int main(void)
 				unsigned char data[6];
 				data[0] = DEVICE_ID_ROTATOR_UNIT;
 				int i;
-				for (i=0; i<3; ++i) {
+				for (i=0; i<ADC_CHANNELS; ++i) {
 					int target = current_heading[i];
 					if (target_heading[i] != -1) {
 						target = target_heading[i];
@@ -313,25 +335,43 @@ int main(void)
 			}
 			
 				/* Set the relays according to the rotate_dir variable */
+			uint8_t porta = PORTA;
 			uint8_t portc = PORTC;
 			if (rotate_dir[adc_ch] < 0) {
-				portc &= ~_BV(4-adc_ch*2);
-				portc |= _BV(5-adc_ch*2);
+				if (adc_ch <= 2) {
+					portc &= ~_BV(4-adc_ch*2);
+					portc |= _BV(5-adc_ch*2);
+				} else {
+					porta |= _BV((adc_ch-3)*3);
+					porta &= ~_BV((adc_ch-3)*3+1);
+					porta |= _BV((adc_ch-3)*3+2);
+				}
 			}
 			else if (rotate_dir[adc_ch] > 0) {
-				portc &= ~_BV(5-adc_ch*2);
-				portc |= _BV(4-adc_ch*2);
+				if (adc_ch <= 2) {
+					portc &= ~_BV(5-adc_ch*2);
+					portc |= _BV(4-adc_ch*2);
+				} else {
+					porta &= ~_BV((adc_ch-3)*3);
+					porta |= _BV((adc_ch-3)*3+1);
+					porta |= _BV((adc_ch-3)*3+2);
+				}
 			}
 			else {
-				portc &= ~(_BV(4-adc_ch*2) | _BV(5-adc_ch*2));
+				if (adc_ch <= 2) {
+					portc &= ~(_BV(4-adc_ch*2) | _BV(5-adc_ch*2));
+				} else {
+					porta &= ~(_BV((adc_ch-3)*3) | _BV((adc_ch-3)*3+1) | _BV((adc_ch-3)*3+2));
+				}
 			}
+			PORTA = porta;
 			PORTC = portc;
 	
 				/* Switch to next ADC channel and start a conversion. */
 			if (++adc_ch == ADC_CHANNELS) {
 				adc_ch = 0;
 			}
-			ADMUX = (ADMUX & 0xf0) | adc_ch;
+			ADMUX = (ADMUX & 0xf0) | adc_mapping[adc_ch];
 			ADCSRA |= (_BV(ADEN) | _BV(ADSC));
 		}
 	}
