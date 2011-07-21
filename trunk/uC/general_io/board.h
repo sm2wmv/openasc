@@ -56,14 +56,14 @@
  * 
  * PORTA
  * =====================================================================================
- * PA0	-	Output - LED 6 (Status LED, Green)
+ * PA0	-	Output - Driver 1
  * PA1	-	Output - Driver 2
  * PA2	-	Output - Driver 3
- * PA3	- Output - Driver 4
+ * PA3	-	Output - Driver 4
  * PA4	-	Output - Driver 5
  * PA5	-	Output - Driver 6
  * PA6	-	Output - Driver 7
- * PA7	-	
+ * PA7	-	LED 6 (Status LED, Green)
  * =====================================================================================
  *
  *
