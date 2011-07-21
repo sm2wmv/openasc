@@ -314,6 +314,8 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 	new_dir[1] = (heading >> 8)	& 0x00FF;
 	new_dir[2] = heading & 0x00FF;
 	
+  printf("Rotator: addr %i - sub_addr: %i - heading %i\n",current_antennas.rotator_addr[ant_index],current_antennas.rotator_sub_addr[ant_index],heading);
+  
 	bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[ant_index], 
 										 (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_SET_ANGLE, sizeof(new_dir), new_dir);
   
@@ -322,22 +324,26 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 
 /*! \brief Rotate the last rotatable antenna clockwise */
 void antenna_ctrl_rotate_cw(void) {
-  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
-    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CW, 0, NULL);
+  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4) && (current_antennas.rotator_addr[(unsigned char)last_rotated_antenna] != 0)) {
+    printf("Rotator: addr %i - sub_addr: %i\n",current_antennas.rotator_addr[(unsigned char)last_rotated_antenna],current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
+    
+    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CW, 1, &current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
   }
 }
 
 /*! \brief Rotate the last rotatable antenna counter-clockwise */
 void antenna_ctrl_rotate_ccw(void) {
-  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
-    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CCW, 0, NULL);
+  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4) && (current_antennas.rotator_addr[(unsigned char)last_rotated_antenna] != 0)) {
+    printf("Rotator: addr %i - sub_addr: %i\n",current_antennas.rotator_addr[(unsigned char)last_rotated_antenna],current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
+    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_ROTATE_CCW, 1, &current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
   }
 }
 
 /*! \brief Stop rotation of the last antenna */
 void antenna_ctrl_rotate_stop(void) {
-  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4)) {
-    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_STOP, 0, NULL);
+  if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4) && (current_antennas.rotator_addr[(unsigned char)last_rotated_antenna] != 0)) {
+    printf("Rotator: addr %i - sub_addr: %i\n",current_antennas.rotator_addr[(unsigned char)last_rotated_antenna],current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
+    bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_STOP, 1, &current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
   }
 }
 
@@ -569,11 +575,6 @@ void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
       break;
     }
   }
-/*  
-  printf("Comb allowed: %i\n",current_antennas.antenna_comb_allowed);
-  printf("Def ant index: %i\n",current_antennas.default_antenna);
-  printf("Flag antennas: %i\n",current_antennas.antenna_flag[0]);
-  printf("Flags %i\n",antenna_ctrl_get_flags(0));*/
 }
 
 /*! \brief Read the eeprom for the rx antenna settings  */
