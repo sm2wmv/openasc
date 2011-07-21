@@ -505,7 +505,21 @@ int main(void){
 	//Init the backlight PWM
 	init_backlight();
 	
-	runtime_settings.powermeter_address = 0; //Set powermeter address to AUTO
+	//Set powermeter address to AUTO, always is configured this way at startup
+	runtime_settings.powermeter_address = 0; 
+	
+	//This will go through the antenna_disabled variable and check so there is no faulty value
+	//This is useful mostly the first time a box gets the upgrade supporting this feature.
+	unsigned char ant_dis_changed = 0;
+	
+	for (unsigned char i=0;i<9;i++)
+		if (runtime_settings.antenna_disabled[i] > 15) {
+			runtime_settings.antenna_disabled[i] = 0;
+			ant_dis_changed = 1;
+	}
+	
+	if (ant_dis_changed != 0)
+		eeprom_save_runtime_settings(&runtime_settings);
 	
 	display_set_backlight(runtime_settings.lcd_backlight_value);
 		
