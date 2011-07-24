@@ -64,6 +64,8 @@ void sequencer_load_eeprom(void) {
 /*! \brief Function to be called if the footswitch is pressed */
 void sequencer_footsw_pressed(void) {
 	if (ptt_sequencer.ptt_input & (1<<PTT_INPUT_FOOTSWITCH)) {
+    main_update_critical_list();
+    
 		//Check so that the computer does not already PTT the device, if so we just skip this event
 		if ((ptt_active & (1<<PTT_ACTIVE_COMPUTER_RTS)) == 0) {
 			if (main_get_inhibit_state() == INHIBIT_OK_TO_SEND) {
@@ -128,6 +130,8 @@ void sequencer_footsw_released(void) {
 
 /*! \brief Function to be called if the computer rts is activated */
 void sequencer_computer_rts_activated(void) {
+  main_update_critical_list();
+    
 	//Check that the COMPUTER RTS input is activated
 	if (ptt_sequencer.ptt_input & (1<<PTT_INPUT_COMPUTER_RTS)) {
 		//Check if the footswitch is active, if so we just skip this event

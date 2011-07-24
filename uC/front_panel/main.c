@@ -93,6 +93,9 @@ unsigned int counter_last_pulse_event=0;
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 unsigned int counter_event_timer = 0;
 
+//! Counter which we use to keep track of when to check the critical cmd list
+unsigned char counter_critical_cmd_check = 0;
+
 //! The number of devices on the bus
 unsigned char device_count = 0;
 
@@ -310,6 +313,21 @@ void load_settings(void) {
 	sequencer_load_eeprom();
   
   status.txrx_mode = 0;
+}
+
+void main_update_critical_list(void) {
+  status.curr_critical_cmd_state = event_check_critical_cmd_list();
+
+  //Checks the message queues if we are allowed to PTT or not
+  if (status.curr_critical_cmd_state != status.last_critical_cmd_state) {
+    status.last_critical_cmd_state = status.curr_critical_cmd_state;
+
+    if (status.curr_critical_cmd_state == 0) {
+      event_add_message((void *)main_update_ptt_status, CRITICAL_CMD_CHANGE_TAIL_TIME, EVENT_TYPE_CRITICAL_CMD_UPDATE);
+  }
+  else
+    main_update_ptt_status();
+  }
 }
 
 /*! \brief Function which updates the status of the PTT
@@ -762,17 +780,12 @@ int main(void){
 			radio_process_tasks();
 		}
 
-    status.curr_critical_cmd_state = event_check_critical_cmd_list();
 
-    //Checks the message queues if we are allowed to PTT or not
-		if (status.curr_critical_cmd_state != status.last_critical_cmd_state) {
-      status.last_critical_cmd_state = status.curr_critical_cmd_state;
+    //Check every 10 ms if we are allowed to PTT or not
+    if ((counter_critical_cmd_check % 10) == 0) {
+      main_update_critical_list();
       
-      if (status.curr_critical_cmd_state == 0) {
-        event_add_message((void *)main_update_ptt_status, CRITICAL_CMD_CHANGE_TAIL_TIME, EVENT_TYPE_CRITICAL_CMD_UPDATE);
-      }
-      else
-        main_update_ptt_status();
+      counter_critical_cmd_check = 0;
     }
 			
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
@@ -836,6 +849,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_poll_rotary_encoder++;
 	counter_poll_buttons++;
 	counter_poll_ext_devices++;	
+  counter_critical_cmd_check++;
 	
 	if ((counter_ms % 1000) == 0)
 		counter_screensaver_timeout++;

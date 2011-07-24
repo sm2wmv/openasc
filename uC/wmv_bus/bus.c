@@ -341,6 +341,10 @@ void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		bus_message.checksum = checksum;
 
 		tx_queue_add(bus_message);
+    
+    #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+      main_update_critical_list();
+    #endif
 	}
 }
 

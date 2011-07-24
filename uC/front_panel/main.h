@@ -348,6 +348,8 @@ void set_tx_ant_leds(void);
 void set_knob_function(unsigned char function);
 void shutdown_device(void);
 
+void main_update_critical_list(void);
+
 enum enum_inhibit_state main_get_inhibit_state(void);
 void main_set_inhibit_state(enum enum_inhibit_state state);
 
