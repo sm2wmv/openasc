@@ -146,6 +146,7 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "cwl") == 0) {
       if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Set rotation start angle\r\n");
         send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
         send_ascii_data(bus_message->from_addr,"Usage: cwl <degree>\r\n");
       }
@@ -157,6 +158,7 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "ccwl") == 0) {
       if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Set rotation stop angle\r\n");
         send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
         send_ascii_data(bus_message->from_addr,"Usage: ccwl <degree>\r\n");
       }
@@ -168,6 +170,7 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "brkdelay") == 0) {
       if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Set rotation break delay\r\n");
         send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
         send_ascii_data(bus_message->from_addr,"Usage: brkdelay <ms/100>\r\n");
       }
@@ -178,6 +181,7 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "rotdelay") == 0) {
       if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Set rotation delay\r\n");
         send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
         send_ascii_data(bus_message->from_addr,"Usage: rotdelay <seconds>\r\n");
       }
@@ -185,6 +189,71 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
         rotator_settings.rotation_delay = atoi(argv[1]) ;
         send_ascii_data(bus_message->from_addr,"Rotation delay set\r\n");
       }
+    }
+    else if (strcmp(argv[0], "headinput") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Set which input we use as heading input\r\n");
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: headinput <input index>\r\n");
+      }
+      else {
+        rotator_settings.heading_input = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"Heading input set\r\n");
+      }
+    }    
+    else if (strcmp(argv[0], "rotmode") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Sets the rotator mode\r\n");
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: rotmode <index>\r\n");
+      }
+      else {
+        rotator_settings.rotator_mode = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"Rotator mode set\r\n");
+      }
+    }    
+    else if (strcmp(argv[0], "cwoutput") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Sets the CW output\r\n");
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: cwoutput <output index>\r\n");
+      }
+      else {
+        rotator_settings.cw_output = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"CW output set\r\n");
+      }
+    }    
+    else if (strcmp(argv[0], "ccwoutput") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Sets the CCW output\r\n");
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: ccwoutput <output index>\r\n");
+      }
+      else {
+        rotator_settings.ccw_output = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"CCW output set\r\n");
+      }
+    }
+    else if (strcmp(argv[0], "brkoutput") == 0) {
+      if (argc < 2) {
+        send_ascii_data(bus_message->from_addr,"Sets the break output\r\n");
+        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
+        send_ascii_data(bus_message->from_addr,"Usage: brkoutput <output index>\r\n");
+      }
+      else {
+        rotator_settings.break_output = atoi(argv[1]) ;
+        send_ascii_data(bus_message->from_addr,"Break output set\r\n");
+      }
+    }        
+    else if (strcmp(argv[0], "setcwlimit") == 0) {
+      rotator_settings.rotation_max = rotator_read_heading();
+      
+      send_ascii_data(bus_message->from_addr,"CW limit set\r\n");
+    }
+    else if (strcmp(argv[0], "setccwlimit") == 0) {
+      rotator_settings.rotation_min = rotator_read_heading();
+      
+      send_ascii_data(bus_message->from_addr,"CCW limit set\r\n");
     }
     else if (strcmp(argv[0], "save") == 0) {
       //This will cause a bus resend, how to fix it?

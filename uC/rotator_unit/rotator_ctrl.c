@@ -158,3 +158,14 @@ void rotator_stop(void) {
   if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
     ext_ctrl_relay4_deactivate();    
 }
+
+unsigned int rotator_read_heading(void) {
+  if (rotator_settings.heading_input & (1<<HEADING_INPUT_POT1)) {
+    return(a2dConvert10bit(ADC_CH_ADC0));
+  }
+  else if (rotator_settings.heading_input & (1<<HEADING_INPUT_POT2)) {
+    return(a2dConvert10bit(ADC_CH_ADC1));
+  }
+  
+  return(0);
+}

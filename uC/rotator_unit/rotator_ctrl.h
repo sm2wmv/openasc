@@ -31,5 +31,6 @@ void rotator_stop(void);
 
 void rotator_rotate_to(int heading);
 
+unsigned int rotator_read_heading(void);
 
 #endif
