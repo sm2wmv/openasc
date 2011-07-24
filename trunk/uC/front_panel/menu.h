@@ -74,10 +74,10 @@ typedef struct {
 #define MENU_POS_MISC        			5
 //! Show the power meter addresses
 #define MENU_POS_SHOW_POWERMETER_ADDR 6
-//! Show the error menu 
-#define MENU_POS_SHOW_ERRORS     	7
 //! Show the ant disable/enable feature
-#define MENU_POS_ANT_STATUS       8
+#define MENU_POS_ANT_STATUS       7
+//! Show the error menu 
+#define MENU_POS_SHOW_ERRORS      8
 
 //! Menu flag scroll up
 #define MENU_SCROLL_UP			0

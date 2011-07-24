@@ -72,8 +72,8 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_SHOW_FIRMWARE, "Firmware", NULL, 0,MENU_OPTION_TYPE_NONE},
 {MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
-{MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_ANT_STATUS, "Antenna status", NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS}
+{MENU_POS_ANT_STATUS, "Antenna status", NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS},
+{MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL}
 };
 
 /*! \brief Show the text of a menu on the display 
