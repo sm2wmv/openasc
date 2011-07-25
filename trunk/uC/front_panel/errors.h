@@ -46,7 +46,7 @@
 #define ERROR_TYPE_BAND_PING_TIMEOUT		6
 //! VSWR error
 #define ERROR_TYPE_HIGH_VSWR						7
-//! VSWR error
+//! Band is already in use
 #define ERROR_TYPE_BAND_IN_USE          8
 
 
