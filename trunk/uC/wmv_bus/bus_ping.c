@@ -18,6 +18,8 @@
 #include "bus.h"
 #include "bus_ping.h"
 
+unsigned char ping_mutex = 0;
+
 //TODO: Change the ping list to be dynamic, responding to the length which the master sends out, how many number of units on the bus
 
 //! The ping list
@@ -39,18 +41,20 @@ void bus_ping_init(void) {
  *  \param data_len The number of bytes the data is
  *  \param data Additional data which might be used for status, for example current band information */
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data) {
-	ping_list[from_addr-1].addr = from_addr;
-	ping_list[from_addr-1].device_type = device_type;
-	
-	if (data_len > 0) {
-		for (unsigned char i=0;i<data_len;i++)
-			ping_list[from_addr-1].data[i] = data[i];
+	if (ping_mutex == 0) {
+		ping_list[from_addr-1].addr = from_addr;
+		ping_list[from_addr-1].device_type = device_type;
+		
+		if (data_len > 0) {
+			for (unsigned char i=0;i<data_len;i++)
+				ping_list[from_addr-1].data[i] = data[i];
+		}
+		
+		ping_list[from_addr-1].time_last_ping = 0;
+		
+		//Reset the flags which need to be reset
+		ping_list[from_addr-1].flags &= ~(1<<PING_FLAG_PROCESSED);
 	}
-	
-	ping_list[from_addr-1].time_last_ping = 0;
-	
-	//Reset the flags which need to be reset
-	ping_list[from_addr-1].flags &= ~(1<<PING_FLAG_PROCESSED);
 }
 
 /*! \brief This function will update the time counter which keeps track of the time stamps of the ping message. Should be called every ms */
@@ -96,21 +100,29 @@ unsigned char bus_ping_get_failed_count(void) {
  *  \param index The index of the ping structure we wish to retrieve from the list
  *  \return The ping data structure */
 bus_struct_ping_status bus_ping_get_ping_data(unsigned char index) {
-	return(ping_list[index]);
+	ping_mutex = 1;
+	bus_struct_ping_status temp = ping_list[index];
+	ping_mutex = 0;
+	
+	return(temp);
 }
 
 /*! \brief Returns the device type of a certain ping data structure
  *  \param index The index of the device type we wish to retrieve from the list
  *  \return The device type of the specified index */
 unsigned char bus_ping_get_device_type(unsigned char index) {
-	return(ping_list[index].device_type);
+	ping_mutex = 1;
+	unsigned char device_type = ping_list[index].device_type;
+	ping_mutex = 0;
+	
+	return(device_type);
 }
 
 /*! \brief Clears a ping address, used when a unit is shut down
  *  \param addr The address of the unit */
 void bus_ping_clear_device(unsigned char addr) {
-  ping_list[addr-1].addr = 0;
-  ping_list[addr-1].device_type = 0;
-  ping_list[addr-1].time_last_ping = 0;
-  ping_list[addr-1].flags = 0;  
+	ping_list[addr-1].addr = 0;
+	ping_list[addr-1].device_type = 0;
+	ping_list[addr-1].time_last_ping = 0;
+	ping_list[addr-1].flags = 0;  
 }
