@@ -69,7 +69,7 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_RADIO_PTT, "Radio PTT", (struct_menu_option *)menu_option_radio_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_AMP_PTT, "Amplifier PTT", (struct_menu_option *)menu_option_amp_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_BACKLIGHT_LEVEL, "Backlight", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
-{MENU_POS_SHOW_FIRMWARE, "Firmware", NULL, 0,MENU_OPTION_TYPE_NONE},
+{MENU_POS_SHOW_INFO, "Information", NULL, 0,MENU_OPTION_TYPE_NONE},
 {MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_ANT_STATUS, "Antenna status", NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS},
@@ -99,7 +99,7 @@ void menu_show_text(struct_menu_text menu_text) {
 			}
 		}
 	}
-	else if (menu_text.pos == MENU_POS_SHOW_FIRMWARE) {
+	else if (menu_text.pos == MENU_POS_SHOW_INFO) {
 		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
 		
 		//Draw a seperation line between the options and the header
@@ -107,8 +107,11 @@ void menu_show_text(struct_menu_text menu_text) {
 		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 		
     char temp[30];
-    sprintf(temp,"Version: %s",FIRMWARE_REV);
+    sprintf(temp,"Firmware: %s",FIRMWARE_REV);
     glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
+    
+    sprintf(temp,"Address: %i",bus_get_address());
+    glcd_text(MENU_OPTION_LEFT_POS,18+10,FONT_SEVEN_DOT,temp,strlen(temp));
 	}
 	else {
 		//Show the "Menu" text
