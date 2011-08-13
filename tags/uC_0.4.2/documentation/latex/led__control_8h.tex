@@ -1,0 +1,323 @@
+\section{front\_\-panel/led\_\-control.h File Reference}
+\label{led__control_8h}\index{front\_\-panel/led\_\-control.h@{front\_\-panel/led\_\-control.h}}
+Front panel LED control functions.  
+
+
+\subsection*{Enumerations}
+\begin{CompactItemize}
+\item 
+enum {\bf enum\_\-led\_\-ptt\_\-state} \{ {\bf LED\_\-STATE\_\-PTT\_\-ACTIVE}, 
+{\bf LED\_\-STATE\_\-PTT\_\-INHIBIT}, 
+{\bf LED\_\-STATE\_\-PTT\_\-OK}
+ \}
+\begin{CompactList}\small\item\em PTT led state. \item\end{CompactList}\item 
+enum {\bf enum\_\-led\_\-state} \{ {\bf LED\_\-STATE\_\-ON}, 
+{\bf LED\_\-STATE\_\-OFF}
+ \}
+\begin{CompactList}\small\item\em Regular LED state. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf led\_\-set\_\-band} (unsigned char band)
+\begin{CompactList}\small\item\em Set the band LEDs to the proper band. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-band\_\-none} (void)\label{led__control_8h_bfdee5775ab42a7048468f5ad4dd0607}
+
+\begin{CompactList}\small\item\em Turn off all band leds. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-ptt} (enum {\bf enum\_\-led\_\-ptt\_\-state} state)
+\begin{CompactList}\small\item\em Set the PTT LED. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-error} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the error LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-rotation\_\-active} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the rotating led to active state, indicates if any antenna on the current band is rotating. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-tx\_\-ant} (unsigned char index, enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the TX Antenna LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-rx\_\-ant} (unsigned char index, enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the RX Antenna LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-rotate} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the Rotate LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-txrx} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the TX/RX mode LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-rxant} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the RX antenna LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-aux} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the AUX LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-menu} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set the menu LED status. \item\end{CompactList}\item 
+void {\bf led\_\-set\_\-all} (enum {\bf enum\_\-led\_\-state} state)
+\begin{CompactList}\small\item\em Set all the LEDs. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Front panel LED control functions. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/led_control.h" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file {\bf led\_\-control.h}.
+
+\subsection{Enumeration Type Documentation}
+\index{led\_\-control.h@{led\_\-control.h}!enum\_\-led\_\-ptt\_\-state@{enum\_\-led\_\-ptt\_\-state}}
+\index{enum\_\-led\_\-ptt\_\-state@{enum\_\-led\_\-ptt\_\-state}!led_control.h@{led\_\-control.h}}
+\subsubsection[{enum\_\-led\_\-ptt\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf enum\_\-led\_\-ptt\_\-state}}\label{led__control_8h_da31a3268524c326594606626e93f391}
+
+
+PTT led state. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{LED\_\-STATE\_\-PTT\_\-ACTIVE@{LED\_\-STATE\_\-PTT\_\-ACTIVE}!led\_\-control.h@{led\_\-control.h}}\index{led\_\-control.h@{led\_\-control.h}!LED\_\-STATE\_\-PTT\_\-ACTIVE@{LED\_\-STATE\_\-PTT\_\-ACTIVE}}\item[{\em 
+LED\_\-STATE\_\-PTT\_\-ACTIVE\label{led__control_8h_da31a3268524c326594606626e93f39183e0c3f69436aef4771764e85cef0fe1}
+}]Used to set the LED to PTT active color. \index{LED\_\-STATE\_\-PTT\_\-INHIBIT@{LED\_\-STATE\_\-PTT\_\-INHIBIT}!led\_\-control.h@{led\_\-control.h}}\index{led\_\-control.h@{led\_\-control.h}!LED\_\-STATE\_\-PTT\_\-INHIBIT@{LED\_\-STATE\_\-PTT\_\-INHIBIT}}\item[{\em 
+LED\_\-STATE\_\-PTT\_\-INHIBIT\label{led__control_8h_da31a3268524c326594606626e93f391d7136a9959d76f279f656e61083898d2}
+}]Used to set the LED to INHIBIT color. \index{LED\_\-STATE\_\-PTT\_\-OK@{LED\_\-STATE\_\-PTT\_\-OK}!led\_\-control.h@{led\_\-control.h}}\index{led\_\-control.h@{led\_\-control.h}!LED\_\-STATE\_\-PTT\_\-OK@{LED\_\-STATE\_\-PTT\_\-OK}}\item[{\em 
+LED\_\-STATE\_\-PTT\_\-OK\label{led__control_8h_da31a3268524c326594606626e93f3910649286809256f7e7cb03616fbbfb550}
+}]Used to set the LED to PTT OK color (which means that it is OK to transmit). \end{description}
+\end{Desc}
+
+
+
+Definition at line 27 of file led\_\-control.h.\index{led\_\-control.h@{led\_\-control.h}!enum\_\-led\_\-state@{enum\_\-led\_\-state}}
+\index{enum\_\-led\_\-state@{enum\_\-led\_\-state}!led_control.h@{led\_\-control.h}}
+\subsubsection[{enum\_\-led\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf enum\_\-led\_\-state}}\label{led__control_8h_f3b2f3268e399a66b018faace7ebb18d}
+
+
+Regular LED state. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{LED\_\-STATE\_\-ON@{LED\_\-STATE\_\-ON}!led\_\-control.h@{led\_\-control.h}}\index{led\_\-control.h@{led\_\-control.h}!LED\_\-STATE\_\-ON@{LED\_\-STATE\_\-ON}}\item[{\em 
+LED\_\-STATE\_\-ON\label{led__control_8h_f3b2f3268e399a66b018faace7ebb18d024f137d8368d2d31196fbcfb8345550}
+}]Used to set the LED as ON. \index{LED\_\-STATE\_\-OFF@{LED\_\-STATE\_\-OFF}!led\_\-control.h@{led\_\-control.h}}\index{led\_\-control.h@{led\_\-control.h}!LED\_\-STATE\_\-OFF@{LED\_\-STATE\_\-OFF}}\item[{\em 
+LED\_\-STATE\_\-OFF\label{led__control_8h_f3b2f3268e399a66b018faace7ebb18d0eebea54c4dc200be6939742385ee789}
+}]Used to set the LED as OFF. \end{description}
+\end{Desc}
+
+
+
+Definition at line 37 of file led\_\-control.h.
+
+\subsection{Function Documentation}
+\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-all@{led\_\-set\_\-all}}
+\index{led\_\-set\_\-all@{led\_\-set\_\-all}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-all}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-all (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_d25bd9b40562f08dec9dd7a267f42583}
+
+
+Set all the LEDs. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 216 of file led\_\-control.c.
+
+References led\_\-set\_\-aux(), led\_\-set\_\-band(), led\_\-set\_\-error(), led\_\-set\_\-menu(), led\_\-set\_\-ptt(), led\_\-set\_\-rotate(), led\_\-set\_\-rx\_\-ant(), led\_\-set\_\-rxant(), led\_\-set\_\-tx\_\-ant(), led\_\-set\_\-txrx(), LED\_\-STATE\_\-OFF, LED\_\-STATE\_\-ON, LED\_\-STATE\_\-PTT\_\-ACTIVE, and LED\_\-STATE\_\-PTT\_\-OK.
+
+Referenced by main().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-aux@{led\_\-set\_\-aux}}
+\index{led\_\-set\_\-aux@{led\_\-set\_\-aux}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-aux}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-aux (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_c6073b4001daa7a7ea4f7220dcbe62a4}
+
+
+Set the AUX LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 198 of file led\_\-control.c.
+
+References LED\_\-AUX\_\-BIT, and LED\_\-STATE\_\-ON.
+
+Referenced by led\_\-set\_\-all().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-band@{led\_\-set\_\-band}}
+\index{led\_\-set\_\-band@{led\_\-set\_\-band}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-band}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-band (unsigned char {\em band})}\label{led__control_8h_5bfe45c367d2201775bbf65a55ff3634}
+
+
+Set the band LEDs to the proper band. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em band}]The band we wish to turn on the LED for \end{description}
+\end{Desc}
+
+
+Definition at line 32 of file led\_\-control.c.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), led\_\-set\_\-all(), and main().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-error@{led\_\-set\_\-error}}
+\index{led\_\-set\_\-error@{led\_\-set\_\-error}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-error (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_193a3938c3c5250e16f71f66d60dc5c7}
+
+
+Set the error LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 67 of file led\_\-control.c.
+
+References LED\_\-ERROR\_\-BIT, and LED\_\-STATE\_\-ON.
+
+Referenced by bus\_\-resend\_\-message(), led\_\-set\_\-all(), and menu\_\-action().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-menu@{led\_\-set\_\-menu}}
+\index{led\_\-set\_\-menu@{led\_\-set\_\-menu}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-menu}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-menu (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_f3e320269d62c70597b7d7eb457cb29e}
+
+
+Set the menu LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 207 of file led\_\-control.c.
+
+References LED\_\-MENU\_\-BIT, and LED\_\-STATE\_\-ON.
+
+Referenced by event\_\-poll\_\-buttons(), and led\_\-set\_\-all().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-ptt@{led\_\-set\_\-ptt}}
+\index{led\_\-set\_\-ptt@{led\_\-set\_\-ptt}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-ptt}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-ptt (enum {\bf enum\_\-led\_\-ptt\_\-state} {\em state})}\label{led__control_8h_995815f6cfca1616b4bbec84ba4bc27c}
+
+
+Set the PTT LED. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 47 of file led\_\-control.c.
+
+References LED\_\-PTT\_\-GREEN\_\-BIT, LED\_\-PTT\_\-RED\_\-BIT, LED\_\-STATE\_\-PTT\_\-ACTIVE, LED\_\-STATE\_\-PTT\_\-INHIBIT, and LED\_\-STATE\_\-PTT\_\-OK.
+
+Referenced by led\_\-set\_\-all(), main(), and main\_\-update\_\-ptt\_\-status().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-rotate@{led\_\-set\_\-rotate}}
+\index{led\_\-set\_\-rotate@{led\_\-set\_\-rotate}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-rotate}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-rotate (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_c7b0014c475fe68f1db5ef137c71bb84}
+
+
+Set the Rotate LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 169 of file led\_\-control.c.
+
+References LED\_\-ROTATE\_\-BIT, and LED\_\-STATE\_\-ON.
+
+Referenced by event\_\-poll\_\-buttons(), event\_\-rxant\_\-button\_\-pressed(), and led\_\-set\_\-all().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-rotation\_\-active@{led\_\-set\_\-rotation\_\-active}}
+\index{led\_\-set\_\-rotation\_\-active@{led\_\-set\_\-rotation\_\-active}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-rotation\_\-active}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-rotation\_\-active (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_67a6ae6da6bd1e1000cb0cfae12ebf53}
+
+
+Set the rotating led to active state, indicates if any antenna on the current band is rotating. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 76 of file led\_\-control.c.
+
+References LED\_\-ROTATION\_\-ACTIVE\_\-BIT, and LED\_\-STATE\_\-ON.\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-rx\_\-ant@{led\_\-set\_\-rx\_\-ant}}
+\index{led\_\-set\_\-rx\_\-ant@{led\_\-set\_\-rx\_\-ant}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-rx\_\-ant}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-rx\_\-ant (unsigned char {\em index}, \/  enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_5a7a9162c3fb5416a9c2f9608c88021b}
+
+
+Set the RX Antenna LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]Which LED we wish to change the status of \item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 128 of file led\_\-control.c.
+
+References LED\_\-RX\_\-BUTTON1\_\-BIT, LED\_\-RX\_\-BUTTON2\_\-BIT, LED\_\-RX\_\-BUTTON3\_\-BIT, LED\_\-RX\_\-BUTTON4\_\-BIT, and LED\_\-STATE\_\-ON.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), and led\_\-set\_\-all().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-rxant@{led\_\-set\_\-rxant}}
+\index{led\_\-set\_\-rxant@{led\_\-set\_\-rxant}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-rxant}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-rxant (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_1842fb4da0f83f83c77493a3dd2ddfb8}
+
+
+Set the RX antenna LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 187 of file led\_\-control.c.
+
+References LED\_\-RXANT\_\-BIT, and LED\_\-STATE\_\-ON.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), event\_\-rxant\_\-button\_\-pressed(), and led\_\-set\_\-all().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-tx\_\-ant@{led\_\-set\_\-tx\_\-ant}}
+\index{led\_\-set\_\-tx\_\-ant@{led\_\-set\_\-tx\_\-ant}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-tx\_\-ant}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-tx\_\-ant (unsigned char {\em index}, \/  enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_66d6c83ed387c751253fe06a14ee842f}
+
+
+Set the TX Antenna LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]Which LED we wish to change the status of \item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 86 of file led\_\-control.c.
+
+References LED\_\-STATE\_\-ON, LED\_\-TX\_\-BUTTON1\_\-BIT, LED\_\-TX\_\-BUTTON2\_\-BIT, LED\_\-TX\_\-BUTTON3\_\-BIT, and LED\_\-TX\_\-BUTTON4\_\-BIT.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), event\_\-tx\_\-button1\_\-pressed(), event\_\-tx\_\-button2\_\-pressed(), event\_\-tx\_\-button3\_\-pressed(), event\_\-tx\_\-button4\_\-pressed(), led\_\-set\_\-all(), and set\_\-tx\_\-ant\_\-leds().\index{led\_\-control.h@{led\_\-control.h}!led\_\-set\_\-txrx@{led\_\-set\_\-txrx}}
+\index{led\_\-set\_\-txrx@{led\_\-set\_\-txrx}!led_control.h@{led\_\-control.h}}
+\subsubsection[{led\_\-set\_\-txrx}]{\setlength{\rightskip}{0pt plus 5cm}void led\_\-set\_\-txrx (enum {\bf enum\_\-led\_\-state} {\em state})}\label{led__control_8h_7cfa42017a78de6f6b9eb9ec790b8261}
+
+
+Set the TX/RX mode LED status. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state of the LED \end{description}
+\end{Desc}
+
+
+Definition at line 178 of file led\_\-control.c.
+
+References LED\_\-STATE\_\-ON, and LED\_\-TXRX\_\-BIT.
+
+Referenced by led\_\-set\_\-all().

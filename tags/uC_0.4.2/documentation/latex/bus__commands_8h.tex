@@ -1,0 +1,610 @@
+\hypertarget{bus__commands_8h}{
+\section{wmv\_\-bus/bus\_\-commands.h File Reference}
+\label{bus__commands_8h}\index{wmv\_\-bus/bus\_\-commands.h@{wmv\_\-bus/bus\_\-commands.h}}
+}
+Global commands for the WMV communication bus.  
+
+
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define \hyperlink{bus__commands_8h_6c2ee7e478e90d1c0f8ef1bb2eb0b7e3}{BUS\_\-CMD\_\-ACK}~0xFA
+\item 
+\#define \hyperlink{bus__commands_8h_53b9bdce3699ad0222b53b02c5ce2ea3}{BUS\_\-CMD\_\-NACK}~0xFB
+\item 
+\#define \hyperlink{bus__commands_8h_5c51c766847f6dc88363a91b75da474a}{BUS\_\-CMD\_\-SYNC}~0x01
+\item 
+\#define \hyperlink{bus__commands_8h_36de56636ef50c0222e4048d13832e1d}{BUS\_\-CMD\_\-PING}~0x02
+\item 
+\#define \hyperlink{bus__commands_8h_b6431678824286cb0a00c88d31ea5412}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE}~0x10
+\item 
+\#define \hyperlink{bus__commands_8h_6c85935c123ea05e79906c6d7d1afd05}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE}~0x11
+\item 
+\#define \hyperlink{bus__commands_8h_41f3df40a4a40e6fe94dcf3b738d1926}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO}~0x12
+\item 
+\#define \hyperlink{bus__commands_8h_5e342ae7ae5876c4fca15a9dbbd6a39f}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO}~0x13
+\item 
+\#define \hyperlink{bus__commands_8h_e6914b7dce921236824d3a3c63270dd0}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO}~0x14
+\item 
+\#define \hyperlink{bus__commands_8h_27576d9204d093f2d7e47682ecff4a7e}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO}~0x15
+\item 
+\#define \hyperlink{bus__commands_8h_4eabbe9e30f2a324d63bdc0dd79975d1}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT}~0x16
+\item 
+\#define \hyperlink{bus__commands_8h_a3fad4898b934b8822bbc7d0f2a24399}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT}~0x17
+\item 
+\#define \hyperlink{bus__commands_8h_eee6892df89d7421dd9226e898c9810c}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT}~0x18
+\item 
+\#define \hyperlink{bus__commands_8h_5bfcb90b2dac3e562939b45145b5c0f7}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT}~0x19
+\item 
+\#define \hyperlink{bus__commands_8h_434a920e7c3ef31a6673277a6a36786d}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}~0x1A
+\item 
+\#define \hyperlink{bus__commands_8h_42ea2ab03ac6f12037287a034bc5d2de}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}~0x1B
+\item 
+\#define \hyperlink{bus__commands_8h_f6b5ff2e60b05ea934fe2f8d3de530fa}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}~0x1C
+\item 
+\#define \hyperlink{bus__commands_8h_976f4bc4c211172eaddac0013d523e75}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS}~0x1D
+\item 
+\#define \hyperlink{bus__commands_8h_0bc29c7757b28beded81b7912863fdff}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}~0x1E
+\item 
+\#define \hyperlink{bus__commands_8h_5441b8c2c565e8e7b5244daa7addaae9}{BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS}~0x1F
+\item 
+\#define \hyperlink{bus__commands_8h_e4a08e3f50e0b2652352d4117628d742}{BUS\_\-CMD\_\-GET\_\-TEMPERATURE}~0x20
+\item 
+\#define \hyperlink{bus__commands_8h_da01c734d22265fc738d4276011a4d41}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS}~0x21
+\item 
+\#define \hyperlink{bus__commands_8h_08c034b12e50df0482d787a0acb3fe19}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS}~0x22
+\item 
+\#define \hyperlink{bus__commands_8h_c90d7b296d00137a869e0c4d09bc445b}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS}~0x23
+\item 
+\#define \hyperlink{bus__commands_8h_cec107c3fbe8491eeaed482564e2ef3a}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS}~0x24
+\item 
+\#define \hyperlink{bus__commands_8h_bcce6221d55adba6c339097256ccb737}{BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS}~0x25
+\item 
+\#define \hyperlink{bus__commands_8h_7202ab208931af2bb1e7bed5df0db7c8}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}~0x26
+\item 
+\#define \hyperlink{bus__commands_8h_beae1947a31f4f741f1bcc80f0bd18b6}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}~0x27
+\item 
+\#define \hyperlink{bus__commands_8h_3a110def39ac4c21171e86a723323773}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS}~0x28
+\item 
+\#define \hyperlink{bus__commands_8h_5c7264577e0880cf186738206fcdbf86}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}~0x29
+\item 
+\#define \hyperlink{bus__commands_8h_644c09bbedbd68ee3d79bdb3698ebd45}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}~0x3A
+\item 
+\#define \hyperlink{bus__commands_8h_1f94f33287942b7bdbef90e950b4e973}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS}~0x3B
+\item 
+\#define \hyperlink{bus__commands_8h_f99d678512b196cb15fb8090ce935095}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}~0x3C
+\item 
+\#define \hyperlink{bus__commands_8h_1e0aeece2a34b9e01bf8f90bf9616362}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}~0x3D
+\item 
+\#define \hyperlink{bus__commands_8h_9bce71fb46009529991e2934910f6d12}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS}~0x3E
+\item 
+\#define \hyperlink{bus__commands_8h_197f040e7cf670e2ea814459ce91832b}{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}~0x3F
+\item 
+\#define \hyperlink{bus__commands_8h_f001987a54274aeed8dd769f925b65b2}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}~0x40
+\item 
+\#define \hyperlink{bus__commands_8h_c100f77243c4a22b7649dab196d779b2}{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS}~0x41
+\item 
+\#define \hyperlink{bus__commands_8h_2bc217fcababe25f512a04a75b67d21a}{BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE}~0x60
+\item 
+\#define \hyperlink{bus__commands_8h_b05aa63e4642c8c1dfadb6e523a70f3d}{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE}~0x61
+\item 
+\#define \hyperlink{bus__commands_8h_c16c7b6d003960a55b24a458d0d693a1}{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS}~0x62
+\item 
+\#define \hyperlink{bus__commands_8h_69d742981c5da189566c3b07519f5a1c}{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW}~0x63
+\item 
+\#define \hyperlink{bus__commands_8h_987bafb7830fae77ab2396ba327de736}{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW}~0x64
+\item 
+\#define \hyperlink{bus__commands_8h_306580c87cd4f39ffe12781c3dd4bb6e}{BUS\_\-CMD\_\-ROTATOR\_\-STOP}~0x65
+\item 
+\#define \hyperlink{bus__commands_8h_04fe15bb0cfaffbbb5eac8e4f0364b7f}{BUS\_\-CMD\_\-TRANSPARENT}~0x66
+\item 
+\#define \hyperlink{bus__commands_8h_d522b61cf8e394e382d70162ab92f0a8}{BUS\_\-CMD\_\-POWERMETER\_\-STATUS}~0x70
+\item 
+\#define \hyperlink{bus__commands_8h_ac7ed088c7fa14b3100dc48f6949b928}{BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE}~0x71
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Global commands for the WMV communication bus. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "wmv_bus/bus_commands.h" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{bus__commands_8h-source}{bus\_\-commands.h}.
+
+\subsection{Define Documentation}
+\hypertarget{bus__commands_8h_6c2ee7e478e90d1c0f8ef1bb2eb0b7e3}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ACK@{BUS\_\-CMD\_\-ACK}}
+\index{BUS\_\-CMD\_\-ACK@{BUS\_\-CMD\_\-ACK}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ACK}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ACK~0xFA}}
+\label{bus__commands_8h_6c2ee7e478e90d1c0f8ef1bb2eb0b7e3}
+
+
+Send an acknowledge 
+
+Definition at line 29 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), bus\_\-send\_\-ack(), bus\_\-send\_\-message(), and event\_\-bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_4eabbe9e30f2a324d63bdc0dd79975d1}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-ANT\_\-OUTPUT~0x16}}
+\label{bus__commands_8h_4eabbe9e30f2a324d63bdc0dd79975d1}
+
+
+Activate a driver output, type = ANT 
+
+Definition at line 52 of file bus\_\-commands.h.
+
+Referenced by antenna\_\-ctrl\_\-send\_\-ant\_\-data\_\-to\_\-bus(), bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_eee6892df89d7421dd9226e898c9810c}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-BAND\_\-OUTPUT~0x18}}
+\label{bus__commands_8h_eee6892df89d7421dd9226e898c9810c}
+
+
+Activate a driver output, type = BAND 
+
+Definition at line 56 of file bus\_\-commands.h.
+
+Referenced by band\_\-ctrl\_\-send\_\-band\_\-data\_\-to\_\-bus(), bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_e6914b7dce921236824d3a3c63270dd0}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-COMBO~0x14}}
+\label{bus__commands_8h_e6914b7dce921236824d3a3c63270dd0}
+
+
+Activate a driver combo, type = RX ANT combo 
+
+Definition at line 48 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_434a920e7c3ef31a6673277a6a36786d}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-ANT\_\-OUTPUT~0x1A}}
+\label{bus__commands_8h_434a920e7c3ef31a6673277a6a36786d}
+
+
+Activate a driver output, type = RX Antenna 
+
+Definition at line 60 of file bus\_\-commands.h.
+
+Referenced by antenna\_\-ctrl\_\-send\_\-rx\_\-ant\_\-data\_\-to\_\-bus(), bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_0bc29c7757b28beded81b7912863fdff}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-RX\_\-BAND\_\-OUTPUT~0x1E}}
+\label{bus__commands_8h_0bc29c7757b28beded81b7912863fdff}
+
+
+Activate RX BAND output 
+
+Definition at line 68 of file bus\_\-commands.h.
+
+Referenced by antenna\_\-ctrl\_\-send\_\-rx\_\-ant\_\-band\_\-data\_\-to\_\-bus(), and bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_7202ab208931af2bb1e7bed5df0db7c8}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT~0x26}}
+\label{bus__commands_8h_7202ab208931af2bb1e7bed5df0db7c8}
+
+
+Activate sub menu output 
+
+Definition at line 85 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_5c7264577e0880cf186738206fcdbf86}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT~0x29}}
+\label{bus__commands_8h_5c7264577e0880cf186738206fcdbf86}
+
+
+Activate sub menu output 
+
+Definition at line 91 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_f99d678512b196cb15fb8090ce935095}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT~0x3C}}
+\label{bus__commands_8h_f99d678512b196cb15fb8090ce935095}
+
+
+Activate sub menu output 
+
+Definition at line 97 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_197f040e7cf670e2ea814459ce91832b}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT~0x3F}}
+\label{bus__commands_8h_197f040e7cf670e2ea814459ce91832b}
+
+
+Activate sub menu output 
+
+Definition at line 103 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_41f3df40a4a40e6fe94dcf3b738d1926}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TX\_\-ANT\_\-COMBO~0x12}}
+\label{bus__commands_8h_41f3df40a4a40e6fe94dcf3b738d1926}
+
+
+Activate a driver combo, type = TX ANT 
+
+Definition at line 44 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_b6431678824286cb0a00c88d31ea5412}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE@{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-ACTIVATE\_\-TXRX\_\-MODE~0x10}}
+\label{bus__commands_8h_b6431678824286cb0a00c88d31ea5412}
+
+
+Activate TX/RX mode 
+
+Definition at line 40 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_08c034b12e50df0482d787a0acb3fe19}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-ANT\_\-OUTPUTS~0x22}}
+\label{bus__commands_8h_08c034b12e50df0482d787a0acb3fe19}
+
+
+Deactivate all the ant outputs enabled by this device 
+
+Definition at line 77 of file bus\_\-commands.h.
+
+Referenced by antenna\_\-ctrl\_\-deactivate\_\-all(), antenna\_\-ctrl\_\-send\_\-ant\_\-data\_\-to\_\-bus(), bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_c90d7b296d00137a869e0c4d09bc445b}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-BAND\_\-OUTPUTS~0x23}}
+\label{bus__commands_8h_c90d7b296d00137a869e0c4d09bc445b}
+
+
+Deactivate all the band outputs enabled by this device 
+
+Definition at line 79 of file bus\_\-commands.h.
+
+Referenced by band\_\-ctrl\_\-deactivate\_\-all(), bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_da01c734d22265fc738d4276011a4d41}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-OUTPUTS~0x21}}
+\label{bus__commands_8h_da01c734d22265fc738d4276011a4d41}
+
+
+Deactivate all the outputs enabled by this device 
+
+Definition at line 75 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_cec107c3fbe8491eeaed482564e2ef3a}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-ANTENNA\_\-OUTPUTS~0x24}}
+\label{bus__commands_8h_cec107c3fbe8491eeaed482564e2ef3a}
+
+
+Deactivate all the RX ANTENNA outputs 
+
+Definition at line 81 of file bus\_\-commands.h.
+
+Referenced by antenna\_\-ctrl\_\-change\_\-rx\_\-ant(), antenna\_\-ctrl\_\-send\_\-rx\_\-ant\_\-data\_\-to\_\-bus(), and bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_976f4bc4c211172eaddac0013d523e75}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-RX\_\-BAND\_\-OUTPUTS~0x1D}}
+\label{bus__commands_8h_976f4bc4c211172eaddac0013d523e75}
+
+
+Deactivate ALL RX BAND outputs 
+
+Definition at line 66 of file bus\_\-commands.h.
+
+Referenced by antenna\_\-ctrl\_\-deactivate\_\-all\_\-rx\_\-band(), antenna\_\-ctrl\_\-send\_\-rx\_\-ant\_\-band\_\-data\_\-to\_\-bus(), and bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_3a110def39ac4c21171e86a723323773}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT1\_\-OUTPUTS~0x28}}
+\label{bus__commands_8h_3a110def39ac4c21171e86a723323773}
+
+
+Deactivate all sub menu outputs 
+
+Definition at line 89 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), sub\_\-menu\_\-deactivate\_\-all(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_1f94f33287942b7bdbef90e950b4e973}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT2\_\-OUTPUTS~0x3B}}
+\label{bus__commands_8h_1f94f33287942b7bdbef90e950b4e973}
+
+
+Deactivate all sub menu outputs 
+
+Definition at line 95 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), sub\_\-menu\_\-deactivate\_\-all(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_9bce71fb46009529991e2934910f6d12}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT3\_\-OUTPUTS~0x3E}}
+\label{bus__commands_8h_9bce71fb46009529991e2934910f6d12}
+
+
+Deactivate all sub menu outputs 
+
+Definition at line 101 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), sub\_\-menu\_\-deactivate\_\-all(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_c100f77243c4a22b7649dab196d779b2}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ALL\_\-SUBMENU\_\-ANT4\_\-OUTPUTS~0x41}}
+\label{bus__commands_8h_c100f77243c4a22b7649dab196d779b2}
+
+
+Deactivate all sub menu outputs 
+
+Definition at line 107 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), sub\_\-menu\_\-deactivate\_\-all(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_a3fad4898b934b8822bbc7d0f2a24399}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-ANT\_\-OUTPUT~0x17}}
+\label{bus__commands_8h_a3fad4898b934b8822bbc7d0f2a24399}
+
+
+Deactivate a driver output, type = ANT 
+
+Definition at line 54 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_5bfcb90b2dac3e562939b45145b5c0f7}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-BAND\_\-OUTPUT~0x19}}
+\label{bus__commands_8h_5bfcb90b2dac3e562939b45145b5c0f7}
+
+
+Deactivate a driver output, type = BAND 
+
+Definition at line 58 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_27576d9204d093f2d7e47682ecff4a7e}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-COMBO~0x15}}
+\label{bus__commands_8h_27576d9204d093f2d7e47682ecff4a7e}
+
+
+Deactivate a driver combo, type = RX ANT combo 
+
+Definition at line 50 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_42ea2ab03ac6f12037287a034bc5d2de}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-ANT\_\-OUTPUT~0x1B}}
+\label{bus__commands_8h_42ea2ab03ac6f12037287a034bc5d2de}
+
+
+Deactivate a driver output, type = RX Antenna 
+
+Definition at line 62 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and parse\_\-internal\_\-comm\_\-message().\hypertarget{bus__commands_8h_f6b5ff2e60b05ea934fe2f8d3de530fa}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-RX\_\-BAND\_\-OUTPUT~0x1C}}
+\label{bus__commands_8h_f6b5ff2e60b05ea934fe2f8d3de530fa}
+
+
+Deactivate RX BAND output 
+
+Definition at line 64 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_beae1947a31f4f741f1bcc80f0bd18b6}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT1\_\-OUTPUT~0x27}}
+\label{bus__commands_8h_beae1947a31f4f741f1bcc80f0bd18b6}
+
+
+Deactivate sub menu output 
+
+Definition at line 87 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_644c09bbedbd68ee3d79bdb3698ebd45}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT2\_\-OUTPUT~0x3A}}
+\label{bus__commands_8h_644c09bbedbd68ee3d79bdb3698ebd45}
+
+
+Deactivate sub menu output 
+
+Definition at line 93 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_1e0aeece2a34b9e01bf8f90bf9616362}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT3\_\-OUTPUT~0x3D}}
+\label{bus__commands_8h_1e0aeece2a34b9e01bf8f90bf9616362}
+
+
+Deactivate sub menu output 
+
+Definition at line 99 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_f001987a54274aeed8dd769f925b65b2}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-SUBMENU\_\-ANT4\_\-OUTPUT~0x40}}
+\label{bus__commands_8h_f001987a54274aeed8dd769f925b65b2}
+
+
+Deactivate sub menu output 
+
+Definition at line 105 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), and sub\_\-menu\_\-send\_\-data\_\-to\_\-bus().\hypertarget{bus__commands_8h_5e342ae7ae5876c4fca15a9dbbd6a39f}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TX\_\-ANT\_\-COMBO~0x13}}
+\label{bus__commands_8h_5e342ae7ae5876c4fca15a9dbbd6a39f}
+
+
+Deactivate a driver combo, type = TX ANT 
+
+Definition at line 46 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_6c85935c123ea05e79906c6d7d1afd05}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE@{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-DEACTIVATE\_\-TXRX\_\-MODE~0x11}}
+\label{bus__commands_8h_6c85935c123ea05e79906c6d7d1afd05}
+
+
+Deactivate TX/RX mode 
+
+Definition at line 42 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_5441b8c2c565e8e7b5244daa7addaae9}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS@{BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS}}
+\index{BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS@{BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-DRIVER\_\-GET\_\-STATUS~0x1F}}
+\label{bus__commands_8h_5441b8c2c565e8e7b5244daa7addaae9}
+
+
+Get the driver status 
+
+Definition at line 71 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_e4a08e3f50e0b2652352d4117628d742}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-GET\_\-TEMPERATURE@{BUS\_\-CMD\_\-GET\_\-TEMPERATURE}}
+\index{BUS\_\-CMD\_\-GET\_\-TEMPERATURE@{BUS\_\-CMD\_\-GET\_\-TEMPERATURE}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-GET\_\-TEMPERATURE}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-GET\_\-TEMPERATURE~0x20}}
+\label{bus__commands_8h_e4a08e3f50e0b2652352d4117628d742}
+
+
+Retrieve the temperature 
+
+Definition at line 73 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_53b9bdce3699ad0222b53b02c5ce2ea3}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-NACK@{BUS\_\-CMD\_\-NACK}}
+\index{BUS\_\-CMD\_\-NACK@{BUS\_\-CMD\_\-NACK}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-NACK}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-NACK~0xFB}}
+\label{bus__commands_8h_53b9bdce3699ad0222b53b02c5ce2ea3}
+
+
+Send an NOT acknowledge 
+
+Definition at line 31 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), bus\_\-send\_\-message(), bus\_\-send\_\-nack(), and event\_\-bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_36de56636ef50c0222e4048d13832e1d}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-PING@{BUS\_\-CMD\_\-PING}}
+\index{BUS\_\-CMD\_\-PING@{BUS\_\-CMD\_\-PING}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-PING}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-PING~0x02}}
+\label{bus__commands_8h_36de56636ef50c0222e4048d13832e1d}
+
+
+Sends a ping which all devices can use to see what's connected to the bus 
+
+Definition at line 37 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message(), ISR(), main(), and send\_\-ping().\hypertarget{bus__commands_8h_ac7ed088c7fa14b3100dc48f6949b928}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE@{BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE}}
+\index{BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE@{BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-POWERMETER\_\-CALIBRATE~0x71}}
+\label{bus__commands_8h_ac7ed088c7fa14b3100dc48f6949b928}
+
+
+PowerMeter calibration command 
+
+Definition at line 127 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_d522b61cf8e394e382d70162ab92f0a8}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-POWERMETER\_\-STATUS@{BUS\_\-CMD\_\-POWERMETER\_\-STATUS}}
+\index{BUS\_\-CMD\_\-POWERMETER\_\-STATUS@{BUS\_\-CMD\_\-POWERMETER\_\-STATUS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-POWERMETER\_\-STATUS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-POWERMETER\_\-STATUS~0x70}}
+\label{bus__commands_8h_d522b61cf8e394e382d70162ab92f0a8}
+
+
+PowerMeter information 
+
+Definition at line 125 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_b05aa63e4642c8c1dfadb6e523a70f3d}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE@{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE}}
+\index{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE@{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-ANGLE~0x61}}
+\label{bus__commands_8h_b05aa63e4642c8c1dfadb6e523a70f3d}
+
+
+Get the current direction 
+
+Definition at line 112 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_c16c7b6d003960a55b24a458d0d693a1}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS@{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS}}
+\index{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS@{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ROTATOR\_\-GET\_\-STATUS~0x62}}
+\label{bus__commands_8h_c16c7b6d003960a55b24a458d0d693a1}
+
+
+Get the current direction 
+
+Definition at line 114 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_987bafb7830fae77ab2396ba327de736}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW@{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW}}
+\index{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW@{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CCW~0x64}}
+\label{bus__commands_8h_987bafb7830fae77ab2396ba327de736}
+
+
+Rotate CounterClockWise 
+
+Definition at line 118 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_69d742981c5da189566c3b07519f5a1c}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW@{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW}}
+\index{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW@{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ROTATOR\_\-ROTATE\_\-CW~0x63}}
+\label{bus__commands_8h_69d742981c5da189566c3b07519f5a1c}
+
+
+Rotate ClockWise 
+
+Definition at line 116 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_2bc217fcababe25f512a04a75b67d21a}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE@{BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE}}
+\index{BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE@{BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ROTATOR\_\-SET\_\-ANGLE~0x60}}
+\label{bus__commands_8h_2bc217fcababe25f512a04a75b67d21a}
+
+
+Set the target rotation direction and start rotation 
+
+Definition at line 110 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_306580c87cd4f39ffe12781c3dd4bb6e}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-ROTATOR\_\-STOP@{BUS\_\-CMD\_\-ROTATOR\_\-STOP}}
+\index{BUS\_\-CMD\_\-ROTATOR\_\-STOP@{BUS\_\-CMD\_\-ROTATOR\_\-STOP}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-ROTATOR\_\-STOP}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-ROTATOR\_\-STOP~0x65}}
+\label{bus__commands_8h_306580c87cd4f39ffe12781c3dd4bb6e}
+
+
+Stop the rotation of the rotator 
+
+Definition at line 120 of file bus\_\-commands.h.\hypertarget{bus__commands_8h_bcce6221d55adba6c339097256ccb737}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS@{BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS}}
+\index{BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS@{BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-SET\_\-PTT\_\-SETTINGS~0x25}}
+\label{bus__commands_8h_bcce6221d55adba6c339097256ccb737}
+
+
+Set the PTT settings, which PTT input that corresponds to which device 
+
+Definition at line 83 of file bus\_\-commands.h.
+
+Referenced by bus\_\-parse\_\-message().\hypertarget{bus__commands_8h_5c51c766847f6dc88363a91b75da474a}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-SYNC@{BUS\_\-CMD\_\-SYNC}}
+\index{BUS\_\-CMD\_\-SYNC@{BUS\_\-CMD\_\-SYNC}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-SYNC}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-SYNC~0x01}}
+\label{bus__commands_8h_5c51c766847f6dc88363a91b75da474a}
+
+
+Transmit the SYNC signal. The SYNC signal contains one variable which describes the number of devices connected to the bus. 
+
+Definition at line 35 of file bus\_\-commands.h.
+
+Referenced by bus\_\-add\_\-tx\_\-message(), bus\_\-parse\_\-message(), ISR(), and main().\hypertarget{bus__commands_8h_04fe15bb0cfaffbbb5eac8e4f0364b7f}{
+\index{bus\_\-commands.h@{bus\_\-commands.h}!BUS\_\-CMD\_\-TRANSPARENT@{BUS\_\-CMD\_\-TRANSPARENT}}
+\index{BUS\_\-CMD\_\-TRANSPARENT@{BUS\_\-CMD\_\-TRANSPARENT}!bus_commands.h@{bus\_\-commands.h}}
+\subsubsection[{BUS\_\-CMD\_\-TRANSPARENT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BUS\_\-CMD\_\-TRANSPARENT~0x66}}
+\label{bus__commands_8h_04fe15bb0cfaffbbb5eac8e4f0364b7f}
+
+
+Transparent command which just redirects the data to the serial port 
+
+Definition at line 122 of file bus\_\-commands.h.

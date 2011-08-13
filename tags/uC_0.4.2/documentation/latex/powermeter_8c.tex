@@ -1,0 +1,139 @@
+\hypertarget{powermeter_8c}{
+\section{front\_\-panel/powermeter.c File Reference}
+\label{powermeter_8c}\index{front\_\-panel/powermeter.c@{front\_\-panel/powermeter.c}}
+}
+Power meter.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include \char`\"{}powermeter.h\char`\"{}}\par
+{\tt \#include \char`\"{}radio\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}display.h\char`\"{}}\par
+{\tt \#include \char`\"{}glcd.h\char`\"{}}\par
+{\tt \#include \char`\"{}main.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{powermeter_8c_986127da6aa4b3bba7d9d80fdfaf5387}{
+\#define \textbf{POWERMETER\_\-FLAG\_\-ACTIVE}~0}
+\label{powermeter_8c_986127da6aa4b3bba7d9d80fdfaf5387}
+
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{powermeter_8c_e90f9a0d1fdc31dd734304f544e2834d}{powermeter\_\-init} (unsigned char pickup\_\-addr, unsigned int text\_\-update\_\-rate, unsigned int bargraph\_\-update\_\-rate, unsigned int vswr\_\-limit)
+\begin{CompactList}\small\item\em Initialize the power meter. \item\end{CompactList}\item 
+void \hyperlink{powermeter_8c_6136824af7105bfedca5e551a9079a72}{powermeter\_\-set\_\-active} (unsigned char state)
+\begin{CompactList}\small\item\em Activate the power meter display /$\ast$! \item\end{CompactList}\item 
+void \hyperlink{powermeter_8c_802ee0989df8b107d06a15a4c130b281}{powermeter\_\-update\_\-values} (unsigned int fwd\_\-pwr, unsigned int ref\_\-pwr, unsigned int vswr)
+\begin{CompactList}\small\item\em Update the values of the power meter. \item\end{CompactList}\item 
+\hypertarget{powermeter_8c_cbe105d945a1d31fe09796270252546d}{
+void \hyperlink{powermeter_8c_cbe105d945a1d31fe09796270252546d}{powermeter\_\-process\_\-tasks} (void)}
+\label{powermeter_8c_cbe105d945a1d31fe09796270252546d}
+
+\begin{CompactList}\small\item\em This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc. \item\end{CompactList}\item 
+\hypertarget{powermeter_8c_87a92b8ac14dbe3814bbf1f09c349902}{
+void \hyperlink{powermeter_8c_87a92b8ac14dbe3814bbf1f09c349902}{powermeter\_\-1ms\_\-tick} (void)}
+\label{powermeter_8c_87a92b8ac14dbe3814bbf1f09c349902}
+
+\begin{CompactList}\small\item\em This function should be called at 1 ms intervals. It is to keep track of update rates etc for the display. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{powermeter_8c_534a11b0ccb5422e3b090b68f4b4ec3a}{
+\hyperlink{structpowermeter__struct}{powermeter\_\-struct} \hyperlink{powermeter_8c_534a11b0ccb5422e3b090b68f4b4ec3a}{powermeter\_\-status}}
+\label{powermeter_8c_534a11b0ccb5422e3b090b68f4b4ec3a}
+
+\begin{CompactList}\small\item\em The current status of the power meter. \item\end{CompactList}\item 
+\hypertarget{powermeter_8c_201fd24837eec1183a3ebf9fecbe2e82}{
+unsigned char \hyperlink{powermeter_8c_201fd24837eec1183a3ebf9fecbe2e82}{powermeter\_\-flags}}
+\label{powermeter_8c_201fd24837eec1183a3ebf9fecbe2e82}
+
+\begin{CompactList}\small\item\em Various flags used in the powermeter, defines can be found in \hyperlink{powermeter_8h}{powermeter.h}. \item\end{CompactList}\item 
+\hypertarget{powermeter_8c_9d43c54fe2d5fc0282f3daf8d4f0a70f}{
+unsigned int \hyperlink{powermeter_8c_9d43c54fe2d5fc0282f3daf8d4f0a70f}{counter\_\-powermeter\_\-update\_\-text} = 0}
+\label{powermeter_8c_9d43c54fe2d5fc0282f3daf8d4f0a70f}
+
+\begin{CompactList}\small\item\em The counter which keeps track of when we should update the power meter text. \item\end{CompactList}\item 
+\hypertarget{powermeter_8c_790adf77943c06c922790d486a915524}{
+unsigned int \hyperlink{powermeter_8c_790adf77943c06c922790d486a915524}{counter\_\-powermeter\_\-update\_\-bargraph} = 0}
+\label{powermeter_8c_790adf77943c06c922790d486a915524}
+
+\begin{CompactList}\small\item\em The counter which keeps track of when we should update the power meter bargraph. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Power meter. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-05-12 
+
+\begin{Code}\begin{verbatim} #include "front_panel/powermeter.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{powermeter_8c-source}{powermeter.c}.
+
+\subsection{Function Documentation}
+\hypertarget{powermeter_8c_e90f9a0d1fdc31dd734304f544e2834d}{
+\index{powermeter.c@{powermeter.c}!powermeter\_\-init@{powermeter\_\-init}}
+\index{powermeter\_\-init@{powermeter\_\-init}!powermeter.c@{powermeter.c}}
+\subsubsection[{powermeter\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void powermeter\_\-init (unsigned char {\em pickup\_\-addr}, \/  unsigned int {\em text\_\-update\_\-rate}, \/  unsigned int {\em bargraph\_\-update\_\-rate}, \/  unsigned int {\em vswr\_\-limit})}}
+\label{powermeter_8c_e90f9a0d1fdc31dd734304f544e2834d}
+
+
+Initialize the power meter. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em pickup\_\-addr}]The address of the powermeter unit that sends the information \item[{\em text\_\-update\_\-rate}]How often we should refresh the text on the display \item[{\em bargraph\_\-update\_\-rate}]How often we should update the bargraph of the display \item[{\em vswr\_\-limit}]What is the SWR limit of the device, when this is exceeded we shut down the possibility to PTT \end{description}
+\end{Desc}
+
+
+Definition at line 53 of file powermeter.c.
+
+References powermeter\_\-struct::bargraph\_\-update\_\-rate, powermeter\_\-struct::curr\_\-fwd\_\-pwr\_\-value, powermeter\_\-struct::curr\_\-ref\_\-pwr\_\-value, powermeter\_\-struct::curr\_\-vswr\_\-value, powermeter\_\-struct::pickup\_\-addr, powermeter\_\-struct::text\_\-update\_\-rate, and powermeter\_\-struct::vswr\_\-limit.
+
+Referenced by main().\hypertarget{powermeter_8c_6136824af7105bfedca5e551a9079a72}{
+\index{powermeter.c@{powermeter.c}!powermeter\_\-set\_\-active@{powermeter\_\-set\_\-active}}
+\index{powermeter\_\-set\_\-active@{powermeter\_\-set\_\-active}!powermeter.c@{powermeter.c}}
+\subsubsection[{powermeter\_\-set\_\-active}]{\setlength{\rightskip}{0pt plus 5cm}void powermeter\_\-set\_\-active (unsigned char {\em state})}}
+\label{powermeter_8c_6136824af7105bfedca5e551a9079a72}
+
+
+Activate the power meter display /$\ast$! 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]If this is set to 1 we will activate the powermeter, if set to 0 we will deactivate it \end{description}
+\end{Desc}
+
+
+Definition at line 66 of file powermeter.c.\hypertarget{powermeter_8c_802ee0989df8b107d06a15a4c130b281}{
+\index{powermeter.c@{powermeter.c}!powermeter\_\-update\_\-values@{powermeter\_\-update\_\-values}}
+\index{powermeter\_\-update\_\-values@{powermeter\_\-update\_\-values}!powermeter.c@{powermeter.c}}
+\subsubsection[{powermeter\_\-update\_\-values}]{\setlength{\rightskip}{0pt plus 5cm}void powermeter\_\-update\_\-values (unsigned int {\em fwd\_\-pwr}, \/  unsigned int {\em ref\_\-pwr}, \/  unsigned int {\em vswr})}}
+\label{powermeter_8c_802ee0989df8b107d06a15a4c130b281}
+
+
+Update the values of the power meter. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em fwd\_\-pwr}]The current forward power in watts \item[{\em ref\_\-pwr}]The current reflected power in watts \item[{\em vswr}]The current VSWR value, for example 151 means 1.51:1 in VSWR \end{description}
+\end{Desc}
+
+
+Definition at line 86 of file powermeter.c.

@@ -1,0 +1,132 @@
+\hypertarget{bus__ping_8c}{
+\section{wmv\_\-bus/bus\_\-ping.c File Reference}
+\label{bus__ping_8c}\index{wmv\_\-bus/bus\_\-ping.c@{wmv\_\-bus/bus\_\-ping.c}}
+}
+The communication bus ping control.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include \char`\"{}bus.h\char`\"{}}\par
+{\tt \#include \char`\"{}bus\_\-ping.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{bus__ping_8c_3b55347348ca973d2ece39bc00635a88}{
+void \hyperlink{bus__ping_8c_3b55347348ca973d2ece39bc00635a88}{bus\_\-ping\_\-init} (void)}
+\label{bus__ping_8c_3b55347348ca973d2ece39bc00635a88}
+
+\begin{CompactList}\small\item\em Initialize the ping functions of the bus communication interface. \item\end{CompactList}\item 
+void \hyperlink{bus__ping_8c_a5bd6be9a7946a242de8c8902e8cf8b5}{bus\_\-ping\_\-new\_\-stamp} (unsigned char from\_\-addr, unsigned char device\_\-type, unsigned char data\_\-len, unsigned char $\ast$data)
+\begin{CompactList}\small\item\em This function will update the ping list with the sent in arguments and reset the counter to 0. \item\end{CompactList}\item 
+\hypertarget{bus__ping_8c_8ae980cef99cf2fa835dc03a498e2d46}{
+void \hyperlink{bus__ping_8c_8ae980cef99cf2fa835dc03a498e2d46}{bus\_\-ping\_\-tick} (void)}
+\label{bus__ping_8c_8ae980cef99cf2fa835dc03a498e2d46}
+
+\begin{CompactList}\small\item\em This function will update the time counter which keeps track of the time stamps of the ping message. Should be called every ms. \item\end{CompactList}\item 
+\hyperlink{structbus__struct__ping__status}{bus\_\-struct\_\-ping\_\-status} $\ast$ \hyperlink{bus__ping_8c_4cc7c93bba034be681e75505bca52a62}{bus\_\-ping\_\-get\_\-failed\_\-ping} (void)
+\begin{CompactList}\small\item\em This function will return a ping which has failed and will mark it that it has been reported. \item\end{CompactList}\item 
+unsigned char \hyperlink{bus__ping_8c_ce4e50820ab916666992f5c87dacdc73}{bus\_\-ping\_\-get\_\-failed\_\-count} (void)
+\begin{CompactList}\small\item\em Goes through the ping list and checks how many has timed out. \item\end{CompactList}\item 
+\hyperlink{structbus__struct__ping__status}{bus\_\-struct\_\-ping\_\-status} $\ast$ \hyperlink{bus__ping_8c_c7de7aed1ce64f5f9902eb6f388d44f5}{bus\_\-ping\_\-get\_\-ping\_\-data} (unsigned char index)
+\begin{CompactList}\small\item\em Returns a ping data structure. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{bus__ping_8c_7b29231a5571da1904146eb5cf046677}{
+\hyperlink{structbus__struct__ping__status}{bus\_\-struct\_\-ping\_\-status} \hyperlink{bus__ping_8c_7b29231a5571da1904146eb5cf046677}{ping\_\-list} \mbox{[}DEF\_\-NR\_\-DEVICES\mbox{]}}
+\label{bus__ping_8c_7b29231a5571da1904146eb5cf046677}
+
+\begin{CompactList}\small\item\em The ping list. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The communication bus ping control. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-04-22 
+
+\begin{Code}\begin{verbatim} #include "wmv_bus/bus_ping.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{bus__ping_8c-source}{bus\_\-ping.c}.
+
+\subsection{Function Documentation}
+\hypertarget{bus__ping_8c_ce4e50820ab916666992f5c87dacdc73}{
+\index{bus\_\-ping.c@{bus\_\-ping.c}!bus\_\-ping\_\-get\_\-failed\_\-count@{bus\_\-ping\_\-get\_\-failed\_\-count}}
+\index{bus\_\-ping\_\-get\_\-failed\_\-count@{bus\_\-ping\_\-get\_\-failed\_\-count}!bus_ping.c@{bus\_\-ping.c}}
+\subsubsection[{bus\_\-ping\_\-get\_\-failed\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char bus\_\-ping\_\-get\_\-failed\_\-count (void)}}
+\label{bus__ping_8c_ce4e50820ab916666992f5c87dacdc73}
+
+
+Goes through the ping list and checks how many has timed out. 
+
+\begin{Desc}
+\item[Returns:]The number of failed pings \end{Desc}
+
+
+Definition at line 84 of file bus\_\-ping.c.
+
+References BUS\_\-PING\_\-TIMEOUT\_\-LIMIT, and DEF\_\-NR\_\-DEVICES.\hypertarget{bus__ping_8c_4cc7c93bba034be681e75505bca52a62}{
+\index{bus\_\-ping.c@{bus\_\-ping.c}!bus\_\-ping\_\-get\_\-failed\_\-ping@{bus\_\-ping\_\-get\_\-failed\_\-ping}}
+\index{bus\_\-ping\_\-get\_\-failed\_\-ping@{bus\_\-ping\_\-get\_\-failed\_\-ping}!bus_ping.c@{bus\_\-ping.c}}
+\subsubsection[{bus\_\-ping\_\-get\_\-failed\_\-ping}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bus\_\-struct\_\-ping\_\-status}$\ast$ bus\_\-ping\_\-get\_\-failed\_\-ping (void)}}
+\label{bus__ping_8c_4cc7c93bba034be681e75505bca52a62}
+
+
+This function will return a ping which has failed and will mark it that it has been reported. 
+
+\begin{Desc}
+\item[Returns:]A pointer to a structure of type \hyperlink{structbus__struct__ping__status}{bus\_\-struct\_\-ping\_\-status} which contains information of the failed ping \end{Desc}
+
+
+Definition at line 66 of file bus\_\-ping.c.
+
+References BUS\_\-PING\_\-TIMEOUT\_\-LIMIT, DEF\_\-NR\_\-DEVICES, bus\_\-struct\_\-ping\_\-status::flags, and PING\_\-FLAG\_\-PROCESSED.\hypertarget{bus__ping_8c_c7de7aed1ce64f5f9902eb6f388d44f5}{
+\index{bus\_\-ping.c@{bus\_\-ping.c}!bus\_\-ping\_\-get\_\-ping\_\-data@{bus\_\-ping\_\-get\_\-ping\_\-data}}
+\index{bus\_\-ping\_\-get\_\-ping\_\-data@{bus\_\-ping\_\-get\_\-ping\_\-data}!bus_ping.c@{bus\_\-ping.c}}
+\subsubsection[{bus\_\-ping\_\-get\_\-ping\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bus\_\-struct\_\-ping\_\-status}$\ast$ bus\_\-ping\_\-get\_\-ping\_\-data (unsigned char {\em index})}}
+\label{bus__ping_8c_c7de7aed1ce64f5f9902eb6f388d44f5}
+
+
+Returns a ping data structure. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of the ping structure we wish to retrieve from the list \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The ping data structure \end{Desc}
+
+
+Definition at line 99 of file bus\_\-ping.c.\hypertarget{bus__ping_8c_a5bd6be9a7946a242de8c8902e8cf8b5}{
+\index{bus\_\-ping.c@{bus\_\-ping.c}!bus\_\-ping\_\-new\_\-stamp@{bus\_\-ping\_\-new\_\-stamp}}
+\index{bus\_\-ping\_\-new\_\-stamp@{bus\_\-ping\_\-new\_\-stamp}!bus_ping.c@{bus\_\-ping.c}}
+\subsubsection[{bus\_\-ping\_\-new\_\-stamp}]{\setlength{\rightskip}{0pt plus 5cm}void bus\_\-ping\_\-new\_\-stamp (unsigned char {\em from\_\-addr}, \/  unsigned char {\em device\_\-type}, \/  unsigned char {\em data\_\-len}, \/  unsigned char $\ast$ {\em data})}}
+\label{bus__ping_8c_a5bd6be9a7946a242de8c8902e8cf8b5}
+
+
+This function will update the ping list with the sent in arguments and reset the counter to 0. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em from\_\-addr}]The address which the PING message was sent from \item[{\em device\_\-type}]Which type of device this is \item[{\em data\_\-len}]The number of bytes the data is \item[{\em data}]Additional data which might be used for status, for example current band information \end{description}
+\end{Desc}
+
+
+Definition at line 41 of file bus\_\-ping.c.
+
+References bus\_\-struct\_\-ping\_\-status::addr, bus\_\-struct\_\-ping\_\-status::device\_\-type, bus\_\-struct\_\-ping\_\-status::flags, PING\_\-FLAG\_\-PROCESSED, and bus\_\-struct\_\-ping\_\-status::time\_\-last\_\-ping.
+
+Referenced by ISR().

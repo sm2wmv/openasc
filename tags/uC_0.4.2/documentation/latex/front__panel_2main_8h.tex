@@ -1,0 +1,590 @@
+\hypertarget{front__panel_2main_8h}{
+\section{front\_\-panel/main.h File Reference}
+\label{front__panel_2main_8h}\index{front\_\-panel/main.h@{front\_\-panel/main.h}}
+}
+Main file of the front panel.  
+
+
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+struct \hyperlink{structstruct__setting}{struct\_\-setting}
+\begin{CompactList}\small\item\em Settings struct. \item\end{CompactList}\item 
+struct \hyperlink{structstruct__status}{struct\_\-status}
+\begin{CompactList}\small\item\em This struct only contains information that is temporary. \item\end{CompactList}\item 
+struct \hyperlink{structstruct__runtime__settings}{struct\_\-runtime\_\-settings}
+\begin{CompactList}\small\item\em Settings like status but which should be saved into the EEPROM. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2main_8h_c96f014067eaeb8354864e4cb6265ab0}{
+\#define \hyperlink{front__panel_2main_8h_c96f014067eaeb8354864e4cb6265ab0}{FIRMWARE\_\-REV}~\char`\"{}0.1b$\backslash$0\char`\"{}}
+\label{front__panel_2main_8h_c96f014067eaeb8354864e4cb6265ab0}
+
+\begin{CompactList}\small\item\em The current firmware revision nr. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_597454661b68a741cee73a5683fca2ed}{
+\#define \hyperlink{front__panel_2main_8h_597454661b68a741cee73a5683fca2ed}{ENABLE\_\-TIMER0\_\-INT}()~TIMSK0 $|$= (1$<$$<$OCIE0A);}
+\label{front__panel_2main_8h_597454661b68a741cee73a5683fca2ed}
+
+\begin{CompactList}\small\item\em Macro to enable timer 0 interrupt. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_24b1c27cec65a16fea8ca920140ff43e}{
+\#define \hyperlink{front__panel_2main_8h_24b1c27cec65a16fea8ca920140ff43e}{DISABLE\_\-TIMER0\_\-INT}()~TIMSK0 \&= $\sim$(1$<$$<$OCIE0A);}
+\label{front__panel_2main_8h_24b1c27cec65a16fea8ca920140ff43e}
+
+\begin{CompactList}\small\item\em Macro to disable timer 0 interrupt. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_ce9e759febab1ef55a06836baff54dcb}{
+\#define \hyperlink{front__panel_2main_8h_ce9e759febab1ef55a06836baff54dcb}{BUS\_\-STATUS\_\-ALLOWED\_\-TO\_\-SEND\_\-BIT}~0}
+\label{front__panel_2main_8h_ce9e759febab1ef55a06836baff54dcb}
+
+\begin{CompactList}\small\item\em Flag to indicate that the bus is allowed to transmit. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_6a16221d27bb7882638936437408b9fa}{
+\#define \hyperlink{front__panel_2main_8h_6a16221d27bb7882638936437408b9fa}{BUS\_\-STATUS\_\-PREAMBLE\_\-FOUND\_\-BIT}~1}
+\label{front__panel_2main_8h_6a16221d27bb7882638936437408b9fa}
+
+\begin{CompactList}\small\item\em Flag to indicate that a preamble has been found in the bus. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_dffac4bc5208e16dab5a4bb6a2e0a6f4}{
+\#define \hyperlink{front__panel_2main_8h_dffac4bc5208e16dab5a4bb6a2e0a6f4}{BUS\_\-RX\_\-QUEUE\_\-SIZE}~10}
+\label{front__panel_2main_8h_dffac4bc5208e16dab5a4bb6a2e0a6f4}
+
+\begin{CompactList}\small\item\em The size of the RX queue in buffers. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_fc2f94db0f2436787adc0230e9f9a035}{
+\#define \hyperlink{front__panel_2main_8h_fc2f94db0f2436787adc0230e9f9a035}{BUS\_\-TX\_\-QUEUE\_\-SIZE}~25}
+\label{front__panel_2main_8h_fc2f94db0f2436787adc0230e9f9a035}
+
+\begin{CompactList}\small\item\em The size of the TX queue in buffers. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_801a5474a129dd6449d92d5ef4d6346c}{
+\#define \hyperlink{front__panel_2main_8h_801a5474a129dd6449d92d5ef4d6346c}{ANTENNA\_\-EXIST\_\-FLAG}~0}
+\label{front__panel_2main_8h_801a5474a129dd6449d92d5ef4d6346c}
+
+\begin{CompactList}\small\item\em This flag is to indicate that the antenna exist. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_705341b0c50cc752f3871d8c52e1286d}{
+\#define \hyperlink{front__panel_2main_8h_705341b0c50cc752f3871d8c52e1286d}{ANTENNA\_\-ROTATOR\_\-FLAG}~1}
+\label{front__panel_2main_8h_705341b0c50cc752f3871d8c52e1286d}
+
+\begin{CompactList}\small\item\em Flag if there is a rotator that can be controlled. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_3359009d76133b2bcc8a2facab2170db}{
+\#define \hyperlink{front__panel_2main_8h_3359009d76133b2bcc8a2facab2170db}{ANTENNA\_\-IS\_\-MULTIBAND}~2}
+\label{front__panel_2main_8h_3359009d76133b2bcc8a2facab2170db}
+
+\begin{CompactList}\small\item\em Flag if the antenna is a multiband antenna - Not implemented. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_098feaa985c1498be6a024ee0fbcb601}{
+\#define \hyperlink{front__panel_2main_8h_098feaa985c1498be6a024ee0fbcb601}{ANTENNA\_\-IN\_\-USE\_\-FLAG}~3}
+\label{front__panel_2main_8h_098feaa985c1498be6a024ee0fbcb601}
+
+\begin{CompactList}\small\item\em Flag that shows if an antenna is occupied, used for multiband antennas primary - Not implemented. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_e00188aeb21ba10e71beca9b74b1508e}{
+\#define \hyperlink{front__panel_2main_8h_e00188aeb21ba10e71beca9b74b1508e}{DISPLAY\_\-SCREENSAVER\_\-TIMEOUT}~5000}
+\label{front__panel_2main_8h_e00188aeb21ba10e71beca9b74b1508e}
+
+\begin{CompactList}\small\item\em Screensaver timeout. \item\end{CompactList}\item 
+\#define \hyperlink{front__panel_2main_8h_8a0bc380e990fe6b22c4dafcd477d7ea}{RADIO\_\-RX\_\-DATA\_\-TIMEOUT}~10
+\item 
+\hypertarget{front__panel_2main_8h_ec5abb8bedce3e903eaf55d3b57e42a5}{
+\#define \hyperlink{front__panel_2main_8h_ec5abb8bedce3e903eaf55d3b57e42a5}{PTT\_\-RADIO\_\-BIT}~0}
+\label{front__panel_2main_8h_ec5abb8bedce3e903eaf55d3b57e42a5}
+
+\begin{CompactList}\small\item\em Indicate that radio is enabled or disabled. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_11b12917150266475b65609512cb2de9}{
+\#define \hyperlink{front__panel_2main_8h_11b12917150266475b65609512cb2de9}{PTT\_\-AMP\_\-BIT}~1}
+\label{front__panel_2main_8h_11b12917150266475b65609512cb2de9}
+
+\begin{CompactList}\small\item\em Indicate that amp is enabled or disabled. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_fa7ae68a2d30103c7a9baf0ab8666d0e}{
+\#define \hyperlink{front__panel_2main_8h_fa7ae68a2d30103c7a9baf0ab8666d0e}{INHIBIT\_\-ENABLED\_\-BIT}~2}
+\label{front__panel_2main_8h_fa7ae68a2d30103c7a9baf0ab8666d0e}
+
+\begin{CompactList}\small\item\em Indicate that inhibit is enabled or disabled. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_36225caec680f0f1ed29d95205308bc8}{
+\#define \hyperlink{front__panel_2main_8h_36225caec680f0f1ed29d95205308bc8}{BAND\_\-CHANGE\_\-MODE\_\-MANUAL}~0}
+\label{front__panel_2main_8h_36225caec680f0f1ed29d95205308bc8}
+
+\begin{CompactList}\small\item\em Band changes are done manually. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_c896e6d179d6d2b30cd01aa20355bd13}{
+\#define \hyperlink{front__panel_2main_8h_c896e6d179d6d2b30cd01aa20355bd13}{BAND\_\-CHANGE\_\-MODE\_\-AUTO}~1}
+\label{front__panel_2main_8h_c896e6d179d6d2b30cd01aa20355bd13}
+
+\begin{CompactList}\small\item\em Band changes are done automatically. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_d5bbfa9ae4c7ddf53da69100efd497f5}{
+\#define \hyperlink{front__panel_2main_8h_d5bbfa9ae4c7ddf53da69100efd497f5}{FLAG\_\-POLL\_\-BUTTONS}~0}
+\label{front__panel_2main_8h_d5bbfa9ae4c7ddf53da69100efd497f5}
+
+\begin{CompactList}\small\item\em POLL BUTTONS, is set when a poll on the front panel buttons should occur. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_c4689af444ec04fdfcd45d61be93c4e7}{
+\#define \hyperlink{front__panel_2main_8h_c4689af444ec04fdfcd45d61be93c4e7}{FLAG\_\-POLL\_\-EXT\_\-DEVICES}~1}
+\label{front__panel_2main_8h_c4689af444ec04fdfcd45d61be93c4e7}
+
+\begin{CompactList}\small\item\em EXT DEVICES flag is set when a poll for external devices should occur. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_1e6ee47355c14bca23b23495babcf203}{
+\#define \hyperlink{front__panel_2main_8h_1e6ee47355c14bca23b23495babcf203}{FLAG\_\-RUN\_\-EVENT\_\-QUEUE}~2}
+\label{front__panel_2main_8h_1e6ee47355c14bca23b23495babcf203}
+
+\begin{CompactList}\small\item\em Run the event first in the event queue. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_b04a6f4ec0e26589b9e5c6a3e7ad40b5}{
+\#define \hyperlink{front__panel_2main_8h_b04a6f4ec0e26589b9e5c6a3e7ad40b5}{FLAG\_\-UPDATE\_\-DISPLAY}~3}
+\label{front__panel_2main_8h_b04a6f4ec0e26589b9e5c6a3e7ad40b5}
+
+\begin{CompactList}\small\item\em FLAG to indicate that the display should be updated. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_dc2aeef09642259a07a0bb41c1753088}{
+\#define \hyperlink{front__panel_2main_8h_dc2aeef09642259a07a0bb41c1753088}{FLAG\_\-POLL\_\-PULSE\_\-SENSOR}~4}
+\label{front__panel_2main_8h_dc2aeef09642259a07a0bb41c1753088}
+
+\begin{CompactList}\small\item\em Poll the pulse sensor. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_467b101d7a67dfc5f3963df420f3ba5f}{
+\#define \hyperlink{front__panel_2main_8h_467b101d7a67dfc5f3963df420f3ba5f}{FLAG\_\-LAST\_\-BAND\_\-BLINK}~5}
+\label{front__panel_2main_8h_467b101d7a67dfc5f3963df420f3ba5f}
+
+\begin{CompactList}\small\item\em This flag indicates the state of the last BAND blink event, used to blink the LED when a new band change is in process. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_816cebd6146900d08da5dc669dd434d2}{
+\#define \hyperlink{front__panel_2main_8h_816cebd6146900d08da5dc669dd434d2}{FLAG\_\-LAST\_\-ANTENNA\_\-BLINK}~6}
+\label{front__panel_2main_8h_816cebd6146900d08da5dc669dd434d2}
+
+\begin{CompactList}\small\item\em This flag is used to blink the antennas which can be rotated. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_f57075b8a37ead1174e5f66309f72b71}{
+\#define \hyperlink{front__panel_2main_8h_f57075b8a37ead1174e5f66309f72b71}{FLAG\_\-CHANGE\_\-RX\_\-ANT}~7}
+\label{front__panel_2main_8h_f57075b8a37ead1174e5f66309f72b71}
+
+\begin{CompactList}\small\item\em This flag is used to trigger an RX antenna change, after a certain amount of time which is set with the flag below. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_1098d19ddf5464bb34982709aed3e9cd}{
+\#define \hyperlink{front__panel_2main_8h_1098d19ddf5464bb34982709aed3e9cd}{FLAG\_\-PROCESS\_\-RX\_\-ANT\_\-CHANGE}~8}
+\label{front__panel_2main_8h_1098d19ddf5464bb34982709aed3e9cd}
+
+\begin{CompactList}\small\item\em Works together with the above flag, but this is set when the actual antenna change should occur. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_22ea104df4f944d88ce1a5b756ff125c}{
+\#define \hyperlink{front__panel_2main_8h_22ea104df4f944d88ce1a5b756ff125c}{FLAG\_\-BLINK\_\-BAND\_\-LED}~9}
+\label{front__panel_2main_8h_22ea104df4f944d88ce1a5b756ff125c}
+
+\begin{CompactList}\small\item\em Blink the band led. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_a1cbad3fce2a98f6eb87415a815be18c}{
+\#define \hyperlink{front__panel_2main_8h_a1cbad3fce2a98f6eb87415a815be18c}{FLAG\_\-POLL\_\-RADIO}~10}
+\label{front__panel_2main_8h_a1cbad3fce2a98f6eb87415a815be18c}
+
+\begin{CompactList}\small\item\em Indicate that we should poll the radio. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_8576ae415da0b64eb4eec78bdbad8264}{
+\#define \hyperlink{front__panel_2main_8h_8576ae415da0b64eb4eec78bdbad8264}{FLAG\_\-CHANGE\_\-SUBMENU}~11}
+\label{front__panel_2main_8h_8576ae415da0b64eb4eec78bdbad8264}
+
+\begin{CompactList}\small\item\em This flag is set to indicate that we have changed the sub menu. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_b615fc363931123fa7ef223439453403}{
+\#define \hyperlink{front__panel_2main_8h_b615fc363931123fa7ef223439453403}{FLAG\_\-PROCESS\_\-SUBMENU\_\-CHANGE}~12}
+\label{front__panel_2main_8h_b615fc363931123fa7ef223439453403}
+
+\begin{CompactList}\small\item\em This flag is to indicate that a sub menu change should occur, ie sent out on the bus. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_70f23447a499aaaf1cf18b28184b661a}{
+\#define \hyperlink{front__panel_2main_8h_70f23447a499aaaf1cf18b28184b661a}{INTERVAL\_\-POLL\_\-BUTTONS}~50}
+\label{front__panel_2main_8h_70f23447a499aaaf1cf18b28184b661a}
+
+\begin{CompactList}\small\item\em The poll interval of the front panel buttons (unit = ms). \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_9e08063b99021df16f145c6736eaa691}{
+\#define \hyperlink{front__panel_2main_8h_9e08063b99021df16f145c6736eaa691}{INTERVAL\_\-POLL\_\-ROTARY\_\-ENCODER}~5}
+\label{front__panel_2main_8h_9e08063b99021df16f145c6736eaa691}
+
+\begin{CompactList}\small\item\em The poll interval of the rotary encoder (unit = ms). \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_9c04beaf7a7380713efb46b3f62399a4}{
+\#define \hyperlink{front__panel_2main_8h_9c04beaf7a7380713efb46b3f62399a4}{INTERVAL\_\-POLL\_\-EXT\_\-DEVICES}~1}
+\label{front__panel_2main_8h_9c04beaf7a7380713efb46b3f62399a4}
+
+\begin{CompactList}\small\item\em The poll interval of the external devices as shown in board.h (unit = ms). \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_3514d73b5a6a90fc9aea94b9c3539f76}{
+\#define \hyperlink{front__panel_2main_8h_3514d73b5a6a90fc9aea94b9c3539f76}{KNOB\_\-FUNCTION\_\-NONE}~0}
+\label{front__panel_2main_8h_3514d73b5a6a90fc9aea94b9c3539f76}
+
+\begin{CompactList}\small\item\em Knob function is to select RX antenna. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_2600a539ab9da2d4ce1923e9bb04a8f0}{
+\#define \hyperlink{front__panel_2main_8h_2600a539ab9da2d4ce1923e9bb04a8f0}{KNOB\_\-FUNCTION\_\-RX\_\-ANT}~1}
+\label{front__panel_2main_8h_2600a539ab9da2d4ce1923e9bb04a8f0}
+
+\begin{CompactList}\small\item\em Knob function is to select RX antenna. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_124672fc70c5c8736e349e740257951d}{
+\#define \hyperlink{front__panel_2main_8h_124672fc70c5c8736e349e740257951d}{KNOB\_\-FUNCTION\_\-SELECT\_\-BAND}~2}
+\label{front__panel_2main_8h_124672fc70c5c8736e349e740257951d}
+
+\begin{CompactList}\small\item\em Knob function is to select band. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_5b13bf421e4dffa03e48d02369eb96f8}{
+\#define \hyperlink{front__panel_2main_8h_5b13bf421e4dffa03e48d02369eb96f8}{KNOB\_\-FUNCTION\_\-SET\_\-HEADING}~3}
+\label{front__panel_2main_8h_5b13bf421e4dffa03e48d02369eb96f8}
+
+\begin{CompactList}\small\item\em Knob function is to set the heading of a rotator. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_809998ce457992aae0323f1854d29bdb}{
+\#define \hyperlink{front__panel_2main_8h_809998ce457992aae0323f1854d29bdb}{KNOB\_\-FUNCTION\_\-AUTO}~4}
+\label{front__panel_2main_8h_809998ce457992aae0323f1854d29bdb}
+
+\begin{CompactList}\small\item\em Auto select, pick the one which is most likely to be used. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_e58f5bf0ed80caf245299759985c656c}{
+\#define \hyperlink{front__panel_2main_8h_e58f5bf0ed80caf245299759985c656c}{KNOB\_\-FUNCTION\_\-SET\_\-SUBMENU}~5}
+\label{front__panel_2main_8h_e58f5bf0ed80caf245299759985c656c}
+
+\begin{CompactList}\small\item\em Knob function set submenu option. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_4972607548605115680496212a0f6389}{
+\#define \hyperlink{front__panel_2main_8h_4972607548605115680496212a0f6389}{RX\_\-ANTENNA\_\-NAME\_\-LENGTH}~15}
+\label{front__panel_2main_8h_4972607548605115680496212a0f6389}
+
+\begin{CompactList}\small\item\em RX antenna name length. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_239f00312148139d5807662e854c4a24}{
+\#define \hyperlink{front__panel_2main_8h_239f00312148139d5807662e854c4a24}{RX\_\-ANTENNA\_\-OUTPUT\_\-STR\_\-LENGTH}~10}
+\label{front__panel_2main_8h_239f00312148139d5807662e854c4a24}
+
+\begin{CompactList}\small\item\em RX antenna output str length. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_90ea37e1c968a32e61cc012534e9f783}{
+\#define \hyperlink{front__panel_2main_8h_90ea37e1c968a32e61cc012534e9f783}{RX\_\-ANTENNA\_\-BAND\_\-OUTPUT\_\-STR\_\-LENGTH}~10}
+\label{front__panel_2main_8h_90ea37e1c968a32e61cc012534e9f783}
+
+\begin{CompactList}\small\item\em RX antenna band output str length. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_6cf87dd5d0e49ec1ffc6e2980a17dda6}{
+\#define \hyperlink{front__panel_2main_8h_6cf87dd5d0e49ec1ffc6e2980a17dda6}{ANTENNA\_\-TEXT\_\-SIZE}~10}
+\label{front__panel_2main_8h_6cf87dd5d0e49ec1ffc6e2980a17dda6}
+
+\begin{CompactList}\small\item\em The max size of the antenna output str length. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_23bc80103908e90f0c5ddbd1142f3b93}{
+\#define \hyperlink{front__panel_2main_8h_23bc80103908e90f0c5ddbd1142f3b93}{ANTENNA\_\-OUTPUT\_\-COMB\_\-SIZE}~10}
+\label{front__panel_2main_8h_23bc80103908e90f0c5ddbd1142f3b93}
+
+\begin{CompactList}\small\item\em The max size of the output combination length. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_7670a4e73127c06ec1c0cd2cdc74f737}{
+\#define \hyperlink{front__panel_2main_8h_7670a4e73127c06ec1c0cd2cdc74f737}{BAND\_\-OUTPUT\_\-STR\_\-SIZE}~10}
+\label{front__panel_2main_8h_7670a4e73127c06ec1c0cd2cdc74f737}
+
+\begin{CompactList}\small\item\em The max size of the band output str. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_ce8406b719b9e401ef67d18fc47cab7d}{
+\#define \hyperlink{front__panel_2main_8h_ce8406b719b9e401ef67d18fc47cab7d}{SUB\_\-MENU\_\-ARRAY\_\-STR\_\-SIZE}~10}
+\label{front__panel_2main_8h_ce8406b719b9e401ef67d18fc47cab7d}
+
+\begin{CompactList}\small\item\em The max size of the sub menu array output str size. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_3d6e3e3e7f4dd3690013df5ddde19029}{
+\#define \hyperlink{front__panel_2main_8h_3d6e3e3e7f4dd3690013df5ddde19029}{SUB\_\-MENU\_\-ARRAY\_\-NAME\_\-SIZE}~3}
+\label{front__panel_2main_8h_3d6e3e3e7f4dd3690013df5ddde19029}
+
+\begin{CompactList}\small\item\em The size of the name of a 4-SQ. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_91afd03683ce572620f032008c7ccd3e}{
+\#define \hyperlink{front__panel_2main_8h_91afd03683ce572620f032008c7ccd3e}{OUTPUT\_\-ADDR\_\-DELIMITER}~0xFF}
+\label{front__panel_2main_8h_91afd03683ce572620f032008c7ccd3e}
+
+\begin{CompactList}\small\item\em The delimiter that seperates the outputs from which address they should be sent to. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_5335a7cf4367e984d593763ecb285c9f}{
+\#define \hyperlink{front__panel_2main_8h_5335a7cf4367e984d593763ecb285c9f}{FUNC\_\-STATUS\_\-RXANT}~0}
+\label{front__panel_2main_8h_5335a7cf4367e984d593763ecb285c9f}
+
+\begin{CompactList}\small\item\em Define for function status. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_a0cdd5aafdd18df9459e3eca7028bd2b}{
+\#define \hyperlink{front__panel_2main_8h_a0cdd5aafdd18df9459e3eca7028bd2b}{FUNC\_\-STATUS\_\-ROTATE}~1}
+\label{front__panel_2main_8h_a0cdd5aafdd18df9459e3eca7028bd2b}
+
+\begin{CompactList}\small\item\em Define for function status, that rotation is active. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_f28f24293b0ed3f3dc95d3a5d48954d0}{
+\#define \hyperlink{front__panel_2main_8h_f28f24293b0ed3f3dc95d3a5d48954d0}{FUNC\_\-STATUS\_\-SELECT\_\-ANT\_\-ROTATE}~2}
+\label{front__panel_2main_8h_f28f24293b0ed3f3dc95d3a5d48954d0}
+
+\begin{CompactList}\small\item\em Define for function status, to select which antenna that should be rotated. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_b3407ba86bfaebd131cc3eb6a5aef462}{
+\#define \hyperlink{front__panel_2main_8h_b3407ba86bfaebd131cc3eb6a5aef462}{FUNC\_\-STATUS\_\-SUBMENU}~3}
+\label{front__panel_2main_8h_b3407ba86bfaebd131cc3eb6a5aef462}
+
+\begin{CompactList}\small\item\em Define for function status, to select sub menu. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_ef483d63721984032e12d35502ddb223}{
+\#define \hyperlink{front__panel_2main_8h_ef483d63721984032e12d35502ddb223}{DISPLAY\_\-LEVEL\_\-LOGO}~0}
+\label{front__panel_2main_8h_ef483d63721984032e12d35502ddb223}
+
+\begin{CompactList}\small\item\em Display level openASC logo. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_51cf2799b3a733a050466547798a6a4b}{
+\#define \hyperlink{front__panel_2main_8h_51cf2799b3a733a050466547798a6a4b}{DISPLAY\_\-LEVEL\_\-BAND}~1}
+\label{front__panel_2main_8h_51cf2799b3a733a050466547798a6a4b}
+
+\begin{CompactList}\small\item\em Display level current band. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_68a448ffb4acddc69c4fa75e71545b6c}{
+\#define \hyperlink{front__panel_2main_8h_68a448ffb4acddc69c4fa75e71545b6c}{DISPLAY\_\-LEVEL\_\-SUBMENU}~2}
+\label{front__panel_2main_8h_68a448ffb4acddc69c4fa75e71545b6c}
+
+\begin{CompactList}\small\item\em Display level sub menu. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_3f63a3eafe2a7f9a7f4eab952e939e39}{
+\#define \hyperlink{front__panel_2main_8h_3f63a3eafe2a7f9a7f4eab952e939e39}{CURRENT\_\-DISPLAY\_\-LOGO}~0}
+\label{front__panel_2main_8h_3f63a3eafe2a7f9a7f4eab952e939e39}
+
+\begin{CompactList}\small\item\em Current display is the openASC logo. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_369eb8e282a85b010f95c13f89ed78e6}{
+\#define \hyperlink{front__panel_2main_8h_369eb8e282a85b010f95c13f89ed78e6}{CURRENT\_\-DISPLAY\_\-ANTENNA\_\-INFO}~1}
+\label{front__panel_2main_8h_369eb8e282a85b010f95c13f89ed78e6}
+
+\begin{CompactList}\small\item\em Current display is the antenna information. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_d9c2b0e311750f4061a9c7058940bb6e}{
+\#define \hyperlink{front__panel_2main_8h_d9c2b0e311750f4061a9c7058940bb6e}{CURRENT\_\-DISPLAY\_\-MENU\_\-SYSTEM}~2}
+\label{front__panel_2main_8h_d9c2b0e311750f4061a9c7058940bb6e}
+
+\begin{CompactList}\small\item\em Current display is the menu system. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_08dea390561b6cc7f300368803425516}{
+\#define \hyperlink{front__panel_2main_8h_08dea390561b6cc7f300368803425516}{CURRENT\_\-DISPLAY\_\-SHUTDOWN\_\-VIEW}~3}
+\label{front__panel_2main_8h_08dea390561b6cc7f300368803425516}
+
+\begin{CompactList}\small\item\em Current display is the shutdown in progress view. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_7350eed95a906f7a4dd9df72a25ecc74}{
+\#define \hyperlink{front__panel_2main_8h_7350eed95a906f7a4dd9df72a25ecc74}{CURRENT\_\-DISPLAY\_\-POWERMETER\_\-VIEW}~4}
+\label{front__panel_2main_8h_7350eed95a906f7a4dd9df72a25ecc74}
+
+\begin{CompactList}\small\item\em Current display power meter view. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_4318f641df4d676cd1e6fba1fff0e1f8}{
+\#define \hyperlink{front__panel_2main_8h_4318f641df4d676cd1e6fba1fff0e1f8}{PULSE\_\-SENSOR\_\-RX\_\-ANT\_\-CHANGE\_\-LIMIT}~250}
+\label{front__panel_2main_8h_4318f641df4d676cd1e6fba1fff0e1f8}
+
+\begin{CompactList}\small\item\em The time from when a pulse sensor change occured to the actual change does happen, in ms. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_1818cf4299126fa6a29e925ec387523d}{
+\#define \hyperlink{front__panel_2main_8h_1818cf4299126fa6a29e925ec387523d}{PULSE\_\-SENSOR\_\-SUBMENU\_\-CHANGE\_\-LIMIT}~250}
+\label{front__panel_2main_8h_1818cf4299126fa6a29e925ec387523d}
+
+\begin{CompactList}\small\item\em The time from when a pulse sensor change occured to the actual change does happen, in ms. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_525d9215cd48b0126a8f9f7b663c1828}{
+\#define \hyperlink{front__panel_2main_8h_525d9215cd48b0126a8f9f7b663c1828}{SUBMENU\_\-NONE}~0}
+\label{front__panel_2main_8h_525d9215cd48b0126a8f9f7b663c1828}
+
+\begin{CompactList}\small\item\em Sub menu type NONE. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_96b3f56b0dc9e956330d701f31e8301e}{
+\#define \hyperlink{front__panel_2main_8h_96b3f56b0dc9e956330d701f31e8301e}{SUBMENU\_\-VERT\_\-ARRAY}~1}
+\label{front__panel_2main_8h_96b3f56b0dc9e956330d701f31e8301e}
+
+\begin{CompactList}\small\item\em Sub menu type 4-SQ. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_49d302868e8c20c465b863443802867f}{
+\#define \hyperlink{front__panel_2main_8h_49d302868e8c20c465b863443802867f}{SUBMENU\_\-STACK}~2}
+\label{front__panel_2main_8h_49d302868e8c20c465b863443802867f}
+
+\begin{CompactList}\small\item\em Sub menu type stack. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_510ca8c87f160e835211d0b38729e346}{
+\#define \hyperlink{front__panel_2main_8h_510ca8c87f160e835211d0b38729e346}{VIEW\_\-ANTENNAS}~0}
+\label{front__panel_2main_8h_510ca8c87f160e835211d0b38729e346}
+
+\begin{CompactList}\small\item\em Flag used if we wish to view antennas. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Enumerations}
+\begin{CompactItemize}
+\item 
+enum \hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}{enum\_\-inhibit\_\-state} \{ \hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9445f6ae3a8b4c6ce9ebf589cac8adefb68}{INHIBIT\_\-OK\_\-TO\_\-SEND}, 
+\hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9445a12753849f7b7707c9afe2a901f9fa0}{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND}, 
+\hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9440ae1150bc2e673ccc633c820ec3892bf}{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND\_\-RADIO\_\-TX}
+ \}
+\begin{CompactList}\small\item\em Different inhibit states. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2main_8h_b07bb29d6209caf66d9510c77909473f}{
+void \hyperlink{front__panel_2main_8h_b07bb29d6209caf66d9510c77909473f}{main\_\-update\_\-ptt\_\-status} (void)}
+\label{front__panel_2main_8h_b07bb29d6209caf66d9510c77909473f}
+
+\begin{CompactList}\small\item\em Function which updates the status of the PTT This function will check various sources if it is for example OK to transmit or not. This function also updates the color of the PTT led. It does also set the \hyperlink{front__panel_2main_8c_a8f632e39dd9c50749fa281cad87ddb0}{main\_\-set\_\-inhibit\_\-state()} status which is used at various places to make the sequencing etc safe. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_f2a186dd8c8b709c034fdc89befd9486}{
+void \hyperlink{front__panel_2main_8h_f2a186dd8c8b709c034fdc89befd9486}{main\_\-save\_\-settings} (void)}
+\label{front__panel_2main_8h_f2a186dd8c8b709c034fdc89befd9486}
+
+\begin{CompactList}\small\item\em Save runtime settings etc to the EEPROM. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2main_8h_f496e941a90c0dab928b545c26d30dcc}{event\_\-add\_\-message} (void($\ast$func), unsigned int offset, unsigned char id)
+\item 
+unsigned char \hyperlink{front__panel_2main_8h_f3d6009270cd4a03b5dda580d73bed64}{ext\_\-key\_\-get\_\-assignment} (unsigned char index)
+\item 
+void \hyperlink{front__panel_2main_8h_f857f2bd1ba4cb025156687b9cf13b18}{ext\_\-key\_\-set\_\-assignment} (unsigned char index, unsigned char func)
+\item 
+\hypertarget{front__panel_2main_8h_2c307bda82ec7f710fadd8606b25e15a}{
+void \hyperlink{front__panel_2main_8h_2c307bda82ec7f710fadd8606b25e15a}{main\_\-update\_\-display} (void)}
+\label{front__panel_2main_8h_2c307bda82ec7f710fadd8606b25e15a}
+
+\begin{CompactList}\small\item\em Sets the flag that the display should be updated. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_1b624796c1900201281f3773685abe2d}{
+void \textbf{check\_\-knob\_\-function} (void)}
+\label{front__panel_2main_8h_1b624796c1900201281f3773685abe2d}
+
+\item 
+\hypertarget{front__panel_2main_8h_79c949b6a0edc880ea71fe05b28967ab}{
+void \hyperlink{front__panel_2main_8h_79c949b6a0edc880ea71fe05b28967ab}{set\_\-tx\_\-ant\_\-leds} (void)}
+\label{front__panel_2main_8h_79c949b6a0edc880ea71fe05b28967ab}
+
+\begin{CompactList}\small\item\em Set the TX antenna leds according to the status of status.selected\_\-ant. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2main_8h_fd9ab4725abe99a112bd35bbba063389}{set\_\-knob\_\-function} (unsigned char function)
+\begin{CompactList}\small\item\em Set the rotary knob function. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_f227e695e9a635cfb68434663e8f5edb}{
+void \hyperlink{front__panel_2main_8h_f227e695e9a635cfb68434663e8f5edb}{shutdown\_\-device} (void)}
+\label{front__panel_2main_8h_f227e695e9a635cfb68434663e8f5edb}
+
+\begin{CompactList}\small\item\em Send a message to the motherboard that the openASC box should be shut off. Will deactivate the power supply relay. \item\end{CompactList}\item 
+enum \hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}{enum\_\-inhibit\_\-state} \hyperlink{front__panel_2main_8h_33e0e0ca61cfd86443ceb19d5c7ce50b}{main\_\-get\_\-inhibit\_\-state} (void)
+\begin{CompactList}\small\item\em Get the inhibit state This function is used to get the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. \item\end{CompactList}\item 
+void \hyperlink{front__panel_2main_8h_a8f632e39dd9c50749fa281cad87ddb0}{main\_\-set\_\-inhibit\_\-state} (enum \hyperlink{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}{enum\_\-inhibit\_\-state} state)
+\begin{CompactList}\small\item\em Set the inhibit state This function is used to set the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_c03f611309a40dc9133d7164da7308e7}{
+void \hyperlink{front__panel_2main_8h_c03f611309a40dc9133d7164da7308e7}{send\_\-ping} (void)}
+\label{front__panel_2main_8h_c03f611309a40dc9133d7164da7308e7}
+
+\begin{CompactList}\small\item\em Send a ping message out on the bus. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{front__panel_2main_8h_44180c9bab74233e1e4e36be5bcf2fe1}{
+\hyperlink{structstruct__status}{struct\_\-status} \hyperlink{front__panel_2main_8h_44180c9bab74233e1e4e36be5bcf2fe1}{status}}
+\label{front__panel_2main_8h_44180c9bab74233e1e4e36be5bcf2fe1}
+
+\begin{CompactList}\small\item\em Contains different statuses of buttons etc. \item\end{CompactList}\item 
+\hypertarget{front__panel_2main_8h_74a522f526f7b89b1db24714c80ecdcf}{
+\hyperlink{structstruct__runtime__settings}{struct\_\-runtime\_\-settings} \hyperlink{front__panel_2main_8h_74a522f526f7b89b1db24714c80ecdcf}{runtime\_\-settings}}
+\label{front__panel_2main_8h_74a522f526f7b89b1db24714c80ecdcf}
+
+\begin{CompactList}\small\item\em Contains settings which will be saved and restored each time the box is turned on/off. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Main file of the front panel. 
+
+
+
+Definition in file \hyperlink{front__panel_2main_8h-source}{main.h}.
+
+\subsection{Define Documentation}
+\hypertarget{front__panel_2main_8h_8a0bc380e990fe6b22c4dafcd477d7ea}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!RADIO\_\-RX\_\-DATA\_\-TIMEOUT@{RADIO\_\-RX\_\-DATA\_\-TIMEOUT}}
+\index{RADIO\_\-RX\_\-DATA\_\-TIMEOUT@{RADIO\_\-RX\_\-DATA\_\-TIMEOUT}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{RADIO\_\-RX\_\-DATA\_\-TIMEOUT}]{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-RX\_\-DATA\_\-TIMEOUT~10}}
+\label{front__panel_2main_8h_8a0bc380e990fe6b22c4dafcd477d7ea}
+
+
+The limit (in ms) of the radio communication timeout. If this limit is reached the radio rx buffers will be cleared 
+
+Definition at line 58 of file main.h.
+
+Referenced by ISR().
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!enum\_\-inhibit\_\-state@{enum\_\-inhibit\_\-state}}
+\index{enum\_\-inhibit\_\-state@{enum\_\-inhibit\_\-state}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{enum\_\-inhibit\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf enum\_\-inhibit\_\-state}}}
+\label{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b944}
+
+
+Different inhibit states. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{INHIBIT\_\-OK\_\-TO\_\-SEND@{INHIBIT\_\-OK\_\-TO\_\-SEND}!front\_\-panel/main.h@{front\_\-panel/main.h}}\index{front\_\-panel/main.h@{front\_\-panel/main.h}!INHIBIT\_\-OK\_\-TO\_\-SEND@{INHIBIT\_\-OK\_\-TO\_\-SEND}}\item[{\em 
+\hypertarget{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9445f6ae3a8b4c6ce9ebf589cac8adefb68}{
+INHIBIT\_\-OK\_\-TO\_\-SEND}
+\label{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9445f6ae3a8b4c6ce9ebf589cac8adefb68}
+}]Inhibit state, OK to start a transmission. \index{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND@{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND}!front\_\-panel/main.h@{front\_\-panel/main.h}}\index{front\_\-panel/main.h@{front\_\-panel/main.h}!INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND@{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND}}\item[{\em 
+\hypertarget{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9445a12753849f7b7707c9afe2a901f9fa0}{
+INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND}
+\label{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9445a12753849f7b7707c9afe2a901f9fa0}
+}]Inhibit state, NOT OK to start a transmission. \index{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND\_\-RADIO\_\-TX@{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND\_\-RADIO\_\-TX}!front\_\-panel/main.h@{front\_\-panel/main.h}}\index{front\_\-panel/main.h@{front\_\-panel/main.h}!INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND\_\-RADIO\_\-TX@{INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND\_\-RADIO\_\-TX}}\item[{\em 
+\hypertarget{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9440ae1150bc2e673ccc633c820ec3892bf}{
+INHIBIT\_\-NOT\_\-OK\_\-TO\_\-SEND\_\-RADIO\_\-TX}
+\label{front__panel_2main_8h_134c1d1af939afa5cdbca4c5cc75b9440ae1150bc2e673ccc633c820ec3892bf}
+}]Inhibit state, NOT OK to start a transmission, Radio is in TX. \end{description}
+\end{Desc}
+
+
+
+Definition at line 187 of file main.h.
+
+\subsection{Function Documentation}
+\hypertarget{front__panel_2main_8h_f496e941a90c0dab928b545c26d30dcc}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!event\_\-add\_\-message@{event\_\-add\_\-message}}
+\index{event\_\-add\_\-message@{event\_\-add\_\-message}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{event\_\-add\_\-message}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-add\_\-message (void $\ast$ {\em func}, \/  unsigned int {\em offset}, \/  unsigned char {\em id})}}
+\label{front__panel_2main_8h_f496e941a90c0dab928b545c26d30dcc}
+
+
+Add a message to the event queue which will be run at the correct time \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em func}]A function pointer to the function we want to run \item[{\em offset}]the time in ms when we want our function to be run \item[{\em id}]Which type of event this is \end{description}
+\end{Desc}
+
+
+Definition at line 115 of file main.c.
+
+References counter\_\-event\_\-timer, event\_\-in\_\-queue(), and event\_\-queue\_\-add().
+
+Referenced by display\_\-update\_\-screensaver(), event\_\-internal\_\-comm\_\-parse\_\-message(), sequencer\_\-computer\_\-rts\_\-activated(), sequencer\_\-computer\_\-rts\_\-deactivated(), sequencer\_\-footsw\_\-pressed(), and sequencer\_\-footsw\_\-released().\hypertarget{front__panel_2main_8h_f3d6009270cd4a03b5dda580d73bed64}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!ext\_\-key\_\-get\_\-assignment@{ext\_\-key\_\-get\_\-assignment}}
+\index{ext\_\-key\_\-get\_\-assignment@{ext\_\-key\_\-get\_\-assignment}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{ext\_\-key\_\-get\_\-assignment}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char ext\_\-key\_\-get\_\-assignment (unsigned char {\em index})}}
+\label{front__panel_2main_8h_f3d6009270cd4a03b5dda580d73bed64}
+
+
+Get the key assignment index \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of which task we wish to check \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The current task index, can be found in \hyperlink{event__handler_8h}{event\_\-handler.h} \end{Desc}
+
+
+Definition at line 131 of file main.c.
+
+References struct\_\-setting::ext\_\-key\_\-assignments.
+
+Referenced by event\_\-handler\_\-process\_\-ps2().\hypertarget{front__panel_2main_8h_f857f2bd1ba4cb025156687b9cf13b18}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!ext\_\-key\_\-set\_\-assignment@{ext\_\-key\_\-set\_\-assignment}}
+\index{ext\_\-key\_\-set\_\-assignment@{ext\_\-key\_\-set\_\-assignment}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{ext\_\-key\_\-set\_\-assignment}]{\setlength{\rightskip}{0pt plus 5cm}void ext\_\-key\_\-set\_\-assignment (unsigned char {\em index}, \/  unsigned char {\em func})}}
+\label{front__panel_2main_8h_f857f2bd1ba4cb025156687b9cf13b18}
+
+
+Set the key assignment task \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em index}]The index of which task we wish to set \item[{\em func}]The function we wish to assign to the assignment index \end{description}
+\end{Desc}
+
+
+Definition at line 138 of file main.c.
+
+References struct\_\-setting::ext\_\-key\_\-assignments.\hypertarget{front__panel_2main_8h_33e0e0ca61cfd86443ceb19d5c7ce50b}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!main\_\-get\_\-inhibit\_\-state@{main\_\-get\_\-inhibit\_\-state}}
+\index{main\_\-get\_\-inhibit\_\-state@{main\_\-get\_\-inhibit\_\-state}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{main\_\-get\_\-inhibit\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf enum\_\-inhibit\_\-state} main\_\-get\_\-inhibit\_\-state (void)}}
+\label{front__panel_2main_8h_33e0e0ca61cfd86443ceb19d5c7ce50b}
+
+
+Get the inhibit state This function is used to get the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. 
+
+\begin{Desc}
+\item[Returns:]The current inhibit status \end{Desc}
+
+
+Definition at line 280 of file main.c.
+
+References struct\_\-runtime\_\-settings::inhibit\_\-state, and runtime\_\-settings.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), event\_\-pulse\_\-sensor\_\-down(), event\_\-pulse\_\-sensor\_\-up(), event\_\-tx\_\-button1\_\-pressed(), event\_\-tx\_\-button2\_\-pressed(), event\_\-tx\_\-button3\_\-pressed(), event\_\-tx\_\-button4\_\-pressed(), radio\_\-poll\_\-status(), sequencer\_\-computer\_\-rts\_\-activated(), and sequencer\_\-footsw\_\-pressed().\hypertarget{front__panel_2main_8h_a8f632e39dd9c50749fa281cad87ddb0}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!main\_\-set\_\-inhibit\_\-state@{main\_\-set\_\-inhibit\_\-state}}
+\index{main\_\-set\_\-inhibit\_\-state@{main\_\-set\_\-inhibit\_\-state}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{main\_\-set\_\-inhibit\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}void main\_\-set\_\-inhibit\_\-state (enum {\bf enum\_\-inhibit\_\-state} {\em state})}}
+\label{front__panel_2main_8h_a8f632e39dd9c50749fa281cad87ddb0}
+
+
+Set the inhibit state This function is used to set the inhibit state, which is used to check at various places if it is safe for example to transmit, change band or change antennas. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em state}]The state we wish to set the inhibit status to \end{description}
+\end{Desc}
+
+
+Definition at line 272 of file main.c.
+
+References struct\_\-runtime\_\-settings::inhibit\_\-state, and runtime\_\-settings.
+
+Referenced by main(), and main\_\-update\_\-ptt\_\-status().\hypertarget{front__panel_2main_8h_fd9ab4725abe99a112bd35bbba063389}{
+\index{front\_\-panel/main.h@{front\_\-panel/main.h}!set\_\-knob\_\-function@{set\_\-knob\_\-function}}
+\index{set\_\-knob\_\-function@{set\_\-knob\_\-function}!front_panel/main.h@{front\_\-panel/main.h}}
+\subsubsection[{set\_\-knob\_\-function}]{\setlength{\rightskip}{0pt plus 5cm}void set\_\-knob\_\-function (unsigned char {\em function})}}
+\label{front__panel_2main_8h_fd9ab4725abe99a112bd35bbba063389}
+
+
+Set the rotary knob function. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em function}]Which type of action should occur when the knob is turned \end{description}
+\end{Desc}
+
+
+Definition at line 178 of file main.c.
+
+References struct\_\-runtime\_\-settings::band\_\-change\_\-mode, BAND\_\-CHANGE\_\-MODE\_\-MANUAL, struct\_\-status::knob\_\-function, KNOB\_\-FUNCTION\_\-AUTO, KNOB\_\-FUNCTION\_\-NONE, KNOB\_\-FUNCTION\_\-SELECT\_\-BAND, runtime\_\-settings, and status.
+
+Referenced by band\_\-ctrl\_\-change\_\-band(), event\_\-poll\_\-buttons(), event\_\-rotate\_\-button\_\-pressed(), event\_\-rxant\_\-button\_\-pressed(), event\_\-sub\_\-button\_\-pressed(), main(), and menu\_\-action().

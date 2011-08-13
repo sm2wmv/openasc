@@ -1,0 +1,150 @@
+\hypertarget{internal__comm__tx__queue_8c}{
+\section{internal\_\-comm\_\-tx\_\-queue.c File Reference}
+\label{internal__comm__tx__queue_8c}\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+}
+The internal communication TX QUEUE.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include \char`\"{}internal\_\-comm\_\-tx\_\-queue.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{internal__comm__tx__queue_8c_4afc5830f8eda79025bbfbcd2e04252e}{int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init} (void)
+\item 
+void \hyperlink{internal__comm__tx__queue_8c_503465c565d12ed3b7a241ddd5a55b7a}{int\_\-comm\_\-tx\_\-queue\_\-add} (\hyperlink{structUC__MESSAGE}{UC\_\-MESSAGE} message)
+\begin{CompactList}\small\item\em Insert a message into the TX queue (FIFO). \item\end{CompactList}\item 
+\hyperlink{structUC__MESSAGE}{UC\_\-MESSAGE} \hyperlink{internal__comm__tx__queue_8c_c41e66c3bc956e9ed2c1de27b0310dc8}{int\_\-comm\_\-tx\_\-queue\_\-get} (void)
+\begin{CompactList}\small\item\em Retrieve the first message from the FIFO TX queue. \item\end{CompactList}\item 
+void \hyperlink{internal__comm__tx__queue_8c_ffbdd7268965482ee52874e3686a832c}{int\_\-comm\_\-tx\_\-queue\_\-drop} (void)
+\item 
+void \hyperlink{internal__comm__tx__queue_8c_44348cbc6a3f482a6f455c016eca08b8}{int\_\-comm\_\-tx\_\-queue\_\-dropall} (void)
+\begin{CompactList}\small\item\em Erase all content in the TX queue. \item\end{CompactList}\item 
+unsigned char \hyperlink{internal__comm__tx__queue_8c_c80c9a21bbeba9b67ed0ddc48e204889}{int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty} (void)
+\begin{CompactList}\small\item\em Check if the queue is empty. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{internal__comm__tx__queue_8c_60def323242660bc882cda44cdffe27e}{
+\hyperlink{structtx__linked__list}{int\_\-comm\_\-tx\_\-queue\_\-struct} \hyperlink{internal__comm__tx__queue_8c_60def323242660bc882cda44cdffe27e}{int\_\-comm\_\-tx\_\-queue}}
+\label{internal__comm__tx__queue_8c_60def323242660bc882cda44cdffe27e}
+
+\begin{CompactList}\small\item\em The TX queue. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The internal communication TX QUEUE. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "internal_comm_tx_queue.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{internal__comm__tx__queue_8c-source}{internal\_\-comm\_\-tx\_\-queue.c}.
+
+\subsection{Function Documentation}
+\hypertarget{internal__comm__tx__queue_8c_4afc5830f8eda79025bbfbcd2e04252e}{
+\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}!int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init@{int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init}}
+\index{int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init@{int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init}!internal_comm_tx_queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+\subsubsection[{int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void int\_\-comm\_\-int\_\-comm\_\-tx\_\-queue\_\-init (void)}}
+\label{internal__comm__tx__queue_8c_4afc5830f8eda79025bbfbcd2e04252e}
+
+
+Initialize the internal communication TX queue 
+
+Definition at line 35 of file internal\_\-comm\_\-tx\_\-queue.c.
+
+References tx\_\-linked\_\-list::first, and tx\_\-linked\_\-list::last.\hypertarget{internal__comm__tx__queue_8c_503465c565d12ed3b7a241ddd5a55b7a}{
+\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}!int\_\-comm\_\-tx\_\-queue\_\-add@{int\_\-comm\_\-tx\_\-queue\_\-add}}
+\index{int\_\-comm\_\-tx\_\-queue\_\-add@{int\_\-comm\_\-tx\_\-queue\_\-add}!internal_comm_tx_queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+\subsubsection[{int\_\-comm\_\-tx\_\-queue\_\-add}]{\setlength{\rightskip}{0pt plus 5cm}void int\_\-comm\_\-tx\_\-queue\_\-add ({\bf UC\_\-MESSAGE} {\em message})}}
+\label{internal__comm__tx__queue_8c_503465c565d12ed3b7a241ddd5a55b7a}
+
+
+Insert a message into the TX queue (FIFO). 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em message}]- The message that should be inserted to the queue \end{description}
+\end{Desc}
+
+
+Definition at line 43 of file internal\_\-comm\_\-tx\_\-queue.c.
+
+References tx\_\-linked\_\-list::first, tx\_\-linked\_\-list::last, and tx\_\-linked\_\-list::message.
+
+Referenced by internal\_\-comm\_\-add\_\-tx\_\-message().\hypertarget{internal__comm__tx__queue_8c_ffbdd7268965482ee52874e3686a832c}{
+\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}!int\_\-comm\_\-tx\_\-queue\_\-drop@{int\_\-comm\_\-tx\_\-queue\_\-drop}}
+\index{int\_\-comm\_\-tx\_\-queue\_\-drop@{int\_\-comm\_\-tx\_\-queue\_\-drop}!internal_comm_tx_queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+\subsubsection[{int\_\-comm\_\-tx\_\-queue\_\-drop}]{\setlength{\rightskip}{0pt plus 5cm}void int\_\-comm\_\-tx\_\-queue\_\-drop (void)}}
+\label{internal__comm__tx__queue_8c_ffbdd7268965482ee52874e3686a832c}
+
+
+Drops the first message in the queue Frees up the memory space aswell. 
+
+Definition at line 66 of file internal\_\-comm\_\-tx\_\-queue.c.
+
+References tx\_\-linked\_\-list::first.
+
+Referenced by ISR().\hypertarget{internal__comm__tx__queue_8c_44348cbc6a3f482a6f455c016eca08b8}{
+\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}!int\_\-comm\_\-tx\_\-queue\_\-dropall@{int\_\-comm\_\-tx\_\-queue\_\-dropall}}
+\index{int\_\-comm\_\-tx\_\-queue\_\-dropall@{int\_\-comm\_\-tx\_\-queue\_\-dropall}!internal_comm_tx_queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+\subsubsection[{int\_\-comm\_\-tx\_\-queue\_\-dropall}]{\setlength{\rightskip}{0pt plus 5cm}void int\_\-comm\_\-tx\_\-queue\_\-dropall (void)}}
+\label{internal__comm__tx__queue_8c_44348cbc6a3f482a6f455c016eca08b8}
+
+
+Erase all content in the TX queue. 
+
+\begin{Desc}
+\item[Returns:]The number of items that were cleared \end{Desc}
+
+
+Definition at line 76 of file internal\_\-comm\_\-tx\_\-queue.c.
+
+References tx\_\-linked\_\-list::first, and tx\_\-linked\_\-list::last.
+
+Referenced by internal\_\-comm\_\-init().\hypertarget{internal__comm__tx__queue_8c_c41e66c3bc956e9ed2c1de27b0310dc8}{
+\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}!int\_\-comm\_\-tx\_\-queue\_\-get@{int\_\-comm\_\-tx\_\-queue\_\-get}}
+\index{int\_\-comm\_\-tx\_\-queue\_\-get@{int\_\-comm\_\-tx\_\-queue\_\-get}!internal_comm_tx_queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+\subsubsection[{int\_\-comm\_\-tx\_\-queue\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}{\bf UC\_\-MESSAGE} int\_\-comm\_\-tx\_\-queue\_\-get (void)}}
+\label{internal__comm__tx__queue_8c_c41e66c3bc956e9ed2c1de27b0310dc8}
+
+
+Retrieve the first message from the FIFO TX queue. 
+
+\begin{Desc}
+\item[Returns:]The first message in the queue \end{Desc}
+
+
+Definition at line 59 of file internal\_\-comm\_\-tx\_\-queue.c.
+
+References tx\_\-linked\_\-list::first, and tx\_\-linked\_\-list::message.
+
+Referenced by internal\_\-comm\_\-poll\_\-tx\_\-queue(), and internal\_\-comm\_\-resend().\hypertarget{internal__comm__tx__queue_8c_c80c9a21bbeba9b67ed0ddc48e204889}{
+\index{internal\_\-comm\_\-tx\_\-queue.c@{internal\_\-comm\_\-tx\_\-queue.c}!int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty@{int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty}}
+\index{int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty@{int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty}!internal_comm_tx_queue.c@{internal\_\-comm\_\-tx\_\-queue.c}}
+\subsubsection[{int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char int\_\-comm\_\-tx\_\-queue\_\-is\_\-empty (void)}}
+\label{internal__comm__tx__queue_8c_c80c9a21bbeba9b67ed0ddc48e204889}
+
+
+Check if the queue is empty. 
+
+\begin{Desc}
+\item[Returns:]1 if the queue is empty and 0 otherwise \end{Desc}
+
+
+Definition at line 84 of file internal\_\-comm\_\-tx\_\-queue.c.
+
+References tx\_\-linked\_\-list::first, and tx\_\-linked\_\-list::last.
+
+Referenced by internal\_\-comm\_\-poll\_\-tx\_\-queue().
