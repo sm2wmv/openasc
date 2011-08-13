@@ -780,7 +780,7 @@ int main(void){
 			radio_process_tasks();
 		}
 
-    //Check that we aren't on the same band as another box every 100 ms
+    //Check that we aren't on the same band as another box every 250 ms
     if ((counter_compare0 % 250) == 0) {
       if (main_band_change_ok(status.selected_band) == 0) {
         error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
