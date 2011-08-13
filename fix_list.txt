@@ -1,9 +1,0 @@
-Most important implementations
-------------------------------
-v Implement so that PTT is locked until we know all antennas have been switched properly
-v Band interlock, if a band that is in use is tried to be activated, we enter no band selected
-v Implement so that certain errors can lock the PTT
-v Implement high VSWR error
-* Fix the TX active control option on the driver cards
-* Finish the ping implementation!
-
