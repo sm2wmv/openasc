@@ -1,11 +1,11 @@
-/*! \file front_panel/display.h
+/*! \file front_panel/display_handler.h
  *  \ingroup front_panel_group 
- *  \brief The serial interface to configure the device and control it
+ *  \brief Device handler
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-01-25
- *  \code #include "front_panel/display.h" \endcode
+ *  \date 2011-08-14
+ *  \code #include "front_panel/display_handler.h" \endcode
  */
-//    Copyright (C) 2008  Mikael Larsmark, SM2WMV
+//    Copyright (C) 2011  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _DISPLAY_H_
-#define _DISPLAY_H_
+#ifndef _DISPLAY_HANDLER_H_
+#define _DISPLAY_HANDLER_H_
 
 
 #include "glcd.h"
@@ -112,32 +112,69 @@
 
 /************************************************/
 
-#define DISPLAY_UPDATE_ALL			1
-#define DISPLAY_UPDATE_ROTATOR	2
+#define DISPLAY_HANDLER_VIEW_OPENASC_LOGO     0
+#define DISPLAY_HANDLER_VIEW_ANTENNAS         1
+#define DISPLAY_HANDLER_VIEW_POWERMETER       2
+#define DISPLAY_HANDLER_VIEW_SUBMENU          3
+#define DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR  4
+#define DISPLAY_HANDLER_VIEW_MENU             5
+#define DISPLAY_HANDLER_VIEW_SHUTDOWN         6
+#define DISPLAY_HANDLER_VIEW_CONFIG_SPLASH    7
+#define DISPLAY_HANDLER_VIEW_SCREENSAVER      8
 
-void display_disable_screensaver(void);
-void display_enable_screensaver(void);
-void display_setup_view(void);
-void display_shutdown_view(void);
-void display_antennas(unsigned char band);
-void display_rotator_directions(unsigned char band);
-void display_radio_freq(unsigned char length, char *freq);
-void display_view(unsigned char mode);
-void display_invert_antenna(unsigned char ant_index);
-void display_update_screensaver(void);
-unsigned char display_screensaver_mode(void);
-void display_set_backlight(unsigned char value);
-void display_update(unsigned char band, unsigned char antenna);
-void display_show_rx_ant(unsigned char ant_index);
-unsigned char display_calculate_width(char *str, unsigned char font, unsigned char length);
-void display_show_set_heading(unsigned int rotator_heading, unsigned char view_360_deg);
-void display_text_center_adjust(unsigned char y,char *str, unsigned char length, unsigned char font);
+typedef struct {
+  unsigned int new_display;
+  unsigned int active_display;
+  unsigned int prev_display;
+  unsigned char force_repaint;
+  
+  unsigned int counter_powermeter_update_text;
+  unsigned int counter_powermeter_update_bargraph;
+  
+  unsigned int powermeter_bargraph_update_rate;
+  unsigned int powermeter_text_update_rate;
+  
+  double powermeter_fwd_scale_val;
+  double powermeter_ref_scale_val;
+  
+  unsigned char screensaver_mode;
+} display_handler_status_struct;
 
-void display_update_radio_freq(void);
-void display_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type);
+void display_handler_text_center_adjust(unsigned char y,char *str, unsigned char length, unsigned char font);
+unsigned char display_handler_calculate_width(char *str, unsigned char font, unsigned char length);
+void display_handler_text_right_adjust(unsigned char x, unsigned char y,char *str, unsigned char length, unsigned char font);
 
-void display_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_power);
-void display_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr);
-void display_show_powermeter(void);
+void display_handler_show_bargraph_fwd(unsigned char percent);
+void display_handler_show_bargraph_ref(unsigned char percent);
+
+void display_handler_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_power);
+void display_handler_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr);
+void display_handler_show_powermeter(void);
+
+void display_handler_new_view_powermeter(unsigned int bargraph_update_rate, unsigned int text_update_rate, double fwd_scale_val, double ref_scale_val);
+void display_handler_new_view(unsigned int display_view);
+void display_handler_prev_view(void);
+
+void display_handler_tick(void);
+
+void display_handler_setup_view(void);
+void display_handler_shutdown_view(void);
+
+void display_handler_antennas(unsigned char band);
+void display_handler_show_rx_ant(unsigned char ant_index);
+void display_handler_update_antennas(unsigned char band, unsigned char antenna);
+void display_handler_rotator_directions(unsigned char band);
+void display_handler_show_sub_menu(unsigned char ant_index, unsigned char sub_menu_type);
+void display_handler_repaint(void);
+void display_handler_show_set_heading(unsigned int rotator_heading);
+
+unsigned int display_handler_get_view(void);
+
+void display_handler_disable_screensaver(void);
+unsigned char display_handler_screensaver_mode(void);
+void display_handler_enable_screensaver(void);
+void display_handler_update_screensaver(void);
+
+void display_handler_set_backlight(unsigned char value);
 
 #endif

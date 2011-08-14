@@ -185,8 +185,6 @@ void event_handler_process_ps2(unsigned char key_code);
 void event_pulse_sensor_up(void);
 void event_pulse_sensor_down(void);
 
-void event_update_display(void);
-
 void event_poll_buttons(void);
 void event_poll_ext_device(void);
 void event_bus_parse_message(void);

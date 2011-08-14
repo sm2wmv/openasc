@@ -31,6 +31,7 @@
 #include "glcd.h"
 #include "main.h"
 #include "errors.h"
+#include "display_handler.h"
 
 #define POWERMETER_FLAG_ACTIVE 					0
 
@@ -70,35 +71,16 @@ void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update
 /*! \param state If this is set to 1 we will activate the powermeter, if set to 0 we will deactivate it */
 void powermeter_set_active(unsigned char state) {
 	if (state != 0) {
-		powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
-		
-		glcd_clear();
-		
-    status.prev_display = status.current_display;
-    status.current_display = CURRENT_DISPLAY_POWERMETER_VIEW;
- 
-    display_show_powermeter();
-		glcd_update_all();
+    if ((status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) == 0) {
+      powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
+      display_handler_new_view_powermeter(powermeter_status.bargraph_update_rate, powermeter_status.text_update_rate, fwd_scale_value, ref_scale_value);
+    }
 	}
 	else {
-		powermeter_flags &= ~(1<<POWERMETER_FLAG_ACTIVE);
-		
-		glcd_clear();
-    
-    //Fixes so that the power meter display never gets "stuck" visible
-    if (status.current_display != status.prev_display) {
-      status.current_display = status.prev_display;
-      status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
+    if ((status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) == 0) {
+      powermeter_flags &= ~(1<<POWERMETER_FLAG_ACTIVE);
+      display_handler_prev_view();
     }
-    else {
-        status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-        status.prev_display = CURRENT_DISPLAY_POWERMETER_VIEW;
-    }
-    
-  /*  printf("REL curr_disp: %i\n",status.current_display);
-    printf("REL Prev_disp: %i\n",status.prev_display);    
-    */
-		main_update_display();
 	}
 }
 
@@ -163,27 +145,53 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	pickup_type = type;
 }
 
-/*! \brief This function should be called as much as possible and it does all the updates, such checking for new data, updating display etc */
-void powermeter_process_tasks(void) {
-	if (powermeter_flags & (1<<POWERMETER_FLAG_ACTIVE)) {
-		if (counter_powermeter_update_text >= powermeter_status.text_update_rate) {
-			display_show_powermeter_text(powermeter_status.curr_fwd_pwr_value,powermeter_status.curr_ref_pwr_value,powermeter_status.curr_vswr_value);
-			
-			glcd_update_all();
-			
-			counter_powermeter_update_text = 0;
-		}
-
-		if (counter_powermeter_update_bargraph >= powermeter_status.bargraph_update_rate) {
-			display_show_powermeter_bargraph(powermeter_status.curr_fwd_pwr_value*fwd_scale_value, powermeter_status.curr_ref_pwr_value*ref_scale_value);
-			
-			counter_powermeter_update_bargraph = 0;
-		}
-	}
-}
-
 /*! \brief This function should be called at 1 ms intervals. It is to keep track of update rates etc for the display */
 void powermeter_1ms_tick(void) {
 	counter_powermeter_update_text++;
 	counter_powermeter_update_bargraph++;
+}
+
+/*! \brief Get the update rate of the text
+ *  \return The update rate in ms */
+unsigned int powermeter_get_text_update_rate(void) {
+  return(powermeter_status.text_update_rate);
+}
+
+/*! \brief Get the update rate of the bargraph
+ *  \return The update rate in ms */
+unsigned int powermeter_get_bargraph_update_rate(void) {
+  return(powermeter_status.bargraph_update_rate);
+}
+
+/*! \brief Get the current forward power value
+ *  \return The forward power in watts */
+unsigned int powermeter_get_fwd_power(void) {
+  return(powermeter_status.curr_fwd_pwr_value);
+}
+
+/*! \brief Get the current reflected power value
+ *  \return The reflected power in watts */
+unsigned int powermeter_get_ref_power(void) {
+  return(powermeter_status.curr_ref_pwr_value);
+}
+
+/*! \brief Get the current VSWR, 253 means 2.53:1
+ *  \return The VSWR as an int */
+unsigned int powermeter_get_vswr(void) {
+  return(powermeter_status.curr_vswr_value); 
+}
+
+double powermeter_get_fwd_scale_val(void) {
+  return(fwd_scale_value);
+}
+
+double powermeter_get_ref_scale_val(void) {
+  return(ref_scale_value);
+}
+
+unsigned char powermeter_is_active(void) {
+  if (powermeter_flags & (1<<POWERMETER_FLAG_ACTIVE))
+    return(1);
+
+  return(0);
 }

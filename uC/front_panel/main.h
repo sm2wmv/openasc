@@ -155,6 +155,10 @@
 #define FUNC_STATUS_SELECT_ANT_ROTATE	2
 //! Define for function status, to select sub menu
 #define FUNC_STATUS_SUBMENU						3
+//! Define for function status, menu is active
+#define FUNC_STATUS_MENU_ACTIVE       4
+//! Shutdown in progress
+#define FUNC_STATUS_SHUTDOWN_IN_PROGRESS  5
 
 //! Display level openASC logo
 #define DISPLAY_LEVEL_LOGO		0
@@ -198,6 +202,8 @@
 //! How long the PTT is locked after a sub menu change (in ms)
 #define SUBMENU_CHANGE_PTT_LOCK_TIME 300
 
+//! Tick interval for the display handler update routine (in ms)
+#define DISPLAY_HANDLER_TICK_INTERVAL   10
 
 /****************************************************************/
 
@@ -273,13 +279,6 @@ typedef struct {
 	//! The status of different functions, like rx ant etc, see defines above
 	unsigned char function_status;
 	
-	/*! 0 = openASC logo, 1 = curr band level, 2 = sub menu */
-	unsigned char current_display_level;
-	/*! 0 = openASC logo, 1 = antenna info, 2 = menu system, 3 = shutdown view */
-	unsigned char current_display;
-	/*! Previous display */
-	unsigned char prev_display;
-	
 	/*! The currently selected RX antenna */
 	unsigned char selected_rx_antenna;
 	/*! Knob function */
@@ -341,8 +340,6 @@ void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned char ext_key_get_assignment(unsigned char index);
 void ext_key_set_assignment(unsigned char index, unsigned char func);
 		
-void main_update_display(void);
-
 void check_knob_function(void);
 void set_tx_ant_leds(void);
 void set_knob_function(unsigned char function);

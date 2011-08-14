@@ -35,6 +35,7 @@
 #include "errors.h"
 #include "event_handler.h"
 #include "led_control.h"
+#include "display_handler.h"
 
 //! Sets the intend from the left
 #define MENU_OPTION_LEFT_POS 13
@@ -87,8 +88,8 @@ void menu_show_text(struct_menu_text menu_text) {
 		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
 	
 		//Draw a seperation line between the options and the header
-		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
+		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 		
 		unsigned char count = 0;
 		
@@ -103,8 +104,8 @@ void menu_show_text(struct_menu_text menu_text) {
 		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
 		
 		//Draw a seperation line between the options and the header
-		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
+		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 		
     char temp[30];
     sprintf(temp,"Firmware: %s",FIRMWARE_REV);
@@ -118,8 +119,8 @@ void menu_show_text(struct_menu_text menu_text) {
 		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
 		
 		//Draw a seperation line between the options and the header
-		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-		glcd_line(0,display_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
+		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 	
 		if (menu_text.option_type == MENU_OPTION_TYPE_NORMAL) {
 			//Print the different options, mark the current selected with an inverted background
@@ -130,7 +131,7 @@ void menu_show_text(struct_menu_text menu_text) {
 					glcd_text(0,18+i*10,FONT_SEVEN_DOT,"->",2);
 				
 					if (current_menu_level == 1) {
-						glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(menu_text.options[i].text,FONT_SEVEN_DOT,strlen(menu_text.options[i].text))+MENU_OPTION_LEFT_POS,18+i*10-1,18+i*10+7);
+						glcd_invert_area(MENU_OPTION_LEFT_POS,display_handler_calculate_width(menu_text.options[i].text,FONT_SEVEN_DOT,strlen(menu_text.options[i].text))+MENU_OPTION_LEFT_POS,18+i*10-1,18+i*10+7);
 					}
 				}
 			}
@@ -143,7 +144,7 @@ void menu_show_text(struct_menu_text menu_text) {
 				glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
 				
 				if (current_menu_level == 1)
-					glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
+					glcd_invert_area(MENU_OPTION_LEFT_POS,display_handler_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
 			}
 			else if (menu_text.pos == MENU_POS_SHOW_POWERMETER_ADDR) {
 				char temp[14];
@@ -155,7 +156,7 @@ void menu_show_text(struct_menu_text menu_text) {
 				glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
 				
 				if (current_menu_level == 1)
-					glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);				
+					glcd_invert_area(MENU_OPTION_LEFT_POS,display_handler_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);				
 			}
 			else if (menu_text.pos == MENU_POS_ANT_STATUS) {
         char temp[20];
@@ -165,7 +166,7 @@ void menu_show_text(struct_menu_text menu_text) {
         glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
         
         if (current_menu_level == 1)
-          glcd_invert_area(MENU_OPTION_LEFT_POS,display_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
+          glcd_invert_area(MENU_OPTION_LEFT_POS,display_handler_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
         
         if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0))
           sprintf(temp,"A1: Disabled");
@@ -251,7 +252,7 @@ void menu_action(unsigned char menu_action_type) {
 					if (runtime_settings.lcd_backlight_value < 100)
 						runtime_settings.lcd_backlight_value++;
 
-					display_set_backlight(runtime_settings.lcd_backlight_value);
+					display_handler_set_backlight(runtime_settings.lcd_backlight_value);
 				}
 				else if (menu_system_text[current_menu_pos].pos == MENU_POS_SHOW_POWERMETER_ADDR) {
 					if (runtime_settings.powermeter_address < 0xFF)
@@ -284,7 +285,7 @@ void menu_action(unsigned char menu_action_type) {
 					if (runtime_settings.lcd_backlight_value > 0)
 						runtime_settings.lcd_backlight_value--;
 
-					display_set_backlight(runtime_settings.lcd_backlight_value);
+					display_handler_set_backlight(runtime_settings.lcd_backlight_value);
 				}
 				else if (menu_system_text[current_menu_pos].pos == MENU_POS_SHOW_POWERMETER_ADDR) {
 					if (runtime_settings.powermeter_address > 0)
@@ -343,4 +344,12 @@ void menu_action(unsigned char menu_action_type) {
 		
 		menu_show(current_menu_pos);
 	}
+}
+
+unsigned char menu_curr_pos(void) {
+  return(current_menu_pos);
+}
+
+void menu_set_pos(unsigned char pos) {
+  current_menu_pos = pos;
 }

@@ -52,6 +52,7 @@
 #include "powermeter.h"
 #include "../wmv_bus/bus_ping.h"
 #include "../event_queue.h"
+#include "display_handler.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -132,10 +133,13 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 		case INT_COMM_TURN_DEVICE_OFF:
 			//TODO: Problem with delay here, need to wait until everything is shut off
 			//This solution is pretty uggly...do it some other way?
-			status.prev_display = status.current_display;
-			status.current_display = CURRENT_DISPLAY_SHUTDOWN_VIEW;
-			display_shutdown_view();
-			
+
+      status.function_status |= (1<<FUNC_STATUS_SHUTDOWN_IN_PROGRESS);
+
+      display_handler_new_view(DISPLAY_HANDLER_VIEW_SHUTDOWN);
+      display_handler_repaint();
+      display_handler_tick();
+
 			main_save_settings();
 			
 			band_ctrl_change_band(BAND_UNDEFINED);
@@ -345,7 +349,7 @@ void event_process_task(unsigned char task_index) {
 			if (status.new_band_portion != status.current_band_portion) {
 				status.current_band_portion = status.new_band_portion;
 					
-				display_update_radio_freq();
+//				display_update_radio_freq();
 				band_ctrl_change_band_portion(status.current_band_portion);
 			}
 		}
@@ -356,8 +360,10 @@ void event_process_task(unsigned char task_index) {
 void event_pulse_sensor_up(void) {
 	clear_screensaver_timer();
 	
-	if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
+	if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
 		menu_action(MENU_SCROLL_UP);
+    
+    display_handler_repaint();
 	}
 	else {
 		//If the knob function is RX ANT SELECT then go up the list of 
@@ -372,7 +378,7 @@ void event_pulse_sensor_up(void) {
 		
 			//Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
 			main_flags |= (1<<FLAG_CHANGE_RX_ANT);
-			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+			display_handler_repaint();
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 			if (status.new_band > BAND_UNDEFINED)
@@ -384,16 +390,16 @@ void event_pulse_sensor_up(void) {
 			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1);
 			
-			display_show_set_heading(status.new_beamheading, 0);
+			display_handler_repaint();
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
 			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
 				sub_menu_pos_up(status.sub_menu_antenna_index);
 				
 				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
-        glcd_clear();
-				display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
-			}
+
+        display_handler_repaint();
+      }
 		}
 	}
 }
@@ -402,8 +408,10 @@ void event_pulse_sensor_up(void) {
 void event_pulse_sensor_down(void) {
 	clear_screensaver_timer();
 	
-	if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
+	if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
 		menu_action(MENU_SCROLL_DOWN);
+    
+    display_handler_repaint();
 	}
 	else {
 		//If the knob function is RX ANT SELECT then go down the list of 
@@ -418,7 +426,7 @@ void event_pulse_sensor_down(void) {
 			
 			//Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
 			main_flags |= (1<<FLAG_CHANGE_RX_ANT);
-			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+      display_handler_repaint();
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 			if (status.new_band < BAND_10M)
@@ -430,7 +438,7 @@ void event_pulse_sensor_down(void) {
 			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1);
 			
-			display_show_set_heading(status.new_beamheading, 0);
+			display_handler_repaint();
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
 			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
@@ -438,41 +446,10 @@ void event_pulse_sensor_down(void) {
 				sub_menu_pos_down(status.sub_menu_antenna_index);
           
 				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
-
-        glcd_clear();
-				display_show_sub_menu(status.sub_menu_antenna_index, sub_menu_get_type(status.sub_menu_antenna_index));
+        
+        display_handler_repaint();
 			}
 		}
-	}
-}
-
-/*! \brief Function to be called if we wish to update the display */
-void event_update_display(void) {
-  if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
-		if (status.current_display_level == DISPLAY_LEVEL_BAND) {
-      //Should we show the RX antenna?
-      if (status.function_status & (1<<FUNC_STATUS_RXANT))
-        display_show_rx_ant(status.selected_rx_antenna);
-      else
-        display_show_rx_ant(0);
-        
-      display_update(status.selected_band, status.selected_ant);
-    }
-    else if (status.current_display_level == DISPLAY_LEVEL_SUBMENU) {
-      if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_VERT_ARRAY)
-        display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
-      else if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_STACK)
-        display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_STACK);
-    }
-	}
-	else if (status.current_display == CURRENT_DISPLAY_LOGO) {
-		glcd_print_picture();
-	}
-	else if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
-		menu_show(0);
-	}
-	else if (status.current_display == CURRENT_DISPLAY_SETTING) {
-		
 	}
 }
 
@@ -538,30 +515,17 @@ void event_poll_buttons(void) {
       clear_screensaver_timer();
       
 			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
-				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM) {
-					if (status.selected_band != BAND_UNDEFINED) {
-            status.prev_display = status.current_display;
-            
-            status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-						status.current_display_level = DISPLAY_LEVEL_BAND;
-					}
-					else {
-						status.prev_display = status.current_display;
-						status.current_display = CURRENT_DISPLAY_LOGO;
-					}
-					
-					glcd_clear();
-					
+				if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
+          status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
+          display_handler_prev_view();
 					led_set_menu(LED_STATE_OFF);
 				}
 				else {
 					menu_reset();
-					status.prev_display = status.current_display;
-					status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
-					led_set_menu(LED_STATE_ON);
+          status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
+          display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
+          led_set_menu(LED_STATE_ON);
 				}
-			
-				main_update_display();
 			}
 		}
 
@@ -570,7 +534,7 @@ void event_poll_buttons(void) {
       clear_screensaver_timer();
       
 			if (status.buttons_current_state & (1<<	FLAG_BUTTON_PULSE_BIT)) {
-				if (status.current_display == CURRENT_DISPLAY_MENU_SYSTEM)
+				if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE))
 					menu_action(MENU_BUTTON_PRESSED);
 				else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 					main_set_new_band(status.new_band);
@@ -587,12 +551,7 @@ void event_poll_buttons(void) {
 				
 						set_knob_function(KNOB_FUNCTION_AUTO);
 					
-            status.prev_display = status.current_display;
-            status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-        
-            glcd_clear();
-            main_update_display();
-          }
+            display_handler_prev_view();          }
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
           clear_screensaver_timer();
@@ -603,12 +562,8 @@ void event_poll_buttons(void) {
 					status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
 					set_knob_function(KNOB_FUNCTION_AUTO);
 				
-					status.prev_display = status.current_display;
-					status.current_display_level = DISPLAY_LEVEL_BAND;
-				
-					glcd_clear();
-					main_update_display();
-				}
+          display_handler_prev_view();				
+        }
 			}
 		}
 
@@ -674,7 +629,7 @@ void event_tx_button1_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(1,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
@@ -683,7 +638,7 @@ void event_tx_button1_pressed(void) {
 							antenna_ctrl_send_ant_data_to_bus();
 			
 							led_set_tx_ant(0,LED_STATE_OFF);
-							display_update(status.selected_band, status.selected_ant);
+							display_handler_repaint();
 						}
 					}
 				}
@@ -696,7 +651,7 @@ void event_tx_button1_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(1,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF1)) {
@@ -706,7 +661,7 @@ void event_tx_button1_pressed(void) {
 			
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(1,LED_STATE_ON);
-							display_update(status.selected_band, status.selected_ant);
+							display_handler_repaint();
 						}
 					}
 				}
@@ -715,12 +670,9 @@ void event_tx_button1_pressed(void) {
 				status.antenna_to_rotate = 1;
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
-				status.new_beamheading = antenna_ctrl_get_direction(0);        
+        status.new_beamheading = antenna_ctrl_get_direction(0);
 
-        status.prev_display = status.current_display;
-        status.current_display = CURRENT_DISPLAY_SETTING;        
-
-				display_show_set_heading(status.new_beamheading, 0);
+        display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
 				
 				set_tx_ant_leds();
 			}
@@ -751,7 +703,7 @@ void event_tx_button2_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(2,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
@@ -760,7 +712,7 @@ void event_tx_button2_pressed(void) {
 							antenna_ctrl_send_ant_data_to_bus();
 								
 							led_set_tx_ant(0,LED_STATE_OFF);
-							display_update(status.selected_band, status.selected_ant);
+              display_handler_repaint();
 						}
 					}
 				}
@@ -773,7 +725,7 @@ void event_tx_button2_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(2,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+            display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF2)) {
@@ -783,7 +735,7 @@ void event_tx_button2_pressed(void) {
 								
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(2,LED_STATE_ON);
-							display_update(status.selected_band, status.selected_ant);
+              display_handler_repaint();
 						}
 					}
 				}
@@ -793,10 +745,7 @@ void event_tx_button2_pressed(void) {
 				
 				status.new_beamheading = antenna_ctrl_get_direction(1);
         
-        status.prev_display = status.current_display;
-        status.current_display = CURRENT_DISPLAY_SETTING;        
-
-        display_show_set_heading(status.new_beamheading, 0);
+        display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
 				
 				set_tx_ant_leds();
 			}
@@ -827,7 +776,7 @@ void event_tx_button3_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(3,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
@@ -836,7 +785,7 @@ void event_tx_button3_pressed(void) {
 							antenna_ctrl_send_ant_data_to_bus();
 								
 							led_set_tx_ant(0,LED_STATE_OFF);
-							display_update(status.selected_band, status.selected_ant);
+							display_handler_repaint();
 						}
 					}
 				}
@@ -849,7 +798,7 @@ void event_tx_button3_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(3,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF4)) {
@@ -859,7 +808,7 @@ void event_tx_button3_pressed(void) {
 								
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(3,LED_STATE_ON);
-							display_update(status.selected_band, status.selected_ant);
+							display_handler_repaint();
 						}
 					}
 				}
@@ -870,10 +819,7 @@ void event_tx_button3_pressed(void) {
 				
 				status.new_beamheading = antenna_ctrl_get_direction(3);
         
-        status.prev_display = status.current_display;
-        status.current_display = CURRENT_DISPLAY_SETTING;
-        
-				display_show_set_heading(status.new_beamheading, 0);
+        display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
 				
 				set_tx_ant_leds();
 			}
@@ -904,7 +850,7 @@ void event_tx_button4_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 								
 						led_set_tx_ant(4,LED_STATE_OFF);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
@@ -913,7 +859,7 @@ void event_tx_button4_pressed(void) {
 							antenna_ctrl_send_ant_data_to_bus();
 									
 							led_set_tx_ant(0,LED_STATE_OFF);
-							display_update(status.selected_band, status.selected_ant);
+							display_handler_repaint();
 						}
 					}
 				}
@@ -926,7 +872,7 @@ void event_tx_button4_pressed(void) {
 						antenna_ctrl_send_ant_data_to_bus();
 								
 						led_set_tx_ant(4,LED_STATE_ON);
-						display_update(status.selected_band, status.selected_ant);
+						display_handler_repaint();
 					}
 					else {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF8)) {
@@ -936,7 +882,7 @@ void event_tx_button4_pressed(void) {
 									
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(4,LED_STATE_ON);
-							display_update(status.selected_band, status.selected_ant);
+							display_handler_repaint();
 						}
 					}
 				}
@@ -947,10 +893,7 @@ void event_tx_button4_pressed(void) {
 				
 				status.new_beamheading = antenna_ctrl_get_direction(3);
         
-        status.prev_display = status.current_display;
-        status.current_display = CURRENT_DISPLAY_SETTING;
-        
-				display_show_set_heading(status.new_beamheading, 0);
+        display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
 				
 				set_tx_ant_leds();
 			}
@@ -998,15 +941,7 @@ void event_sub_button_pressed(void) {
 						if ((antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY) || (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_STACK))
 							status.sub_menu_antenna_index = i;
 					
-					status.prev_display = status.current_display;
-					status.current_display_level = DISPLAY_LEVEL_SUBMENU;
-					
-					glcd_clear();
-					
-					if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_VERT_ARRAY)
-						display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_VERT_ARRAY);
-					else if (antenna_ctrl_get_sub_menu_type(status.sub_menu_antenna_index) == SUBMENU_STACK)
-						display_show_sub_menu(status.sub_menu_antenna_index, SUBMENU_STACK);
+            display_handler_new_view(DISPLAY_HANDLER_VIEW_SUBMENU);
 				}
 			}
 			else if (status.knob_function != KNOB_FUNCTION_SET_SUBMENU) {
@@ -1016,12 +951,8 @@ void event_sub_button_pressed(void) {
 				led_set_submenu(LED_STATE_OFF);
 				status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
 				set_knob_function(KNOB_FUNCTION_AUTO);
-				
-				status.prev_display = status.current_display;
-				status.current_display_level = DISPLAY_LEVEL_BAND;
-				
-				glcd_clear();
-				main_update_display();
+
+        display_handler_prev_view();
 			}
 		}
 		else {
@@ -1050,7 +981,7 @@ void event_rxant_button_pressed(void) {
 			
 			led_set_rxant(LED_STATE_ON);
 				
-			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+      display_handler_repaint();
 				
 			antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
 				
@@ -1067,7 +998,7 @@ void event_rxant_button_pressed(void) {
 			antenna_ctrl_change_rx_ant(0);
 
 			status.function_status &= ~(1<<FUNC_STATUS_RXANT);
-			main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+			display_handler_repaint();
 		}
 	}
 	else	//If we don't have any antennas to choose we always have the LED off
@@ -1102,10 +1033,8 @@ void event_rotate_button_pressed(void) {
 					status.new_beamheading = antenna_ctrl_get_direction(rotator_index);
 					set_knob_function(KNOB_FUNCTION_SET_HEADING);
 					
-					status.prev_display = status.current_display;
-					status.current_display = CURRENT_DISPLAY_SETTING;
-					display_show_set_heading(status.new_beamheading, 0);	
-				}
+          display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
+        }
 				else {
 					led_set_rotate(LED_STATE_ON);
 					status.function_status |= (1<<FUNC_STATUS_ROTATE);
@@ -1124,11 +1053,7 @@ void event_rotate_button_pressed(void) {
 					
 				set_knob_function(KNOB_FUNCTION_AUTO);
 				
-				status.prev_display = status.current_display;
-				status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-				
-				glcd_clear();
-				main_update_display();
+				display_handler_prev_view();
 			}
 		}
 	}
@@ -1164,8 +1089,7 @@ void event_bus_parse_message(void) {
           if (antenna_ctrl_get_direction(i) != curr_heading) {
             antenna_ctrl_set_direction(curr_heading,i);
 						
-            if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO)
-              main_update_display();
+            display_handler_repaint();
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))

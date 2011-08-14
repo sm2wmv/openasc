@@ -343,8 +343,6 @@ void sub_menu_set_array_dir(unsigned char dir_nr) {
 			sub_menu_set_current_pos(3,dir_nr);
 			sub_menu_send_data_to_bus(3,dir_nr);
 		}
-		
-		main_update_display();
 	}
 }
 
@@ -370,7 +368,5 @@ void sub_menu_set_stack_comb(unsigned char comb_nr) {
 			sub_menu_set_current_pos(3,comb_nr);
 			sub_menu_send_data_to_bus(3,comb_nr);
 		}
-		
-		main_update_display();
 	}	
 }

@@ -239,10 +239,10 @@ unsigned char radio_poll_status(void) {
 			
 			//We update frequency directly after the request has been sent. This means we probably don't see the update at once
 			//but it will still atleast update
-			display_update_radio_freq();
+			//display_handler_update_radio_freq();
 		}
 		else if (radio_settings.interface_type == RADIO_INTERFACE_CAT_MON) {
-			display_update_radio_freq();
+			//display_handler_update_radio_freq();
 		}
 	}
 	

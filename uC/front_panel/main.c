@@ -51,6 +51,7 @@
 #include "event_handler.h"
 #include "powermeter.h"
 #include "errors.h"
+#include "display_handler.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -112,12 +113,12 @@ unsigned char device_started = 0;
 void clear_screensaver_timer(void) {
 	counter_screensaver_timeout = 0;
 	
-	if (display_screensaver_mode()) {
-		display_disable_screensaver();
-		display_set_backlight(runtime_settings.lcd_backlight_value);
+	if (display_handler_screensaver_mode()) {
+		display_handler_disable_screensaver();
+		display_handler_set_backlight(runtime_settings.lcd_backlight_value);
 
-    main_update_display();
-	}
+    display_handler_repaint();
+  }
 }
 
 //This function is just used at startup
@@ -139,7 +140,7 @@ void main_set_new_band(unsigned char band) {
   status.current_band_portion = BAND_LOW;
 	band_ctrl_change_band(band);
 					
-	display_update_radio_freq();
+	//display_handler_update_radio_freq();
 	send_ping();
 }
 
@@ -237,11 +238,6 @@ void main_process_lock(unsigned char lock_status) {
     
     led_set_ptt(LED_STATE_PTT_INHIBIT); 
   }
-}
-
-/*! \brief Sets the flag that the display should be updated */
-void main_update_display(void) {
-	main_flags |= (1<<FLAG_UPDATE_DISPLAY);
 }
 
 /*! \brief This function will set the device_online variable 
@@ -539,7 +535,7 @@ int main(void){
 	if (ant_dis_changed != 0)
 		eeprom_save_runtime_settings(&runtime_settings);
 	
-	display_set_backlight(runtime_settings.lcd_backlight_value);
+	display_handler_set_backlight(runtime_settings.lcd_backlight_value);
 		
 	//Check to see if the radio interface is configured as manual or automatic as default
 	if (radio_interface_get_interface() == RADIO_INTERFACE_MANUAL)
@@ -574,8 +570,12 @@ int main(void){
 		
 		sei();
 		
-		display_setup_view();
-	
+		display_handler_new_view(DISPLAY_HANDLER_VIEW_CONFIG_SPLASH);
+    display_handler_repaint();
+    
+    //Forced to generate the tick ourselfs
+    display_handler_tick();
+    
 		while(1) {
 			computer_interface_send_data();
 			
@@ -623,8 +623,9 @@ int main(void){
 	init_timer_2();
 
 	//Print the startup picture
-	glcd_print_picture();
-	
+	display_handler_new_view(DISPLAY_HANDLER_VIEW_OPENASC_LOGO);
+	display_handler_repaint();
+  
 	//Set all leds on at startup so it's possible to see everything works
 	led_set_all(LED_STATE_ON);
 	delay_ms(250);
@@ -691,13 +692,6 @@ int main(void){
 				event_poll_ext_device();
 				main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
 			}
-		
-      //Update the display
-      if (main_flags & (1<<FLAG_UPDATE_DISPLAY)) {
-        event_update_display();
-        
-        main_flags &= ~(1<<FLAG_UPDATE_DISPLAY);
-      }
 		
 			if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
 				int val = rotary_encoder_poll();
@@ -774,9 +768,6 @@ int main(void){
 				}
 			}
 		
-			if (settings.powermeter_address != 0x00)
-				powermeter_process_tasks();
-		
 			radio_process_tasks();
 		}
 
@@ -786,6 +777,13 @@ int main(void){
         error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
       }
     }
+
+    if ((counter_compare0 % DISPLAY_HANDLER_TICK_INTERVAL) == 0) {
+      display_handler_tick();
+    }
+
+//    if ((counter_compare0 % 1000) == 0)
+      //display_handler_repaint();
 
     //Check every 10 ms if we are allowed to PTT or not
     if ((counter_critical_cmd_check % 10) == 0) {
@@ -840,12 +838,12 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	if (!display_screensaver_mode()) {
+	if (!display_handler_screensaver_mode()) {
 		if (counter_screensaver_timeout >= DISPLAY_SCREENSAVER_TIMEOUT) {
-			display_enable_screensaver();
+			display_handler_enable_screensaver();
 
-			event_add_message((void*)display_update_screensaver, 0,0);
-			display_set_backlight(DISPLAY_SCREENSAVER_DEF_CONTRAST);
+			event_add_message((void*)display_handler_update_screensaver, 0,0);
+			display_handler_set_backlight(DISPLAY_SCREENSAVER_DEF_CONTRAST);
 			
 			counter_screensaver_timeout = 0;
 		}
