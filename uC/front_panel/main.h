@@ -26,7 +26,7 @@
 //#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "0.42b\0"
+#define FIRMWARE_REV "0.4.5\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
