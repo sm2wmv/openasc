@@ -32,6 +32,7 @@
 #include "radio_interface.h"
 #include "sub_menu.h"
 #include "display.h"
+#include "display_handler.h"
 #include "../global.h"
 #include "../event_queue.h"
 
@@ -185,8 +186,11 @@ void band_ctrl_change_band(unsigned char band) {
 			
 			if (band != BAND_UNDEFINED) {
 				band_ctrl_load_band(band);
-				
-				if (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM) {
+      }
+      
+      display_handler_new_view(DISPLAY_HANDLER_VIEW_ANTENNAS);
+        
+/*        if (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM) {
 					status.prev_display = status.current_display;
           status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
 					status.current_display_level = DISPLAY_LEVEL_BAND;
@@ -196,7 +200,7 @@ void band_ctrl_change_band(unsigned char band) {
 				if ((status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW) && (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM))
           status.prev_display = status.current_display;
 					status.current_display = CURRENT_DISPLAY_LOGO;
-			}		
+			}		*/
 			
 			antenna_ctrl_deactivate_all_rx_band();
 			antenna_ctrl_deactivate_all();
@@ -223,7 +227,7 @@ void band_ctrl_change_band(unsigned char band) {
 			}
       
 			//Update the display
-			event_add_message((void*)main_update_display,200,0);
+			event_add_message((void*)display_handler_repaint,200,0);
 		}
 		else {
       //Lets change to band undefined, as long as we are not allowed in on the band we want

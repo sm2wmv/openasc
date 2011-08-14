@@ -30,6 +30,7 @@
 #include "main.h"
 #include "menu.h"
 #include "led_control.h"
+#include "display_handler.h"
 
 //! Flag that the PTT should be locked if this error occur
 #define ERROR_FLAG_LOCK_PTT					0
@@ -76,13 +77,12 @@ void error_handler_set(unsigned char error_type, unsigned char state, unsigned i
       clear_screensaver_timer();
 
       menu_reset();
+      menu_set_pos(MENU_POS_SHOW_ERRORS);
+      status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
       
-      status.prev_display = status.current_display;
-      status.current_display = CURRENT_DISPLAY_MENU_SYSTEM;
+      display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
       
       led_set_menu(LED_STATE_ON);
-      
-      menu_show(MENU_POS_SHOW_ERRORS);
     }
   }
 }

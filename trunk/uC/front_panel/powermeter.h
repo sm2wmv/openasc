@@ -67,8 +67,18 @@ typedef struct {
 
 void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr, unsigned char type);
 void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit);
-void powermeter_process_tasks(void);
 void powermeter_1ms_tick(void);
 void powermeter_set_active(unsigned char state);
+unsigned char powermeter_is_active(void);
+
+unsigned int powermeter_get_fwd_power(void);
+unsigned int powermeter_get_ref_power(void);
+unsigned int powermeter_get_vswr(void);
+
+unsigned int powermeter_get_text_update_rate(void);
+unsigned int powermeter_get_bargraph_update_rate(void);
+
+double powermeter_get_fwd_scale_val(void);
+double powermeter_get_ref_scale_val(void);
 
 #endif

@@ -90,5 +90,7 @@ void menu_show(unsigned char pos);
 void menu_action(unsigned char menu_action_type);
 void menu_init(void);
 void menu_reset(void);
+unsigned char menu_curr_pos(void);
+void menu_set_pos(unsigned char pos);
 
 #endif
