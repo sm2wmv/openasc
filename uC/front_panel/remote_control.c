@@ -2,10 +2,10 @@
  *  \brief Remote control of the openASC box
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-01-25
+ *  \date 2011-08-15
  *  \code #include "front_panel/remote_control.c" \endcode
  */
-//    Copyright (C) 2008  Mikael Larsmark, SM2WMV
+//    Copyright (C) 2011  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -281,7 +281,7 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       }
     }
     else if (strcmp_P(argv[0], PSTR("info")) == 0) {
-      char line[10][25];
+      char line[10][30];
       
       for (unsigned char i=0;i<10;i++)
         for (unsigned char j=0;j<25;j++)
@@ -364,6 +364,19 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
               
               cnt+= sprintf((char *)(line[line_nr]+cnt+antenna_ctrl_get_antenna_text_length(i))," - (%s)",sub_menu_get_text(i,sub_menu_get_current_pos(i)));
             }
+            
+            if (antenna_ctrl_get_flags(i) & (1<<ANTENNA_ROTATOR_FLAG)) {
+              for (unsigned char c=antenna_ctrl_get_antenna_text_length(i);c<10;c++) {
+                line[line_nr][c+cnt] = ' ';
+              }
+              
+              if (cnt == 6)
+                cnt += 9 - antenna_ctrl_get_antenna_text_length(i);
+              else
+                cnt += 10 - antenna_ctrl_get_antenna_text_length(i);
+              
+              cnt+= sprintf((char *)(line[line_nr]+cnt+antenna_ctrl_get_antenna_text_length(i))," - %i deg",antenna_ctrl_get_direction(i));
+            }
 
             strcpy((char *)(line[line_nr]+antenna_ctrl_get_antenna_text_length(i)+cnt),"\r\n");
             
@@ -384,10 +397,10 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         line_nr++;
         
         if (status.function_status & (1<<FUNC_STATUS_RXANT)) {
-          strcpy_P(line[line_nr],PSTR("RX ant ON\r\n"));
+          strcpy_P(line[line_nr],PSTR("RX ant: ON\r\n"));
         }
         else
-          strcpy_P(line[line_nr],PSTR("RX ant OFF\r\n"));
+          strcpy_P(line[line_nr],PSTR("RX ant: OFF\r\n"));
         
         line_nr++;
       }

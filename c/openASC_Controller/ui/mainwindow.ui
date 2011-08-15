@@ -1042,7 +1042,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <x>160</x>
          <y>305</y>
          <width>405</width>
-         <height>171</height>
+         <height>141</height>
         </rect>
        </property>
       </widget>
@@ -1062,6 +1062,16 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         <enum>QFrame::Raised</enum>
        </property>
       </widget>
+      <widget class="QLineEdit" name="lineEditCommand">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>450</y>
+         <width>406</width>
+         <height>24</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -1072,7 +1082,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <x>0</x>
      <y>0</y>
      <width>590</width>
-     <height>19</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">
