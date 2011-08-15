@@ -27,7 +27,6 @@
 
 #include "powermeter.h"
 #include "radio_interface.h"
-#include "display.h"
 #include "glcd.h"
 #include "main.h"
 #include "errors.h"

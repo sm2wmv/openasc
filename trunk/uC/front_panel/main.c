@@ -31,7 +31,6 @@
 #include "board.h"
 #include "usart.h"
 #include "init.h"
-#include "display.h"
 #include "glcd.h"
 #include "ks0108.h"
 #include "led_control.h"

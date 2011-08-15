@@ -29,8 +29,6 @@
 #include "event_handler.h"
 #include "main.h"
 #include "board.h"
-#include "display.h"
-#include "glcd.h"
 #include "led_control.h"
 #include "../delay.h"
 #include "../i2c.h"
