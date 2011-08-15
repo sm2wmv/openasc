@@ -95,7 +95,7 @@ void init_ports(void) {
 	PORTH |= (1<<BUTTON1_RX_BIT) | (1<<BUTTON2_RX_BIT) | (1<<BUTTON3_RX_BIT);
 	PORTB |= (1<<BUTTON4_RX_BIT);
 	PORTG = 0x07;
-	
+
 	PORTJ |= (1<<0);
 	
 	PORTE |= (1<<0);

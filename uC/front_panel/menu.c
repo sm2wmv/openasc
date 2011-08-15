@@ -30,7 +30,6 @@
 #include "board.h"
 #include "glcd.h"
 #include "fonts.h"
-#include "display.h"
 #include "radio_interface.h"
 #include "errors.h"
 #include "event_handler.h"

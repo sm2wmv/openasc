@@ -33,7 +33,6 @@
 #include "usart.h"
 #include "board.h"
 #include "eeprom.h"
-#include "display.h"
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 #include "../global.h"
