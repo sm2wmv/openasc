@@ -17,7 +17,6 @@ FORMS = ui/mainwindow.ui \
 HEADERS = src/mainwindowimpl.h \
     src/generic.h \
     src/main.h \
-    src/commclass.h \
     src/posix_qextserialport.h \
     src/qextserialbase.h \
     src/qextserialport.h \
@@ -34,6 +33,5 @@ SOURCES = src/mainwindowimpl.cpp \
     src/qextserialport.cpp \
     src/rotatordialog.cpp \
     src/mapviewwidget.cpp \
-    src/commclass.cpp \
     src/settingsdialog.cpp \
     src/comminterface.cpp
