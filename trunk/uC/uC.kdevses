@@ -2,8 +2,8 @@
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
  <DocsAndViews NumberOfDocuments="1" >
-  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.h" >
-   <View0 Encoding="" line="59" Type="Source" />
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/powermeter.c" >
+   <View0 Encoding="" line="103" Type="Source" />
   </Doc0>
  </DocsAndViews>
  <pluginList>
