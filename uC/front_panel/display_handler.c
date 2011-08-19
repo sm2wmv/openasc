@@ -696,9 +696,9 @@ void display_handler_tick(void) {
     if (display_handler_status.counter_powermeter_update_text >= powermeter_get_text_update_rate()) {
       display_handler_show_powermeter_text(powermeter_get_fwd_power(),powermeter_get_ref_power(),powermeter_get_vswr());
       
-      glcd_update_all();
+			glcd_update_all();
       
-      display_handler_status.counter_powermeter_update_text = 0;
+			display_handler_status.counter_powermeter_update_text = 0;
     }
     
     if (display_handler_status.counter_powermeter_update_bargraph >= powermeter_get_bargraph_update_rate()) {

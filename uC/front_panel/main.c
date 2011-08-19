@@ -667,13 +667,15 @@ int main(void){
 		//For example this is used when the box is about to shut down
 		if (device_online == 1) {
 			if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
-				if (radio_get_current_band() != status.selected_band) {
-					if (main_band_change_ok(radio_get_current_band()) == 1) {
-						main_set_new_band(radio_get_current_band());
-					}
-					else {
-						if (status.selected_band != BAND_UNDEFINED)
-							main_set_new_band(BAND_UNDEFINED);
+				if ((counter_compare0 % (radio_interface_get_poll_interval()*10)) == 0) {
+					if (radio_get_current_band() != status.selected_band) {
+						if (main_band_change_ok(radio_get_current_band()) == 1) {
+							main_set_new_band(radio_get_current_band());
+						}
+						else {
+							if (status.selected_band != BAND_UNDEFINED)
+								main_set_new_band(BAND_UNDEFINED);
+						}
 					}
 				}
 			}

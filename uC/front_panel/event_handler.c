@@ -258,6 +258,7 @@ void event_process_task(unsigned char task_index) {
 	/* Requires that we dont change the order of the functions */
 	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT10)) {
     event_set_rx_antenna(task_index);
+		display_handler_repaint();
 		return;
 	}	
 	
@@ -284,27 +285,35 @@ void event_process_task(unsigned char task_index) {
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR1:
 			sub_menu_set_array_dir(0);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR2:
 			sub_menu_set_array_dir(1);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR3:
 			sub_menu_set_array_dir(2);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR4:
 			sub_menu_set_array_dir(3);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR5:
 			sub_menu_set_array_dir(4);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR6:
 			sub_menu_set_array_dir(5);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR7:
 			sub_menu_set_array_dir(6);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_ARRAY_DIR8:
 			sub_menu_set_array_dir(7);
+			display_handler_repaint();
 			break;
 		case EXT_CTRL_SET_STACK_COMB1:
 			sub_menu_set_stack_comb(0);
@@ -332,6 +341,7 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_SEL_RX_NONE:
       event_set_rx_antenna(0);
+			display_handler_repaint();
       break;
 		default:
 			break;
