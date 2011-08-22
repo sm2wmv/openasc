@@ -1,10 +1,16 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="1" >
-  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/powermeter.c" >
-   <View0 Encoding="" line="103" Type="Source" />
+ <DocsAndViews NumberOfDocuments="3" >
+  <Doc0 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/front_panel/main.c" >
+   <View0 Encoding="" line="185" Type="Source" />
   </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/wmv_bus/bus_ping.h" >
+   <View0 Encoding="" line="46" Type="Source" />
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:///home/larsmark/private/projects/openASC_google/trunk/uC/wmv_bus/bus_ping.c" >
+   <View0 Encoding="" line="89" Type="Source" />
+  </Doc2>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>

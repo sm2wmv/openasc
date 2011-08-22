@@ -69,6 +69,9 @@ struct_setting settings;
 //! Used to disable/enable all polling of radios, buttons etc, used for shutdown
 unsigned char device_online = 0;
 
+//! Ping list, so we dont need to make space in the memory for it each time
+bus_struct_ping_status ping_list;
+
 //! Counter which counts up each time a compare0 interrupt has occured
 unsigned int counter_compare0 = 0;
 //! Counter which is used to keep track of when we last received a sync message from the bus
@@ -177,12 +180,10 @@ unsigned char ext_key_get_assignment(unsigned char index) {
 /*! Get information if a band change is OK to do
  *  \return 1 if the band change is OK, 0 if not */
 unsigned char main_band_change_ok(unsigned char new_band) {
-  bus_struct_ping_status ping_list;
-  
-  for (unsigned char i=0;i<bus_get_device_count();i++) {
-    if (bus_ping_get_device_type(i) == DEVICE_ID_MAINBOX) {
+	for (unsigned char i=0;i<bus_get_device_count();i++) {
+		if ((bus_ping_get_device_type(i) == DEVICE_ID_MAINBOX) && (i != (bus_get_address()-1))) {
       ping_list = bus_ping_get_ping_data(i);
-      
+
       if ((new_band != 0) && (ping_list.data[1] == new_band)) {
         return(0);
       }
@@ -775,7 +776,9 @@ int main(void){
     //Check that we aren't on the same band as another box every 250 ms
     if ((counter_compare0 % 250) == 0) {
       if (main_band_change_ok(status.selected_band) == 0) {
-        error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
+					if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) == 0) {
+        		error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
+					}
       }
     }
 

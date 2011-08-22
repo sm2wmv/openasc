@@ -82,8 +82,6 @@ front_panel/band_ctrl.h
 front_panel/board.h
 front_panel/computer_interface.c
 front_panel/computer_interface.h
-front_panel/display.c
-front_panel/display.h
 front_panel/ds1307.c
 front_panel/ds1307.h
 front_panel/eeprom.c

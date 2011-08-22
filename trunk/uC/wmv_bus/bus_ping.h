@@ -40,4 +40,8 @@ typedef struct {
   
 	bus_struct_ping_status bus_ping_get_ping_data(unsigned char index);
 	unsigned char bus_ping_get_device_type(unsigned char index);
+
+	#ifdef DEBUG_COMPUTER_USART_ENABLED
+		void bus_ping_print_list(void);
+	#endif
 #endif
