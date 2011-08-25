@@ -539,28 +539,35 @@ ISR(ISR_BUS_USART_RECV) {
 				case 6 :	bus_new_message.length = data;
 									calc_checksum += data;
 									break;
-				default:	bus_new_message.data[bus_status.char_count - 7] = data;
+				default:	if ((bus_status.char_count-7) < BUS_MESSAGE_DATA_SIZE) { //Check so that we don't write larger than the buffer size
+                    
+                    bus_new_message.data[bus_status.char_count - 7] = data;
 
-									//The command is a SYNC message, reset the timer
-									if (bus_new_message.cmd == BUS_CMD_SYNC) {
-										TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
-										
-										bus_status.device_count = data;
-										bus_status.device_count_mult = (data * BUS_TIME_MULTIPLIER);
+                    //The command is a SYNC message, reset the timer
+                    if (bus_new_message.cmd == BUS_CMD_SYNC) {
+                      TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
+                      
+                      bus_status.device_count = data;
+                      bus_status.device_count_mult = (data * BUS_TIME_MULTIPLIER);
 
-										bus_status.frame_counter = 0;
+                      bus_status.frame_counter = 0;
 
-										//Indicate that atleast one SYNC has been received
-										bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
-										bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
+                      //Indicate that atleast one SYNC has been received
+                      bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
+                      bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
 
-										//Reset the counter keeping track of how long ago we last receieved a SYNC
-										//message from the master.
-										counter_sync_timeout = 0;
-									}
+                      //Reset the counter keeping track of how long ago we last receieved a SYNC
+                      //message from the master.
+                      counter_sync_timeout = 0;
+                    }
 
-									calc_checksum += data;
-									break;
+                    calc_checksum += data;
+                  }
+                  else { //If we have written larger than the buffer size, reset the RX and let it start over
+                    bus_reset_rx_status();
+                  }
+
+                  break;
 			}
 		}
 	}
