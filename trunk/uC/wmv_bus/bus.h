@@ -244,9 +244,6 @@
     There is a dead period both before and after our slot, so total dead time is BUS_SLOT_DEAD_TIME * 2 */
 #define BUS_SLOT_DEAD_TIME		130
 
-//! Length of the RX buffer
-#define SERIAL_RX_BUF_LENGTH 20
-
 //! Define the length of the bus message data field length
 #define BUS_MESSAGE_DATA_SIZE 15
 
@@ -298,21 +295,21 @@ typedef struct tx_linked_list {
 /*! The bus status structure */
 typedef struct {
 	//!Counter which keeps track of which frame (slot) we are in
-	unsigned char frame_counter;			
+	unsigned char frame_counter;
 	//!The address of this device
-	unsigned char ext_addr;						
+	unsigned char ext_addr;
 	//!The lower limit of the time slot
-	unsigned int lower_limit;				
+	unsigned int lower_limit;
 	//!The upper limit of the time slot
-	unsigned int upper_limit;				
+	unsigned int upper_limit;
 	//!Nr of devices on the bus
-	unsigned char device_count;				
+	unsigned char device_count;
 	//!Nr of devices are x 4 so we don't need to do the division
-	unsigned int device_count_mult;		
+	unsigned int device_count_mult;
 	/*! See details in defines */
 	unsigned int flags;
 	//!The char count of the received message
-	unsigned char char_count;					
+	unsigned char char_count;
 	//!The number of times the last message was sent
 	unsigned char send_count;
 	//! The previous character received
