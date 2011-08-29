@@ -21,9 +21,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* bus protocol format
- * ----------------------------------------------------------------------
- * |0xFE|0xFE|to-adr|fm-adr|checksum|cmd|length|data|data|data|data|0xFD|
- * ----------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
+ * |0xFE|0xFE|fm-adr|to-adr|checksum|flags|cmd|length|data|data|data|data|0xFD|
+ * ----------------------------------------------------------------------------
  *
  * The length of a message is total length - 7 bytes (premble, to-adr, fm-adr,checksum,cmd,length,postamble)
  * Checksum is calculated by adding together to-addr, fm-addr, cmd, length, data[0..n]
@@ -221,6 +221,17 @@ void __inline__ bus_reset_rx_status(void) {
 	bus_status.char_count = 0;
 	calc_checksum = 0;
 	bus_status.prev_char = 0;
+  
+  //Clear bus_new_message content
+  bus_new_message.checksum = 0;
+  bus_new_message.cmd = 0;
+  bus_new_message.flags = 0;
+  bus_new_message.from_addr = 0;
+  bus_new_message.to_addr = 0;
+  bus_new_message.length = 0;
+  
+  for (unsigned char i=0;i<BUS_MESSAGE_DATA_SIZE;i++)
+    bus_new_message.data[i] = 0;
 }
 
 
@@ -545,31 +556,37 @@ ISR(ISR_BUS_USART_RECV) {
 									calc_checksum += data;
 									break;
 				default:	if ((bus_status.char_count-7) < BUS_MESSAGE_DATA_SIZE) { //Check so that we don't write larger than the buffer size
-                    
-                    bus_new_message.data[bus_status.char_count - 7] = data;
+                    if ((bus_status.char_count-7) < bus_new_message.length) {
+                      bus_new_message.data[bus_status.char_count - 7] = data;
 
-                    //The command is a SYNC message, reset the timer
-                    if (bus_new_message.cmd == BUS_CMD_SYNC) {
-                      TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
-                      
-                      bus_status.device_count = data;
-                      bus_status.device_count_mult = (data * BUS_TIME_MULTIPLIER);
+                      //The command is a SYNC message, reset the timer
+                      if (bus_new_message.cmd == BUS_CMD_SYNC) {
+                        TCNT2 = 0;	//Clear the counter so that all units have about the same baseline
+                        
+                        bus_status.device_count = data;
+                        bus_status.device_count_mult = (data * BUS_TIME_MULTIPLIER);
 
-                      bus_status.frame_counter = 0;
+                        bus_status.frame_counter = 0;
 
-                      //Indicate that atleast one SYNC has been received
-                      bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
-                      bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
+                        //Indicate that atleast one SYNC has been received
+                        bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
+                        bus_status.flags |= (1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
 
-                      //Reset the counter keeping track of how long ago we last receieved a SYNC
-                      //message from the master.
-                      counter_sync_timeout = 0;
+                        //Reset the counter keeping track of how long ago we last receieved a SYNC
+                        //message from the master.
+                        counter_sync_timeout = 0;
+                      }
+
+                      calc_checksum += data;
                     }
-
-                    calc_checksum += data;
+                    else {
+                      bus_reset_rx_status();
+                      return;
+                    }
                   }
                   else { //If we have written larger than the buffer size, reset the RX and let it start over
                     bus_reset_rx_status();
+                    return;
                   }
 
                   break;

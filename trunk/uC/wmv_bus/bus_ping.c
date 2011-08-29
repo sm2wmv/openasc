@@ -77,7 +77,10 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 		
 		if (data_len > 0) {
 			for (unsigned char i=0;i<data_len;i++)
-				ping_list[from_addr-1].data[i] = data[i];
+        if (data_len < sizeof(ping_list[from_addr-1].data))
+          ping_list[from_addr-1].data[i] = data[i];
+        else
+          break;
 		}
 		
 		ping_list[from_addr-1].time_last_ping = 0;
