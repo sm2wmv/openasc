@@ -26,6 +26,7 @@
  * ----------------------------------------------------------------------
  *
  * The length of a message is total length - 7 bytes (premble, to-adr, fm-adr,checksum,cmd,length,postamble)
+ * Checksum is calculated by adding together to-addr, fm-addr, cmd, length, data[0..n]
  *
  */
 
@@ -325,13 +326,15 @@ void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		BUS_MESSAGE bus_message;
 
 		bus_message.from_addr = from_addr;
+		checksum += from_addr;
 		bus_message.to_addr = to_addr;
+		checksum += to_addr;
 		bus_message.flags = flags;
 		checksum += flags;
 		bus_message.cmd = cmd;
 		checksum += cmd;
 		bus_message.length = length;
-		checksum += length;		
+		checksum += length;	
 
 		for (unsigned char i=0;i<length;i++) {
 			checksum += data[i];
@@ -525,8 +528,10 @@ ISR(ISR_BUS_USART_RECV) {
 		else {
 			switch(bus_status.char_count) {
 				case 1 :	bus_new_message.from_addr = data;
+									calc_checksum += data;
 									break;
 				case 2 :	bus_new_message.to_addr = data;
+									calc_checksum += data;
 									break;
 				case 3 :	bus_new_message.checksum = data;
 									break;
