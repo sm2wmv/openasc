@@ -630,7 +630,7 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_SAVE:
-					eeprom_save_settings_structure(settings_ptr);
+          eeprom_save_settings_structure(settings_ptr);
 					
 					computer_interface_send_ack();
 					break;

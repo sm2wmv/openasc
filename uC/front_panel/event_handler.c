@@ -559,7 +559,8 @@ void event_poll_buttons(void) {
 				
 						set_knob_function(KNOB_FUNCTION_AUTO);
 					
-            display_handler_prev_view();          }
+            display_handler_prev_view();
+          }
 				}
 				else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
           clear_screensaver_timer();
@@ -676,6 +677,11 @@ void event_tx_button1_pressed(void) {
 			}
 			else {
 				status.antenna_to_rotate = 1;
+
+        //Set the last rotated antenna variable to this, so that we can select
+        //an antenna to rotate with CCW/CW buttons without selecting the preset
+        antenna_ctrl_set_antenna_to_rotate(0);
+        
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
         status.new_beamheading = antenna_ctrl_get_direction(0);
@@ -751,6 +757,10 @@ void event_tx_button2_pressed(void) {
 				status.antenna_to_rotate = 2;
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
+        //Set the last rotated antenna variable to this, so that we can select
+        //an antenna to rotate with CCW/CW buttons without selecting the preset
+        antenna_ctrl_set_antenna_to_rotate(1);
+        
 				status.new_beamheading = antenna_ctrl_get_direction(1);
         
         display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
@@ -827,6 +837,10 @@ void event_tx_button3_pressed(void) {
 				
 				status.new_beamheading = antenna_ctrl_get_direction(3);
         
+        //Set the last rotated antenna variable to this, so that we can select
+        //an antenna to rotate with CCW/CW buttons without selecting the preset
+        antenna_ctrl_set_antenna_to_rotate(2);
+        
         display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
 				
 				set_tx_ant_leds();
@@ -899,6 +913,10 @@ void event_tx_button4_pressed(void) {
 				status.antenna_to_rotate = 4;
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
+        //Set the last rotated antenna variable to this, so that we can select
+        //an antenna to rotate with CCW/CW buttons without selecting the preset
+        antenna_ctrl_set_antenna_to_rotate(3);
+        
 				status.new_beamheading = antenna_ctrl_get_direction(3);
         
         display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
@@ -1037,6 +1055,8 @@ void event_rotate_button_pressed(void) {
           status.function_status |= (1<<FUNC_STATUS_ROTATE);
           
           led_set_rotate(LED_STATE_ON);
+          
+          antenna_ctrl_set_antenna_to_rotate(rotator_index);
           
 					status.new_beamheading = antenna_ctrl_get_direction(rotator_index);
 					set_knob_function(KNOB_FUNCTION_SET_HEADING);
