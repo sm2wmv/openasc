@@ -31,6 +31,7 @@
 #include "ds1307.h"
 #include "../i2c.h"
 #include "../delay.h"
+#include "main.h"
 
 //! Flag which is set to 1 if a read request is allowed to the ds1307
 unsigned char allowed_to_read = 0;
@@ -97,7 +98,6 @@ void ds1307_set_time(char *data) {
 	*(time_data+8) = 0x00;
 	
 	i2cMasterSend(DS1307_ADDR,9,(unsigned char *)time_data);
-	
 	//Allowed to read from the real-time clock again
 	allowed_to_read = 1;
 }

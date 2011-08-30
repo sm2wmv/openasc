@@ -320,6 +320,12 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
   last_rotated_antenna = ant_index;
 }
 
+/*! \brief Set the antenna to be rotated 
+ *  \param index The index of the antenna to be rotated */
+void antenna_ctrl_set_antenna_to_rotate(unsigned char index) {
+  last_rotated_antenna = index;
+}
+
 /*! \brief Rotate the last rotatable antenna clockwise */
 void antenna_ctrl_rotate_cw(void) {
   if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4) && (current_antennas.rotator_addr[(unsigned char)last_rotated_antenna] != 0)) {

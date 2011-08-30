@@ -35,6 +35,7 @@
 #include "event_handler.h"
 #include "led_control.h"
 #include "display_handler.h"
+#include "main.h"
 
 //! Sets the intend from the left
 #define MENU_OPTION_LEFT_POS 13

@@ -174,4 +174,6 @@ void antenna_ctrl_select_default_ant(void);
 
 unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index);
 
+void antenna_ctrl_set_antenna_to_rotate(unsigned char index);
+
 #endif
