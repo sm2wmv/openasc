@@ -393,8 +393,12 @@ void event_pulse_sensor_up(void) {
 				status.new_band--;
 		}
 		else if ((status.knob_function == KNOB_FUNCTION_SET_HEADING) && ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0)) {
-			if (status.new_beamheading < (antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1)))
-				status.new_beamheading += status.rotator_step_resolution;
+			if (status.new_beamheading < (antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1))) {
+				if (status.new_beamheading + status.rotator_step_resolution > antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1))
+          status.new_beamheading = status.rotator_step_resolution;
+        else
+          status.new_beamheading += status.rotator_step_resolution;
+      }
 			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1);
 			
@@ -441,8 +445,12 @@ void event_pulse_sensor_down(void) {
 				status.new_band++;
 		}	//TODO: Fix all the rotator options properly
 		else if ((status.knob_function == KNOB_FUNCTION_SET_HEADING) && ((status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) == 0)) {
-			if (status.new_beamheading > antenna_ctrl_get_start_heading(status.antenna_to_rotate-1))
-				status.new_beamheading -= status.rotator_step_resolution;
+			if (status.new_beamheading > antenna_ctrl_get_start_heading(status.antenna_to_rotate-1)) {
+				if (status.new_beamheading >= status.rotator_step_resolution)
+          status.new_beamheading -= status.rotator_step_resolution;
+        else
+          status.new_beamheading = 0;
+      }
 			else
 				status.new_beamheading = antenna_ctrl_get_start_heading(status.antenna_to_rotate-1) + antenna_ctrl_get_max_rotation(status.antenna_to_rotate-1);
 			
@@ -1113,7 +1121,9 @@ void event_bus_parse_message(void) {
 					
 					curr_heading = bus_message.data[2]<<8;
 					curr_heading += bus_message.data[3];
-         	
+
+          antenna_ctrl_set_rotator_flags(i,bus_message.data[6]);
+          
           if (antenna_ctrl_get_direction(i) != curr_heading) {
             antenna_ctrl_set_direction(curr_heading,i);
 						
