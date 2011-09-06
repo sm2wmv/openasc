@@ -107,6 +107,7 @@ static void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
 
 static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
 {
+  char msg[30];
   char data[16];
   memcpy(data, bus_message->data, bus_message->length);
   data[bus_message->length] = '\0';
@@ -146,33 +147,31 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "cwl") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Set rotation start angle\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: cwl <degree>\r\n");
+        sprintf(msg, "CW limit: %i\r\n",rotator_settings.rotation_stop_angle);
+        send_ascii_data(bus_message->from_addr,msg);
+
       }
       else {
-        rotator_settings.rotation_start_angle = atoi(argv[1]);
+        rotator_settings.rotation_stop_angle = atoi(argv[1]);
         
         send_ascii_data(bus_message->from_addr,"CWL set\r\n");
       }
     }
     else if (strcmp(argv[0], "ccwl") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Set rotation stop angle\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: ccwl <degree>\r\n");
+        sprintf(msg, "CCW limit: %i\r\n",rotator_settings.rotation_start_angle);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
-        rotator_settings.rotation_stop_angle = atoi(argv[1]);
+        rotator_settings.rotation_start_angle = atoi(argv[1]);
         
         send_ascii_data(bus_message->from_addr,"CCWL set\r\n");
       }
     }
     else if (strcmp(argv[0], "brkdelay") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Set rotation break delay\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: brkdelay <ms/100>\r\n");
+        sprintf(msg, "brkdelay: %i\r\n",rotator_settings.rotation_break_delay);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.rotation_break_delay = atoi(argv[1]) ;
@@ -181,9 +180,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "rotdelay") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Set rotation delay\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: rotdelay <seconds>\r\n");
+        sprintf(msg, "rotdelay: %i\r\n",rotator_settings.rotation_delay);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.rotation_delay = atoi(argv[1]) ;
@@ -192,9 +190,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "headinput") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Set which input we use as heading input\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: headinput <input index>\r\n");
+        sprintf(msg, "heading input: %i\r\n",rotator_settings.heading_input);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.heading_input = atoi(argv[1]) ;
@@ -203,9 +200,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }    
     else if (strcmp(argv[0], "rotmode") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Sets the rotator mode\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: rotmode <index>\r\n");
+        sprintf(msg, "rotmode: %i\r\n",rotator_settings.rotator_mode);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.rotator_mode = atoi(argv[1]) ;
@@ -214,9 +210,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }    
     else if (strcmp(argv[0], "cwoutput") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Sets the CW output\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: cwoutput <output index>\r\n");
+        sprintf(msg, "cw output: %i\r\n",rotator_settings.cw_output);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.cw_output = atoi(argv[1]) ;
@@ -225,9 +220,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }    
     else if (strcmp(argv[0], "ccwoutput") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Sets the CCW output\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: ccwoutput <output index>\r\n");
+        sprintf(msg, "ccw output: %i\r\n",rotator_settings.ccw_output);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.ccw_output = atoi(argv[1]) ;
@@ -236,9 +230,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     }
     else if (strcmp(argv[0], "brkoutput") == 0) {
       if (argc < 2) {
-        send_ascii_data(bus_message->from_addr,"Sets the break output\r\n");
-        send_ascii_data(bus_message->from_addr,"Too few arguments\r\n");
-        send_ascii_data(bus_message->from_addr,"Usage: brkoutput <output index>\r\n");
+        sprintf(msg, "break output: %i\r\n",rotator_settings.break_output);
+        send_ascii_data(bus_message->from_addr,msg);
       }
       else {
         rotator_settings.break_output = atoi(argv[1]) ;
@@ -248,13 +241,45 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     else if (strcmp(argv[0], "setcwlimit") == 0) {
       rotator_settings.rotation_max = rotator_read_heading();
       
-      send_ascii_data(bus_message->from_addr,"CW limit set\r\n");
+      sprintf(msg, "CW limit set: %i\r\n",rotator_settings.rotation_max);
+      send_ascii_data(bus_message->from_addr,msg);
     }
     else if (strcmp(argv[0], "setccwlimit") == 0) {
       rotator_settings.rotation_min = rotator_read_heading();
       
-      send_ascii_data(bus_message->from_addr,"CCW limit set\r\n");
+      sprintf(msg, "CCW limit set: %i\r\n",rotator_settings.rotation_min);
+      send_ascii_data(bus_message->from_addr,msg);
     }
+    else if (strcmp(argv[0], "rotatenorth") == 0) {
+      rotator_settings.rotation_min = rotator_read_heading();
+      
+      sprintf(msg, "CCW limit set: %i\r\n",rotator_settings.rotation_min);
+      send_ascii_data(bus_message->from_addr,msg);
+    }
+    else if (strcmp(argv[0], "adval") == 0) {
+      sprintf(msg,"ADVAL: %i\r\n",rotator_status.curr_heading_ad_val);
+      send_ascii_data(bus_message->from_addr,msg);
+    }
+    else if (strcmp(argv[0], "rotates") == 0) {
+      if (argc < 2) {
+        if (rotator_settings.rotates_over == 1) 
+          send_ascii_data(bus_message->from_addr,"Rotates over north\r\n");
+        else
+          send_ascii_data(bus_message->from_addr,"Rotates over south\r\n");
+      }
+      else {
+        if (strcmp(argv[1],"south") == 0) {
+          rotator_settings.rotates_over = 0;
+          send_ascii_data(bus_message->from_addr,"Rotates over south\r\n");
+        }
+        else if (strcmp(argv[1],"north") == 0) {
+          rotator_settings.rotates_over = 1;
+          send_ascii_data(bus_message->from_addr,"Rotates over north\r\n");
+        }
+        else
+          send_ascii_data(bus_message->from_addr,"Huh?\r\n");
+      }
+    }        
     else if (strcmp(argv[0], "save") == 0) {
       //This will cause a bus resend, how to fix it?
       eeprom_write_block(&rotator_settings, (const void *)1, sizeof(rotator_settings));
@@ -288,8 +313,11 @@ void bus_parse_message(void) {
 			//1st byte = sub_addr (0x00 in our case)
 			//2nd byte = new direction (high bytes)
 			//3rd byte = new direction (low bytes)
-			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED)
-				rotator_rotate_to((bus_message.data[1]<<8) + bus_message.data[2]);
+			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
+				rotator_status.target_heading = (bus_message.data[1]<<8) + bus_message.data[2];
+        
+        main_set_preset_active();
+      }
 			break;
 		case BUS_CMD_ROTATOR_GET_STATUS:
 			temp[0] = 0x00;
@@ -302,20 +330,30 @@ void bus_parse_message(void) {
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CW:
       if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
-        event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
-        event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        if (rotator_settings.break_output != 0) {
+          event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
+          event_add_message(rotator_rotate_cw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        }
+        else
+          event_add_message(rotator_rotate_cw,0,EVENT_QUEUE_ROTATE_CW_ID);
         
         main_flags &= ~(1<<FLAG_NO_ROTATION);
         main_flags |= (1<<FLAG_ROTATION_CW); 
+        main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
       }
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CCW:
       if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
-        event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
-        event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        if (rotator_settings.break_output != 0) {
+          event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
+          event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay,EVENT_QUEUE_ROTATE_CW_ID);
+        }
+        else
+          event_add_message(rotator_rotate_ccw,0,EVENT_QUEUE_ROTATE_CW_ID);
         
         main_flags &= ~(1<<FLAG_NO_ROTATION);
         main_flags |= (1<<FLAG_ROTATION_CCW);
+        main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
       }	
       		
 			break;
@@ -325,10 +363,11 @@ void bus_parse_message(void) {
           rotator_stop();
           
 				  event_add_message(rotator_activate_break,rotator_settings.rotation_break_delay,EVENT_QUEUE_ACTIVATE_BREAK_ID);
-          event_add_message(rotator_set_no_rotation, rotator_settings.rotation_delay, EVENT_QUEUE_ROTATION_ALLOWED);
+          event_add_message(rotator_set_no_rotation, rotator_settings.rotation_delay*10, EVENT_QUEUE_ROTATION_ALLOWED);
             
           main_flags &= ~(1<<FLAG_ROTATION_CW);
           main_flags &= ~(1<<FLAG_ROTATION_CCW);
+          main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
         }
       }
 			break;
@@ -369,7 +408,16 @@ unsigned char read_ext_addr(void) {
 }
 
 void main_convert_ad_vals(void) {
-	rotator_status.curr_heading = (int)((double)rotator_status.curr_heading_ad_val * 0.5625f);
+  if (rotator_settings.rotates_over == 1) {
+    if (rotator_status.curr_heading_ad_val > (double)(rotator_settings.rotation_max - rotator_settings.rotation_min)/2) {
+      rotator_status.curr_heading = (int)(((double)rotator_status.curr_heading_ad_val / (double)(rotator_settings.rotation_max - rotator_settings.rotation_min)) * (rotator_settings.rotation_stop_angle - rotator_settings.rotation_start_angle)) - (double)(rotator_settings.rotation_stop_angle - rotator_settings.rotation_start_angle)/2;
+    }
+    else
+      rotator_status.curr_heading = (double)(rotator_settings.rotation_stop_angle - rotator_settings.rotation_start_angle)/2 + (int)(((double)rotator_status.curr_heading_ad_val / (double)(rotator_settings.rotation_max - rotator_settings.rotation_min)) * (rotator_settings.rotation_stop_angle - rotator_settings.rotation_start_angle));  
+  }
+  else {
+    rotator_status.curr_heading = (int)(((double)rotator_status.curr_heading_ad_val / (double)(rotator_settings.rotation_max - rotator_settings.rotation_min)) * (rotator_settings.rotation_stop_angle - rotator_settings.rotation_start_angle));
+  }
 }
 
 void init_dummy_values(void) {
@@ -386,7 +434,21 @@ void init_dummy_values(void) {
 	rotator_settings.rotation_max = 900;
 	rotator_settings.rotation_break_delay = 10;
 	
-	main_flags = (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
+	main_flags = (1<<FLAG_NO_ROTATION);
+}
+
+void main_set_preset_active(void) {
+  main_flags |= (1<<FLAG_ROTATOR_PRESET_ACTIVE);
+}
+
+void main_stop_rotation(void) {
+  rotator_stop();
+
+  main_flags &= (1<<FLAG_ROTATION_CCW);
+  main_flags &= ~(1<<FLAG_ROTATION_CW);
+  main_flags |= (1<<FLAG_NO_ROTATION);
+  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
+  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
 }
 
 /*! Run the first function in the event queue
@@ -460,7 +522,7 @@ int main(void)
 		event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay*10,EVENT_QUEUE_ROTATE_CW_ID);
 	}*/
 	
-  main_flags = (1<<FLAG_NO_ROTATION) | (1<<FLAG_ROTATION_ALLOWED);
+  main_flags = (1<<FLAG_NO_ROTATION);
   
 	unsigned char device_count = bus_get_device_count();
 	
@@ -486,7 +548,12 @@ int main(void)
 		if ((timer_flags & (1<<FLAG_SEND_STATUS)) != 0) {
 			//We only update if the beaming heading has changed with > 1 degree from the last update
 			if (rotator_status.curr_heading != rotator_status.last_heading) {
-				send_status[0] = DEVICE_ID_ROTATOR_UNIT;
+        if (rotator_settings.rotates_over == 0)
+          main_flags |= (1<<FLAG_ROTATES_OVER_SOUTH);
+        else
+          main_flags &= ~(1<<FLAG_ROTATES_OVER_SOUTH);
+        
+        send_status[0] = DEVICE_ID_ROTATOR_UNIT;
 				send_status[1] = 0;
 				send_status[2] = ((rotator_status.curr_heading >> 8) & 0xFF);
 				send_status[3] = (rotator_status.curr_heading & 0xFF);
@@ -508,7 +575,147 @@ int main(void)
 			else if (rotator_settings.heading_input == HEADING_INPUT_POT2)
 				rotator_status.curr_heading_ad_val = a2dConvert10bit(ADC_CH_ADC1);
 	
+      //Only time the A/D should read 0 is when there is a faulty pot, then we should stop preset rotation at once
+      if (rotator_status.curr_heading_ad_val == 0) {
+        if (main_flags & (1<<FLAG_ROTATOR_PRESET_ACTIVE)) {
+          main_stop_rotation();
+        }
+      }
+
+      //We should not rotate over the end limits
+      if (main_flags & (1<<FLAG_ROTATION_CW) && (rotator_status.curr_heading_ad_val >= rotator_settings.rotation_max)) {
+        main_stop_rotation();
+      }
+      
+      //We should not rotate over the end limits
+      if (main_flags & (1<<FLAG_ROTATION_CCW) && (rotator_status.curr_heading_ad_val <= rotator_settings.rotation_min)) {
+        main_stop_rotation();
+      }      
+      
 			main_convert_ad_vals();
+      
+      if (main_flags & (1<<FLAG_ROTATOR_PRESET_ACTIVE)) {
+        if (main_flags & (1<<FLAG_NO_ROTATION)) {
+          if (rotator_settings.rotates_over == 1) { //Rotates over north
+            if ((rotator_status.curr_heading - 180) >= 0) {
+              if ((rotator_status.target_heading - 180) >= 0) {
+                if (rotator_status.target_heading > rotator_status.curr_heading) {
+                  main_flags |= (1<<FLAG_ROTATION_CW);
+                  main_flags &= ~(1<<FLAG_ROTATION_CCW);
+                  main_flags &= ~(1<<FLAG_NO_ROTATION);
+                  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+                  
+                  rotator_rotate_cw();
+                }
+                else {
+                  main_flags |= (1<<FLAG_ROTATION_CCW);
+                  main_flags &= ~(1<<FLAG_ROTATION_CW);
+                  main_flags &= ~(1<<FLAG_NO_ROTATION);
+                  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+                  
+                  rotator_rotate_ccw();
+                }
+              }
+              else {
+                main_flags |= (1<<FLAG_ROTATION_CW);
+                main_flags &= ~(1<<FLAG_ROTATION_CCW);
+                main_flags &= ~(1<<FLAG_NO_ROTATION);
+                main_flags |= (1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+                
+                rotator_rotate_cw();
+              }
+            }
+            else {
+              if ((rotator_status.target_heading - 180) >= 0) {
+                main_flags |= (1<<FLAG_ROTATION_CCW);
+                main_flags &= ~(1<<FLAG_ROTATION_CW);
+                main_flags &= ~(1<<FLAG_NO_ROTATION);
+                main_flags |= (1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+                
+                rotator_rotate_ccw();
+              }
+              else {
+                if (rotator_status.target_heading > rotator_status.curr_heading) {
+                  main_flags |= (1<<FLAG_ROTATION_CW);
+                  main_flags &= ~(1<<FLAG_ROTATION_CCW);
+                  main_flags &= ~(1<<FLAG_NO_ROTATION);
+                  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+                  
+                  rotator_rotate_cw();
+                }
+                else {
+                  main_flags |= (1<<FLAG_ROTATION_CCW);
+                  main_flags &= ~(1<<FLAG_ROTATION_CW);
+                  main_flags &= ~(1<<FLAG_NO_ROTATION);
+                  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+                  
+                  rotator_rotate_ccw();                  
+                }
+              }
+            }
+          }
+          else { //Rotates over south
+            if (rotator_status.curr_heading < rotator_status.target_heading) {
+              main_flags |= (1<<FLAG_ROTATION_CW);
+              main_flags &= ~(1<<FLAG_ROTATION_CCW);
+              main_flags &= ~(1<<FLAG_NO_ROTATION);
+              
+              rotator_rotate_cw();
+            }
+            else {
+              main_flags |= (1<<FLAG_ROTATION_CCW);
+              main_flags &= ~(1<<FLAG_ROTATION_CW);
+              main_flags &= ~(1<<FLAG_NO_ROTATION);
+              
+              rotator_rotate_ccw();
+            }
+          }
+        }
+        else { //Rotation is active, check A/D values and stop when it should be stopped
+          if (rotator_settings.rotates_over == 1) { //Rotates over the north
+            if (main_flags & (1<<FLAG_ROTATOR_PRESET_OVER_NORTH)) {
+              if (main_flags & (1<<FLAG_ROTATION_CW)) {
+                if ((rotator_status.curr_heading - 180) < 0) {
+                  if (rotator_status.curr_heading >= rotator_status.target_heading)
+                    main_stop_rotation();
+                }
+              }
+              else if (main_flags & (1<<FLAG_ROTATION_CCW)) {
+                if ((rotator_status.curr_heading - 180) >= 0) {
+                  if (rotator_status.curr_heading <= rotator_status.target_heading)
+                    main_stop_rotation();
+                }
+              }
+            }
+            else {
+              if ((rotator_status.target_heading - 180) > 0) {
+                if ((main_flags & (1<<FLAG_ROTATION_CW)) && (rotator_status.curr_heading >= rotator_status.target_heading))
+                    main_stop_rotation();
+                else if ((main_flags & (1<<FLAG_ROTATION_CCW)) && (rotator_status.curr_heading <= rotator_status.target_heading))
+                  main_stop_rotation();
+              }
+              else {
+                if ((main_flags & (1<<FLAG_ROTATION_CW)) && (rotator_status.curr_heading >= rotator_status.target_heading))
+                    main_stop_rotation();
+                else if ((main_flags & (1<<FLAG_ROTATION_CCW)) && (rotator_status.curr_heading <= rotator_status.target_heading))
+                  main_stop_rotation();
+              }
+            }
+          }
+          else { //Rotates over the south
+            if (main_flags & (1<<FLAG_ROTATION_CW)) {
+              if (rotator_status.curr_heading >= rotator_status.target_heading) {
+                main_stop_rotation();
+              }
+            }
+            else if (main_flags & (1<<FLAG_ROTATION_CCW)) {
+              if (rotator_status.curr_heading <= rotator_status.target_heading) {
+                main_stop_rotation();
+              }
+            }
+          }
+        }
+      }
 			
 			timer_flags &= ~(1<<FLAG_POLL_AD);
 		}

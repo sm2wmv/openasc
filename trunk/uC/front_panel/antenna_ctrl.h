@@ -32,6 +32,8 @@
 #define FLAG_ROTATION_CW					3
 //! The rotator is being rotated CCW
 #define FLAG_ROTATION_CCW					4
+//! The rotator rotates over south
+#define FLAG_ROTATES_OVER_SOUTH     5
 
 //! Struct which contains information of the rx antennas
 typedef struct {
@@ -175,5 +177,7 @@ void antenna_ctrl_select_default_ant(void);
 unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index);
 
 void antenna_ctrl_set_antenna_to_rotate(unsigned char index);
+
+char antenna_ctrl_get_rotates_char(unsigned char index);
 
 #endif

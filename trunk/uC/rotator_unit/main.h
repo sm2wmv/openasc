@@ -30,12 +30,18 @@
 #define FLAG_RUN_EVENT_QUEUE			0
 //! The rotator is currently standing still
 #define FLAG_NO_ROTATION					1
-//! The rotator is allowed to be rotated
-#define FLAG_ROTATION_ALLOWED			2
+//! The current preset rotates over north
+#define FLAG_ROTATOR_PRESET_OVER_NORTH  2
 //! The rotator is being rotated CW
 #define FLAG_ROTATION_CW					3
 //! The rotator is being rotated CCW
 #define FLAG_ROTATION_CCW					4
+//! The rotator rotates over south
+#define FLAG_ROTATES_OVER_SOUTH   5
+//! The preset is active
+#define FLAG_ROTATOR_PRESET_ACTIVE  6
+//! The current preset rotates over north
+#define FLAG_ROTATOR_PRESET_OVER_NORTH  7
 
 //! The heading input is A/D input #1
 #define HEADING_INPUT_POT1					1
@@ -56,21 +62,23 @@
 //! Note that one can have several outputs activated at the same time!
 //! ------------------------------------------------------------------
 //! Rotation output (hardwired mode) - FET1
-#define ROTATION_OUTPUT_FET1		0
+#define ROTATION_OUTPUT_NONE    0
+//! Rotation output (hardwired mode) - FET1
+#define ROTATION_OUTPUT_FET1		1
 //! Rotation output (hardwired mode) - FET2
-#define ROTATION_OUTPUT_FET2		1
+#define ROTATION_OUTPUT_FET2		2
 //! Rotation output (hardwired mode) - FET3
-#define ROTATION_OUTPUT_FET3		2
+#define ROTATION_OUTPUT_FET3		3
 //! Rotation output (hardwired mode) - FET4
-#define ROTATION_OUTPUT_FET4		3
+#define ROTATION_OUTPUT_FET4		4
 //! Rotation output (hardwired mode) - RELAY1
-#define ROTATION_OUTPUT_RELAY1	4
+#define ROTATION_OUTPUT_RELAY1	5
 //! Rotation output (hardwired mode) - RELAY2
-#define ROTATION_OUTPUT_RELAY2	5
+#define ROTATION_OUTPUT_RELAY2	6
 //! Rotation output (hardwired mode) - RELAY3
-#define ROTATION_OUTPUT_RELAY3	6
+#define ROTATION_OUTPUT_RELAY3	7
 //! Rotation output (hardwired mode) - RELAY4
-#define ROTATION_OUTPUT_RELAY4	7
+#define ROTATION_OUTPUT_RELAY4	8
 
 //! The rotator turns over south
 #define ROTATOR_PATH_SOUTH 0
@@ -97,11 +105,11 @@ typedef struct {
 	//! Which kind of mode the rotator card is in
 	unsigned char rotator_mode;
 	//! Which outputs are used for CW rotation (hardwired mode)
-	unsigned char cw_output;
+	unsigned int cw_output;
 	//! Which outputs are used for CCW rotation (hardwired mode)
-	unsigned char ccw_output;
+	unsigned int ccw_output;
 	//! Break release outputs (hardwired mode)
-	unsigned char break_output;
+	unsigned int break_output;
 	//! Rotation delay, in seconds. This is the time after a rotation has been
 	//! excecuted before another rotation can start
 	unsigned char rotation_delay;
@@ -115,24 +123,24 @@ typedef struct {
 	unsigned int rotation_max;
 	//! Rotator break delay, the delay between rotation and the break is put in/out (x100 ms)
 	unsigned char rotation_break_delay;
+  //! Rotator rotates over south or north, 0 = south, 1 = north
+  unsigned char rotates_over;
 } struct_settings;
 
 //! Struct of the current rotator status
 typedef struct {
 	//! The current heading of the rotator (curr sample)
-	unsigned int curr_heading;
+	int curr_heading;
 	//! The last heading of the rotator (last sample)
-	unsigned int last_heading;
+	int last_heading;
 	//! The current heading of the rotator (curr sample A/D value)
 	unsigned int curr_heading_ad_val;
 	//! The last heading of the rotator (last sample A/D value)
 	unsigned int last_heading_ad_val;
 	//! The target heading of the rotator
-	unsigned int target_heading;
+	int target_heading;
 	//! The target heading of the rotator A/D value
 	unsigned int target_heading_ad_val;
-	//! The current speed of the rotator (calculated by using the heading input)
-	unsigned char rotator_speed;
 } struct_rotator_status;
 
 struct_rotator_status rotator_status;
@@ -143,5 +151,7 @@ void bus_parse_message(void);
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned char read_ext_addr(void);
 void event_run(void);
+
+void main_set_preset_active(void);
 
 #endif

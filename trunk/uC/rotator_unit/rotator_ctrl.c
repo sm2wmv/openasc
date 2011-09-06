@@ -56,114 +56,196 @@
 	unsigned char rotator_speed;
 } struct_rotator_status;*/
 
-void rotator_rotate_to(int heading) {
-	//TODO: Implement this
-	
-	rotator_rotate_cw();
-}
-
 
 void rotator_release_break(void) {
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET1))
-    ext_ctrl_fet1_activate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
-    ext_ctrl_fet2_activate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
-    ext_ctrl_relay1_activate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
-    ext_ctrl_relay2_activate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY3))
-    ext_ctrl_relay3_activate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY4))
-    ext_ctrl_relay4_activate();
+  switch(rotator_settings.break_output) {
+    case ROTATION_OUTPUT_FET1:
+      ext_ctrl_fet1_activate();
+      break;
+    case ROTATION_OUTPUT_FET2:
+      ext_ctrl_fet2_activate();
+      break;
+    case ROTATION_OUTPUT_FET3:
+      ext_ctrl_fet3_activate();
+      break;
+    case ROTATION_OUTPUT_FET4:
+      ext_ctrl_fet4_activate();
+      break; 
+    case ROTATION_OUTPUT_RELAY1:
+      ext_ctrl_relay1_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY2:
+      ext_ctrl_relay2_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY3:
+      ext_ctrl_relay3_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY4:
+      ext_ctrl_relay4_activate();
+      break;
+    default:
+      break;      
+  }
 }
 
 void rotator_activate_break(void) {
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET1))
-    ext_ctrl_fet1_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET2))
-    ext_ctrl_fet2_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET3))
-    ext_ctrl_fet3_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_FET4))
-    ext_ctrl_fet4_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY1))
-    ext_ctrl_relay1_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY2))
-    ext_ctrl_relay2_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY3))
-    ext_ctrl_relay3_deactivate();
-  if (rotator_settings.break_output & (1<<ROTATION_OUTPUT_RELAY4))
-    ext_ctrl_relay4_deactivate();
+  switch(rotator_settings.break_output) {
+    case ROTATION_OUTPUT_FET1:
+      ext_ctrl_fet1_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET2:
+      ext_ctrl_fet2_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET3:
+      ext_ctrl_fet3_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET4:
+      ext_ctrl_fet4_deactivate();
+      break; 
+    case ROTATION_OUTPUT_RELAY1:
+      ext_ctrl_relay1_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY2:
+      ext_ctrl_relay2_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY3:
+      ext_ctrl_relay3_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY4:
+      ext_ctrl_relay4_deactivate();
+      break;
+    default:
+      break;      
+  }
 }
 
 void rotator_rotate_cw(void) {
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET1))
-    ext_ctrl_fet1_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
-    ext_ctrl_fet2_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET3))
-    ext_ctrl_fet3_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET4))
-    ext_ctrl_fet4_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
-    ext_ctrl_relay1_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))
-    ext_ctrl_relay2_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY3))
-    ext_ctrl_relay3_activate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY4))
-    ext_ctrl_relay4_activate();
+  switch(rotator_settings.cw_output) {
+    case ROTATION_OUTPUT_FET1:
+      ext_ctrl_fet1_activate();
+      break;
+    case ROTATION_OUTPUT_FET2:
+      ext_ctrl_fet2_activate();
+      break;
+    case ROTATION_OUTPUT_FET3:
+      ext_ctrl_fet3_activate();
+      break;
+    case ROTATION_OUTPUT_FET4:
+      ext_ctrl_fet4_activate();
+      break; 
+    case ROTATION_OUTPUT_RELAY1:
+      ext_ctrl_relay1_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY2:
+      ext_ctrl_relay2_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY3:
+      ext_ctrl_relay3_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY4:
+      ext_ctrl_relay4_activate();
+      break;
+    default:
+      break;
+  }
 }
 
 void rotator_rotate_ccw(void) {
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET1))
-    ext_ctrl_fet1_activate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET2))
-    ext_ctrl_fet2_activate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY1))
-    ext_ctrl_relay1_activate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY2))
-    ext_ctrl_relay2_activate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY3))
-    ext_ctrl_relay3_activate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
-    ext_ctrl_relay4_activate();
+  switch(rotator_settings.ccw_output) {
+    case ROTATION_OUTPUT_FET1:
+      ext_ctrl_fet1_activate();
+      break;
+    case ROTATION_OUTPUT_FET2:
+      ext_ctrl_fet2_activate();
+      break;
+    case ROTATION_OUTPUT_FET3:
+      ext_ctrl_fet3_activate();
+      break;
+    case ROTATION_OUTPUT_FET4:
+      ext_ctrl_fet4_activate();
+      break; 
+    case ROTATION_OUTPUT_RELAY1:
+      ext_ctrl_relay1_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY2:
+      ext_ctrl_relay2_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY3:
+      ext_ctrl_relay3_activate();
+      break;
+    case ROTATION_OUTPUT_RELAY4:
+      ext_ctrl_relay4_activate();
+      break;
+    default:
+      break;      
+  }
 }
 
 void rotator_stop(void) {
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET1))
-    ext_ctrl_fet1_deactivate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_FET2))
-    ext_ctrl_fet2_deactivate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY1))
-    ext_ctrl_relay1_deactivate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY2))
-    ext_ctrl_relay2_deactivate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY3))
-    ext_ctrl_relay3_deactivate();
-  if (rotator_settings.cw_output & (1<<ROTATION_OUTPUT_RELAY4))
-    ext_ctrl_relay4_deactivate();
-    
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET1))
-    ext_ctrl_fet1_deactivate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_FET2))
-    ext_ctrl_fet2_deactivate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY1))
-    ext_ctrl_relay1_deactivate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY2))
-    ext_ctrl_relay2_deactivate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY3))
-    ext_ctrl_relay3_deactivate();
-  if (rotator_settings.ccw_output & (1<<ROTATION_OUTPUT_RELAY4))
-    ext_ctrl_relay4_deactivate();    
+  switch(rotator_settings.cw_output) {
+    case ROTATION_OUTPUT_FET1:
+      ext_ctrl_fet1_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET2:
+      ext_ctrl_fet2_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET3:
+      ext_ctrl_fet3_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET4:
+      ext_ctrl_fet4_deactivate();
+      break; 
+    case ROTATION_OUTPUT_RELAY1:
+      ext_ctrl_relay1_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY2:
+      ext_ctrl_relay2_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY3:
+      ext_ctrl_relay3_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY4:
+      ext_ctrl_relay4_deactivate();
+      break;
+    default:
+      break;      
+  }
+  
+  switch(rotator_settings.ccw_output) {
+    case ROTATION_OUTPUT_FET1:
+      ext_ctrl_fet1_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET2:
+      ext_ctrl_fet2_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET3:
+      ext_ctrl_fet3_deactivate();
+      break;
+    case ROTATION_OUTPUT_FET4:
+      ext_ctrl_fet4_deactivate();
+      break; 
+    case ROTATION_OUTPUT_RELAY1:
+      ext_ctrl_relay1_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY2:
+      ext_ctrl_relay2_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY3:
+      ext_ctrl_relay3_deactivate();
+      break;
+    case ROTATION_OUTPUT_RELAY4:
+      ext_ctrl_relay4_deactivate();
+      break;
+    default:
+      break;      
+  }
 }
 
 unsigned int rotator_read_heading(void) {
-  if (rotator_settings.heading_input & (1<<HEADING_INPUT_POT1)) {
+  if (rotator_settings.heading_input == HEADING_INPUT_POT1) {
     return(a2dConvert10bit(ADC_CH_ADC0));
   }
-  else if (rotator_settings.heading_input & (1<<HEADING_INPUT_POT2)) {
+  else if (rotator_settings.heading_input == HEADING_INPUT_POT2) {
     return(a2dConvert10bit(ADC_CH_ADC1));
   }
   
