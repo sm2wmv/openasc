@@ -24,7 +24,7 @@ void MapViewWidget::paintEvent(QPaintEvent *event) {
 	painter.drawText(10,20,mapTitle);
 	painter.drawText(10,35,QString::number(currAzimuthAngle)+176);
 	
-	painter.drawText(390,490,"Stopped");
+        painter.drawText(250,280,"Stopped");
 	
 	if (targetAzimuthAngle != currAzimuthAngle) {
 		painter.setPen(Qt::SolidLine);
@@ -40,7 +40,7 @@ void MapViewWidget::setCurrentDir(int azimuthAngle, int beamWidth) {
 	currAzimuthAngle = azimuthAngle;
 	currBeamWidth = beamWidth;
 	
-	painter.drawText(10,35,QString::number(currAzimuthAngle)+176);
+        painter.drawText(10,35,QString::number(currAzimuthAngle)+176);
 	
 	repaint();
 }

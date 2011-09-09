@@ -18,13 +18,13 @@ HEADERS = src/mainwindowimpl.h \
     src/generic.h \
     src/main.h \
     src/posix_qextserialport.h \
+    src/win_qextserialport.h \
     src/qextserialbase.h \
     src/qextserialport.h \
     src/rotatordialog.h \
     src/mapviewwidget.h \
     src/settingsdialog.h \
-    src/commands.h \
-    src/comminterface.h
+    src/commands.h
 SOURCES = src/mainwindowimpl.cpp \
     src/main.cpp \
     src/generic.cpp \
@@ -34,4 +34,4 @@ SOURCES = src/mainwindowimpl.cpp \
     src/rotatordialog.cpp \
     src/mapviewwidget.cpp \
     src/settingsdialog.cpp \
-    src/comminterface.cpp
+    src/win_qextserialport.cpp

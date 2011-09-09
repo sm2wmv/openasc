@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include "ui_mainwindow.h"
 #include "rotatordialog.h"
-#include "commclass.h"
 #include "settingsdialog.h"
 
 #include <QtNetwork>
@@ -26,7 +25,6 @@ public:
 		MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
-		CommClass comm;
 		void pushButtonPressed(unsigned char button);
 private:
 		int interfaceType;
