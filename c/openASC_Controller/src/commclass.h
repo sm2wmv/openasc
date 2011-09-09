@@ -39,8 +39,7 @@
 //! The serial NOT acknowledge of the computer communication protocol
 #define COMPUTER_COMM_NACK			0xFB
 
-class CommClass : public QThread
-{
+class CommClass : public QThread {
 	public:
 		CommClass();
 		int openPort(QString deviceName);

@@ -18,103 +18,7 @@
    <string>openASC remote controller v0.1</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#frameMain {
-	border: none;
-	background-color: rgb(113,113,113)
-}
-QLabel {
-	color: rgb(255, 255, 255)
-}
-
-QComboBox {
-color: #333;
-border: 2px solid #555;
-border-radius: 5px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
-}
-
-#frameMain QPushButton {
-color: #333;
-border: 2px solid #555;
-border-radius: 11px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
-}
-#frameMain QPushButton:hover {
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
-}
-#frameMain QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
-}
-
- QMenu {
-     background-color: white;
-     margin: 2px; /* some spacing around the menu */
- }
-
- QMenu::item {
-     padding: 2px 25px 2px 20px;
-     border: 1px solid transparent; /* reserve space for selection border */
- }
-
- QMenu::item:selected {
-     border-color: darkblue;
-     background: rgba(100, 100, 100, 150);
- }
-
- QMenu::icon:checked { /* appearance of a 'checked' icon */
-     background: gray;
-     border: 1px inset gray;
-     position: absolute;
-     top: 1px;
-     right: 1px;
-     bottom: 1px;
-     left: 1px;
- }
-
- QMenu::separator {
-     height: 1px;
-     background: silver;
-     margin-left: 5px;
-     margin-right: 5px;
- }
-
- QMenu::indicator {
-     width: 13px;
-     height: 13px;
- }
-
- QMenuBar {
-     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                       stop:0 lightgray, stop:1 darkgray);
- }
-
- QMenuBar::item {
-     spacing: 3px; /* spacing between menu bar items */
-     padding: 1px 4px;
-     background: transparent;
-     border-radius: 4px;
- }
-
- QMenuBar::item:selected { /* when selected using mouse or keyboard */
-     background: #a8a8a8;
- }
-
- QMenuBar::item:pressed {
-     background: #888888;
- }
-</string>
+   <string notr="true"/>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -984,7 +888,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>94</width>
+          <width>70</width>
           <height>29</height>
          </rect>
         </property>
@@ -1010,9 +914,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        <widget class="QPushButton" name="pushButtonRXAnt">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>85</x>
           <y>20</y>
-          <width>94</width>
+          <width>70</width>
           <height>29</height>
          </rect>
         </property>
@@ -1082,7 +986,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <x>0</x>
      <y>0</y>
      <width>590</width>
-     <height>18</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">

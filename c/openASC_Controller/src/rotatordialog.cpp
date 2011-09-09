@@ -1,86 +1,108 @@
 #include "rotatordialog.h"
-#include "mapviewwidget.h"
 #include <math.h>
 
 #define PI 3.1415
 
-void RotatorDialog::loadMap(QString path) {
-	for (int i=0;i<4;i++) {
-		map[i] = new MapViewWidget();
-		map[i]->setWidgetSize(500,500);
-	
-		QVBoxLayout *mapLayout = new QVBoxLayout;
-		mapLayout->addWidget(map[i]);
-			
-		if (i == 0)
-			frameMap1->setLayout(mapLayout);
-		if (i == 1)
-			frameMap2->setLayout(mapLayout);
-		if (i == 2)
-			frameMap3->setLayout(mapLayout);
-		if (i == 3)
-                        frameMap4->setLayout(mapLayout);
-		
-		map[i]->setImagePath(path);
-	}
+void RotatorDialog::paintEvent(QPaintEvent *event) {
+    QPainter painter(this);
+
+    //painter.setBrush(Qt::Dense7Pattern);
+
+    image = QImage(imagePath);
+    image.convertToFormat(QImage::Format_ARGB32_Premultiplied ,Qt::ColorOnly);
+
+    painter.drawImage(0 , 0 , image);
+
+    float rectWidth = sizeWidth - (sizeWidth * 0.08);
+    float rectHeight = sizeHeight - (sizeHeight * 0.08);
+    QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth, rectHeight);
+
+    for (int i=0;i<4;i++) {
+        if(hasRotor[i] == true) {
+            if (i==0) {
+                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
+            }
+            else if (i==1) {
+                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
+            }
+            else if (i==2) {
+                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
+            }
+            else if (i==3) {
+                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
+            }
+
+            painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + currBeamWidth[i]/2))*16,currBeamWidth[i]*16);
+        }
+    }
 }
 
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
-        if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (505)) && (event->y() <= 505)) {
-                double mapX = abs(256 - event->x());
-		double mapY = 256 - event->y();
-		
-                if ((256 - event->x()) < 0)
-                        map[0]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
-		else
-                        map[0]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
-	}
-        else if ((event->x() >= 523) && (event->y() >= 8) && (event->x() <= (1021)) && (event->y() <= 505)) {
-            double mapX = abs(771 - event->x());
-            double mapY = 256 - event->y();
+    if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (600)) && (event->y() <= 600)) {
+        double mapX = abs(300 - event->x());
+        double mapY = 300 - event->y();
 
-            if ((771 - event->x()) < 0)
-                    map[1]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
-            else
-                    map[1]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
-        }
-        else if ((event->x() >= 8) && (event->y() >= 522) && (event->x() <= (505)) && (event->y() <= 1021)) {
-            double mapX = abs(256 - event->x());
-            double mapY = 771 - event->y();
+        if ((256 - event->x()) < 0)
+            setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
+        else
+            setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
+    }
+}
 
-            if ((256 - event->x()) < 0)
-                    map[2]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
-            else
-                    map[2]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
-        }
-        else if ((event->x() >= 523) && (event->y() >= 522) && (event->x() <= (1021)) && (event->y() <= 1021)) {
-            double mapX = abs(771 - event->x());
-            double mapY = 771 - event->y();
+void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
+    targetAzimuthAngle[antIndex] = targetAngle;
+}
 
-            if ((771 - event->x()) < 0)
-                    map[3]->setTargetDir(90-atan(mapY/mapX)*(180/PI));
-            else
-                    map[3]->setTargetDir(270+atan(mapY/mapX)*(180/PI));
-        }
+void RotatorDialog::setAntName(int antIndex, QString name) {
+    antName[antIndex] = name;
+
+
 }
 
 RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
-	setupUi(this);
-	
-	this->resize(1280,1024);
-	
-	loadMap("../src/maps/map.jpg");
-	
-	map[0]->setMapTitle("6/6/6el");
-	map[1]->setMapTitle("5/5el");
-	map[2]->setMapTitle("4el");
-	
-	map[0]->setCurrentDir(325,50);
-	map[0]->setTargetDir(325);
-	map[1]->setCurrentDir(120,60);
-	map[1]->setTargetDir(45);
-	map[2]->setCurrentDir(180,75);
-	map[2]->setTargetDir(180);	
+    setupUi(this);
+
+    this->resize(800,600);
+    imagePath = "../src/maps/map.jpg";
+
+    sizeWidth = 600;
+    sizeHeight = 600;
+
+    currAzimuthAngle[0] = 305;
+    currBeamWidth[0] = 10;
+    targetAzimuthAngle[0] = 305;
+
+    currAzimuthAngle[1] = 50;
+    currBeamWidth[1] = 65;
+    targetAzimuthAngle[1] = 60;
+
+    currAzimuthAngle[2] = 180;
+    currBeamWidth[2] = 65;
+    targetAzimuthAngle[2] = 185;
+
+    currAzimuthAngle[3] = 0;
+    currBeamWidth[3] = 0;
+    targetAzimuthAngle[3] = 0;
+
+    hasRotor[0] = true;
+    hasRotor[1] = true;
+    hasRotor[2] = true;
+    hasRotor[3] = false;
+
+    currAntIndex = 0;
+
+    QPalette plt;
+    plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+    groupBoxAnt1->setPalette(plt);
+
+    plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+    groupBoxAnt2->setPalette(plt);
+
+    plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+    groupBoxAnt3->setPalette(plt);
 }
 //
-
