@@ -29,6 +29,8 @@
 
 */
 
+#include <avr/pgmspace.h>
+
 void remote_control_activate_remote_mode(void);
 void remote_control_deactivate_remote_mode(void);
 unsigned char remote_control_get_remote_mode(void);
@@ -37,6 +39,10 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
 void remote_control_parse_button(unsigned char button);
 
 void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message);
+
+unsigned char remote_control_create_attr_str(char *return_str, const PROGMEM char *attr, char *input_str);
+void __inline__ remote_control_send_ack(void);
+
 
 //! Command to activate the remote control mode
 #define REMOTE_CONTROL_ACTIVATE_MODE		0x01

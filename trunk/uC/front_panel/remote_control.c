@@ -45,6 +45,8 @@ unsigned char remote_control_flags;
 char linefeed[3] = {"\r\n\0"};
 char huh[7] = {"Huh?\r\n\0"};
 
+static char ack[] = {"<ack>\r"};
+
 /*! \brief Activate the remote control mode */
 void remote_control_activate_remote_mode(void) {
 	remote_control_flags |= (1<<FLAG_REMOTE_CONTROL_MODE_ACTIVE);
@@ -155,6 +157,8 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
           remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT3);
         else if (strcmp(argv[1],"4") == 0)
           remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT4);
+        
+        remote_control_send_ack();
       }
       else {
         send_ascii_data(0, huh);
@@ -188,6 +192,8 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       else {
         remote_control_parse_button(EXT_CTRL_TOGGLE_RX_ANT_MODE);
       }
+      
+      remote_control_send_ack();
     }
     else if (strcmp_P(argv[0], PSTR("array")) == 0) {
       if (argc > 1) {
@@ -202,6 +208,8 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         else
           send_ascii_data(0, huh);
       }
+      
+      remote_control_send_ack();
     }
     else if (strcmp_P(argv[0], PSTR("stack")) == 0) {
       if (argc > 1) {
@@ -216,6 +224,8 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         else
           send_ascii_data(0, huh);
       }
+      
+      remote_control_send_ack();
     }
     else if (strcmp_P(argv[0], PSTR("band")) == 0) {
       if (strcmp_P(argv[1], PSTR("160")) == 0) {
@@ -248,6 +258,8 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       else {
         send_ascii_data(0, huh);
       }
+      
+      remote_control_send_ack();
     }
     else if (strcmp_P(argv[0], PSTR("errors")) == 0) {
       if (argc > 1) {
@@ -278,6 +290,8 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         for (int i=0;i<error_count;i++) {
           send_ascii_data(0, line[i]);
         }
+        
+        remote_control_send_ack();
       }
     }
     else if (strcmp_P(argv[0], PSTR("info")) == 0) {
@@ -406,13 +420,243 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       }
       
       for (int i=0;i<line_nr;i++) {
-        send_ascii_data(0, line[i]);
+        send_ascii_data(0, line[i]);        
       }
+      
+      remote_control_send_ack();
     }
+    else if (strcmp_P(argv[0], PSTR("getants")) == 0) {
+      char line[4][ANTENNA_TEXT_SIZE+6+2];
+      char temp[ANTENNA_TEXT_SIZE+1];
+      
+      strncpy(temp, antenna_ctrl_get_antenna_text(0), antenna_ctrl_get_antenna_text_length(0));
+      temp[antenna_ctrl_get_antenna_text_length(0)] = 0;
+      remote_control_create_attr_str(line[0], PSTR("ant1"), temp);
+      
+
+      sprintf(temp, antenna_ctrl_get_antenna_text(1), antenna_ctrl_get_antenna_text_length(1));
+      temp[antenna_ctrl_get_antenna_text_length(1)] = 0;
+      remote_control_create_attr_str(line[1], PSTR("ant2"), temp);
+      
+      
+      strncpy(temp, antenna_ctrl_get_antenna_text(2), antenna_ctrl_get_antenna_text_length(2));
+      temp[antenna_ctrl_get_antenna_text_length(2)] = 0;
+      remote_control_create_attr_str(line[2], PSTR("ant3"), temp);
+      
+      
+      strncpy(temp, antenna_ctrl_get_antenna_text(3), antenna_ctrl_get_antenna_text_length(3));
+      temp[antenna_ctrl_get_antenna_text_length(3)] = 0;
+      remote_control_create_attr_str(line[3], PSTR("ant4"), temp);
+      
+      
+      for (int i=0;i<4;i++)
+        send_ascii_data(0, line[i]);
+      
+      remote_control_send_ack();
+    }
+    else if (strcmp_P(argv[0], PSTR("getdirs")) == 0) {
+      char line[4][20];
+      char temp[4];
+      
+      sprintf((char *)temp,"%i",antenna_ctrl_get_direction(0));
+      remote_control_create_attr_str(line[0], PSTR("dir1"), temp);
+
+      sprintf((char *)temp,"%i",antenna_ctrl_get_direction(1));
+      remote_control_create_attr_str(line[1], PSTR("dir2"), temp);
+
+      sprintf((char *)temp,"%i",antenna_ctrl_get_direction(2));
+      remote_control_create_attr_str(line[2], PSTR("dir3"), temp);
+      
+      sprintf((char *)temp,"%i",antenna_ctrl_get_direction(3));
+      remote_control_create_attr_str(line[3], PSTR("dir4"), temp);  
+      
+      for (int i=0;i<4;i++)
+        send_ascii_data(0, line[i]);
+      
+      remote_control_send_ack();
+    }
+    else if (strcmp_P(argv[0], PSTR("getrxant")) == 0) {
+      char line[RX_ANTENNA_NAME_LENGTH+8+9+1];
+      char temp[RX_ANTENNA_NAME_LENGTH+1];
+      unsigned char ant_index = 0;
+      
+      if (argc == 1) {
+        if (antenna_ctrl_rx_antenna_selected() != 0) {
+          strncpy(temp, antenna_ctrl_get_rx_antenna_name(antenna_ctrl_rx_antenna_selected()-1), antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1));
+          temp[antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1)] = 0;
+          remote_control_create_attr_str((char *)line, PSTR("rxant"), temp);
+        }
+        else
+          remote_control_create_attr_str((char *)line, PSTR("rxant"), "None");
+         
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"1") == 0)  {
+        ant_index = 0;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant1"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"2") == 0)  {
+        ant_index = 1;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant2"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"3") == 0)  {
+        ant_index = 2;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant3"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"4") == 0)  {
+        ant_index = 3;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant4"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"5") == 0)  {
+        ant_index = 4;
+       
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant5"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"6") == 0)  {
+        ant_index = 5;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant6"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"7") == 0)  {
+        ant_index = 6;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant7"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"8") == 0)  {
+        ant_index = 7;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant8"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"9") == 0)  {
+        ant_index = 8;
+        
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant9"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else if (strcmp(argv[1],"10") == 0)  {
+        ant_index = 9;
+       
+        strncpy(temp, antenna_ctrl_get_rx_antenna_name(ant_index), antenna_ctrl_get_rx_antenna_name_length(ant_index));
+        temp[antenna_ctrl_get_rx_antenna_name_length(ant_index)] = 0;
+        remote_control_create_attr_str((char *)line, PSTR("rxant10"), temp);
+        
+        send_ascii_data(0, (char *)line);
+        remote_control_send_ack();
+      }
+      else
+        send_ascii_data(0, huh);
+    }
+    else if (strcmp_P(argv[0], PSTR("getband")) == 0) {
+      char line[13];
+      
+      if (status.selected_band == BAND_160M) {
+        strcpy_P(line,PSTR("<band>160m\r"));
+      }
+      else if (status.selected_band == BAND_80M) {
+        strcpy_P(line,PSTR("<band>80m\r"));
+      }
+      else if (status.selected_band == BAND_40M) {
+        strcpy_P(line,PSTR("<band>40m\r"));        
+      }
+      else if (status.selected_band == BAND_30M) {
+        strcpy_P(line,PSTR("<band>30m\r"));
+      }
+      else if (status.selected_band == BAND_20M) {
+        strcpy_P(line,PSTR("<band>20m\r"));
+      }
+      else if (status.selected_band == BAND_17M) {
+        strcpy_P(line,PSTR("<band>17m\r")); 
+      }
+      else if (status.selected_band == BAND_15M) {
+        strcpy_P(line,PSTR("<band>15m\r"));
+      }
+      else if (status.selected_band == BAND_12M) {
+        strcpy_P(line,PSTR("<band>12m\r"));
+      }
+      else if (status.selected_band == BAND_10M) {
+        strcpy_P(line,PSTR("<band>10m\r")); 
+      }
+      else
+        strcpy_P(line,PSTR("<band>None\r"));
+      
+      send_ascii_data(0, line);
+      
+      remote_control_send_ack();
+    }    
     else {
       send_ascii_data(0, huh);
     }
   }
 
   send_ascii_data(0, "%d> ",0);
+}
+
+unsigned char remote_control_create_attr_str(char *return_str, const PROGMEM char *attr, char *input_str) {
+  unsigned char len = strlen_P(attr) + 3 + strlen(input_str);
+  
+  char c_attr[strlen_P(attr)+2];
+  c_attr[0] = '<';
+  strcpy_P(c_attr+1,attr);
+  c_attr[strlen_P(attr)+1] = '>';
+  
+  strncpy(return_str,c_attr,strlen_P(attr)+2);
+  strncpy(return_str+strlen_P(attr)+2, input_str, strlen(input_str));
+  
+  return_str[len-1] = 13;
+  return_str[len] = 0;
+  
+  return(strlen(return_str));
+}
+
+void __inline__ remote_control_send_ack(void) {
+  send_ascii_data(0,ack);
 }
