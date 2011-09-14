@@ -26,6 +26,8 @@ public:
 		void pushButtonPressed(unsigned char button);
 		CommClass *comm;
 		void parseCommData(QString attr, QString data);
+		QString getCurrentBandName();
+		int getCurrentBandIndex();
 private:
 		int interfaceType;
 		QTimer *timerPollRXQueue;
@@ -35,6 +37,8 @@ private:
 		status_struct status;
 		void sendInitSequence();
 		QString lastBand;
+		QString currentBandName;
+		int currentBandIndex;
 protected:
 private slots:
 public slots:

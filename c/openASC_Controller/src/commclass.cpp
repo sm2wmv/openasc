@@ -104,13 +104,15 @@ void CommClass::run() {
 
 		txTimeout++;
 
-		if (txTimeout > 500) {
+		if (txTimeout > 1000) {
 			qDebug("TX timeout");
 
 			if (txQueue.count() > 0)
 				txQueue.removeFirst();
 
 			lastMessageAcked = true;
+
+			txTimeout = 0;
 		}
 
 		QThread::msleep(1);

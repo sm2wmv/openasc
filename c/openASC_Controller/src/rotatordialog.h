@@ -13,6 +13,8 @@
 #include <QBrush>
 #include <QSettings>
 
+#include "commclass.h"
+
 #define TARGET_DIR_BEAMWIDTH	1
 #define TARGET_DIR_BEAMWIDTH_A1_COLOR	red
 #define CURRENT_DIR_BEAMWIDTH_A1_COLOR	black
@@ -36,9 +38,11 @@ public:
         void setAntName(int antIndex, QString name);
 				void loadBand(int bandIndex);
 				void setRotatorAngle(int antIndex, int angle);
+				void setCommPtr(CommClass* commPtr);
+				CommClass *comm;
 protected:
     void paintEvent(QPaintEvent *event);
-    void mousePressEvent ( QMouseEvent * event );
+		void mousePressEvent ( QMouseEvent * event );
 		QSettings settings;
 private:
 	void loadMap(QString path);

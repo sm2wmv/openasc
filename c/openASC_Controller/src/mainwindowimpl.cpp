@@ -156,7 +156,7 @@ void MainWindowImpl::comboBoxBandIndexChanged(int index) {
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
 	if (comm->isOpen()) {
-		comm->addTXMessage("getrxant");
+//		comm->addTXMessage("getrxant");
 		comm->addTXMessage("getdirs");
 		comm->addTXMessage("getband");
 	}
@@ -210,7 +210,32 @@ void MainWindowImpl::parseCommData(QString attr, QString data) {
 	else if (attr == "band") {
 		labelCurrentBandInfo->setText(data);
 
+		if (data == "160m")
+			currentBandIndex = 1;
+		else if (data == "80m")
+			currentBandIndex = 2;
+		else if (data == "40m")
+			currentBandIndex = 3;
+		else if (data == "30m")
+			currentBandIndex = 4;
+		else if (data == "20m")
+			currentBandIndex = 5;
+		else if (data == "17m")
+			currentBandIndex = 6;
+		else if (data == "15m")
+			currentBandIndex = 7;
+		else if (data == "12m")
+			currentBandIndex = 8;
+		else if (data == "10m")
+			currentBandIndex = 9;
+		else
+			currentBandIndex = 0;
+
+		currentBandName = data;
+
 		if (data != lastBand) {
+			rotatorWindow->loadBand(currentBandIndex);
+
 			comm->addTXMessage("getants");
 			lastBand = data;
 		}
@@ -278,6 +303,14 @@ void MainWindowImpl::parseCommData(QString attr, QString data) {
 	}
 }
 
+QString MainWindowImpl::getCurrentBandName() {
+	return(currentBandName);
+}
+
+int MainWindowImpl::getCurrentBandIndex() {
+	return(currentBandIndex);
+}
+
 void MainWindowImpl::lineEditCommandPressed(void) {
 	if (comm->isOpen()) {
 		comm->sendText(lineEditCommand->text()+CHAR_ENTER);
@@ -299,6 +332,8 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 
 	rotatorWindow = new RotatorDialog(this);
 	rotatorWindow->hide();
+	rotatorWindow->setCommPtr(comm);
+
 
 	timerPollRXQueue = new QTimer(this);
 	timerPollRXQueue->setInterval(10);

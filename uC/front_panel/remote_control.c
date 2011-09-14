@@ -632,6 +632,18 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       
       remote_control_send_ack();
     }    
+    else if (strcmp_P(argv[0], PSTR("setdir")) == 0) {
+      if (argc > 2) {
+        if (strcmp(argv[1],"1") == 0)
+          antenna_ctrl_rotate(0,atoi(argv[2]));
+        else if (strcmp(argv[1],"2") == 0)
+          antenna_ctrl_rotate(1,atoi(argv[2]));
+        else if (strcmp(argv[1],"3") == 0)
+          antenna_ctrl_rotate(2,atoi(argv[2]));
+        else if (strcmp(argv[1],"4") == 0)
+          antenna_ctrl_rotate(3,atoi(argv[2]));
+      }
+    }
     else {
       send_ascii_data(0, huh);
     }
