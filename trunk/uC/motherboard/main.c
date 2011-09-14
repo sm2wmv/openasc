@@ -178,12 +178,6 @@ void parse_internal_comm_message(UC_MESSAGE message) {
 	#endif
 		
 	switch(message.cmd) {
-		case UC_COMM_MSG_ACK:
-			internal_comm_message_acked();
-			break;
-		case UC_COMM_MSG_NACK:
-			internal_comm_message_nacked();
-			break;
 		case INT_COMM_REDIRECT_DATA:
 			//computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
 			break;

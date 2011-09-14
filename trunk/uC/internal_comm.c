@@ -47,6 +47,8 @@ UC_MESSAGE uc_new_message;
 //! The previous data
 unsigned char prev_data = 0;
 
+unsigned char allowed_to_send = 1;
+
 //! Counter which keep track of when we last did a transmission
 unsigned char counter_tx_timeout = 0;
 //! Counter which keeps track of when we last did receive a character
@@ -277,12 +279,20 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 					#ifdef INT_COMM_DEBUG
 						printf("AM 0x%02X\n",uc_new_message.cmd);
 					#endif
-					//Add the message to the RX queue
-					int_comm_rx_queue_add(uc_new_message);
-					//Send ack to acknowledge we recieved the package
 					
-					if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK))
+					if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK)) {
 						internal_comm_send_ack();
+          
+            //Add the message to the RX queue
+            int_comm_rx_queue_add(uc_new_message);
+            //Send ack to acknowledge we recieved the package
+          }
+          else {
+            if (uc_new_message.cmd == UC_COMM_MSG_ACK)
+              internal_comm_message_acked();
+            else if (uc_new_message.cmd == UC_COMM_MSG_ACK)
+              internal_comm_message_nacked();
+          }
 				}
 				else {
 					internal_comm_send_nack();
