@@ -122,12 +122,6 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 	
 	//Init the sequence of saving all data and disable all outputs activated by this unit
 	switch(message.cmd) {
-		case UC_COMM_MSG_ACK:
-			internal_comm_message_acked();
-			break;
-		case UC_COMM_MSG_NACK:
-			internal_comm_message_nacked();
-			break;
 		case INT_COMM_TURN_DEVICE_OFF:
 			//TODO: Problem with delay here, need to wait until everything is shut off
 			//This solution is pretty uggly...do it some other way?
