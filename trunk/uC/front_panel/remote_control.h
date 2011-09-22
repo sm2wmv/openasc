@@ -31,6 +31,8 @@
 
 #include <avr/pgmspace.h>
 
+#include "../internal_comm.h"
+
 void remote_control_activate_remote_mode(void);
 void remote_control_deactivate_remote_mode(void);
 unsigned char remote_control_get_remote_mode(void);
@@ -40,26 +42,14 @@ void remote_control_parse_button(unsigned char button);
 
 void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message);
 
-unsigned char remote_control_create_attr_str(char *return_str, const PROGMEM char *attr, char *input_str);
-void __inline__ remote_control_send_ack(void);
-
+void remote_control_send_band_info(unsigned char band);
+unsigned char remote_control_send_rx_ant_info(void);
+void remote_control_send_antenna_dir_info(unsigned char index);
+void remote_control_send_ant_info(void);
 
 //! Command to activate the remote control mode
 #define REMOTE_CONTROL_ACTIVATE_MODE		0x01
 //! Command to deactivate the remote control mode
 #define REMOTE_CONTROL_DEACTIVATE_MODE	0x02
-
-//! A button should be pressed
-#define REMOTE_CONTROL_BUTTON_PRESSED		0x10
-//! Command for sending rx antenna button texts
-#define REMOTE_CONTROL_RX_ANT_TEXT			0x11
-
-#define REMOTE_CONTROL_BUTTON_PRESSED		0x10
-#define REMOTE_CONTROL_RX_ANT_TEXT			0x11
-#define REMOTE_CONTROL_ANT_TEXT					0x12
-#define REMOTE_CONTROL_GET_STATUS				0x13
-#define REMOTE_CONTROL_CHANGE_BAND			0x14
-
-#define REMOTE_CONTROL_TEXT_SEPERATOR	0xFC
 
 #endif

@@ -658,7 +658,7 @@ int main(void){
   #endif
   
 	while(1) {
-		if (!rx_queue_is_empty())
+    if (!rx_queue_is_empty())
 			event_bus_parse_message();
 		
 		if (!tx_queue_is_empty())
@@ -681,8 +681,6 @@ int main(void){
 				}
 			}
 			
-      event_handler_check_uc_cmd();
-      
 		//Poll the buttons
 			if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
 				event_poll_buttons();
@@ -771,23 +769,29 @@ int main(void){
 			}
 		
 			radio_process_tasks();
+      
+      //Check that we aren't on the same band as another box every 250 ms
+      if ((counter_compare0 % 250) == 0) {
+        if (main_band_change_ok(status.selected_band) == 0) {
+            if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) == 0) {
+              error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
+            }
+        }
+      }
+      
+      event_handler_check_uc_cmd();
 		}
 
-    //Check that we aren't on the same band as another box every 250 ms
-    if ((counter_compare0 % 250) == 0) {
-      if (main_band_change_ok(status.selected_band) == 0) {
-					if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) == 0) {
-        		error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
-					}
-      }
-    }
+    //Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
+    internal_comm_poll_rx_queue();
+
+    //Poll the TX queue in the internal comm to see if we have any new messages to be SENT
+    internal_comm_poll_tx_queue();
+
 
     if ((counter_compare0 % DISPLAY_HANDLER_TICK_INTERVAL) == 0) {
       display_handler_tick();
     }
-
-//    if ((counter_compare0 % 1000) == 0)
-      //display_handler_repaint();
 
     //Check every 10 ms if we are allowed to PTT or not
     if ((counter_critical_cmd_check % 10) == 0) {
@@ -795,12 +799,6 @@ int main(void){
       
       counter_critical_cmd_check = 0;
     }
-			
-		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
-		internal_comm_poll_rx_queue();
-		
-		//Poll the TX queue in the internal comm to see if we have any new messages to be SENT
-		internal_comm_poll_tx_queue();
 
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue

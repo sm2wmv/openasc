@@ -28,6 +28,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+//#define DEBUG_REMOTE_CTRL
+
 //! Internal communication command to redirect data
 #define INT_COMM_REDIRECT_DATA	0x10
 

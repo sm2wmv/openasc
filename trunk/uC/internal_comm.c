@@ -34,6 +34,7 @@
 #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 	#include "../front_panel/led_control.h"
 	#include "../front_panel/errors.h"
+	#include "../front_panel/main.h"
 #endif
 
 //! The uc_com struct
@@ -84,7 +85,7 @@ void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(cha
 }
 
 /*! \brief Will reset the RX variables */
-void internal_comm_reset_rx(void) {
+void __inline__ internal_comm_reset_rx(void) {
 	uc_com.char_count = 0;
 	uc_com.checksum = 0;
 	uc_com.flags = 0;
@@ -95,7 +96,7 @@ void internal_comm_reset_rx(void) {
  * \return 1 if a message was in the buffer and got parsed, 0 if not
  */
 unsigned char internal_comm_poll_rx_queue(void) {
-	if (!int_comm_rx_queue_is_empty()) {
+	if (int_comm_rx_queue_count() > 0) {
 		f_ptr_rx(int_comm_rx_queue_get());	//Send the first message to the function
 		
 		int_comm_rx_queue_drop();					//Drop the message from the queue since it's been executed
@@ -109,8 +110,18 @@ unsigned char internal_comm_poll_rx_queue(void) {
  *  \return 1 if a message was in the buffer and got sent, 0 if not
  */
 unsigned char internal_comm_poll_tx_queue(void) {
-	if ((!int_comm_tx_queue_is_empty()) && (msg_not_acked == 0)) {
+  if (uc_com.flags & (1<<UC_MESSAGE_RESEND)) {
+    internal_comm_resend(); 
+    
+    uc_com.flags &= ~(1<<UC_MESSAGE_RESEND);
+  }
+  
+  if ((int_comm_tx_queue_size() > 0) && (msg_not_acked == 0)) {
 		//Send the first message in the queue
+    #ifdef INT_COMM_DEBUG
+      printf("PSEND\n\r");
+    #endif 
+    
 		internal_comm_send_message(int_comm_tx_queue_get());
 		msg_not_acked = 1;
 		return(1);	//Return 1 to show that something was done
@@ -121,6 +132,10 @@ unsigned char internal_comm_poll_tx_queue(void) {
 
 /*! \brief Send an ACK message to the internal communication uart */
 void internal_comm_send_ack(void) {
+  #ifdef INT_COMM_DEBUG
+    printf("SA\n\r");
+  #endif
+  
 	unsigned char checksum = UC_COMM_MSG_ACK;
 	
 	f_ptr_tx(UC_COMM_MSG_PREAMBLE);
@@ -175,32 +190,44 @@ void internal_comm_send_message(UC_MESSAGE tx_message) {
 void internal_comm_add_tx_message(unsigned char command, unsigned char length, char *data) {
 	#ifdef INT_COMM_DEBUG
 		printf("ADD 0x%02X\n",command);
+    printf("TX_BUF_SIZE: %i\n\r",int_comm_tx_queue_size());
+    printf("RX_BUF_SIZE: %i\n\r",int_comm_rx_queue_count());
 	#endif
-		
-	UC_MESSAGE new_mess;
 	
-	new_mess.checksum = command + length;
-	
-	new_mess.cmd = command;
-	new_mess.length = length;
-	
-	for (unsigned char i=0;i<length;i++) {
-		new_mess.checksum += data[i];
-		new_mess.data[i] = data[i];
-		
-		#ifdef INT_COMM_DEBUG
-			printf("0x%02X ",new_mess.data[i]);
-		#endif
-	}
-	
-	#ifdef INT_COMM_DEBUG
-		printf("\n");
-	#endif
+	if (int_comm_tx_queue_size() < INTERNAL_COMM_TX_QUEUE_SIZE) {
+	  UC_MESSAGE new_mess;
+    
+    new_mess.checksum = command + length;
+    
+    new_mess.cmd = command;
+    new_mess.length = length;
+    
+    for (unsigned char i=0;i<length;i++) {
+      new_mess.checksum += data[i];
+      new_mess.data[i] = data[i];
+      
+      #ifdef INT_COMM_DEBUG
+        printf("0x%02X ",new_mess.data[i]);
+      #endif
+    }
+    
+    #ifdef INT_COMM_DEBUG
+      printf("\n");
+    #endif
 
-	int_comm_tx_queue_add(new_mess);
+    int_comm_tx_queue_add(new_mess);
+  }
+  else {
+    #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+      led_set_error(LED_STATE_ON);
+
+      //Set the error flag
+      error_handler_set(ERROR_TYPE_INT_COMM_TX_FULL,1,0);
+    #endif
+  }
 }
 
-void internal_comm_message_acked(void) {
+void __inline__ internal_comm_message_acked(void) {
 	uc_new_message.checksum = 0;
 	uc_new_message.cmd = 0;
 	uc_new_message.length = 0;
@@ -210,10 +237,17 @@ void internal_comm_message_acked(void) {
 	
 	//Last TXed message was acked, lets drop the message from the TX queue
 	int_comm_tx_queue_drop();
+  
+  #ifdef INT_COMM_DEBUG
+    printf("ACKED: %i\n\r",int_comm_tx_queue_size());
+  #endif
+  
 	resend_count = 0;
+  
+  internal_comm_reset_rx();
 }
 
-void internal_comm_message_nacked(void) {
+void __inline__ internal_comm_message_nacked(void) {
 	internal_comm_resend();
 }
 
@@ -222,9 +256,9 @@ void internal_comm_resend(void) {
   if (resend_count < UC_COMM_RESEND_COUNT) {
 		if (msg_not_acked == 1) {
 			internal_comm_send_message(int_comm_tx_queue_get());
-			
+
 			#ifdef INT_COMM_DEBUG
-				printf("RS: %i\n",timer);
+				printf("RS[%i]: %u\n",resend_count,timer);
 			#endif
 			
 			resend_count++;
@@ -237,9 +271,10 @@ void internal_comm_resend(void) {
 			//Set the error flag
 			error_handler_set(ERROR_TYPE_INT_COMM_RESEND,1,0);
 		#endif
-			
+
 		#ifdef INT_COMM_DEBUG
 			printf("RESEND ERROR\n");
+      
 		#endif
 			
 		int_comm_tx_queue_drop();
@@ -280,18 +315,29 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 						printf("AM 0x%02X\n",uc_new_message.cmd);
 					#endif
 					
-					if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK)) {
-						internal_comm_send_ack();
-          
-            //Add the message to the RX queue
-            int_comm_rx_queue_add(uc_new_message);
-            //Send ack to acknowledge we recieved the package
+					//If there is room in the queue the message gets added and acked, otherwise not
+					if (int_comm_rx_queue_count() < INTERNAL_COMM_RX_QUEUE_SIZE) {
+            if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK)) {
+              internal_comm_send_ack();
+            
+              //Add the message to the RX queue
+              int_comm_rx_queue_add(uc_new_message);
+              //Send ack to acknowledge we recieved the package
+            }
+            else {
+              if (uc_new_message.cmd == UC_COMM_MSG_ACK)
+                internal_comm_message_acked();
+              else if (uc_new_message.cmd == UC_COMM_MSG_ACK)
+                internal_comm_message_nacked();
+            }
           }
           else {
-            if (uc_new_message.cmd == UC_COMM_MSG_ACK)
-              internal_comm_message_acked();
-            else if (uc_new_message.cmd == UC_COMM_MSG_ACK)
-              internal_comm_message_nacked();
+            #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+              led_set_error(LED_STATE_ON);
+        
+              //Set the error flag
+              error_handler_set(ERROR_TYPE_INT_COMM_RX_FULL,1,0);
+            #endif
           }
 				}
 				else {
@@ -324,9 +370,9 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 					break;
 				default:	
 					if ((uc_com.char_count - 4) < UC_MESSAGE_DATA_SIZE) {
-						uc_new_message.data[uc_com.char_count - 4] = data;
-						uc_com.checksum += data;
-					}
+              uc_new_message.data[uc_com.char_count - 4] = data;
+              uc_com.checksum += data;
+            }
 				break;
 			}
 		}
@@ -352,6 +398,7 @@ ISR(ISR_INTERNAL_COMM_USART_DATA) {
 void internal_comm_1ms_timer(void) {
 	if ((uc_com.char_count > 0) && (counter_rx_timeout >= UC_COMM_RX_TIMEOUT)) {
 		counter_rx_timeout = 0;
+    
 		internal_comm_reset_rx();
 	}
 		
@@ -360,7 +407,7 @@ void internal_comm_1ms_timer(void) {
 	if ((msg_not_acked == 1) && (counter_tx_timeout >= UC_COMM_TX_TIMEOUT)) {
 		counter_tx_timeout = 0;
 		
-		internal_comm_resend();
+		uc_com.flags |= (1<<UC_MESSAGE_RESEND);
 	}
 	
 	if (msg_not_acked != 0)

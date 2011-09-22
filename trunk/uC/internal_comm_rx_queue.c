@@ -28,6 +28,8 @@
 
 #include "internal_comm_rx_queue.h"
 
+unsigned char internal_comm_mutex_lock = 0;
+
 //! The RX queue
 int_comm_rx_queue_struct int_comm_rx_queue;
 
@@ -35,13 +37,17 @@ int_comm_rx_queue_struct int_comm_rx_queue;
 void int_comm_rx_queue_init(void) {
 	int_comm_rx_queue.first = 0;
 	int_comm_rx_queue.last = 0;
+  
+  int_comm_rx_queue.count = 0;
 }
 
 /*! \brief Insert a message into the TX queue (FIFO)
  * \param message - The message that should be inserted to the queue
  */
 void int_comm_rx_queue_add(UC_MESSAGE message) {
-	int_comm_rx_queue.message[int_comm_rx_queue.last++] = message;
+	internal_comm_mutex_lock = 1;
+
+  int_comm_rx_queue.message[int_comm_rx_queue.last++] = message;
 	
 	if (int_comm_rx_queue.last >= INTERNAL_COMM_RX_QUEUE_SIZE)
 		int_comm_rx_queue.last = 0;
@@ -51,23 +57,34 @@ void int_comm_rx_queue_add(UC_MESSAGE message) {
 	
 	if (int_comm_rx_queue.first >= INTERNAL_COMM_RX_QUEUE_SIZE)
 		int_comm_rx_queue.first = 0;	
+  
+  int_comm_rx_queue.count++;
+  
+  internal_comm_mutex_lock = 0;
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.
  * \return The first message in the queue
  */
 UC_MESSAGE int_comm_rx_queue_get(void) {
-	//Return the message (content of the first node)
-	return(int_comm_rx_queue.message[int_comm_rx_queue.first]);
+  if (!internal_comm_mutex_lock) {
+    //Return the message (content of the first node)
+    return(int_comm_rx_queue.message[int_comm_rx_queue.first]);
+  }
+  
+  return;
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
  */
 void int_comm_rx_queue_drop(void) {
-	int_comm_rx_queue.first++;
+  int_comm_rx_queue.first++;
 	
 	if (int_comm_rx_queue.first >= INTERNAL_COMM_RX_QUEUE_SIZE)
 		int_comm_rx_queue.first = 0;
+  
+  if (int_comm_rx_queue.count > 0)
+    int_comm_rx_queue.count--;
 }
 
 /*! \brief Erase all content in the TX queue
@@ -76,6 +93,8 @@ void int_comm_rx_queue_drop(void) {
 void int_comm_rx_queue_dropall(void) {
 	int_comm_rx_queue.first = 0;
 	int_comm_rx_queue.last = 0;
+  
+  int_comm_rx_queue.count = 0;
 }
 
 /*! \brief Check if the queue is empty
@@ -86,4 +105,10 @@ unsigned char int_comm_rx_queue_is_empty(void) {
 		return(1);
 	else
 		return(0);
+}
+
+/*! \brief Check the number of message in the queue 
+ *  \return The number of messages in the queue */
+unsigned char int_comm_rx_queue_count(void) {
+  return(int_comm_rx_queue.count);
 }

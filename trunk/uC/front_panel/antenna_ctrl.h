@@ -22,7 +22,10 @@
 
 #ifndef _ANTENNA_CTRL_H_
 #define _ANTENNA_CTRL_H_
+
 #include "main.h"
+
+#include "../global.h"
 
 //! The rotator is currently standing still
 #define FLAG_NO_ROTATION					1

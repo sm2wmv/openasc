@@ -45,4 +45,13 @@
 //! Command to send data to a device
 #define INT_COMM_PC_SEND_TO_ADDR            0xD1
 
+#define INT_COMM_REMOTE_SET_STATUS            0xA0
+#define INT_COMM_REMOTE_BAND_INFO             0xA1
+#define INT_COMM_REMOTE_ANT_TEXT              0xA2
+#define INT_COMM_REMOTE_RXANT_TEXT            0xA3
+#define INT_COMM_REMOTE_ANT_INFO              0xA4
+#define INT_COMM_REMOTE_SUBMENU_ARRAY_TEXT    0xA5
+#define INT_COMM_REMOTE_SUBMENU_STACK_TEXT    0xA6
+#define INT_COMM_REMOTE_ANT_DIR_INFO          0xA7
+
 #endif

@@ -32,10 +32,14 @@
 #include "radio_interface.h"
 #include "sub_menu.h"
 #include "display_handler.h"
+#include "remote_control.h"
+#include "errors.h"
+
 #include "../global.h"
 #include "../event_queue.h"
 
 #include "../internal_comm.h"
+#include "../internal_comm_commands.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -188,19 +192,7 @@ void band_ctrl_change_band(unsigned char band) {
       }
       
       display_handler_new_view(DISPLAY_HANDLER_VIEW_ANTENNAS);
-        
-/*        if (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM) {
-					status.prev_display = status.current_display;
-          status.current_display = CURRENT_DISPLAY_ANTENNA_INFO;
-					status.current_display_level = DISPLAY_LEVEL_BAND;
-				}
-			}
-			else {
-				if ((status.current_display != CURRENT_DISPLAY_SHUTDOWN_VIEW) && (status.current_display != CURRENT_DISPLAY_MENU_SYSTEM))
-          status.prev_display = status.current_display;
-					status.current_display = CURRENT_DISPLAY_LOGO;
-			}		*/
-			
+
 			antenna_ctrl_deactivate_all_rx_band();
 			antenna_ctrl_deactivate_all();
 			band_ctrl_deactivate_all();
@@ -227,6 +219,10 @@ void band_ctrl_change_band(unsigned char band) {
       
 			//Update the display
 			event_add_message((void*)display_handler_repaint,200,0);
+      
+      if (remote_control_get_remote_mode()) {
+        remote_control_send_band_info(band);
+      }
 		}
 		else {
       //Lets change to band undefined, as long as we are not allowed in on the band we want

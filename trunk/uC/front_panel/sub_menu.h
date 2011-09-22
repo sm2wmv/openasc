@@ -24,6 +24,7 @@
 #define _SUB_MENU_H_
 
 #include "main.h"
+#include "../global.h"
 
 //! Struct of a sub menu with the type array
 typedef struct {

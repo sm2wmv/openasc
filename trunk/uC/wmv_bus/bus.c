@@ -581,11 +581,13 @@ ISR(ISR_BUS_USART_RECV) {
                     }
                     else {
                       bus_reset_rx_status();
+                      bus_status.prev_char = data;
                       return;
                     }
                   }
                   else { //If we have written larger than the buffer size, reset the RX and let it start over
                     bus_reset_rx_status();
+                    bus_status.prev_char = data;
                     return;
                   }
 
