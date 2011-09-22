@@ -135,7 +135,7 @@ void MainWindowImpl::actionConnectTriggered() {
 			timerPollRXQueue->start();
 			timerPollStatus->start();
 
-			comm->addTXMessage("getants");
+			/*comm->addTXMessage("getants");
 			comm->addTXMessage("getrxant 1");
 			comm->addTXMessage("getrxant 2");
 			comm->addTXMessage("getrxant 3");
@@ -145,7 +145,7 @@ void MainWindowImpl::actionConnectTriggered() {
 			comm->addTXMessage("getrxant 7");
 			comm->addTXMessage("getrxant 8");
 			comm->addTXMessage("getrxant 9");
-			comm->addTXMessage("getrxant 10");
+			comm->addTXMessage("getrxant 10");*/
 		}
 	}
 }
@@ -236,7 +236,7 @@ void MainWindowImpl::parseCommData(QString attr, QString data) {
 		if (data != lastBand) {
 			rotatorWindow->loadBand(currentBandIndex);
 
-			comm->addTXMessage("getants");
+			//comm->addTXMessage("getants");
 			lastBand = data;
 		}
 	}

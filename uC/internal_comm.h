@@ -78,6 +78,8 @@
 #define UC_PREAMBLE_FOUND			0
 //! Flag that a message is in the buffer
 #define UC_MESSAGE_IN_BUFFER	1
+//! Resend
+#define UC_MESSAGE_RESEND     2
 
 //! Size of UC MESSAGE fixed part
 #define UC_SIZE_FIXED	5
@@ -98,13 +100,13 @@
 #define UC_MESSAGE_DATA_SIZE	15
 
 //! After this many ms it will reset the rx flags (in ms) (change back to 25?)
-#define UC_COMM_RX_TIMEOUT	25
+#define UC_COMM_RX_TIMEOUT	5
 
 //! After this many ms a resend will occur if a message has not been acked (in ms) (change back to 25?)
-#define UC_COMM_TX_TIMEOUT	100
+#define UC_COMM_TX_TIMEOUT	10
 
 //! Number of resends that is allowed (change back to 10?)
-#define UC_COMM_RESEND_COUNT	5
+#define UC_COMM_RESEND_COUNT	15
 
 
 /*! uC message structure, used for communication between the uCs */
@@ -135,16 +137,15 @@ unsigned char internal_comm_poll_rx_queue(void);
 unsigned char internal_comm_poll_tx_queue(void);
 void internal_comm_add_tx_message(unsigned char command, unsigned char length,char *data);
 
-void internal_comm_message_acked(void);
-void internal_comm_message_nacked(void);
+void __inline__ internal_comm_message_acked(void);
+void __inline__ internal_comm_message_nacked(void);
 
 void internal_comm_send_ack(void);
 void internal_comm_send_nack(void);
 void internal_comm_send_message(UC_MESSAGE tx_message);
-void internal_comm_reset_rx(void);
+void __inline__ internal_comm_reset_rx(void);
 void internal_comm_1ms_timer(void);
 
-void internal_comm_reset_rx(void);
 void internal_comm_resend(void);
 
 unsigned char internal_comm_check_cmd_in_tx_queue(unsigned char cmd);

@@ -104,7 +104,7 @@ void CommClass::run() {
 
 		txTimeout++;
 
-		if (txTimeout > 1000) {
+		if (txTimeout > 100) {
 			qDebug("TX timeout");
 
 			if (txQueue.count() > 0)

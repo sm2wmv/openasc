@@ -24,6 +24,7 @@
 #define _BAND_CTRL_H_
 
 #include "main.h"
+#include "../global.h"
 
 //! Struct of band data
 typedef struct {

@@ -1,4 +1,4 @@
-/*! \file front_panel/event_handler.c '
+/*! \file front_panel/event_handler.c
  *  \brief Event handler of various things
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
@@ -119,66 +119,81 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
 	#ifdef INT_COMM_DEBUG
 		printf("0x%02X\n",message.cmd);
 	#endif
-	
-	//Init the sequence of saving all data and disable all outputs activated by this unit
-	switch(message.cmd) {
-		case INT_COMM_TURN_DEVICE_OFF:
-			//TODO: Problem with delay here, need to wait until everything is shut off
-			//This solution is pretty uggly...do it some other way?
 
-      status.function_status |= (1<<FUNC_STATUS_SHUTDOWN_IN_PROGRESS);
-
-      display_handler_new_view(DISPLAY_HANDLER_VIEW_SHUTDOWN);
-      display_handler_repaint();
-      display_handler_tick();
-
-			main_save_settings();
-			
-			band_ctrl_change_band(BAND_UNDEFINED);
-			
-      send_ping();
+  if ((message.cmd >= 0xA0) && (message.cmd <= 0xAF)) {
+    switch(message.cmd) {
+      case INT_COMM_REMOTE_SET_STATUS:
+        if (message.data[0] == 0)
+          remote_control_deactivate_remote_mode();
+        else if (message.data[0] == 1)
+          remote_control_activate_remote_mode();
+        break;
       
-			//TODO: Send global shutdown message
-      bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0 ,BUS_CMD_SHUTTING_DOWN,0,0);
-      
-      main_set_device_online(0);
-			
-			if (computer_interface_is_active()) {
-				delay_s(3);
-				led_set_error(LED_STATE_ON);
-				internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
-			}
-			else
-				event_add_message((void *)shutdown_device,3000,0);
-			break;
-		case INT_COMM_PS2_KEYPRESSED:
-			event_handler_process_ps2(message.data[0]);
-			break;
-		case INT_COMM_GET_BAND_BCD_STATUS:
-			if (message.data[0] != radio_get_current_band()) {
-				if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
-					radio_set_current_band(message.data[0]);
-			}
-			
-			#ifdef INT_COMM_DEBUG
-				printf("RX BCD STATUS\n");
-			#endif
-			break;
-    case INT_COMM_PC_CONNECT_TO_ADDR:
-      ascii_comm_device_addr = message.data[0];
-      break;
-    case INT_COMM_PC_SEND_TO_ADDR:
-      if (ascii_comm_device_addr != 0x00) {
-        bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,message.data);
-      }
-      else {
-        new_uc_message = message;
-        parse_uc_cmd = 1;
-      }
-      break;
-		default:
-			break;
-	}
+      default:
+        break;
+    }
+  }
+  else {
+    switch(message.cmd) {
+      //Init the sequence of saving all data and disable all outputs activated by this unit
+      case INT_COMM_TURN_DEVICE_OFF:
+        //TODO: Problem with delay here, need to wait until everything is shut off
+        //This solution is pretty uggly...do it some other way?
+
+        status.function_status |= (1<<FUNC_STATUS_SHUTDOWN_IN_PROGRESS);
+
+        display_handler_new_view(DISPLAY_HANDLER_VIEW_SHUTDOWN);
+        display_handler_repaint();
+        display_handler_tick();
+
+        main_save_settings();
+        
+        band_ctrl_change_band(BAND_UNDEFINED);
+        
+        send_ping();
+        
+        //TODO: Send global shutdown message
+        bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0 ,BUS_CMD_SHUTTING_DOWN,0,0);
+        
+        main_set_device_online(0);
+        
+        if (computer_interface_is_active()) {
+          delay_s(3);
+          led_set_error(LED_STATE_ON);
+          internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
+        }
+        else
+          event_add_message((void *)shutdown_device,3000,0);
+        break;
+      case INT_COMM_PS2_KEYPRESSED:
+        event_handler_process_ps2(message.data[0]);
+        break;
+      case INT_COMM_GET_BAND_BCD_STATUS:
+        if (message.data[0] != radio_get_current_band()) {
+          if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
+            radio_set_current_band(message.data[0]);
+        }
+        
+        #ifdef INT_COMM_DEBUG
+          printf("RX BCD STATUS\n");
+        #endif
+        break;
+      case INT_COMM_PC_CONNECT_TO_ADDR:
+        ascii_comm_device_addr = message.data[0];
+        break;
+      case INT_COMM_PC_SEND_TO_ADDR:
+        if (ascii_comm_device_addr != 0x00) {
+          bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,message.data);
+        }
+        else {
+          new_uc_message = message;
+          parse_uc_cmd = 1;
+        }
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 void event_handler_check_uc_cmd(void) {
@@ -1117,11 +1132,16 @@ void event_bus_parse_message(void) {
 					curr_heading += bus_message.data[3];
 
           antenna_ctrl_set_rotator_flags(i,bus_message.data[6]);
-          
+
           if (antenna_ctrl_get_direction(i) != curr_heading) {
             antenna_ctrl_set_direction(curr_heading,i);
-						
+            
             display_handler_repaint();
+          }
+
+          //If the remote mode is active, we send the new heading to the motherboard, of this antenna
+          if (remote_control_get_remote_mode()) {
+            remote_control_send_antenna_dir_info(i);
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))

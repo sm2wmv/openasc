@@ -82,7 +82,8 @@ void int_comm_tx_queue_drop(void) {
 	if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
 		int_comm_tx_queue.first = 0;
   
-  int_comm_tx_queue_curr_size--;
+  if (int_comm_tx_queue_curr_size > 0)
+    int_comm_tx_queue_curr_size--;
 }
 
 /*! \brief Erase all content in the TX queue

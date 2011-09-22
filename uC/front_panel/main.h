@@ -122,28 +122,6 @@
 //! Knob function set menu options
 #define KNOB_FUNCTION_SET_MENU		6
 
-//! RX antenna name length
-#define RX_ANTENNA_NAME_LENGTH				15
-//! RX antenna output str length
-#define RX_ANTENNA_OUTPUT_STR_LENGTH	10
-//! RX antenna band output str length
-#define RX_ANTENNA_BAND_OUTPUT_STR_LENGTH	10
-
-//! The max size of the antenna output str length
-#define ANTENNA_TEXT_SIZE					10
-//! The max size of the output combination length
-#define ANTENNA_OUTPUT_COMB_SIZE	10
-//! The max size of the band output str
-#define BAND_OUTPUT_STR_SIZE			15
-//! The max size of the sub menu array output str size
-#define SUB_MENU_ARRAY_STR_SIZE		10
-//! The size of the name of a 4-SQ
-#define SUB_MENU_ARRAY_NAME_SIZE  4
-//! The max size of the sub menu array output str size
-#define SUB_MENU_STACK_STR_SIZE 10
-//! The size of the name of a stack
-#define SUB_MENU_STACK_NAME_SIZE 10
-
 //! The delimiter that seperates the outputs from which address they should be sent to
 #define OUTPUT_ADDR_DELIMITER			0xFF
 

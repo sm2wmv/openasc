@@ -55,7 +55,9 @@ struct_errors error_list[] = {
 	{ERROR_TYPE_ANT_PING_TIMEOUT,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
 	{ERROR_TYPE_BAND_PING_TIMEOUT,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
 	{ERROR_TYPE_HIGH_VSWR,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
-  {ERROR_TYPE_BAND_IN_USE,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0}};
+  {ERROR_TYPE_BAND_IN_USE,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
+  {ERROR_TYPE_INT_COMM_TX_FULL,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
+  {ERROR_TYPE_INT_COMM_RX_FULL,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0}};
 
 
 void error_handler_set(unsigned char error_type, unsigned char state, unsigned int data) {
@@ -124,4 +126,14 @@ unsigned char error_handler_is_ptt_locked(void) {
 
 unsigned char error_handler_get_state(unsigned char error_type) {
 	return(error_list[error_type].state);
+}
+
+unsigned int error_handler_get_errors(void) {
+  unsigned int retval = 0;
+  
+  for (unsigned char i=0;i<NR_OF_ERRORS;i++)
+    if (error_list[i].state)
+      retval |= (1<<i);
+    
+  return(retval);
 }

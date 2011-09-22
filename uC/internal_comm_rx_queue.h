@@ -26,7 +26,7 @@
 #include "internal_comm.h"
 
 //! The size of the RX QUEUE
-#define INTERNAL_COMM_RX_QUEUE_SIZE	8
+#define INTERNAL_COMM_RX_QUEUE_SIZE	20
 
 //! The structure of the RX circular buffer
 typedef struct rx_linked_list {
@@ -36,6 +36,8 @@ typedef struct rx_linked_list {
 	unsigned char first;
 	//! The index of the last message in the list
 	unsigned char last;
+  //! The number of messages in the queue
+  unsigned char count;
 } int_comm_rx_queue_struct;
 
 void int_comm_rx_queue_add(UC_MESSAGE message);
@@ -44,5 +46,6 @@ void int_comm_rx_queue_drop(void);
 void int_comm_rx_queue_dropall(void);
 void int_comm_rx_queue_init(void);
 unsigned char int_comm_rx_queue_is_empty(void);
+unsigned char int_comm_rx_queue_count(void);
 
 #endif

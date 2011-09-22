@@ -24,7 +24,7 @@
 #define _ERRORS_H_
 
 //! Define which tells us how many different error types that currently exist
-#define NR_OF_ERRORS	9
+#define NR_OF_ERRORS	11
 
 //! Error that the bus had to resend a message more times than the max limit
 #define ERROR_TYPE_BUS_RESEND						0
@@ -48,6 +48,10 @@
 #define ERROR_TYPE_HIGH_VSWR						7
 //! Band is already in use
 #define ERROR_TYPE_BAND_IN_USE          8
+//! Internal communication TX queue full   
+#define ERROR_TYPE_INT_COMM_TX_FULL     9
+//! Internal communication RX queue full   
+#define ERROR_TYPE_INT_COMM_RX_FULL     10
 
 
 /*! \brief Set the error flag of a certain error type
@@ -69,5 +73,7 @@ void error_handler_clear(unsigned char error_type);
 unsigned char error_handler_is_ptt_locked(void);
 
 unsigned char error_handler_get_state(unsigned char error_type);
+
+unsigned int error_handler_get_errors(void);
 
 #endif
