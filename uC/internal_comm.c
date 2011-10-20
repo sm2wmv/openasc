@@ -222,7 +222,7 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
       led_set_error(LED_STATE_ON);
 
       //Set the error flag
-      error_handler_set(ERROR_TYPE_INT_COMM_TX_FULL,1,0);
+      //error_handler_set(ERROR_TYPE_INT_COMM_TX_FULL,1,0);
     #endif
   }
 }
@@ -376,7 +376,7 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
               led_set_error(LED_STATE_ON);
         
               //Set the error flag
-              error_handler_set(ERROR_TYPE_INT_COMM_RX_FULL,1,0);
+              //error_handler_set(ERROR_TYPE_INT_COMM_RX_FULL,1,0);
             #endif
           }
 				}
