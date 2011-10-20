@@ -501,7 +501,7 @@ void display_handler_show_sub_menu(unsigned char ant_index, unsigned char sub_me
     sprintf((char *)temp, "%s",antenna_ctrl_get_antenna_text(ant_index));
     display_handler_text_center_adjust(3, temp, strlen(temp), FONT_NINE_DOT);
     
-    sprintf((char *)temp, "Direction");
+    strcpy_P((char *)temp,PSTR("Direction"));
     display_handler_text_center_adjust(19, temp, strlen(temp), FONT_NINE_DOT);
     
     sprintf((char *)temp, "%s",sub_menu_get_text(ant_index, sub_menu_get_current_pos(ant_index)));
@@ -527,7 +527,7 @@ void display_handler_show_sub_menu(unsigned char ant_index, unsigned char sub_me
     sprintf((char *)temp, "%s",antenna_ctrl_get_antenna_text(ant_index));
     display_handler_text_center_adjust(3, temp, strlen(temp), FONT_NINE_DOT);
     
-    sprintf((char *)temp, "combination");
+    strcpy_P((char *)temp, PSTR("combination"));
     display_handler_text_center_adjust(19, temp, strlen(temp), FONT_NINE_DOT);
     
     sprintf((char *)temp, "%s",sub_menu_get_text(ant_index, sub_menu_get_current_pos(ant_index)));
@@ -563,7 +563,7 @@ void display_handler_show_set_heading(unsigned int rotator_heading) {
   else
     size = 3;
       
-  sprintf((char *)temp, "Heading");
+  strcpy_P((char *)temp, PSTR("Heading"));
   display_handler_text_center_adjust(0, temp, strlen(temp), FONT_FIFTEEN_DOT);
   
   sprintf((char *)temp, "%i",rotator_heading);

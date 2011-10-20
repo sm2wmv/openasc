@@ -505,10 +505,10 @@ void computer_interface_parse_data(void) {
 			computer_interface_send_ack();
 		}
 		else if (computer_comm.command == CTRL_SET_RADIO_SETTINGS) {
-			/* Data structure for changing settings in the radio interface
-			   byte 0   = sub command, see CTRL_SET_RADIO_SETTINGS_X defines
-				 byte 1..x = data
-			*/
+			// Data structure for changing settings in the radio interface
+			// byte 0   = sub command, see CTRL_SET_RADIO_SETTINGS_X defines
+			// byte 1..x = data
+
 			switch(computer_comm.rx_buffer_start[0]) {
 				case CTRL_SET_RADIO_SETTINGS_ALL:
 					radio_settings_ptr->radio_model = computer_comm.rx_buffer_start[1];
@@ -533,16 +533,16 @@ void computer_interface_parse_data(void) {
 			}
 		}
 		else if (computer_comm.command == CTRL_SET_SEQUENCER_SETTINGS) {
-				/*! Bit 0 = Footswitch
-						Bit 1 = Radio sense lower floor
-						Bit 2 = Radio sense upper floor
-						Bit 3 = Computer RTS
-						Bit 4 = Inverted radio sense
-						Bit 5 = Inverted Computer RTS 
-						Bit 6 = Inhibit polarity (0=active low, 1=active high)
+				// Bit 0 = Footswitch
+				// Bit 1 = Radio sense lower floor
+				// Bit 2 = Radio sense upper floor
+				//	Bit 3 = Computer RTS
+				//	Bit 4 = Inverted radio sense
+				//	Bit 5 = Inverted Computer RTS 
+				//	Bit 6 = Inhibit polarity (0=active low, 1=active high)
 						
-						unsigned char ptt_input;
-				 */
+				//	unsigned char ptt_input;
+				
 			switch(computer_comm.rx_buffer_start[0]) {
 				case CTRL_SET_SEQUENCER_FOOTSWITCH:
 					ptt_sequencer_ptr->footswitch.radio_pre_delay = computer_comm.rx_buffer_start[1];
@@ -640,17 +640,17 @@ void computer_interface_parse_data(void) {
 			}
 		}
 		else if (computer_comm.command == CTRL_SET_BAND_DATA) {
-			/* 1st byte = What kind of data
-				 2nd byte = Band index
-			*/
+			// 1st byte = What kind of data
+			//	 2nd byte = Band index
+			//
 			
-			/*	Band limits (in data)
-			   	---------------------
-					byte[0..1] = low_portion_low_limit
-					byte[2..3] = low_portion_high_limit
-					byte[4..5] = high_portion_low_limit
-					byte[6..7] = high_portion_high_limit
-			*/
+			//	Band limits (in data)
+			//   	---------------------
+			//	byte[0..1] = low_portion_low_limit
+      //  byte[2..3] = low_portion_high_limit
+			//	byte[4..5] = high_portion_low_limit
+			//	byte[6..7] = high_portion_high_limit
+			
 			
 			switch(computer_comm.rx_buffer_start[0]) {
 				case CTRL_SET_BAND_DATA_LIMITS:

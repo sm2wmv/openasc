@@ -24,7 +24,7 @@
 #define _EVENT_QUEUE_H_
 
 //! The size of the event list
-#define EVENT_LIST_SIZE	10
+#define EVENT_LIST_SIZE	5
 
 //! Event message used for timing of events
 typedef struct {

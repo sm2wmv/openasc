@@ -1150,7 +1150,7 @@ void event_bus_parse_message(void) {
 
           //If the remote mode is active, we send the new heading to the motherboard, of this antenna
           if (remote_control_get_remote_mode()) {
-            remote_control_send_antenna_dir_info(i);
+//            remote_control_send_antenna_dir_info(i);
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))
