@@ -134,18 +134,6 @@ void MainWindowImpl::actionConnectTriggered() {
 			comm->start();
 			timerPollRXQueue->start();
 			timerPollStatus->start();
-
-			/*comm->addTXMessage("getants");
-			comm->addTXMessage("getrxant 1");
-			comm->addTXMessage("getrxant 2");
-			comm->addTXMessage("getrxant 3");
-			comm->addTXMessage("getrxant 4");
-			comm->addTXMessage("getrxant 5");
-			comm->addTXMessage("getrxant 6");
-			comm->addTXMessage("getrxant 7");
-			comm->addTXMessage("getrxant 8");
-			comm->addTXMessage("getrxant 9");
-			comm->addTXMessage("getrxant 10");*/
 		}
 	}
 }
@@ -156,50 +144,21 @@ void MainWindowImpl::comboBoxBandIndexChanged(int index) {
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
 	if (comm->isOpen()) {
-//		comm->addTXMessage("getrxant");
-		comm->addTXMessage("getdirs");
-		comm->addTXMessage("getband");
+
 	}
 }
 
 void MainWindowImpl::pushButtonRXAntClicked(bool state) {
-	if (comm->isOpen())
-		comm->addTXMessage("rxant");
+	if (comm->isOpen()) {
+
+	}
+
 }
 
 void MainWindowImpl::timerPollRXQueueUpdate(void) {
 
 	if (comm->getRXQueueCount() > 0) {
-		QByteArray temp = comm->getFirstInQueue();
-		textEdit->append(temp);
 
-		int i = 0;
-
-		QString attr,data;
-		bool prefixFound = false;
-		bool dataFound = false;
-
-		while(i<temp.length()) {
-			if (temp.at(i) == '<')
-				prefixFound = true;
-			else if ((temp.at(i) == '>') && (prefixFound)) {
-				prefixFound = false;
-				dataFound = true;
-			}
-			else if (prefixFound) {
-				attr.append(temp.at(i));
-			}
-			else if (dataFound) {
-				if (temp.at(i) != 13)
-					data.append(temp.at(i));
-				else
-					break;
-			}
-
-			i++;
-		}
-
-		parseCommData(attr.toAscii(),data.toAscii());
 	}
 }
 

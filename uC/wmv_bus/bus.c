@@ -401,7 +401,7 @@ unsigned char bus_check_cmd_in_tx_queue(unsigned char cmd) {
 }
 
 /*! \brief Adds the message bus_new_message into the RX queue */
-void bus_add_new_message(void) {
+void static __inline__ bus_add_new_message(void) {
 	rx_queue_add(bus_new_message);
 }
 
@@ -492,7 +492,6 @@ ISR(ISR_BUS_USART_RECV) {
 	if (bus_status.flags & (1<< BUS_STATUS_PREAMBLE_FOUND_BIT)) {
 		//Check if this is a postamble
 		if ((data == 0xFD) && (bus_new_message.length == (bus_status.char_count-7))) {		
-
 			if ((bus_new_message.to_addr == bus_status.ext_addr) || (bus_new_message.to_addr == BUS_BROADCAST_ADDR)) {
 				//Is the receiver ON? If not we don't parse the message since it's sent by ourself. This is needed because of the SYNC message if this
 				//device is used as master.
