@@ -28,6 +28,10 @@
 #define INTERFACE_TYPE_SERIAL		0
 #define INTERFACE_TYPE_TCP			1
 
+typedef struct {
+
+} struct_comm_msg;
+
 class CommClass : public QThread {
 
 public:
