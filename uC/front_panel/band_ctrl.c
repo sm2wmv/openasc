@@ -221,7 +221,7 @@ void band_ctrl_change_band(unsigned char band) {
 			event_add_message((void*)display_handler_repaint,200,0);
       
       if (remote_control_get_remote_mode()) {
-        remote_control_send_band_info(band);
+//        remote_control_send_band_info(band);
       }
 		}
 		else {

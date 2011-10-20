@@ -51,7 +51,7 @@ char huh[7] = {"Huh?\r\n\0"};
 void remote_control_activate_remote_mode(void) {
 	remote_control_flags |= (1<<FLAG_REMOTE_CONTROL_MODE_ACTIVE);
 
-  if (status.selected_band != BAND_UNDEFINED) {
+/*  if (status.selected_band != BAND_UNDEFINED) {
     remote_control_send_band_info(status.selected_band);
     remote_control_send_ant_info();
     
@@ -59,7 +59,7 @@ void remote_control_activate_remote_mode(void) {
       remote_control_send_antenna_dir_info(i);
   }
   
-  remote_control_send_rx_ant_info();
+  remote_control_send_rx_ant_info();*/
 }
 
 /*! \brief Deactivate the remote control mode */
@@ -77,7 +77,7 @@ unsigned char remote_control_get_remote_mode(void) {
 }
 
 unsigned char remote_control_send_rx_ant_info(void) {
-  if (remote_control_get_remote_mode()) {
+  /*if (remote_control_get_remote_mode()) {
     unsigned char temp_str[RX_ANTENNA_NAME_LENGTH+2];
     //Send the RX antenna names to the motherboard and the current band information
     for (unsigned char i=0;i<antenna_ctrl_get_rx_antenna_count();i++) {
@@ -88,13 +88,13 @@ unsigned char remote_control_send_rx_ant_info(void) {
       
       internal_comm_add_tx_message(INT_COMM_REMOTE_RXANT_TEXT,sizeof(temp_str),temp_str);
     }
-  }
+  }*/
   
   return(antenna_ctrl_get_rx_antenna_count());
 }
 
 void remote_control_send_band_info(unsigned char band) {
-  if (remote_control_get_remote_mode()) {
+  /*if (remote_control_get_remote_mode()) {
     remote_current_band = band;
     
     unsigned char temp_data[8];
@@ -114,11 +114,11 @@ void remote_control_send_band_info(unsigned char band) {
     internal_comm_add_tx_message(INT_COMM_REMOTE_BAND_INFO,sizeof(temp_data),temp_data);
     
     //TODO: Continue to send more info to the motherboard of the new selected band
-  }
+  }*/
 }
 
 void remote_control_send_antenna_dir_info(unsigned char index) {
-  if (remote_control_get_remote_mode()) {
+ /* if (remote_control_get_remote_mode()) {
     if (remote_current_band != BAND_UNDEFINED) {
       unsigned char temp_data[4] = {0,0,0,0};
       
@@ -145,11 +145,11 @@ void remote_control_send_antenna_dir_info(unsigned char index) {
         internal_comm_add_tx_message(INT_COMM_REMOTE_ANT_DIR_INFO,sizeof(temp_data),(char *)temp_data);
       }
     }
-  }
+  }*/
 }
 
 void remote_control_send_ant_info(void) {
-  if (remote_control_get_remote_mode()) {
+ /*if (remote_control_get_remote_mode()) {
     if (remote_current_band != BAND_UNDEFINED) {
       unsigned char temp_data[8];
       
@@ -164,7 +164,7 @@ void remote_control_send_ant_info(void) {
       
       internal_comm_add_tx_message(INT_COMM_REMOTE_ANT_INFO,sizeof(temp_data),(char *)temp_data);
     }
-  }
+  }*/
 }
 
 /*! \brief Parse a button press event, will perform an action depending on which button we wish to press
@@ -242,45 +242,45 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
   send_ascii_data(0, "\r\n");
 
   if (argc > 0) {
-    if (strcmp(argv[0], "help") == 0) {
+    if (strcmp_P(argv[0], PSTR("help")) == 0) {
       send_ascii_data(0,"No help\r\n");
     }
-    else if (strcmp(argv[0], "ant") == 0) {
+    else if (strcmp_P(argv[0], PSTR("ant")) == 0) {
       if (argc > 1) {
-        if (strcmp(argv[1],"1") == 0)
+        if (strcmp_P(argv[1],PSTR("1")) == 0)
           remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT1);
-        else if (strcmp(argv[1],"2") == 0)
+        else if (strcmp_P(argv[1],PSTR("2")) == 0)
           remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT2);
-        else if (strcmp(argv[1],"3") == 0)
+        else if (strcmp_P(argv[1],PSTR("3")) == 0)
           remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT3);
-        else if (strcmp(argv[1],"4") == 0)
+        else if (strcmp_P(argv[1],PSTR("4")) == 0)
           remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT4);
       }
       else {
         send_ascii_data(0, huh);
       }
     }
-    else if (strcmp(argv[0],"rxant") == 0) {
+    else if (strcmp_P(argv[0],PSTR("rxant")) == 0) {
       if (argc > 1) {
-        if (strcmp(argv[1],"1") == 0)
+        if (strcmp_P(argv[1],PSTR("1")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT1);
-        else if (strcmp(argv[1],"2") == 0)
+        else if (strcmp_P(argv[1],PSTR("2")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT2);
-        else if (strcmp(argv[1],"3") == 0)
+        else if (strcmp_P(argv[1],PSTR("3")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT3);
-        else if (strcmp(argv[1],"4") == 0)
+        else if (strcmp_P(argv[1],PSTR("4")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT4);
-        else if (strcmp(argv[1],"5") == 0)
+        else if (strcmp_P(argv[1],PSTR("5")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT5);
-        else if (strcmp(argv[1],"6") == 0)
+        else if (strcmp_P(argv[1],PSTR("6")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT6);
-        else if (strcmp(argv[1],"7") == 0)
+        else if (strcmp_P(argv[1],PSTR("7")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT7);
-        else if (strcmp(argv[1],"8") == 0)
+        else if (strcmp_P(argv[1],PSTR("8")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT8);
-        else if (strcmp(argv[1],"9") == 0)
+        else if (strcmp_P(argv[1],PSTR("9")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT9);
-        else if (strcmp(argv[1],"10") == 0)
+        else if (strcmp_P(argv[1],PSTR("10")) == 0)
           remote_control_parse_button(EXT_CTRL_SEL_RX_ANT10);
         else
           remote_control_parse_button(EXT_CTRL_SEL_RX_NONE);
@@ -289,35 +289,35 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         remote_control_parse_button(EXT_CTRL_TOGGLE_RX_ANT_MODE);
       }
     }
-    else if (strcmp(argv[0], "array") == 0) {
+    else if (strcmp_P(argv[0], PSTR("array")) == 0) {
       if (argc > 1) {
-        if (strcmp(argv[1],"1") == 0)
+        if (strcmp_P(argv[1],PSTR("1")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR1);
-        else if (strcmp(argv[1],"2") == 0)
+        else if (strcmp_P(argv[1],PSTR("2")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR2);
-        else if (strcmp(argv[1],"3") == 0)
+        else if (strcmp_P(argv[1],PSTR("3")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR3);
-        else if (strcmp(argv[1],"4") == 0)
+        else if (strcmp_P(argv[1],PSTR("4")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR4);
         else
           send_ascii_data(0, huh);
       }
     }
-    else if (strcmp(argv[0], "stack") == 0) {
+    else if (strcmp_P(argv[0], PSTR("stack")) == 0) {
       if (argc > 1) {
-        if (strcmp(argv[1],"1") == 0)
+        if (strcmp_P(argv[1],PSTR("1")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_STACK_COMB1);
-        else if (strcmp(argv[1],"2") == 0)
+        else if (strcmp_P(argv[1],PSTR("2")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_STACK_COMB2);
-        else if (strcmp(argv[1],"3") == 0)
+        else if (strcmp_P(argv[1],PSTR("3")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_STACK_COMB3);
-        else if (strcmp(argv[1],"4") == 0)
+        else if (strcmp_P(argv[1],PSTR("4")) == 0)
           remote_control_parse_button(EXT_CTRL_SET_STACK_COMB4);
         else
           send_ascii_data(0, huh);
       }
     }
-    else if (strcmp(argv[0], "band") == 0) {
+    else if (strcmp_P(argv[0], PSTR("band")) == 0) {
       if (strcmp_P(argv[1], PSTR("160")) == 0) {
         main_set_new_band(BAND_160M);
       }
@@ -349,7 +349,7 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         send_ascii_data(0, huh);
       }
     }
-    else if (strcmp(argv[0], "errors") == 0) {
+    else if (strcmp_P(argv[0], PSTR("errors")) == 0) {
       if (argc > 1) {
         if (strcmp_P(argv[1], PSTR("clear")) == 0) {
           error_handler_clear_all();
@@ -380,7 +380,7 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         }
       }
     }
-    else if (strcmp(argv[0], "info") == 0) {
+    else if (strcmp_P(argv[0], PSTR("info")) == 0) {
       char line[10][30];
       
       for (unsigned char i=0;i<10;i++)
@@ -509,18 +509,18 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
         send_ascii_data(0, line[i]);        
       }
     }
-     else if (strcmp(argv[0], "setdir") == 0) {
+     else if (strcmp_P(argv[0], PSTR("setdir")) == 0) {
       if (argc > 2) {
-        if (strcmp(argv[1],"1") == 0)
+        if (strcmp_P(argv[1],PSTR("1")) == 0)
           antenna_ctrl_rotate(0,atoi(argv[2]));
-        else if (strcmp(argv[1],"2") == 0)
+        else if (strcmp_P(argv[1],PSTR("2")) == 0)
           antenna_ctrl_rotate(1,atoi(argv[2]));
-        else if (strcmp(argv[1],"3") == 0)
+        else if (strcmp_P(argv[1],PSTR("3")) == 0)
           antenna_ctrl_rotate(2,atoi(argv[2]));
-        else if (strcmp(argv[1],"4") == 0)
+        else if (strcmp_P(argv[1],PSTR("4")) == 0)
           antenna_ctrl_rotate(3,atoi(argv[2]));
       }
-      else if ((argc == 2) && (strcmp(argv[1],"stop") == 0))
+      else if ((argc == 2) && (strcmp_P(argv[1],PSTR("stop")) == 0))
         antenna_ctrl_rotate_stop();
     }
     else {

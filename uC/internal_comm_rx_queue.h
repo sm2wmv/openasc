@@ -26,7 +26,7 @@
 #include "internal_comm.h"
 
 //! The size of the RX QUEUE
-#define INTERNAL_COMM_RX_QUEUE_SIZE	20
+#define INTERNAL_COMM_RX_QUEUE_SIZE	10
 
 //! The structure of the RX circular buffer
 typedef struct rx_linked_list {

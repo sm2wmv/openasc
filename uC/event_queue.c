@@ -26,6 +26,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+  #include "front_panel/errors.h"
+#endif
+
 #include "event_queue.h"
 
 /*! \brief Initialize the event queue */
@@ -60,6 +64,10 @@ char event_queue_add(EVENT_MESSAGE event) {
 			return(i);
 		}
 	}
+
+  #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+    error_handler_set(ERROR_TYPE_EVENT_QUEUE_FULL,1,0);
+  #endif
 
 	return(-1);
 }

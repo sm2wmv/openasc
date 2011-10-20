@@ -52,6 +52,8 @@
 #define ERROR_TYPE_INT_COMM_TX_FULL     9
 //! Internal communication RX queue full   
 #define ERROR_TYPE_INT_COMM_RX_FULL     10
+//! Event queue is full
+#define ERROR_TYPE_EVENT_QUEUE_FULL     11
 
 
 /*! \brief Set the error flag of a certain error type

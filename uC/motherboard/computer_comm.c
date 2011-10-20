@@ -167,6 +167,7 @@ void computer_interface_parse_data(void) {
         printf("--- addr <card address> - Set remote card address\r\n");
         printf("--- conv                - Enter conversation mode\r\n");
         printf("--- rc                  - Set remote control\r\n");
+        printf("--- remote              - Activate remote protocol\r\n");
       }
       else if (strcmp(argv[0], "arc") == 0) {
         char addr = 0;
