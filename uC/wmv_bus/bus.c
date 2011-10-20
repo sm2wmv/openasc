@@ -95,7 +95,7 @@ void bus_init(void) {
 		//57.600kpbs
 		bus_usart_init(15);
 	#endif
-	
+
 	#ifdef DEVICE_TYPE_GENERAL_IO
 		//57.600kpbs
 		bus_usart_init(15);
@@ -458,10 +458,6 @@ ISR(ISR_BUS_USART_RECV) {
     unsigned char data = UDR2;
   #endif
 
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD
-    unsigned char data = UDR2;
-  #endif
-	
   #ifdef DEVICE_TYPE_DRIVER_UNIT_V2
 		unsigned char data = UDR1;
 	#endif
@@ -488,7 +484,7 @@ ISR(ISR_BUS_USART_RECV) {
       
 	
 	bus_status.char_count++;
-
+        
 	if (bus_status.flags & (1<< BUS_STATUS_PREAMBLE_FOUND_BIT)) {
 		//Check if this is a postamble
 		if ((data == 0xFD) && (bus_new_message.length == (bus_status.char_count-7))) {		
@@ -498,33 +494,10 @@ ISR(ISR_BUS_USART_RECV) {
 				if (bus_status.flags & (1<<BUS_STATUS_RECEIVE_ON)) {
 					//Is the checksum OK? In that case we add the new message to the RX queue, if not we send a NACK (not sent if it's a broadcast)
 					if (calc_checksum == bus_new_message.checksum) {
-						//Is the message a PING message? If so we should send it to the PING list
-						if (bus_new_message.cmd == BUS_CMD_PING) {
-							if (bus_new_message.length > 1)
-								bus_ping_new_stamp(bus_new_message.from_addr, bus_new_message.data[0], bus_new_message.length-1, (unsigned char *)(bus_new_message.data+1));
-							else
-								bus_ping_new_stamp(bus_new_message.from_addr, bus_new_message.data[0], 0, 0);
-							
-							//If the device is a driver unit or a general I/O card, we also add the message to the message queue
-							#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
-								if (bus_new_message.data[0] == DEVICE_ID_MAINBOX)
-									bus_add_new_message();
-							#endif
-								
-							#ifdef DEVICE_TYPE_GENERAL_IO
-								if (bus_new_message.data[0] == DEVICE_ID_MAINBOX)
-									bus_add_new_message();
-							#endif
-						}
-						else {
-              if (bus_new_message.cmd == BUS_CMD_SHUTTING_DOWN)
-                bus_ping_clear_device(bus_new_message.from_addr);
-              
-							bus_add_new_message();
+						bus_add_new_message();
 					
-							if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
-								bus_send_ack(bus_new_message.from_addr);
-						}
+						if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
+							bus_send_ack(bus_new_message.from_addr);
 					}
 					else if (bus_new_message.to_addr != BUS_BROADCAST_ADDR) //SEND NACK
 						bus_send_nack(bus_new_message.from_addr, BUS_CHECKSUM_ERROR);
@@ -538,7 +511,7 @@ ISR(ISR_BUS_USART_RECV) {
 		else {
 			switch(bus_status.char_count) {
 				case 1 :	bus_new_message.from_addr = data;
-									calc_checksum += data;
+								calc_checksum += data;
 									break;
 				case 2 :	bus_new_message.to_addr = data;
 									calc_checksum += data;

@@ -70,150 +70,150 @@ void bus_parse_message(void) {
  *  \param offset the time in ms when we want our function to be run
  *  \param id Which type of event this is */
 void event_add_message(void (*func), unsigned int offset, unsigned char id) {
-	EVENT_MESSAGE event;
-	
-	if (event_in_queue() == 0)
-		counter_event_timer = 0;
+    EVENT_MESSAGE event;
 
-	event.func = func;
-	event.time_target = counter_event_timer + offset;
-	event.id = id;
-	
-	event_queue_add(event);
+    if (event_in_queue() == 0)
+        counter_event_timer = 0;
+
+    event.func = func;
+    event.time_target = counter_event_timer + offset;
+    event.id = id;
+    
+    event_queue_add(event);
 }
 
 /*! \brief Run the first function in the event queue */
 void event_run(void) {
-	if (event_in_queue()) {
-		EVENT_MESSAGE event = event_queue_get();
-		
-		//Run the function in the event queue
-		event.func();
-	
-		//When the function has been run we drop the message
-		event_queue_drop();
-	}
+    if (event_in_queue()) {
+        EVENT_MESSAGE event = event_queue_get();
+
+        //Run the function in the event queue
+        event.func();
+
+        //When the function has been run we drop the message
+        event_queue_drop();
+    }
 }
 
 /*! \brief Send a ping message out on the bus */
 void send_ping(void) {
-	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
+    bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
 }
 
 /*! Main function of the front panel */
 int main(void){
-	cli();
-	
-	MCUSR = 0;
-	wdt_disable();
-	
-	delay_ms(250);
-	
-	/* Initialize various hardware resources */
-	init_ports();
+    cli();
 
-	delay_ms(250);
+    MCUSR = 0;
+    wdt_disable();
 
-	/* This delay is simply so that if you have the devices connected to the same power supply
-	all units should not send their status messages at the same time. Therefor we insert a delay
-	that is based on the external address of the device */	
-  delay_ms(7 * BUS_ADDR);
-	
-  //This must be done in this order for it to work properly!
-	/* Read the external address of the device */
-	bus_set_address(BUS_ADDR);
-	
-	bus_init();
-	
-  if (BUS_ADDR == 0x01) {
-    bus_set_is_master(1,DEF_NR_DEVICES);
-	}
-	else {
-		bus_set_is_master(0,0);	
-	}
-	
-	if (bus_is_master()) {
-		tx_queue_dropall();
-	}
-	
-	init_timer_0();
-	
-	//Timer used for the communication bus. The interrupt is caught in bus.c
-	init_timer_2();
+    delay_ms(250);
 
-  computer_interface_init();
+    /* Initialize various hardware resources */
+    init_ports();
+
+    delay_ms(250);
+
+    /* This delay is simply so that if you have the devices connected to the same power supply
+    all units should not send their status messages at the same time. Therefor we insert a delay
+    that is based on the external address of the device */	
+    delay_ms(7 * BUS_ADDR);
+	
+    //This must be done in this order for it to work properly!
+    /* Read the external address of the device */
+    bus_set_address(BUS_ADDR);
+	
+    bus_init();
+	
+    if (BUS_ADDR == 0x01) {
+        bus_set_is_master(1,DEF_NR_DEVICES);
+    }
+    else {
+        bus_set_is_master(0,0);	
+    }
+	
+    if (bus_is_master()) {
+        tx_queue_dropall();
+    }
+	
+    init_timer_0();
+	
+    //Timer used for the communication bus. The interrupt is caught in bus.c
+    init_timer_2();
+
+    computer_interface_init();
   
-	sei();
+    sei();
 	
-  ping_message[0] = DEVICE_ID_STN_CTRL_BOARD;
+    ping_message[0] = DEVICE_ID_STN_CTRL_BOARD;
 
-  main_flags |= (1<<FLAG_DEVICE_STARTED);
+    main_flags |= (1<<FLAG_DEVICE_STARTED);
 	
-	while(1) {
-		if (!rx_queue_is_empty())
-			bus_parse_message();
-		
-		if (!tx_queue_is_empty())
-			bus_check_tx_status();
-		
-		if (bus_is_master()) {
-			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, (unsigned char *)DEF_NR_DEVICES);
+    while(1) {
+        if (!rx_queue_is_empty())
+            bus_parse_message();
 
-				counter_sync = 0;
-			}
-		}
+            if (!tx_queue_is_empty())
+                bus_check_tx_status();
 		
-		computer_interface_parse_data();
-    computer_interface_send_data();
+            if (bus_is_master()) {
+                if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
+                    bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, (unsigned char *)DEF_NR_DEVICES);
 
-		if (bus_allowed_to_send()) {
-		//Check if a ping message should be sent out on the bus
-			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				send_ping();
-				
-				counter_ping_interval = 0;
-			}
-		}
+                    counter_sync = 0;
+                }
+            }
+		
+        computer_interface_parse_data();
+        computer_interface_send_data();
 
-    if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
-			//Run the event in the queue
-			event_run();
-			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
-		}
-	}
+        if (bus_allowed_to_send()) {
+            //Check if a ping message should be sent out on the bus
+            if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
+                send_ping();
+
+                counter_ping_interval = 0;
+            }
+        }
+
+        if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
+            //Run the event in the queue
+            event_run();
+            main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
+        }
+    }
 }
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0A) {
-	//If this device should act as master it should send out a SYNC command
-	//and also the number of devices (for the time slots) that are active on the bus
-  if ((main_flags & (1<<FLAG_DEVICE_STARTED)) && (bus_is_master())) {
-		counter_sync++;
-	}
+    //If this device should act as master it should send out a SYNC command
+    //and also the number of devices (for the time slots) that are active on the bus
+    if ((main_flags & (1<<FLAG_DEVICE_STARTED)) && (bus_is_master())) {
+        counter_sync++;
+    }
 
-	if (event_in_queue()) {
-		if (counter_event_timer >= (event_queue_get()).time_target)
-      //event_run();
-      main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
-	}
+    if (event_in_queue()) {
+        if (counter_event_timer >= (event_queue_get()).time_target)
+        //event_run();
+        main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+    }
 	
-	counter_ping_interval++;
-	counter_ms++;
-	counter_event_timer++;
+    counter_ping_interval++;
+    counter_ms++;
+    counter_event_timer++;
 
-	//If the value equals the half of it's range then
-	//we remove that amount from all target times in the event
-	//queue and set the counter to 0 again
-	if (counter_event_timer >= 32767) {
-		event_queue_wrap(32767);
-		
-		counter_event_timer = 0;
-	}
+    //If the value equals the half of it's range then
+    //we remove that amount from all target times in the event
+    //queue and set the counter to 0 again
+    if (counter_event_timer >= 32767) {
+        event_queue_wrap(32767);
+
+        counter_event_timer = 0;
+    }
 	
-	computer_interface_1ms_tick();
+    computer_interface_1ms_tick();
 	
-	bus_ping_tick();
+    bus_ping_tick();
 }
 
 /*!Output overflow 0 interrupt */

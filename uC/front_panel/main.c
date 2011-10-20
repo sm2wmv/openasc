@@ -512,13 +512,13 @@ int main(void){
     
 	//Load all settings from the EEPROM	
 	load_settings();
-  
+        
 	//Init the communzication routines between the computer and the openASC box
 	computer_interface_init();
-	
+
 	//Init the backlight PWM
 	init_backlight();
-	
+        
 	//Set powermeter address to AUTO, always is configured this way at startup
 	runtime_settings.powermeter_address = 0; 
 	
