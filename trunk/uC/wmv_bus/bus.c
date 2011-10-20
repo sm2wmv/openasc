@@ -439,6 +439,74 @@ void bus_message_acked(unsigned char addr) {
 	}
 }
 
+void disable_bus_interrupt(void) {
+  #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+    UCSR2B &= ~(1<<RXCIE2);
+  #endif
+
+  #ifdef DEVICE_TYPE_STN_CTRL_BOARD
+    UCSR2B &= ~(1<<RXCIE2);
+  #endif
+
+  #ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+    UCSR1B &= ~(1<<RXCIE1);
+  #endif
+
+  #ifdef DEVICE_TYPE_GENERAL_IO
+      UCSR1B &= ~(1<<RXCIE1);
+  #endif
+
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT
+    UCSR1B &= ~(1<<RXCIE1);
+  #endif
+    
+  #ifdef DEVICE_TYPE_DRIVER_UNIT
+    UCSRB &= ~(1<<RXCIE);
+  #endif
+
+  #ifdef DEVICE_TYPE_POWERMETER_PICKUP
+      UCSRB &= ~(1<<RXCIE);
+  #endif    
+      
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+    UCSR2B &= ~(1<<RXCIE2);
+  #endif
+}
+
+void enable_bus_interrupt(void) {
+  #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+    UCSR2B |= (1<<RXCIE2);
+  #endif
+
+  #ifdef DEVICE_TYPE_STN_CTRL_BOARD
+    UCSR2B |= (1<<RXCIE2);
+  #endif
+
+  #ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+    UCSR1B |= (1<<RXCIE1);
+  #endif
+
+  #ifdef DEVICE_TYPE_GENERAL_IO
+      UCSR1B |= (1<<RXCIE1);
+  #endif
+
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT
+    UCSR1B |= (1<<RXCIE1);
+  #endif
+    
+  #ifdef DEVICE_TYPE_DRIVER_UNIT
+    UCSRB |= (1<<RXCIE);
+  #endif
+
+  #ifdef DEVICE_TYPE_POWERMETER_PICKUP
+      UCSRB |= (1<<RXCIE);
+  #endif    
+      
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+    UCSR2B |= (1<<RXCIE2);
+  #endif
+}
+
 #ifndef DEVICE_TYPE_COMPUTER
 /*!USART data interrupt*/
 ISR(ISR_BUS_USART_DATA) {

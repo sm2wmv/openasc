@@ -150,4 +150,7 @@ void internal_comm_resend(void);
 
 unsigned char internal_comm_check_cmd_in_tx_queue(unsigned char cmd);
 
+void enable_int_comm_interrupt(void);
+void disable_int_comm_interrupt(void);
+
 #endif

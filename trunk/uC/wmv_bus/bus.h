@@ -319,6 +319,9 @@ typedef struct {
 } bus_status_struct;
 
 
+void disable_bus_interrupt(void);
+void enable_bus_interrupt(void);
+
 void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 void bus_add_rx_message(unsigned char from_addr, unsigned char to_addr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 void bus_set_address(unsigned char addr);
