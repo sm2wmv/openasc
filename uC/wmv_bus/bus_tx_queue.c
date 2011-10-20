@@ -54,7 +54,9 @@ void tx_queue_init(void) {
 * \param message - The message that should be inserted to the queue
 */
 void tx_queue_add(BUS_MESSAGE message) {
-	bus_tx_queue_size++;
+	disable_bus_interrupt();
+	
+  bus_tx_queue_size++;
 	
 	//printf("SIZE: %i\n",bus_tx_queue_size);	
 	
@@ -78,50 +80,84 @@ void tx_queue_add(BUS_MESSAGE message) {
 	
 	if (tx_queue.first >= BUS_TX_QUEUE_SIZE)
 		tx_queue.first = 0;
+
+  enable_bus_interrupt();
 }
 
 BUS_MESSAGE tx_queue_get_pos(unsigned char pos) {
-  return(tx_queue.message[tx_queue.first+pos]);
+  disable_bus_interrupt();
+
+  BUS_MESSAGE mess = tx_queue.message[tx_queue.first+pos];
+  
+  enable_bus_interrupt();
+  
+  return(mess);
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.
 * \return The first message in the queue
 */
 BUS_MESSAGE tx_queue_get(void) {
-	//Return the message (content of the first node)
-	return(tx_queue.message[tx_queue.first]);
+	disable_bus_interrupt();
+  
+  BUS_MESSAGE mess = tx_queue.message[tx_queue.first];
+  
+  enable_bus_interrupt();
+  
+  //Return the message (content of the first node)
+	return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
 */
 void tx_queue_drop(void) {
-	tx_queue.first++;
+  disable_bus_interrupt();
+  
+  tx_queue.first++;
 	bus_tx_queue_size--;
 
 	if (tx_queue.first >= BUS_TX_QUEUE_SIZE)
 		tx_queue.first = 0;
+  
+  enable_bus_interrupt();  
 }
 
 /*! \brief Erase all content in the TX queue
  * \return The number of items that were cleared
  */
 void tx_queue_dropall(void) {
-	tx_queue.first = 0;
+  disable_bus_interrupt();
+  
+  tx_queue.first = 0;
 	tx_queue.last = 0;
 	bus_tx_queue_size = 0;
+  
+  enable_bus_interrupt();  
 }
 
 /*! \brief Check if the queue is empty
  *	\return 1 if the queue is empty and 0 otherwise */
 unsigned char tx_queue_is_empty(void) {
-	if (tx_queue.first == tx_queue.last)
-		return(1);
-	else
-		return(0);
+	disable_bus_interrupt();
+  
+  unsigned char state = 0;
+  
+  if (tx_queue.first == tx_queue.last)
+		state = 1;
+  
+  enable_bus_interrupt();
+  
+  return(state);
 }
 
 /*! \brief Get how much of the TX queue that is currently being used 
  *  \return How much of the queue is being used */
 unsigned char tx_queue_size(void) {
-	return(bus_tx_queue_size);
+	disable_bus_interrupt();
+  
+  unsigned char size = bus_tx_queue_size;
+  
+  enable_bus_interrupt();
+  
+  return(size);
 }

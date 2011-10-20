@@ -53,7 +53,9 @@ void rx_queue_init(void) {
 * \param message - The message that should be inserted to the queue
 */
 void rx_queue_add(BUS_MESSAGE message) {
-	bus_rx_queue_size++;
+  disable_bus_interrupt();
+  
+  bus_rx_queue_size++;
 
 	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 		if (bus_rx_queue_size > BUS_RX_QUEUE_SIZE) {
@@ -75,48 +77,69 @@ void rx_queue_add(BUS_MESSAGE message) {
 	
 	if (rx_queue.first >= BUS_RX_QUEUE_SIZE)
 		rx_queue.first = 0;	
+  
+  enable_bus_interrupt();
 }
 
 /*!\brief Retrieve the first message from the FIFO RX queue.
 * \return The first message in the queue
 */
 BUS_MESSAGE rx_queue_get() {
-	//Return the message (content of the first node)
-	return(rx_queue.message[rx_queue.first]);
+  disable_bus_interrupt();
+  BUS_MESSAGE mess = rx_queue.message[rx_queue.first];
+  enable_bus_interrupt();
+  
+  //Return the message (content of the first node)
+	return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
 */
 void rx_queue_drop(void) {
-	rx_queue.first++;
+  disable_bus_interrupt();
+  rx_queue.first++;
 	
 	bus_rx_queue_size--;
 	
 	if (rx_queue.first >= BUS_RX_QUEUE_SIZE)
 		rx_queue.first = 0;
+  
+  enable_bus_interrupt();
 }
 
 /*! \brief Erase all content in the RX queue
  * \return The number of items that were cleared
  */
 void rx_queue_dropall(void) {
-	rx_queue.first = 0;
+  disable_bus_interrupt();
+  rx_queue.first = 0;
 	rx_queue.last = 0;
 	
 	bus_rx_queue_size = 0;
+  enable_bus_interrupt();
+
 }
 
 /*! \brief Check if the queue is empty
  *	\return 1 if the queue is empty and 0 otherwise */
 unsigned char rx_queue_is_empty(void) {
-	if (rx_queue.first == rx_queue.last)
-		return(1);
-	else
-		return(0);
+  disable_bus_interrupt();
+  unsigned char state = 0;
+  
+  if (rx_queue.first == rx_queue.last)
+		state = 1;
+  
+  enable_bus_interrupt();
+  
+  return(state);
 }
 
 /*! \brief Get how much size of the RX queue is used at the moment 
  *  \return The size of the queue that is used */
 unsigned char rx_queue_size(void) {
-	return(bus_rx_queue_size);
+	disable_bus_interrupt();
+  unsigned char size = bus_rx_queue_size;
+  enable_bus_interrupt();
+  
+  return(size);
 }

@@ -44,7 +44,9 @@ void int_comm_tx_queue_init(void) {
  * \param message - The message that should be inserted to the queue
  */
 void int_comm_tx_queue_add(UC_MESSAGE message) {
-	int_comm_tx_queue.message[int_comm_tx_queue.last++] = message;
+  disable_int_comm_interrupt();
+  
+  int_comm_tx_queue.message[int_comm_tx_queue.last++] = message;
 	
 	if (int_comm_tx_queue.last >= INTERNAL_COMM_TX_QUEUE_SIZE)
 		int_comm_tx_queue.last = 0;
@@ -56,55 +58,89 @@ void int_comm_tx_queue_add(UC_MESSAGE message) {
 		int_comm_tx_queue.first = 0;
   
   int_comm_tx_queue_curr_size++;
+  
+  enable_int_comm_interrupt();
 }
 
 /*!\brief Retrieve the pos message from the FIFO TX queue.
  * \return The [pos] message in the queue
  */
 UC_MESSAGE int_comm_tx_queue_get_pos(unsigned char pos) {
+  disable_int_comm_interrupt();
+  
+  UC_MESSAGE mess = int_comm_tx_queue.message[int_comm_tx_queue.first+pos];
+  
+  enable_int_comm_interrupt();
+  
   //Return the message (content of the first node)
-  return(int_comm_tx_queue.message[int_comm_tx_queue.first+pos]);
+  return(mess);  
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.
  * \return The first message in the queue
  */
-UC_MESSAGE int_comm_tx_queue_get(void) {
-	//Return the message (content of the first node)
-	return(int_comm_tx_queue.message[int_comm_tx_queue.first]);
+UC_MESSAGE int_comm_tx_queue_get(void) {	
+  disable_int_comm_interrupt();
+  
+  UC_MESSAGE mess = int_comm_tx_queue.message[int_comm_tx_queue.first];
+
+  enable_int_comm_interrupt();
+  
+  //Return the message (content of the first node)
+	return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
  */
 void int_comm_tx_queue_drop(void) {
-	int_comm_tx_queue.first++;
+  disable_int_comm_interrupt();
+  
+  int_comm_tx_queue.first++;
 	
 	if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
 		int_comm_tx_queue.first = 0;
   
   if (int_comm_tx_queue_curr_size > 0)
     int_comm_tx_queue_curr_size--;
+  
+  enable_int_comm_interrupt();
 }
 
 /*! \brief Erase all content in the TX queue
  * \return The number of items that were cleared
  */
 void int_comm_tx_queue_dropall(void) {
-	int_comm_tx_queue.first = 0;
+	disable_int_comm_interrupt();
+  
+  int_comm_tx_queue.first = 0;
 	int_comm_tx_queue.last = 0;
   int_comm_tx_queue_curr_size = 0;
+  
+  enable_int_comm_interrupt();
 }
 
 /*! \brief Check if the queue is empty
  *	\return 1 if the queue is empty and 0 otherwise
  */
 unsigned char int_comm_tx_queue_is_empty(void) {
-	if (int_comm_tx_queue.first == int_comm_tx_queue.last)
-		return(1);
-	else
-		return(0);
+  disable_int_comm_interrupt();
+  
+  unsigned char state = 0;
+  
+  if (int_comm_tx_queue.first == int_comm_tx_queue.last)
+		state = 1;
+  
+  enable_int_comm_interrupt();
+  
+  return(state);
 }
 
 unsigned char int_comm_tx_queue_size(void) {
-  return(int_comm_tx_queue_curr_size);
+  disable_int_comm_interrupt();
+  
+  unsigned char size = int_comm_tx_queue_curr_size;
+  
+  enable_int_comm_interrupt();
+  
+  return(size);
 }

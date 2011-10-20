@@ -285,6 +285,46 @@ void internal_comm_resend(void) {
 	}
 }
 
+void enable_int_comm_interrupt(void) {
+  #ifdef DEVICE_TYPE_MAIN_MOTHERBOARD_UNIT
+    UCSR0B |= (1<<RXCIE0);
+  #endif
+
+  //! if the device is a frontpanel we need to set the proper USARTs used
+  #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+    UCSR0B |= (1<<RXCIE0);
+  #endif
+
+  //! if the device is a frontpanel we need to set the proper USARTs used
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+    UCSR0B |= (1<<RXCIE0);
+  #endif
+
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX_MOTHERBOARD
+    UCSR0B |= (1<<RXCIE0);
+  #endif
+}
+
+void disable_int_comm_interrupt(void) {
+  #ifdef DEVICE_TYPE_MAIN_MOTHERBOARD_UNIT
+    UCSR0B &= ~(1<<RXCIE0);
+  #endif
+
+  //! if the device is a frontpanel we need to set the proper USARTs used
+  #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+    UCSR0B &= ~(1<<RXCIE0);
+  #endif
+
+  //! if the device is a frontpanel we need to set the proper USARTs used
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+    UCSR0B &= ~(1<<RXCIE0);
+  #endif
+
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOX_MOTHERBOARD
+    UCSR0B &= ~(1<<RXCIE0);
+  #endif
+}
+
 /*! \brief Goes through the TX queue and checks if a certain command exists 
  *  \param cmd The command we wish to check if it exists in the queue *
  *  \return 1 if it exist in the queue, 0 if not */
