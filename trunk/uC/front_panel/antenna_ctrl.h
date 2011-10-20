@@ -99,7 +99,7 @@ typedef struct {
 	unsigned char rotator_sub_addr[4];
 	//!The number of degrees the rotator can turn, this might be for example 450 degrees for YAESU
 	unsigned int rotator_max_rotation[4];
-	//!The minimum heading of the rotator, this can also be negative numbers if starting point is not at 0 degrees
+	//!The minimum heading of the rotator
 	unsigned int rotator_min_heading[4];
 	//! The rotator flags
 	unsigned char rotator_flags[4];
