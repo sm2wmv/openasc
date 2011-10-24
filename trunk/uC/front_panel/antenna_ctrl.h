@@ -109,6 +109,8 @@ typedef struct {
 
 unsigned char antenna_ctrl_check_address_in_use(unsigned char addr);
 
+struct_antenna* antenna_ctrl_get_antenna_ptr(void);
+
 void antenna_ctrl_deactivate_all_rx_band(void);
 
 void antenna_ctrl_send_ant_data_to_bus(void);

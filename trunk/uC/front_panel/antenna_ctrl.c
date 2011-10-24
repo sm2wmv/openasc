@@ -91,6 +91,10 @@ unsigned char antenna_ctrl_check_address_in_use(unsigned char addr) {
 	return(ret_val);
 }
 
+struct_antenna* antenna_ctrl_get_antenna_ptr(void) {
+  return((struct_antenna*)&current_antennas);
+}
+
 unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
 	unsigned char result = 0;
 

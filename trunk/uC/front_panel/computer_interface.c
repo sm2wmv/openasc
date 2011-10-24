@@ -711,6 +711,7 @@ void computer_interface_activate_setup(void) {
 	
 	//Create dummy structures
 	antenna_ptr = (struct_antenna *)malloc(sizeof(struct_antenna));
+  //antenna_ptr = antenna_ctrl_get_antenna_ptr();
 	rx_antenna_ptr = (struct_rx_antennas *)malloc(sizeof(struct_rx_antennas));
 	band_ptr = (struct_band *)malloc(sizeof(struct_band));
 	settings_ptr = (struct_setting *)malloc(sizeof(struct_setting));
