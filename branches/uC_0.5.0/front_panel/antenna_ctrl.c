@@ -91,6 +91,10 @@ unsigned char antenna_ctrl_check_address_in_use(unsigned char addr) {
 	return(ret_val);
 }
 
+struct_antenna* antenna_ctrl_get_antenna_ptr(void) {
+  return((struct_antenna*)&current_antennas);
+}
+
 unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
 	unsigned char result = 0;
 
@@ -139,6 +143,13 @@ unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
 	}
 	
 	return(0);
+}
+
+char antenna_ctrl_get_rotates_char(unsigned char index) {
+  if (current_antennas.rotator_flags[index] & (1<<FLAG_ROTATES_OVER_SOUTH))
+    return('S');
+
+  return('N');
 }
 
 /*! \brief This function will go through a parameter with addresses and send a command to it
@@ -318,6 +329,12 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
 										 (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_SET_ANGLE, sizeof(new_dir), new_dir);
   
   last_rotated_antenna = ant_index;
+}
+
+/*! \brief Set the antenna to be rotated 
+ *  \param index The index of the antenna to be rotated */
+void antenna_ctrl_set_antenna_to_rotate(unsigned char index) {
+  last_rotated_antenna = index;
 }
 
 /*! \brief Rotate the last rotatable antenna clockwise */

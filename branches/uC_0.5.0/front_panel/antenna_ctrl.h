@@ -22,7 +22,10 @@
 
 #ifndef _ANTENNA_CTRL_H_
 #define _ANTENNA_CTRL_H_
+
 #include "main.h"
+
+#include "../global.h"
 
 //! The rotator is currently standing still
 #define FLAG_NO_ROTATION					1
@@ -32,6 +35,8 @@
 #define FLAG_ROTATION_CW					3
 //! The rotator is being rotated CCW
 #define FLAG_ROTATION_CCW					4
+//! The rotator rotates over south
+#define FLAG_ROTATES_OVER_SOUTH     5
 
 //! Struct which contains information of the rx antennas
 typedef struct {
@@ -94,7 +99,7 @@ typedef struct {
 	unsigned char rotator_sub_addr[4];
 	//!The number of degrees the rotator can turn, this might be for example 450 degrees for YAESU
 	unsigned int rotator_max_rotation[4];
-	//!The minimum heading of the rotator, this can also be negative numbers if starting point is not at 0 degrees
+	//!The minimum heading of the rotator
 	unsigned int rotator_min_heading[4];
 	//! The rotator flags
 	unsigned char rotator_flags[4];
@@ -103,6 +108,8 @@ typedef struct {
 } struct_antenna;
 
 unsigned char antenna_ctrl_check_address_in_use(unsigned char addr);
+
+struct_antenna* antenna_ctrl_get_antenna_ptr(void);
 
 void antenna_ctrl_deactivate_all_rx_band(void);
 
@@ -173,5 +180,9 @@ unsigned char antenna_ctrl_get_rotator_flags(unsigned char ant_index);
 void antenna_ctrl_select_default_ant(void);
 
 unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index);
+
+void antenna_ctrl_set_antenna_to_rotate(unsigned char index);
+
+char antenna_ctrl_get_rotates_char(unsigned char index);
 
 #endif

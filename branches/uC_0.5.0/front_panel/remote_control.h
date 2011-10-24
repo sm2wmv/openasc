@@ -23,6 +23,8 @@
 #ifndef _REMOTE_CONTROL_H_
 #define _REMOTE_CONTROL_H_
 
+#include "../internal_comm.h"
+
 /*! Remote control description 
  *  REMOTE_CONTROL_RX_ANT_TEXT -> ant1 text REMOTE_CONTROL_TEXT_SEPERATOR ant2 text REMOTE_CONTROL_TEXT_SEPERATOR ant3 text
  *  REMOTE_CONTROL_ANT_TEXT -> ant1 text REMOTE_CONTROL_ANT_TEXT ant2 text REMOTE_CONTROL_ANT_TEXT ant3 text REMOTE_CONTROL_ANT_TEXT ant4 text

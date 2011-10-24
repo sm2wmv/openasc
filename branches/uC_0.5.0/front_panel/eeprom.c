@@ -33,6 +33,7 @@
 #include "band_ctrl.h"
 #include "main.h"
 #include "radio_interface.h"
+#include "../global.h"
 
 //TODO: Fix the read block command so that reading settings from the eeprom goes faster
 

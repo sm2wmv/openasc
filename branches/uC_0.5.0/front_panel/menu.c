@@ -35,6 +35,7 @@
 #include "event_handler.h"
 #include "led_control.h"
 #include "display_handler.h"
+#include "main.h"
 
 //! Sets the intend from the left
 #define MENU_OPTION_LEFT_POS 13
@@ -43,7 +44,9 @@
 #define MENU_OPTIONS	9
 
 //! Menu options - Errors
-const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"},{"Band in use"}};
+const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, 
+                                         {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"},{"Band in use"}, {"Int comm. TX full"}, {"Int comm. RX full"},
+                                         {"Event queue full"}};
 
 
 const struct_menu_option menu_misc[] = {{"Reboot"}};
