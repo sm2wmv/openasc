@@ -31,7 +31,7 @@
 
 /*! Init the UART for the computer communication */
 void init_usart_computer(void) {
-	usart1_init(7,1); //115.2kbit
+	usart1_init(47,1); //19200 baud
 	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
 }
 
@@ -74,4 +74,7 @@ void init_ports(void) {
 	DDRJ = 0x8A;
 	DDRK = 0xFF;
 	DDRL = 0xFF;
+  
+  PORTH |= (1<<1);  //Set USART port high so we don't send continoulsy out on the bus
+  PORTH |= (1<<0); //Pull up for the USART
 }

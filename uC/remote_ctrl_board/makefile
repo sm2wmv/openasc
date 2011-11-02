@@ -50,7 +50,7 @@
 
 
 # MCU name
-MCU = atmega1280
+MCU = atmega2560
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
