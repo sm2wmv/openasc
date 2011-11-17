@@ -28,10 +28,10 @@
 
 #include "internal_comm_rx_queue.h"
 
-unsigned char internal_comm_mutex_lock = 0;
+static char data_changed = 0;
 
 //! The RX queue
-int_comm_rx_queue_struct int_comm_rx_queue;
+static int_comm_rx_queue_struct int_comm_rx_queue;
 
 /*! \brief Initialize the internal comm rx queue */
 void int_comm_rx_queue_init(void) {
@@ -45,8 +45,8 @@ void int_comm_rx_queue_init(void) {
  * \param message - The message that should be inserted to the queue
  */
 void int_comm_rx_queue_add(UC_MESSAGE message) {
-  disable_int_comm_interrupt();
-
+  data_changed = 1;
+  
   int_comm_rx_queue.message[int_comm_rx_queue.last++] = message;
 	
 	if (int_comm_rx_queue.last >= INTERNAL_COMM_RX_QUEUE_SIZE)
@@ -59,29 +59,29 @@ void int_comm_rx_queue_add(UC_MESSAGE message) {
 		int_comm_rx_queue.first = 0;	
   
   int_comm_rx_queue.count++;
-  
-  enable_int_comm_interrupt();
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.
  * \return The first message in the queue
  */
 UC_MESSAGE int_comm_rx_queue_get(void) {
-  disable_int_comm_interrupt();
+  data_changed = 0;
   
   //Return the message (content of the first node)
   UC_MESSAGE mess = int_comm_rx_queue.message[int_comm_rx_queue.first];
   
-  enable_int_comm_interrupt();
-  
+  if (data_changed) {
+    disable_int_comm_interrupt();
+    mess = int_comm_rx_queue.message[int_comm_rx_queue.first];
+    enable_int_comm_interrupt();
+  }
+
   return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
  */
 void int_comm_rx_queue_drop(void) {
-  disable_int_comm_interrupt();
-  
   int_comm_rx_queue.first++;
 	
 	if (int_comm_rx_queue.first >= INTERNAL_COMM_RX_QUEUE_SIZE)
@@ -89,36 +89,26 @@ void int_comm_rx_queue_drop(void) {
   
   if (int_comm_rx_queue.count > 0)
     int_comm_rx_queue.count--;
-  
-  enable_int_comm_interrupt();
 }
 
 /*! \brief Erase all content in the TX queue
  * \return The number of items that were cleared
  */
 void int_comm_rx_queue_dropall(void) {
-	disable_int_comm_interrupt();
-  
   int_comm_rx_queue.first = 0;
 	int_comm_rx_queue.last = 0;
   
   int_comm_rx_queue.count = 0;
-  
-  enable_int_comm_interrupt();
 }
 
 /*! \brief Check if the queue is empty
  *	\return 1 if the queue is empty and 0 otherwise
  */
 unsigned char int_comm_rx_queue_is_empty(void) {
-	disable_int_comm_interrupt();
-  
   unsigned char state = 0;
   
   if (int_comm_rx_queue.first == int_comm_rx_queue.last)
 		state = 1;
-  
-  enable_int_comm_interrupt();
   
   return(state);
 }
@@ -126,11 +116,7 @@ unsigned char int_comm_rx_queue_is_empty(void) {
 /*! \brief Check the number of message in the queue 
  *  \return The number of messages in the queue */
 unsigned char int_comm_rx_queue_count(void) {
-  disable_int_comm_interrupt();
-  
   unsigned char count = int_comm_rx_queue.count;
-  
-  enable_int_comm_interrupt();
   
   return(count);
 }

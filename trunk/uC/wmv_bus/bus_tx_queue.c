@@ -35,12 +35,13 @@
 	#include "../front_panel/errors.h"
 #endif
 
+static char data_changed = 0;
 
 //! Variable that keeps track of how much of the TX queue that is being used
-unsigned char bus_tx_queue_size;
+static unsigned char bus_tx_queue_size;
 
 //! The tx queue
-tx_queue_struct tx_queue;
+static tx_queue_struct tx_queue;
 
 /*! \brief Initialize the TX queue */
 void tx_queue_init(void) {
@@ -54,7 +55,7 @@ void tx_queue_init(void) {
 * \param message - The message that should be inserted to the queue
 */
 void tx_queue_add(BUS_MESSAGE message) {
-	disable_bus_interrupt();
+	data_changed = 1;
 	
   bus_tx_queue_size++;
 	
@@ -80,16 +81,18 @@ void tx_queue_add(BUS_MESSAGE message) {
 	
 	if (tx_queue.first >= BUS_TX_QUEUE_SIZE)
 		tx_queue.first = 0;
-
-  enable_bus_interrupt();
 }
 
 BUS_MESSAGE tx_queue_get_pos(unsigned char pos) {
-  disable_bus_interrupt();
-
+  data_changed = 0;
+  
   BUS_MESSAGE mess = tx_queue.message[tx_queue.first+pos];
   
-  enable_bus_interrupt();
+  if (data_changed) {
+    disable_bus_interrupt();
+    mess = tx_queue.message[tx_queue.first+pos];
+    enable_bus_interrupt();
+  }
   
   return(mess);
 }
@@ -98,11 +101,15 @@ BUS_MESSAGE tx_queue_get_pos(unsigned char pos) {
 * \return The first message in the queue
 */
 BUS_MESSAGE tx_queue_get(void) {
-	disable_bus_interrupt();
+  data_changed = 0;
   
   BUS_MESSAGE mess = tx_queue.message[tx_queue.first];
   
-  enable_bus_interrupt();
+  if (data_changed) {
+    disable_bus_interrupt();
+    mess = tx_queue.message[tx_queue.first];
+    enable_bus_interrupt();
+  }
   
   //Return the message (content of the first node)
 	return(mess);
@@ -111,41 +118,29 @@ BUS_MESSAGE tx_queue_get(void) {
 /*! Drops the first message in the queue Frees up the memory space aswell.
 */
 void tx_queue_drop(void) {
-  disable_bus_interrupt();
-  
   tx_queue.first++;
 	bus_tx_queue_size--;
 
 	if (tx_queue.first >= BUS_TX_QUEUE_SIZE)
 		tx_queue.first = 0;
-  
-  enable_bus_interrupt();  
 }
 
 /*! \brief Erase all content in the TX queue
  * \return The number of items that were cleared
  */
 void tx_queue_dropall(void) {
-  disable_bus_interrupt();
-  
   tx_queue.first = 0;
 	tx_queue.last = 0;
 	bus_tx_queue_size = 0;
-  
-  enable_bus_interrupt();  
 }
 
 /*! \brief Check if the queue is empty
  *	\return 1 if the queue is empty and 0 otherwise */
 unsigned char tx_queue_is_empty(void) {
-	disable_bus_interrupt();
-  
   unsigned char state = 0;
   
   if (tx_queue.first == tx_queue.last)
 		state = 1;
-  
-  enable_bus_interrupt();
   
   return(state);
 }
@@ -153,11 +148,7 @@ unsigned char tx_queue_is_empty(void) {
 /*! \brief Get how much of the TX queue that is currently being used 
  *  \return How much of the queue is being used */
 unsigned char tx_queue_size(void) {
-	disable_bus_interrupt();
-  
   unsigned char size = bus_tx_queue_size;
-  
-  enable_bus_interrupt();
   
   return(size);
 }
