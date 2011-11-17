@@ -40,12 +40,12 @@
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
 
 //! Flags used in the remote control
-unsigned char remote_control_flags = 0;
+static unsigned char remote_control_flags = 0;
 
-unsigned char remote_current_band = 0;
+static unsigned char remote_current_band = 0;
 
-char linefeed[3] = {"\r\n\0"};
-char huh[7] = {"Huh?\r\n\0"};
+static char linefeed[3] = {"\r\n\0"};
+static char huh[7] = {"Huh?\r\n\0"};
 
 /*! \brief Activate the remote control mode */
 void remote_control_activate_remote_mode(void) {
@@ -358,26 +358,49 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
       }
       else {
         unsigned char error_count = 0;
-        char line[NR_OF_ERRORS][20];
-        
-        //Show the current errors
-        if (error_handler_get_state(ERROR_TYPE_BUS_RESEND) != 0) {
-          strcpy_P(line[error_count], PSTR("Bus resend\r\n"));
-          error_count++;
-        }
-        else if (error_handler_get_state(ERROR_TYPE_BUS_SYNC) != 0) {
-          strcpy_P(line[error_count], PSTR("Sync error\r\n"));
-          error_count++;
-        }
+        char line[NR_OF_ERRORS+2][20];
 
-        if (error_count == 0) {
-          strcpy_P(line[error_count], PSTR("No errors\r\n"));
-          error_count++;
-        }
+        strcpy_P(line[0], PSTR("Error list\n\r"));
+        strcpy_P(line[1], PSTR("----------\n\r"));
         
-        for (int i=0;i<error_count;i++) {
+        if (error_handler_get_state(ERROR_TYPE_BUS_RESEND) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Bus resend\n\r"));
+        
+        if (error_handler_get_state(ERROR_TYPE_BUS_SYNC) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Bus sync\n\r"));
+
+        if (error_handler_get_state(ERROR_TYPE_BUS_TX_QUEUE_FULL) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Bus TX queue full\n\r"));
+        
+        if (error_handler_get_state(ERROR_TYPE_BUS_RX_QUEUE_FULL) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Bus RX queue full\n\r"));
+        
+        if (error_handler_get_state(ERROR_TYPE_INT_COMM_RESEND) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Int comm resend\n\r"));
+        
+        if (error_handler_get_state(ERROR_TYPE_ANT_PING_TIMEOUT) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Ant ping timeout\n\r"));
+        
+        if (error_handler_get_state(ERROR_TYPE_BAND_PING_TIMEOUT) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Band ping timeout\n\r"));        
+        
+        if (error_handler_get_state(ERROR_TYPE_HIGH_VSWR) != 0)
+          strcpy_P(line[2+error_count++], PSTR("High VSWR\n\r"));
+
+        if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Band in use\n\r"));
+
+        if (error_handler_get_state(ERROR_TYPE_INT_COMM_TX_FULL) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Int comm TX full\n\r"));
+        
+        if (error_handler_get_state(ERROR_TYPE_INT_COMM_TX_FULL) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Int comm TX full\n\r"));        
+        
+        if (error_handler_get_state(ERROR_TYPE_EVENT_QUEUE_FULL) != 0)
+          strcpy_P(line[2+error_count++], PSTR("Event queue full\n\r"));
+        
+        for (int i=0;i<error_count+2;i++)
           send_ascii_data(0, line[i]);
-        }
       }
     }
     else if (strcmp_P(argv[0], PSTR("info")) == 0) {

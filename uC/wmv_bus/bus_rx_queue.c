@@ -35,12 +35,13 @@
 	#include "../front_panel/errors.h"
 #endif
 
+static char data_changed = 0;
 
 //! Variable keeps track of how much of the queue that is currently used
-unsigned char bus_rx_queue_size;
+static unsigned char bus_rx_queue_size;
 
 //! The rx queue
-rx_queue_struct rx_queue;
+static rx_queue_struct rx_queue;
 
 /*! \brief Initialize the RX queue */
 void rx_queue_init(void) {
@@ -53,7 +54,7 @@ void rx_queue_init(void) {
 * \param message - The message that should be inserted to the queue
 */
 void rx_queue_add(BUS_MESSAGE message) {
-  disable_bus_interrupt();
+  data_changed = 1;
   
   bus_rx_queue_size++;
 
@@ -77,17 +78,21 @@ void rx_queue_add(BUS_MESSAGE message) {
 	
 	if (rx_queue.first >= BUS_RX_QUEUE_SIZE)
 		rx_queue.first = 0;	
-  
-  enable_bus_interrupt();
 }
 
 /*!\brief Retrieve the first message from the FIFO RX queue.
 * \return The first message in the queue
 */
 BUS_MESSAGE rx_queue_get() {
-  disable_bus_interrupt();
+  data_changed = 0;
+  
   BUS_MESSAGE mess = rx_queue.message[rx_queue.first];
-  enable_bus_interrupt();
+  
+  if (data_changed) {
+    disable_bus_interrupt();
+    mess = rx_queue.message[rx_queue.first];
+    enable_bus_interrupt();
+  }
   
   //Return the message (content of the first node)
 	return(mess);
@@ -96,50 +101,40 @@ BUS_MESSAGE rx_queue_get() {
 /*! Drops the first message in the queue Frees up the memory space aswell.
 */
 void rx_queue_drop(void) {
-  disable_bus_interrupt();
   rx_queue.first++;
 	
 	bus_rx_queue_size--;
 	
 	if (rx_queue.first >= BUS_RX_QUEUE_SIZE)
 		rx_queue.first = 0;
-  
-  enable_bus_interrupt();
 }
 
 /*! \brief Erase all content in the RX queue
  * \return The number of items that were cleared
  */
 void rx_queue_dropall(void) {
-  disable_bus_interrupt();
   rx_queue.first = 0;
 	rx_queue.last = 0;
 	
 	bus_rx_queue_size = 0;
-  enable_bus_interrupt();
 
 }
 
 /*! \brief Check if the queue is empty
  *	\return 1 if the queue is empty and 0 otherwise */
 unsigned char rx_queue_is_empty(void) {
-  disable_bus_interrupt();
   unsigned char state = 0;
   
   if (rx_queue.first == rx_queue.last)
 		state = 1;
-  
-  enable_bus_interrupt();
-  
+
   return(state);
 }
 
 /*! \brief Get how much size of the RX queue is used at the moment 
  *  \return The size of the queue that is used */
 unsigned char rx_queue_size(void) {
-	disable_bus_interrupt();
   unsigned char size = bus_rx_queue_size;
-  enable_bus_interrupt();
   
   return(size);
 }

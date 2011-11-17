@@ -70,46 +70,46 @@ struct_setting settings;
 unsigned char device_online = 0;
 
 //! Ping list, so we dont need to make space in the memory for it each time
-bus_struct_ping_status ping_list;
+static bus_struct_ping_status main_ping_list;
 
 //! Counter which counts up each time a compare0 interrupt has occured
-unsigned int counter_compare0 = 0;
+static unsigned int counter_compare0 = 0;
 //! Counter which is used to keep track of when we last received a sync message from the bus
-unsigned int counter_sync = 32000;
+static unsigned int counter_sync = 32000;
 //! Counter which keeps track of when we should poll the buttons
-unsigned char counter_poll_buttons = 0;
+static unsigned char counter_poll_buttons = 0;
 //! Counter which keeps track of when we should poll the external inputs
-unsigned char counter_poll_ext_devices = 0;
+static unsigned char counter_poll_ext_devices = 0;
 //! Counter which keeps track of the screensaver timeout
-unsigned int counter_screensaver_timeout = 0;
+static unsigned int counter_screensaver_timeout = 0;
 //! Counter which keeps track of when we should send out a ping to the communication bus
-unsigned int counter_ping_interval = 0;
+static unsigned int counter_ping_interval = 0;
 //! Counter which counts up each millisecond
-unsigned int counter_ms = 0;
+static unsigned int counter_ms = 0;
 //! Counter which keeps track when we should poll the rotary encoder
-unsigned char counter_poll_rotary_encoder = 0;
+static unsigned char counter_poll_rotary_encoder = 0;
 //! Counter which keeps track of when we should poll the radio
-unsigned int counter_poll_radio = 0;
+static unsigned int counter_poll_radio = 0;
 //! Counter which keeps track of when the last pulse event did occur. This is used to sense if we should change rx antennas 
-unsigned int counter_last_pulse_event=0;
+static unsigned int counter_last_pulse_event=0;
 
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
-unsigned int counter_event_timer = 0;
+static unsigned int counter_event_timer = 0;
 
 //! Counter which we use to keep track of when to check the critical cmd list
-unsigned char counter_critical_cmd_check = 0;
+static unsigned char counter_critical_cmd_check = 0;
 
 //! The number of devices on the bus
-unsigned char device_count = 0;
+static unsigned char device_count = 0;
 
 //! Different flags, description is found in main.h
 unsigned int main_flags = 0;
 
 //! Ping message of the openASC device
-unsigned char ping_message[3];
+static unsigned char ping_message[3];
 
 //! Variable to check if the device has actually gone through all init steps
-unsigned char device_started = 0;
+static unsigned char device_started = 0;
 
 //! Clear the screensaver timer
 void clear_screensaver_timer(void) {
@@ -182,9 +182,9 @@ unsigned char ext_key_get_assignment(unsigned char index) {
 unsigned char main_band_change_ok(unsigned char new_band) {
 	for (unsigned char i=0;i<bus_get_device_count();i++) {
 		if ((bus_ping_get_device_type(i) == DEVICE_ID_MAINBOX) && (i != (bus_get_address()-1))) {
-      ping_list = bus_ping_get_ping_data(i);
+      main_ping_list = bus_ping_get_ping_data(i);
 
-      if ((new_band != 0) && (ping_list.data[1] == new_band)) {
+      if ((new_band != 0) && (main_ping_list.data[1] == new_band)) {
         return(0);
       }
     }
