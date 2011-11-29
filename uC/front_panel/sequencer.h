@@ -45,6 +45,14 @@
 //! Sequencer enabled for INHIBIT
 #define SEQUENCER_PTT_INHIBIT_ENABLED	2
 
+//! \brief The footswitch PTT input is active
+#define PTT_ACTIVE_FOOTSWITCH     0
+//! \brief The radio sense PTT input is active
+#define PTT_ACTIVE_RADIO_SENSE    1
+//! \brief The computer PTT input is active
+#define PTT_ACTIVE_COMPUTER_RTS   2
+
+
 /* 
  *	Input
  *	-----

@@ -36,13 +36,6 @@
 #include "antenna_ctrl.h"
 #include "eeprom.h"
 
-//! \brief The footswitch PTT input is active
-#define PTT_ACTIVE_FOOTSWITCH			0
-//! \brief The radio sense PTT input is active
-#define PTT_ACTIVE_RADIO_SENSE		1
-//! \brief The computer PTT input is active
-#define PTT_ACTIVE_COMPUTER_RTS		2
-
 //TODO: Finish the radio sense input stuff
 
 //! The status of the PTT, see defines above

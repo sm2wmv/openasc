@@ -51,6 +51,7 @@
 #include "../wmv_bus/bus_ping.h"
 #include "../event_queue.h"
 #include "display_handler.h"
+#include "sequencer.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -618,7 +619,7 @@ void event_poll_ext_device(void) {
 	if (status.ext_devices_current_state != status.ext_devices_last_state) {
 		event_parse_ext_event(status.ext_devices_current_state ^ status.ext_devices_last_state);
 	}
-	
+
 	status.ext_devices_last_state = status.ext_devices_current_state;
 }
 
