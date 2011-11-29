@@ -88,6 +88,9 @@ BUS_MESSAGE rx_queue_get() {
   
   BUS_MESSAGE mess = rx_queue.message[rx_queue.first];
   
+  //Hopefully there is very few times where we actually need to disable the interrupts.
+  //Most of the time the data_changed variable should work just fine, hence not slowing down
+  //the communication.
   if (data_changed) {
     disable_bus_interrupt();
     mess = rx_queue.message[rx_queue.first];
