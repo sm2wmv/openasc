@@ -550,6 +550,13 @@ ISR(ISR_BUS_USART_RECV) {
       unsigned char data = UDR2;
   #endif
       
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+      unsigned char data = UDR2;
+  #endif
+
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+      unsigned char data = UDR2;
+  #endif
 	
 	bus_status.char_count++;
         

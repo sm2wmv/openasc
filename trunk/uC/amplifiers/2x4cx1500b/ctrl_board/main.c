@@ -34,16 +34,16 @@
 #include "motor_control.h"
 #include "a2d.h"
 
-#include "../../delay.h"
-#include "../../global.h"
-#include "../../event_queue.h"
+#include "../../../delay.h"
+#include "../../../global.h"
+#include "../../../event_queue.h"
 
 /* Include the bus headers */
-#include "../../wmv_bus/bus.h"
-#include "../../wmv_bus/bus_ping.h"
-#include "../../wmv_bus/bus_rx_queue.h"
-#include "../../wmv_bus/bus_tx_queue.h"
-#include "../../wmv_bus/bus_commands.h"
+#include "../../../wmv_bus/bus.h"
+#include "../../../wmv_bus/bus_ping.h"
+#include "../../../wmv_bus/bus_rx_queue.h"
+#include "../../../wmv_bus/bus_tx_queue.h"
+#include "../../../wmv_bus/bus_commands.h"
 
 //#define ERROR_DEBUG 1
 

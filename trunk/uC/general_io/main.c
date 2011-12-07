@@ -171,6 +171,12 @@ void bus_parse_message(void) {
 		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
+	else if (bus_message.cmd == BUS_CMD_PING) {
+		if (bus_message.length > 1)
+			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+		else
+			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);		
+	}
 	else if (bus_message.cmd == BUS_CMD_ROTATOR_SET_ANGLE) {
 		unsigned char subaddr = bus_message.data[0];
 		if (subaddr < ADC_CHANNELS) {

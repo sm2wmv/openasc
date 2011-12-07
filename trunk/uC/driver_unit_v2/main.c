@@ -231,6 +231,12 @@ void bus_parse_message(void) {
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_PING) {
+		//ADD the ping to the ping_list
+		if (bus_message.length > 1)
+			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+		else
+			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
+
 		//TODO: This needs to be read from the ping list
 		//If the ping is coming from a mainbox, we need to save ptt input information for the interlock
 		if (bus_message.data[0] == DEVICE_ID_MAINBOX) {
