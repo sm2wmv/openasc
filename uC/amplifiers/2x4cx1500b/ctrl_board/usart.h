@@ -21,7 +21,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#include "../../global.h"
+#include "../../../global.h"
 
 #ifndef _USART_H_
 #define _USART_H_

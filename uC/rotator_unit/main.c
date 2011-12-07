@@ -42,6 +42,7 @@
 #include "../wmv_bus/bus_rx_queue.h"
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
+#include "../wmv_bus/bus_ping.h"
 
 #define MAX_ASCII_CMD_ARGS  5
 
@@ -308,6 +309,10 @@ void bus_parse_message(void) {
 			bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 			break;
 		case BUS_CMD_PING:
+			if (bus_message.length > 1)
+				bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+			else
+				bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);				
 			break;
 		case BUS_CMD_ROTATOR_SET_ANGLE:
 			//1st byte = sub_addr (0x00 in our case)

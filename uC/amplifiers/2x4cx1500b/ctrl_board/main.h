@@ -26,6 +26,11 @@
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
 
+//! The size of the RX queue in buffers
+#define BUS_RX_QUEUE_SIZE 10
+//! The size of the TX queue in buffers
+#define BUS_TX_QUEUE_SIZE	10
+
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
 //! Macro to disable timer 0 interrupt
