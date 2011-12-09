@@ -1,4 +1,4 @@
-/*! \file station_ctrl_board_group/a2d.h \brief Analog-to-Digital converter function library. */
+/*! \file rotator_unit/a2d.h \brief Analog-to-Digital converter function library. */
 //*****************************************************************************
 //
 // File Name	: 'a2d.h'
