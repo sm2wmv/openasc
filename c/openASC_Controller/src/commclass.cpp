@@ -17,174 +17,321 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 #include "commclass.h"
+#include "mainwindowimpl.h"
 
-//! Character for enter
-#define CHAR_ENTER 13
-//! Character for space
-#define CHAR_SPACE 32
-//! Character for ESC
-#define CHAR_ESC 27
-//! Character for backspace
-#define CHAR_BS 8
-
-int txTimeout = 0;
+unsigned int ackCount = 0;
 
 CommClass::CommClass() {
-	threadActive = false;
-	lastMessageAcked = true;
+  threadActive = false;
 }
 
-/*! \brief Set the interface type of the function
- * \param type The type of the interface */
-void CommClass::setInterfaceType(int type) {
-	interfaceType = type;
+int CommClass::openPort(QString deviceName, BaudRateType baudrate) {
+  serialPort = new QextSerialPort(deviceName);
+  serialPort->setBaudRate(baudrate);
+  serialPort->setDataBits(DATA_8);
+  serialPort->setFlowControl(FLOW_OFF);
+  serialPort->setParity(PAR_NONE);
+  serialPort->setStopBits(STOP_1);
+
+  //Sets the timeout between each character read to 50 us
+  serialPort->setTimeout(0,10);
+
+  txTimeout = 0;
+  rxTimeout = 0;
+  resendCount = 0;
+  resendFlag = 0;
+  txMsgAcked = 1;
+
+  if (serialPort->open(QIODevice::ReadWrite)) {
+    serialPort->flush();
+    return(0);
+  } else {
+    return(1);
+  }
+
 }
 
-/*! \brief Set the network details
- * \param port The TCP port to connect to
- * \param addr The network address */
-void CommClass::setNetworkDetails(int port, QString addr) {
-	networkPort = port;
-	networkIPAddress = addr;
-}
-
-/*! \brief Set the serial port device name
- * \param port The name of the serial port device name */
-void CommClass::setSerialPort(QString port) {
-	serialPortName = port;
-}
-
-/*! \brief Opens the port you have configured and starts communication
-		\return 0 if everything opens OK, 1 otherwise */
-int CommClass::openPort() {
-	if (interfaceType == INTERFACE_TYPE_SERIAL) {
-		serialPort = new QextSerialPort(serialPortName);
-		serialPort->setBaudRate(BAUD19200);
-		serialPort->setDataBits(DATA_8);
-		serialPort->setFlowControl(FLOW_OFF);
-		serialPort->setParity(PAR_NONE);
-		serialPort->setStopBits(STOP_1);
-
-		//Sets the timeout between each character read to 50 us
-		serialPort->setTimeout(0,10);
-
-		if (serialPort->open(QIODevice::ReadWrite)) {
-			serialPort->flush();
-			return(0);
-		}
-		else
-			return(1);
-
-		receivedMessage.clear();
-	}
-	else if (interfaceType == INTERFACE_TYPE_TCP) {
-
-	}
+void CommClass::parseRXQueue() {
 }
 
 void CommClass::run() {
-	threadActive = true;
+  threadActive = true;
 
-	if (interfaceType == INTERFACE_TYPE_SERIAL) {
-	}
+  while(threadActive) {
+    receiveMsg();
 
-	while(threadActive) {
-		receiveMsg();
+    checkTXQueue();
 
-		if (lastMessageAcked) {
-			if (txQueue.count() > 0) {
-				sendText(txQueue.first());
+    rxTimeout++;
 
-				lastMessageAcked = false;
-				txTimeout = 0;
-			}
-		}
+    if (rxMessage.size() > 0) {
+      if (rxTimeout > COMM_INTERFACE_RX_TIMEOUT_LIMIT) {
+        rxMessage.clear();
 
-		txTimeout++;
+        rxTimeout = 0;
+      }
+    }
 
-		if (txTimeout > 100) {
-			qDebug("TX timeout");
+    if (txMsgAcked == 0) {
+      if (txTimeout > COMM_INTERFACE_TX_TIMEOUT_LIMIT) {
+        resendFlag = 1;
+        txTimeout = 0;
+      }
+      else
+        txTimeout++;
+    }
 
-			if (txQueue.count() > 0)
-				txQueue.removeFirst();
-
-			lastMessageAcked = true;
-
-			txTimeout = 0;
-		}
-
-		QThread::msleep(1);
-	}
+    QThread::usleep(1000);
+  }
 }
 
 void CommClass::stopProcess() {
-	threadActive = false;
+  threadActive = false;
 }
 
-bool CommClass::isOpen() {
-	return(serialPort->isOpen());
+int CommClass::closePort() {
+  serialPort->close();
+
+  return(0);
+}
+
+void CommClass::checkTXQueue() {
+  if (txQueue.size() > 0) {
+    if (txMsgAcked) {
+      sendMessage(txQueue.first());
+
+      resendFlag = 0;
+      txMsgAcked = 0;
+      resendCount = 0;
+      txTimeout = 0;
+    }
+    else if (resendFlag) {
+      if(resendCount < COMM_INTERFACE_MAX_RESENDS) {
+        qDebug("RESEND");
+        if (txQueue.size() > 0)
+          sendMessage(txQueue.first());
+
+        resendCount++;
+        txTimeout = 0;
+      }
+      else {
+        qDebug("I GIVE UP! DROPPING MESSAGE");
+        if (txQueue.size() > 0)
+          txQueue.removeFirst();
+
+        txMsgAcked = 1;
+        resendCount = 0;
+        txTimeout = 0;
+      }
+    }
+  }
+}
+
+int CommClass::getRXQueueSize() {
+  return(rxQueue.size());
+}
+
+struct_message CommClass::getRXQueueFirst() {
+  struct_message message = rxQueue.first();
+  rxQueue.removeFirst();
+
+  return(message);
+}
+
+void CommClass::resetRXStatus() {
+
+}
+
+void CommClass::sendACK() {
+  struct_message message;
+
+  message.checksum = COMM_CLASS_ACK;
+  message.cmd = COMM_CLASS_ACK;
+  message.length = 0;
+
+  sendMessage(message);
+}
+
+void CommClass::sendNACK() {
+  struct_message message;
+
+  message.checksum = COMM_CLASS_NACK;
+  message.cmd = COMM_CLASS_NACK;
+  message.length = 0;
+
+  sendMessage(message);
 }
 
 void CommClass::receiveMsg() {
-	if (interfaceType == INTERFACE_TYPE_SERIAL) {
-		char buff[1024];
-		int numBytes;
+  char buff[1024];
+  unsigned char prev_char = 0;
+  unsigned char curr_char = 0;
+  unsigned char char_count = 0;
+  unsigned char checksum = 0;
+  int lastFoundIndex = 0;
+  unsigned char preamble_found = 0;
+  int numBytes;
 
-		numBytes = serialPort->bytesAvailable();
+  struct_message message;
 
-		if(numBytes > 0) {
-			if(numBytes > 1024)
-				numBytes = 1024;
+  numBytes = serialPort->bytesAvailable();
 
-			int i = serialPort->read(buff, numBytes);
+  if(numBytes > 0) {
+    rxTimeout = 0;
 
-			receivedMessage.append(buff,i);
-		}
-	
-		for (int i=0;i<receivedMessage.length();i++) {
-			if (receivedMessage.at(i) == CHAR_ENTER) {
-				rxQueue.append(receivedMessage.mid(0,i));
-				receivedMessage.remove(0,i+1);
-			}
-		}
-	}
+    if(numBytes > 1024)
+      numBytes = 1024;
+
+    int i = serialPort->read(buff, numBytes);
+
+    rxMessage.append(buff,i);
+
+/*    for (int i=0;i<rxMessage.size();i++)
+      printf("CHAR: 0x%02X\n\r",(unsigned char)(rxMessage.at(i)));//qDebug() << "CHAR: " << i << ": " << rxMessage.at(i);
+
+    qDebug() << "SIZE: " << rxMessage.size();*/
+  }
+
+  for (int i=0;i<rxMessage.size();i++) {
+    curr_char = rxMessage.at(i);
+
+    if (preamble_found) {
+      if ((curr_char == COMM_CLASS_POSTAMBLE) && (message.length == (char_count - 3))){
+        //qDebug("POSTAMBLE FOUND");
+        if (checksum == message.checksum) {
+//          qDebug("CHECKSUM OK");
+          if (message.cmd == COMM_CLASS_ACK) {
+            qDebug() << "ACK #" << ackCount++ << " RXED";
+            if (txQueue.size() > 0)
+              txQueue.removeFirst();  //Remove the first message in the queue
+
+            txMsgAcked = 1;
+            resendFlag = 0;
+            resendCount = 0;
+          }
+          else if (message.cmd == COMM_CLASS_NACK) {
+            resendFlag = 1;
+            //qDebug("CHECKSUM FAIL");
+          }
+          else {
+/*            qDebug("ADDED MSG\n\r");
+
+            qDebug() << "CMD: " << message.cmd;
+            qDebug() << "LENGTH: " << message.length;
+            for (unsigned char i=0;i<message.length;i++)
+              qDebug() << "DATA[" << i << "]: " << message.data[i];
+*/
+            rxQueue.append(message);
+            sendACK();
+          }
+
+          checksum = 0;
+          char_count = 0;
+        }
+        else {
+          qDebug("RX CHECKSUM FAIL");
+          resendFlag = 1;
+          resendCount = 0;
+          lastFoundIndex = i;
+        }
+
+        lastFoundIndex = i;
+      }
+      else {
+        if (char_count < (COMM_INTERFACE_DATA_LENGTH+3)) {
+          switch(char_count) {
+            case 0:
+              message.checksum = curr_char;
+              break;
+          case 1:
+              message.cmd = curr_char;
+              checksum += curr_char;
+              break;
+          case 2:
+              message.length = curr_char;
+              checksum += curr_char;
+              break;
+          default:
+              message.data[char_count-3] = curr_char;
+              checksum += curr_char;
+              break;
+          }
+
+          char_count++;
+        }
+        else {
+          char_count = 0;
+          checksum = 0;
+          curr_char = 0;
+        }
+      }
+    }
+    else if ((prev_char == COMM_CLASS_PREAMBLE) && (curr_char == COMM_CLASS_PREAMBLE)) {
+      preamble_found = 1;
+      checksum = 0;
+      char_count = 0;
+    }
+
+    prev_char = curr_char;
+
+
+//      qDebug() << "Loop: " << i;
+  }
+
+  if (lastFoundIndex != 0)
+    rxMessage.remove(0,lastFoundIndex+1);
 }
 
-void CommClass::sendText(QString text) {
-	if (interfaceType == INTERFACE_TYPE_SERIAL) {
-		QByteArray array(text.toAscii());
-
-		serialPort->write(array);
-	}
+bool CommClass::isOpen() {
+  return(serialPort->isOpen());
 }
 
-void CommClass::addTXMessage(QString msg) {
-	if (msg.at(msg.length()-1) != 13)
-		msg.append(13);
+void CommClass::sendMessage(struct_message message) {
+  QByteArray txArray;
 
-	txQueue.append(msg);
+  txArray.append(COMM_CLASS_PREAMBLE);
+  txArray.append(COMM_CLASS_PREAMBLE);
+  txArray.append(message.checksum);
+  txArray.append(message.cmd);
+  txArray.append(message.length);
+
+  for (unsigned char i=0;i<message.length;i++)
+    txArray.append(message.data[i]);
+
+  txArray.append(COMM_CLASS_POSTAMBLE);
+
+  serialPort->write(txArray);
 }
 
-QByteArray CommClass::getFirstInQueue() {
-	if (rxQueue.count() > 0) {
-		QByteArray temp = rxQueue.first();
-		rxQueue.removeFirst();
+void CommClass::addTXMessage(unsigned char cmd, unsigned char length, unsigned char *data) {
+  struct_message message;
 
-		return(temp);
-	}
+  message.checksum = 0;
+  message.cmd = cmd;
+  message.checksum += cmd;
+  message.length = length;
+  message.checksum += length;
 
-	return(NULL);
+  for (unsigned char i=0;i<length;i++) {
+    message.data[i] = data[i];
+    message.checksum += data[i];
+  }
+
+  txQueue.append(message);
 }
 
-int CommClass::getRXQueueCount() {
-	return(rxQueue.count());
-}
+void CommClass::addTXMessage(unsigned char cmd, unsigned char data) {
+  struct_message message;
 
-bool CommClass::messageAcked() {
-	if (txQueue.count() > 0)
-		txQueue.removeFirst();
+  message.checksum = 0;
+  message.cmd = cmd;
+  message.checksum += cmd;
+  message.length = 1;
+  message.checksum += 1;
 
-	lastMessageAcked = true;
+  message.data[0] = data;
+  message.checksum += data;
+
+  txQueue.append(message);
 }

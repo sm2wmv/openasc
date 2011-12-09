@@ -250,7 +250,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>10</number>
+         <number>0</number>
         </property>
         <item>
          <property name="text">
@@ -820,7 +820,7 @@
        <widget class="QLabel" name="labelRXAntennas3">
         <property name="geometry">
          <rect>
-          <x>15</x>
+          <x>10</x>
           <y>170</y>
           <width>86</width>
           <height>20</height>
@@ -845,58 +845,8 @@
        <widget class="QLabel" name="labelCurrentRXAntenna">
         <property name="geometry">
          <rect>
-          <x>105</x>
+          <x>100</x>
           <y>170</y>
-          <width>131</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="labelCurrentBand">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>190</y>
-          <width>86</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Current band:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="labelCurrentBandInfo">
-        <property name="geometry">
-         <rect>
-          <x>105</x>
-          <y>190</y>
           <width>131</width>
           <height>20</height>
          </rect>
@@ -986,7 +936,7 @@
          <string>RX Ant</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -1036,7 +986,7 @@
      <x>0</x>
      <y>0</y>
      <width>590</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">

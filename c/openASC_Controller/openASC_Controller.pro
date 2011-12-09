@@ -12,6 +12,7 @@ MOC_DIR = build
 UI_DIR = build
 FORMS = ui/mainwindow.ui \
     ui/rotatorwindow.ui \
+    ui/mapviewwidget.ui \
     ui/settingsdialog.ui
 HEADERS = src/mainwindowimpl.h \
     src/generic.h \
@@ -21,6 +22,7 @@ HEADERS = src/mainwindowimpl.h \
     src/qextserialbase.h \
     src/qextserialport.h \
     src/rotatordialog.h \
+    src/mapviewwidget.h \
     src/settingsdialog.h \
     src/commands.h \
     src/commclass.h
@@ -31,6 +33,7 @@ SOURCES = src/mainwindowimpl.cpp \
     src/qextserialbase.cpp \
     src/qextserialport.cpp \
     src/rotatordialog.cpp \
+    src/mapviewwidget.cpp \
     src/settingsdialog.cpp \
     src/win_qextserialport.cpp \
     src/commclass.cpp

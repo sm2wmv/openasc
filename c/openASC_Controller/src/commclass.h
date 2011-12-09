@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Mikael Larsmark, SM2WMV   *
+ *   Copyright (C) 2009 by Mikael Larsmark, SM2WMV   *
  *   mike@sm3wmv.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,49 +18,78 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef COMMCLASS_H
-#define COMMCLASS_H
+#ifndef __COMMCLASS_H__
+#define __COMMCLASS_H__
 
+#include <QMainWindow>
 #include <QThread>
 #include <QLinkedList>
+#include <QtNetwork>
+#include <QString>
+#include <QTcpSocket>
+
 #include "qextserialport.h"
+#include "commands.h"
 
-#define INTERFACE_TYPE_SERIAL		0
-#define INTERFACE_TYPE_TCP			1
+//Must be set to the same value in the uC source
+#define	COMM_INTERFACE_DATA_LENGTH	15
 
-typedef struct {
+//! The timeout limit for transmission
+#define COMM_INTERFACE_TX_TIMEOUT_LIMIT 100
 
-} struct_comm_msg;
+#define COMM_INTERFACE_RX_TIMEOUT_LIMIT 100
 
-class CommClass : public QThread {
+#define COMM_INTERFACE_MAX_RESENDS  5
 
-public:
-	CommClass();
-	void setInterfaceType(int type);
-	void setNetworkDetails(int port, QString addr);
-	void setSerialPort(QString port);
-	int openPort();
-	void stopProcess();
-	bool isOpen();
-	void receiveMsg();	
-	QByteArray getFirstInQueue();
-	int getRXQueueCount();
-	bool messageAcked();
-	void addTXMessage(QString msg);
-	void sendText(QString text);
-private:
-	int interfaceType;
-	bool threadActive;
-	QextSerialPort *serialPort;
-	QString serialPortName;
-	int networkPort;
-	QString networkIPAddress;
-	QByteArray receivedMessage;
-	QLinkedList<QByteArray> rxQueue;
-	QLinkedList<QString> txQueue;
-	bool lastMessageAcked;
-protected:
-	void run();
+struct struct_message {
+  unsigned char checksum;
+  unsigned char cmd;
+  unsigned char length;
+  unsigned char data[COMM_INTERFACE_DATA_LENGTH];
 };
 
-#endif // COMMCLASS_H
+//! The serial acknowledge of the computer communication protocol
+#define COMM_CLASS_ACK				0xFA
+//! The serial NOT acknowledge of the computer communication protocol
+#define COMM_CLASS_NACK			0xFB
+//! The communication preamble
+#define COMM_CLASS_PREAMBLE   0xFE
+//! The communication postamble
+#define COMM_CLASS_POSTAMBLE  0xFD
+
+class CommClass : public QThread {
+	public:
+		CommClass();
+    int openPort(QString deviceName, BaudRateType baudrate);
+		int closePort();
+		void receiveMsg();
+    void sendMessage(struct_message message);
+		void addTXMessage(unsigned char cmd, unsigned char length, unsigned char *data);
+    void addTXMessage(unsigned char cmd, unsigned char data);
+    void pollTXQueue();
+		void stopProcess();
+		bool isOpen();
+		int getRXQueueSize();
+    struct_message getRXQueueFirst();
+	private:
+    void resetRXStatus();
+    void checkTXQueue();
+    void parseRXQueue();
+    void sendACK();
+		void sendNACK();
+    unsigned char txMsgAcked;
+    unsigned char resendCount;
+    unsigned char txTimeout;
+    unsigned char rxTimeout;
+    unsigned char resendFlag;
+	protected:
+		bool threadActive;
+		QextSerialPort *serialPort;
+    QByteArray rxMessage;
+    QLinkedList<struct_message> txQueue;
+    QLinkedList<struct_message> rxQueue;
+		void run();
+};
+
+#endif
+
