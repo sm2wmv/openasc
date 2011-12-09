@@ -1,9 +1,9 @@
-/*! \file station_ctrl_board_group/init.h 
+/*! \file 4cx1500b/ctrl_board/init.h 
  *  \brief Initialization routines for the control board
- *  \ingroup station_ctrl_board_group
+ *  \ingroup ctrl_board_group
  *  \author Mikael Larsmark, SM2WMV
  *  \date 2011-02-05
- *  \code #include "station_ctrl_board_group/init.h" \endcode
+ *  \code #include "4cx1500b/ctrl_board/init.h" \endcode
  */
 
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV

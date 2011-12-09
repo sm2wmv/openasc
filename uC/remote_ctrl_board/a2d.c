@@ -1,4 +1,4 @@
-/*! \file station_ctrl_board_group/a2d.c \brief Analog-to-Digital converter function library. */
+/*! \file amplifiers/finnpa/ctrl_board/a2d.c \brief Analog-to-Digital converter function library. */
 //*****************************************************************************
 //
 // File Name	: 'a2d.c'
@@ -19,9 +19,9 @@
 #include <avr/signal.h>
 #include <avr/interrupt.h>
 
-#include "../../global.h"
-#include "../../avrlibdefs.h"
-#include "../../avrlibtypes.h"
+#include "../global.h"
+#include "../avrlibdefs.h"
+#include "../avrlibtypes.h"
 #include "a2d.h"
 
 // global variables
