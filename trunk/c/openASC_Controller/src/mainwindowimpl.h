@@ -11,6 +11,9 @@
 #include <QTcpSocket>
 #include <QTimer>
 
+#define INTERFACE_TYPE_SERIAL 0
+#define INTERFACE_TYPE_TCP    1
+
 typedef struct {
 	unsigned char currentBand;
 	unsigned char currentAntennas;
@@ -23,11 +26,8 @@ public:
 		MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
+    CommClass serial;
 		void pushButtonPressed(unsigned char button);
-		CommClass *comm;
-		void parseCommData(QString attr, QString data);
-		QString getCurrentBandName();
-		int getCurrentBandIndex();
 private:
 		int interfaceType;
 		QTimer *timerPollRXQueue;
@@ -35,10 +35,6 @@ private:
 		void getRXAntennaInfo();
 		void getTXAntennaInfo();
 		status_struct status;
-		void sendInitSequence();
-		QString lastBand;
-		QString currentBandName;
-		int currentBandIndex;
 protected:
 private slots:
 public slots:
@@ -69,7 +65,6 @@ public slots:
 		void timerPollStatusUpdate();
 
 		void actionSettingsEditTriggered();
-		void lineEditCommandPressed();
 };
 #endif
 
