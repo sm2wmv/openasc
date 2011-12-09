@@ -26,17 +26,19 @@
 //! The delay between each tick of a stepper motor
 #define MOTOR_CONTROL_STEP_DELAY  3
 
+//Direction is from front of motor looking at the axle
+
 #define MOTOR_DIR_NONE  0
-#define MOTOR_DIR_DOWN  1
-#define MOTOR_DIR_UP    2
+#define MOTOR_DIR_CCW  1
+#define MOTOR_DIR_CW    2
 
-#define MOTOR1_LIMIT_DOWN	100
-#define MOTOR2_LIMIT_DOWN	100
-#define MOTOR3_LIMIT_DOWN	100
+#define MOTOR1_LIMIT_CCW	100
+#define MOTOR2_LIMIT_CCW	100
+#define MOTOR3_LIMIT_CCW	100
 
-#define MOTOR1_LIMIT_UP 900
-#define MOTOR2_LIMIT_UP 900
-#define MOTOR3_LIMIT_UP 900
+#define MOTOR1_LIMIT_CW 900
+#define MOTOR2_LIMIT_CW 900
+#define MOTOR3_LIMIT_CW 900
 
 typedef struct {
   //! The current position of the stepper motor
@@ -47,16 +49,22 @@ typedef struct {
   unsigned int current_tick;  
   //! Next ms tick
   unsigned int next_tick;  
-  //! Which phase the motor is in
+  //! Step count
+	unsigned int step_count;
+	//! Which phase the motor is in
   unsigned char current_phase;
   //! Which direction the motor should head
   unsigned char current_dir;
 } struct_stepper_motor;
 
+unsigned int motor_control_get_curr_pos(unsigned char motor_index);
+
 void motor_control_process(void);
 void motor_control_tick(void);
 void motor_control_goto(unsigned char motor_index, unsigned int pos);
 void motor_control_set_phase(unsigned char motor_index, unsigned char phase);
+
+void motor_control_stepper_off(unsigned char index);
 
 void motor_control_step_motor1(void);
 

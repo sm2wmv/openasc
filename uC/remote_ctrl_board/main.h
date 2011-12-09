@@ -23,6 +23,8 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+#include "../comm_interface.h"
+
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b"
 
@@ -50,7 +52,12 @@
 //! Flag which indicates that the device has started properly
 #define FLAG_DEVICE_STARTED       1
 
+#define REMOTE_CMD_PING							0x01
+#define REMOTE_CMD_TURN_ON_RADIO1		0x02
+#define REMOTE_CMD_TURN_OFF_RADIO1	0x03
+
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 void send_ping(void);
+void computer_parse_message(struct_comm_interface_msg message);
 
 #endif

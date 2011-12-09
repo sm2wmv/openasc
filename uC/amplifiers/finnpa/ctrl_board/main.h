@@ -54,7 +54,7 @@
 #define DEVICE_ID_AMP_CTRL_BOX     2
 #define DEVICE_ID_AMP_POWERMETER   3
 
-#define AD_CONV_INTERVAL	10
+#define AD_CONV_INTERVAL	500
 
 //!Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE      0
