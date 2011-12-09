@@ -31,7 +31,6 @@
 #include "board.h"
 #include "usart.h"
 #include "init.h"
-#include "computer_interface.h"
 
 #include "../delay.h"
 #include "../global.h"
@@ -43,6 +42,8 @@
 #include "../wmv_bus/bus_rx_queue.h"
 #include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
+
+#include "../comm_interface.h"
 
 //#define ERROR_DEBUG 1
 
@@ -60,6 +61,19 @@ static unsigned int counter_event_timer = 0;
 static unsigned char ping_message[3];
 
 static unsigned char main_flags = 0;
+
+void computer_parse_message(struct_comm_interface_msg message) {
+	if (message.cmd == REMOTE_CMD_PING) {
+		PORTD |= (1<<6);
+	}
+	else if (message.cmd == REMOTE_CMD_TURN_ON_RADIO1) {
+		PORTD &= ~(1<<6);
+	}
+	else if (message.cmd == REMOTE_CMD_TURN_OFF_RADIO1) {
+		unsigned char shit[5] = {0xFA, 0xFB, 0xFC, 0xFD, 0xFE};
+		comm_interface_add_tx_message(0x05,0,shit);
+	}
+}
 
 void bus_parse_message(void) {
 	BUS_MESSAGE bus_message = rx_queue_get();
@@ -157,7 +171,9 @@ int main(void){
     //Timer used for the communication bus. The interrupt is caught in bus.c
     init_timer_2();
 
-    computer_interface_init();
+		init_usart_computer();
+
+    comm_interface_init(computer_parse_message,usart0_transmit);
   
     sei();
 	
@@ -180,8 +196,8 @@ int main(void){
                 }
             }
 		
-        computer_interface_parse_data();
-        computer_interface_send_data();
+        comm_interface_poll_tx_queue();
+        comm_interface_poll_rx_queue();
 
         if (bus_allowed_to_send()) {
             //Check if a ping message should be sent out on the bus
@@ -227,7 +243,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
         counter_event_timer = 0;
     }
 	
-    computer_interface_1ms_tick();
+    comm_interface_1ms_tick();
 	
     bus_ping_tick();
 }

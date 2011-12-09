@@ -31,8 +31,8 @@
 
 /*! Init the UART for the computer communication */
 void init_usart_computer(void) {
-	usart1_init(7,1); //115.2kbit
-	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
+	usart0_init(47); //115.2kbit
+	fdevopen((void*)usart0_transmit, (void*)usart0_receive_loopback);
 }
 
 /*!
@@ -74,4 +74,6 @@ void init_ports(void) {
 	DDRJ = 0x8A;
 	DDRK = 0xFF;
 	DDRL = 0xFF;
+	
+	PORTH |= (1<<0) | (1<<1);
 }

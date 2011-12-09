@@ -28,7 +28,7 @@
 
 #include "internal_comm_rx_queue.h"
 
-static char data_changed = 0;
+volatile static char data_changed = 0;
 
 //! The RX queue
 static int_comm_rx_queue_struct int_comm_rx_queue;

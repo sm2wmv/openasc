@@ -140,6 +140,8 @@ int main(void){
 	//Initialize the A/D converter
 	a2dInit();
 	
+	init_usart_computer();
+	
 	delay_ms(250);
 
 	/* This delay is simply so that if you have the devices connected to the same power supply
@@ -174,11 +176,18 @@ int main(void){
   ping_message[0] = DEVICE_ID_AMP_CTRL_BOARD;
 
   main_flags |= (1<<FLAG_DEVICE_STARTED);
+
+	a2dSetPrescaler(ADC_PRESCALE_DIV32);
+	a2dSetReference(ADC_REFERENCE_AVCC);
   
 	//Load the current position of the pots - IMPORTANT!!
 	for (unsigned char i=0;i<2;i++)
 		ad_curr_val[i] = a2dConvert10bit(i);
 	
+	printf("\n\r\n\rFinnPA control board started\n\r");
+	
+unsigned int motor_pos = 100;
+
 	while(1) {
 		if (!rx_queue_is_empty())
 			bus_parse_message();
@@ -194,6 +203,19 @@ int main(void){
 			}
 		}
 
+		if ((counter_ms % 10000) == 0) {
+			motor_control_goto(0,motor_pos);
+			
+			motor_pos += 200;
+			
+			if (motor_pos > 900)
+				motor_pos = 100;
+		}
+
+		if ((counter_ms % 1000) == 0) {
+			printf("STEPPER_POS[0]: %i\n\r",motor_control_get_curr_pos(0));
+		}
+
 		if (bus_allowed_to_send()) {
 		//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
@@ -202,45 +224,19 @@ int main(void){
 				counter_ping_interval = 0;
 			}
 		}
-    
+
     motor_control_process();
 /*		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}*/
-		
-		//Read the values of the A/D
-		if (ad_conv_started == 0) {
-			if (counter_ad_conversion >= AD_CONV_INTERVAL) {
-				a2dSetChannel(ad_curr_ch);
-				a2dStartConvert();
-				ad_conv_started = 1;
-			}
-		}
-		else {
-			if (a2dIsComplete() == 1) {
-				ad_curr_val[ad_curr_ch] = a2dGet10bitVal();
-				ad_conv_started = 0;
-				
-				if (ad_curr_ch < 2)
-					ad_curr_ch++;
-				else {
-					ad_curr_ch = 0;
-					counter_ad_conversion = 0;
-				}
-			}
-		}
 	}
 }
 
-unsigned int get_ad_curr_val(unsigned char ch) {
-	return(ad_curr_val[ch]);
-}
-
-unsigned char step_period = 3;
+unsigned char step_period = 2;
 unsigned char phase = 7;
-unsigned char dir = 0;
+unsigned char dir = 1;
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0A) {
@@ -256,14 +252,14 @@ ISR(SIG_OUTPUT_COMPARE0A) {
       //main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	if ((counter_ms % 5000) == 0) {
-		if (dir == 1)
-			dir = 0;
-		else
-			dir = 1;
+	if ((counter_ms % 2000) == 0) {
+	//	if (dir == 1)
+		//	dir = 0;
+		//else
+		//	dir = 1;
 	}
 	
-	if ((counter_ms % step_period) == 0) {
+	/*if ((counter_ms % step_period) == 0) {
 		if (dir == 0) {
 			phase--;
 			motor_control_set_phase(0,phase);
@@ -271,7 +267,7 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			motor_control_step_motor1();
 			
 			if (phase == 0)
-				phase = 4;
+				phase = 8;
 		}
 		else if (dir == 1) {
 			motor_control_set_phase(0,phase);
@@ -279,10 +275,10 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 			
 			motor_control_step_motor1();
 			
-			if (phase > 3)
+			if (phase > 7)
 				phase = 0;	
 		}
-	}
+	}*/
 	
 	counter_ad_conversion++;
 		

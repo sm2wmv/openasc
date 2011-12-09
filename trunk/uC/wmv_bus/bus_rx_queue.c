@@ -35,7 +35,7 @@
 	#include "../front_panel/errors.h"
 #endif
 
-static char data_changed = 0;
+volatile static char data_changed = 0;
 
 //! Variable keeps track of how much of the queue that is currently used
 static unsigned char bus_rx_queue_size;
