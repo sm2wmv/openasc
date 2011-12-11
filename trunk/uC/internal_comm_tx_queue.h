@@ -19,9 +19,6 @@
 
 #include "internal_comm.h"
 
-//! \brief Size of the TX queue
-#define INTERNAL_COMM_TX_QUEUE_SIZE	10
-
 //! The structure of the TX circular buffer
 typedef struct tx_linked_list {
 	//! A UC_MESSAGE

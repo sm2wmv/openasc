@@ -35,7 +35,7 @@
 //! RX data CHAR receieve timeout limit in ms (max 255 ms)
 #define	RX_DATA_TIMEOUT	10
 //! TX data transmit timeout limit in ms (max 255 ms)
-#define	TX_DATA_TIMEOUT	100
+#define	TX_DATA_TIMEOUT	20
 
 #define PREAMBLE_FOUND	0
 //! Was the last TX message acked
@@ -65,8 +65,8 @@ static unsigned char add_rx_message = 0;
 //! Computer MSG NOT Acknowledge
 #define COMPUTER_NACK				0xFB
 
-#define RESET_TX_MSG_ACKED comm_status &= ~(1<<TX_MSG_ACKED);
-#define SET_TX_MSG_ACKED comm_status |= (1<<TX_MSG_ACKED);
+#define RESET_TX_MSG_ACKED comm_status &= ~(1<<TX_MSG_ACKED)
+#define SET_TX_MSG_ACKED comm_status |= (1<<TX_MSG_ACKED)
 
 static struct_comm_interface_msg	rx_message;
 
@@ -88,19 +88,15 @@ static unsigned char tx_data_timeout = 0;
 static unsigned char rx_checksum = 0;
 
 void comm_interface_send_message(struct_comm_interface_msg message);
-void comm_interface_send_ack(void);
-void comm_interface_send_nack(void);
+void __inline__ comm_interface_send_ack(void);
+void __inline__ comm_interface_send_nack(void);
 
 void enable_comm_interface_interrupt(void) {
-  #ifdef DEVICE_TYPE_STN_CTRL_BOARD
-    UCSR0B |= (1<<RXCIE0);
-  #endif
+  COMM_ENABLE_INT;
 }
 
 void disable_comm_interface_interrupt(void) {
-  #ifdef DEVICE_TYPE_STN_CTRL_BOARD
-    UCSR0B &= ~(1<<RXCIE0);
-  #endif
+  COMM_DISABLE_INT;
 }
 
 static void __inline__ reset_rx_status(void) {
@@ -134,8 +130,6 @@ void comm_interface_poll_tx_queue(void) {
 		else {
 			comm_interface_tx_queue_drop();
 			
-			PORTD |= (1<<7);
-			
 			SET_TX_MSG_ACKED;
 			resend_count = 0;
 			tx_data_timeout = 0;
@@ -150,7 +144,7 @@ void comm_interface_poll_tx_queue(void) {
  *  \param length The number of byte data
  *  \param data The data to be sent
  *  \return 0 if everything went OK, 1 if the TX queue was full */
-unsigned char comm_interface_add_tx_message(unsigned char cmd, unsigned char length, unsigned char *data) {
+unsigned char comm_interface_add_tx_message(unsigned char cmd, unsigned char length, char *data) {
 	struct_comm_interface_msg message;
 
 	message.cmd = cmd;
@@ -167,25 +161,26 @@ unsigned char comm_interface_add_tx_message(unsigned char cmd, unsigned char len
 }
 
 void comm_interface_poll_rx_queue(void) {
-	if (add_rx_message) {
-		if (rx_message.cmd == COMPUTER_ACK) {
-			comm_interface_tx_queue_drop();
-			
-			SET_TX_MSG_ACKED;
-			resend_count = 0;
-		}
-		else if (rx_message.cmd == COMPUTER_NACK) {
-			comm_status |= (1<<RESEND_FLAG);
-		}
-		else if (!comm_interface_rx_queue_add(rx_message)) {
-			comm_interface_send_ack();	//Only send ACK if the message has been added to the queue
-		}
-				
-		reset_rx_status();
-		add_rx_message = 0;
-	}
+  if (add_rx_message) {
+    if (rx_message.cmd == COMPUTER_ACK) {
+      comm_interface_tx_queue_drop();
+      
+      SET_TX_MSG_ACKED;
+      resend_count = 0;
+    }
+    else if (rx_message.cmd == COMPUTER_NACK) {
+      comm_status |= (1<<RESEND_FLAG);
+    }
+    else if (!comm_interface_rx_queue_add(rx_message)) {
+      comm_interface_send_ack();  //Only send ACK if the message has been added to the queue
+    }
 
-	if (!comm_interface_rx_queue_is_empty()) {
+    reset_rx_status();
+    
+    add_rx_message = 0;
+  }
+  
+  if (!comm_interface_rx_queue_is_empty()) {
 		f_ptr_rx(comm_interface_rx_queue_get());
 		
 		comm_interface_rx_queue_drop();
@@ -207,7 +202,7 @@ void comm_interface_send_message(struct_comm_interface_msg message) {
 	f_ptr_tx(COMPUTER_POSTAMBLE);
 }
 
-void comm_interface_send_ack(void) {
+void __inline__ comm_interface_send_ack(void) {
 	f_ptr_tx(COMPUTER_PREAMBLE);
 	f_ptr_tx(COMPUTER_PREAMBLE);
 	f_ptr_tx(COMPUTER_ACK);	//Checksum
@@ -216,7 +211,7 @@ void comm_interface_send_ack(void) {
 	f_ptr_tx(COMPUTER_POSTAMBLE);
 }
 
-void comm_interface_send_nack(void) {
+void __inline__ comm_interface_send_nack(void) {
 	f_ptr_tx(COMPUTER_PREAMBLE);
 	f_ptr_tx(COMPUTER_PREAMBLE);
 	f_ptr_tx(COMPUTER_NACK);	//Checksum
@@ -257,20 +252,20 @@ void comm_interface_1ms_tick(void) {
 	}
 }
 
-ISR(SIG_USART0_DATA) {
+ISR(COMM_SIG_DATA_NAME) {
 
 }
 
 /*! Interrupt which is called when a byte has been received */
-ISR(SIG_USART0_RECV) {
-  unsigned char data = UDR0;
+ISR(COMM_SIG_RECV_NAME) {
+  unsigned char data = COMM_UDR_TYPE;
 	rx_data_timeout = 0;
 
 	if (comm_status & (1<<PREAMBLE_FOUND)) {
 		if ((data == COMPUTER_POSTAMBLE) && ((rx_char_count - 3) == rx_message.length)) {
 			if (rx_message.checksum == rx_checksum) {
-				add_rx_message = 1;
-			}
+        add_rx_message = 1;
+      }
 			else {
 				reset_rx_status();
 				comm_interface_send_nack();

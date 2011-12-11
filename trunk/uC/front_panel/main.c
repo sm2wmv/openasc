@@ -51,6 +51,7 @@
 #include "powermeter.h"
 #include "errors.h"
 #include "display_handler.h"
+#include "remote_control.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -731,6 +732,8 @@ int main(void){
 				main_flags &= ~(1<<FLAG_BLINK_BAND_LED);
 			}
 		
+      remote_control_process();
+		
 			if (main_flags & (1<<FLAG_POLL_RADIO)) {
 				radio_poll_status();
 			
@@ -740,6 +743,8 @@ int main(void){
 			if (main_flags & (1<<FLAG_PROCESS_RX_ANT_CHANGE)) {
 				antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
 			
+        remote_control_set_update_band_info();
+        
 				main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
 				main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);
 			}

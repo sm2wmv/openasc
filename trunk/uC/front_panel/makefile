@@ -61,6 +61,12 @@ TARGET = main
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_MAIN_FRONT_UNIT
 
+INTERNAL_COMM_TX_QUEUE_SIZE = 20
+
+INTERNAL_COMM_RX_QUEUE_SIZE = 10
+
+BASE_ADDRESS = 0
+
 #Root directories
 WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_tx_queue.c ../wmv_bus/bus_rx_queue.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c
 
@@ -123,7 +129,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS)
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DINTERNAL_COMM_RX_QUEUE_SIZE=$(INTERNAL_COMM_RX_QUEUE_SIZE) -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
 
 
 

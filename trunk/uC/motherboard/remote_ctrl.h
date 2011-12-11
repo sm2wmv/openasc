@@ -25,6 +25,8 @@
 #include "../global.h"
 #include "../internal_comm.h"
 
+//#define DEBUG_REMOTE_CTRL
+
 typedef struct {
   //! The current band
   unsigned char current_band;
@@ -36,6 +38,8 @@ typedef struct {
   unsigned char current_modes;
   //! The RX antenna names
   char rx_antenna_name[10][RX_ANTENNA_NAME_LENGTH];
+  //! The number of rx antennas
+  unsigned char rx_antenna_count;
   //! The antenna names
   char antenna_name[4][ANTENNA_TEXT_SIZE];
   //! The sub menu array name
@@ -43,7 +47,7 @@ typedef struct {
   //! The sub menu stack name
   char sub_menu_stack_name[4][SUB_MENU_STACK_NAME_SIZE];
   //! The current directions of the beams
-  unsigned int antenna_curr_direction[4];
+  unsigned char antenna_curr_direction[4][2]; //LOW/HIGH byte
   //! Flags
   unsigned int flags;
   //! Error status

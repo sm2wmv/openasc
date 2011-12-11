@@ -52,6 +52,7 @@
 #include "../event_queue.h"
 #include "display_handler.h"
 #include "sequencer.h"
+#include "../remote_commands.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -129,7 +130,18 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
         else if (message.data[0] == 1)
           remote_control_activate_remote_mode();
         break;
-      
+      case COMPUTER_COMM_REMOTE_BUTTON_EVENT:
+        if (message.length > 0)
+          event_process_task(message.data[0]);
+        break;
+      case COMPUTER_COMM_REMOTE_CHANGE_BAND:
+        if (message.length > 0)
+          main_set_new_band(message.data[0]);
+        break;
+      case COMPUTER_COMM_REMOTE_ROTATE_ANTENNA:
+        if (message.length > 2) {
+          antenna_ctrl_rotate(message.data[0],(message.data[1]<<8) + message.data[2]);
+        }
       default:
         break;
     }
@@ -215,6 +227,8 @@ void __inline__ event_set_rx_antenna(unsigned char ant_index) {
 		  
 	  antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
 	  main_flags |= (1<<FLAG_UPDATE_DISPLAY);
+    
+    remote_control_set_update_band_info();
   }
 }
 
@@ -269,7 +283,8 @@ void event_process_task(unsigned char task_index) {
 	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT10)) {
     event_set_rx_antenna(task_index);
 		display_handler_repaint();
-		return;
+
+    return;
 	}	
 	
 	//TODO: Continue with implementation of ext keypad functions
@@ -711,6 +726,7 @@ void event_tx_button1_pressed(void) {
 		}
 		
 		main_update_ptt_status();
+    remote_control_set_update_band_info();
 	}
 }
 
@@ -788,6 +804,7 @@ void event_tx_button2_pressed(void) {
     }
     
     main_update_ptt_status();
+    remote_control_set_update_band_info();
   }
 }
 
@@ -866,6 +883,7 @@ void event_tx_button3_pressed(void) {
 		}
 		
 		main_update_ptt_status();
+    remote_control_set_update_band_info();
 	}
 }
 
@@ -944,6 +962,7 @@ void event_tx_button4_pressed(void) {
   	}
   	
   	main_update_ptt_status();
+    remote_control_set_update_band_info();
 	}
 }
 
@@ -1044,6 +1063,8 @@ void event_rxant_button_pressed(void) {
 			status.function_status &= ~(1<<FUNC_STATUS_RXANT);
 			display_handler_repaint();
 		}
+		
+		remote_control_set_update_band_info();
 	}
 	else	//If we don't have any antennas to choose we always have the LED off
 		led_set_rxant(LED_STATE_OFF);
@@ -1151,7 +1172,7 @@ void event_bus_parse_message(void) {
 
           //If the remote mode is active, we send the new heading to the motherboard, of this antenna
           if (remote_control_get_remote_mode()) {
-//            remote_control_send_antenna_dir_info(i);
+            remote_control_send_antenna_dir_info(i);
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))

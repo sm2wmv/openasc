@@ -45,16 +45,16 @@ void init_timer_0(void)
 /*! \brief Set the direction of the ports */
 void init_ports(void)
 {
-	DDRA = 0xFF;
-	DDRB = 0x0F;
-	DDRC = 0xFF;
-	DDRD = 0x0E;
-	DDRF = 0x30;
-	
-	//Trigger on any edge
-	EICRB = (0<<ISC61) | (1<<ISC60);
-	EIMSK |= (1<<INT6);
-	
-	PORTE |= (1<<0);
-	PORTE |= (1<<1);
+  DDRA = 0xFF;
+  DDRB = 0x0F;
+  DDRC = 0xFF;
+  DDRD = 0x0E;
+  DDRF = 0x30;
+  
+  //Trigger on falling edge
+  EICRB = (1<<ISC61) | (0<<ISC60);
+  EIMSK |= (1<<INT6);
+  
+  PORTE |= (1<<0);
+  PORTE |= (1<<1);
 }

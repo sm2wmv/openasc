@@ -35,6 +35,7 @@
 #include "sub_menu.h"
 #include "errors.h"
 #include "led_control.h"
+#include "../remote_commands.h"
 
 //! Flag that the remote control is active
 #define FLAG_REMOTE_CONTROL_MODE_ACTIVE	0
@@ -44,22 +45,113 @@ static unsigned char remote_control_flags = 0;
 
 static unsigned char remote_current_band = 0;
 
-static char linefeed[3] = {"\r\n\0"};
-static char huh[7] = {"Huh?\r\n\0"};
+#define REMOTE_UPDATE_BAND_INFO       0
+#define REMOTE_UPDATE_TX_ANT_INFO     1
+
+static unsigned char remote_update_vector = 0;
+static unsigned int remote_update_rx_ant_text = 0;
+static unsigned char remote_update_ant_text = 0;
+static unsigned char remote_update_ant_dir_info = 0;
+
+//static char linefeed[3] = {"\r\n\0"};
+//static char huh[7] = {"Huh?\r\n\0"};
 
 /*! \brief Activate the remote control mode */
 void remote_control_activate_remote_mode(void) {
 	remote_control_flags |= (1<<FLAG_REMOTE_CONTROL_MODE_ACTIVE);
-
-/*  if (status.selected_band != BAND_UNDEFINED) {
-    remote_control_send_band_info(status.selected_band);
-    remote_control_send_ant_info();
-    
-    for (unsigned char i=0;i<4;i++)
-      remote_control_send_antenna_dir_info(i);
-  }
   
-  remote_control_send_rx_ant_info();*/
+  remote_update_vector |= (1<<REMOTE_UPDATE_BAND_INFO);
+  remote_update_vector |= (1<<REMOTE_UPDATE_TX_ANT_INFO);
+  
+  for (unsigned char i=0;i<antenna_ctrl_get_rx_antenna_count();i++)
+    remote_update_rx_ant_text |= (1<<i);
+  
+  //Bit 0-3
+  remote_update_ant_text = 15;
+  
+  remote_update_ant_dir_info = 15;
+}
+
+void remote_control_changed_band(void) {
+  if (status.selected_band != BAND_UNDEFINED) {
+    remote_update_vector |= (1<<REMOTE_UPDATE_BAND_INFO);
+    remote_update_vector |= (1<<REMOTE_UPDATE_TX_ANT_INFO);
+    
+    for (unsigned char i=0;i<antenna_ctrl_get_rx_antenna_count();i++)
+      remote_update_rx_ant_text |= (1<<i);
+    
+    //Bit 0-3
+    remote_update_ant_text = 15;
+    
+    remote_update_ant_dir_info = 15;
+  }
+  else {
+    //TODO: FIX THIS PART
+  }
+}
+
+void remote_control_process(void) {
+  if (remote_control_get_remote_mode()) {
+    if (remote_update_vector != 0) {
+      if (remote_update_vector & (1<<REMOTE_UPDATE_BAND_INFO)) {
+        if (!internal_comm_is_tx_queue_full()) {
+          remote_control_send_band_info(status.selected_band);
+          remote_update_vector &= ~(1<<REMOTE_UPDATE_BAND_INFO);
+        }
+      }
+      
+      if (remote_update_vector & (1<<REMOTE_UPDATE_TX_ANT_INFO)) {
+        if (!internal_comm_is_tx_queue_full()) {
+          remote_control_send_ant_info();
+          remote_update_vector &= ~(1<<REMOTE_UPDATE_TX_ANT_INFO);
+        }
+      }
+    }
+    
+    if (remote_update_rx_ant_text != 0) {
+      for (unsigned char i=0;i<10;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_rx_ant_text & (1<<i)) {
+            remote_control_send_rx_ant_info(i);
+            
+            remote_update_rx_ant_text &= ~(1<<i);
+          }
+        }
+      }
+    }
+    
+    if (remote_update_ant_text != 0) {
+      for (unsigned char i=0;i<4;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_ant_text & (1<<i)) {
+            remote_control_send_ant_text(i);
+            
+            remote_update_ant_text &= ~(1<<i);
+          }
+        }
+      }
+    }
+    
+    if (remote_update_ant_dir_info != 0) {
+      for (unsigned char i=0;i<4;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_ant_dir_info & (1<<i)) {
+            remote_control_send_antenna_dir_info(i);
+            
+            remote_update_ant_dir_info &= ~(1<<i);
+          }
+        }
+      }
+    }
+  }
+}
+
+void remote_control_set_update_band_info(void) {
+  remote_update_vector |= (1<<REMOTE_UPDATE_BAND_INFO);
+}
+
+void remote_control_set_update_tx_ant_info(void) {
+  remote_update_vector |= (1<<REMOTE_UPDATE_TX_ANT_INFO);
 }
 
 /*! \brief Deactivate the remote control mode */
@@ -76,49 +168,63 @@ unsigned char remote_control_get_remote_mode(void) {
   return(0);
 }
 
-unsigned char remote_control_send_rx_ant_info(void) {
-  /*if (remote_control_get_remote_mode()) {
+void remote_control_send_rx_ant_info(unsigned char ant_index) {
+  if (remote_control_get_remote_mode()) {
     unsigned char temp_str[RX_ANTENNA_NAME_LENGTH+2];
     //Send the RX antenna names to the motherboard and the current band information
-    for (unsigned char i=0;i<antenna_ctrl_get_rx_antenna_count();i++) {
-      temp_str[0] = i;
-      temp_str[1] = antenna_ctrl_get_rx_antenna_name_length(i);
+    temp_str[0] = ant_index;
+    temp_str[1] = antenna_ctrl_get_rx_antenna_name_length(ant_index);
       
-      strcpy((char *)(temp_str+2),antenna_ctrl_get_rx_antenna_name(i));
+    strcpy((char *)(temp_str+2),antenna_ctrl_get_rx_antenna_name(ant_index));
       
-      internal_comm_add_tx_message(INT_COMM_REMOTE_RXANT_TEXT,sizeof(temp_str),temp_str);
-    }
-  }*/
-  
-  return(antenna_ctrl_get_rx_antenna_count());
+    internal_comm_add_tx_message(INT_COMM_REMOTE_RXANT_TEXT,sizeof(temp_str),temp_str);
+  }
 }
 
 void remote_control_send_band_info(unsigned char band) {
-  /*if (remote_control_get_remote_mode()) {
+  if (remote_control_get_remote_mode()) {
     remote_current_band = band;
     
-    unsigned char temp_data[8];
+    unsigned char temp_data[9];
     temp_data[0] = band;
     temp_data[1] = status.selected_ant;
     temp_data[2] = status.selected_rx_antenna;
-    temp_data[3] = 0;
-    temp_data[4] = 0;
+    temp_data[3] = antenna_ctrl_get_rx_antenna_count();
+    temp_data[4] = status.function_status;
     temp_data[5] = 0;
     
     //Get the errors from the error handler
     unsigned int errors = error_handler_get_errors();
     
-    temp_data[6] = (errors >> 8);
-    temp_data[7] = (errors & 0x00FF);
+    temp_data[7] = (errors >> 8);
+    temp_data[8] = (errors & 0x00FF);
 
     internal_comm_add_tx_message(INT_COMM_REMOTE_BAND_INFO,sizeof(temp_data),temp_data);
     
     //TODO: Continue to send more info to the motherboard of the new selected band
-  }*/
+  }
+}
+
+void remote_control_send_ant_text(unsigned char ant_index) {
+  if (remote_current_band != BAND_UNDEFINED) {
+    unsigned char temp_data[ANTENNA_TEXT_SIZE+2]; 
+    //byte 0   -> Antenna index
+    //byte 1   -> Length
+    //byte 2-x -> data
+    
+    if (antenna_ctrl_get_antenna_text_length(ant_index) > 0) {
+      temp_data[0] = ant_index;
+      temp_data[1] = antenna_ctrl_get_antenna_text_length(ant_index);
+      
+      memcpy(temp_data+2,antenna_ctrl_get_antenna_text(ant_index),antenna_ctrl_get_antenna_text_length(ant_index));
+      
+      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_ANT_TEXT,sizeof(temp_data),temp_data);
+    }
+  }
 }
 
 void remote_control_send_antenna_dir_info(unsigned char index) {
- /* if (remote_control_get_remote_mode()) {
+  if (remote_control_get_remote_mode()) {
     if (remote_current_band != BAND_UNDEFINED) {
       unsigned char temp_data[4] = {0,0,0,0};
       
@@ -131,7 +237,7 @@ void remote_control_send_antenna_dir_info(unsigned char index) {
           unsigned int ant_dir = antenna_ctrl_get_direction(index);
         
           temp_data[0] = index;
-          temp_data[1] = ant_dir << 8;
+          temp_data[1] = ant_dir >> 8;
           temp_data[2] = ant_dir & 0x00FF;
           temp_data[3] = antenna_ctrl_get_rotator_flags(index);
         }
@@ -142,14 +248,15 @@ void remote_control_send_antenna_dir_info(unsigned char index) {
           temp_data[3] = 0;
         }
         
+
         internal_comm_add_tx_message(INT_COMM_REMOTE_ANT_DIR_INFO,sizeof(temp_data),(char *)temp_data);
       }
     }
-  }*/
+  }
 }
 
 void remote_control_send_ant_info(void) {
- /*if (remote_control_get_remote_mode()) {
+ if (remote_control_get_remote_mode()) {
     if (remote_current_band != BAND_UNDEFINED) {
       unsigned char temp_data[8];
       
@@ -164,18 +271,18 @@ void remote_control_send_ant_info(void) {
       
       internal_comm_add_tx_message(INT_COMM_REMOTE_ANT_INFO,sizeof(temp_data),(char *)temp_data);
     }
-  }*/
+  }
 }
 
 /*! \brief Parse a button press event, will perform an action depending on which button we wish to press
  *  \param button The button we wish to press */
 void remote_control_parse_button(unsigned char button) {
-//  event_process_task(button);  
+  event_process_task(button);  
 }
 
 void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
 {
-  char str[41];
+/*  char str[41];
   va_list ap;
   va_start(ap, fmt);
   int len = vsnprintf(str, sizeof(str), fmt, ap);
@@ -205,11 +312,11 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
     
     len -= len_to_send;
     ptr += len_to_send;
-  }
+  }*/
 }
 
 void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
-  char data[16];
+/*  char data[16];
   memcpy(data, uc_message->data, uc_message->length);
   data[uc_message->length] = '\0';
   
@@ -551,5 +658,5 @@ void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
     }
   }
 
-  send_ascii_data(0, "%d> ",0);
+  send_ascii_data(0, "%d> ",0);*/
 }

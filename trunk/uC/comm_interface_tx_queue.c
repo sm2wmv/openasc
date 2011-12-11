@@ -47,7 +47,11 @@ void comm_interface_tx_queue_init(void) {
  * \return 0 If it went well, 1 if the queue is full
  */
 unsigned char comm_interface_tx_queue_add(struct_comm_interface_msg message) {
-	if (comm_interface_tx_queue_curr_size < COMM_INTERFACE_TX_QUEUE_SIZE) {
+  unsigned char retval = 1;
+  
+  disable_comm_interface_interrupt();
+  
+  if (comm_interface_tx_queue_curr_size < COMM_INTERFACE_TX_QUEUE_SIZE) {
 		data_changed = 1;
 		
 		comm_interface_tx_queue.message[comm_interface_tx_queue.last++] = message;
@@ -62,26 +66,28 @@ unsigned char comm_interface_tx_queue_add(struct_comm_interface_msg message) {
 			comm_interface_tx_queue.first = 0;
 		
 		comm_interface_tx_queue_curr_size++;
-		
-		return(0);
+
+		retval = 0;
 	}
-	else
-		return (1);
+	
+  enable_comm_interface_interrupt();
+	
+  return(retval);
 }
 
 /*!\brief Retrieve the pos message from the FIFO TX queue.
  * \return The [pos] message in the queue
  */
 struct_comm_interface_msg comm_interface_tx_queue_get_pos(unsigned char pos) {
-  data_changed = 0;
+  //data_changed = 0;
   
-  struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
+  //struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
   
-  if (data_changed) {
+  //if (data_changed) {
     disable_comm_interface_interrupt();
-    mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
+    struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
     enable_comm_interface_interrupt();
-  }
+//  }
   
   //Return the message (content of the first node)
   return(mess);  
@@ -91,23 +97,20 @@ struct_comm_interface_msg comm_interface_tx_queue_get_pos(unsigned char pos) {
  * \return The first message in the queue
  */
 struct_comm_interface_msg comm_interface_tx_queue_get(void) {	
-  data_changed = 0;
-  
+  disable_comm_interface_interrupt();
+ 
   struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first];
 
-  if (data_changed) {
-    disable_comm_interface_interrupt();
-    mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first];
-    enable_comm_interface_interrupt();
-  }
-  
-  //Return the message (content of the first node)
-	return(mess);
+  enable_comm_interface_interrupt();
+
+  return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
  */
 void comm_interface_tx_queue_drop(void) {
+  disable_comm_interface_interrupt();
+
   comm_interface_tx_queue.first++;
 	
 	if (comm_interface_tx_queue.first >= COMM_INTERFACE_TX_QUEUE_SIZE)
@@ -115,6 +118,8 @@ void comm_interface_tx_queue_drop(void) {
   
   if (comm_interface_tx_queue_curr_size > 0)
     comm_interface_tx_queue_curr_size--;
+  
+  enable_comm_interface_interrupt();
 }
 
 /*! \brief Erase all content in the TX queue

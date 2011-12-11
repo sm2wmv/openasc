@@ -58,11 +58,18 @@ FORMAT = ihex
 # Target file name (without extension).
 TARGET = main
 
+INTERNAL_COMM_TX_QUEUE_SIZE = 10
+
+INTERNAL_COMM_RX_QUEUE_SIZE = 20
+
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_MAIN_MOTHERBOARD_UNIT
 
+#COMM uart interface
+COMM_UART_INTERFACE = COMM_UART_INTERFACE1
+
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c init.c usart.c ../delay.c ../internal_comm.c ../internal_comm_tx_queue.c ../internal_comm_rx_queue.c remote_ctrl.c computer_comm_rx_queue.c computer_comm_tx_queue.c computer_comm.c
+SRC = $(TARGET).c init.c usart.c ../delay.c ../internal_comm.c ../internal_comm_tx_queue.c ../internal_comm_rx_queue.c remote_ctrl.c ps2kbd.c ../comm_interface.c ../comm_interface_rx_queue.c ../comm_interface_tx_queue.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -118,7 +125,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS)
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -D$(COMM_UART_INTERFACE) -DINTERNAL_COMM_RX_QUEUE_SIZE=$(INTERNAL_COMM_RX_QUEUE_SIZE) -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
 
 
 

@@ -26,12 +26,14 @@
 #include "board.h"
 #include "usart.h"
 #include "init.h"
-#include "computer_comm.h"
+#include "ps2kbd.h"
 
 #include "../delay.h"
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 #include "../wmv_bus/bus_commands.h"
+#include "../comm_interface.h"
+#include "../remote_commands.h"
 
 #include "remote_ctrl.h"
 
@@ -185,7 +187,6 @@ void parse_internal_comm_message(UC_MESSAGE message) {
   else {
     switch(message.cmd) {
       case INT_COMM_REDIRECT_DATA:
-        //computer_interface_send(message.data[0], message.data[1], (void *)message.data[2]);
         break;
       case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
         for (unsigned char i=0;i<message.length;i++)
@@ -353,8 +354,8 @@ void parse_internal_comm_message(UC_MESSAGE message) {
         PORTB &= ~(1<<7);
         break;
       case INT_COMM_PC_SEND_TO_ADDR:
-        if (remote_ctrl_get_active_status() == 0)
-          computer_interface_tx_message(message.length,message.data);
+        //if (remote_ctrl_get_active_status() == 0)
+        //  computer_interface_tx_message(message.length,message.data);
         break;
       default:
         break;
@@ -390,8 +391,27 @@ void ps2_process_key(unsigned char key_code) {
 	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 
-void parse_computer_comm_message(COMM_MESSAGE message) {
-
+void parse_computer_comm_message(struct_comm_interface_msg message) {
+  if (message.cmd == COMPUTER_COMM_REMOTE_SET_STATUS) {
+    if (message.length > 0) {
+      if (message.data[0] == 0)
+        remote_ctrl_set_deactive();
+      else if (message.data[0] == 1)
+        remote_ctrl_set_active();
+    }
+  }
+  else if (message.cmd == COMPUTER_COMM_REMOTE_BUTTON_EVENT) {
+    if (message.length > 0)
+      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_BUTTON_EVENT,1,message.data);
+  }
+  else if (message.cmd == COMPUTER_COMM_REMOTE_CHANGE_BAND) {
+    if (message.length > 0)
+      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_CHANGE_BAND,1,message.data);
+  }
+  else if (message.cmd == COMPUTER_COMM_REMOTE_ROTATE_ANTENNA) {
+    if (message.length > 2)
+      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_ROTATE_ANTENNA,3,message.data);
+  }
 }
 
 //! Main function of the motherboard
@@ -406,16 +426,16 @@ int main(void) {
 	//Initialize internal communication
 	internal_comm_init((void*)parse_internal_comm_message,(void*)usart0_transmit);
 	
+  //19.2kbaud - computer comm
+  usart1_init(47);
+  fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
+  
   //Initialize computer communication
-  computer_comm_init((void*)parse_computer_comm_message,(void*)usart1_transmit);  
+  comm_interface_init((void*)parse_computer_comm_message,(void*)usart1_transmit);
   
 	init_ports();
 	init_timer_0();
-	
-	//19.2kbaud - computer comm
-	usart1_init(47);
-	fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
-	
+		
 	//57.6kbaud - internal comm
 	usart0_init(15);
 	
@@ -424,24 +444,29 @@ int main(void) {
 	sei();
 
 	//Init the values in the ps2 struct
-	ps2.started = 0;
+	/*ps2.started = 0;
 	ps2.bit_count = 0;
 	ps2.data = 0;
-	ps2.data_ready = 0;
+	ps2.data_ready = 0;*/
 	
+  kbd_init();
+  
 	delay_ms(200);
 	
-	PORTA |= (1<<3);
+	//PORTA |= (1<<3);
 
-	ps2_keyboard_send(0xF4);
+	//ps2_keyboard_send(0xF4);
 	delay_ms(100);
 	
-	while(1) {
-    if (remote_ctrl_get_active_status() == 0) {
-      computer_interface_send_data();
-      computer_interface_parse_data();
-    }
-    
+  unsigned char c = 0;
+  
+/*  kbd_send(0xF4);
+  kbd_send(0xFF);
+  kbd_send(0xED);*/
+
+  unsigned char temp_var = 1;
+  
+  while(1) {
     //Is remote ctrl mode active? Then check if anything should be updated
     if (remote_ctrl_get_active_status())
       remote_ctrl_update_info();
@@ -453,11 +478,15 @@ int main(void) {
     internal_comm_poll_tx_queue();
     
     //Poll the RX queue in the computer comm to see if we have any new messages to be PARSED
-    computer_comm_poll_rx_queue();
+    comm_interface_poll_rx_queue();
     
     //Poll the TX queue in the computer comm to see if we have any new messages to be SENT
-    computer_comm_poll_tx_queue();    
+    comm_interface_poll_tx_queue();
 		
+/*    if (c = kbd_getchar()) {
+      printf("CHAR: %c\n\r",c);
+    }*/
+    
 		//Check if ON/OFF button was pressed, if so we send a message to the front panel
 		//which in it's turn will send a message to turn the device off after all settings have been saved
 		//and messages have been sent out to all slave cards
@@ -478,7 +507,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		btn_on_off_last_state = 0;
 	}
 	
-	if (counter_ps2 > 250) {
+/*	if (counter_ps2 > 250) {
 		ps2.started = 0;
 		ps2.bit_count = 0;
 		ps2.data = 0;
@@ -497,8 +526,9 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	}
 	
 	ps2_send_counter++;
-	counter_ps2++;
+	counter_ps2++;*/
 	
+  comm_interface_1ms_tick();
 	internal_comm_1ms_timer();
 }
 
@@ -507,7 +537,7 @@ ISR(SIG_OVERFLOW0) {
 	
 }
 
-ISR(SIG_INTERRUPT6) {
+/*ISR(SIG_INTERRUPT6) {
 	if (!ps2.transmit) {
 		if ((PINE & (1<<6)) == 0) {
 			if (ps2.started == 0) {
@@ -577,4 +607,4 @@ ISR(SIG_INTERRUPT6) {
 			}
 		}
 	}
-}
+}*/

@@ -43,9 +43,17 @@ void remote_control_parse_button(unsigned char button);
 void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message);
 
 void remote_control_send_band_info(unsigned char band);
-unsigned char remote_control_send_rx_ant_info(void);
+void remote_control_send_rx_ant_info(unsigned char ant_index);
 void remote_control_send_antenna_dir_info(unsigned char index);
 void remote_control_send_ant_info(void);
+void remote_control_send_ant_text(unsigned char ant_index);
+
+void remote_control_process(void);
+
+void remote_control_set_update_band_info(void);
+void remote_control_set_update_tx_ant_info(void);
+
+void remote_control_changed_band(void);
 
 //! Command to activate the remote control mode
 #define REMOTE_CONTROL_ACTIVATE_MODE		0x01
