@@ -46,7 +46,11 @@ void comm_interface_rx_queue_init(void) {
  * \return 0 If it went well, 1 if the queue is full
  */
 unsigned char comm_interface_rx_queue_add(struct_comm_interface_msg message) {
-	if (comm_interface_rx_queue.count < COMM_INTERFACE_RX_QUEUE_SIZE) {
+  unsigned char retval = 1;
+  
+  disable_comm_interface_interrupt();
+  
+  if (comm_interface_rx_queue.count < COMM_INTERFACE_RX_QUEUE_SIZE) {
 		data_changed = 1;
 		
 		comm_interface_rx_queue.message[comm_interface_rx_queue.last++] = message;
@@ -62,26 +66,27 @@ unsigned char comm_interface_rx_queue_add(struct_comm_interface_msg message) {
 		
 		comm_interface_rx_queue.count++;
 		
-		return(0);
+		retval = 0;
 	}
-	else
-		return(1);
+  
+  enable_comm_interface_interrupt();
+  
+  return(retval);
 }
 
 /*!\brief Retrieve the first message from the FIFO TX queue.
  * \return The first message in the queue
  */
 struct_comm_interface_msg comm_interface_rx_queue_get(void) {
-  data_changed = 0;
+//  data_changed = 0;
   
   //Return the message (content of the first node)
-  struct_comm_interface_msg mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
-  
-  if (data_changed) {
+//  struct_comm_interface_msg mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
+  //if (data_changed) {
     disable_comm_interface_interrupt();
-    mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
+    struct_comm_interface_msg mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
     enable_comm_interface_interrupt();
-  }
+  //}
 
   return(mess);
 }
@@ -89,13 +94,17 @@ struct_comm_interface_msg comm_interface_rx_queue_get(void) {
 /*! Drops the first message in the queue Frees up the memory space aswell.
  */
 void comm_interface_rx_queue_drop(void) {
+  disable_comm_interface_interrupt();
+
   comm_interface_rx_queue.first++;
-	
+  
 	if (comm_interface_rx_queue.first >= COMM_INTERFACE_RX_QUEUE_SIZE)
 		comm_interface_rx_queue.first = 0;
   
   if (comm_interface_rx_queue.count > 0)
     comm_interface_rx_queue.count--;
+  
+  enable_comm_interface_interrupt();
 }
 
 /*! \brief Erase all content in the TX queue

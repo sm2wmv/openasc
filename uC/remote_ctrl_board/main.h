@@ -26,7 +26,7 @@
 #include "../comm_interface.h"
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "0.1b"
+#define FIRMWARE_REV "266"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);

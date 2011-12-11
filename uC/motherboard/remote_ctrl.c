@@ -3,7 +3,7 @@
  *  \brief Remote control
  *  \author Mikael Larsmark, SM2WMV
  *  \date 2011-09-21
- *  \code #include "computer_interface.c" \endcode */
+ *  \code #include "remote_ctrl.c" \endcode */
 //    Copyright (C) 2011  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -34,57 +34,114 @@
 #include "usart.h"
 #include "main.h"
 #include "remote_ctrl.h"
-#include "computer_comm.h"
-#include "computer_comm_commands.h"
+#include "../remote_commands.h"
+
+#include "../comm_interface.h"
 
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 
 unsigned char remote_ctrl_band_data_updated = 0;
 unsigned char remote_ctrl_ant_text_updated = 0;
-unsigned char remote_ctrl_rxant_text_updated = 0;
+unsigned int remote_ctrl_rxant_text_updated = 0;
 unsigned char remote_ctrl_ant_info_updated = 0;
 unsigned char remote_ctrl_ant_dir_updated = 0;
 
-static unsigned char remote_ctrl_active = 0;
+volatile static unsigned char remote_ctrl_active[2] = {0,0};
 
 struct_band_data band_data;
 
 void remote_ctrl_update_info(void) {
   if (remote_ctrl_band_data_updated) {
-    char temp_data[8];
+    char temp_data[4];
     
     temp_data[0] = band_data.current_band;
     temp_data[1] = band_data.curr_ant_selected;
     temp_data[2] = band_data.curr_rx_ant_selected;
+    temp_data[3] = band_data.current_modes;
     
-    computer_comm_add_tx_message(COMPUTER_COMM_REMOTE_BAND_INFO,3,(char *)temp_data);
+    comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_BAND_INFO,sizeof(temp_data),(char *)temp_data);
     
     remote_ctrl_band_data_updated = 0;
   }
   
-  if (remote_ctrl_ant_text_updated) {
+  if (remote_ctrl_ant_text_updated != 0) {
+    for (unsigned char i=0;i<4;i++) {
+      if (remote_ctrl_ant_text_updated & (1<<i)) {
+        char temp_data[COMM_INTERFACE_DATA_LENGTH];
+        
+        temp_data[0] = i;
+
+        strcpy((char *)(temp_data+1), band_data.antenna_name[i]);
+        
+        comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_ANT_TEXT,strlen(band_data.antenna_name[i])+2,(char *)temp_data);
+      }
+      
+      remote_ctrl_ant_text_updated &= ~(1<<i);
+    }
+  } 
+  
+  if (remote_ctrl_rxant_text_updated != 0) {
+    for (unsigned char i=0;i<10;i++) {
+      if (remote_ctrl_rxant_text_updated & (1<<i)) {
+        
+        if (strlen(band_data.rx_antenna_name[i]) > 0) {
+          char temp_data[COMM_INTERFACE_DATA_LENGTH];
+          temp_data[0] = i;
+          strcpy(temp_data+1, band_data.rx_antenna_name[i]);
+          
+          comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_RXANT_TEXT,strlen(band_data.rx_antenna_name[i])+2,(char *)temp_data);
+        }
+    
+        remote_ctrl_rxant_text_updated &= ~(1<<i);
+      }
+    }
+  }
+  
+  if (remote_ctrl_ant_dir_updated != 0) {
+    char temp_data[4];
+    
+    for (unsigned char i=0;i<4;i++) {
+      if (remote_ctrl_ant_dir_updated & (1<<i)) {
+        temp_data[0] = i; //Which index
+        temp_data[1] = band_data.antenna_curr_direction[i][0];
+        temp_data[2] = band_data.antenna_curr_direction[i][1];
+        temp_data[3] = band_data.antenna_rotator_flags[i];
+        
+        comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_ANT_DIR_INFO,4,(char *)temp_data);
+        
+        remote_ctrl_ant_dir_updated &= ~(1<<i);
+      }
+    }
   }
 }
 
 /*! \brief Activate the remote control mode */
 void remote_ctrl_set_active(void) {
-  remote_ctrl_active = 1;
+  remote_ctrl_active[0] = 1;
   
-  internal_comm_add_tx_message(INT_COMM_REMOTE_SET_STATUS,1,&remote_ctrl_active);
+  #ifdef DEBUG_REMOTE_CTRL
+    printf("Remote ctrl mode activated\n\r");
+  #endif
+  
+  internal_comm_add_tx_message(INT_COMM_REMOTE_SET_STATUS,1,(char *)remote_ctrl_active);
 }
 
 /*! \brief Deactivate the remote control mode */
 void remote_ctrl_set_deactive(void) {
-  remote_ctrl_active = 0;
+  remote_ctrl_active[0] = 0;
+
+  #ifdef DEBUG_REMOTE_CTRL
+    printf("Remote ctrl mode deactivated\n\r");
+  #endif
   
-  internal_comm_add_tx_message(INT_COMM_REMOTE_SET_STATUS,1,&remote_ctrl_active);
+  internal_comm_add_tx_message(INT_COMM_REMOTE_SET_STATUS,1,(char *)remote_ctrl_active);
 }
 
 /*! \brief Retrieve the status of the remote control mode 
  *  \return 1 if active, 0 if not active */
 unsigned char remote_ctrl_get_active_status(void) {
-  return(remote_ctrl_active);
+  return(remote_ctrl_active[0]);
 }
 
 /*! \brief Retrieve the current band 
@@ -125,7 +182,7 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       // char index 0 -> Current band
       // char index 1 -> Selected ant combination
       // char index 2 -> Selected RX antenna
-      // char index 3 -> Current modes
+      // char index 3 -> Current modes (status.function_status)
       // char index 4 -> Flags byte 1
       // char index 5 -> Flags byte 2
       // char index 6 -> Erorrs byte 1
@@ -134,11 +191,13 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       band_data.current_band = message.data[0];
       band_data.curr_ant_selected = message.data[1];
       band_data.curr_rx_ant_selected = message.data[2];
-      band_data.current_modes = message.data[3];
-      band_data.flags = message.data[4] << 8;
-      band_data.flags |= message.data[5];
-      band_data.error = message.data[6] << 8;
-      band_data.error |= message.data[7];
+      band_data.rx_antenna_count = message.data[3];
+      band_data.current_modes = message.data[4];
+      
+      band_data.flags = message.data[5] << 8;
+      band_data.flags |= message.data[6];
+      band_data.error = message.data[7] << 8;
+      band_data.error |= message.data[8];
       
       #ifdef DEBUG_REMOTE_CTRL
         printf("Remote band info\n\r");
@@ -161,13 +220,13 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
         for (unsigned char i=0;i<message.data[1];i++)
           band_data.antenna_name[message.data[0]][i] = message.data[2+i];
         
-        band_data.antenna_name[message.data[0]][message.data[1]+2] = 0;
+        band_data.antenna_name[message.data[0]][message.data[1]] = 0;
         
         #ifdef DEBUG_REMOTE_CTRL
           printf("Antenna %i name: %s\n\r",message.data[0]+1,band_data.antenna_name[message.data[0]]);
         #endif
         
-        remote_ctrl_ant_text_updated = 1;
+        remote_ctrl_ant_text_updated = (1<<message.data[0]);
       }
       break;
     case INT_COMM_REMOTE_RXANT_TEXT:
@@ -175,7 +234,7 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       // Char index 1  -> The length of the text
       // Char index 2- -> The data
       
-      if (message.data[0] < 10) {      
+      if (message.data[0] < 10) {
         for (unsigned char i=0;i<message.data[1];i++)
           band_data.rx_antenna_name[message.data[0]][i] = message.data[2+i];
         
@@ -185,7 +244,7 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
           printf("RX Antenna %i name: %s\n\r",message.data[0]+1,band_data.rx_antenna_name[message.data[0]]);
         #endif
         
-        remote_ctrl_rxant_text_updated = 1;
+        remote_ctrl_rxant_text_updated |= (1<<message.data[0]);
       }      
       break;
     case INT_COMM_REMOTE_ANT_INFO:
@@ -223,7 +282,8 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       // Char index 3 -> Antenna rotator flags
       
       if (message.data[0] < 4) {
-        band_data.antenna_curr_direction[message.data[0]] = (message.data[1] << 8) + message.data[2];
+        band_data.antenna_curr_direction[message.data[0]][0] = message.data[1];
+        band_data.antenna_curr_direction[message.data[0]][1] = message.data[2];
         band_data.antenna_rotator_flags[message.data[0]] = message.data[3];
         
         #ifdef DEBUG_REMOTE_CTRL
@@ -232,7 +292,7 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
         #endif
       }
       
-      remote_ctrl_ant_dir_updated = 1;
+      remote_ctrl_ant_dir_updated = (1<<message.data[0]);
       break;
     case INT_COMM_REMOTE_SUBMENU_ARRAY_TEXT:
       break;

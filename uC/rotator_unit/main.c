@@ -373,6 +373,7 @@ void bus_parse_message(void) {
           main_flags &= ~(1<<FLAG_ROTATION_CW);
           main_flags &= ~(1<<FLAG_ROTATION_CCW);
           main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
+          main_flags |= (1<<FLAG_NO_ROTATION);
         }
       }
 			break;
@@ -430,14 +431,14 @@ void init_dummy_values(void) {
 	rotator_settings.rotator_mode = ROTATOR_MODE_HARDWIRED;
 	rotator_settings.cw_output = (1<<ROTATION_OUTPUT_RELAY1);
 	rotator_settings.ccw_output = (1<<ROTATION_OUTPUT_RELAY2);
-	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
+//	rotator_settings.break_output = (1<<ROTATION_OUTPUT_RELAY3);
 	
-	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
-	rotator_settings.rotation_start_angle = 20;
-  rotator_settings.rotation_stop_angle = 500;
+/*	rotator_settings.rotation_delay = 10;	//Rotation delay is 10 seconds before any action after a rotation
+	rotator_settings.rotation_start_angle = 0;
+  rotator_settings.rotation_stop_angle = 360;
 	rotator_settings.rotation_min = 100;
 	rotator_settings.rotation_max = 900;
-	rotator_settings.rotation_break_delay = 10;
+	rotator_settings.rotation_break_delay = 10;*/
 	
 	main_flags = (1<<FLAG_NO_ROTATION);
 }
@@ -454,6 +455,8 @@ void main_stop_rotation(void) {
   main_flags |= (1<<FLAG_NO_ROTATION);
   main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
   main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
+  
+  send_rotator_status_update();
 }
 
 /*! Run the first function in the event queue
@@ -468,6 +471,27 @@ void event_run(void) {
 		//When the function has been run we drop the message
 		event_queue_drop();
 	}
+}
+
+void send_rotator_status_update(void) {
+  unsigned char send_status[7];
+  
+  if (rotator_settings.rotates_over == 0)
+    main_flags |= (1<<FLAG_ROTATES_OVER_SOUTH);
+  else
+    main_flags &= ~(1<<FLAG_ROTATES_OVER_SOUTH);
+  
+  send_status[0] = DEVICE_ID_ROTATOR_UNIT;
+  send_status[1] = 0;
+  send_status[2] = ((rotator_status.curr_heading >> 8) & 0xFF);
+  send_status[3] = (rotator_status.curr_heading & 0xFF);
+  send_status[4] = ((rotator_status.target_heading >> 8) & 0xFF);
+  send_status[5] = (rotator_status.target_heading & 0xFF);
+  send_status[6] = main_flags;
+
+  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_ROTATOR_STATUS_UPDATE, 7, send_status);
+
+  rotator_status.last_heading = rotator_status.curr_heading;
 }
 
 int main(void)
@@ -522,6 +546,8 @@ int main(void)
   
   eeprom_read_block(&rotator_settings, (const void *)1, sizeof(rotator_settings));
 	
+  //init_dummy_values();
+  
 	/*if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
 		event_add_message(rotator_release_break,0,EVENT_QUEUE_RELEASE_BREAK_ID);
 		event_add_message(rotator_rotate_ccw,rotator_settings.rotation_break_delay*10,EVENT_QUEUE_ROTATE_CW_ID);
@@ -530,8 +556,6 @@ int main(void)
   main_flags = (1<<FLAG_NO_ROTATION);
   
 	unsigned char device_count = bus_get_device_count();
-	
-	unsigned char send_status[7];
 	
 	device_id = DEVICE_ID_ROTATOR_UNIT;
 	
@@ -552,24 +576,9 @@ int main(void)
 		
 		if ((timer_flags & (1<<FLAG_SEND_STATUS)) != 0) {
 			//We only update if the beaming heading has changed with > 1 degree from the last update
-			if (rotator_status.curr_heading != rotator_status.last_heading) {
-        if (rotator_settings.rotates_over == 0)
-          main_flags |= (1<<FLAG_ROTATES_OVER_SOUTH);
-        else
-          main_flags &= ~(1<<FLAG_ROTATES_OVER_SOUTH);
-        
-        send_status[0] = DEVICE_ID_ROTATOR_UNIT;
-				send_status[1] = 0;
-				send_status[2] = ((rotator_status.curr_heading >> 8) & 0xFF);
-				send_status[3] = (rotator_status.curr_heading & 0xFF);
-				send_status[4] = ((rotator_status.target_heading >> 8) & 0xFF);
-				send_status[5] = (rotator_status.target_heading & 0xFF);
-				send_status[6] = main_flags;
-	
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_ROTATOR_STATUS_UPDATE, 7, send_status);
-			
-				rotator_status.last_heading = rotator_status.curr_heading;
-			}
+      if (rotator_status.curr_heading != rotator_status.last_heading) {
+        send_rotator_status_update();
+      }
 			
 			timer_flags &= ~(1<<FLAG_SEND_STATUS);
 		}

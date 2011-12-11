@@ -36,7 +36,7 @@
 //! The rotator is being rotated CCW
 #define FLAG_ROTATION_CCW					4
 //! The rotator rotates over south
-#define FLAG_ROTATES_OVER_SOUTH     5
+#define FLAG_ROTATES_OVER_SOUTH   5
 
 //! Struct which contains information of the rx antennas
 typedef struct {

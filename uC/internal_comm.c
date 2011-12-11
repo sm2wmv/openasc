@@ -183,6 +183,13 @@ void internal_comm_send_message(UC_MESSAGE tx_message) {
 	counter_tx_timeout = 0;
 }
 
+unsigned char internal_comm_is_tx_queue_full(void) {
+  if (int_comm_tx_queue_size() < INTERNAL_COMM_TX_QUEUE_SIZE)
+    return(0);
+  else
+    return(1);
+}
+
 /*! \brief Add a message to the transmit queue 
  *  \param command The command we wish to perform
  *  \param length The length of the data field 
@@ -222,7 +229,7 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
       led_set_error(LED_STATE_ON);
 
       //Set the error flag
-      //error_handler_set(ERROR_TYPE_INT_COMM_TX_FULL,1,0);
+      error_handler_set(ERROR_TYPE_INT_COMM_TX_FULL,1,0);
     #endif
   }
 }
