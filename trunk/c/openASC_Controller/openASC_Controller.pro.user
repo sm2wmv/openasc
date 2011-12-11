@@ -6,15 +6,15 @@
  </data>
  <data>
   <variable>RunConfiguration0-BaseEnvironmentBase</variable>
-  <value type="int">2</value>
+  <value type="int">0</value>
  </data>
  <data>
   <variable>RunConfiguration0-Executable</variable>
-  <value type="QString"></value>
+  <value type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller/bin/openASC_Controller</value>
  </data>
  <data>
   <variable>RunConfiguration0-RunConfiguration.name</variable>
-  <value type="QString">Custom Executable</value>
+  <value type="QString">openASC Controller</value>
  </data>
  <data>
   <variable>RunConfiguration0-UseTerminal</variable>
@@ -26,15 +26,15 @@
  </data>
  <data>
   <variable>RunConfiguration0-UserName</variable>
-  <value type="QString"></value>
+  <value type="QString">openASC Controller</value>
  </data>
  <data>
   <variable>RunConfiguration0-UserSetName</variable>
-  <value type="bool">false</value>
+  <value type="bool">true</value>
  </data>
  <data>
   <variable>RunConfiguration0-WorkingDirectory</variable>
-  <value type="QString">$BUILDDIR</value>
+  <value type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller/bin</value>
  </data>
  <data>
   <variable>RunConfiguration0-type</variable>
@@ -164,6 +164,51 @@
   <variable>buildconfiguration-Release-cleanstep0</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gPgL9Rc0AW,guid=e9c241fa6febc59d97d3c0e44edd09b4</value>
+    <value type="QString">DESKTOP_SESSION=kde</value>
+    <value type="QString">DISPLAY=:0</value>
+    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-0ucylB/S.gpg-agent:1343:1</value>
+    <value type="QString">GS_LIB=/home/micke/.fonts</value>
+    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/micke/.gtkrc-2.0:/home/micke/.gtkrc-2.0-kde4:/home/micke/.kde/share/config/gtkrc-2.0</value>
+    <value type="QString">GTK_MODULES=canberra-gtk-module</value>
+    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/micke/.gtkrc::/home/micke/.kde/share/config/gtkrc</value>
+    <value type="QString">HOME=/home/micke</value>
+    <value type="QString">KDE_FULL_SESSION=true</value>
+    <value type="QString">KDE_MULTIHEAD=false</value>
+    <value type="QString">KDE_SESSION_UID=1000</value>
+    <value type="QString">KDE_SESSION_VERSION=4</value>
+    <value type="QString">LANG=en_US.UTF-8</value>
+    <value type="QString">LANGUAGE=</value>
+    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
+    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/dri:/usr/lib32/dri</value>
+    <value type="QString">LOGNAME=micke</value>
+    <value type="QString">PATH=/usr/bin:/home/micke/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
+    <value type="QString">PWD=/home/micke</value>
+    <value type="QString">QTDIR=/usr/share/qt4</value>
+    <value type="QString">QT_PLUGIN_PATH=/home/micke/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
+    <value type="QString">SESSION_MANAGER=local/beavis:@/tmp/.ICE-unix/1831,unix/beavis:/tmp/.ICE-unix/1831</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=0</value>
+    <value type="QString">SPEECHD_PORT=7560</value>
+    <value type="QString">SSH_AGENT_PID=1342</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-UpMiqi1278/agent.1278</value>
+    <value type="QString">USER=micke</value>
+    <value type="QString">WINDOWPATH=7</value>
+    <value type="QString">XCURSOR_THEME=oxy-white</value>
+    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
+    <value type="QString">XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1323108787.383426-1982366049</value>
+    <value type="QString">XDM_MANAGED=method=classic</value>
+   </valuelist>
+   <value key="abstractProcess.IgnoreReturnValue" type="bool">true</value>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">clean</value>
+    <value type="QString">-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller</value>
    <value key="cleanConfig" type="bool">true</value>
    <valuelist key="makeargs" type="QVariantList">
     <value type="QString">clean</value>
