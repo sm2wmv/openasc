@@ -142,6 +142,17 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
         if (message.length > 2) {
           antenna_ctrl_rotate(message.data[0],(message.data[1]<<8) + message.data[2]);
         }
+      case COMPUTER_COMM_REMOTE_CLEAR_ERRORS:
+        error_handler_clear_all();
+        led_set_error(LED_STATE_OFF);
+        
+        if (remote_control_get_remote_mode())
+          remote_control_set_update_band_info();
+        
+        status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
+        display_handler_prev_view();
+        led_set_menu(LED_STATE_OFF);
+        break;
       default:
         break;
     }
@@ -197,10 +208,6 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
       case INT_COMM_PC_SEND_TO_ADDR:
         if (ascii_comm_device_addr != 0x00) {
           bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,message.data);
-        }
-        else {
-          new_uc_message = message;
-          parse_uc_cmd = 1;
         }
         break;
       default:

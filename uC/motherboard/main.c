@@ -356,6 +356,7 @@ void parse_internal_comm_message(UC_MESSAGE message) {
       case INT_COMM_PC_SEND_TO_ADDR:
         //if (remote_ctrl_get_active_status() == 0)
         //  computer_interface_tx_message(message.length,message.data);
+          comm_interface_add_tx_message(message.cmd, message.length, message.data);
         break;
       default:
         break;
@@ -411,6 +412,17 @@ void parse_computer_comm_message(struct_comm_interface_msg message) {
   else if (message.cmd == COMPUTER_COMM_REMOTE_ROTATE_ANTENNA) {
     if (message.length > 2)
       internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_ROTATE_ANTENNA,3,message.data);
+  }
+  else if (message.cmd == INT_COMM_PC_SEND_TO_ADDR) {
+    if (message.length > 0)
+      internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, message.length,message.data);
+  }
+  else if (message.cmd == INT_COMM_PC_CONNECT_TO_ADDR) {
+    if (message.length > 0)
+      internal_comm_add_tx_message(INT_COMM_PC_CONNECT_TO_ADDR, 1, message.data);
+  }
+  else if (message.cmd == COMPUTER_COMM_REMOTE_CLEAR_ERRORS) {
+    internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_CLEAR_ERRORS,0,0);
   }
 }
 

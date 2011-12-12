@@ -8,14 +8,26 @@
     <x>0</x>
     <y>0</y>
     <width>590</width>
-    <height>547</height>
+    <height>441</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>590</width>
+    <height>441</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>590</width>
+    <height>441</height>
+   </size>
   </property>
   <property name="mouseTracking">
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>openASC remote controller v0.1</string>
+   <string>openASC Controller</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -985,42 +997,6 @@
         </property>
        </widget>
       </widget>
-      <widget class="QTextEdit" name="textEdit">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>285</y>
-         <width>405</width>
-         <height>141</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QFrame" name="frame_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>395</y>
-         <width>145</width>
-         <height>80</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditCommand">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>430</y>
-         <width>406</width>
-         <height>24</height>
-        </rect>
-       </property>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -1052,12 +1028,13 @@
      <string>Windows</string>
     </property>
     <addaction name="actionWindowsRotators"/>
+    <addaction name="actionTerminal"/>
+    <addaction name="actionErrorDialog"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
     <property name="title">
      <string>Commands</string>
     </property>
-    <addaction name="actionClearErrors"/>
    </widget>
    <addaction name="menuNetwork"/>
    <addaction name="menuSettings"/>
@@ -1101,6 +1078,16 @@
   <action name="actionClearErrors">
    <property name="text">
     <string>Clear Errors</string>
+   </property>
+  </action>
+  <action name="actionTerminal">
+   <property name="text">
+    <string>Terminal</string>
+   </property>
+  </action>
+  <action name="actionErrorDialog">
+   <property name="text">
+    <string>Errors</string>
    </property>
   </action>
  </widget>
