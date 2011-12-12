@@ -66,6 +66,9 @@ class CommClass : public QThread {
     void sendMessage(struct_message message);
 		void addTXMessage(unsigned char cmd, unsigned char length, char *data);
 		void addTXMessage(unsigned char cmd, char data);
+		void addTXMessage(unsigned char cmd, unsigned char length, QString data);
+		void addTXMessage(unsigned char cmd, unsigned char length, QByteArray *data);
+		void addTXMessage(unsigned char cmd);
     void pollTXQueue();
 		void stopProcess();
 		bool isOpen();

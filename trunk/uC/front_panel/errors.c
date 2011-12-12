@@ -31,6 +31,7 @@
 #include "menu.h"
 #include "led_control.h"
 #include "display_handler.h"
+#include "remote_control.h"
 
 //! Flag that the PTT should be locked if this error occur
 #define ERROR_FLAG_LOCK_PTT					0
@@ -87,6 +88,9 @@ void error_handler_set(unsigned char error_type, unsigned char state, unsigned i
       
       led_set_menu(LED_STATE_ON);
     }
+    
+    if (remote_control_get_remote_mode())
+      remote_control_set_update_band_info();
   }
 }
 

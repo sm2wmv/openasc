@@ -6,6 +6,8 @@
 #include "rotatordialog.h"
 #include "settingsdialog.h"
 #include "commclass.h"
+#include "terminaldialog.h"
+#include "errordialog.h"
 
 #include <QtNetwork>
 #include <QTcpSocket>
@@ -18,6 +20,7 @@ typedef struct {
 	unsigned char currentBand;
 	unsigned char currentAntennas;
 	unsigned char currentRXAntennas;
+	unsigned int currentErrors;
 } status_struct;
 
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
@@ -26,7 +29,9 @@ public:
 		MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
-    CommClass serial;
+		CommClass *serial;
+		terminalDialog *terminalWindow;
+		ErrorDialog *errorDialog;
 		void pushButtonPressed(unsigned char button);
 		QString getBandName(int bandIndex);
 private:
@@ -44,6 +49,10 @@ public slots:
 		void WindowRotatorsTriggered();
 		void actionConnectTriggered();
 		void actionDisconnectTriggered();
+		void actionSettingsEditTriggered();
+		void actionErrorDialogTriggered();
+		void actionTerminalTriggered();
+
 		void pushButtonTX1Clicked();
 		void pushButtonTX2Clicked();
 		void pushButtonTX3Clicked();
@@ -66,8 +75,6 @@ public slots:
 
 		void timerPollRXQueueUpdate();
 		void timerPollStatusUpdate();
-
-		void actionSettingsEditTriggered();
 };
 #endif
 

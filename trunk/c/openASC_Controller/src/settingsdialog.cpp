@@ -4,6 +4,7 @@
 
 SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::SettingsDialog) {
 		m_ui->setupUi(this);
+
 		QSettings settings("settings.ini",QSettings::IniFormat,0);
 
 		settings.beginGroup("Settings");

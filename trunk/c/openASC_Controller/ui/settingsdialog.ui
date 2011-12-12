@@ -16,8 +16,20 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>303</width>
+    <height>218</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>303</width>
+    <height>218</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Settings</string>
   </property>
   <widget class="QPushButton" name="pushButtonOK">
    <property name="geometry">

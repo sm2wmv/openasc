@@ -139,18 +139,19 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
     ++argc;
   }
   
-  send_ascii_data(bus_message->from_addr, "\r\n");
-  
   if (argc > 0) {
     if (strcmp(argv[0], "help") == 0) {
       send_ascii_data(bus_message->from_addr,
                       "No help available\r\n");
     }
+    else if (strcmp(argv[0], "gettype") == 0) {
+      sprintf(msg, "Device type: Rotator\r\n");
+      send_ascii_data(bus_message->from_addr,msg);
+    }
     else if (strcmp(argv[0], "cwl") == 0) {
       if (argc < 2) {
         sprintf(msg, "CW limit: %i\r\n",rotator_settings.rotation_stop_angle);
         send_ascii_data(bus_message->from_addr,msg);
-
       }
       else {
         rotator_settings.rotation_stop_angle = atoi(argv[1]);
@@ -290,8 +291,6 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
       send_ascii_data(bus_message->from_addr, "Huh?\r\n");
     }
   }
-
-  send_ascii_data(bus_message->from_addr, "%d> ", bus_get_address());
 }
 
 /*! \brief Parse a message and exectute the proper commands
@@ -373,7 +372,6 @@ void bus_parse_message(void) {
           main_flags &= ~(1<<FLAG_ROTATION_CW);
           main_flags &= ~(1<<FLAG_ROTATION_CCW);
           main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
-          main_flags |= (1<<FLAG_NO_ROTATION);
         }
       }
 			break;
@@ -449,13 +447,14 @@ void main_set_preset_active(void) {
 
 void main_stop_rotation(void) {
   rotator_stop();
-
-  main_flags &= (1<<FLAG_ROTATION_CCW);
-  main_flags &= ~(1<<FLAG_ROTATION_CW);
-  main_flags |= (1<<FLAG_NO_ROTATION);
-  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
-  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_OVER_NORTH);
   
+  event_add_message(rotator_activate_break,rotator_settings.rotation_break_delay,EVENT_QUEUE_ACTIVATE_BREAK_ID);
+  event_add_message(rotator_set_no_rotation, rotator_settings.rotation_delay*10, EVENT_QUEUE_ROTATION_ALLOWED);
+    
+  main_flags &= ~(1<<FLAG_ROTATION_CW);
+  main_flags &= ~(1<<FLAG_ROTATION_CCW);
+  main_flags &= ~(1<<FLAG_ROTATOR_PRESET_ACTIVE);
+
   send_rotator_status_update();
 }
 

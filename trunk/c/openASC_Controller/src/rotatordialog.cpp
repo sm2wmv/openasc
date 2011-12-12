@@ -77,17 +77,6 @@ int RotatorDialog::getActiveAntenna(){
 }
 
 void RotatorDialog::setRotatorFlag(unsigned char antIndex, unsigned char flags) {
-	if (flags & (1<<1)) {//No rotation
-		if (antIndex == 0)
-			labelAnt1Status->setText("Stopped");
-		else if (antIndex == 1)
-			labelAnt2Status->setText("Stopped");
-		else if (antIndex == 1)
-			labelAnt3Status->setText("Stopped");
-		else if (antIndex == 1)
-			labelAnt4Status->setText("Stopped");
-	}
-
 	if (flags & (1<<3)) {
 		if (antIndex == 0)
 			labelAnt1Status->setText("Rotating CW");
@@ -98,8 +87,7 @@ void RotatorDialog::setRotatorFlag(unsigned char antIndex, unsigned char flags) 
 		else if (antIndex == 1)
 			labelAnt4Status->setText("Rotating CW");
 	}
-
-	if (flags & (1<<4)) {
+	else if (flags & (1<<4)) {
 		if (antIndex == 0)
 			labelAnt1Status->setText("Rotating CCW");
 		else if (antIndex == 1)
@@ -109,7 +97,16 @@ void RotatorDialog::setRotatorFlag(unsigned char antIndex, unsigned char flags) 
 		else if (antIndex == 1)
 			labelAnt4Status->setText("Rotating CCW");
 	}
-
+	else {
+		if (antIndex == 0)
+			labelAnt1Status->setText("Stopped");
+		else if (antIndex == 1)
+			labelAnt2Status->setText("Stopped");
+		else if (antIndex == 1)
+			labelAnt3Status->setText("Stopped");
+		else if (antIndex == 1)
+			labelAnt4Status->setText("Stopped");
+	}
 }
 
 void RotatorDialog::setAntName(int antIndex, QString name) {

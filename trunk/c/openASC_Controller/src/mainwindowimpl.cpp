@@ -6,6 +6,7 @@
 #include "mainwindowimpl.h"
 #include "generic.h"
 #include "commclass.h"
+#include "terminaldialog.h"
 #include "../../../uC/remote_commands.h"
 #include "../../../uC/ext_events.h"
 
@@ -49,59 +50,59 @@ void MainWindowImpl::pushButtonPressed(unsigned char button) {
 }
 
 void MainWindowImpl::pushButtonTX1Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT1);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT1);
 }
 
 void MainWindowImpl::pushButtonTX2Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT2);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT2);
 }
 
 void MainWindowImpl::pushButtonTX3Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT3);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT3);
 }
 
 void MainWindowImpl::pushButtonTX4Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT4);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT4);
 }
 
 void MainWindowImpl::pushButtonRXAnt1Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT1);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT1);
 }
 
 void MainWindowImpl::pushButtonRXAnt2Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT2);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT2);
 }
 
 void MainWindowImpl::pushButtonRXAnt3Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT3);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT3);
 }
 
 void MainWindowImpl::pushButtonRXAnt4Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT4);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT4);
 }
 
 void MainWindowImpl::pushButtonRXAnt5Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT5);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT5);
 }
 
 void MainWindowImpl::pushButtonRXAnt6Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT6);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT6);
 }
 
 void MainWindowImpl::pushButtonRXAnt7Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT7);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT7);
 }
 
 void MainWindowImpl::pushButtonRXAnt8Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT8);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT8);
 }
 
 void MainWindowImpl::pushButtonRXAnt9Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT9);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT9);
 }
 
 void MainWindowImpl::pushButtonRXAnt10Clicked() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT10);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT10);
 }
 
 void MainWindowImpl::actionSettingsEditTriggered() {
@@ -109,9 +110,13 @@ void MainWindowImpl::actionSettingsEditTriggered() {
 }
 
 void MainWindowImpl::actionDisconnectTriggered() {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_SET_STATUS,0);
-
 	timerPollStatus->stop();
+	serial->closePort();
+
+
+
+	actionConnect->setEnabled(true);
+	actionDisconnect->setEnabled(false);
 }
 
 void MainWindowImpl::getRXAntennaInfo() {
@@ -122,20 +127,27 @@ void MainWindowImpl::getTXAntennaInfo() {
 
 void MainWindowImpl::actionConnectTriggered() {
   qDebug("Opened serial port");
-  serial.openPort(settingsDialog->getCOMDeviceName(),BAUD19200);
-  serial.start();
+	if (serial->openPort(settingsDialog->getCOMDeviceName(),BAUD19200)) {
+		qDebug("Failed to open serial device");
+	}
+	else {
+		serial->start();
 
-	timerPollRXQueue->setInterval(1);
-	timerPollRXQueue->start();
+		actionConnect->setEnabled(false);
+		actionDisconnect->setEnabled(true);
 
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_SET_STATUS,1);
+		timerPollRXQueue->setInterval(1);
+		timerPollRXQueue->start();
 
-	timerPollStatus->setInterval(100);
-	timerPollStatus->start();
+		serial->addTXMessage(COMPUTER_COMM_REMOTE_SET_STATUS,1);
+
+		timerPollStatus->setInterval(100);
+		timerPollStatus->start();
+	}
 }
 
 void MainWindowImpl::comboBoxBandIndexChanged(int index) {
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_CHANGE_BAND,index);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_CHANGE_BAND,index);
 }
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
@@ -145,18 +157,17 @@ void MainWindowImpl::timerPollStatusUpdate(void) {
 		temp[1] = ((rotatorWindow->getTargetDir(rotatorWindow->getActiveAntenna()) & 0xFF00) >> 8);
 		temp[2] = (rotatorWindow->getTargetDir(rotatorWindow->getActiveAntenna()) & 0x00FF);
 
-		serial.addTXMessage(COMPUTER_COMM_REMOTE_ROTATE_ANTENNA,3,temp);
+		serial->addTXMessage(COMPUTER_COMM_REMOTE_ROTATE_ANTENNA,3,temp);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAntClicked() {
-	qDebug("PRESSED");
-	serial.addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_RX_ANT_MODE);
+	serial->addTXMessage(COMPUTER_COMM_REMOTE_BUTTON_EVENT,EXT_CTRL_TOGGLE_RX_ANT_MODE);
 }
 
 void MainWindowImpl::parseMessage(struct_message message) {
 	if (message.cmd == COMPUTER_COMM_REMOTE_BAND_INFO) {
-		if (message.length > 3) {
+		if (message.length > 5) {
 			if (status.currentBand != message.data[0]) {
 				labelAnt1->setText("");
 				labelAnt2->setText("");
@@ -170,6 +181,14 @@ void MainWindowImpl::parseMessage(struct_message message) {
 				status.currentBand = message.data[0];
 				labelBand->setText("Band: "+getBandName(message.data[0]));
 				//comboBoxBand->setCurrentIndex(message.data[0]);
+			}
+
+			unsigned int temp_error = (message.data[4] << 8) + message.data[5];
+
+			if (temp_error != status.currentErrors) {
+				status.currentErrors = temp_error;
+				errorDialog->setErrorList(status.currentErrors);
+				errorDialog->show();
 			}
 
 			if (message.data[1] != status.currentAntennas) {
@@ -196,7 +215,6 @@ void MainWindowImpl::parseMessage(struct_message message) {
 					pushButtonTX4->setChecked(false);
 			}
 
-			qDebug("BAND INFO RXED");
 			rotatorWindow->loadBand(message.data[0]);
 
 			if (message.data[3] & (1<<0))	{ //RX ANT MODE STATUS
@@ -244,8 +262,6 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			labelAnt4->setText(antText);
 	}
 	else if (message.cmd == COMPUTER_COMM_REMOTE_RXANT_TEXT){
-		qDebug("RX ANT TEXT RXED");
-
 		if (message.length > 0) {
 			QString rxAntText = QString::fromLocal8Bit(message.data+1);
 
@@ -290,16 +306,27 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			rotatorWindow->setRotatorAngle(message.data[0],dir);
 		}
 	}
+	else if (message.cmd == INT_COMM_PC_SEND_TO_ADDR) {
+		terminalWindow->addNewMessage(message);
+	}
+}
+
+void MainWindowImpl::actionTerminalTriggered() {
+	terminalWindow->show();
 }
 
 void MainWindowImpl::timerPollRXQueueUpdate(void) {
-	if (serial.getRXQueueSize() > 0) {
-		struct_message message = serial.getRXQueueFirst();
+	if (serial->getRXQueueSize() > 0) {
+		struct_message message = serial->getRXQueueFirst();
 
 	//	qDebug() << "MESSAGE: " << message.cmd;
 
 		parseMessage(message);
 	}
+}
+
+void MainWindowImpl::actionErrorDialogTriggered() {
+	errorDialog->show();
 }
 
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
@@ -312,8 +339,20 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
   settingsDialog = new SettingsDialog(this);
 	settingsDialog->hide();
 
+	terminalWindow = new terminalDialog(this);
+	terminalWindow->hide();
+
 	rotatorWindow = new RotatorDialog(this);
 	rotatorWindow->hide();
+
+	serial = new CommClass();
+
+	terminalWindow->setSerialPtr(serial);
+
+	errorDialog = new ErrorDialog();
+	errorDialog->hide();
+
+	errorDialog->setSerialPtr(serial);
 
 	bandChangedFlag = 0;
 
@@ -326,7 +365,9 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));
 	connect(actionWindowsRotators, SIGNAL(triggered()), this, SLOT(WindowRotatorsTriggered()));
 	connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
-        connect(actionDisconnect, SIGNAL(triggered()), this, SLOT(actionDisconnectTriggered()));
+	connect(actionDisconnect, SIGNAL(triggered()), this, SLOT(actionDisconnectTriggered()));
+	connect(actionTerminal, SIGNAL(triggered()), this, SLOT(actionTerminalTriggered()));
+	connect(actionErrorDialog, SIGNAL(triggered()), this, SLOT(actionErrorDialogTriggered()));
 
 	connect(comboBoxBand, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxBandIndexChanged(int)));
 

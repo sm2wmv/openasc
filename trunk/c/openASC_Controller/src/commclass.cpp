@@ -337,3 +337,48 @@ void CommClass::addTXMessage(unsigned char cmd, char data) {
 
   txQueue.append(message);
 }
+
+void CommClass::addTXMessage(unsigned char cmd, unsigned char length, QByteArray *data) {
+	struct_message message;
+
+	message.checksum = 0;
+	message.cmd = cmd;
+	message.checksum += cmd;
+	message.length = length;
+	message.checksum += length;
+
+	for (unsigned char i=0;i<length;i++) {
+		message.data[i] = data->at(i);
+		message.checksum += data->at(i);
+	}
+
+	txQueue.append(message);
+}
+
+void CommClass::addTXMessage(unsigned char cmd, unsigned char length, QString data) {
+	struct_message message;
+
+	message.checksum = 0;
+	message.cmd = cmd;
+	message.checksum += cmd;
+	message.length = length;
+	message.checksum += length;
+
+	for (unsigned char i=0;i<length;i++) {
+		message.data[i] = data.at(i).toLatin1();
+		message.checksum += data.at(i).toLatin1();
+	}
+
+	txQueue.append(message);
+}
+
+void CommClass::addTXMessage(unsigned char cmd) {
+	struct_message message;
+
+	message.checksum = 0;
+	message.cmd = cmd;
+	message.checksum += cmd;
+	message.length = 0;
+
+	txQueue.append(message);
+}

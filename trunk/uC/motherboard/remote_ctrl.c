@@ -53,12 +53,15 @@ struct_band_data band_data;
 
 void remote_ctrl_update_info(void) {
   if (remote_ctrl_band_data_updated) {
-    char temp_data[4];
+    char temp_data[6];
     
     temp_data[0] = band_data.current_band;
     temp_data[1] = band_data.curr_ant_selected;
     temp_data[2] = band_data.curr_rx_ant_selected;
     temp_data[3] = band_data.current_modes;
+    temp_data[4] = band_data.error >> 8;
+    temp_data[5] = band_data.error & 0xFF;
+    
     
     comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_BAND_INFO,sizeof(temp_data),(char *)temp_data);
     
