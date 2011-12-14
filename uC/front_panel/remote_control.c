@@ -52,6 +52,10 @@ static unsigned char remote_update_vector = 0;
 static unsigned int remote_update_rx_ant_text = 0;
 static unsigned char remote_update_ant_text = 0;
 static unsigned char remote_update_ant_dir_info = 0;
+static unsigned char remote_update_sub_menu_info_ant1 = 0;
+static unsigned char remote_update_sub_menu_info_ant2 = 0;
+static unsigned char remote_update_sub_menu_info_ant3 = 0;
+static unsigned char remote_update_sub_menu_info_ant4 = 0;
 
 //static char linefeed[3] = {"\r\n\0"};
 //static char huh[7] = {"Huh?\r\n\0"};
@@ -84,6 +88,18 @@ void remote_control_changed_band(void) {
     remote_update_ant_text = 15;
     
     remote_update_ant_dir_info = 15;
+    
+    if (sub_menu_get_type(0) != SUBMENU_NONE)
+      remote_update_sub_menu_info_ant1 = 255;
+    
+    if (sub_menu_get_type(1) != SUBMENU_NONE)
+      remote_update_sub_menu_info_ant2 = 255;
+    
+    if (sub_menu_get_type(2) != SUBMENU_NONE)
+      remote_update_sub_menu_info_ant3 = 255;
+
+    if (sub_menu_get_type(3) != SUBMENU_NONE)
+      remote_update_sub_menu_info_ant4 = 255;
   }
   else {
     //TODO: FIX THIS PART
@@ -117,6 +133,8 @@ void remote_control_process(void) {
             remote_update_rx_ant_text &= ~(1<<i);
           }
         }
+        else
+          break;
       }
     }
     
@@ -129,6 +147,8 @@ void remote_control_process(void) {
             remote_update_ant_text &= ~(1<<i);
           }
         }
+        else
+          break;        
       }
     }
     
@@ -141,8 +161,66 @@ void remote_control_process(void) {
             remote_update_ant_dir_info &= ~(1<<i);
           }
         }
+        else
+          break;
       }
     }
+    /*
+    if (remote_update_sub_menu_info_ant1 != 0) {
+      for (unsigned char i=0;i<8;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_sub_menu_info_ant1 & (1<<i)) {
+            remote_control_send_sub_menu(0,i);
+            
+            remote_update_sub_menu_info_ant1 &= ~(1<<i);
+          }
+        }
+        else
+          break;
+      }
+    }
+    
+    if (remote_update_sub_menu_info_ant2 != 0) {
+      for (unsigned char i=0;i<8;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_sub_menu_info_ant2 & (1<<i)) {
+            remote_control_send_sub_menu(1,i);
+            
+            remote_update_sub_menu_info_ant2 &= ~(1<<i);
+          }
+        }
+        else
+          break;
+      }
+    }
+    
+    if (remote_update_sub_menu_info_ant3 != 0) {
+      for (unsigned char i=0;i<8;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_sub_menu_info_ant3 & (1<<i)) {
+            remote_control_send_sub_menu(2,i);
+            
+            remote_update_sub_menu_info_ant3 &= ~(1<<i);
+          }
+        }
+        else
+          break;
+      }
+    }
+    
+    if (remote_update_sub_menu_info_ant4 != 0) {
+      for (unsigned char i=0;i<8;i++) {
+        if (!internal_comm_is_tx_queue_full()) {
+          if (remote_update_sub_menu_info_ant4 & (1<<i)) {
+            remote_control_send_sub_menu(3,i);
+            
+            remote_update_sub_menu_info_ant4 &= ~(1<<i);
+          }
+        }
+        else
+          break;
+      }
+    }*/
   }
 }
 
@@ -274,389 +352,31 @@ void remote_control_send_ant_info(void) {
   }
 }
 
-/*! \brief Parse a button press event, will perform an action depending on which button we wish to press
- *  \param button The button we wish to press */
-void remote_control_parse_button(unsigned char button) {
-  event_process_task(button);  
-}
-
-void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
-{
-/*  char str[41];
-  va_list ap;
-  va_start(ap, fmt);
-  int len = vsnprintf(str, sizeof(str), fmt, ap);
-  va_end(ap);
-
-  if (len >= sizeof(str)-1) {
-    strcpy(str + sizeof(str) - 6, "...\r\n");
-    len = sizeof(str)-1;
+void remote_control_send_sub_menu(unsigned char ant_index, unsigned char sub_pos) {
+   if (remote_control_get_remote_mode()) {
+/*    if (remote_current_band != BAND_UNDEFINED) {
+      if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
+        unsigned char temp_data[SUB_MENU_ARRAY_NAME_SIZE+3];
+        
+        temp_data[0] = ant_index;
+        temp_data[1] = sub_menu_get_combination_count(ant_index);
+        temp_data[2] = sub_pos;
+        
+        strcpy((char *)(temp_data+3), sub_menu_get_text(ant_index,sub_pos));
+        
+        internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT,sizeof(temp_data),(char *)temp_data);
+      }
+      else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) {
+        unsigned char temp_data[SUB_MENU_STACK_NAME_SIZE+3];
+        
+        temp_data[0] = ant_index;
+        temp_data[1] = sub_menu_get_combination_count(ant_index);
+        temp_data[2] = sub_pos;
+        
+        strcpy((char *)(temp_data+3), sub_menu_get_text(ant_index,sub_pos));
+        
+        internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_STACK_TEXT,sizeof(temp_data),(char *)temp_data);      
+      }
+    }*/
   }
-  
-  char *ptr = str;
-  while (len > 0) {
-    unsigned char len_to_send = len < 15 ? len : 15;
-    
-    if (to_addr != 0) {
-      bus_add_tx_message(bus_get_address(),
-                         to_addr,
-                         (1<<BUS_MESSAGE_FLAGS_NEED_ACK),
-                          BUS_CMD_ASCII_DATA,
-                          len_to_send,
-                          (unsigned char *)ptr
-                        );
-    }
-    else {
-      internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, len_to_send, (char *)ptr);
-    }
-    
-    len -= len_to_send;
-    ptr += len_to_send;
-  }*/
-}
-
-void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message) {
-/*  char data[16];
-  memcpy(data, uc_message->data, uc_message->length);
-  data[uc_message->length] = '\0';
-  
-    // Get the command and its arguments
-  unsigned char argc = 0;
-  char *argv[MAX_ASCII_CMD_ARGS];
-  argv[0] = NULL;
-  unsigned char pos = 0;
-  for (pos=0; pos < uc_message->length; ++pos) {
-    if (argv[argc] == NULL) {
-      if (data[pos] != ' ') {
-        argv[argc] = (char*)(data + pos);
-      }
-    }
-    else {
-      if (data[pos] == ' ') {
-        data[pos] = '\0';
-        if (argc >= MAX_ASCII_CMD_ARGS-1) {
-          break;
-        }
-        ++argc;
-        argv[argc] = NULL;
-      }
-    }
-  }
-  if (argv[argc] != NULL) {
-    ++argc;
-  }
-  
-  send_ascii_data(0, "\r\n");
-
-  if (argc > 0) {
-    if (strcmp_P(argv[0], PSTR("help")) == 0) {
-      send_ascii_data(0,"No help\r\n");
-    }
-    else if (strcmp_P(argv[0], PSTR("ant")) == 0) {
-      if (argc > 1) {
-        if (strcmp_P(argv[1],PSTR("1")) == 0)
-          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT1);
-        else if (strcmp_P(argv[1],PSTR("2")) == 0)
-          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT2);
-        else if (strcmp_P(argv[1],PSTR("3")) == 0)
-          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT3);
-        else if (strcmp_P(argv[1],PSTR("4")) == 0)
-          remote_control_parse_button(EXT_CTRL_TOGGLE_TX_ANT4);
-      }
-      else {
-        send_ascii_data(0, huh);
-      }
-    }
-    else if (strcmp_P(argv[0],PSTR("rxant")) == 0) {
-      if (argc > 1) {
-        if (strcmp_P(argv[1],PSTR("1")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT1);
-        else if (strcmp_P(argv[1],PSTR("2")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT2);
-        else if (strcmp_P(argv[1],PSTR("3")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT3);
-        else if (strcmp_P(argv[1],PSTR("4")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT4);
-        else if (strcmp_P(argv[1],PSTR("5")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT5);
-        else if (strcmp_P(argv[1],PSTR("6")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT6);
-        else if (strcmp_P(argv[1],PSTR("7")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT7);
-        else if (strcmp_P(argv[1],PSTR("8")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT8);
-        else if (strcmp_P(argv[1],PSTR("9")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT9);
-        else if (strcmp_P(argv[1],PSTR("10")) == 0)
-          remote_control_parse_button(EXT_CTRL_SEL_RX_ANT10);
-        else
-          remote_control_parse_button(EXT_CTRL_SEL_RX_NONE);
-      }
-      else {
-        remote_control_parse_button(EXT_CTRL_TOGGLE_RX_ANT_MODE);
-      }
-    }
-    else if (strcmp_P(argv[0], PSTR("array")) == 0) {
-      if (argc > 1) {
-        if (strcmp_P(argv[1],PSTR("1")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR1);
-        else if (strcmp_P(argv[1],PSTR("2")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR2);
-        else if (strcmp_P(argv[1],PSTR("3")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR3);
-        else if (strcmp_P(argv[1],PSTR("4")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_ARRAY_DIR4);
-        else
-          send_ascii_data(0, huh);
-      }
-    }
-    else if (strcmp_P(argv[0], PSTR("stack")) == 0) {
-      if (argc > 1) {
-        if (strcmp_P(argv[1],PSTR("1")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB1);
-        else if (strcmp_P(argv[1],PSTR("2")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB2);
-        else if (strcmp_P(argv[1],PSTR("3")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB3);
-        else if (strcmp_P(argv[1],PSTR("4")) == 0)
-          remote_control_parse_button(EXT_CTRL_SET_STACK_COMB4);
-        else
-          send_ascii_data(0, huh);
-      }
-    }
-    else if (strcmp_P(argv[0], PSTR("band")) == 0) {
-      if (strcmp_P(argv[1], PSTR("160")) == 0) {
-        main_set_new_band(BAND_160M);
-      }
-      else if (strcmp_P(argv[1], PSTR("80")) == 0) {
-        main_set_new_band(BAND_80M);
-      }
-      else if (strcmp_P(argv[1], PSTR("40")) == 0) {
-        main_set_new_band(BAND_40M);
-      }
-      else if (strcmp_P(argv[1], PSTR("30")) == 0) {
-        main_set_new_band(BAND_30M);
-      }
-      else if (strcmp_P(argv[1], PSTR("20")) == 0) {
-        main_set_new_band(BAND_20M);
-      }
-      else if (strcmp_P(argv[1], PSTR("17")) == 0) {
-        main_set_new_band(BAND_17M);
-      }
-      else if (strcmp_P(argv[1], PSTR("15")) == 0) {
-        main_set_new_band(BAND_15M);
-      }                        
-      else if (strcmp_P(argv[1], PSTR("12")) == 0) {
-        main_set_new_band(BAND_12M);
-      }      
-      else if (strcmp_P(argv[1], PSTR("10")) == 0) {
-        main_set_new_band(BAND_10M);
-      }
-      else {
-        send_ascii_data(0, huh);
-      }
-    }
-    else if (strcmp_P(argv[0], PSTR("errors")) == 0) {
-      if (argc > 1) {
-        if (strcmp_P(argv[1], PSTR("clear")) == 0) {
-          error_handler_clear_all();
-          led_set_error(LED_STATE_OFF);
-        }
-      }
-      else {
-        unsigned char error_count = 0;
-        char line[NR_OF_ERRORS+2][20];
-
-        strcpy_P(line[0], PSTR("Error list\n\r"));
-        strcpy_P(line[1], PSTR("----------\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_BUS_RESEND) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Bus resend\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_BUS_SYNC) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Bus sync\n\r"));
-
-        if (error_handler_get_state(ERROR_TYPE_BUS_TX_QUEUE_FULL) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Bus TX queue full\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_BUS_RX_QUEUE_FULL) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Bus RX queue full\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_INT_COMM_RESEND) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Int comm resend\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_ANT_PING_TIMEOUT) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Ant ping timeout\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_BAND_PING_TIMEOUT) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Band ping timeout\n\r"));        
-        
-        if (error_handler_get_state(ERROR_TYPE_HIGH_VSWR) != 0)
-          strcpy_P(line[2+error_count++], PSTR("High VSWR\n\r"));
-
-        if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Band in use\n\r"));
-
-        if (error_handler_get_state(ERROR_TYPE_INT_COMM_TX_FULL) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Int comm TX full\n\r"));
-        
-        if (error_handler_get_state(ERROR_TYPE_INT_COMM_TX_FULL) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Int comm TX full\n\r"));        
-        
-        if (error_handler_get_state(ERROR_TYPE_EVENT_QUEUE_FULL) != 0)
-          strcpy_P(line[2+error_count++], PSTR("Event queue full\n\r"));
-        
-        for (int i=0;i<error_count+2;i++)
-          send_ascii_data(0, line[i]);
-      }
-    }
-    else if (strcmp_P(argv[0], PSTR("info")) == 0) {
-      char line[10][30];
-      
-      for (unsigned char i=0;i<10;i++)
-        for (unsigned char j=0;j<25;j++)
-          line[i][j] = 0;
-      
-      unsigned char cnt = 0;
-      unsigned char line_nr = 0;
-      
-      strcpy_P(line[line_nr], PSTR("Band: "));
-      
-      if (status.selected_band == BAND_160M) {
-        strcpy_P(line[line_nr]+6, PSTR("160m\r\n"));
-      }
-      else if (status.selected_band == BAND_80M) {
-        strcpy_P(line[line_nr]+6, PSTR("80m\r\n"));
-      }
-      else if (status.selected_band == BAND_40M) {
-        strcpy_P(line[line_nr]+6, PSTR("40m\r\n"));
-      }
-      else if (status.selected_band == BAND_30M) {
-        strcpy_P(line[line_nr]+6, PSTR("30m\r\n"));
-      }
-      else if (status.selected_band == BAND_20M) {
-        strcpy_P(line[line_nr]+6, PSTR("20m\r\n"));
-      }
-      else if (status.selected_band == BAND_17M) {
-        strcpy_P(line[line_nr]+6, PSTR("17m\r\n"));
-      }
-      else if (status.selected_band == BAND_15M) {
-        strcpy_P(line[line_nr]+6, PSTR("15m\r\n"));
-      }
-      else if (status.selected_band == BAND_12M) {
-        strcpy_P(line[line_nr]+6, PSTR("12m\r\n"));
-      }
-      else if (status.selected_band == BAND_10M) {
-        strcpy_P(line[line_nr]+6, PSTR("10m\r\n"));
-      }
-      else
-        strcpy_P(line[line_nr]+6, PSTR("None\r\n"));
-
-      
-      line_nr++;
-      
-      if (status.selected_band != BAND_UNDEFINED) {
-        for (int i=0;i<4;i++) {
-          if (antenna_ctrl_get_antenna_text_length(i) > 0) {
-            if ((status.selected_ant & (1<<i)) != 0) {
-              if (i == 0)
-                strcpy_P(line[line_nr], PSTR(" A1: *"));
-              else if (i == 1)
-                strcpy_P(line[line_nr], PSTR(" A2: *"));
-              else if (i == 2)
-                strcpy_P(line[line_nr], PSTR(" A3: *"));
-              else if (i == 3)
-                strcpy_P(line[line_nr], PSTR(" A4: *"));
-              
-              cnt = 6;
-            }
-            else {
-              if (i == 0)
-                strcpy_P(line[line_nr], PSTR(" A1: "));
-              else if (i == 1)
-                strcpy_P(line[line_nr], PSTR(" A2: "));
-              else if (i == 2)
-                strcpy_P(line[line_nr], PSTR(" A3: "));
-              else if (i == 3)
-                strcpy_P(line[line_nr], PSTR(" A4: "));
-              
-              cnt = 5;
-            }
-            
-            strncpy((char *)(line[line_nr]+cnt),antenna_ctrl_get_antenna_text(i), antenna_ctrl_get_antenna_text_length(i));
-            
-            if (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY) {
-              for (unsigned char c=antenna_ctrl_get_antenna_text_length(i);c<10;c++) {
-                line[line_nr][c+cnt] = ' ';
-              }
-              
-              cnt += 10 - antenna_ctrl_get_antenna_text_length(i);
-              
-              cnt+= sprintf((char *)(line[line_nr]+cnt+antenna_ctrl_get_antenna_text_length(i))," - (%s)",sub_menu_get_text(i,sub_menu_get_current_pos(i)));
-            }
-            
-            if (antenna_ctrl_get_flags(i) & (1<<ANTENNA_ROTATOR_FLAG)) {
-              for (unsigned char c=antenna_ctrl_get_antenna_text_length(i);c<10;c++) {
-                line[line_nr][c+cnt] = ' ';
-              }
-              
-              if (cnt == 6)
-                cnt += 9 - antenna_ctrl_get_antenna_text_length(i);
-              else
-                cnt += 10 - antenna_ctrl_get_antenna_text_length(i);
-              
-              cnt+= sprintf((char *)(line[line_nr]+cnt+antenna_ctrl_get_antenna_text_length(i))," - %i deg",antenna_ctrl_get_direction(i));
-            }
-
-            strcpy((char *)(line[line_nr]+antenna_ctrl_get_antenna_text_length(i)+cnt),"\r\n");
-            
-            line_nr++;
-          }
-        }
-  
-        strncpy_P((char *)line[line_nr],PSTR("RX ant: \r\n"),10);
-        
-        if (antenna_ctrl_rx_antenna_selected() == 0) {
-          strcpy_P((char *)(line[line_nr]+8),PSTR("None\r\n")); 
-        }
-        else {
-          strncpy((char *)(line[line_nr]+8),antenna_ctrl_get_rx_antenna_name(antenna_ctrl_rx_antenna_selected()-1),antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1));
-          strcpy((char *)(line[line_nr]+8+antenna_ctrl_get_rx_antenna_name_length(antenna_ctrl_rx_antenna_selected()-1)),linefeed);
-        }
-        
-        line_nr++;
-        
-        if (status.function_status & (1<<FUNC_STATUS_RXANT)) {
-          strcpy_P(line[line_nr],PSTR("RX ant: ON\r\n"));
-        }
-        else
-          strcpy_P(line[line_nr],PSTR("RX ant: OFF\r\n"));
-        
-        line_nr++;
-      }
-      
-      for (int i=0;i<line_nr;i++) {
-        send_ascii_data(0, line[i]);        
-      }
-    }
-     else if (strcmp_P(argv[0], PSTR("setdir")) == 0) {
-      if (argc > 2) {
-        if (strcmp_P(argv[1],PSTR("1")) == 0)
-          antenna_ctrl_rotate(0,atoi(argv[2]));
-        else if (strcmp_P(argv[1],PSTR("2")) == 0)
-          antenna_ctrl_rotate(1,atoi(argv[2]));
-        else if (strcmp_P(argv[1],PSTR("3")) == 0)
-          antenna_ctrl_rotate(2,atoi(argv[2]));
-        else if (strcmp_P(argv[1],PSTR("4")) == 0)
-          antenna_ctrl_rotate(3,atoi(argv[2]));
-      }
-      else if ((argc == 2) && (strcmp_P(argv[1],PSTR("stop")) == 0))
-        antenna_ctrl_rotate_stop();
-    }
-    else {
-      send_ascii_data(0, huh);
-    }
-  }
-
-  send_ascii_data(0, "%d> ",0);*/
 }

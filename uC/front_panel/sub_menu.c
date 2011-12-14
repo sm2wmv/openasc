@@ -370,3 +370,12 @@ void sub_menu_set_stack_comb(unsigned char comb_nr) {
 		}
 	}	
 }
+
+unsigned char sub_menu_get_combination_count(unsigned char ant_index) {
+  if (sub_menu_get_type(ant_index) == SUBMENU_STACK)
+    return(current_sub_menu_stack[ant_index].comb_count);
+  else if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY)
+    return(current_sub_menu_array[ant_index].direction_count);
+  
+  return(0);
+}

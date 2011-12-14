@@ -24,7 +24,7 @@
 #define _COMM_INTERFACE_
 
 //! \brief Size of the TX queue
-#define COMM_INTERFACE_TX_QUEUE_SIZE	20
+#define COMM_INTERFACE_TX_QUEUE_SIZE	30
 
 //! \brief Size of the RX queue
 #define COMM_INTERFACE_RX_QUEUE_SIZE	5

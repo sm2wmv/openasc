@@ -7,13 +7,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
+    <width>552</width>
     <height>441</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>590</width>
+    <width>552</width>
     <height>441</height>
    </size>
   </property>
@@ -321,7 +321,7 @@
         <rect>
          <x>160</x>
          <y>85</y>
-         <width>405</width>
+         <width>366</width>
          <height>196</height>
         </rect>
        </property>
@@ -361,8 +361,8 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>530</width>
-          <height>136</height>
+          <width>346</width>
+          <height>120</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
@@ -410,6 +410,22 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>13</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="0" column="3">
           <widget class="QLabel" name="labelAnt1">
            <property name="minimumSize">
@@ -450,7 +466,7 @@
           <widget class="QLabel" name="labelAnt1Dir">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
@@ -534,7 +550,7 @@
           <widget class="QLabel" name="labelAnt2Dir">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
@@ -618,7 +634,7 @@
           <widget class="QLabel" name="labelAnt3Dir">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
@@ -702,7 +718,7 @@
           <widget class="QLabel" name="labelAnt4Dir">
            <property name="minimumSize">
             <size>
-             <width>70</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
@@ -718,21 +734,27 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="1" column="6">
+          <widget class="QPushButton" name="pushButtonSubMenu2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+           <property name="maximumSize">
             <size>
-             <width>10</width>
-             <height>20</height>
+             <width>45</width>
+             <height>16777215</height>
             </size>
            </property>
-          </spacer>
+           <property name="text">
+            <string>Sub</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item row="3" column="6">
           <widget class="QPushButton" name="pushButtonSubMenu4">
@@ -758,28 +780,6 @@
          </item>
          <item row="2" column="6">
           <widget class="QPushButton" name="pushButtonSubMenu3">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>45</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Sub</string>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="6">
-          <widget class="QPushButton" name="pushButtonSubMenu2">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -827,7 +827,7 @@
        <widget class="QLabel" name="labelRXAntennas3">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>170</y>
           <width>86</width>
           <height>20</height>
@@ -852,7 +852,7 @@
        <widget class="QLabel" name="labelCurrentRXAntenna">
         <property name="geometry">
          <rect>
-          <x>100</x>
+          <x>95</x>
           <y>170</y>
           <width>131</width>
           <height>20</height>
@@ -880,7 +880,7 @@
         <rect>
          <x>340</x>
          <y>10</y>
-         <width>225</width>
+         <width>186</width>
          <height>70</height>
         </rect>
        </property>
@@ -997,6 +997,127 @@
         </property>
        </widget>
       </widget>
+      <widget class="QFrame" name="frameSubMenuVertArray">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>285</y>
+         <width>366</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="labelSubMenuName">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>Sub menu:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray1">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray2">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray3">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray4">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray5">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray6">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray7">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonSubMenuArray8">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -1006,7 +1127,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>590</width>
+     <width>552</width>
      <height>22</height>
     </rect>
    </property>

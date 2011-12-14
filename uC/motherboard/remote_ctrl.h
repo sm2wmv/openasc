@@ -58,7 +58,22 @@ typedef struct {
   unsigned char antenna_flags[4];
   //! Antenna rotator flags
   unsigned char antenna_rotator_flags[4];
+  //! Current sub menu selected
+  unsigned char curr_sub_menu_selected[4];
 } struct_band_data;
+
+//! Struct of a sub menu with the type array
+typedef struct {
+  //! Number of directions
+  unsigned char direction_count;
+  //! The directions
+  unsigned char direction_name[8][SUB_MENU_ARRAY_NAME_SIZE];
+} struct_sub_menu_array;
+
+typedef struct {
+  unsigned char comb_count;
+  unsigned char comb_name[6][SUB_MENU_STACK_NAME_SIZE];
+} struct_sub_menu_stack;
 
 void remote_ctrl_set_active(void);
 void remote_ctrl_set_deactive(void);

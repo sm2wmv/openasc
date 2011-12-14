@@ -55,6 +55,8 @@ void remote_control_set_update_tx_ant_info(void);
 
 void remote_control_changed_band(void);
 
+void remote_control_send_sub_menu(unsigned char ant_index, unsigned char sub_pos);
+
 //! Command to activate the remote control mode
 #define REMOTE_CONTROL_ACTIVATE_MODE		0x01
 //! Command to deactivate the remote control mode
