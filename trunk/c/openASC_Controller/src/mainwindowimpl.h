@@ -21,7 +21,24 @@ typedef struct {
 	unsigned char currentAntennas;
 	unsigned char currentRXAntennas;
 	unsigned int currentErrors;
+	unsigned char subMenuType[4];
+	unsigned char antennaFlags[4];
+//struct_sub_menu_array subMenuArray;
+//	struct_sub_menu_stack subMenuStack;
 } status_struct;
+
+//! Struct of a sub menu with the type array
+typedef struct {
+	//! Number of directions
+	unsigned char dirCount;
+	//! The directions
+	QString dirName[8];
+} struct_sub_menu_array;
+
+typedef struct {
+	unsigned char combCount;
+	QString combNames[6];
+} struct_sub_menu_stack;
 
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
@@ -75,6 +92,11 @@ public slots:
 
 		void timerPollRXQueueUpdate();
 		void timerPollStatusUpdate();
+
+		void pushButtonSubMenu1Clicked();
+		void pushButtonSubMenu2Clicked();
+		void pushButtonSubMenu3Clicked();
+		void pushButtonSubMenu4Clicked();
 };
 #endif
 

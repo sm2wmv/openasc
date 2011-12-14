@@ -216,14 +216,6 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
   }
 }
 
-void event_handler_check_uc_cmd(void) {
-  if (parse_uc_cmd == 1) {
-    remote_control_parse_ascii_cmd(&new_uc_message);
-    
-    parse_uc_cmd = 0;  
-  }
-}
-
 /*! \brief Set an RX antenna. Will set the proper flags and call the antenna_ctrl_change_rx_ant function
  *  \param ant_index The index of the RX antenna we wish to chose */
 void __inline__ event_set_rx_antenna(unsigned char ant_index) {

@@ -41,26 +41,36 @@
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 
-unsigned char remote_ctrl_band_data_updated = 0;
-unsigned char remote_ctrl_ant_text_updated = 0;
-unsigned int remote_ctrl_rxant_text_updated = 0;
-unsigned char remote_ctrl_ant_info_updated = 0;
-unsigned char remote_ctrl_ant_dir_updated = 0;
+static unsigned char remote_ctrl_band_data_updated = 0;
+static unsigned char remote_ctrl_ant_text_updated = 0;
+static unsigned int remote_ctrl_rxant_text_updated = 0;
+static unsigned char remote_ctrl_ant_info_updated = 0;
+static unsigned char remote_ctrl_ant_dir_updated = 0;
+static unsigned char remote_ctrl_sub_menu_stack_updated = 0;
+static unsigned char remote_ctrl_sub_menu_array_updated = 0;
 
 volatile static unsigned char remote_ctrl_active[2] = {0,0};
 
 struct_band_data band_data;
 
+struct_sub_menu_array sub_menu_array[4];
+struct_sub_menu_stack sub_menu_stack[4];
+
 void remote_ctrl_update_info(void) {
   if (remote_ctrl_band_data_updated) {
-    char temp_data[6];
+    char temp_data[10];
     
     temp_data[0] = band_data.current_band;
     temp_data[1] = band_data.curr_ant_selected;
     temp_data[2] = band_data.curr_rx_ant_selected;
     temp_data[3] = band_data.current_modes;
-    temp_data[4] = band_data.error >> 8;
-    temp_data[5] = band_data.error & 0xFF;
+    temp_data[4] = band_data.curr_sub_menu_selected[0];
+    temp_data[5] = band_data.curr_sub_menu_selected[1];
+    temp_data[6] = band_data.curr_sub_menu_selected[2];
+    temp_data[7] = band_data.curr_sub_menu_selected[3];
+
+    temp_data[8] = band_data.error >> 8;
+    temp_data[9] = band_data.error & 0xFF;
     
     
     comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_BAND_INFO,sizeof(temp_data),(char *)temp_data);
@@ -117,6 +127,25 @@ void remote_ctrl_update_info(void) {
       }
     }
   }
+  
+  /*if (remote_ctrl_sub_menu_array_updated != 0) {
+    for (unsigned char i=0;i<4;i++) {
+      if (remote_ctrl_sub_menu_array_updated & (1<<i)) {
+        for (unsigned char c=0;c<8;c++) {
+          char temp_data[sizeof(sub_menu_array[i])+2];
+          
+          temp_data[0] = i;
+          temp_data[1] = c;
+          temp_data[2] = sub_menu_array[i].direction_count;
+          strncpy((char *)temp_data[3],sub_menu_array[i].direction_name[c], strlen(sub_menu_array[i].direction_name[c]));
+          
+          comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT,strlen(sub_menu_array[i].direction_name[c])+4,(char *)temp_data);
+        }
+      
+        remote_ctrl_sub_menu_array_updated &= (1<<i);
+      }
+    }
+  }*/
 }
 
 /*! \brief Activate the remote control mode */
@@ -298,8 +327,16 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       remote_ctrl_ant_dir_updated = (1<<message.data[0]);
       break;
     case INT_COMM_REMOTE_SUBMENU_ARRAY_TEXT:
+      sub_menu_array[message.data[0]].direction_count = message.data[1];
+      strcpy(sub_menu_array[message.data[0]].direction_name[message.data[2]],(char *)(message.data+3));
+      
+      remote_ctrl_sub_menu_array_updated |= (1<<message.data[0]);
       break;
     case INT_COMM_REMOTE_SUBMENU_STACK_TEXT:
+      sub_menu_stack[message.data[0]].comb_count = message.data[1];
+      strcpy(sub_menu_stack[message.data[0]].comb_name[message.data[2]],(char *)(message.data+3));
+      
+      remote_ctrl_sub_menu_stack_updated |= (1<<message.data[0]);
       break;
     default:
       break;

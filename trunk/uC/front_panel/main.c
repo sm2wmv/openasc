@@ -783,8 +783,6 @@ int main(void){
             }
         }
       }
-      
-      event_handler_check_uc_cmd();
 		}
 
     //Poll the RX queue in the internal comm to see if we have any new messages to be PARSED

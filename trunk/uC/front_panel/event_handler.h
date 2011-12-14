@@ -110,8 +110,6 @@ void event_process_task(unsigned char task_index);
 
 void __inline__ event_set_rx_antenna(unsigned char ant_index);
 
-void event_handler_check_uc_cmd(void);
-
 void event_txrx_mode_pressed(void);
 
 unsigned char event_check_critical_cmd_list(void);

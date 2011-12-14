@@ -68,4 +68,6 @@ void sub_menu_set_stack_comb(unsigned char comb_nr);
 
 void __inline__ sub_menu_set_ptt_status(void);
 
+unsigned char sub_menu_get_combination_count(unsigned char ant_index);
+
 #endif
