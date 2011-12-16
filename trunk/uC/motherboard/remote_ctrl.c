@@ -58,19 +58,20 @@ struct_sub_menu_stack sub_menu_stack[4];
 
 void remote_ctrl_update_info(void) {
   if (remote_ctrl_band_data_updated) {
-    char temp_data[10];
+    char temp_data[11];
     
     temp_data[0] = band_data.current_band;
     temp_data[1] = band_data.curr_ant_selected;
     temp_data[2] = band_data.curr_rx_ant_selected;
-    temp_data[3] = band_data.current_modes;
-    temp_data[4] = band_data.curr_sub_menu_selected[0];
-    temp_data[5] = band_data.curr_sub_menu_selected[1];
-    temp_data[6] = band_data.curr_sub_menu_selected[2];
-    temp_data[7] = band_data.curr_sub_menu_selected[3];
+    temp_data[3] = band_data.rx_antenna_count;
+    temp_data[4] = band_data.function_status;
+    temp_data[5] = band_data.curr_sub_menu_option_selected[0];
+    temp_data[6] = band_data.curr_sub_menu_option_selected[1];
+    temp_data[7] = band_data.curr_sub_menu_option_selected[2];
+    temp_data[8] = band_data.curr_sub_menu_option_selected[3];
 
-    temp_data[8] = band_data.error >> 8;
-    temp_data[9] = band_data.error & 0xFF;
+    temp_data[9] = band_data.error >> 8;
+    temp_data[10] = band_data.error & 0xFF;
     
     
     comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_BAND_INFO,sizeof(temp_data),(char *)temp_data);
@@ -78,6 +79,28 @@ void remote_ctrl_update_info(void) {
     remote_ctrl_band_data_updated = 0;
   }
   
+  if (remote_ctrl_ant_info_updated) {
+    for (unsigned char i=0;i<4;i++) {
+      if (remote_ctrl_ant_info_updated & (1<<i)) {
+        unsigned char temp_data[8];
+
+        temp_data[0] = band_data.antenna_flags[0];
+        temp_data[1] = band_data.antenna_flags[1];
+        temp_data[2] = band_data.antenna_flags[2];
+        temp_data[3] = band_data.antenna_flags[3];
+        
+        temp_data[4] = band_data.sub_menu_type[0];
+        temp_data[5] = band_data.sub_menu_type[1];
+        temp_data[6] = band_data.sub_menu_type[2];
+        temp_data[7] = band_data.sub_menu_type[3];
+        
+        comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_ANT_INFO,sizeof(temp_data),(char *)temp_data);
+      }
+      
+      remote_ctrl_ant_info_updated &= ~(1<<i);
+    }
+  }
+
   if (remote_ctrl_ant_text_updated != 0) {
     for (unsigned char i=0;i<4;i++) {
       if (remote_ctrl_ant_text_updated & (1<<i)) {
@@ -112,7 +135,7 @@ void remote_ctrl_update_info(void) {
   }
   
   if (remote_ctrl_ant_dir_updated != 0) {
-    char temp_data[4];
+    char temp_data[4] = {0,0,0,0};
     
     for (unsigned char i=0;i<4;i++) {
       if (remote_ctrl_ant_dir_updated & (1<<i)) {
@@ -121,14 +144,14 @@ void remote_ctrl_update_info(void) {
         temp_data[2] = band_data.antenna_curr_direction[i][1];
         temp_data[3] = band_data.antenna_rotator_flags[i];
         
-        comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_ANT_DIR_INFO,4,(char *)temp_data);
+        comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_ANT_DIR_INFO,sizeof(temp_data),(char *)temp_data);
         
         remote_ctrl_ant_dir_updated &= ~(1<<i);
       }
     }
   }
   
-  /*if (remote_ctrl_sub_menu_array_updated != 0) {
+  if (remote_ctrl_sub_menu_array_updated != 0) {
     for (unsigned char i=0;i<4;i++) {
       if (remote_ctrl_sub_menu_array_updated & (1<<i)) {
         for (unsigned char c=0;c<8;c++) {
@@ -137,15 +160,15 @@ void remote_ctrl_update_info(void) {
           temp_data[0] = i;
           temp_data[1] = c;
           temp_data[2] = sub_menu_array[i].direction_count;
-          strncpy((char *)temp_data[3],sub_menu_array[i].direction_name[c], strlen(sub_menu_array[i].direction_name[c]));
+          memcpy((char *)temp_data[3],sub_menu_array[i].direction_name[c], sizeof(sub_menu_array[i].direction_name[c]));
           
-          comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT,strlen(sub_menu_array[i].direction_name[c])+4,(char *)temp_data);
+          comm_interface_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT,sizeof(sub_menu_array[i].direction_name[c])+4,(char *)temp_data);
         }
       
         remote_ctrl_sub_menu_array_updated &= (1<<i);
       }
     }
-  }*/
+  }
 }
 
 /*! \brief Activate the remote control mode */
@@ -224,12 +247,13 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       band_data.curr_ant_selected = message.data[1];
       band_data.curr_rx_ant_selected = message.data[2];
       band_data.rx_antenna_count = message.data[3];
-      band_data.current_modes = message.data[4];
-      
-      band_data.flags = message.data[5] << 8;
-      band_data.flags |= message.data[6];
-      band_data.error = message.data[7] << 8;
-      band_data.error |= message.data[8];
+      band_data.function_status = message.data[4];
+      band_data.curr_sub_menu_option_selected[0] = message.data[5];
+      band_data.curr_sub_menu_option_selected[1] = message.data[6];
+      band_data.curr_sub_menu_option_selected[2] = message.data[7];
+      band_data.curr_sub_menu_option_selected[3] = message.data[8];
+      band_data.error = message.data[9] << 8;
+      band_data.error |= message.data[10];
       
       #ifdef DEBUG_REMOTE_CTRL
         printf("Remote band info\n\r");
@@ -328,13 +352,13 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       break;
     case INT_COMM_REMOTE_SUBMENU_ARRAY_TEXT:
       sub_menu_array[message.data[0]].direction_count = message.data[1];
-      strcpy(sub_menu_array[message.data[0]].direction_name[message.data[2]],(char *)(message.data+3));
+      memcpy(sub_menu_array[message.data[0]].direction_name[message.data[2]],(char *)(message.data+3),SUB_MENU_ARRAY_NAME_SIZE);
       
       remote_ctrl_sub_menu_array_updated |= (1<<message.data[0]);
       break;
     case INT_COMM_REMOTE_SUBMENU_STACK_TEXT:
       sub_menu_stack[message.data[0]].comb_count = message.data[1];
-      strcpy(sub_menu_stack[message.data[0]].comb_name[message.data[2]],(char *)(message.data+3));
+      memcpy(sub_menu_stack[message.data[0]].comb_name[message.data[2]],(char *)(message.data+3),SUB_MENU_STACK_NAME_SIZE);
       
       remote_ctrl_sub_menu_stack_updated |= (1<<message.data[0]);
       break;
@@ -342,3 +366,4 @@ void remote_ctrl_parse_message(UC_MESSAGE message) {
       break;
   }
 }
+

@@ -68,13 +68,15 @@ void sub_menu_load(unsigned char band_index) {
 		curr_option_selected[i] = 0;
 		
 		sub_menu_type[i] = antenna_ctrl_get_sub_menu_type(i);
-		
+	
 		if (sub_menu_type[i] == SUBMENU_VERT_ARRAY) {
 			eeprom_get_ant_sub_menu_array_structure(band_index, i, &current_sub_menu_array[i]);
 		}
 		else if (sub_menu_type[i] == SUBMENU_STACK) {
 			eeprom_get_ant_sub_menu_stack_structure(band_index, i, &current_sub_menu_stack[i]);
 		}
+		else
+      sub_menu_type[i] = SUBMENU_NONE;
 	}
 }
 

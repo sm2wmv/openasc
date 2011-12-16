@@ -153,6 +153,19 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
         display_handler_prev_view();
         led_set_menu(LED_STATE_OFF);
         break;
+      case COMPUTER_COMM_SET_SUBMENU_OPTION:
+        // Bit 0 -> Antenna index
+        // Bit 1 -> Dir/comb
+        
+        if (sub_menu_get_type(message.data[0]) == SUBMENU_VERT_ARRAY)
+          sub_menu_set_array_dir(message.data[1]);
+        else if (sub_menu_get_type(message.data[0]) == SUBMENU_STACK)
+          sub_menu_set_stack_comb(message.data[1]);
+        
+        //TEMPORARY
+        remote_control_set_update_band_info();
+        
+        display_handler_repaint();
       default:
         break;
     }

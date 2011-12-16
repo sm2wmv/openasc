@@ -35,7 +35,7 @@ typedef struct {
   //! The current rx antenna selected, 0 = None, 10 = rx ant nr 10
   unsigned char curr_rx_ant_selected;
   //! Which modes are active, bit 0 -> RX ANT, bit 1 -> TX/RX modes
-  unsigned char current_modes;
+  unsigned char function_status;
   //! The RX antenna names
   char rx_antenna_name[10][RX_ANTENNA_NAME_LENGTH];
   //! The number of rx antennas
@@ -59,7 +59,7 @@ typedef struct {
   //! Antenna rotator flags
   unsigned char antenna_rotator_flags[4];
   //! Current sub menu selected
-  unsigned char curr_sub_menu_selected[4];
+  unsigned char curr_sub_menu_option_selected[4];
 } struct_band_data;
 
 //! Struct of a sub menu with the type array

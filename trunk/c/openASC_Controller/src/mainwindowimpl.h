@@ -23,6 +23,7 @@ typedef struct {
 	unsigned int currentErrors;
 	unsigned char subMenuType[4];
 	unsigned char antennaFlags[4];
+	unsigned char antSubOptSelected[4];
 //struct_sub_menu_array subMenuArray;
 //	struct_sub_menu_stack subMenuStack;
 } status_struct;
@@ -97,6 +98,11 @@ public slots:
 		void pushButtonSubMenu2Clicked();
 		void pushButtonSubMenu3Clicked();
 		void pushButtonSubMenu4Clicked();
+
+		void pushButtonSubMenuArray1Clicked();
+		void pushButtonSubMenuArray2Clicked();
+		void pushButtonSubMenuArray3Clicked();
+		void pushButtonSubMenuArray4Clicked();
 };
 #endif
 

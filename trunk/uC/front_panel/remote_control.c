@@ -62,6 +62,8 @@ static unsigned char remote_update_sub_menu_info_ant4 = 0;
 
 /*! \brief Activate the remote control mode */
 void remote_control_activate_remote_mode(void) {
+  PORTC |= (1<<7);
+  
 	remote_control_flags |= (1<<FLAG_REMOTE_CONTROL_MODE_ACTIVE);
   
   remote_update_vector |= (1<<REMOTE_UPDATE_BAND_INFO);
@@ -74,6 +76,18 @@ void remote_control_activate_remote_mode(void) {
   remote_update_ant_text = 15;
   
   remote_update_ant_dir_info = 15;
+ 
+  if (sub_menu_get_type(0) != SUBMENU_NONE)
+    //remote_update_sub_menu_info_ant1 = 255;
+  
+  if (sub_menu_get_type(1) != SUBMENU_NONE)
+    //remote_update_sub_menu_info_ant2 = 255;
+  
+  if (sub_menu_get_type(2) != SUBMENU_NONE)
+    remote_update_sub_menu_info_ant3 = 255;
+
+  if (sub_menu_get_type(3) != SUBMENU_NONE)
+    remote_update_sub_menu_info_ant4 = 255;  
 }
 
 void remote_control_changed_band(void) {
@@ -89,17 +103,21 @@ void remote_control_changed_band(void) {
     
     remote_update_ant_dir_info = 15;
     
-    if (sub_menu_get_type(0) != SUBMENU_NONE)
+    if (sub_menu_get_type(0) != SUBMENU_NONE) {
       remote_update_sub_menu_info_ant1 = 255;
+    }
     
-    if (sub_menu_get_type(1) != SUBMENU_NONE)
+    if (sub_menu_get_type(1) != SUBMENU_NONE) {
       remote_update_sub_menu_info_ant2 = 255;
+    }
     
-    if (sub_menu_get_type(2) != SUBMENU_NONE)
+    if (sub_menu_get_type(2) != SUBMENU_NONE) {
       remote_update_sub_menu_info_ant3 = 255;
+    }
 
-    if (sub_menu_get_type(3) != SUBMENU_NONE)
+    if (sub_menu_get_type(3) != SUBMENU_NONE) {
       remote_update_sub_menu_info_ant4 = 255;
+    }
   }
   else {
     //TODO: FIX THIS PART
@@ -165,60 +183,76 @@ void remote_control_process(void) {
           break;
       }
     }
-    /*
-    if (remote_update_sub_menu_info_ant1 != 0) {
+    
+/*    if (remote_update_sub_menu_info_ant1 != 0) {
       for (unsigned char i=0;i<8;i++) {
-        if (!internal_comm_is_tx_queue_full()) {
-          if (remote_update_sub_menu_info_ant1 & (1<<i)) {
-            remote_control_send_sub_menu(0,i);
-            
-            remote_update_sub_menu_info_ant1 &= ~(1<<i);
+        if (sub_menu_get_combination_count(0) < i) {
+          if (!internal_comm_is_tx_queue_full()) {
+            if (remote_update_sub_menu_info_ant1 & (1<<i)) {
+                remote_control_send_sub_menu(0,i);
+              
+              remote_update_sub_menu_info_ant1 &= ~(1<<i);
+            }
           }
+          else
+            break;
         }
         else
-          break;
+          remote_update_sub_menu_info_ant1 &= ~(1<<i);
       }
     }
     
     if (remote_update_sub_menu_info_ant2 != 0) {
       for (unsigned char i=0;i<8;i++) {
-        if (!internal_comm_is_tx_queue_full()) {
-          if (remote_update_sub_menu_info_ant2 & (1<<i)) {
-            remote_control_send_sub_menu(1,i);
-            
-            remote_update_sub_menu_info_ant2 &= ~(1<<i);
+        if (sub_menu_get_combination_count(0) < i) {
+          if (!internal_comm_is_tx_queue_full()) {
+            if (remote_update_sub_menu_info_ant2 & (1<<i)) {
+              remote_control_send_sub_menu(1,i);
+              
+              remote_update_sub_menu_info_ant2 &= ~(1<<i);
+            }
           }
+          else
+            break;
         }
         else
-          break;
+          remote_update_sub_menu_info_ant2 &= ~(1<<i);
       }
     }
     
     if (remote_update_sub_menu_info_ant3 != 0) {
       for (unsigned char i=0;i<8;i++) {
-        if (!internal_comm_is_tx_queue_full()) {
-          if (remote_update_sub_menu_info_ant3 & (1<<i)) {
-            remote_control_send_sub_menu(2,i);
-            
-            remote_update_sub_menu_info_ant3 &= ~(1<<i);
+        if (sub_menu_get_combination_count(0) < i) {
+          if (!internal_comm_is_tx_queue_full()) {
+            if (remote_update_sub_menu_info_ant3 & (1<<i)) {
+              remote_control_send_sub_menu(2,i);
+              
+              remote_update_sub_menu_info_ant3 &= ~(1<<i);
+            }
           }
+          else
+            break;
         }
         else
-          break;
+          remote_update_sub_menu_info_ant3 &= ~(1<<i);
       }
     }
     
     if (remote_update_sub_menu_info_ant4 != 0) {
       for (unsigned char i=0;i<8;i++) {
-        if (!internal_comm_is_tx_queue_full()) {
-          if (remote_update_sub_menu_info_ant4 & (1<<i)) {
-            remote_control_send_sub_menu(3,i);
-            
-            remote_update_sub_menu_info_ant4 &= ~(1<<i);
+        if (sub_menu_get_combination_count(0) < i) {
+          if (!internal_comm_is_tx_queue_full()) {
+            if (remote_update_sub_menu_info_ant4 & (1<<i)) {
+              remote_control_send_sub_menu(3,i);
+              
+              remote_update_sub_menu_info_ant4 &= ~(1<<i);
+            }
           }
+          else
+            break;
         }
         else
-          break;
+          remote_update_sub_menu_info_ant4 &= ~(1<<i);
       }
     }*/
   }
@@ -234,6 +268,8 @@ void remote_control_set_update_tx_ant_info(void) {
 
 /*! \brief Deactivate the remote control mode */
 void remote_control_deactivate_remote_mode(void) {
+  //AUX LED
+  PORTC &= ~(1<<7);
 	remote_control_flags &= ~(1<<FLAG_REMOTE_CONTROL_MODE_ACTIVE);
 }
 
@@ -263,19 +299,22 @@ void remote_control_send_band_info(unsigned char band) {
   if (remote_control_get_remote_mode()) {
     remote_current_band = band;
     
-    unsigned char temp_data[9];
+    unsigned char temp_data[11];
     temp_data[0] = band;
     temp_data[1] = status.selected_ant;
     temp_data[2] = status.selected_rx_antenna;
     temp_data[3] = antenna_ctrl_get_rx_antenna_count();
     temp_data[4] = status.function_status;
-    temp_data[5] = 0;
+    temp_data[5] = sub_menu_get_current_pos(0);
+    temp_data[6] = sub_menu_get_current_pos(1);
+    temp_data[7] = sub_menu_get_current_pos(2);
+    temp_data[8] = sub_menu_get_current_pos(3);
     
     //Get the errors from the error handler
     unsigned int errors = error_handler_get_errors();
     
-    temp_data[7] = (errors >> 8);
-    temp_data[8] = (errors & 0x00FF);
+    temp_data[9] = (errors >> 8);
+    temp_data[10] = (errors & 0x00FF);
 
     internal_comm_add_tx_message(INT_COMM_REMOTE_BAND_INFO,sizeof(temp_data),temp_data);
     
@@ -304,7 +343,7 @@ void remote_control_send_ant_text(unsigned char ant_index) {
 void remote_control_send_antenna_dir_info(unsigned char index) {
   if (remote_control_get_remote_mode()) {
     if (remote_current_band != BAND_UNDEFINED) {
-      unsigned char temp_data[4] = {0,0,0,0};
+      unsigned char temp_data[4] = {0,0,0,0,0};
       
       if (index < 4) {
         if (antenna_ctrl_get_flags(index) & (1<<ANTENNA_ROTATOR_FLAG)) {
@@ -319,13 +358,6 @@ void remote_control_send_antenna_dir_info(unsigned char index) {
           temp_data[2] = ant_dir & 0x00FF;
           temp_data[3] = antenna_ctrl_get_rotator_flags(index);
         }
-        else {
-          temp_data[0] = 0;
-          temp_data[1] = 0;
-          temp_data[2] = 0;
-          temp_data[3] = 0;
-        }
-        
 
         internal_comm_add_tx_message(INT_COMM_REMOTE_ANT_DIR_INFO,sizeof(temp_data),(char *)temp_data);
       }
@@ -354,29 +386,33 @@ void remote_control_send_ant_info(void) {
 
 void remote_control_send_sub_menu(unsigned char ant_index, unsigned char sub_pos) {
    if (remote_control_get_remote_mode()) {
-/*    if (remote_current_band != BAND_UNDEFINED) {
+    if (remote_current_band != BAND_UNDEFINED) {
       if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY) {
-        unsigned char temp_data[SUB_MENU_ARRAY_NAME_SIZE+3];
-        
-        temp_data[0] = ant_index;
-        temp_data[1] = sub_menu_get_combination_count(ant_index);
-        temp_data[2] = sub_pos;
-        
-        strcpy((char *)(temp_data+3), sub_menu_get_text(ant_index,sub_pos));
-        
-        internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT,sizeof(temp_data),(char *)temp_data);
+        if (sub_pos < 8) {
+          unsigned char temp_data[SUB_MENU_ARRAY_NAME_SIZE+3];
+          
+          temp_data[0] = ant_index;
+          temp_data[1] = sub_menu_get_combination_count(ant_index);
+          temp_data[2] = sub_pos;
+          
+          strcpy((char *)(temp_data+3), (char *)sub_menu_get_text(ant_index,sub_pos));
+          
+          internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT,sizeof(temp_data),(char *)temp_data);
+        }
       }
       else if (sub_menu_get_type(ant_index) == SUBMENU_STACK) {
-        unsigned char temp_data[SUB_MENU_STACK_NAME_SIZE+3];
-        
-        temp_data[0] = ant_index;
-        temp_data[1] = sub_menu_get_combination_count(ant_index);
-        temp_data[2] = sub_pos;
-        
-        strcpy((char *)(temp_data+3), sub_menu_get_text(ant_index,sub_pos));
-        
-        internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_STACK_TEXT,sizeof(temp_data),(char *)temp_data);      
+        if (sub_pos < 6) {
+          unsigned char temp_data[SUB_MENU_STACK_NAME_SIZE+3];
+          
+          temp_data[0] = ant_index;
+          temp_data[1] = sub_menu_get_combination_count(ant_index);
+          temp_data[2] = sub_pos;
+          
+          strcpy((char *)(temp_data+3),(char *) sub_menu_get_text(ant_index,sub_pos));
+          
+          internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_SUBMENU_STACK_TEXT,sizeof(temp_data),(char *)temp_data);      
+        }
       }
-    }*/
+    }
   }
 }
