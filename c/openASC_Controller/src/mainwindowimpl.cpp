@@ -181,7 +181,7 @@ void MainWindowImpl::pushButtonRXAntClicked() {
 
 void MainWindowImpl::parseMessage(struct_message message) {
 	if (message.cmd == COMPUTER_COMM_REMOTE_BAND_INFO) {
-		if (message.length > 5) {
+		if (message.length > 10) {
 			if (status.currentBand != message.data[0]) {
 				labelAnt1->setText("");
 				labelAnt2->setText("");
@@ -195,9 +195,13 @@ void MainWindowImpl::parseMessage(struct_message message) {
 				status.currentBand = message.data[0];
 				labelBand->setText("Band: "+getBandName(message.data[0]));
 				//comboBoxBand->setCurrentIndex(message.data[0]);
+
+				if (status.currentBand == 2) {
+					status.subMenuType[0] = 1;
+				}
 			}
 
-			unsigned int temp_error = (message.data[8] << 8) + message.data[9];
+			unsigned int temp_error = (message.data[9] << 8) + message.data[10];
 
 			if (temp_error != status.currentErrors) {
 				status.currentErrors = temp_error;
@@ -231,7 +235,7 @@ void MainWindowImpl::parseMessage(struct_message message) {
 
 			rotatorWindow->loadBand(message.data[0]);
 
-			if (message.data[3] & (1<<0))	{ //RX ANT MODE STATUS
+			if (message.data[4] & (1<<0))	{ //RX ANT MODE STATUS
 				pushButtonRXAnt->setChecked(true);
 
 				if (message.data[2] == 0)
@@ -260,6 +264,22 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			else {
 				pushButtonRXAnt->setChecked(false);
 				labelCurrentRXAntenna->setText("None");
+			}
+
+			status.antSubOptSelected[0] = message.data[5];
+			status.antSubOptSelected[1] = message.data[6];
+			status.antSubOptSelected[2] = message.data[7];
+			status.antSubOptSelected[3] = message.data[8];
+
+			if (status.subMenuType[0] != 0) {
+				if (status.antSubOptSelected[0] == 0)
+					labelAnt1Dir->setText("SW");
+				else if (status.antSubOptSelected[0] == 1)
+					labelAnt1Dir->setText("NW");
+				else if (status.antSubOptSelected[0] == 2)
+					labelAnt1Dir->setText("NE");
+				else if (status.antSubOptSelected[0] == 3)
+					labelAnt1Dir->setText("SE");
 			}
 		}
 	}
@@ -307,21 +327,25 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			dir += ((int)(message.data[1])) << 8;
 			dir += (int)(message.data[2]) & 0x00FF;
 
-			if (status.subMenuType[0] == 0) 
-				if (message.data[0] == 0)
+			if (message.data[0] == 0) {
+				if (status.subMenuType[0] == 0)
 					labelAnt1Dir->setText(QString::number(dir)+'°');
+			}
 			
-			if (status.subMenuType[1] == 0) 
+			if (status.subMenuType[1] == 0) {
 				if (message.data[0] == 1)
 					labelAnt2Dir->setText(QString::number(dir)+'°');
+			}
 
-			if (status.subMenuType[2] == 0) 
+			if (status.subMenuType[2] == 0) {
 				if (message.data[0] == 2)
 					labelAnt3Dir->setText(QString::number(dir)+'°');
+			}
 
-			if (status.subMenuType[3] == 0) 
+			if (status.subMenuType[3] == 0) {
 				if (message.data[0] == 3)
 					labelAnt4Dir->setText(QString::number(dir)+'°');
+			}
 
 			rotatorWindow->setRotatorFlag(message.data[0],message.data[3]);
 			rotatorWindow->setRotatorAngle(message.data[0],dir);
@@ -337,10 +361,10 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			status.antennaFlags[2] = message.data[2];
 			status.antennaFlags[3] = message.data[3];
 
-			status.subMenuType[4] = message.data[4];
-			status.subMenuType[5] = message.data[5];
-			status.subMenuType[6] = message.data[6];
-			status.subMenuType[7] = message.data[7];
+			status.subMenuType[0] = message.data[4];
+			status.subMenuType[1] = message.data[5];
+			status.subMenuType[2] = message.data[6];
+			status.subMenuType[3] = message.data[7];
 		}
 	}
 	else if (message.cmd == COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT) {
@@ -380,6 +404,34 @@ void MainWindowImpl::pushButtonSubMenu3Clicked() {
 
 void MainWindowImpl::pushButtonSubMenu4Clicked() {
 
+}
+
+void MainWindowImpl::pushButtonSubMenuArray1Clicked() {
+	if (serial->isOpen())	{
+		char data[2] = {0,0};
+		serial->addTXMessage(COMPUTER_COMM_SET_SUBMENU_OPTION,2,data);
+	}
+}
+
+void MainWindowImpl::pushButtonSubMenuArray2Clicked() {
+	if (serial->isOpen())	{
+		char data[2] = {0,1};
+		serial->addTXMessage(COMPUTER_COMM_SET_SUBMENU_OPTION,2,data);
+	}
+}
+
+void MainWindowImpl::pushButtonSubMenuArray3Clicked() {
+	if (serial->isOpen())	{
+		char data[2] = {0,2};
+		serial->addTXMessage(COMPUTER_COMM_SET_SUBMENU_OPTION,2,data);
+	}
+}
+
+void MainWindowImpl::pushButtonSubMenuArray4Clicked() {
+	if (serial->isOpen())	{
+		char data[2] = {0,3};
+		serial->addTXMessage(COMPUTER_COMM_SET_SUBMENU_OPTION,2,data);
+	}
 }
 
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
@@ -451,4 +503,9 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	connect(pushButtonSubMenu2, SIGNAL(clicked()), this, SLOT(pushButtonSubMenu2Clicked()));
 	connect(pushButtonSubMenu3, SIGNAL(clicked()), this, SLOT(pushButtonSubMenu3Clicked()));
 	connect(pushButtonSubMenu4, SIGNAL(clicked()), this, SLOT(pushButtonSubMenu4Clicked()));
+
+	connect(pushButtonSubMenuArray1, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray1Clicked()));
+	connect(pushButtonSubMenuArray2, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray2Clicked()));
+	connect(pushButtonSubMenuArray3, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray3Clicked()));
+	connect(pushButtonSubMenuArray4, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray4Clicked()));
 }

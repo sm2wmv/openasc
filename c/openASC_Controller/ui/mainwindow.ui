@@ -361,7 +361,7 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>346</width>
+          <width>345</width>
           <height>120</height>
          </rect>
         </property>
@@ -1037,40 +1037,40 @@
           <item>
            <widget class="QPushButton" name="pushButtonSubMenuArray1">
             <property name="text">
-             <string/>
+             <string>SW</string>
             </property>
             <property name="checkable">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonSubMenuArray2">
             <property name="text">
-             <string/>
+             <string>NW</string>
             </property>
             <property name="checkable">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonSubMenuArray3">
             <property name="text">
-             <string/>
+             <string>NE</string>
             </property>
             <property name="checkable">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButtonSubMenuArray4">
             <property name="text">
-             <string/>
+             <string>SE</string>
             </property>
             <property name="checkable">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>

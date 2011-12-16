@@ -48,6 +48,8 @@
 
 //#define PS2_DEBUG 1
 
+static unsigned char resend_count = 0;
+
 driver_status_struct driver_status;
 
 //! Counter used for the PS/2 decoding
@@ -424,6 +426,19 @@ void parse_computer_comm_message(struct_comm_interface_msg message) {
   else if (message.cmd == COMPUTER_COMM_REMOTE_CLEAR_ERRORS) {
     internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_CLEAR_ERRORS,0,0);
   }
+  else if (message.cmd == COMPUTER_COMM_SET_SUBMENU_OPTION) {
+    if (message.length > 0)
+      internal_comm_add_tx_message(COMPUTER_COMM_SET_SUBMENU_OPTION,2,message.data);
+  }
+}
+
+void main_resend_timeout(void) {
+  resend_count++;
+  
+  if (resend_count > 3) {
+    remote_ctrl_set_deactive();
+    resend_count = 0;
+  }
 }
 
 //! Main function of the motherboard
@@ -444,6 +459,7 @@ int main(void) {
   
   //Initialize computer communication
   comm_interface_init((void*)parse_computer_comm_message,(void*)usart1_transmit);
+  comm_interface_set_resend_ptr((void *)main_resend_timeout);
   
 	init_ports();
 	init_timer_0();

@@ -32,7 +32,7 @@
 #define	COMM_INTERFACE_DATA_LENGTH	20
 
 //! The number of times the interface should try to resend before giving up
-#define COMM_INTERFACE_RESEND_COUNT	10
+#define COMM_INTERFACE_RESEND_COUNT	2
 
 #ifdef COMM_UART_INTERFACE0
   #define COMM_SIG_RECV_NAME   SIG_USART0_RECV
@@ -74,6 +74,7 @@ typedef struct {
 } struct_comm_interface_msg;
 
 void comm_interface_init(void (*func_ptr_rx)(struct_comm_interface_msg), void (*func_ptr_tx)(char));
+void comm_interface_set_resend_ptr(void (*func_ptr)(void));
 void comm_interface_poll_tx_queue(void);
 void comm_interface_poll_rx_queue(void);
 void comm_interface_1ms_tick(void);

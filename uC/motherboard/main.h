@@ -70,4 +70,6 @@ typedef struct {
 	unsigned long driver_output_state;
 } driver_status_struct;
 
+void main_resend_timeout(void);
+
 #endif

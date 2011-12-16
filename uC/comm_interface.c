@@ -75,6 +75,8 @@ static void (*f_ptr_rx)(struct_comm_interface_msg);
 /*! \brief Function to be called when we wish to send a message */
 static void (*f_ptr_tx)(char);
 
+static void (*f_ptr_resend)(void);
+
 //! Counter with 1 ms ticks
 static unsigned int counter_1ms = 0;
 
@@ -133,6 +135,8 @@ void comm_interface_poll_tx_queue(void) {
 			SET_TX_MSG_ACKED;
 			resend_count = 0;
 			tx_data_timeout = 0;
+      
+      f_ptr_resend();
 		}
 		
 		comm_status &= ~(1<<RESEND_FLAG);
@@ -233,6 +237,10 @@ void comm_interface_init(void (*func_ptr_rx)(struct_comm_interface_msg), void (*
 	SET_TX_MSG_ACKED;
 }
 
+void comm_interface_set_resend_ptr(void (*func_ptr)(void)) {
+  f_ptr_resend = func_ptr;
+}
+
 void comm_interface_1ms_tick(void) {
   counter_1ms++;
 	
@@ -259,7 +267,8 @@ ISR(COMM_SIG_DATA_NAME) {
 /*! Interrupt which is called when a byte has been received */
 ISR(COMM_SIG_RECV_NAME) {
   unsigned char data = COMM_UDR_TYPE;
-	rx_data_timeout = 0;
+	
+  rx_data_timeout = 0;
 
 	if (comm_status & (1<<PREAMBLE_FOUND)) {
 		if ((data == COMPUTER_POSTAMBLE) && ((rx_char_count - 3) == rx_message.length)) {
