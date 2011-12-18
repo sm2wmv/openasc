@@ -98,7 +98,7 @@ BUS_MESSAGE rx_queue_get() {
   }
   
   //Return the message (content of the first node)
-	return(mess);
+  return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.

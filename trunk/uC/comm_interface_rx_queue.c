@@ -35,8 +35,8 @@ static comm_interface_rx_queue_struct comm_interface_rx_queue;
 
 /*! \brief Initialize the comm interface rx queue */
 void comm_interface_rx_queue_init(void) {
-	comm_interface_rx_queue.first = 0;
-	comm_interface_rx_queue.last = 0;
+  comm_interface_rx_queue.first = 0;
+  comm_interface_rx_queue.last = 0;
   
   comm_interface_rx_queue.count = 0;
 }
@@ -46,6 +46,8 @@ void comm_interface_rx_queue_init(void) {
  * \return 0 If it went well, 1 if the queue is full
  */
 unsigned char comm_interface_rx_queue_add(struct_comm_interface_msg message) {
+  data_changed = 1;
+  
   unsigned char retval = 1;
   
   disable_comm_interface_interrupt();
@@ -78,15 +80,16 @@ unsigned char comm_interface_rx_queue_add(struct_comm_interface_msg message) {
  * \return The first message in the queue
  */
 struct_comm_interface_msg comm_interface_rx_queue_get(void) {
-//  data_changed = 0;
+  data_changed = 0;
   
   //Return the message (content of the first node)
-//  struct_comm_interface_msg mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
-  //if (data_changed) {
+  struct_comm_interface_msg mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
+  
+  if (data_changed) {
     disable_comm_interface_interrupt();
     struct_comm_interface_msg mess = comm_interface_rx_queue.message[comm_interface_rx_queue.first];
     enable_comm_interface_interrupt();
-  //}
+  }
 
   return(mess);
 }

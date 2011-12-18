@@ -48,6 +48,7 @@ void comm_interface_tx_queue_init(void) {
  */
 unsigned char comm_interface_tx_queue_add(struct_comm_interface_msg message) {
   unsigned char retval = 1;
+  data_changed = 1;
   
   disable_comm_interface_interrupt();
   
@@ -79,15 +80,15 @@ unsigned char comm_interface_tx_queue_add(struct_comm_interface_msg message) {
  * \return The [pos] message in the queue
  */
 struct_comm_interface_msg comm_interface_tx_queue_get_pos(unsigned char pos) {
-  //data_changed = 0;
+  data_changed = 0;
   
-  //struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
+  struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
   
-  //if (data_changed) {
+  if (data_changed) {
     disable_comm_interface_interrupt();
     struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first+pos];
     enable_comm_interface_interrupt();
-//  }
+  }
   
   //Return the message (content of the first node)
   return(mess);  
@@ -97,11 +98,15 @@ struct_comm_interface_msg comm_interface_tx_queue_get_pos(unsigned char pos) {
  * \return The first message in the queue
  */
 struct_comm_interface_msg comm_interface_tx_queue_get(void) {	
-  disable_comm_interface_interrupt();
+  data_changed = 0;
  
   struct_comm_interface_msg mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first];
 
-  enable_comm_interface_interrupt();
+  if (data_changed) {
+    disable_comm_interface_interrupt();
+    mess = comm_interface_tx_queue.message[comm_interface_tx_queue.first];
+    enable_comm_interface_interrupt();
+  }
 
   return(mess);
 }
