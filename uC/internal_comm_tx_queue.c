@@ -70,11 +70,11 @@ UC_MESSAGE int_comm_tx_queue_get_pos(unsigned char pos) {
   
   UC_MESSAGE mess = int_comm_tx_queue.message[int_comm_tx_queue.first+pos];
   
-  if (data_changed) {
+  /*if (data_changed) {
     disable_int_comm_interrupt();
     mess = int_comm_tx_queue.message[int_comm_tx_queue.first+pos];
     enable_int_comm_interrupt();
-  }
+  }*/
   
   //Return the message (content of the first node)
   return(mess);  
@@ -88,14 +88,14 @@ UC_MESSAGE int_comm_tx_queue_get(void) {
   
   UC_MESSAGE mess = int_comm_tx_queue.message[int_comm_tx_queue.first];
 
-  if (data_changed) {
+  /*if (data_changed) {
     disable_int_comm_interrupt();
     mess = int_comm_tx_queue.message[int_comm_tx_queue.first];
     enable_int_comm_interrupt();
-  }
+  }*/
   
   //Return the message (content of the first node)
-	return(mess);
+  return(mess);
 }
 
 /*! Drops the first message in the queue Frees up the memory space aswell.
@@ -103,9 +103,9 @@ UC_MESSAGE int_comm_tx_queue_get(void) {
 void int_comm_tx_queue_drop(void) {
   int_comm_tx_queue.first++;
 	
-	if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
-		int_comm_tx_queue.first = 0;
-  
+  if (int_comm_tx_queue.first >= INTERNAL_COMM_TX_QUEUE_SIZE)
+    int_comm_tx_queue.first = 0;
+
   if (int_comm_tx_queue_curr_size > 0)
     int_comm_tx_queue_curr_size--;
 }

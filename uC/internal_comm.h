@@ -100,13 +100,13 @@
 #define UC_MESSAGE_DATA_SIZE	15
 
 //! After this many ms it will reset the rx flags (in ms) (change back to 25?)
-#define UC_COMM_RX_TIMEOUT	5
+#define UC_COMM_RX_TIMEOUT	10
 
 //! After this many ms a resend will occur if a message has not been acked (in ms) (change back to 25?)
-#define UC_COMM_TX_TIMEOUT	10
+#define UC_COMM_TX_TIMEOUT	25
 
 //! Number of resends that is allowed (change back to 10?)
-#define UC_COMM_RESEND_COUNT	15
+#define UC_COMM_RESEND_COUNT	10
 
 
 /*! uC message structure, used for communication between the uCs */

@@ -45,6 +45,8 @@ unsigned int timer = 0;
 //! Where we save any new uc_comm message
 UC_MESSAGE uc_new_message;
 
+static unsigned char add_new_uc_message = 0;
+
 //! The previous data
 unsigned char prev_data = 0;
 
@@ -102,6 +104,35 @@ unsigned char internal_comm_poll_rx_queue(void) {
 		int_comm_rx_queue_drop();					//Drop the message from the queue since it's been executed
 		return(1);								//Return 1 to show that something was done
 	}
+
+	if (add_new_uc_message) {
+    //If there is room in the queue the message gets added and acked, otherwise not
+    if (int_comm_rx_queue_count() < INTERNAL_COMM_RX_QUEUE_SIZE) {
+      if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK)) {
+        internal_comm_send_ack();
+      
+        //Add the message to the RX queue
+        int_comm_rx_queue_add(uc_new_message);
+        //Send ack to acknowledge we recieved the package
+      }
+      else {
+        if (uc_new_message.cmd == UC_COMM_MSG_ACK)
+          internal_comm_message_acked();
+        else if (uc_new_message.cmd == UC_COMM_MSG_ACK)
+          internal_comm_message_nacked();
+      }
+    }
+    else {
+      #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+        led_set_error(LED_STATE_ON);
+
+        //Set the error flag
+        error_handler_set(ERROR_TYPE_INT_COMM_RX_FULL,1,0);
+      #endif
+    }
+    
+    add_new_uc_message = 0;
+  }
 	
 	return(0);
 }
@@ -362,30 +393,7 @@ ISR(ISR_INTERNAL_COMM_USART_RECV) {
 						printf("AM 0x%02X\n",uc_new_message.cmd);
 					#endif
 					
-					//If there is room in the queue the message gets added and acked, otherwise not
-					if (int_comm_rx_queue_count() < INTERNAL_COMM_RX_QUEUE_SIZE) {
-            if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK)) {
-              internal_comm_send_ack();
-            
-              //Add the message to the RX queue
-              int_comm_rx_queue_add(uc_new_message);
-              //Send ack to acknowledge we recieved the package
-            }
-            else {
-              if (uc_new_message.cmd == UC_COMM_MSG_ACK)
-                internal_comm_message_acked();
-              else if (uc_new_message.cmd == UC_COMM_MSG_ACK)
-                internal_comm_message_nacked();
-            }
-          }
-          else {
-            #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-              led_set_error(LED_STATE_ON);
-        
-              //Set the error flag
-              //error_handler_set(ERROR_TYPE_INT_COMM_RX_FULL,1,0);
-            #endif
-          }
+          add_new_uc_message = 1;
 				}
 				else {
 					internal_comm_send_nack();

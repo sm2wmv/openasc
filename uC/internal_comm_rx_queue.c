@@ -65,16 +65,16 @@ void int_comm_rx_queue_add(UC_MESSAGE message) {
  * \return The first message in the queue
  */
 UC_MESSAGE int_comm_rx_queue_get(void) {
-  data_changed = 0;
+//  data_changed = 0;
   
   //Return the message (content of the first node)
   UC_MESSAGE mess = int_comm_rx_queue.message[int_comm_rx_queue.first];
   
-  if (data_changed) {
+  /*if (data_changed) {
     disable_int_comm_interrupt();
     mess = int_comm_rx_queue.message[int_comm_rx_queue.first];
     enable_int_comm_interrupt();
-  }
+  }*/
 
   return(mess);
 }
@@ -108,7 +108,7 @@ unsigned char int_comm_rx_queue_is_empty(void) {
   unsigned char state = 0;
   
   if (int_comm_rx_queue.first == int_comm_rx_queue.last)
-		state = 1;
+    state = 1;
   
   return(state);
 }
