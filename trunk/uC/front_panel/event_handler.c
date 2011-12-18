@@ -163,7 +163,8 @@ void event_internal_comm_parse_message(UC_MESSAGE message) {
           sub_menu_set_stack_comb(message.data[1]);
         
         //TEMPORARY
-        remote_control_set_update_band_info();
+        if (remote_control_get_remote_mode())
+          remote_control_set_update_band_info();
         
         display_handler_repaint();
       default:
@@ -738,7 +739,9 @@ void event_tx_button1_pressed(void) {
 		}
 		
 		main_update_ptt_status();
-    remote_control_set_update_band_info();
+    
+    if (remote_control_get_remote_mode())
+      remote_control_set_update_band_info();
 	}
 }
 
@@ -816,7 +819,9 @@ void event_tx_button2_pressed(void) {
     }
     
     main_update_ptt_status();
-    remote_control_set_update_band_info();
+
+    if (remote_control_get_remote_mode())
+      remote_control_set_update_band_info();
   }
 }
 
@@ -895,7 +900,9 @@ void event_tx_button3_pressed(void) {
 		}
 		
 		main_update_ptt_status();
-    remote_control_set_update_band_info();
+    
+    if (remote_control_get_remote_mode())
+      remote_control_set_update_band_info();
 	}
 }
 
@@ -974,7 +981,9 @@ void event_tx_button4_pressed(void) {
   	}
   	
   	main_update_ptt_status();
-    remote_control_set_update_band_info();
+    
+    if (remote_control_get_remote_mode())
+      remote_control_set_update_band_info();
 	}
 }
 
@@ -1076,7 +1085,8 @@ void event_rxant_button_pressed(void) {
 			display_handler_repaint();
 		}
 		
-		remote_control_set_update_band_info();
+		if (remote_control_get_remote_mode())
+      remote_control_set_update_band_info();
 	}
 	else	//If we don't have any antennas to choose we always have the LED off
 		led_set_rxant(LED_STATE_OFF);

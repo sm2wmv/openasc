@@ -70,12 +70,6 @@ UC_MESSAGE int_comm_rx_queue_get(void) {
   //Return the message (content of the first node)
   UC_MESSAGE mess = int_comm_rx_queue.message[int_comm_rx_queue.first];
   
-  /*if (data_changed) {
-    disable_int_comm_interrupt();
-    mess = int_comm_rx_queue.message[int_comm_rx_queue.first];
-    enable_int_comm_interrupt();
-  }*/
-
   return(mess);
 }
 
