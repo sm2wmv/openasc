@@ -28,8 +28,6 @@
 
 #include "internal_comm_tx_queue.h"
 
-volatile static char data_changed = 0;
-
 //! The TX queue
 static int_comm_tx_queue_struct int_comm_tx_queue;
 
@@ -46,8 +44,6 @@ void int_comm_tx_queue_init(void) {
  * \param message - The message that should be inserted to the queue
  */
 void int_comm_tx_queue_add(UC_MESSAGE message) {
-  data_changed = 1;
-  
   int_comm_tx_queue.message[int_comm_tx_queue.last++] = message;
 	
 	if (int_comm_tx_queue.last >= INTERNAL_COMM_TX_QUEUE_SIZE)
@@ -66,8 +62,6 @@ void int_comm_tx_queue_add(UC_MESSAGE message) {
  * \return The [pos] message in the queue
  */
 UC_MESSAGE int_comm_tx_queue_get_pos(unsigned char pos) {
-  data_changed = 0;
-  
   UC_MESSAGE mess = int_comm_tx_queue.message[int_comm_tx_queue.first+pos];
   
   /*if (data_changed) {
@@ -84,15 +78,7 @@ UC_MESSAGE int_comm_tx_queue_get_pos(unsigned char pos) {
  * \return The first message in the queue
  */
 UC_MESSAGE int_comm_tx_queue_get(void) {	
-  data_changed = 0;
-  
   UC_MESSAGE mess = int_comm_tx_queue.message[int_comm_tx_queue.first];
-
-  /*if (data_changed) {
-    disable_int_comm_interrupt();
-    mess = int_comm_tx_queue.message[int_comm_tx_queue.first];
-    enable_int_comm_interrupt();
-  }*/
   
   //Return the message (content of the first node)
   return(mess);
