@@ -171,7 +171,7 @@ void deactivate_output(unsigned char from_addr, unsigned char index) {
 
 /*! \brief Parse an internal communication message 
  *  \param message The message that we wish to parse */
-void parse_internal_comm_message(UC_MESSAGE message) {
+void parse_internal_comm_message(struct_comm_interface_msg message) {
 	char temp=0;
 	unsigned char from_addr = 0;
 	

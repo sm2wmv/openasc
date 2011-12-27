@@ -30,17 +30,19 @@ typedef struct {
 	unsigned char data[2];
 } bus_struct_ping_status;
 
-	void bus_ping_init(void);
-	void bus_ping_tick(void);
-	void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data);
-	bus_struct_ping_status bus_ping_get_failed_ping(void);
-	unsigned char bus_ping_get_failed_count(void);
-	
-  void bus_ping_clear_device(unsigned char addr);
-  
-	bus_struct_ping_status bus_ping_get_ping_data(unsigned char index);
-	unsigned char bus_ping_get_device_type(unsigned char index);
+void bus_ping_init(void);
+void bus_ping_tick(void);
+void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data);
+bus_struct_ping_status bus_ping_get_failed_ping(void);
+unsigned char bus_ping_get_failed_count(void);
 
+void bus_ping_clear_device(unsigned char addr);
+
+bus_struct_ping_status* bus_ping_get_ping_data(unsigned char index);
+unsigned char bus_ping_get_device_type(unsigned char index);
+
+unsigned char* bus_ping_get_mainbox_adresses(void);
+  
 	#ifdef DEBUG_COMPUTER_USART_ENABLED
 		void bus_ping_print_list(void);
 	#endif

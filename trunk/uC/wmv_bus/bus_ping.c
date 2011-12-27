@@ -17,11 +17,14 @@
 
 #include "bus.h"
 #include "bus_ping.h"
+#include "../global.h"
 
 //TODO: Change the ping list to be dynamic, responding to the length which the master sends out, how many number of units on the bus
 
 //! The ping list
-bus_struct_ping_status ping_list[DEF_NR_DEVICES];
+static bus_struct_ping_status ping_list[DEF_NR_DEVICES];
+
+static unsigned char mainbox_band_info[MAINBOX_DEVICE_COUNT];
 
 /*! \brief Initialize the ping functions of the bus communication interface */
 void bus_ping_init(void) {
@@ -31,6 +34,9 @@ void bus_ping_init(void) {
 		ping_list[i].time_last_ping = 0;
 		ping_list[i].flags = 0;
 	}
+	
+	for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++)
+    mainbox_band_info[i] = 0;
 }
 
 /*! \brief This function will update the ping list with the sent in arguments and reset the counter to 0 
@@ -39,7 +45,7 @@ void bus_ping_init(void) {
  *  \param data_len The number of bytes the data is
  *  \param data Additional data which might be used for status, for example current band information */
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data) {
-	#ifdef DEBUG_COMPUTER_USART_ENABLED
+/*	#ifdef DEBUG_COMPUTER_USART_ENABLED
 		if (ping_list[from_addr-1].addr != from_addr) {
 			printf("BUS_PING->ADDR CHANGED\n\r");
 			
@@ -68,16 +74,30 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 				printf("BUS_PING->NEW[%i][1]: %i\n\r",from_addr,data[1]);
 			}
 	#endif
-	
+	*/
 	ping_list[from_addr-1].addr = from_addr;
 	ping_list[from_addr-1].device_type = device_type;
 	
+  //This will populate the array with details of which addresses are of DEVICE_ID_MAINBOX
+  if (device_type == DEVICE_ID_MAINBOX) {
+    for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
+      //If we find an unpopulated bit of the array, we put our device address here 
+      if (mainbox_band_info[i] == 0)
+        mainbox_band_info[i] = from_addr;
+      
+      //This will automatically break the loop if we already found a place where
+      //our address is located
+      if (mainbox_band_info[i] == data[1])
+        break;
+    }
+  }
+  
 	if (data_len > 0) {
 		for (unsigned char i=0;i<data_len;i++)
-	if (data_len < sizeof(ping_list[from_addr-1].data))
-	  ping_list[from_addr-1].data[i] = data[i];
-	else
-	  break;
+      if (data_len <= sizeof(ping_list[from_addr-1].data))
+        ping_list[from_addr-1].data[i] = data[i];
+      else
+        break;
 	}
 	
 	ping_list[from_addr-1].time_last_ping = 0;
@@ -128,10 +148,14 @@ unsigned char bus_ping_get_failed_count(void) {
 /*! \brief Returns a ping data structure
  *  \param index The index of the ping structure we wish to retrieve from the list
  *  \return The ping data structure */
-bus_struct_ping_status bus_ping_get_ping_data(unsigned char index) {
-	bus_struct_ping_status temp = ping_list[index];
-	
-	return(temp);
+bus_struct_ping_status* bus_ping_get_ping_data(unsigned char index) {
+	return(&ping_list[index]);
+}
+
+/*! \brief Returns a pointer to the array which contains information of what the DEVICE_ID_MAINBOX unit addresses are 
+ *  \return A pointer to the char array which contains the units addresses */
+unsigned char* bus_ping_get_mainbox_adresses(void) {
+  return(&mainbox_band_info);
 }
 
 /*! \brief Returns the device type of a certain ping data structure

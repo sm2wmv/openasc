@@ -29,8 +29,13 @@
 #include "comm_interface.h"
 
 #include "global.h"
-#include "comm_interface_rx_queue.h"
-#include "comm_interface_tx_queue.h"
+#include "queue.h"
+
+CREATE_QUEUE(COMM_INTERFACE_RX_QUEUE_SIZE,struct_comm_interface_msg,comm_rx);
+CREATE_QUEUE_WRAPPERS(struct_comm_interface_msg,comm_rx);
+
+CREATE_QUEUE(COMM_INTERFACE_RX_QUEUE_SIZE,struct_comm_interface_msg,comm_tx);
+CREATE_QUEUE_WRAPPERS(struct_comm_interface_msg,comm_tx);
 
 //! RX data CHAR receieve timeout limit in ms (max 255 ms)
 #define	RX_DATA_TIMEOUT	10
@@ -116,21 +121,27 @@ static void __inline__ reset_tx_status(void) {
 
 void comm_interface_poll_tx_queue(void) {
 	//Check that the last message sent was acked, if so we transmit the next one in the queue
-	if ((comm_status & (1<<TX_MSG_ACKED)) && (comm_interface_tx_queue_size() > 0)) {
-		comm_interface_send_message(comm_interface_tx_queue_get());
+	if ((comm_status & (1<<TX_MSG_ACKED)) && (!queue_is_empty_comm_tx())) {
+		struct_comm_interface_msg msg;
+    queue_get_first_comm_tx(&msg);
+    
+    comm_interface_send_message(msg);
 
 		RESET_TX_MSG_ACKED;
 		tx_data_timeout = 0;
 	}
 	else if (comm_status & (1<<RESEND_FLAG)) {
 		if (resend_count < COMM_INTERFACE_RESEND_COUNT) {
-			comm_interface_send_message(comm_interface_tx_queue_get());
+      struct_comm_interface_msg msg;
+      queue_get_first_comm_tx(&msg);
+      
+      comm_interface_send_message(msg);
 
 			tx_data_timeout = 0;
 			resend_count++;
 		}
 		else {
-			comm_interface_tx_queue_drop();
+			queue_drop_comm_tx();
 			
 			SET_TX_MSG_ACKED;
 			resend_count = 0;
@@ -161,13 +172,13 @@ unsigned char comm_interface_add_tx_message(unsigned char cmd, unsigned char len
 		message.data[i] = data[i];
 	}
 	
-	return(comm_interface_tx_queue_add(message));	
+	return(queue_enqueue_comm_tx(&message));
 }
 
 void comm_interface_poll_rx_queue(void) {
   if (add_rx_message) {
     if (rx_message.cmd == COMPUTER_ACK) {
-      comm_interface_tx_queue_drop();
+      queue_drop_comm_tx();
       
       SET_TX_MSG_ACKED;
       resend_count = 0;
@@ -175,7 +186,7 @@ void comm_interface_poll_rx_queue(void) {
     else if (rx_message.cmd == COMPUTER_NACK) {
       comm_status |= (1<<RESEND_FLAG);
     }
-    else if (!comm_interface_rx_queue_add(rx_message)) {
+    else if (!queue_enqueue_comm_rx(&rx_message)) {
       comm_interface_send_ack();  //Only send ACK if the message has been added to the queue
     }
 
@@ -184,10 +195,10 @@ void comm_interface_poll_rx_queue(void) {
     add_rx_message = 0;
   }
   
-  if (!comm_interface_rx_queue_is_empty()) {
-		f_ptr_rx(comm_interface_rx_queue_get());
-		
-		comm_interface_rx_queue_drop();
+  if (!queue_is_empty_comm_rx()) {
+    struct_comm_interface_msg msg;
+    queue_dequeue_comm_rx(&msg);
+		f_ptr_rx(msg);
 		
 		reset_rx_status();
 	}
@@ -227,9 +238,6 @@ void __inline__ comm_interface_send_nack(void) {
 void comm_interface_init(void (*func_ptr_rx)(struct_comm_interface_msg), void (*func_ptr_tx)(char)) {
 	reset_rx_status();
 	reset_tx_status();
-	
-	comm_interface_rx_queue_init();
-	comm_interface_tx_queue_init();
 	
 	f_ptr_tx = func_ptr_tx;
 	f_ptr_rx = func_ptr_rx;

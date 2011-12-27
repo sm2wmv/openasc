@@ -36,6 +36,8 @@
 #ifndef _INTERNAL_COMM_H_
 #define _INTERNAL_COMM_H_
 
+#include "comm_interface.h"
+
 //#define INT_COMM_DEBUG 1
 
 //! if the device is a motherboard we need to set the proper USARTs used
@@ -105,19 +107,6 @@
 //! Number of resends that is allowed (change back to 10?)
 #define UC_COMM_RESEND_COUNT	5
 
-
-/*! uC message structure, used for communication between the uCs */
-typedef struct {
-	//! The checksum of the message
-	unsigned char checksum;
-	//! The command of the message
-	unsigned char cmd;
-	//! The length of the data sent in the message
-	unsigned char length;
-	//! The variables wanted to be sent
-	unsigned char data[UC_MESSAGE_DATA_SIZE];
-} UC_MESSAGE;
-
 /*! Variables used for the communication between the two uCs */
 typedef struct {
 	//! Various flags, defined in this file
@@ -129,7 +118,7 @@ typedef struct {
 } struct_uc_com;
 /****************************************************************/
 
-void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(char));
+void internal_comm_init(void (*func_ptr_rx)(struct_comm_interface_msg), void (*func_ptr_tx)(char));
 unsigned char internal_comm_poll_rx_queue(void);
 unsigned char internal_comm_poll_tx_queue(void);
 void internal_comm_add_tx_message(unsigned char command, unsigned char length,char *data);
@@ -139,13 +128,13 @@ void __inline__ internal_comm_message_nacked(void);
 
 void internal_comm_send_ack(void);
 void internal_comm_send_nack(void);
-void internal_comm_send_message(UC_MESSAGE tx_message);
+void internal_comm_send_message(struct_comm_interface_msg tx_message);
 void __inline__ internal_comm_reset_rx(void);
 void internal_comm_1ms_timer(void);
 
 void internal_comm_resend(void);
 
-unsigned char internal_comm_check_cmd_in_tx_queue(unsigned char cmd);
+unsigned char internal_comm_check_critical_cmd_state(void);
 
 void enable_int_comm_interrupt(void);
 void disable_int_comm_interrupt(void);

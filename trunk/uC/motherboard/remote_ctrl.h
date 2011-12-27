@@ -79,7 +79,7 @@ void remote_ctrl_set_active(void);
 void remote_ctrl_set_deactive(void);
 unsigned char remote_ctrl_get_active_status(void);
 
-void remote_ctrl_parse_message(UC_MESSAGE message);
+void remote_ctrl_parse_message(struct_comm_interface_msg message);
 
 void remote_ctrl_update_info(void);
 

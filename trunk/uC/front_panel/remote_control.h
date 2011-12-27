@@ -40,8 +40,6 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
 
 void remote_control_parse_button(unsigned char button);
 
-void remote_control_parse_ascii_cmd(UC_MESSAGE *uc_message);
-
 void remote_control_send_band_info(unsigned char band);
 void remote_control_send_rx_ant_info(unsigned char ant_index);
 void remote_control_send_antenna_dir_info(unsigned char index);

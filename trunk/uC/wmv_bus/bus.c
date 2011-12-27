@@ -48,12 +48,24 @@
 #endif
 
 #include "bus.h"
-#include "bus_tx_queue.h"
-#include "bus_rx_queue.h"
 #include "bus_commands.h"
 #include "bus_ping.h"
 #include "global.h"
+#include "../global.h"
 #include "bus_usart.h"
+
+#include "../queue.h"
+
+CREATE_CRITICAL_LIST();
+
+/*! \brief Macros for creating the tx and rx queue for the bus communication */
+CREATE_QUEUE(BUS_TX_QUEUE_SIZE,BUS_MESSAGE,bus_tx);
+CREATE_QUEUE(BUS_RX_QUEUE_SIZE,BUS_MESSAGE,bus_rx);
+
+CREATE_QUEUE_WRAPPERS(BUS_MESSAGE,bus_tx);
+CREATE_QUEUE_WRAPPERS(BUS_MESSAGE,bus_rx);
+
+static unsigned char critical_list[sizeof(critical_cmd_list)];
 
 //! \brief The bus status structure
 bus_status_struct bus_status;
@@ -75,10 +87,12 @@ unsigned int counter_sync_timeout = 0;
 //! Counter which keeps track of each time the 130us timer counts up
 unsigned int counter_130us = 0;
 
+
+
 /*! \brief Init the communication bus */
 void bus_init(void) {
-	rx_queue_init();
-	tx_queue_init();
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    critical_list[i] = 0;
 	
 	#ifdef DEVICE_TYPE_DRIVER_UNIT
 		//57.600kpbs
@@ -136,6 +150,29 @@ void bus_init(void) {
 	bus_status.flags |= (1<<BUS_STATUS_RECEIVE_ON);
 }
 
+void __inline__ bus_del_all_critical_list(void) {
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    critical_list[i] = 0;
+}
+
+void __inline__ bus_add_to_critical_list(unsigned char cmd) {
+  for (unsigned char i=0;i<sizeof(critical_cmd_list);i++)
+    if (critical_cmd_list[i] == cmd) {
+      critical_list[i]++;
+      
+      break;
+    }
+}
+
+void __inline__ bus_del_from_critical_list(unsigned char cmd) {
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    if (critical_cmd_list[i] == cmd) {
+      critical_list[i]--;
+      
+      break;
+    }
+}
+
 /*! \brief Set the address of this device on the bus.
  * \param addr The address of this device */
 void bus_set_address(unsigned char addr) {
@@ -166,8 +203,9 @@ void bus_send_message(void) {
 	 * Transmit interrupt. Used to know when we are sending and somebody else */
 	bus_status.flags &= ~(1<<BUS_STATUS_RECEIVE_ON);
 
-	BUS_MESSAGE bus_message = tx_queue_get();
-
+	BUS_MESSAGE bus_message;
+  queue_get_first_bus_tx(&bus_message);
+  
 
 	#ifndef DEVICE_TYPE_COMPUTER
 		bus_usart_transmit(BUS_MSG_PREAMBLE);
@@ -191,7 +229,9 @@ void bus_send_message(void) {
 	// confirmation of these anyway.
 	if ((bus_message.to_addr == BUS_BROADCAST_ADDR) || (bus_message.cmd == BUS_CMD_ACK) || (bus_message.cmd == BUS_CMD_NACK)) {
 		bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
-		tx_queue_drop();
+		
+    bus_del_from_critical_list(bus_message.cmd);
+    queue_drop_bus_tx();
 		bus_reset_tx_status();
 	}
 	else {
@@ -299,28 +339,48 @@ void  bus_resend_message(void) {
 			error_handler_set(ERROR_TYPE_BUS_RESEND,1,0);
 		#endif
 			
-		tx_queue_drop();
+    BUS_MESSAGE bus_message;
+    queue_get_first_bus_tx(&bus_message);
+    
+		bus_del_from_critical_list(bus_message.cmd);
+    
+    queue_drop_bus_tx();
 		bus_reset_tx_status();
 	}
 }
 
 /*! \brief Checks if there is anything that should be sent in the TX queue */
 void bus_check_tx_status(void) {
-	if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
-		if (bus_status.flags & (1<<BUS_STATUS_SEND_MESSAGE)) {
-			bus_status.flags &= ~(1<<BUS_STATUS_SEND_MESSAGE);
+	if (!queue_is_empty_bus_tx()) {
+    if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
+      if (bus_status.flags & (1<<BUS_STATUS_SEND_MESSAGE)) {
+        bus_status.flags &= ~(1<<BUS_STATUS_SEND_MESSAGE);
 
-			bus_status.send_count++;
-			bus_send_message();
-		}
-	}
-	else if (bus_status.flags & (1<<BUS_STATUS_FORCE_SYNC)) {
-		bus_status.flags &= ~(1<<BUS_STATUS_SEND_MESSAGE);
-		bus_status.flags &= ~(1<<BUS_STATUS_FORCE_SYNC);
+        bus_status.send_count++;
+        bus_send_message();
+      }
+    }
+    else if (bus_status.flags & (1<<BUS_STATUS_FORCE_SYNC)) {
+      bus_status.flags &= ~(1<<BUS_STATUS_SEND_MESSAGE);
+      bus_status.flags &= ~(1<<BUS_STATUS_FORCE_SYNC);
 
-		bus_status.send_count++;
-		bus_send_message();
-	}
+      bus_status.send_count++;
+      bus_send_message();
+    }
+  }
+}
+
+unsigned char bus_check_rx_status(BUS_MESSAGE* message) {
+  if (!queue_is_empty_bus_rx()) {
+    
+    disable_bus_interrupt();
+    queue_dequeue_bus_rx(message);
+    enable_bus_interrupt();
+    
+    return(1);
+  }
+
+  return(0);
 }
 
 /*!\brief Adds a message to the TX queue which will be sent as soon as possible
@@ -354,7 +414,8 @@ void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		
 		bus_message.checksum = checksum;
 
-		tx_queue_add(bus_message);
+    bus_add_to_critical_list(bus_message.cmd);
+		queue_enqueue_bus_tx(&bus_message);
     
     #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
       main_update_critical_list();
@@ -382,27 +443,22 @@ void bus_add_rx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		bus_message.data[i] = data[i];
 	}
 
-	rx_queue_add(bus_message);
+	queue_enqueue_bus_rx(&bus_message);
 }
 
-/*! \brief Goes through the TX queue and checks if a certain command exists 
- *  \param cmd The command we wish to check if it exists in the queue *
- *  \return 1 if it exist in the queue, 0 if not */
-unsigned char bus_check_cmd_in_tx_queue(unsigned char cmd) {
-  unsigned char ret_val = 0;
+/*! \brief Returns if there is a critical command in the queue
+ *  \return 1 if there is a critical cmd in the queue, 0 if not */
+unsigned char bus_check_critical_cmd_state(void) {
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    if (critical_list[i] != 0)
+      return(1);
   
-  for (unsigned char i=0;i<tx_queue_size();i++)
-    if (tx_queue_get_pos(i).cmd == cmd) {
-      ret_val = 1;
-      break;
-    }
-    
-  return(ret_val);
+  return(0);
 }
 
 /*! \brief Adds the message bus_new_message into the RX queue */
 void static __inline__ bus_add_new_message(void) {
-	rx_queue_add(bus_new_message);
+  queue_enqueue_bus_rx(&bus_new_message);
 }
 
 /*! \brief The message last sent was NACKED from the receiver
@@ -412,8 +468,7 @@ void bus_message_nacked(unsigned char addr, unsigned char error_type) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 
 	BUS_MESSAGE bus_message;
-	
-	bus_message = tx_queue_get();
+  queue_get_first_bus_tx(&bus_message);
 	
 	//We need to make sure that this NACK was actually from the address we expected
 	//Otherwise there is a risk that another device which has gotten corrupted information
@@ -425,8 +480,7 @@ void bus_message_nacked(unsigned char addr, unsigned char error_type) {
 /*! \brief The message last sent was acknowledged from the receiver */
 void bus_message_acked(unsigned char addr) {
 	BUS_MESSAGE bus_message;
-	
-	bus_message = tx_queue_get();
+  queue_get_first_bus_tx(&bus_message);
 	
 	//We need to make sure that this ACK was actually from the address we expected
 	//Otherwise there is a risk that another device which has gotten corrupted information
@@ -434,7 +488,9 @@ void bus_message_acked(unsigned char addr) {
 	if (bus_message.to_addr == addr) {
 		bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 
-		tx_queue_drop();
+    bus_del_from_critical_list(bus_message.cmd);
+    
+		queue_drop_bus_tx();
 		bus_reset_tx_status();
 	}
 }
@@ -678,7 +734,8 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 		bus_status.flags &= ~(1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
 		
 		//Drops all current messages in the TX queue
-		tx_queue_dropall();
+		queue_drop_all_bus_tx();
+    bus_del_all_critical_list();
 
 		counter_sync_timeout = 0;
 		

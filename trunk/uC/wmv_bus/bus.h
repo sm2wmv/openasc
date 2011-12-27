@@ -353,6 +353,7 @@ unsigned char bus_get_device_count(void);
 void bus_set_device_count(unsigned char device_count);
 unsigned char bus_allowed_to_send(void);
 void bus_check_tx_status(void);
-unsigned char bus_check_cmd_in_tx_queue(unsigned char cmd);
+unsigned char bus_check_rx_status(BUS_MESSAGE* mess);
+unsigned char bus_check_critical_cmd_state(void);
 
 #endif

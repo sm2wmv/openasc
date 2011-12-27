@@ -231,7 +231,7 @@ char* remote_ctrl_get_rx_antenna_name(unsigned char index) {
   return(NULL);
 }
 
-void remote_ctrl_parse_message(UC_MESSAGE message) {
+void remote_ctrl_parse_message(struct_comm_interface_msg message) {
   switch (message.cmd) {
     case INT_COMM_REMOTE_BAND_INFO:
       // char index 0 -> Current band

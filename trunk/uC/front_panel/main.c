@@ -180,17 +180,22 @@ unsigned char ext_key_get_assignment(unsigned char index) {
 
 /*! Get information if a band change is OK to do
  *  \return 1 if the band change is OK, 0 if not */
-unsigned char main_band_change_ok(unsigned char new_band) {
-	for (unsigned char i=0;i<bus_get_device_count();i++) {
-		if ((bus_ping_get_device_type(i) == DEVICE_ID_MAINBOX) && (i != (bus_get_address()-1))) {
-      main_ping_list = bus_ping_get_ping_data(i);
-
-      if ((new_band != 0) && (main_ping_list.data[1] == new_band)) {
-        return(0);
-      }
+unsigned char main_band_change_ok(unsigned char new_band) { 
+  unsigned char* band_info_ptr = bus_ping_get_mainbox_adresses();
+  bus_struct_ping_status* ping_status_ptr;
+  
+  for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
+    //We have reached the end of the list
+    if (band_info_ptr[i] == 0)
+      break;
+    
+    ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
+    
+    if ((new_band != 0) && (ping_status_ptr->data[1] == new_band)) {
+      return(0);
     }
   }
-
+  
   //The band isn't in use, OK to change
   return(1);
 }
@@ -614,10 +619,6 @@ int main(void){
 		bus_set_is_master(0,0);	
 	}
 	
-	if (bus_is_master()) {
-		tx_queue_dropall();
-	}
-	
 	init_timer_0();
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
@@ -658,12 +659,14 @@ int main(void){
     printf("openASC started in USART debug mode\n");
   #endif
   
+  BUS_MESSAGE mess;
+    
 	while(1) {
-    if (!rx_queue_is_empty())
-			event_bus_parse_message();
-		
-		if (!tx_queue_is_empty())
-			bus_check_tx_status();
+    if (bus_check_rx_status(&mess)) {
+      event_bus_parse_message(mess);
+    }
+    
+    bus_check_tx_status();
 		
 		//This variable can be set to 0 to disable all the control of the device
 		//For example this is used when the box is about to shut down
