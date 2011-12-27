@@ -27,9 +27,10 @@
 #include <string.h>
 
 #include "internal_comm.h"
-
-#include "internal_comm_rx_queue.h"
-#include "internal_comm_tx_queue.h"
+#include "queue.h"
+#include "comm_interface.h"
+#include "global.h"
+#include "wmv_bus/bus_commands.h"
 
 #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 	#include "../front_panel/led_control.h"
@@ -37,13 +38,23 @@
 	#include "../front_panel/main.h"
 #endif
 
+CREATE_CRITICAL_LIST();
+
+CREATE_QUEUE(INTERNAL_COMM_RX_QUEUE_SIZE,struct_comm_interface_msg,int_rx);
+CREATE_QUEUE_WRAPPERS(struct_comm_interface_msg,int_rx);
+
+CREATE_QUEUE(INTERNAL_COMM_TX_QUEUE_SIZE,struct_comm_interface_msg,int_tx);
+CREATE_QUEUE_WRAPPERS(struct_comm_interface_msg,int_tx);
+
 //! The uc_com struct
 struct_uc_com uc_com;
 
 unsigned int timer = 0;
 
+static unsigned char critical_list[sizeof(critical_cmd_list)];
+
 //! Where we save any new uc_comm message
-UC_MESSAGE uc_new_message;
+struct_comm_interface_msg uc_new_message;
 
 static unsigned char add_new_uc_message = 0;
 
@@ -64,26 +75,41 @@ unsigned char resend_count = 0;
 unsigned char msg_not_acked = 0;
 
 /*! \brief Function to be called when a message is recieved and should be parsed/executed */
-void (*f_ptr_rx)(UC_MESSAGE);
+void (*f_ptr_rx)(struct_comm_interface_msg);
 /*! \brief Function to be called when we wish to send a message */
 void (*f_ptr_tx)(char);
+
+void __inline__ int_comm_add_to_critical_list(unsigned char cmd) {
+  for (unsigned char i=0;i<sizeof(critical_cmd_list);i++)
+    if (critical_cmd_list[i] == cmd) {
+      critical_list[i]++;
+      
+      break;
+    }
+}
+
+void __inline__ int_comm_del_from_critical_list(unsigned char cmd) {
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    if (critical_cmd_list[i] == cmd) {
+      critical_list[i]--;
+      
+      break;
+    }
+}
 
 /*! \brief Initialize the internal communication 
  *  \param func_ptr_rx The function you wish to call when a new message has been recieved and should be parsed
  *  \param func_ptr_tx The function used to send data to the hardware handeling the data transmission */
-void internal_comm_init(void (*func_ptr_rx)(UC_MESSAGE), void (*func_ptr_tx)(char)) {
+void internal_comm_init(void (*func_ptr_rx)(struct_comm_interface_msg), void (*func_ptr_tx)(char)) {
 	f_ptr_rx = func_ptr_rx;	//To know which function we should call to parse a message
 	f_ptr_tx = func_ptr_tx;	//To know which function we should call to send data
+	
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    critical_list[i] = 0;
 	
 	uc_com.char_count = 0;
 	uc_com.checksum = 0;
 	uc_com.flags = 0;
-	
-	int_comm_rx_queue_init();
-	int_comm_tx_queue_init();
-	
-	int_comm_rx_queue_dropall();
-	int_comm_tx_queue_dropall();
 }
 
 /*! \brief Will reset the RX variables */
@@ -98,23 +124,24 @@ void __inline__ internal_comm_reset_rx(void) {
  * \return 1 if a message was in the buffer and got parsed, 0 if not
  */
 unsigned char internal_comm_poll_rx_queue(void) {
-	if (int_comm_rx_queue_count() > 0) {
-		f_ptr_rx(int_comm_rx_queue_get());	//Send the first message to the function
-		
-		int_comm_rx_queue_drop();					//Drop the message from the queue since it's been executed
+	if (!queue_is_empty_int_rx()) {
+		struct_comm_interface_msg msg;
+    
+    queue_dequeue_int_rx(&msg);
+    
+    f_ptr_rx(msg);	//Send the first message to the function
 		return(1);								//Return 1 to show that something was done
 	}
 
 	if (add_new_uc_message) {
     //If there is room in the queue the message gets added and acked, otherwise not
-    if (int_comm_rx_queue_count() < INTERNAL_COMM_RX_QUEUE_SIZE) {
+    if (queue_get_count_int_rx() < INTERNAL_COMM_RX_QUEUE_SIZE) {
       if ((uc_new_message.cmd != UC_COMM_MSG_ACK) && (uc_new_message.cmd != UC_COMM_MSG_NACK)) {
         internal_comm_send_ack();
       
         //Add the message to the RX queue
-        int_comm_rx_queue_add(uc_new_message);
-        //Send ack to acknowledge we recieved the package
-      }
+        queue_enqueue_int_rx(&uc_new_message);
+      }        //Send ack to acknowledge we recieved the package
       else {
         if (uc_new_message.cmd == UC_COMM_MSG_ACK)
           internal_comm_message_acked();
@@ -147,13 +174,16 @@ unsigned char internal_comm_poll_tx_queue(void) {
     uc_com.flags &= ~(1<<UC_MESSAGE_RESEND);
   }
   
-  if ((int_comm_tx_queue_size() > 0) && (msg_not_acked == 0)) {
+  if ((queue_is_empty_int_tx() == 0) && (msg_not_acked == 0)) {
 		//Send the first message in the queue
     #ifdef INT_COMM_DEBUG
       printf("PSEND\n\r");
     #endif 
     
-		internal_comm_send_message(int_comm_tx_queue_get());
+		struct_comm_interface_msg msg;
+    queue_get_first_int_tx(&msg);
+    
+    internal_comm_send_message(msg);
 		msg_not_acked = 1;
 		return(1);	//Return 1 to show that something was done
 	}
@@ -195,7 +225,7 @@ void internal_comm_send_nack(void) {
 
 /*! \brief Send a message to the internal communication uart 
  *  \param tx_message The message we wish to send */
-void internal_comm_send_message(UC_MESSAGE tx_message) {
+void internal_comm_send_message(struct_comm_interface_msg tx_message) {
 	#ifdef INT_COMM_DEBUG
 		printf("S: 0x%02X\n",tx_message.cmd);
 	#endif
@@ -215,7 +245,7 @@ void internal_comm_send_message(UC_MESSAGE tx_message) {
 }
 
 unsigned char internal_comm_is_tx_queue_full(void) {
-  if (int_comm_tx_queue_size() < INTERNAL_COMM_TX_QUEUE_SIZE)
+  if (queue_get_count_int_tx() < INTERNAL_COMM_TX_QUEUE_SIZE)
     return(0);
   else
     return(1);
@@ -232,8 +262,8 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
     printf("RX_BUF_SIZE: %i\n\r",int_comm_rx_queue_count());
 	#endif
 	
-	if (int_comm_tx_queue_size() < INTERNAL_COMM_TX_QUEUE_SIZE) {
-	  UC_MESSAGE new_mess;
+	if (queue_get_count_int_tx() < INTERNAL_COMM_TX_QUEUE_SIZE) {
+	  struct_comm_interface_msg new_mess;
     
     new_mess.checksum = command + length;
     
@@ -253,7 +283,9 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
       printf("\n");
     #endif
 
-    int_comm_tx_queue_add(new_mess);
+    int_comm_add_to_critical_list(new_mess.cmd);
+      
+    queue_enqueue_int_tx(&new_mess);
   }
   else {
     #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
@@ -266,15 +298,19 @@ void internal_comm_add_tx_message(unsigned char command, unsigned char length, c
 }
 
 void __inline__ internal_comm_message_acked(void) {
-	uc_new_message.checksum = 0;
+  uc_new_message.checksum = 0;
 	uc_new_message.cmd = 0;
 	uc_new_message.length = 0;
 				
 	msg_not_acked = 0;
 	counter_tx_timeout = 0;
-	
+
+  struct_comm_interface_msg msg;
+  queue_get_first_int_tx(&msg);
+  int_comm_del_from_critical_list(msg.cmd);
+  
 	//Last TXed message was acked, lets drop the message from the TX queue
-	int_comm_tx_queue_drop();
+  queue_drop_int_tx();
   
   #ifdef INT_COMM_DEBUG
     printf("ACKED: %i\n\r",int_comm_tx_queue_size());
@@ -293,7 +329,10 @@ void __inline__ internal_comm_message_nacked(void) {
 void internal_comm_resend(void) {
   if (resend_count < UC_COMM_RESEND_COUNT) {
 		if (msg_not_acked == 1) {
-			internal_comm_send_message(int_comm_tx_queue_get());
+			struct_comm_interface_msg msg;
+      queue_get_first_int_tx(&msg);
+      
+      internal_comm_send_message(msg);
 
 			#ifdef INT_COMM_DEBUG
 				printf("RS[%i]: %u\n",resend_count,timer);
@@ -315,7 +354,11 @@ void internal_comm_resend(void) {
       
 		#endif
 			
-		int_comm_tx_queue_drop();
+    struct_comm_interface_msg msg;
+    queue_get_first_int_tx(&msg);
+    int_comm_del_from_critical_list(msg.cmd);
+
+    queue_drop_int_tx();
 		counter_tx_timeout = 0;
 		internal_comm_reset_rx();
 		resend_count = 0;
@@ -366,16 +409,12 @@ void disable_int_comm_interrupt(void) {
 /*! \brief Goes through the TX queue and checks if a certain command exists 
  *  \param cmd The command we wish to check if it exists in the queue *
  *  \return 1 if it exist in the queue, 0 if not */
-unsigned char internal_comm_check_cmd_in_tx_queue(unsigned char cmd) {
-    unsigned char ret_val = 0;
-  
-  for (unsigned char i=0;i<int_comm_tx_queue_size();i++)
-    if (int_comm_tx_queue_get_pos(i).cmd == cmd) {
-      ret_val = 1;
-      break;
-    }
+unsigned char internal_comm_check_critical_cmd_state(void) {
+  for (unsigned char i=0;i<sizeof(critical_list);i++)
+    if (critical_list[i] != 0)
+      return(1);
     
-  return(ret_val);
+  return(0);
 }
 
 //! Interrupt when a byte has been received from the UART

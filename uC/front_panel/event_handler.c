@@ -53,14 +53,16 @@
 #include "display_handler.h"
 #include "sequencer.h"
 #include "../remote_commands.h"
+#include "../comm_interface.h"
 
 //#define DEBUG_WMV_BUS 1
 
 
 //#define ERROR_DEBUG
 
+CREATE_CRITICAL_LIST();
+
 unsigned char parse_uc_cmd = 0;
-static UC_MESSAGE new_uc_message;
 
 extern unsigned int main_flags;
 
@@ -68,32 +70,17 @@ unsigned char ascii_comm_device_addr = 0;
 
 static unsigned char ant_rotating_indicator = 0;
 
-//! Critical command list, none of these tasks can be in any queue if we are gonna let the radio PTT
-unsigned char critical_cmd_list[] = {BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT, BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT, BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT, 
-                                     BUS_CMD_DRIVER_DEACTIVATE_BAND_OUTPUT, BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS, BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS,
-                                     BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS, BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT, BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT, 
-                                     BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT, BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT, BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT,
-                                     BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT,BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT,BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT,
-                                     BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS, BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS, 
-                                     BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS, BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS};
-
 /*! \brief This function goes through the bus and internal communcation queue to check if certain commands exist 
  *  \return 1 if a command in the command list is in either queue and 0 if not */
 unsigned char event_check_critical_cmd_list(void) {
   unsigned char ret_val = 0;
-  
-  for (unsigned char i=0;i<sizeof(critical_cmd_list);i++) {
-    if (bus_check_cmd_in_tx_queue(critical_cmd_list[i]) != 0) {
-      ret_val = 1;
-      break;
-    }
-    
-    if (internal_comm_check_cmd_in_tx_queue(critical_cmd_list[i]) != 0) {
-      ret_val = 1;
-      break;
-    }
-  }
 
+  if (bus_check_critical_cmd_state() != 0)
+    ret_val = 1;
+
+  if (internal_comm_check_critical_cmd_state() != 0)
+    ret_val = 1;
+  
   return(ret_val);
 }
 
@@ -117,7 +104,7 @@ void event_check_pings(void) {
 
 /*! \brief Function which will parse the internal communication message 
  *  \param message The message that we wish to parse */
-void event_internal_comm_parse_message(UC_MESSAGE message) {
+void event_internal_comm_parse_message(struct_comm_interface_msg message) {
 	#ifdef INT_COMM_DEBUG
 		printf("0x%02X\n",message.cmd);
 	#endif
@@ -1149,9 +1136,7 @@ void event_rotate_button_pressed(void) {
 }
 
 /*! \brief Parse a message from the communication bus */
-void event_bus_parse_message(void) {
-	BUS_MESSAGE bus_message = rx_queue_get();
-	
+void event_bus_parse_message(BUS_MESSAGE bus_message) {
 	#ifdef DEBUG_WMV_BUS
 		printf("DEBUG-> From addr: 0x%02X\n",bus_message.from_addr);
 		printf("DEBUG-> To addr:   0x%02X\n",bus_message.to_addr);
@@ -1171,6 +1156,8 @@ void event_bus_parse_message(void) {
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
 		else
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
+    
+    printf("NEW PING\n\r");
 	}
 	else if (bus_message.cmd == BUS_CMD_SHUTTING_DOWN) {
 		bus_ping_clear_device(bus_message.from_addr);
@@ -1220,8 +1207,6 @@ void event_bus_parse_message(void) {
   else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
     internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
   }	
-	//Drop the message
-	rx_queue_drop();
 	
 	#ifdef DEBUG_WMV_BUS
 		printf("DEBUG-> Message dropped\n");

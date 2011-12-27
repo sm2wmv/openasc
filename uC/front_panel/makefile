@@ -61,16 +61,21 @@ TARGET = main
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_MAIN_FRONT_UNIT
 
-INTERNAL_COMM_TX_QUEUE_SIZE = 15
+INTERNAL_COMM_TX_QUEUE_SIZE = 14
+INTERNAL_COMM_RX_QUEUE_SIZE = 7
 
-INTERNAL_COMM_RX_QUEUE_SIZE = 10
+#The size of the RX queue in buffers
+BUS_RX_QUEUE_SIZE = 8
+#The size of the TX queue in buffers
+BUS_TX_QUEUE_SIZE = 12
+
 
 BASE_ADDRESS = 0
 
 #Root directories
-WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_tx_queue.c ../wmv_bus/bus_rx_queue.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c
+WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c
 
-GLOBAL_ROUTINES = ../delay.c ../i2c.c ../internal_comm.c ../event_queue.c ../internal_comm_rx_queue.c ../internal_comm_tx_queue.c
+GLOBAL_ROUTINES = ../delay.c ../i2c.c ../internal_comm.c ../event_queue.c ../queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c ks0108.c glcd.c fonts.c radio_interface.c sequencer.c led_control.c interrupt_handler.c eeprom.c ds1307.c computer_interface.c antenna_ctrl.c band_ctrl.c eeprom_m24.c menu.c rotary_encoder.c event_handler.c  remote_control.c sub_menu.c powermeter.c errors.c display_handler.c
@@ -129,7 +134,8 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DINTERNAL_COMM_RX_QUEUE_SIZE=$(INTERNAL_COMM_RX_QUEUE_SIZE) -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DINTERNAL_COMM_RX_QUEUE_SIZE=$(INTERNAL_COMM_RX_QUEUE_SIZE) 
+CFLAGS += -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE)
 
 
 

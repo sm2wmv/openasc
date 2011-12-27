@@ -81,14 +81,14 @@
 
 void event_check_pings(void);
 
-void event_internal_comm_parse_message(UC_MESSAGE message);
+void event_internal_comm_parse_message(struct_comm_interface_msg message);
 void event_handler_process_ps2(unsigned char key_code);
 void event_pulse_sensor_up(void);
 void event_pulse_sensor_down(void);
 
 void event_poll_buttons(void);
 void event_poll_ext_device(void);
-void event_bus_parse_message(void);
+void event_bus_parse_message(BUS_MESSAGE bus_message);
 void event_parse_ext_event(unsigned int ext_event_status);
 
 void event_sub_button_pressed(void);
