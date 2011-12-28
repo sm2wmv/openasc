@@ -26,7 +26,7 @@
 #define	COMM_INTERFACE_DATA_LENGTH	20
 
 //! The number of times the interface should try to resend before giving up
-#define COMM_INTERFACE_RESEND_COUNT	2
+#define COMM_INTERFACE_RESEND_COUNT	6
 
 #ifdef COMM_UART_INTERFACE0
   #define COMM_SIG_RECV_NAME   SIG_USART0_RECV

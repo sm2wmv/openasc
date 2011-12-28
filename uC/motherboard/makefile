@@ -71,7 +71,7 @@ DEVICE_TYPE = DEVICE_TYPE_MAIN_MOTHERBOARD_UNIT
 COMM_UART_INTERFACE = COMM_UART_INTERFACE1
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c init.c usart.c ../delay.c ../internal_comm.c remote_ctrl.c ps2kbd.c ../comm_interface.c ../queue.c
+SRC = $(TARGET).c init.c usart.c ../delay.c ../internal_comm.c remote_ctrl.c ../comm_interface.c ../queue.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s

@@ -472,18 +472,18 @@ int main(void) {
 	sei();
 
 	//Init the values in the ps2 struct
-	/*ps2.started = 0;
+	ps2.started = 0;
 	ps2.bit_count = 0;
 	ps2.data = 0;
-	ps2.data_ready = 0;*/
+	ps2.data_ready = 0;
 	
-  kbd_init();
+//   //kbd_init();
   
 	delay_ms(200);
 	
-	//PORTA |= (1<<3);
+	PORTA |= (1<<3);
 
-	//ps2_keyboard_send(0xF4);
+	ps2_keyboard_send(0xF4);
 	delay_ms(100);
 	
   unsigned char c = 0;
@@ -535,15 +535,13 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		btn_on_off_last_state = 0;
 	}
 	
-/*	if (counter_ps2 > 250) {
+	if (counter_ps2 > 250) {
 		ps2.started = 0;
 		ps2.bit_count = 0;
 		ps2.data = 0;
 		
 		counter_ps2 = 0;
 	}
-	
-	computer_comm_1ms_timer();
 	
 	//So that if the keyboard has been unplugged and plugged in again it will start working
 	//after maximum time of one minute
@@ -554,7 +552,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	}
 	
 	ps2_send_counter++;
-	counter_ps2++;*/
+  counter_ps2++;
 	
   comm_interface_1ms_tick();
 	internal_comm_1ms_timer();
@@ -565,7 +563,7 @@ ISR(SIG_OVERFLOW0) {
 	
 }
 
-/*ISR(SIG_INTERRUPT6) {
+ISR(SIG_INTERRUPT6) {
 	if (!ps2.transmit) {
 		if ((PINE & (1<<6)) == 0) {
 			if (ps2.started == 0) {
@@ -635,4 +633,4 @@ ISR(SIG_OVERFLOW0) {
 			}
 		}
 	}
-}*/
+}
