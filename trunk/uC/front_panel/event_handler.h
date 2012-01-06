@@ -62,7 +62,7 @@
 #define KEYPAD_BTN_9 			0x7D
 //! External keyboard keycode for Button 0
 #define KEYPAD_BTN_0			0x70
-//! External keyboard keycode for Button A
+//! External keyboard keycode for Button A  
 #define KEYPAD_BTN_A			0x77	
 //! External keyboard keycode for Button B
 #define KEYPAD_BTN_B			0x4A
@@ -77,12 +77,22 @@
 //! External keyboard keycode for Button G
 #define KEYPAD_BTN_G			0x71
 
+//! \brief These are extra keys which exist on some keypads (ESC, CTRL, Alt, <--)
+//! External keyboard keycode for Button E1
+#define KEYPAD_BTN_E1      0x76
+//! External keyboard keycode for Button E2
+#define KEYPAD_BTN_E2      0x14
+//! External keyboard keycode for Button E3
+#define KEYPAD_BTN_E3      0x11
+//! External keyboard keycode for Button E4
+#define KEYPAD_BTN_E4      0x66
+
 #define MAX_ASCII_CMD_ARGS  5
 
 void event_check_pings(void);
 
 void event_internal_comm_parse_message(struct_comm_interface_msg message);
-void event_handler_process_ps2(unsigned char key_code);
+void __inline__ event_handler_process_ps2(unsigned char key_code);
 void event_pulse_sensor_up(void);
 void event_pulse_sensor_down(void);
 

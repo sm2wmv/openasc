@@ -130,7 +130,7 @@ class BandClass
 		int antennaOutputStrLength[15];
 		QString bandName;
 		unsigned char antennaFlags[4];
-		bool antennaOutputCombAllowed[15];
+		bool antennaOutputCombAllowed[16];
 		bool multiband[4];
 		bool hasRotator[4];
 		//0 = none

@@ -10,6 +10,9 @@
 #include "../../../uC/remote_commands.h"
 #include "../../../uC/ext_events.h"
 
+QPalette antSelPal(QColor(Qt::darkGreen));
+QPalette antNotSelPal(QColor(Qt::white));
+
 QString MainWindowImpl::getBandName(int bandIndex) {
 	QString bandName = "None";
 
@@ -212,25 +215,41 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			if (message.data[1] != status.currentAntennas) {
 				status.currentAntennas = message.data[1];
 
-				if (status.currentAntennas & (1<<0))
+				if (status.currentAntennas & (1<<0)) {
 					pushButtonTX1->setChecked(true);
-				else
+					pushButtonTX1->setPalette(antSelPal);
+				}
+				else {
 					pushButtonTX1->setChecked(false);
+					pushButtonTX1->setPalette(antNotSelPal);
+				}
 
-				if (status.currentAntennas & (1<<1))
+				if (status.currentAntennas & (1<<1)) {
 					pushButtonTX2->setChecked(true);
-				else
+					pushButtonTX2->setPalette(antSelPal);
+				}
+				else {
 					pushButtonTX2->setChecked(false);
+					pushButtonTX2->setPalette(antNotSelPal);
+				}
 
-				if (status.currentAntennas & (1<<2))
+				if (status.currentAntennas & (1<<2)) {
 					pushButtonTX3->setChecked(true);
-				else
+					pushButtonTX3->setPalette(antSelPal);
+				}
+				else {
 					pushButtonTX3->setChecked(false);
+					pushButtonTX3->setPalette(antNotSelPal);
+				}
 
-				if (status.currentAntennas & (1<<3))
+				if (status.currentAntennas & (1<<3)) {
 					pushButtonTX4->setChecked(true);
-				else
+					pushButtonTX4->setPalette(antSelPal);
+				}
+				else {
 					pushButtonTX4->setChecked(false);
+					pushButtonTX4->setPalette(antNotSelPal);
+				}
 			}
 
 			rotatorWindow->loadBand(message.data[0]);
@@ -365,6 +384,50 @@ void MainWindowImpl::parseMessage(struct_message message) {
 			status.subMenuType[1] = message.data[5];
 			status.subMenuType[2] = message.data[6];
 			status.subMenuType[3] = message.data[7];
+
+			if (status.antennaFlags[0] & (1<<0)) {
+				pushButtonTX1->setEnabled(true);
+				pushButtonRX1->setEnabled(true);
+			}
+			else {
+				pushButtonTX1->setEnabled(false);
+				pushButtonRX1->setEnabled(false);
+				labelAnt1->clear();
+				labelAnt1Dir->clear();
+			}
+
+			if (status.antennaFlags[1] & (1<<0)) {
+				pushButtonTX2->setEnabled(true);
+				pushButtonRX2->setEnabled(true);
+			}
+			else {
+				pushButtonTX2->setEnabled(false);
+				pushButtonRX2->setEnabled(false);
+				labelAnt2->clear();
+				labelAnt2Dir->clear();
+			}
+
+			if (status.antennaFlags[2] & (1<<0)) {
+				pushButtonTX3->setEnabled(true);
+				pushButtonRX3->setEnabled(true);
+			}
+			else {
+				pushButtonTX3->setEnabled(false);
+				pushButtonRX3->setEnabled(false);
+				labelAnt3->clear();
+				labelAnt3Dir->clear();
+			}
+
+			if (status.antennaFlags[3] & (1<<0)) {
+				pushButtonTX4->setEnabled(true);
+				pushButtonRX4->setEnabled(true);
+			}
+			else {
+				pushButtonTX4->setEnabled(false);
+				pushButtonRX4->setEnabled(false);
+				labelAnt4->clear();
+				labelAnt4Dir->clear();
+			}
 		}
 	}
 	else if (message.cmd == COMPUTER_COMM_REMOTE_SUBMENU_ARRAY_TEXT) {

@@ -128,5 +128,6 @@ unsigned char sequencer_ptt_active(void);
 unsigned char sequencer_get_radio_sense(void);
 
 void sequencer_lock_all(void);
+struct_ptt* sequencer_get_ptt_ptr(void);
 
 #endif

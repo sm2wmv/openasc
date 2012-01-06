@@ -108,6 +108,11 @@ private slots:
 	void lineEditRXAntennaOutputStr40MChanged(QString str);
 	void lineEditRXAntennaOutputStr30MChanged(QString str);
 	
+	void pushButtonExtE1Pressed();
+	void pushButtonExtE2Pressed();
+	void pushButtonExtE3Pressed();
+	void pushButtonExtE4Pressed();
+
 	void actionSaveTriggered();
 	void actionOpenTriggered();
 	void actionQuitTriggered();

@@ -187,4 +187,6 @@ unsigned char radio_get_ptt_status(void);
 void radio_communicaton_timeout(void);
 unsigned char radio_get_cat_enabled(void);
 
+struct_radio_settings* radio_settings_get_ptr(void);
+
 #endif

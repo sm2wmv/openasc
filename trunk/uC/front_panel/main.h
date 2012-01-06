@@ -26,7 +26,7 @@
 //#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "282\0"
+#define FIRMWARE_REV "285\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -37,11 +37,6 @@
 #define BUS_STATUS_ALLOWED_TO_SEND_BIT	0
 //! Flag to indicate that a preamble has been found in the bus
 #define BUS_STATUS_PREAMBLE_FOUND_BIT		1
-
-//! The size of the RX queue in buffers
-#define BUS_RX_QUEUE_SIZE 8
-//! The size of the TX queue in buffers
-#define BUS_TX_QUEUE_SIZE	12
 
 //! This flag is to indicate that the antenna exist
 #define ANTENNA_EXIST_FLAG		0
@@ -206,7 +201,7 @@ typedef struct {
 	//! Device is the master unit
 	unsigned char network_device_is_master;
 	//! The external keypad assignments
-	unsigned char ext_key_assignments[17];
+	unsigned char ext_key_assignments[21];
 	//! The powermeter address
 	unsigned char powermeter_address[9];	//We can have one power meter address for each band
 	//! The powermeter VSWR alarm limit (250 means 2.5:1)
@@ -342,5 +337,7 @@ void main_set_new_band(unsigned char band);
 unsigned char main_get_current_band(void);
 
 void main_process_lock(unsigned char lock_status);
+
+struct_setting* main_get_settings_ptr(void);
 
 #endif

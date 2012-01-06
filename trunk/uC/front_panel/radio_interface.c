@@ -59,6 +59,10 @@ unsigned char ptt_status = 0;
 //! \brief Variable of the radio rx data counter used for a timeout
 unsigned char radio_rx_data_counter;
 
+struct_radio_settings* radio_settings_get_ptr(void) {
+  return((struct_radio_settings*)&radio_settings);
+}
+
 /*! \brief Initialize the radio interface */
 void radio_interface_init(void) {
 	//Initialize the serial rx buffer used for the communication with the radio

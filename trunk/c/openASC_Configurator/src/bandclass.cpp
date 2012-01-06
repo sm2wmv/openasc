@@ -8,6 +8,8 @@ BandClass::BandClass() {
 		hasRotator[i] = false;
 		subMenuType[i] = 0;
 	}
+
+	antennaOutputCombAllowed[15] = true;
 }
 
 void BandClass::setIndex(int new_index) {
@@ -134,12 +136,18 @@ int BandClass::getFlagStatus(int index) {
 
 
 void BandClass::setAntennaOutputStr(int index, QString str) {
-	antennaOutputStr[index] = str;
-	antennaOutputStrLength[index] = str.length();
+	if (index < 15) {
+		antennaOutputStr[index] = str;
+		antennaOutputStrLength[index] = str.length();
+	}
 }
 
 QString BandClass::getAntennaOutputStr(int index) {
-	return(antennaOutputStr[index]);
+	if (index < 15) {
+		return(antennaOutputStr[index]);
+	}
+	else
+		return("");
 }
 
 void BandClass::setDefaultBandLimits() {
@@ -374,13 +382,16 @@ void BandClass::writeSettings(QSettings& settings) {
 
 		for (int i=0;i<15;i++){
 			settings.setArrayIndex(i);
+
 			settings.setValue("OutputStr",antennaOutputStr[i]);
 			settings.setValue("OutputStrLength",antennaOutputStrLength[i]);
 			settings.setValue("OutputCombAllowed",antennaOutputCombAllowed[i]);
 		}
 		
 		settings.endArray();
-		
+
+		settings.setValue("OutputCombAllowedNoAntenna",antennaOutputCombAllowed[15]);
+
 		settings.setValue("BandOutputStrHigh",bandOutputStrHigh);
 		settings.setValue("BandOutputStrLow",bandOutputStrLow);
 		
@@ -511,13 +522,14 @@ void BandClass::loadSettings(QSettings& settings) {
 	
 	for (int i=0;i<size;i++) {
 		settings.setArrayIndex(i);
-		
 		antennaOutputStr[i] = settings.value("OutputStr").toString();
 		antennaOutputStrLength[i] = settings.value("OutputStrLength").toInt();
 		antennaOutputCombAllowed[i] = settings.value("OutputCombAllowed").toBool();
 	}
-	
+
 	settings.endArray();
+
+	antennaOutputCombAllowed[15] = settings.value("OutputCombAllowedNoAntenna").toBool();
 
 	bandOutputStrHigh = settings.value("BandOutputStrHigh").toString();
 	bandOutputStrLow  = settings.value("BandOutputStrLow").toString();

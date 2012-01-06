@@ -59,6 +59,14 @@ unsigned char current_activated_sub_outputs[4][SUB_MENU_ARRAY_STR_SIZE];
 //! How many devices we have activated antenna outputs on
 unsigned char current_activated_sub_outputs_length[4] = {0,0,0,0};
 
+struct_sub_menu_array* sub_menu_get_array_ptr(unsigned char index) {
+  return((struct_sub_menu_array*)&current_sub_menu_array[index]);
+}
+
+struct_sub_menu_stack* sub_menu_get_stack_ptr(unsigned char index) {
+  return((struct_sub_menu_stack*)&current_sub_menu_stack[index]);
+}
+
 /*! \brief Load a set of sub menu from the EEPROM for a specific band
  *  \param band_index Which band it is for */
 void sub_menu_load(unsigned char band_index) {

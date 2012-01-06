@@ -2,7 +2,7 @@
 
 ExternalInputClass::ExternalInputClass() {
 	//Set all the buttons to have no function assigned to them at startup
-	for (int i=0;i<17;i++)
+	for (int i=0;i<21;i++)
 		buttonFunction[i] = 0;
 
 	buttonAUX1Func = 0;
@@ -15,7 +15,7 @@ void ExternalInputClass::writeSettings(QSettings& settings) {
 	settings.beginGroup("ExternalInput");
 	settings.beginWriteArray("ButtonFunction");
 
-	for (int i=0;i<17;i++){
+	for (int i=0;i<21;i++){
 		settings.setArrayIndex(i);
 		settings.setValue("buttonFunctionArray",buttonFunction[i]);
 	}
@@ -47,15 +47,15 @@ void ExternalInputClass::loadSettings(QSettings& settings) {
 }
 
 void ExternalInputClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[20];
+	unsigned char tx_buff[24];
 		
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS;
 	
-	for (int x=0;x<17;x++)
+	for (int x=0;x<21;x++)
 		tx_buff[1+x] = buttonFunction[x];
 
-	tx_buff[18] = buttonAUX1Func;
-	tx_buff[19] = buttonAUX2Func;
+	tx_buff[22] = buttonAUX1Func;
+	tx_buff[23] = buttonAUX2Func;
 
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, sizeof(tx_buff), tx_buff);
 }

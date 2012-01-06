@@ -36,7 +36,7 @@ void MainWindowImpl::listExtButtonFunctionsLoad() {
 
 		listExtButtonFunctions << "Amplifier toggle ON/OFF" << "Amplifier toggle standby" << "Amplifier tune" << "Amplifier reset";
 
-		listExtButtonFunctions << "Rotate last antenna CW" << "Rotate last antenna CCW";
+		listExtButtonFunctions << "Rotate last antenna CW" << "Rotate last antenna CCW" << "Rotator stop";
 
 		listExtButtonFunctions << "Select band portion" << "Change band up" << "Change band down";
 
@@ -314,7 +314,15 @@ void MainWindowImpl::comboBoxBandCurrentIndexChanged(int index) {
 }
 
 void MainWindowImpl::comboBoxAntennaCombinationCurrentIndexChanged(int index) {
-	lineEditAntennaOutputStr->setText(bandData[comboBoxBand->currentIndex()].getAntennaOutputStr(index));
+	if (index < 15) {
+		lineEditAntennaOutputStr->setEnabled(true);
+		lineEditAntennaOutputStr->setText(bandData[comboBoxBand->currentIndex()].getAntennaOutputStr(index));
+	}
+	else {
+		lineEditAntennaOutputStr->setEnabled(false);
+		lineEditAntennaOutputStr->clear();
+	}
+
 	checkBoxCombinationAllowed->setChecked(bandData[comboBoxBand->currentIndex()].getCombinationAllowed(comboBoxAntennaCombination->currentIndex()));
 }
 
@@ -1117,6 +1125,34 @@ void MainWindowImpl::pushButtonExtGPressed() {
 	labelExtKeyPadFunc->setText("Key G function");
 }
 
+void MainWindowImpl::pushButtonExtE1Pressed() {
+	extInput.setCurrSelectedButton(17);
+
+	comboBoxExtKeypadFunc->setCurrentIndex(extInput.getButtonFunction());
+	labelExtKeyPadFunc->setText("Key E1 function");
+}
+
+void MainWindowImpl::pushButtonExtE2Pressed() {
+	extInput.setCurrSelectedButton(18);
+
+	comboBoxExtKeypadFunc->setCurrentIndex(extInput.getButtonFunction());
+	labelExtKeyPadFunc->setText("Key E2 function");
+}
+
+void MainWindowImpl::pushButtonExtE3Pressed() {
+	extInput.setCurrSelectedButton(19);
+
+	comboBoxExtKeypadFunc->setCurrentIndex(extInput.getButtonFunction());
+	labelExtKeyPadFunc->setText("Key E3 function");
+}
+
+void MainWindowImpl::pushButtonExtE4Pressed() {
+	extInput.setCurrSelectedButton(20);
+
+	comboBoxExtKeypadFunc->setCurrentIndex(extInput.getButtonFunction());
+	labelExtKeyPadFunc->setText("Key E4 function");
+}
+
 void MainWindowImpl::comboBoxExtKeypadFuncIndexChanged(int funcIndex) {
 		extInput.setButtonFunction(funcIndex);
 }
@@ -1467,6 +1503,11 @@ void MainWindowImpl::setupConnections() {
 	connect(pushButtonExtE, SIGNAL(pressed()), this, SLOT(pushButtonExtEPressed()));
 	connect(pushButtonExtF, SIGNAL(pressed()), this, SLOT(pushButtonExtFPressed()));
 	connect(pushButtonExtG, SIGNAL(pressed()), this, SLOT(pushButtonExtGPressed()));
+
+	connect(pushButtonExtE1, SIGNAL(pressed()), this, SLOT(pushButtonExtE1Pressed()));
+	connect(pushButtonExtE2, SIGNAL(pressed()), this, SLOT(pushButtonExtE2Pressed()));
+	connect(pushButtonExtE3, SIGNAL(pressed()), this, SLOT(pushButtonExtE3Pressed()));
+	connect(pushButtonExtE4, SIGNAL(pressed()), this, SLOT(pushButtonExtE4Pressed()));
 	
 	connect(comboBoxExtKeypadFunc, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxExtKeypadFuncIndexChanged(int)));
 	
