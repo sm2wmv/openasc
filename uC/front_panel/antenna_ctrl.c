@@ -91,6 +91,10 @@ unsigned char antenna_ctrl_check_address_in_use(unsigned char addr) {
 	return(ret_val);
 }
 
+struct_rx_antennas* antenna_ctrl_get_rx_antenna_ptr(void) {
+  return((struct_rx_antennas*)&rx_antennas);
+}
+
 struct_antenna* antenna_ctrl_get_antenna_ptr(void) {
   return((struct_antenna*)&current_antennas);
 }
@@ -128,7 +132,9 @@ unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
 		result = 13;
 	else if (antenna_comb == 15) 
 		result = 14;
-		
+  else if (antenna_comb == 0)
+    result = 15;
+  
 	return(result);
 }
 
@@ -136,9 +142,9 @@ unsigned char antenna_ctrl_get_comb_value(unsigned char antenna_comb) {
  *  \param antenna_comb The antenna configuration you wish to check 
  *  \return 1 if the combination is allowed, 0 if it is not allowed */
 unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
-	if (antenna_comb == 0)
-		return(1);
-	else if (current_antennas.antenna_comb_allowed & (1<<antenna_ctrl_get_comb_value(antenna_comb))) {
+/*	if (antenna_comb == 0)
+		return(1);*/
+	if (current_antennas.antenna_comb_allowed & (1<<antenna_ctrl_get_comb_value(antenna_comb))) {
 		return(1);
 	}
 	

@@ -601,13 +601,13 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS:
-					for (unsigned char i=0;i<17;i++) {
+					for (unsigned char i=0;i<21;i++) {
 						settings_ptr->ext_key_assignments[i] = computer_comm.rx_buffer_start[i+1];
 					}
 					
 					//Set the aux button functions
-					settings_ptr->aux1_button_func = computer_comm.rx_buffer_start[18];
-					settings_ptr->aux2_button_func = computer_comm.rx_buffer_start[19];
+					settings_ptr->aux1_button_func = computer_comm.rx_buffer_start[22];
+					settings_ptr->aux2_button_func = computer_comm.rx_buffer_start[23];
 					
 					computer_interface_send_ack();
 					break;
@@ -709,41 +709,26 @@ unsigned char computer_interface_is_active(void) {
 void computer_interface_activate_setup(void) {
 	computer_comm.flags = (1<<COMPUTER_COMM_FLAG_SETUP_MODE);
 	
-	//Create dummy structures
-	antenna_ptr = (struct_antenna *)malloc(sizeof(struct_antenna));
-  //antenna_ptr = antenna_ctrl_get_antenna_ptr();
-	rx_antenna_ptr = (struct_rx_antennas *)malloc(sizeof(struct_rx_antennas));
-	band_ptr = (struct_band *)malloc(sizeof(struct_band));
-	settings_ptr = (struct_setting *)malloc(sizeof(struct_setting));
-	ptt_sequencer_ptr = (struct_ptt *)malloc(sizeof(struct_ptt));
-	radio_settings_ptr = (struct_radio_settings *)malloc(sizeof(struct_radio_settings));
-	
+  antenna_ptr = antenna_ctrl_get_antenna_ptr();
+  rx_antenna_ptr = antenna_ctrl_get_rx_antenna_ptr();
+  band_ptr = band_ctrl_get_band_ptr();
+  
+	settings_ptr = main_get_settings_ptr();
+	ptt_sequencer_ptr = sequencer_get_ptt_ptr();
+	radio_settings_ptr = radio_settings_get_ptr();
+
+  for (unsigned char i=0;i<4;i++)
+		sub_menu_array_ptr[i] = sub_menu_get_array_ptr(i);
+  
 	for (unsigned char i=0;i<4;i++)
-		sub_menu_array_ptr[i] = (struct_sub_menu_array *)malloc(sizeof(struct_sub_menu_array));
-	
-	for (unsigned char i=0;i<4;i++)
-		sub_menu_stack_ptr[i] = (struct_sub_menu_stack *)malloc(sizeof(struct_sub_menu_stack));
-	
+		sub_menu_stack_ptr[i] = sub_menu_get_stack_ptr(i);
+  
 	ptt_sequencer_ptr->ptt_input = 0;
 }
 
 /*! \brief Function which will deactivate the computer setup mode, this will clear up memory space of the allocated buffers in the computer_interface_activate_setup() function */
 void computer_interface_deactivate_setup(void) {
 	computer_comm.flags &= ~(1<<COMPUTER_COMM_FLAG_SETUP_MODE);
-	
-	free(ptt_sequencer_ptr);
-	free(antenna_ptr);
-	free(rx_antenna_ptr);
-	free(band_ptr);
-	free(radio_settings_ptr);
-	free(settings_ptr);
-	
-	for (unsigned char i=0;i<4;i++)
-		free(sub_menu_array_ptr[i]);
-	
-	for (unsigned char i=0;i<4;i++)
-		free(sub_menu_stack_ptr[i]);
-	
 }
 
 ISR(SIG_USART1_DATA) {

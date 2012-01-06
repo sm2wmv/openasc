@@ -24,7 +24,7 @@ class ExternalInputClass {
 
 	protected:
 		int currSelectedButtonIndex;
-		int buttonFunction[17];
+		int buttonFunction[21];
 		int buttonAUX1Func;
 		int buttonAUX2Func;
 };

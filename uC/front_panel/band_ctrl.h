@@ -78,5 +78,6 @@ void band_ctrl_deactivate_all(void);
 
 void band_ctrl_change_band_portion(unsigned char band_portion);
 void band_ctrl_change_band(unsigned char band);
+struct_band* band_ctrl_get_band_ptr(void);
 
 #endif

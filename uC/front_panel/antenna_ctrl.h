@@ -85,8 +85,8 @@ typedef struct {
 	 *  Bit11 = ANT 1 + ANT 2 + ANT 4
 	 *  Bit12 = ANT 1 + ANT 3 + ANT 4
 	 *  Bit13 = ANT 2 + ANT 3 + ANT 4
-	 *  Bit14 = ANT 1 + ANT 2 + ANT 3 + ANT 4
-   */
+	 *  Bit14 = ANT 1 + ANT 2 + ANT 3 + ANT 4 
+   *  Bit15 = No antenna selected */
 	unsigned int antenna_comb_allowed;
 		//! The length of the antenna output strings
 	unsigned char antenna_output_length[15];
@@ -110,6 +110,7 @@ typedef struct {
 unsigned char antenna_ctrl_check_address_in_use(unsigned char addr);
 
 struct_antenna* antenna_ctrl_get_antenna_ptr(void);
+struct_rx_antennas* antenna_ctrl_get_rx_antenna_ptr(void);
 
 void antenna_ctrl_deactivate_all_rx_band(void);
 

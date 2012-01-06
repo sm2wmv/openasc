@@ -390,7 +390,7 @@ void ps2_keyboard_send(unsigned char cmd) {
 /*! \brief Process a keystroke
  *  \param key_code The key code which was received */
 void ps2_process_key(unsigned char key_code) {
-	//printf("key_code: %i\n",key_code);
+	//printf("key_code: 0x%02X\n",key_code);
 	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 

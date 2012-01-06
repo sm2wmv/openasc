@@ -111,14 +111,16 @@
 #define EXT_CTRL_ROTATE_CW  39
 //! Ext ctrl - Rotate the last antenna counter clock wise
 #define EXT_CTRL_ROTATE_CCW 40
+//! Ext ctrl - Rotate stop
+#define EXT_CTRL_ROTATE_STOP 41
 
 //! Ext ctrl - Select band portion
-#define EXT_CTRL_SEL_BAND_PORTION 41
+#define EXT_CTRL_SEL_BAND_PORTION 42
 //! Ext ctrl - Change band up
-#define EXT_CTRL_CHANGE_BAND_UP   42
+#define EXT_CTRL_CHANGE_BAND_UP   43
 //! Ext ctrl - Change band down
-#define EXT_CTRL_CHANGE_BAND_DOWN 43
+#define EXT_CTRL_CHANGE_BAND_DOWN 44
 //! Ext ctrl - Set no RX ant
-#define EXT_CTRL_SEL_RX_NONE 44
+#define EXT_CTRL_SEL_RX_NONE 45
 
 #endif

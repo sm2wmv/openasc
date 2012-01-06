@@ -70,4 +70,7 @@ void __inline__ sub_menu_set_ptt_status(void);
 
 unsigned char sub_menu_get_combination_count(unsigned char ant_index);
 
+struct_sub_menu_stack* sub_menu_get_stack_ptr(unsigned char index);
+struct_sub_menu_array* sub_menu_get_array_ptr(unsigned char index);
+
 #endif

@@ -189,6 +189,7 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
         }
         else
           event_add_message((void *)shutdown_device,3000,0);
+        
         break;
       case INT_COMM_PS2_KEYPRESSED:
         event_handler_process_ps2(message.data[0]);
@@ -234,7 +235,7 @@ void __inline__ event_set_rx_antenna(unsigned char ant_index) {
 
 /*! \brief Process an PS2 event 
  *  \param key_code The key that was pressed */
-void event_handler_process_ps2(unsigned char key_code) {
+void __inline__ event_handler_process_ps2(unsigned char key_code) {
 	char func_index = -1;
 	
 	if (key_code == KEYPAD_BTN_0)
@@ -271,7 +272,16 @@ void event_handler_process_ps2(unsigned char key_code) {
 		func_index = 15;
 	else if (key_code == KEYPAD_BTN_G)
 		func_index = 16;
-	
+  else if (key_code == KEYPAD_BTN_E1)
+    func_index = 17;
+  else if (key_code == KEYPAD_BTN_E2)
+    func_index = 18;
+  else if (key_code == KEYPAD_BTN_E3)
+    func_index = 19;
+  else if (key_code == KEYPAD_BTN_E4)
+    func_index = 20;
+  
+  
 	unsigned char curr_task = ext_key_get_assignment(func_index);
 	event_process_task(curr_task);
 }
@@ -363,6 +373,9 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_ROTATE_CCW:
       antenna_ctrl_rotate_ccw();
+      break;
+    case EXT_CTRL_ROTATE_STOP:
+      antenna_ctrl_rotate_stop();
       break;
     case EXT_CTRL_SEL_RX_NONE:
       event_set_rx_antenna(0);

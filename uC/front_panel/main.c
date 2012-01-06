@@ -124,6 +124,10 @@ void clear_screensaver_timer(void) {
   }
 }
 
+struct_setting* main_get_settings_ptr(void) {
+  return((struct_setting *)&settings);
+}
+
 //This function is just used at startup
 void main_enable_device(void) {
   device_online = 1;
@@ -175,7 +179,7 @@ unsigned char main_get_powermeter_address(unsigned char band) {
  *  \param index The index of which task we wish to check
  *  \return The current task index, can be found in event_handler.h */
 unsigned char ext_key_get_assignment(unsigned char index) {
-	return(settings.ext_key_assignments[index]);
+  return(settings.ext_key_assignments[index]);
 }
 
 /*! Get information if a band change is OK to do
@@ -470,7 +474,7 @@ int main(void){
   //Check if this is the first time we start the device, if so we need to initiate some
 	//data structures. To force this at startup just change the value that should be read and
 	//written to the EEPROM
-	if (eeprom_read_startup_byte() != 0x01) {
+	if (eeprom_read_startup_byte() != 0x02) {
 		eeprom_create_table();
 		
 		eeprom_read_table();
@@ -488,7 +492,7 @@ int main(void){
 		//Write the settings to the EEPROM
 		eeprom_save_runtime_settings(&runtime_settings);
 		
-		eeprom_write_startup_byte(0x01);
+		eeprom_write_startup_byte(0x02);
 
 		//The first time the box is started, we need to setup the settings
 		computer_interface_activate_setup();
@@ -657,6 +661,8 @@ int main(void){
 	
   #ifdef DEBUG_COMPUTER_USART_ENABLED
     printf("openASC started in USART debug mode\n");
+    
+    computer_interface_print_size();
   #endif
   
   BUS_MESSAGE mess;

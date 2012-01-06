@@ -69,6 +69,10 @@ unsigned char band_ctrl_check_address_in_use(unsigned char addr) {
 	return(ret_val);
 }
 
+struct_band* band_ctrl_get_band_ptr(void) {
+  return((struct_band *)&current_band);
+}
+
 /*! \brief Send the output string for the current band to the bus */
 void band_ctrl_send_band_data_to_bus(unsigned char band_portion) {
 	if (status.selected_band != BAND_UNDEFINED) {

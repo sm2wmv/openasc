@@ -49,6 +49,10 @@ unsigned char sequencer_get_ptt_active(void) {
 	return(ptt_active);
 }
 
+struct_ptt* sequencer_get_ptt_ptr(void) {
+  return((struct_ptt *)&ptt_sequencer);
+}
+
 /*! \brief This function will load data from the eeprom to the ptt_sequencer struct */
 void sequencer_load_eeprom(void) {
 	eeprom_get_ptt_data(&ptt_sequencer);
