@@ -196,6 +196,10 @@ typedef struct {
 	unsigned int count;
 } computer_comm_struct;
 
+
+//! Address which we call when we wish to reboot the device (jumps to the bootloader area)
+static void (*bootloader_start)(void) = (void *)0x1FE00;
+
 //! Computer communication structure
 computer_comm_struct computer_comm;
 
@@ -221,9 +225,6 @@ struct_radio_settings *radio_settings_ptr;
 struct_sub_menu_array *sub_menu_array_ptr[4];
 	
 struct_sub_menu_stack *sub_menu_stack_ptr[4];
-
-//! Address which we call when we wish to reboot the device (jumps to the bootloader area)
-void (*bootloader_start)(void) = (void *)0x1FE00;
 
 //! \brief Initialize the communication interface towards the computer. Will initialize buffers etc.
 void computer_interface_init(void) {

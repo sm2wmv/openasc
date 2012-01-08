@@ -666,7 +666,7 @@ int main(void){
   #endif
   
   BUS_MESSAGE mess;
-    
+  
 	while(1) {
     if (bus_check_rx_status(&mess)) {
       event_bus_parse_message(mess);
@@ -691,13 +691,13 @@ int main(void){
 				}
 			}
 			
-		//Poll the buttons
+      //Poll the buttons
 			if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
 				event_poll_buttons();
 				main_flags &= ~(1<<FLAG_POLL_BUTTONS);
 			}
 		
-		//Poll the external devices, such as footswitch, radio sense etc
+      //Poll the external devices, such as footswitch, radio sense etc
 			if (main_flags & (1<<FLAG_POLL_EXT_DEVICES)) {
 				event_poll_ext_device();
 				main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
@@ -774,7 +774,7 @@ int main(void){
 			}
 
 			if (bus_allowed_to_send()) {
-			//Check if a ping message should be sent out on the bus
+        //Check if a ping message should be sent out on the bus
 				if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
 					send_ping();
 					

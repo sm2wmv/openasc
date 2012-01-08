@@ -36,5 +36,6 @@
 #define COMPUTER_COMM_REMOTE_CLEAR_ERRORS          0xAC
 #define COMPUTER_COMM_REMOTE_PTT_STATUS            0xAD
 #define COMPUTER_COMM_SET_SUBMENU_OPTION           0xAE
+#define COMPUTER_COMM_REBOOT                       0xAF
 
 #endif
