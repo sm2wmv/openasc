@@ -483,6 +483,14 @@ void MainWindowImpl::pushButtonSubMenuArray2Clicked() {
 	}
 }
 
+void MainWindowImpl::actionRebootTriggered() {
+	if (serial->isOpen()) {
+		serial->addTXMessage(COMPUTER_COMM_REBOOT);
+		QTimer::singleShot(1000, this, SLOT(actionDisconnectTriggered()));
+		QTimer::singleShot(5000, this, SLOT(actionConnectTriggered()));
+	}
+}
+
 void MainWindowImpl::pushButtonSubMenuArray3Clicked() {
 	if (serial->isOpen())	{
 		char data[2] = {0,2};
@@ -535,6 +543,7 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	timerPollStatus = new QTimer(this);
 	connect(timerPollStatus, SIGNAL(timeout()), this, SLOT(timerPollStatusUpdate()));
 
+	connect(actionReboot, SIGNAL(triggered()), this, SLOT(actionRebootTriggered()));
 	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));
 	connect(actionWindowsRotators, SIGNAL(triggered()), this, SLOT(WindowRotatorsTriggered()));
 	connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
