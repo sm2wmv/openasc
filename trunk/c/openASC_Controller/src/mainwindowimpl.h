@@ -64,6 +64,7 @@ private:
 protected:
 private slots:
 public slots:
+		void actionRebootTriggered();
 		void WindowRotatorsTriggered();
 		void actionConnectTriggered();
 		void actionDisconnectTriggered();

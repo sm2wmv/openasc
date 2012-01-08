@@ -361,7 +361,7 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>345</width>
+          <width>356</width>
           <height>120</height>
          </rect>
         </property>
@@ -1156,6 +1156,7 @@
     <property name="title">
      <string>Commands</string>
     </property>
+    <addaction name="actionReboot"/>
    </widget>
    <addaction name="menuNetwork"/>
    <addaction name="menuSettings"/>
@@ -1209,6 +1210,11 @@
   <action name="actionErrorDialog">
    <property name="text">
     <string>Errors</string>
+   </property>
+  </action>
+  <action name="actionReboot">
+   <property name="text">
+    <string>Reboot</string>
    </property>
   </action>
  </widget>
