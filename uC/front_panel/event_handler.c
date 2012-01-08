@@ -156,6 +156,7 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
           remote_control_set_update_band_info();
         
         display_handler_repaint();
+        break;
       case COMPUTER_COMM_REBOOT:
         led_set_error(LED_STATE_ON);
         bootloader_start();
