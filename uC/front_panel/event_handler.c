@@ -62,6 +62,8 @@
 
 CREATE_CRITICAL_LIST();
 
+static void (*bootloader_start)(void) = (void *)0x1FE00;
+
 unsigned char parse_uc_cmd = 0;
 
 extern unsigned int main_flags;
@@ -154,6 +156,10 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
           remote_control_set_update_band_info();
         
         display_handler_repaint();
+      case COMPUTER_COMM_REBOOT:
+        led_set_error(LED_STATE_ON);
+        bootloader_start();
+        break;
       default:
         break;
     }

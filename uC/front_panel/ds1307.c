@@ -34,14 +34,12 @@
 #include "main.h"
 
 //! Flag which is set to 1 if a read request is allowed to the ds1307
-unsigned char allowed_to_read = 0;
+volatile unsigned char allowed_to_read = 0;
 //! Variable which contains information of the current time/date
-unsigned char *time_data;
+static unsigned char time_data[9];
 
 /*! \brief Initialize the realtime clock on the front panel */
 void ds1307_init(void) {
-	time_data = malloc(9);
-	
 /*	*(time_data+0) = 0x00;
 	*(time_data+1) = *time_data & 0x7F;	// enable oscillator (bit 7=0)
   *(time_data+2) = 0x28;	// minute = 59
@@ -107,7 +105,8 @@ void ds1307_set_time(char *data) {
 unsigned char ds1307_get_hours(void) {
 	unsigned char temp = *(time_data+2) & 0x0F;
 	temp += ((*(time_data+2) & 0x30)>>4)*10;
-	return(temp);
+	
+  return(temp);
 }
 
 /*! \brief Retrieve the minute part of the time from the realtime clock 
@@ -115,7 +114,8 @@ unsigned char ds1307_get_hours(void) {
 unsigned char ds1307_get_minutes(void) {
 	unsigned char temp = *(time_data+1) & 0x0F;
 	temp += ((*(time_data+1) & 0x70)>>4)*10;
-	return(temp);
+	
+  return(temp);
 }
 
 /*! \brief Retrieve the seconds part of the time from the realtime clock 
@@ -123,7 +123,8 @@ unsigned char ds1307_get_minutes(void) {
 unsigned char ds1307_get_seconds(void) {
 	unsigned char temp = *(time_data+0) & 0x0F;
 	temp += ((*(time_data+0) & 0x70)>>4)*10;
-	return(temp);
+	
+  return(temp);
 }
 
 /*! \brief Read the current time/date from the realtime clock. Stores the data and can be retrieved with the get functions in this file */

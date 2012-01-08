@@ -39,10 +39,10 @@
 
 display_handler_status_struct display_handler_status;
 
-char power_temp_str[7];
+static char power_temp_str[7];
 
 //! Memory area used for printing variables to the display
-char *temp_ptr = NULL;
+static char temp_time_ptr[9];
 
 //! The last forward value, used for the power meter bargraph update
 unsigned char prev_fwd_val = 0;
@@ -56,8 +56,7 @@ unsigned char display_handler_screensaver_mode(void) {
   return(display_handler_status.screensaver_mode);
 }
 
-/*! \brief Set the mode of the screensaver to disabled
- */
+/*! \brief Set the mode of the screensaver to disabled */
 void display_handler_disable_screensaver(void) {
   display_handler_status.screensaver_mode = 0;
   
@@ -75,16 +74,12 @@ void display_handler_enable_screensaver(void) {
 /*! \brief Updates the screensaver which consist of a clock */
 void display_handler_update_screensaver(void) {
   if (display_handler_status.screensaver_mode == 1) {
-    //If the temp_ptr hasn't been initialized then we need to allocate the memory for it
-    if (temp_ptr == NULL)
-      temp_ptr = (char *)malloc(9);
-  
     ds1307_read();
   
-    sprintf((char *)temp_ptr,"%02i:%02i:%02i",ds1307_get_hours(),ds1307_get_minutes(),ds1307_get_seconds());
+    sprintf((char *)temp_time_ptr,"%02i:%02i:%02i",ds1307_get_hours(),ds1307_get_minutes(),ds1307_get_seconds());
   
     glcd_clear();
-    glcd_text(8, 23, FONT_EIGHTEEN_DOT,temp_ptr,strlen(temp_ptr));
+    glcd_text(8, 23, FONT_EIGHTEEN_DOT,temp_time_ptr,strlen(temp_time_ptr));
     glcd_update_all();
     
     event_add_message((void*)display_handler_update_screensaver, 980, 0);

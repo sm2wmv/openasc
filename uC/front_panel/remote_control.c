@@ -288,7 +288,7 @@ void remote_control_send_rx_ant_info(unsigned char ant_index) {
     //Send the RX antenna names to the motherboard and the current band information
     temp_str[0] = ant_index;
     temp_str[1] = antenna_ctrl_get_rx_antenna_name_length(ant_index);
-      
+
     strcpy((char *)(temp_str+2),antenna_ctrl_get_rx_antenna_name(ant_index));
       
     internal_comm_add_tx_message(INT_COMM_REMOTE_RXANT_TEXT,sizeof(temp_str),temp_str);

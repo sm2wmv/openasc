@@ -430,6 +430,9 @@ void parse_computer_comm_message(struct_comm_interface_msg message) {
     if (message.length > 0)
       internal_comm_add_tx_message(COMPUTER_COMM_SET_SUBMENU_OPTION,2,message.data);
   }
+  else if (message.cmd == COMPUTER_COMM_REBOOT) {
+    internal_comm_add_tx_message(COMPUTER_COMM_REBOOT,0,0);
+  }
 }
 
 void main_resend_timeout(void) {
