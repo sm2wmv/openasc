@@ -206,6 +206,19 @@ private slots:
 	void comboBoxAntennaRotator2IndexChanged(int newIndex);
 	void comboBoxAntennaRotator3IndexChanged(int newIndex);
 	void comboBoxAntennaRotator4IndexChanged(int newIndex);
+	void comboBoxLEDAUXIndexChanged(int funcIndex);
+
+	/* Amplifier functions */
+	void groupBoxAmplifierControlClicked(bool state);
+	void spinBoxAmplifierAddressValueChanged(int value);
+	void spinBoxAmplifierSubAddressValueChanged(int value);
+	void spinBoxAmplifierSegCountValueChanged(int value);
+
+	void checkBoxAmplifierPowerControlClicked(bool state);
+	void checkBoxAmplifierStandbyControlClicked(bool state);
+	void checkBoxAmplifierTuneClicked(bool state);
+	void checkBoxAmplifierBandControlClicked(bool state);
+	void checkBoxAmplifierResetClicked(bool state);
 public slots:
  
 };

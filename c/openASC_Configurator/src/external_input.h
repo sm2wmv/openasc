@@ -27,6 +27,7 @@ class ExternalInputClass {
 		int buttonFunction[21];
 		int buttonAUX1Func;
 		int buttonAUX2Func;
+		int LEDAUXFunc;
 };
 
 #endif // __EXTERNAL_INPUTCLASS_H__

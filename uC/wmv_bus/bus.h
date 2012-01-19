@@ -327,18 +327,18 @@ typedef struct {
 } bus_status_struct;
 
 
-void disable_bus_interrupt(void);
-void enable_bus_interrupt(void);
+void __inline__ disable_bus_interrupt(void);
+void __inline__ enable_bus_interrupt(void);
 
 void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 void bus_add_rx_message(unsigned char from_addr, unsigned char to_addr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 void bus_set_address(unsigned char addr);
 unsigned char bus_get_address(void);
 void bus_init(void);
-void  bus_resend_message(void);
+void __inline__ bus_resend_message(void);
 
-void bus_send_ack(unsigned char to_addr);
-void bus_send_nack(unsigned char to_addr, unsigned char error_type);
+void  __inline__ bus_send_ack(unsigned char to_addr);
+void  __inline__ bus_send_nack(unsigned char to_addr, unsigned char error_type);
 
 void bus_message_acked(unsigned char addr);
 void bus_message_nacked(unsigned char addr, unsigned char error_type);
