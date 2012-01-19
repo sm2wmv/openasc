@@ -31,6 +31,16 @@ class SettingsClass {
 		void setPowerMeterTextView(int value);
 		void setPTTInterlockInput(unsigned char);
 		unsigned char getPTTInterlockInput(void);
+		bool getAmpFuncStatus(unsigned char index);
+		void setAmpFuncStatus(unsigned char index, bool state);
+		void setAmpControlEnabled(bool state);
+		bool getAmpControlEnabled();
+		void setAmpAddr(unsigned char addr);
+		void setAmpSubAddr(unsigned char addr);
+		unsigned char getAmpAddr();
+		unsigned char getAmpSubAddr();
+		unsigned char getAmpBandSegmentCount();
+		void setAmpBandSegmentCount(unsigned char segments);
 	private:
 		int networkAddress;
 		bool deviceIsMaster;
@@ -40,6 +50,11 @@ class SettingsClass {
 		unsigned int powerMeterUpdateRateText;
 		unsigned int powerMeterUpdateRateBargraph;
 		unsigned char pttInterlockInput; //0 = disabled, 1-7 -> ptt inputs
+		bool ampControlEnabled;
+		unsigned char ampAddr;
+		unsigned char ampSubAddr;
+		unsigned int ampFuncStatus;
+		unsigned char ampBandSegmentCount;
 	protected:
 };
 

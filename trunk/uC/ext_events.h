@@ -122,5 +122,17 @@
 #define EXT_CTRL_CHANGE_BAND_DOWN 44
 //! Ext ctrl - Set no RX ant
 #define EXT_CTRL_SEL_RX_NONE 45
+//! Ext ctrl - Set amplifier band segment 1
+#define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_1  46
+//! Ext ctrl - Set amplifier band segment 2
+#define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_2  47
+//! Ext ctrl - Set amplifier band segment 3
+#define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_3  48
+//! Ext ctrl - Set amplifier band segment 4
+#define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_4  49
+//! Ext ctrl - Set amplifier band segment 5
+#define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_5  50
+//! Ext ctrl - Set amplifier band segment 6
+#define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_6  51
 
 #endif

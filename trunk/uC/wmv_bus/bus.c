@@ -204,7 +204,9 @@ void bus_send_message(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_RECEIVE_ON);
 
 	BUS_MESSAGE bus_message;
+  disable_bus_interrupt();
   queue_get_first_bus_tx(&bus_message);
+  enable_bus_interrupt();
   
 
 	#ifndef DEVICE_TYPE_COMPUTER
@@ -231,7 +233,11 @@ void bus_send_message(void) {
 		bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 		
     bus_del_from_critical_list(bus_message.cmd);
+    
+    disable_bus_interrupt();
     queue_drop_bus_tx();
+    enable_bus_interrupt();
+    
 		bus_reset_tx_status();
 	}
 	else {
@@ -304,13 +310,13 @@ void bus_set_is_master(unsigned char state, unsigned char count) {
 /*! \brief Send an NOT acknowledge 
  *  \param to_addr Which address we wish to send the nack to
  *  \param error_type Why was the message nacked, see bus.h for more information about BUS errors */
-void bus_send_nack(unsigned char to_addr, unsigned char error_type) {
+void __inline__ bus_send_nack(unsigned char to_addr, unsigned char error_type) {
 	if (to_addr != BUS_BROADCAST_ADDR)
 		bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_NACK, 1, &error_type);
 }
 
 /*! \brief Send an acknowledge */
-void bus_send_ack(unsigned char to_addr) {
+void __inline__ bus_send_ack(unsigned char to_addr) {
 	bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_ACK, 0, NULL);
 }
 
@@ -329,7 +335,7 @@ void bus_set_device_count(unsigned char device_count) {
 }
 
 /*! \brief Resend the last message */
-void  bus_resend_message(void) {
+void __inline__ bus_resend_message(void) {
 	if (bus_status.send_count < BUS_MAX_RESENDS) {
 		bus_status.flags |= (1<<BUS_STATUS_SEND_MESSAGE);
 	}
@@ -340,11 +346,16 @@ void  bus_resend_message(void) {
 		#endif
 			
     BUS_MESSAGE bus_message;
+    disable_bus_interrupt();
     queue_get_first_bus_tx(&bus_message);
+    enable_bus_interrupt();
     
 		bus_del_from_critical_list(bus_message.cmd);
     
+    disable_bus_interrupt();
     queue_drop_bus_tx();
+    enable_bus_interrupt();
+    
 		bus_reset_tx_status();
 	}
 }
@@ -372,7 +383,6 @@ void bus_check_tx_status(void) {
 
 unsigned char bus_check_rx_status(BUS_MESSAGE* message) {
   if (!queue_is_empty_bus_rx()) {
-    
     disable_bus_interrupt();
     queue_dequeue_bus_rx(message);
     enable_bus_interrupt();
@@ -415,7 +425,10 @@ void bus_add_tx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		bus_message.checksum = checksum;
 
     bus_add_to_critical_list(bus_message.cmd);
+    
+    disable_bus_interrupt();
 		queue_enqueue_bus_tx(&bus_message);
+    enable_bus_interrupt();
     
     #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
       main_update_critical_list();
@@ -443,7 +456,9 @@ void bus_add_rx_message(unsigned char from_addr, unsigned char to_addr, unsigned
 		bus_message.data[i] = data[i];
 	}
 
+  disable_bus_interrupt();
 	queue_enqueue_bus_rx(&bus_message);
+  enable_bus_interrupt();
 }
 
 /*! \brief Returns if there is a critical command in the queue
@@ -458,7 +473,9 @@ unsigned char bus_check_critical_cmd_state(void) {
 
 /*! \brief Adds the message bus_new_message into the RX queue */
 void static __inline__ bus_add_new_message(void) {
+  disable_bus_interrupt();
   queue_enqueue_bus_rx(&bus_new_message);
+  enable_bus_interrupt();
 }
 
 /*! \brief The message last sent was NACKED from the receiver
@@ -468,7 +485,10 @@ void bus_message_nacked(unsigned char addr, unsigned char error_type) {
 	bus_status.flags &= ~(1<<BUS_STATUS_MESSAGE_ACK_TIMEOUT);
 
 	BUS_MESSAGE bus_message;
+  
+  disable_bus_interrupt();
   queue_get_first_bus_tx(&bus_message);
+  enable_bus_interrupt();
 	
 	//We need to make sure that this NACK was actually from the address we expected
 	//Otherwise there is a risk that another device which has gotten corrupted information
@@ -480,7 +500,10 @@ void bus_message_nacked(unsigned char addr, unsigned char error_type) {
 /*! \brief The message last sent was acknowledged from the receiver */
 void bus_message_acked(unsigned char addr) {
 	BUS_MESSAGE bus_message;
+  
+  disable_bus_interrupt();
   queue_get_first_bus_tx(&bus_message);
+  enable_bus_interrupt();
 	
 	//We need to make sure that this ACK was actually from the address we expected
 	//Otherwise there is a risk that another device which has gotten corrupted information
@@ -490,12 +513,15 @@ void bus_message_acked(unsigned char addr) {
 
     bus_del_from_critical_list(bus_message.cmd);
     
-		queue_drop_bus_tx();
+		disable_bus_interrupt();
+    queue_drop_bus_tx();
+    enable_bus_interrupt();
+    
 		bus_reset_tx_status();
 	}
 }
 
-void disable_bus_interrupt(void) {
+void __inline__ disable_bus_interrupt(void) {
   #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
     UCSR2B &= ~(1<<RXCIE2);
   #endif
@@ -529,7 +555,7 @@ void disable_bus_interrupt(void) {
   #endif
 }
 
-void enable_bus_interrupt(void) {
+void __inline__ enable_bus_interrupt(void) {
   #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
     UCSR2B |= (1<<RXCIE2);
   #endif
@@ -735,6 +761,7 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 		
 		//Drops all current messages in the TX queue
 		queue_drop_all_bus_tx();
+    
     bus_del_all_critical_list();
 
 		counter_sync_timeout = 0;

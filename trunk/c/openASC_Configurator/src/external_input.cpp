@@ -7,6 +7,7 @@ ExternalInputClass::ExternalInputClass() {
 
 	buttonAUX1Func = 0;
 	buttonAUX2Func = 0;
+	LEDAUXFunc = 0;
 
 	currSelectedButtonIndex = 10;
 }
@@ -24,6 +25,7 @@ void ExternalInputClass::writeSettings(QSettings& settings) {
 
 	settings.setValue("buttonAUX1Func",buttonAUX1Func);
 	settings.setValue("buttonAUX2Func",buttonAUX2Func);
+	settings.setValue("LEDAUXFunc",LEDAUXFunc);
 
 	settings.endGroup();
 }
@@ -42,12 +44,13 @@ void ExternalInputClass::loadSettings(QSettings& settings) {
 
 	buttonAUX1Func = settings.value("buttonAUX1Func").toInt();
 	buttonAUX2Func = settings.value("buttonAUX2Func").toInt();
+	LEDAUXFunc = settings.value("LEDAUXFunc").toInt();
 
 	settings.endGroup();
 }
 
 void ExternalInputClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[24];
+	unsigned char tx_buff[25];
 		
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS;
 	
@@ -56,6 +59,7 @@ void ExternalInputClass::sendSettings(CommClass& serialPort) {
 
 	tx_buff[22] = buttonAUX1Func;
 	tx_buff[23] = buttonAUX2Func;
+	tx_buff[24] = LEDAUXFunc;
 
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, sizeof(tx_buff), tx_buff);
 }
@@ -80,7 +84,9 @@ void ExternalInputClass::setAUXFunc(unsigned char index, unsigned char funcIndex
 	if (index == 1)
 		buttonAUX1Func = funcIndex;
 	else if (index == 2)
-			buttonAUX2Func = funcIndex;
+		buttonAUX2Func = funcIndex;
+	else if (index == 3)
+		LEDAUXFunc = funcIndex;
 }
 
 int ExternalInputClass::getAUXFunc(unsigned char index) {
@@ -88,6 +94,8 @@ int ExternalInputClass::getAUXFunc(unsigned char index) {
 		return(buttonAUX1Func);
 	else if (index == 2)
 		return(buttonAUX2Func);
+	else if (index == 3)
+		return(LEDAUXFunc);
 
 	return(0);
 }

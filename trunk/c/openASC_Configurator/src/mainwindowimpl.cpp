@@ -38,7 +38,14 @@ void MainWindowImpl::listExtButtonFunctionsLoad() {
 
 		listExtButtonFunctions << "Rotate last antenna CW" << "Rotate last antenna CCW" << "Rotator stop";
 
-		listExtButtonFunctions << "Select band portion" << "Change band up" << "Change band down";
+		listExtButtonFunctions << "Select band portion" << "Change band up" << "Change band down" << "Set RX Ant none";
+
+		listExtButtonFunctions << "Amplifier set band segment 1";
+		listExtButtonFunctions << "Amplifier set band segment 2";
+		listExtButtonFunctions << "Amplifier set band segment 3";
+		listExtButtonFunctions << "Amplifier set band segment 4";
+		listExtButtonFunctions << "Amplifier set band segment 5";
+		listExtButtonFunctions << "Amplifier set band segment 6";
 
 		comboBoxExtKeypadFunc->addItems(listExtButtonFunctions);
 		comboBoxButtonAUX1->addItems(listExtButtonFunctions);
@@ -177,8 +184,21 @@ void MainWindowImpl::loadInitialGUIValues() {
 
 	comboBoxButtonAUX1->setCurrentIndex(extInput.getAUXFunc(1));
 	comboBoxButtonAUX2->setCurrentIndex(extInput.getAUXFunc(2));
+	comboBoxLEDAUX->setCurrentIndex(extInput.getAUXFunc(3));
 
 	comboBoxRotatorsReload();
+
+	/* Load amplifier information */
+	groupBoxAmplifierControl->setChecked(settingsClass.getAmpControlEnabled());
+	spinBoxAmplifierAddress->setValue(settingsClass.getAmpAddr());
+	spinBoxAmplifierSubAddress->setValue(settingsClass.getAmpSubAddr());
+	spinBoxAmplifierSegCount->setValue(settingsClass.getAmpBandSegmentCount());
+
+	checkBoxAmplifierPowerControl->setChecked(settingsClass.getAmpFuncStatus(0));
+	checkBoxAmplifierStandbyControl->setChecked(settingsClass.getAmpFuncStatus(1));
+	checkBoxAmplifierBandControl->setChecked(settingsClass.getAmpFuncStatus(2));
+	checkBoxAmplifierReset->setChecked(settingsClass.getAmpFuncStatus(3));
+	checkBoxAmplifierTune->setChecked(settingsClass.getAmpFuncStatus(4));
 }
 
 void MainWindowImpl::pushButtonDefaultBandLimitsPressed() {
@@ -1360,6 +1380,10 @@ void MainWindowImpl::comboBoxButtonAUX2IndexChanged(int funcIndex) {
 	extInput.setAUXFunc(2,funcIndex);
 }
 
+void MainWindowImpl::comboBoxLEDAUXIndexChanged(int funcIndex) {
+	extInput.setAUXFunc(3,funcIndex);
+}
+
 void MainWindowImpl::checkBoxPowerMeterAllBandsClicked(bool state) {
 	if (state == true) {
 		settingsClass.setPowerMeterAddress(99,spinBoxPowerMeterAddress->value());
@@ -1368,6 +1392,42 @@ void MainWindowImpl::checkBoxPowerMeterAllBandsClicked(bool state) {
 
 void MainWindowImpl::comboBoxPowerMeterBandChanged(int index) {
 	spinBoxPowerMeterAddress->setValue(settingsClass.getPowerMeterAddress(index));
+}
+
+void MainWindowImpl::groupBoxAmplifierControlClicked(bool state) {
+	settingsClass.setAmpControlEnabled(state);
+}
+
+void MainWindowImpl::spinBoxAmplifierAddressValueChanged(int value) {
+	settingsClass.setAmpAddr(value);
+}
+
+void MainWindowImpl::spinBoxAmplifierSubAddressValueChanged(int value) {
+	settingsClass.setAmpSubAddr(value);
+}
+
+void MainWindowImpl::spinBoxAmplifierSegCountValueChanged(int value) {
+	settingsClass.setAmpBandSegmentCount(value);
+}
+
+void MainWindowImpl::checkBoxAmplifierPowerControlClicked(bool state) {
+	settingsClass.setAmpFuncStatus(0,state);
+}
+
+void MainWindowImpl::checkBoxAmplifierStandbyControlClicked(bool state) {
+	settingsClass.setAmpFuncStatus(1,state);
+}
+
+void MainWindowImpl::checkBoxAmplifierBandControlClicked(bool state) {
+	settingsClass.setAmpFuncStatus(2,state);
+}
+
+void MainWindowImpl::checkBoxAmplifierResetClicked(bool state) {
+	settingsClass.setAmpFuncStatus(3,state);
+}
+
+void MainWindowImpl::checkBoxAmplifierTuneClicked(bool state) {
+	settingsClass.setAmpFuncStatus(4,state);
 }
 
 void MainWindowImpl::setupConnections() {
@@ -1513,6 +1573,7 @@ void MainWindowImpl::setupConnections() {
 	
 	connect(comboBoxButtonAUX1, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxButtonAUX1IndexChanged(int)));
 	connect(comboBoxButtonAUX2, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxButtonAUX2IndexChanged(int)));
+	connect(comboBoxLEDAUX,SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxLEDAUXIndexChanged(int)));
 
 	connect(spinBoxNetworkAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxNetworkAddressValueChanged(int)));
 	connect(checkBoxNetworkIsMaster, SIGNAL(clicked(bool)), this, SLOT(checkBoxNetworkIsMasterClicked(bool)));
@@ -1544,6 +1605,17 @@ void MainWindowImpl::setupConnections() {
 	connect(comboBoxAntennaRotator2, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAntennaRotator2IndexChanged(int)));
 	connect(comboBoxAntennaRotator3, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAntennaRotator3IndexChanged(int)));
 	connect(comboBoxAntennaRotator4, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAntennaRotator4IndexChanged(int)));
+
+	/* Amplifier control */
+	connect(groupBoxAmplifierControl, SIGNAL(clicked(bool)), this, SLOT(groupBoxAmplifierControlClicked(bool)));
+	connect(spinBoxAmplifierAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxAmplifierAddressValueChanged(int)));
+	connect(spinBoxAmplifierSubAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxAmplifierSubAddressValueChanged(int)));
+	connect(spinBoxAmplifierSegCount, SIGNAL(valueChanged(int)), this, SLOT(spinBoxAmplifierSegCountValueChanged(int)));
+	connect(checkBoxAmplifierPowerControl, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierPowerControlClicked(bool)));
+	connect(checkBoxAmplifierStandbyControl, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierStandbyControlClicked(bool)));
+	connect(checkBoxAmplifierTune, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierTuneClicked(bool)));
+	connect(checkBoxAmplifierBandControl, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierBandControlClicked(bool)));
+	connect(checkBoxAmplifierReset, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierResetClicked(bool)));
 }
 
 void MainWindowImpl::showInformationDialog(QString caption, QString text) {
@@ -1552,6 +1624,8 @@ void MainWindowImpl::showInformationDialog(QString caption, QString text) {
 
 MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
 	setupUi(this);
+
+	tabWidgetSettings->setCurrentIndex(0);
 
 	listExtButtonFunctionsLoad();
 

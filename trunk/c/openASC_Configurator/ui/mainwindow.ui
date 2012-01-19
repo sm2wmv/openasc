@@ -48,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -2831,7 +2831,7 @@ a function to it</string>
           <string>Use led for PTT</string>
          </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -3398,7 +3398,7 @@ a function to it</string>
          <rect>
           <x>255</x>
           <y>5</y>
-          <width>191</width>
+          <width>286</width>
           <height>291</height>
          </rect>
         </property>
@@ -3414,8 +3414,8 @@ a function to it</string>
         <widget class="QCheckBox" name="checkBoxAmplifierPowerControl">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>90</y>
+           <x>15</x>
+           <y>140</y>
            <width>106</width>
            <height>21</height>
           </rect>
@@ -3427,21 +3427,21 @@ a function to it</string>
         <widget class="QCheckBox" name="checkBoxAmplifierStandbyControl">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>110</y>
-           <width>106</width>
+           <x>15</x>
+           <y>160</y>
+           <width>126</width>
            <height>21</height>
           </rect>
          </property>
          <property name="text">
-          <string>Standby</string>
+          <string>Operate/Standby</string>
          </property>
         </widget>
         <widget class="QCheckBox" name="checkBoxAmplifierBandControl">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>130</y>
+           <x>15</x>
+           <y>180</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -3453,8 +3453,8 @@ a function to it</string>
         <widget class="QCheckBox" name="checkBoxAmplifierReset">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>150</y>
+           <x>15</x>
+           <y>200</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -3463,18 +3463,59 @@ a function to it</string>
           <string>Amplifier reset</string>
          </property>
         </widget>
-        <widget class="QWidget" name="layoutWidget">
+        <widget class="QCheckBox" name="checkBoxAmplifierTune">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>220</y>
+           <width>101</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Tune button</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="labelAmplifierAddress_2">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>25</y>
-           <width>184</width>
-           <height>58</height>
+           <y>120</y>
+           <width>141</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Functions available</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>13</x>
+           <y>28</y>
+           <width>263</width>
+           <height>86</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_16">
           <item row="0" column="0">
            <widget class="QLabel" name="labelAmplifierAddress">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>90</height>
+             </size>
+            </property>
             <property name="text">
              <string>Address:</string>
             </property>
@@ -3486,25 +3527,31 @@ a function to it</string>
           <item row="0" column="1">
            <widget class="QSpinBox" name="spinBoxAmplifierAddress">
             <property name="minimum">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="maximum">
              <number>255</number>
             </property>
             <property name="value">
-             <number>1</number>
+             <number>0</number>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
            <widget class="QLabel" name="labelAmplifierAddressDec">
             <property name="text">
-             <string>(dec)</string>
+             <string>(dec, 0 = disabled)</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="labelAmplifierSubAddress">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Sub address:</string>
             </property>
@@ -3533,6 +3580,48 @@ a function to it</string>
             </property>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelAmplifierBandSegments">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Band segments</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxAmplifierSegCount">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>6</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="labelAmplifierBandSegments2">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </widget>
@@ -3542,7 +3631,7 @@ a function to it</string>
           <x>255</x>
           <y>300</y>
           <width>246</width>
-          <height>116</height>
+          <height>136</height>
          </rect>
         </property>
         <property name="title">
@@ -3552,7 +3641,7 @@ a function to it</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>30</y>
+           <y>20</y>
            <width>52</width>
            <height>15</height>
           </rect>
@@ -3561,13 +3650,13 @@ a function to it</string>
           <string>Buttons</string>
          </property>
         </widget>
-        <widget class="QWidget" name="layoutWidget">
+        <widget class="QWidget" name="">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>45</y>
-           <width>227</width>
-           <height>56</height>
+           <y>36</y>
+           <width>225</width>
+           <height>86</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
@@ -3575,6 +3664,9 @@ a function to it</string>
            <widget class="QLabel" name="labelButtonAUX1">
             <property name="text">
              <string>AUX 1:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -3593,6 +3685,9 @@ a function to it</string>
             <property name="text">
              <string>AUX 2:</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="1" column="1">
@@ -3603,6 +3698,51 @@ a function to it</string>
               <height>0</height>
              </size>
             </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelLEDAUX">
+            <property name="text">
+             <string>LED:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="comboBoxLEDAUX">
+            <property name="minimumSize">
+             <size>
+              <width>180</width>
+              <height>0</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Remote control status</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Amplifier mains status</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Amplifier opr/stby status</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Amplifier tune status</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>

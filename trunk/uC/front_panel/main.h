@@ -26,7 +26,7 @@
 //#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "287\0"
+#define FIRMWARE_REV "289\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -62,6 +62,9 @@
 //! Band changes are done automatically
 #define BAND_CHANGE_MODE_AUTO			1
 
+/*! This is the delay that is inserted after a critical command has happened, for example
+    the time after an antenna change until the PTT is unlocked. This is so that we are sure
+    that relays etc has had enough time to actually switch */
 #define CRITICAL_CMD_CHANGE_TAIL_TIME 50
 
 /****************************************************************/
@@ -178,6 +181,18 @@
 //! Tick interval for the display handler update routine (in ms)
 #define DISPLAY_HANDLER_TICK_INTERVAL   10
 
+/*! Amplifier functions */
+//! The mains can be turned on/off
+#define AMP_MAINS_ON_OFF_ENABLED    0
+//! The amp can be set into operate/standby
+#define AMP_OPR_STBY_ENABLED        1
+//! The amp has got automatic band control
+#define AMP_AUTO_BAND_CTRL_ENABLED  2
+//! The amp has got an amplifier reset function
+#define AMP_RESET_ENABLED           3
+//! The amplifier need to have a TUNE button pushed before changing band
+#define AMP_TUNE_ENABLED            4
+
 /****************************************************************/
 
 //! Different inhibit states
@@ -220,6 +235,18 @@ typedef struct {
 	unsigned char aux1_button_func;
 	//! AUX2 button function, same kind of function indexes as the external key assignments
 	unsigned char aux2_button_func;
+  //! The function of the AUX LED
+  unsigned char aux_led_func;
+  //! The amplifier ctrl enabled/disabled
+  unsigned char amp_ctrl_enabled;
+  //! The amplifier address, if its set to 0 it means the amp control function is disabled
+  unsigned char amp_addr;
+  //! The amplifier sub address
+  unsigned char amp_sub_addr;
+  //! The amplifier configuration functions, see AMP_ defines above
+  unsigned int amp_func_conf;
+  //! The number of band segments the amplifier has got per band
+  unsigned char amp_band_seg_count;
 } struct_setting;
 
 //! This struct only contains information that is temporary

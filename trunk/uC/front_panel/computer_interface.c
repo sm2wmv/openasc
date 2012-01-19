@@ -609,11 +609,19 @@ void computer_interface_parse_data(void) {
 					//Set the aux button functions
 					settings_ptr->aux1_button_func = computer_comm.rx_buffer_start[22];
 					settings_ptr->aux2_button_func = computer_comm.rx_buffer_start[23];
+          settings_ptr->aux_led_func = computer_comm.rx_buffer_start[24];
 					
 					computer_interface_send_ack();
 					break;
 				case CTRL_SET_DEVICE_SETTINGS_OTHER:
 					settings_ptr->ptt_interlock_input = computer_comm.rx_buffer_start[1];
+          
+          settings_ptr->amp_ctrl_enabled = computer_comm.rx_buffer_start[2];
+          settings_ptr->amp_addr = computer_comm.rx_buffer_start[3];
+          settings_ptr->amp_sub_addr = computer_comm.rx_buffer_start[4];
+          settings_ptr->amp_func_conf = computer_comm.rx_buffer_start[5];         //Lower 8 bits
+          settings_ptr->amp_func_conf |= (computer_comm.rx_buffer_start[6] << 8); //Higher 8 bits
+          settings_ptr->amp_band_seg_count = computer_comm.rx_buffer_start[7];
 					
 					computer_interface_send_ack();
 					break;					

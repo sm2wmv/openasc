@@ -106,6 +106,23 @@
 /*! Deactivate all sub menu outputs */
 #define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS	0x31
 
+//! Amplifier control command - Set mains status
+#define BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS         0x40
+//! Amplifier control command - Set operate/standby status
+#define BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS  0x41
+//! Amplifier control command - Amplifier reset
+#define BUS_CMD_AMPLIFIER_RESET                       0x42
+//! Amplifier control command - Tune the amplifier
+#define BUS_CMD_AMPLIFIER_TUNE                        0x43
+//! Amplifier control - Set the band
+#define BUS_CMD_AMPLIFIER_SET_BAND                    0x44
+//! Amplifier control - Set band segment
+#define BUS_CMD_AMPLIFIER_SET_BAND_SEGMENT            0x45
+//! Amplifier control - Get amplififer status
+#define BUS_CMD_AMPLIFIER_GET_STATUS                  0x46
+//! Amplifier control - An error occured
+#define BUS_CMD_AMPLIFIER_ERROR                       0x47
+
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x60
 /*! Get the current direction */
@@ -126,6 +143,7 @@
 
 /*! Bus command for ASCII comm transfer of data */
 #define BUS_CMD_ASCII_DATA  0x80
+
 
 #define BUS_CMD_SHUTTING_DOWN 0xF0
 

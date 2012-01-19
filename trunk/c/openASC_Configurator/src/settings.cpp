@@ -14,6 +14,13 @@ SettingsClass::SettingsClass() {
 	powerMeterUpdateRateBargraph = 200;
 
 	pttInterlockInput = 0;
+
+	//Default amplifier status
+	ampControlEnabled = false;
+	ampAddr = 1;
+	ampSubAddr = 0;
+	ampFuncStatus = 0;
+	ampBandSegmentCount = 1;
 }
 
 void SettingsClass::writeSettings(QSettings& settings) {
@@ -43,6 +50,12 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("PowerMeterDisplayUpdateRateBargraph",powerMeterUpdateRateBargraph);
 
 	settings.setValue("PTTInterlockInput",pttInterlockInput);
+
+	settings.setValue("AmpControlEnabled",ampControlEnabled);
+	settings.setValue("AmpAddr",ampAddr);
+	settings.setValue("AmpSubAddr",ampSubAddr);
+	settings.setValue("AmpFuncStatus",ampFuncStatus);
+	settings.setValue("AmpBandSegmentCount",ampBandSegmentCount);
 
 	settings.endGroup();
 }
@@ -75,6 +88,12 @@ void SettingsClass::loadSettings(QSettings& settings) {
 
 	nrOfDevices = settings.value("nrOfDevices").toInt();
 	
+	ampControlEnabled = settings.value("AmpControlEnabled").toBool();
+	ampAddr = settings.value("AmpAddr").toInt();
+	ampSubAddr = settings.value("AmpSubAddr").toInt();
+	ampFuncStatus = settings.value("AmpFuncStatus").toInt();
+	ampBandSegmentCount = settings.value("AmpBandSegmentCount").toInt();
+
 	settings.endGroup();
 }
 
@@ -114,7 +133,18 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_OTHER;
 	tx_buff[1] = pttInterlockInput;
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 2, tx_buff);
+	if (ampControlEnabled)
+		tx_buff[2] = 1;
+	else
+		tx_buff[2] = 0;
+
+	tx_buff[3] = ampAddr;	// Amp addr
+	tx_buff[4] = ampSubAddr; // Amp sub addr
+	tx_buff[5] = ampFuncStatus & 0x00FF; // Amp functions lower bits
+	tx_buff[6] = (ampFuncStatus & 0xFF00) >> 8; // Amp functions higher bits
+	tx_buff[7] = ampBandSegmentCount; // The number of band segments the amplifier has got
+
+	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 8, tx_buff);
 
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
@@ -187,4 +217,50 @@ void SettingsClass::setNumberOfDevices(int deviceCount) {
 
 int SettingsClass::getNumberOfDevices() {
 	return(nrOfDevices);
+}
+
+void SettingsClass::setAmpFuncStatus(unsigned char index, bool state) {
+	if (state)
+		ampFuncStatus |= (1<<index);
+	else
+		ampFuncStatus &= ~(1<<index);
+}
+
+bool SettingsClass::getAmpFuncStatus(unsigned char index) {
+	if (ampFuncStatus & (1<<index))
+		return(true);
+	else
+		return(false);
+}
+
+void SettingsClass::setAmpControlEnabled(bool state) {
+	ampControlEnabled = state;
+}
+
+bool SettingsClass::getAmpControlEnabled() {
+	return(ampControlEnabled);
+}
+
+void SettingsClass::setAmpAddr(unsigned char addr) {
+	ampAddr = addr;
+}
+
+void SettingsClass::setAmpSubAddr(unsigned char addr) {
+	ampSubAddr = addr;
+}
+
+unsigned char SettingsClass::getAmpAddr() {
+	return(ampAddr);
+}
+
+unsigned char SettingsClass::getAmpSubAddr() {
+	return(ampSubAddr);
+}
+
+unsigned char SettingsClass::getAmpBandSegmentCount() {
+	return(ampBandSegmentCount);
+}
+
+void SettingsClass::setAmpBandSegmentCount(unsigned char segments) {
+	ampBandSegmentCount = segments;
 }
