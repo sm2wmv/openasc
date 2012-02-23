@@ -38,8 +38,6 @@
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
-#include "../wmv_bus/bus_rx_queue.h"
-#include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
 //TODO: Fix the implementation if more than one antenna has got a sub menu, should be done in event_handler.c

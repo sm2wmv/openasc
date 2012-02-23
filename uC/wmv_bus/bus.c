@@ -104,6 +104,10 @@ void bus_init(void) {
 		bus_usart_init(15);
 	#endif
 	
+  #ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+    //57.600kpbs
+    bus_usart_init(15);
+  #endif
 			
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
 		//57.600kpbs
@@ -549,6 +553,10 @@ void __inline__ disable_bus_interrupt(void) {
   #ifdef DEVICE_TYPE_POWERMETER_PICKUP
       UCSRB &= ~(1<<RXCIE);
   #endif    
+  
+  #ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+      UCSRB &= ~(1<<RXCIE);
+  #endif      
       
   #ifdef DEVICE_TYPE_AMP_CTRL_BOX
     UCSR2B &= ~(1<<RXCIE2);
@@ -583,6 +591,10 @@ void __inline__ enable_bus_interrupt(void) {
   #ifdef DEVICE_TYPE_POWERMETER_PICKUP
       UCSRB |= (1<<RXCIE);
   #endif    
+  
+  #ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+      UCSRB |= (1<<RXCIE);
+  #endif   
       
   #ifdef DEVICE_TYPE_AMP_CTRL_BOX
     UCSR2B |= (1<<RXCIE2);
@@ -627,6 +639,10 @@ ISR(ISR_BUS_USART_RECV) {
 	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
 			unsigned char data = UDR;
 	#endif		
+	
+  #ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+      unsigned char data = UDR;
+  #endif  	
       
   #ifdef DEVICE_TYPE_AMP_CTRL_BOX
       unsigned char data = UDR2;

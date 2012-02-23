@@ -34,8 +34,6 @@
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
 #include "../wmv_bus/bus_ping.h"
-#include "../wmv_bus/bus_rx_queue.h"
-#include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
 //! Contains info if the module is a positive or negative driver
@@ -223,94 +221,92 @@ unsigned int lm76_get_temp(void) {
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
-void bus_parse_message(void) {
-	BUS_MESSAGE bus_message = rx_queue_get();
-
-	if (bus_message.cmd == BUS_CMD_ACK)
-		bus_message_acked(bus_message.from_addr);
-	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
-	else if (bus_message.cmd == BUS_CMD_PING) {
+void bus_parse_message(BUS_MESSAGE *bus_message) {
+	if (bus_message->cmd == BUS_CMD_ACK)
+		bus_message_acked(bus_message->from_addr);
+	else if (bus_message->cmd == BUS_CMD_NACK)
+		bus_message_nacked(bus_message->from_addr, bus_message->data[0]);
+	else if (bus_message->cmd == BUS_CMD_PING) {
 		//ADD the ping to the ping_list
-		if (bus_message.length > 1)
-			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+		if (bus_message->length > 1)
+			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], bus_message->length-1, (unsigned char *)(bus_message->data+1));
 		else
-			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
+			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);
 
 		//TODO: This needs to be read from the ping list
 		//If the ping is coming from a mainbox, we need to save ptt input information for the interlock
-		if (bus_message.data[0] == DEVICE_ID_MAINBOX) {
+		if (bus_message->data[0] == DEVICE_ID_MAINBOX) {
 			//Check so that the PTT interlock input is <> 0
-			if (bus_message.data[1] != 0) {
-				if (bus_message.from_addr != driver_status.ptt_interlock_input[bus_message.data[1]-1]) {
-					driver_status.ptt_interlock_input[bus_message.data[1]-1] = bus_message.from_addr;
+			if (bus_message->data[1] != 0) {
+				if (bus_message->from_addr != driver_status.ptt_interlock_input[bus_message->data[1]-1]) {
+					driver_status.ptt_interlock_input[bus_message->data[1]-1] = bus_message->from_addr;
 				}
 			}
 			else {
 				//If we have that no input should be configured for this device, then we go through the list
 				//to make sure if the setting has been changed, it is also removed from the list
 				for (unsigned char i=0;i<7;i++)
-					if (driver_status.ptt_interlock_input[i] == bus_message.from_addr)
+					if (driver_status.ptt_interlock_input[i] == bus_message->from_addr)
 						driver_status.ptt_interlock_input[i] = 0;
 			}
 		}
 	}
-	switch (bus_message.cmd) {
+	switch (bus_message->cmd) {
 		case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_GET_STATUS:
 			
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
-				if (driver_status.driver_output_owner[i-1] == bus_message.from_addr)
-					deactivate_output(bus_message.from_addr,i);
+				if (driver_status.driver_output_owner[i-1] == bus_message->from_addr)
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_GET_TEMPERATURE:
 			/*unsigned int temp_t = lm76_get_temp();
@@ -318,63 +314,63 @@ void bus_parse_message(void) {
 			temp[0] = (temp_t & 0xFF00) >> 8;
 			temp[1] = (temp_t & 0x00FF);
 
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr, 0, BUS_CMD_GET_TEMPERATURE,2, temp);*/
+			bus_add_tx_message(bus_get_address(), bus_message->from_addr, 0, BUS_CMD_GET_TEMPERATURE,2, temp);*/
 			break;
 		case BUS_CMD_SET_PTT_SETTINGS:
 			/* Data[0..n] -> | ADDR | INPUT # | */
-			driver_status.ptt_interlock_input[(int)bus_message.data[1]] = bus_message.data[0];
+			driver_status.ptt_interlock_input[(int)bus_message->data[1]] = bus_message->data[0];
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				activate_output(bus_message.from_addr,bus_message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT:
-			for (unsigned char i=0;i<bus_message.length;i++)
-				deactivate_output(bus_message.from_addr,bus_message.data[i]);
+			for (unsigned char i=0;i<bus_message->length;i++)
+				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT)
-					deactivate_output(bus_message.from_addr,i);
+					deactivate_output(bus_message->from_addr,i);
 			break;
 		case BUS_CMD_SYNC:
 			break;
@@ -382,9 +378,6 @@ void bus_parse_message(void) {
 			
 			break;
 	}
-	
-	//Drop the message
-	rx_queue_drop();
 }
 
 /*! \brief Read the external DIP-switch.
@@ -473,13 +466,14 @@ int main(void)
   else
     ptt_polarity = 0; //Active high
   
-	while(1) {
-		if (!rx_queue_is_empty()) {
-			bus_parse_message();
-		}
-
-		if (!tx_queue_is_empty())
-			bus_check_tx_status();
+  BUS_MESSAGE mess;
+  
+  while(1) {
+    if (bus_check_rx_status(&mess)) {
+      bus_parse_message(&mess);
+    }
+    
+    bus_check_tx_status();  
 			
 		//If this device should act as master it should send out a SYNC command
 		//and also the number of devices (for the time slots) that are active on the bus

@@ -62,8 +62,13 @@ TARGET = main
 DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP
 BASE_ADDRESS = 10
 
+#The size of the RX queue in buffers
+BUS_RX_QUEUE_SIZE = 10
+#The size of the TX queue in buffers
+BUS_TX_QUEUE_SIZE = 10
+
 #Root directories
-WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_tx_queue.c ../../wmv_bus/bus_rx_queue.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c
+WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c ../../queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = $(TARGET).c a2d.c input.c init.c $(WMV_BUS_SRC) ../../delay.c
@@ -122,7 +127,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS)
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE)
 
 
 
