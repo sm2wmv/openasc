@@ -50,6 +50,10 @@
 	#include "../powermeter/sensor_unit/main.h"
 #endif
 
+#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+  #include "../powermeter/sensor_unit_v2/main.h"
+#endif
+
 #ifdef DEVICE_TYPE_GENERAL_IO
 	#include "../general_io/main.h"
 #endif
@@ -67,6 +71,15 @@
 			
 	#define ISR_BUS_TIMER_COMPARE		SIG_OUTPUT_COMPARE2
 	#define ISR_BUS_TIMER_OVERFLOW	SIG_OVERFLOW2
+#endif
+
+#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+  #define ISR_BUS_USART_DATA  SIG_USART_DATA
+  #define ISR_BUS_USART_RECV  SIG_USART_RECV
+  #define ISR_BUS_USART_TRANS SIG_USART_TRANS
+      
+  #define ISR_BUS_TIMER_COMPARE   SIG_OUTPUT_COMPARE2
+  #define ISR_BUS_TIMER_OVERFLOW  SIG_OVERFLOW2
 #endif
 
 #ifdef DEVICE_TYPE_DRIVER_UNIT

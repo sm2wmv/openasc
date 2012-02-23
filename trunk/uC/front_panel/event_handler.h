@@ -27,8 +27,6 @@
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
-#include "../wmv_bus/bus_rx_queue.h"
-#include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
 
 #include "../internal_comm.h"

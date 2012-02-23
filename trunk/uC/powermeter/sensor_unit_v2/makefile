@@ -1,4 +1,4 @@
-# Copyright (C) 2009  Mikael Larsmark, SM3WMV
+# Copyright (C) 2007  Mikael Larsmark, SM3WMV
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #
 # On command line:
 #
-# make all = Make software.
+# make all = Make software
 #
 # make clean = Clean out built project files.
 #
@@ -50,7 +50,7 @@
 #
 
 # MCU name
-MCU = atmega128
+MCU = atmega32
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
@@ -59,8 +59,8 @@ FORMAT = ihex
 TARGET = main
 
 #The name of this device
-DEVICE_TYPE = DEVICE_TYPE_DRIVER_UNIT_V2
-BASE_ADDRESS = 0x00
+DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP_V2
+BASE_ADDRESS = 10
 
 #The size of the RX queue in buffers
 BUS_RX_QUEUE_SIZE = 10
@@ -68,10 +68,10 @@ BUS_RX_QUEUE_SIZE = 10
 BUS_TX_QUEUE_SIZE = 10
 
 #Root directories
-WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c ../queue.c
+WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c ../../queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c ../i2c.c init.c ../delay.c $(WMV_BUS_SRC)
+SRC = $(TARGET).c a2d.c input.c init.c $(WMV_BUS_SRC) ../../delay.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s

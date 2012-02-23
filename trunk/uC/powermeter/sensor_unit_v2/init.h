@@ -1,11 +1,8 @@
-/*! \file wmv_bus/bus_tx_queue.h
- *  \ingroup bus_group 
- *  \brief FIFO queue for the TXed messages.
- *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-01-25
- *  \code #include "wmv_bus/bus_tx_queue.h" \endcode
+/*! \file init.h \brief Init functions
+ * \author Mikael Larsmark, SM2WMV
+ * \date 2009-06-23
  */
-//    Copyright (C) 2008  Mikael Larsmark, SM2WMV
+//    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -20,18 +17,12 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _BUS_TX_QUEUE_H_
-#define _BUS_TX_QUEUE_H_
+#ifndef _INIT_H_
+#define _INIT_H_
 
-#include "bus.h"
-
-void tx_queue_add(BUS_MESSAGE message);
-BUS_MESSAGE tx_queue_get(void);
-void tx_queue_drop(void);
-void tx_queue_dropall(void);
-void tx_queue_init(void);
-unsigned char tx_queue_is_empty(void);
-unsigned char tx_queue_size(void);
-BUS_MESSAGE tx_queue_get_pos(unsigned char pos);
+void init_timer_0(void);
+void init_timer_1(void);
+void init_timer_2(void);
+void init_ports(void);
 
 #endif

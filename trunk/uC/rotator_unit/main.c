@@ -37,13 +37,6 @@
 #include "../event_queue.h"
 #include "../delay.h"
 
-/* Include the bus headers */
-#include "../wmv_bus/bus.h"
-#include "../wmv_bus/bus_rx_queue.h"
-#include "../wmv_bus/bus_tx_queue.h"
-#include "../wmv_bus/bus_commands.h"
-#include "../wmv_bus/bus_ping.h"
-
 #define MAX_ASCII_CMD_ARGS  5
 
 unsigned char device_id=0;
@@ -296,29 +289,28 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
-void bus_parse_message(void) {
-	BUS_MESSAGE bus_message = rx_queue_get();
+void bus_parse_message(BUS_MESSAGE *bus_message) {
 	unsigned char temp[6];
 	
-	switch(bus_message.cmd) {
+	switch(bus_message->cmd) {
 		case BUS_CMD_ACK:
-			bus_message_acked(bus_message.from_addr);
+			bus_message_acked(bus_message->from_addr);
 			break;
 		case BUS_CMD_NACK:
-			bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
+			bus_message_nacked(bus_message->from_addr, bus_message->data[0]);
 			break;
 		case BUS_CMD_PING:
-			if (bus_message.length > 1)
-				bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+			if (bus_message->length > 1)
+				bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], bus_message->length-1, (unsigned char *)(bus_message->data+1));
 			else
-				bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);				
+				bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);				
 			break;
 		case BUS_CMD_ROTATOR_SET_ANGLE:
 			//1st byte = sub_addr (0x00 in our case)
 			//2nd byte = new direction (high bytes)
 			//3rd byte = new direction (low bytes)
 			if (rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) {
-				rotator_status.target_heading = (bus_message.data[1]<<8) + bus_message.data[2];
+				rotator_status.target_heading = (bus_message->data[1]<<8) + bus_message->data[2];
         
         main_set_preset_active();
       }
@@ -330,7 +322,7 @@ void bus_parse_message(void) {
 			temp[3] = ((rotator_status.target_heading >> 8) & 0xFF);
 			temp[4] = (rotator_status.target_heading & 0xFF);
 			temp[5] = main_flags;
-			bus_add_tx_message(bus_get_address(), bus_message.from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_STATUS, 6, temp);
+			bus_add_tx_message(bus_get_address(), bus_message->from_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_GET_STATUS, 6, temp);
 			break;
 		case BUS_CMD_ROTATOR_ROTATE_CW:
       if ((rotator_settings.rotator_mode == ROTATOR_MODE_HARDWIRED) && ((main_flags & (1<<FLAG_NO_ROTATION)) != 0)) {
@@ -376,14 +368,11 @@ void bus_parse_message(void) {
       }
 			break;
     case BUS_CMD_ASCII_DATA:
-      parse_ascii_cmd(&bus_message);
+      parse_ascii_cmd(bus_message);
       break;
 		default:
 			break;
 	}
-	
-	//Drop the message
-	rx_queue_drop();
 }
 
 /*! Add a message to the event queue which will be run at the correct time
@@ -558,14 +547,15 @@ int main(void)
 	
 	device_id = DEVICE_ID_ROTATOR_UNIT;
 	
-	while(1) {	
-		if (!rx_queue_is_empty()) {
-			bus_parse_message();
-		}
+  BUS_MESSAGE mess;
+  
+  while(1) {
+    if (bus_check_rx_status(&mess)) {
+      bus_parse_message(&mess);
+    }
+    
+    bus_check_tx_status();  
 
-		if (!tx_queue_is_empty())
-			bus_check_tx_status();
-		
 		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();

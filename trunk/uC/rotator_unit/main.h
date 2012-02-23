@@ -20,6 +20,10 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+/* Include the bus headers */
+#include "../wmv_bus/bus.h"
+#include "../wmv_bus/bus_commands.h"
+#include "../wmv_bus/bus_ping.h"
 
 //! The size of the RX queue in buffers
 #define BUS_RX_QUEUE_SIZE 10
@@ -147,7 +151,6 @@ struct_rotator_status rotator_status;
 struct_settings rotator_settings;
 
 void rotator_set_no_rotation(void);
-void bus_parse_message(void);
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned char read_ext_addr(void);
 void event_run(void);
