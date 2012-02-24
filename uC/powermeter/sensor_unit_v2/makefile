@@ -59,7 +59,7 @@ FORMAT = ihex
 TARGET = main
 
 #The name of this device
-DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP_V2
+DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP
 BASE_ADDRESS = 10
 
 #The size of the RX queue in buffers

@@ -140,25 +140,7 @@ unsigned char get_band(unsigned int freq) {
 }
 
 unsigned int get_freq(void) {
-	unsigned int freq = 0;
-	unsigned char state = 1;
-
-	icp_mutex = 1;
-	for (unsigned char i=0;i<ICP_ARRAY_SIZE-1;i++) {
-		if ((icp_array[i] > (icp_array[i+1]+2)) || (icp_array[i] < (icp_array[i+1]-2))) {
-			
-			state = 0;
-			break;
-		}
-	}
-
-	if (state == 1) {
-		freq = (14746/icp_array[0]) * 256;
-	}
-
-	icp_mutex = 0;
-	
-	return(freq);
+	return(14000);
 }
 
 int main(void) {
@@ -176,21 +158,15 @@ int main(void) {
 	that is based on the external address of the device */
 	delay_ms(bus_get_address());
 	
-	//Default band 20m
-	for (unsigned char i=0;i<ICP_ARRAY_SIZE;i++)
-		icp_array[i] = 270;
-	
 	a2dInit();
 	
-		//Initialize the communication bus	
+	//Initialize the communication bus	
 	bus_init();
 
 	if (bus_get_address() == 0x01)
 		bus_set_is_master(1,DEF_NR_DEVICES);
 	else
 		bus_set_is_master(0,0);
-	
-	init_timer_1();
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();
@@ -221,6 +197,10 @@ int main(void) {
 	
   BUS_MESSAGE mess;
   
+	#ifdef CAL_MODE
+		printf("Power meter v2.0 started in calibration mode\n\r");
+		printf("--------------------------------------------\n\r");
+	#endif
 	while(1) {
     if (bus_check_rx_status(&mess)) {
       bus_parse_message(&mess);
@@ -323,20 +303,4 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
-}
-
-ISR(TIMER1_CAPT_vect) {
-	if (icp_mutex == 0) {
-		curr_icp = ICR1 - last_icp;
-		last_icp = ICR1;
-		
-		if (icp_array_pos < ICP_ARRAY_SIZE) {
-			icp_array[icp_array_pos] = curr_icp;
-			icp_array_pos++;
-		}
-		else {
-			icp_array[0] = curr_icp;
-			icp_array_pos = 1;
-		}
-	}
 }
