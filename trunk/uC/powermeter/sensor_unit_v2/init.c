@@ -18,13 +18,13 @@ void init_timer_0(void) {
 	OCR0   = OCR0_1MS;                     /* match in aprox 1 ms,  */
 }
 
-void init_timer_1(void) {
+/*void init_timer_1(void) {
 	TCCR1B |= (1<<ICNC1) | (0<<CS12)| (0<<CS11)| (1<<CS10); //start with prescaller 8, rising edge ICP1
 	TIFR |= (1<<ICF1);
 	TCNT1 = 0;
 	TIMSK |= (1<<TICIE1);//|(1<<TOIE1);
 	TCCR1A = 0;
-}
+}*/
 
 /*!Initializes timer 2, used for the communication bus and the interrupt is caught in bus.c
  */
@@ -38,15 +38,13 @@ void init_timer_2(void) {
 }
 
 void init_ports(void) {
-	DDRA = 0xFC;
-	PORTA = 0x00;
-	DDRB = 0x1F;
+	DDRA = 0x80;
+	PORTA = 0;
+	DDRB = 0x1E;
 	PORTB = 0x00;
 	DDRC = 0x03;
 	PORTC = 0x00;
-	DDRD = 0x86;
-	PORTD = (1<<0) | (1<<1) | (1<<3) | (1<<4) | (1<<5);
-	
-	//PORTD = (1<<3) | (1<<4) | (1<<5);
+	DDRD = 0x02;
+	PORTD = (1<<0) | (1<<1);
 }
 
