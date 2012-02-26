@@ -11,6 +11,7 @@
 #include "input.h"
 #include "../../delay.h"
 #include "i2c.h"
+#include "ads1115.h"
 
 /* Include the bus headers */
 #include "../../wmv_bus/bus.h"
@@ -27,8 +28,9 @@ unsigned int counter_compare0 = 0;
 unsigned int counter_ping_interval=0;
 //! Flag which is set when the power information should be sent out on the bus
 unsigned int update_status = 0;
-//! Flag which is set when the power should be polled
-unsigned char poll_curr_power = 0;
+
+//! Counter to keep track of when to poll the power values
+unsigned int poll_power_count = 0;
 //! Counter for the bus SYNC if the device is acting as master
 unsigned int counter_sync = 0;
 //! Flag which indicates that the device is put into "sleep" mode, only sending out data
@@ -65,16 +67,14 @@ unsigned char read_ext_addr(void) {
 	return(~(PINC >> 2) & 0x0F);
 }
 
-void read_state(void) {
+void __inline__ read_fwd_val(void) {
 	//Read the forward A/D value
-	status.curr_fwd_ad_value = a2dConvert10bit(ADC_CH_ADC0);
-		//Read the reflected A/D value
-	status.curr_ref_ad_value = a2dConvert10bit(ADC_CH_ADC1);
-	
-	//Calculate the power from the new A/D reads
-	input_calculate_power();
-	//Save the calculation of the VSWR to the status struct
-	status.curr_vswr = input_calculate_vswr();
+	status.curr_fwd_ad_value = ads1115_read_ch1();
+}
+
+void __inline__ read_ref_val(void) {
+	//Read the reflected A/D value
+	status.curr_ref_ad_value = ads1115_read_ch0();
 }
 
 /*! Read the external configuration jumper settings 
@@ -157,6 +157,10 @@ int main(void) {
 	//Initialize the communication bus	
 	bus_init();
 
+	#ifdef CAL_MODE
+		fdevopen((void*)bus_usart_transmit, (void*)bus_usart_receive_loopback);
+	#endif
+
 	if (bus_get_address() == 0x01)
 		bus_set_is_master(1,DEF_NR_DEVICES);
 	else
@@ -186,10 +190,9 @@ int main(void) {
   
 	device_id = DEVICE_ID_POWERMETER_PICKUP;
 	
-	//TEMP
-	fdevopen((void*)bus_usart_transmit, (void*)bus_usart_receive_loopback);
-	
 	sei();
+	
+	ads1115_init();
 	
   BUS_MESSAGE mess;
   
@@ -197,6 +200,7 @@ int main(void) {
 		printf("Power meter v2.0 started in calibration mode\n\r");
 		printf("--------------------------------------------\n\r");
 	#endif
+	
 	while(1) {
     if (bus_check_rx_status(&mess)) {
       bus_parse_message(&mess);
@@ -225,11 +229,31 @@ int main(void) {
 			}
 		#endif
 		
-		if (poll_curr_power == 1) {
-			read_state();
+		if (poll_power_count == POWER_POLL_INTERVAL) {
+			PORTB |= (1<<4);
+			read_fwd_val();
+			PORTB &= ~(1<<4);
+			
+			poll_power_count++;
+		}
+		else if (poll_power_count > (POWER_POLL_INTERVAL+2)) {
+			PORTB |= (1<<4);
+			read_ref_val();
+			PORTB &= ~(1<<4);
+			
+			//Calculate the power from the new A/D reads
+			input_calculate_power();
+			//Save the calculation of the VSWR to the status struct
+			status.curr_vswr = input_calculate_vswr();
+
 			status.curr_freq = get_freq();
 			status.curr_band = get_band(status.curr_freq);
 		
+			//printf("AD CH0 VAL: %u\n\r",ad_val);
+			//printf("AD CH0: %.1fmV\n\r",(double)(0.0625f*ad_val));
+			//printf("AD CH1 VAL: %u\n\r",ad_val);
+			//printf("AD CH1: %.1fmV\n\r",(double)(0.0625f*ad_val));
+
 			input_calculate_power();
 
 			if (status.curr_fwd_power >= NO_FWD_PWR_LIMIT) {
@@ -243,7 +267,7 @@ int main(void) {
 			else
 				last_pwr_change_interval++;
 	
-			poll_curr_power = 0;
+			poll_power_count = 0;
 		}
 		
 		/* If the update_status flag is set, we should sample the current power values
@@ -267,7 +291,7 @@ int main(void) {
 				
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_POWERMETER_STATUS, 7, data);
 			#endif
-			
+
 			update_status = 0;
 		}
 	}
@@ -288,9 +312,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 		}
 	}
 	
-	if ((counter_compare0 % POWER_POLL_INTERVAL) == 0) {
-		poll_curr_power = 1;
-	}
+	poll_power_count++;
 
 	if (last_pwr_change_interval > (POWER_LAST_CHANGE_TIME/POWER_POLL_INTERVAL)) {
 		pwr_meter_sleep = 1;

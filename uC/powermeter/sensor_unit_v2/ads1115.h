@@ -21,6 +21,7 @@
 #define _ADS1115_H_
 
 #define ADS1115_ADDR  0x90
+void ads1115_init(void);
 
 unsigned int ads1115_read_ch0(void);
 

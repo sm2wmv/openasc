@@ -28,7 +28,7 @@
 	#define POWER_TRANSMIT_INTERVAL2 2000
 
 	//! The interval which the units polls the power */
-	#define POWER_POLL_INTERVAL	40
+	#define POWER_POLL_INTERVAL	20
 #endif
 
 #ifdef CAL_MODE
@@ -38,7 +38,7 @@
 	#define POWER_TRANSMIT_INTERVAL2 2000
 
 	//! The interval which the units polls the power */
-	#define POWER_POLL_INTERVAL	1000
+	#define POWER_POLL_INTERVAL 50
 #endif	
 
 #define POWER_LAST_CHANGE_TIME 1000
