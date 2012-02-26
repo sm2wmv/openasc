@@ -10,6 +10,7 @@
 #include "a2d.h"
 #include "input.h"
 #include "../../delay.h"
+#include "i2c.h"
 
 /* Include the bus headers */
 #include "../../wmv_bus/bus.h"
@@ -19,8 +20,6 @@
 
 /* All these flags should be put together in one variable to save space, however 
    this is not needed on this device since it will never run out of RAM anyway */ 
-
-unsigned int curr_icp = 270, last_icp = 0, icp_mutex = 0;
 
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned int counter_compare0 = 0;
@@ -40,11 +39,6 @@ unsigned char pwr_meter_sleep = 0;
 unsigned char device_id;
 
 unsigned int last_pwr_change_interval = 5000;
-
-#define ICP_ARRAY_SIZE			3
-
-unsigned int icp_array[ICP_ARRAY_SIZE];
-unsigned char icp_array_pos = 0;
 
 /*! \brief Parse a message and exectute the proper commands
  * This function is used to parse a message that was receieved on the bus that is located
@@ -188,6 +182,8 @@ int main(void) {
 	
 	//status.curr_fwd_power = 10;
 	
+  i2cInit();
+  
 	device_id = DEVICE_ID_POWERMETER_PICKUP;
 	
 	//TEMP

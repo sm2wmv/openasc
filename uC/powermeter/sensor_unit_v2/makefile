@@ -59,11 +59,11 @@ FORMAT = ihex
 TARGET = main
 
 #The name of this device
-DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP
+DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP_V2
 BASE_ADDRESS = 10
 
 #The size of the RX queue in buffers
-BUS_RX_QUEUE_SIZE = 10
+BUS_RX_QUEUE_SIZE = 5
 #The size of the TX queue in buffers
 BUS_TX_QUEUE_SIZE = 10
 
@@ -71,7 +71,7 @@ BUS_TX_QUEUE_SIZE = 10
 WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c ../../queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c a2d.c input.c init.c $(WMV_BUS_SRC) ../../delay.c
+SRC = $(TARGET).c a2d.c input.c init.c $(WMV_BUS_SRC) ../../delay.c ads1115.c i2c.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
