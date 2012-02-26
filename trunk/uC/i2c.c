@@ -55,10 +55,8 @@ static unsigned char (*i2cSlaveTransmit)(unsigned char transmitDataLengthMax, un
 void i2c_init(void)
 {
 	// set pull-up resistors on I2C bus pins
-	//sbi(PORTC, 0);	// i2c SCL on ATmega163,323,16,32,etc
-	//sbi(PORTC, 1);	// i2c SDA on ATmega163,323,16,32,etc
-	sbi(PORTD, 0);	// i2c SCL on ATmega128,64
-	sbi(PORTD, 1);	// i2c SDA on ATmega128,64
+  sbi(PORTD, 0);	// i2c SCL
+  sbi(PORTD, 1);	// i2c SDA
 
 	// clear SlaveReceive and SlaveTransmit handler to null
 	i2cSlaveReceive = 0;

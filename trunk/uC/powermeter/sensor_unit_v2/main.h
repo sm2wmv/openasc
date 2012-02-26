@@ -43,17 +43,17 @@
 
 #define POWER_LAST_CHANGE_TIME 1000
 
-/*! 150w pickup configuration */
+/*! 150w   pickup configuration */
 #define PICKUP_TYPE_150W        0
-/*! 1000w pickup configuration */
+/*! 1000w  pickup configuration */
 #define PICKUP_TYPE_1000W       1
-/*! 1500w pickup configuration */
+/*! 1500w  pickup configuration */
 #define PICKUP_TYPE_1500W       2
-/*! 2000w pickup configuration */
+/*! 2000w  pickup configuration */
 #define PICKUP_TYPE_2000W       3
-/*! 3000w pickup configuration */
+/*! 3000w  pickup configuration */
 #define PICKUP_TYPE_3000W       4
-/*! 5000w pickup configuration */
+/*! 5000w  pickup configuration */
 #define PICKUP_TYPE_5000W       5
 /*! 10000w pickup configuration */
 #define PICKUP_TYPE_10000W      6
