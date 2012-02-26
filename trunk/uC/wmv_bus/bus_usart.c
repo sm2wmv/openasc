@@ -58,6 +58,18 @@ void bus_usart_init(unsigned int baudrate) {
 		UCSRB = (1<<RXEN) | (1<<TXEN) | (1<<RXCIE) | (1<<TXCIE);
 	#endif
 
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+		/* Set baud rate */
+		UBRRH = (unsigned char) (baudrate>>8);
+		UBRRL = (unsigned char) baudrate;
+
+		UCSRA = 0;
+
+		/* Set frame format: 8data, no parity & 1 stop bits */
+		UCSRC = (1<< URSEL) | (0<<UMSEL) | (0<<UPM1) | (0<<UPM0) | (0<<USBS) | (1<<UCSZ1) | (1<<UCSZ0);
+		/* Enable receiver and transmitter */
+		UCSRB = (1<<RXEN) | (1<<TXEN) | (1<<RXCIE) | (1<<TXCIE);
+	#endif
 		
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
 		/* Set baud rate */
@@ -127,6 +139,13 @@ unsigned char bus_usart_transmit(unsigned char  data) {
 		/* Put data into buffer, sends the data */
 		UDR = data;
 	#endif
+	
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+		/* Wait for empty transmit buffer */
+		while (!( UCSRA & (1<<UDRE)));
+		/* Put data into buffer, sends the data */
+		UDR = data;
+	#endif	
 		
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
 		/* Wait for empty transmit buffer */
@@ -193,6 +212,13 @@ unsigned char bus_usart_receive(void ) {
 		return UDR;
 	#endif
 		
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+		/* Wait for data to be received */
+		while (!(UCSRA & (1<<RXC)));
+		/* Get and return received data from buffer */
+		return UDR;
+	#endif		
+		
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
 		/* Wait for data to be received */
 		while (!(UCSR1A & (1<<RXC1)));
@@ -241,6 +267,16 @@ unsigned char bus_usart_receive_loopback(void ) {
 	#endif
 
 	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
+		uint8_t rbuff;
+		/* Wait for data to be received */
+		while (!(UCSRA & (1<<RXC)));
+		/* Get and return received data from buffer */
+		rbuff = UDR;
+		bus_usart_transmit(rbuff);
+		return rbuff;
+	#endif
+	
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
 		uint8_t rbuff;
 		/* Wait for data to be received */
 		while (!(UCSRA & (1<<RXC)));
@@ -305,6 +341,11 @@ unsigned char bus_poll_usart_receive(void ) {
 	#endif
 
 	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
+		/* Check if data is received */
+		return ((UCSRA & (1<<RXC)));
+	#endif
+	
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
 		/* Check if data is received */
 		return ((UCSRA & (1<<RXC)));
 	#endif

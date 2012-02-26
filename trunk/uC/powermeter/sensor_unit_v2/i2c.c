@@ -51,8 +51,6 @@ void i2cInit(void)
 	// TODO: should #ifdef these
 	sbi(PORTC, 0);	// i2c SCL on ATmega163,323,16,32,etc
 	sbi(PORTC, 1);	// i2c SDA on ATmega163,323,16,32,etc
-/*	sbi(PORTD, 0);	// i2c SCL on ATmega128,64
-	sbi(PORTD, 1);	// i2c SDA on ATmega128,64*/
 
 	// clear SlaveReceive and SlaveTransmit handler to null
 	i2cSlaveReceive = 0;
@@ -63,12 +61,12 @@ void i2cInit(void)
 	sbi(TWCR, TWEN);
 	// set state
 	I2cState = I2C_IDLE;
-	// enable TWI interrupt and slave address ACK
-	sbi(TWCR, TWIE);
+	//enable TWI interrupt and slave address ACK
+	sbi(TWCR, TWIE);	
 	sbi(TWCR, TWEA);
 	//outb(TWCR, (inb(TWCR)&TWCR_CMD_MASK)|BV(TWINT)|BV(TWEA));
 	// enable interrupts
-	sei();
+	//sei();
 }
 
 void i2cSetBitrate(u16 bitrateKHz)
@@ -202,7 +200,7 @@ u08 i2cMasterSendNI(u08 deviceAddr, u08 length, u08* data)
 	u08 retval = I2C_OK;
 
 	// disable TWI interrupt
-	cbi(TWCR, TWIE);
+	//cbi(TWCR, TWIE);
 
 	// send start condition
 	i2cSendStart();
@@ -237,7 +235,7 @@ u08 i2cMasterSendNI(u08 deviceAddr, u08 length, u08* data)
 	while( !(inb(TWCR) & BV(TWSTO)) );
 
 	// enable TWI interrupt
-	sbi(TWCR, TWIE);
+	//sbi(TWCR, TWIE);
 
 	return retval;
 }
@@ -247,7 +245,7 @@ u08 i2cMasterReceiveNI(u08 deviceAddr, u08 length, u08 *data)
 	u08 retval = I2C_OK;
 
 	// disable TWI interrupt
-	cbi(TWCR, TWIE);
+	//cbi(TWCR, TWIE);
 
 	// send start condition
 	i2cSendStart();
@@ -288,7 +286,7 @@ u08 i2cMasterReceiveNI(u08 deviceAddr, u08 length, u08 *data)
 	i2cSendStop();
 
 	// enable TWI interrupt
-	sbi(TWCR, TWIE);
+	//sbi(TWCR, TWIE);
 
 	return retval;
 }

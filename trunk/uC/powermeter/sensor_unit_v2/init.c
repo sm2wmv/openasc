@@ -39,7 +39,7 @@ void init_timer_2(void) {
 
 void init_ports(void) {
 	DDRA = 0x80;
-	PORTA = 0;
+	PORTA = (1<<3);
 	DDRB = 0x1E;
 	PORTB = 0x00;
 	DDRC = 0x03;
