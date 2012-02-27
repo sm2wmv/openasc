@@ -82,21 +82,21 @@ void input_calculate_power(void) {
 	#ifdef CAL_MODE
 		input_calculate_vswr();
 	
-		printf("FWD VOLT: %.1fmV - REF VOLT: %.1fmV\n",fwd_volt,ref_volt);
-		//printf("REF VOLT: %.1fmV\n",ref_volt);
+		printf("FWD VOLT: %.1fmV\n",fwd_volt);
+		printf("REF VOLT: %.1fmV\n",ref_volt);
 		
-	/*	printf("\n\n");
-		printf("FWD dBm: %.1fdBm\n",fwd_dbm_val);
-		printf("REF dBm: %.1fdBm\n",ref_dbm_val);
+		printf("\n\n");
+		printf("FWD dBm: %.2fdBm\n",fwd_dbm_val);
+		printf("REF dBm: %.2fdBm\n",ref_dbm_val);
 		
-		printf("FWD dBm(2): %.1fdBm\n",fwd_dbm_val-50);
-		printf("REF dBm(2): %.1fdBm\n",ref_dbm_val-50);		
+		printf("FWD dBm(2): %.2fdBm\n",fwd_dbm_val-50);
+		printf("REF dBm(2): %.2fdBm\n",ref_dbm_val-50);		
 	
 		
 		printf("FREQ: %ukHz\n",status.curr_freq);
 		printf("BAND: %i\n",status.curr_band);
 		printf("FWD PWR: %.1f\n",status.curr_fwd_power);
 		printf("REF PWR: %.1f\n",status.curr_ref_power);
-		printf("VSWR: %.2f\n",status.curr_vswr);*/
+		printf("VSWR: %.2f\n",status.curr_vswr);
 	#endif
 }

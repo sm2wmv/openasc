@@ -38,7 +38,7 @@
 	#define POWER_TRANSMIT_INTERVAL2 2000
 
 	//! The interval which the units polls the power */
-	#define POWER_POLL_INTERVAL 50
+	#define POWER_POLL_INTERVAL 500
 #endif	
 
 #define POWER_LAST_CHANGE_TIME 1000
@@ -62,5 +62,11 @@
 
 //! Under this value is considered to be no transmission occuring (in watts)
 #define NO_FWD_PWR_LIMIT	10
+
+//! Defines for the control lines of the counter, PORTB
+#define GAL	4
+#define GAU 3
+#define GBL 2
+#define GBU 1
 
 #endif
