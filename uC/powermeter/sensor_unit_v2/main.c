@@ -37,6 +37,11 @@ unsigned int counter_sync = 0;
 //! at a very much lower rate than during its awake time
 unsigned char pwr_meter_sleep = 0;
 
+//! Counter which keeps track of when we should poll the frequency
+unsigned int counter_poll_freq = 0;
+
+unsigned char update_freq = 0;
+
 //! The device ID of the power meter
 unsigned char device_id;
 
@@ -137,6 +142,52 @@ unsigned int get_freq(void) {
 	return(14000);
 }
 
+unsigned long gal_reg;
+unsigned long gau_reg;
+unsigned long gbl_reg;
+unsigned long gbu_reg;
+
+void __inline__ read_freq_registers(void) {	
+	PORTB &= ~(1<<GAL);
+	PORTB |= (1<<GAU) | (1<<GBL) | (1<<GBU);
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	gal_reg = (((PIND & 0xFC) >> 2) | (PINC & 0xC0)) & 0xFF;
+
+	PORTB &= ~(1<<GAU);
+	PORTB |= (1<<GAL) | (1<<GBL) | (1<<GBU);
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");	
+	gau_reg = (((PIND & 0xFC) >> 2) | (PINC & 0xC0)) & 0xFF;	
+	
+	PORTB &= ~(1<<GBL);
+	PORTB |= (1<<GAL) | (1<<GAU) | (1<<GBU);
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	gbl_reg = (((PIND & 0xFC) >> 2) | (PINC & 0xC0)) & 0xFF;
+
+	PORTB &= ~(1<<GBU);
+	PORTB |= (1<<GAL) | (1<<GBL) | (1<<GAU);
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");
+	__asm__ __volatile__ ("nop");	
+	gbu_reg = (((PIND & 0xFC) >> 2) | (PINC & 0xC0)) & 0xFF;
+
+	//Clear counter
+	PORTA &= ~(1<<7);
+}
+
 int main(void) {
 	cli();
 	
@@ -229,30 +280,25 @@ int main(void) {
 			}
 		#endif
 		
-		if (poll_power_count == POWER_POLL_INTERVAL) {
-			PORTB |= (1<<4);
-			read_fwd_val();
-			PORTB &= ~(1<<4);
+		if (update_freq == 1) {
+			unsigned long freq_hz = (long)gal_reg + ((long)gau_reg << 8) + ((long)gbl_reg+((long)gbu_reg<<8))*65536;
+			status.curr_freq = (int)((double)freq_hz*0.000960131f);
+			status.curr_band = get_band(status.curr_freq);
 			
+			update_freq = 0;
+		}
+		
+		if (poll_power_count == POWER_POLL_INTERVAL) {
+			read_fwd_val();
 			poll_power_count++;
 		}
 		else if (poll_power_count > (POWER_POLL_INTERVAL+2)) {
-			PORTB |= (1<<4);
 			read_ref_val();
-			PORTB &= ~(1<<4);
 			
 			//Calculate the power from the new A/D reads
 			input_calculate_power();
 			//Save the calculation of the VSWR to the status struct
 			status.curr_vswr = input_calculate_vswr();
-
-			status.curr_freq = get_freq();
-			status.curr_band = get_band(status.curr_freq);
-		
-			//printf("AD CH0 VAL: %u\n\r",ad_val);
-			//printf("AD CH0: %.1fmV\n\r",(double)(0.0625f*ad_val));
-			//printf("AD CH1 VAL: %u\n\r",ad_val);
-			//printf("AD CH1: %.1fmV\n\r",(double)(0.0625f*ad_val));
 
 			input_calculate_power();
 
@@ -299,6 +345,16 @@ int main(void) {
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
+	if (counter_poll_freq == 100) {
+		PORTA |= (1<<7);
+	}
+	else if (counter_poll_freq == 1100) {
+		read_freq_registers();
+		
+		update_freq = 1;
+		counter_poll_freq = 0;
+	}
+
 	if (pwr_meter_sleep == 0) {
 		if ((counter_compare0 % POWER_TRANSMIT_INTERVAL1) == 0) {
 			if (update_status == 0)
@@ -311,13 +367,13 @@ ISR(SIG_OUTPUT_COMPARE0) {
 				update_status = 1;
 		}
 	}
-	
-	poll_power_count++;
 
 	if (last_pwr_change_interval > (POWER_LAST_CHANGE_TIME/POWER_POLL_INTERVAL)) {
 		pwr_meter_sleep = 1;
 	}
 
+	poll_power_count++;
+	counter_poll_freq++;
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
