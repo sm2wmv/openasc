@@ -100,7 +100,7 @@
 #define INTERVAL_POLL_BUTTONS 50
 
 //! The poll interval of the rotary encoder (unit = ms)
-#define INTERVAL_POLL_ROTARY_ENCODER	5
+#define INTERVAL_POLL_ROTARY_ENCODER	2
 
 //! The poll interval of the external devices as shown in board.h (unit = ms)
 #define INTERVAL_POLL_EXT_DEVICES		1

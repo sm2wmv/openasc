@@ -659,8 +659,6 @@ int main(void){
 	
   #ifdef DEBUG_COMPUTER_USART_ENABLED
     printf("openASC started in USART debug mode\n");
-    
-    computer_interface_print_size();
   #endif
   
   BUS_MESSAGE mess;
