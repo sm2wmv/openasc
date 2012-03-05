@@ -23,19 +23,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <avr/io.h>
+#include <string.h>
 
 #include "board.h"
 #include "rotary_encoder.h"
+#include "main.h"
 
 //! The last state of the encoder
-unsigned char encoder_last_state = 0;
+static unsigned char encoder_last_state = 0;
 
 //! The current state of the encoder
-unsigned char encoder_current_state = 0;
+static unsigned char encoder_current_state = 0;
+
+#ifdef DEBUG_COMPUTER_USART_ENABLED
+  static int temp_val = 127;
+  static int old_temp_val = 127;
+  
+  static char old_state = 0;
+  static char new_state = 0;
+#endif
 
 /*! \brief Poll the rotary encoder pin states 
  *  \return The state of the rotary encoder pins */
-unsigned char poll_encoder_state(void) {
+ __inline__ unsigned char poll_encoder_state(void) {
 	return(((PINE & (1<<PULSE_SENSOR_BIT1))>>PULSE_SENSOR_BIT1) | ((PINE & (1<<PULSE_SENSOR_BIT2))>>(PULSE_SENSOR_BIT2-1)));
 }
 
@@ -43,7 +53,12 @@ unsigned char poll_encoder_state(void) {
  *  \return Returns 0 if nothing happened, -1 if rotary CCW and 1 if CW */
 int rotary_encoder_poll(void) {
 	int retval = 0;
+  
 	encoder_current_state = poll_encoder_state();
+  
+  #ifdef DEBUG_COMPUTER_USART_ENABLED
+    new_state = encoder_current_state;
+  #endif
 
 	if (encoder_current_state != encoder_last_state) {
 		if (((encoder_current_state == 3) && (encoder_last_state == 2)) || ((encoder_current_state == 0) && (encoder_last_state == 1)))
@@ -53,6 +68,22 @@ int rotary_encoder_poll(void) {
 
 		encoder_last_state = encoder_current_state;
 	}
+
+  #ifdef DEBUG_COMPUTER_USART_ENABLED
+    temp_val += retval;
+    
+    if (old_temp_val != temp_val) {
+      printf("VAL: %i\n\r",temp_val);
+      old_temp_val = temp_val;
+    }
+    
+    if (new_state != old_state) {
+      printf("NEW_STATE: 0x%02X\n\r",new_state);
+      printf("OLD_STATE: 0x%02X\n\r",old_state);
+      
+      old_state = new_state;
+    }
+  #endif
 
 	return(retval);
 }

@@ -1177,7 +1177,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 		else
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
     
-    printf("NEW PING\n\r");
+//    printf("NEW PING\n\r");
 	}
 	else if (bus_message.cmd == BUS_CMD_SHUTTING_DOWN) {
 		bus_ping_clear_device(bus_message.from_addr);
