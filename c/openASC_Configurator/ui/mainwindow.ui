@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>656</width>
-    <height>620</height>
+    <height>640</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>656</width>
-    <height>620</height>
+    <height>640</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>656</width>
-    <height>620</height>
+    <height>640</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -822,8 +822,8 @@
          <rect>
           <x>215</x>
           <y>295</y>
-          <width>278</width>
-          <height>220</height>
+          <width>275</width>
+          <height>258</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -832,7 +832,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QLabel" name="labelPowerMeter">
            <property name="text">
@@ -853,7 +853,7 @@
          <item>
           <layout class="QGridLayout" name="gridLayout_12">
            <item row="0" column="0">
-            <widget class="QLabel" name="labelPowerMeterAddress_3">
+            <widget class="QLabel" name="labelPowerMeterBand">
              <property name="text">
               <string>Band:</string>
              </property>
@@ -909,6 +909,13 @@
                <string>10m</string>
               </property>
              </item>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QCheckBox" name="checkBoxPowerMeterAllBands">
+             <property name="text">
+              <string>All bands</string>
+             </property>
             </widget>
            </item>
            <item row="1" column="0">
@@ -974,10 +981,36 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
-            <widget class="QCheckBox" name="checkBoxPowerMeterAllBands">
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelPowerMeterRefPower">
              <property name="text">
-              <string>All bands</string>
+              <string>Ref power:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QSpinBox" name="spinBoxPowerMeterRefPower">
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>32000</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="labelPowerMeterRefPowerWatts">
+             <property name="text">
+              <string>(W, 0 = disabled)</string>
              </property>
             </widget>
            </item>
@@ -3492,7 +3525,7 @@ a function to it</string>
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>13</x>
@@ -3650,7 +3683,7 @@ a function to it</string>
           <string>Buttons</string>
          </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>10</x>

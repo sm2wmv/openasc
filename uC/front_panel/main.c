@@ -472,7 +472,7 @@ int main(void){
   //Check if this is the first time we start the device, if so we need to initiate some
 	//data structures. To force this at startup just change the value that should be read and
 	//written to the EEPROM
-	if (eeprom_read_startup_byte() != 0x02) {
+	if (eeprom_read_startup_byte() != 0x03) {
 		eeprom_create_table();
 		
 		eeprom_read_table();
@@ -490,7 +490,7 @@ int main(void){
 		//Write the settings to the EEPROM
 		eeprom_save_runtime_settings(&runtime_settings);
 		
-		eeprom_write_startup_byte(0x02);
+		eeprom_write_startup_byte(0x03);
 
 		//The first time the box is started, we need to setup the settings
 		computer_interface_activate_setup();
@@ -612,7 +612,7 @@ int main(void){
 	bus_init();
 
 	//Init the power meter
-	powermeter_init(settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph, settings.powermeter_vswr_limit);
+	powermeter_init(settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph);
 	
 	if (settings.network_device_is_master == 1) {
 		bus_set_is_master(1,settings.network_device_count);
@@ -659,6 +659,14 @@ int main(void){
 	
   #ifdef DEBUG_COMPUTER_USART_ENABLED
     printf("openASC started in USART debug mode\n");
+    
+    /*printf("POWER METER DEBUG\n\r");
+    printf("-----------------\n\r");
+    for (unsigned char i=0;i<9;i++) {
+      printf("Band[%i] addr: 0x%02X\n\r",i,settings.powermeter_address[i]);
+      printf("Band[%i] vswr: %i\n\r",i,settings.powermeter_vswr_limit[i]);
+      printf("Band[%i] refp: %i\n\r",i,settings.powermeter_ref_power_limit[i]);
+    }*/
   #endif
   
   BUS_MESSAGE mess;
@@ -687,6 +695,21 @@ int main(void){
 				}
 			}
 			
+			//Check the VSWR and reflected power values, if they are too high we lock the PTT
+      if (status.selected_band > 0) {
+        if ((settings.powermeter_vswr_limit[status.selected_band-1] != 0) && (powermeter_get_vswr() >= settings.powermeter_vswr_limit[status.selected_band-1])) {
+          //Check so that we are actually transmitting
+          if (main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND_RADIO_TX)
+            error_handler_set(ERROR_TYPE_HIGH_VSWR,1,0);
+        }
+          
+        if ((settings.powermeter_ref_power_limit[status.selected_band-1] != 0) && (powermeter_get_ref_power() >= settings.powermeter_ref_power_limit[status.selected_band-1])) {
+          //Check so that we are actually transmitting
+          if (main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND_RADIO_TX)
+            error_handler_set(ERROR_TYPE_HIGH_REF_POWER,1,0);
+        }
+      }
+
       //Poll the buttons
 			if (main_flags & (1<<FLAG_POLL_BUTTONS)) {
 				event_poll_buttons();

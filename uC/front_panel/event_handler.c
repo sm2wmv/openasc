@@ -57,7 +57,6 @@
 
 //#define DEBUG_WMV_BUS 1
 
-
 //#define ERROR_DEBUG
 
 CREATE_CRITICAL_LIST();
@@ -89,6 +88,7 @@ unsigned char event_check_critical_cmd_list(void) {
 /*! \brief Function which goes through the ping list and checks if something has happened */
 void event_check_pings(void) {
 
+  //TODO: This does not work, check why!
 	if (bus_ping_get_failed_count() > 0) {
 		bus_struct_ping_status ping_data = bus_ping_get_failed_ping();
 		
@@ -1223,7 +1223,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
 		else if (runtime_settings.powermeter_address == bus_message.from_addr)
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
-	}
+  }
   else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
     internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
   }	

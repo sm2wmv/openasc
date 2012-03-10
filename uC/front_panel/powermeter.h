@@ -61,12 +61,10 @@ typedef struct {
 	unsigned int text_update_rate;
 	//! The update rate in ms of the bargraph
 	unsigned int bargraph_update_rate;
-	//! The VSWR limit of when the radios PTT should be deactivated and the device set into ERROR mode
-	unsigned int vswr_limit;
 } powermeter_struct;
 
 void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsigned int vswr, unsigned char type);
-void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit);
+void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate);
 void powermeter_1ms_tick(void);
 void powermeter_set_active(unsigned char state);
 unsigned char powermeter_is_active(void);
