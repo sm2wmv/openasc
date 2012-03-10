@@ -160,8 +160,9 @@ void MainWindowImpl::loadInitialGUIValues() {
 	
 	comboBoxPowerMeterBand->setCurrentIndex(0);
 	spinBoxPowerMeterAddress->setValue(settingsClass.getPowerMeterAddress(0));
+	spinBoxPowerMeterRefPower->setValue(settingsClass.getPowerMeterRefPower(0));
 
-	doubleSpinBoxPowerMeterSWR->setValue(settingsClass.getPowerMeterVSWRAlarm());
+	doubleSpinBoxPowerMeterSWR->setValue(settingsClass.getPowerMeterVSWRAlarm(0));
 	spinBoxPowerMeterUpdateRateText->setValue(settingsClass.getPowerMeterUpdateRateText());
 	spinBoxPowerMeterUpdateRateBargraph->setValue(settingsClass.getPowerMeterUpdateRateBargraph());
 
@@ -1321,7 +1322,17 @@ void MainWindowImpl::spinBoxPowerMeterAdressValueChanged(int value) {
 }
 
 void MainWindowImpl::spinBoxPowerMeterSWRValueChanged(double value) {
-		settingsClass.setPowerMeterVSWRAlarm(value);
+	if (checkBoxPowerMeterAllBands->isChecked())
+		settingsClass.setPowerMeterVSWRAlarm(99,value);
+	else
+		settingsClass.setPowerMeterVSWRAlarm(comboBoxPowerMeterBand->currentIndex(),value);
+}
+
+void MainWindowImpl::spinBoxPowerMeterRefPowerValueChanged(int value) {
+	if (checkBoxPowerMeterAllBands->isChecked())
+		settingsClass.setPowerMeterRefPower(99,value);
+	else
+		settingsClass.setPowerMeterRefPower(comboBoxPowerMeterBand->currentIndex(),value);
 }
 
 void MainWindowImpl::spinBoxPowerMeterUpdateRateTextValueChanged(int rate) {
@@ -1387,11 +1398,15 @@ void MainWindowImpl::comboBoxLEDAUXIndexChanged(int funcIndex) {
 void MainWindowImpl::checkBoxPowerMeterAllBandsClicked(bool state) {
 	if (state == true) {
 		settingsClass.setPowerMeterAddress(99,spinBoxPowerMeterAddress->value());
+		settingsClass.setPowerMeterVSWRAlarm(99,doubleSpinBoxPowerMeterSWR->value());
+		settingsClass.setPowerMeterRefPower(99,spinBoxPowerMeterRefPower->value());
 	}
 }
 
 void MainWindowImpl::comboBoxPowerMeterBandChanged(int index) {
 	spinBoxPowerMeterAddress->setValue(settingsClass.getPowerMeterAddress(index));
+	doubleSpinBoxPowerMeterSWR->setValue(settingsClass.getPowerMeterVSWRAlarm(index));
+	spinBoxPowerMeterRefPower->setValue(settingsClass.getPowerMeterRefPower(index));
 }
 
 void MainWindowImpl::groupBoxAmplifierControlClicked(bool state) {
@@ -1583,6 +1598,7 @@ void MainWindowImpl::setupConnections() {
 	connect(comboBoxPowerMeterBand, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxPowerMeterBandChanged(int)));
 	connect(spinBoxPowerMeterAddress, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterAdressValueChanged(int)));
 	connect(doubleSpinBoxPowerMeterSWR, SIGNAL(valueChanged(double)), this, SLOT(spinBoxPowerMeterSWRValueChanged(double)));
+	connect(spinBoxPowerMeterRefPower, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterRefPowerValueChanged(int)));
 	connect(spinBoxPowerMeterUpdateRateText, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateTextValueChanged(int)));
 	connect(spinBoxPowerMeterUpdateRateBargraph, SIGNAL(valueChanged(int)), this, SLOT(spinBoxPowerMeterUpdateRateBargraphValueChanged(int)));
 

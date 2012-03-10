@@ -26,7 +26,7 @@
 //#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "297\0"
+#define FIRMWARE_REV "298\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -220,7 +220,9 @@ typedef struct {
 	//! The powermeter address
 	unsigned char powermeter_address[9];	//We can have one power meter address for each band
 	//! The powermeter VSWR alarm limit (250 means 2.5:1)
-	unsigned int powermeter_vswr_limit;
+	unsigned int powermeter_vswr_limit[9];
+  //! The powermeter reflected power limit (in watts)
+  unsigned int powermeter_ref_power_limit[9];
 	//! The powermeter update rate on the display text (0 means it's disabled, both text and bargraph)
 	unsigned int powermeter_update_rate_text;
 	//! The powermeter update rate on the display bargraph

@@ -299,6 +299,9 @@ void computer_interface_send_nack(void) {
 void computer_interface_parse_data(void) {
 	unsigned char ptr_pos=2;
 	
+  unsigned char index_swr;
+  unsigned char index_ref_power;
+  
 	if (computer_comm.flags & (1<<COMPUTER_COMM_FLAG_DATA_IN_RX_BUF)) {
 		if (computer_comm.command == CTRL_SET_TIME) {
 			ds1307_set_time(computer_comm.rx_buffer_start);
@@ -626,15 +629,23 @@ void computer_interface_parse_data(void) {
 					computer_interface_send_ack();
 					break;					
 				case CTRL_SET_POWERMETER_SETTINGS:
-					for (unsigned char i=0;i<9;i++)
+            index_swr = 10;
+            index_ref_power = 28;
+
+          for (unsigned char i=0;i<9;i++) {
 						settings_ptr->powermeter_address[i] = computer_comm.rx_buffer_start[1+i];
+            
+            settings_ptr->powermeter_vswr_limit[i] = (computer_comm.rx_buffer_start[index_swr++] << 8);
+            settings_ptr->powermeter_vswr_limit[i] += computer_comm.rx_buffer_start[index_swr++];
+            
+            settings_ptr->powermeter_ref_power_limit[i] = (computer_comm.rx_buffer_start[index_ref_power++] << 8);
+            settings_ptr->powermeter_ref_power_limit[i] += computer_comm.rx_buffer_start[index_ref_power++];
+          }
 					
-					settings_ptr->powermeter_vswr_limit = (computer_comm.rx_buffer_start[10] << 8);
-					settings_ptr->powermeter_vswr_limit += computer_comm.rx_buffer_start[11];
-					settings_ptr->powermeter_update_rate_text = (computer_comm.rx_buffer_start[12] << 8);
-					settings_ptr->powermeter_update_rate_text += computer_comm.rx_buffer_start[13];
-					settings_ptr->powermeter_update_rate_bargraph = (computer_comm.rx_buffer_start[14] << 8);
-					settings_ptr->powermeter_update_rate_bargraph += computer_comm.rx_buffer_start[15];
+					settings_ptr->powermeter_update_rate_text = (computer_comm.rx_buffer_start[46] << 8);
+					settings_ptr->powermeter_update_rate_text += computer_comm.rx_buffer_start[47];
+					settings_ptr->powermeter_update_rate_bargraph = (computer_comm.rx_buffer_start[48] << 8);
+					settings_ptr->powermeter_update_rate_bargraph += computer_comm.rx_buffer_start[49];
 					
 					computer_interface_send_ack();
 					break;

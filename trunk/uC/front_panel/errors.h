@@ -24,7 +24,7 @@
 #define _ERRORS_H_
 
 //! Define which tells us how many different error types that currently exist
-#define NR_OF_ERRORS	11
+#define NR_OF_ERRORS	12
 
 //! Error that the bus had to resend a message more times than the max limit
 #define ERROR_TYPE_BUS_RESEND						0
@@ -54,6 +54,8 @@
 #define ERROR_TYPE_INT_COMM_RX_FULL     10
 //! Event queue is full
 #define ERROR_TYPE_EVENT_QUEUE_FULL     11
+//! HIGH REFLECTED POWER
+#define ERROR_TYPE_HIGH_REF_POWER       12
 
 
 /*! \brief Set the error flag of a certain error type

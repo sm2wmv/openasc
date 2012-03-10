@@ -6,10 +6,13 @@ SettingsClass::SettingsClass() {
 	deviceIsMaster = false;
 	nrOfDevices = 10;
 
-	for (int i=0;i<9;i++)
+	for (int i=0;i<9;i++) {
 		powerMeterAddress[i] = 0;
+		powerMeterVSWRAlarmValue[i] = 0;
+		powerMeterRefPowerValue[i] = 0;
+	}
 
-	powerMeterVSWRAlarmValue = 0;
+
 	powerMeterUpdateRateText = 500;
 	powerMeterUpdateRateBargraph = 200;
 
@@ -45,7 +48,27 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("PowerMeterAddress[7]",powerMeterAddress[7]);
 	settings.setValue("PowerMeterAddress[8]",powerMeterAddress[8]);
 
-	settings.setValue("PowerMeterVSWRAlarmValue",powerMeterVSWRAlarmValue);
+	settings.setValue("PowerMeterVSWRAlarmValue[0]",powerMeterVSWRAlarmValue[0]);
+	settings.setValue("PowerMeterVSWRAlarmValue[1]",powerMeterVSWRAlarmValue[1]);
+	settings.setValue("PowerMeterVSWRAlarmValue[2]",powerMeterVSWRAlarmValue[2]);
+	settings.setValue("PowerMeterVSWRAlarmValue[3]",powerMeterVSWRAlarmValue[3]);
+	settings.setValue("PowerMeterVSWRAlarmValue[4]",powerMeterVSWRAlarmValue[4]);
+	settings.setValue("PowerMeterVSWRAlarmValue[5]",powerMeterVSWRAlarmValue[5]);
+	settings.setValue("PowerMeterVSWRAlarmValue[6]",powerMeterVSWRAlarmValue[6]);
+	settings.setValue("PowerMeterVSWRAlarmValue[7]",powerMeterVSWRAlarmValue[7]);
+	settings.setValue("PowerMeterVSWRAlarmValue[8]",powerMeterVSWRAlarmValue[8]);
+
+	settings.setValue("PowerMeterRefPowerValue[0]",powerMeterRefPowerValue[0]);
+	settings.setValue("PowerMeterRefPowerValue[1]",powerMeterRefPowerValue[1]);
+	settings.setValue("PowerMeterRefPowerValue[2]",powerMeterRefPowerValue[2]);
+	settings.setValue("PowerMeterRefPowerValue[3]",powerMeterRefPowerValue[3]);
+	settings.setValue("PowerMeterRefPowerValue[4]",powerMeterRefPowerValue[4]);
+	settings.setValue("PowerMeterRefPowerValue[5]",powerMeterRefPowerValue[5]);
+	settings.setValue("PowerMeterRefPowerValue[6]",powerMeterRefPowerValue[6]);
+	settings.setValue("PowerMeterRefPowerValue[7]",powerMeterRefPowerValue[7]);
+	settings.setValue("PowerMeterRefPowerValue[8]",powerMeterRefPowerValue[8]);
+
+
 	settings.setValue("PowerMeterDisplayUpdateRateText",powerMeterUpdateRateText);
 	settings.setValue("PowerMeterDisplayUpdateRateBargraph",powerMeterUpdateRateBargraph);
 
@@ -80,7 +103,27 @@ void SettingsClass::loadSettings(QSettings& settings) {
 	powerMeterAddress[7] = settings.value("PowerMeterAddress[7]").toInt();
 	powerMeterAddress[8] = settings.value("PowerMeterAddress[8]").toInt();
 
-	powerMeterVSWRAlarmValue = settings.value("PowerMeterVSWRAlarmValue").toDouble();
+	powerMeterVSWRAlarmValue[0] = settings.value("PowerMeterVSWRAlarmValue[0]").toDouble();
+	powerMeterVSWRAlarmValue[1] = settings.value("PowerMeterVSWRAlarmValue[1]").toDouble();
+	powerMeterVSWRAlarmValue[2] = settings.value("PowerMeterVSWRAlarmValue[2]").toDouble();
+	powerMeterVSWRAlarmValue[3] = settings.value("PowerMeterVSWRAlarmValue[3]").toDouble();
+	powerMeterVSWRAlarmValue[4] = settings.value("PowerMeterVSWRAlarmValue[4]").toDouble();
+	powerMeterVSWRAlarmValue[5] = settings.value("PowerMeterVSWRAlarmValue[5]").toDouble();
+	powerMeterVSWRAlarmValue[6] = settings.value("PowerMeterVSWRAlarmValue[6]").toDouble();
+	powerMeterVSWRAlarmValue[7] = settings.value("PowerMeterVSWRAlarmValue[7]").toDouble();
+	powerMeterVSWRAlarmValue[8] = settings.value("PowerMeterVSWRAlarmValue[8]").toDouble();
+
+	powerMeterRefPowerValue[0] = settings.value("PowerMeterRefPowerValue[0]").toInt();
+	powerMeterRefPowerValue[1] = settings.value("PowerMeterRefPowerValue[1]").toInt();
+	powerMeterRefPowerValue[2] = settings.value("PowerMeterRefPowerValue[2]").toInt();
+	powerMeterRefPowerValue[3] = settings.value("PowerMeterRefPowerValue[3]").toInt();
+	powerMeterRefPowerValue[4] = settings.value("PowerMeterRefPowerValue[4]").toInt();
+	powerMeterRefPowerValue[5] = settings.value("PowerMeterRefPowerValue[5]").toInt();
+	powerMeterRefPowerValue[6] = settings.value("PowerMeterRefPowerValue[6]").toInt();
+	powerMeterRefPowerValue[7] = settings.value("PowerMeterRefPowerValue[7]").toInt();
+	powerMeterRefPowerValue[8] = settings.value("PowerMeterRefPowerValue[8]").toInt();
+
+
 	powerMeterUpdateRateText = settings.value("PowerMeterDisplayUpdateRateText").toInt();
 	powerMeterUpdateRateBargraph = settings.value("PowerMeterDisplayUpdateRateBargraph").toInt();
 
@@ -98,7 +141,7 @@ void SettingsClass::loadSettings(QSettings& settings) {
 }
 
 void SettingsClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[30];
+	unsigned char tx_buff[60];
 		
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_NETWORK;
 	tx_buff[1] = networkAddress;
@@ -121,14 +164,51 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[7] = powerMeterAddress[6];
 	tx_buff[8] = powerMeterAddress[7];
 	tx_buff[9] = powerMeterAddress[8];
-	tx_buff[10] = ((unsigned int)(powerMeterVSWRAlarmValue * 100) & 0xFF00) >> 8;
-	tx_buff[11] = (unsigned int)(powerMeterVSWRAlarmValue * 100) & 0x00FF;
-	tx_buff[12] = (powerMeterUpdateRateText >> 8);
-	tx_buff[13] = (powerMeterUpdateRateText & 0x00FF);
-	tx_buff[14] = (powerMeterUpdateRateBargraph >> 8);
-	tx_buff[15] = (powerMeterUpdateRateBargraph & 0x00FF);	
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 16, tx_buff);
+	tx_buff[10] = ((unsigned int)(powerMeterVSWRAlarmValue[0] * 100) & 0xFF00) >> 8;
+	tx_buff[11] = (unsigned int)(powerMeterVSWRAlarmValue[0] * 100) & 0x00FF;
+	tx_buff[12] = ((unsigned int)(powerMeterVSWRAlarmValue[1] * 100) & 0xFF00) >> 8;
+	tx_buff[13] = (unsigned int)(powerMeterVSWRAlarmValue[1] * 100) & 0x00FF;
+	tx_buff[14] = ((unsigned int)(powerMeterVSWRAlarmValue[2] * 100) & 0xFF00) >> 8;
+	tx_buff[15] = (unsigned int)(powerMeterVSWRAlarmValue[2] * 100) & 0x00FF;
+	tx_buff[16] = ((unsigned int)(powerMeterVSWRAlarmValue[3] * 100) & 0xFF00) >> 8;
+	tx_buff[17] = (unsigned int)(powerMeterVSWRAlarmValue[3] * 100) & 0x00FF;
+	tx_buff[18] = ((unsigned int)(powerMeterVSWRAlarmValue[4] * 100) & 0xFF00) >> 8;
+	tx_buff[19] = (unsigned int)(powerMeterVSWRAlarmValue[4] * 100) & 0x00FF;
+	tx_buff[20] = ((unsigned int)(powerMeterVSWRAlarmValue[5] * 100) & 0xFF00) >> 8;
+	tx_buff[21] = (unsigned int)(powerMeterVSWRAlarmValue[5] * 100) & 0x00FF;
+	tx_buff[22] = ((unsigned int)(powerMeterVSWRAlarmValue[6] * 100) & 0xFF00) >> 8;
+	tx_buff[23] = (unsigned int)(powerMeterVSWRAlarmValue[6] * 100) & 0x00FF;
+	tx_buff[24] = ((unsigned int)(powerMeterVSWRAlarmValue[7] * 100) & 0xFF00) >> 8;
+	tx_buff[25] = (unsigned int)(powerMeterVSWRAlarmValue[7] * 100) & 0x00FF;
+	tx_buff[26] = ((unsigned int)(powerMeterVSWRAlarmValue[8] * 100) & 0xFF00) >> 8;
+	tx_buff[27] = (unsigned int)(powerMeterVSWRAlarmValue[8] * 100) & 0x00FF;
+
+	tx_buff[28] = (powerMeterRefPowerValue[0] >> 8) & 0x00FF;
+	tx_buff[29] = (powerMeterRefPowerValue[0] & 0x00FF);
+	tx_buff[30] = (powerMeterRefPowerValue[1] >> 8) & 0x00FF;
+	tx_buff[31] = (powerMeterRefPowerValue[1] & 0x00FF);
+	tx_buff[32] = (powerMeterRefPowerValue[2] >> 8) & 0x00FF;
+	tx_buff[33] = (powerMeterRefPowerValue[2] & 0x00FF);
+	tx_buff[34] = (powerMeterRefPowerValue[3] >> 8) & 0x00FF;
+	tx_buff[35] = (powerMeterRefPowerValue[3] & 0x00FF);
+	tx_buff[36] = (powerMeterRefPowerValue[4] >> 8) & 0x00FF;
+	tx_buff[37] = (powerMeterRefPowerValue[4] & 0x00FF);
+	tx_buff[38] = (powerMeterRefPowerValue[5] >> 8) & 0x00FF;
+	tx_buff[39] = (powerMeterRefPowerValue[5] & 0x00FF);
+	tx_buff[40] = (powerMeterRefPowerValue[6] >> 8) & 0x00FF;
+	tx_buff[41] = (powerMeterRefPowerValue[6] & 0x00FF);
+	tx_buff[42] = (powerMeterRefPowerValue[7] >> 8) & 0x00FF;
+	tx_buff[43] = (powerMeterRefPowerValue[7] & 0x00FF);
+	tx_buff[44] = (powerMeterRefPowerValue[8] >> 8) & 0x00FF;
+	tx_buff[45] = (powerMeterRefPowerValue[8] & 0x00FF);
+
+	tx_buff[46] = (powerMeterUpdateRateText >> 8);
+	tx_buff[47] = (powerMeterUpdateRateText & 0x00FF);
+	tx_buff[48] = (powerMeterUpdateRateBargraph >> 8);
+	tx_buff[49] = (powerMeterUpdateRateBargraph & 0x00FF);
+
+	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 50, tx_buff);
 
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_OTHER;
 	tx_buff[1] = pttInterlockInput;
@@ -171,12 +251,30 @@ unsigned char SettingsClass::getPowerMeterAddress(unsigned char band) {
 		return(powerMeterAddress[band]);
 }
 
-void SettingsClass::setPowerMeterVSWRAlarm(double swr) {
-		powerMeterVSWRAlarmValue = swr;
+void SettingsClass::setPowerMeterVSWRAlarm(unsigned char band, float swr) {
+	if (band == 99)	{
+		for (unsigned char i=0;i<9;i++)
+			powerMeterVSWRAlarmValue[i] = swr;
+	}
+	else
+		powerMeterVSWRAlarmValue[band] = swr;
 }
 
-double SettingsClass::getPowerMeterVSWRAlarm(void) {
-		return(powerMeterVSWRAlarmValue);
+void SettingsClass::setPowerMeterRefPower(unsigned char band, unsigned int power) {
+	if (band == 99)	{
+		for (unsigned char i=0;i<9;i++)
+			powerMeterRefPowerValue[i] = power;
+	}
+	else
+		powerMeterRefPowerValue[band] = power;
+}
+
+unsigned int SettingsClass::getPowerMeterRefPower(unsigned char band) {
+	return(powerMeterRefPowerValue[band]);
+}
+
+float SettingsClass::getPowerMeterVSWRAlarm(unsigned char band) {
+		return(powerMeterVSWRAlarmValue[band]);
 }
 
 void SettingsClass::setPowerMeterUpdateRateText(unsigned int rate) {

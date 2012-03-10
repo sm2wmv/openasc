@@ -184,6 +184,7 @@ private slots:
 	void comboBoxPowerMeterBandChanged(int index);
 	void spinBoxPowerMeterAdressValueChanged(int);
 	void spinBoxPowerMeterSWRValueChanged(double);
+	void spinBoxPowerMeterRefPowerValueChanged(int value);
 	void spinBoxPowerMeterUpdateRateTextValueChanged(int);
 	void spinBoxPowerMeterUpdateRateBargraphValueChanged(int);
 

@@ -53,17 +53,14 @@ double ref_scale_value = 0;
 
 /*! \brief Initialize the power meter
  *  \param text_update_rate How often we should refresh the text on the display
- *  \param bargraph_update_rate How often we should update the bargraph of the display
- *  \param vswr_limit What is the SWR limit of the device, when this is exceeded we shut down the possibility to PTT 
- *  \param text_view Which kind of data is shown on the text display */
-void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate, unsigned int vswr_limit) {
+ *  \param bargraph_update_rate How often we should update the bargraph of the display */
+void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update_rate) {
 	powermeter_status.curr_fwd_pwr_value = 0;
 	powermeter_status.curr_ref_pwr_value = 0;
 	powermeter_status.curr_vswr_value = 0;
 		
 	powermeter_status.text_update_rate = text_update_rate;
 	powermeter_status.bargraph_update_rate = bargraph_update_rate;
-	powermeter_status.vswr_limit = vswr_limit;
 }
 
 /*! \brief Activate the power meter display 
@@ -92,14 +89,7 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	powermeter_status.curr_fwd_pwr_value = fwd_pwr;
 	powermeter_status.curr_ref_pwr_value = ref_pwr;
 	powermeter_status.curr_vswr_value = vswr;
-	
-	//Check if the VSWR is too high
-	if ((powermeter_status.vswr_limit != 0) && (vswr >= powermeter_status.vswr_limit)) {
-		//Check so that we are actually transmitting
-    if (main_get_inhibit_state() == INHIBIT_NOT_OK_TO_SEND_RADIO_TX)
-      error_handler_set(ERROR_TYPE_HIGH_VSWR,1,vswr);
-	}
-	
+
 	if (type != pickup_type) {
 		switch(type) {
 			case PICKUP_TYPE_150W:
