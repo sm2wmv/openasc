@@ -41,8 +41,6 @@
 /* Include the bus headers */
 #include "../../../wmv_bus/bus.h"
 #include "../../../wmv_bus/bus_ping.h"
-#include "../../../wmv_bus/bus_rx_queue.h"
-#include "../../../wmv_bus/bus_tx_queue.h"
 #include "../../../wmv_bus/bus_commands.h"
 
 //#define ERROR_DEBUG 1
@@ -70,24 +68,20 @@ static unsigned char ad_curr_ch = 0;
 static unsigned char ad_conv_started = 0;
 static unsigned int ad_curr_val[8] = {0,0,0,0,0,0,0,0};
 
-void bus_parse_message(void) {
-	BUS_MESSAGE bus_message = rx_queue_get();
+void bus_parse_message(BUS_MESSAGE *bus_message) {
 
-	if (bus_message.cmd == BUS_CMD_ACK)
-		bus_message_acked(bus_message.from_addr);
-	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
-	else if (bus_message.cmd == BUS_CMD_PING) {
-		if (bus_message.length > 1)
-			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+	if (bus_message->cmd == BUS_CMD_ACK)
+		bus_message_acked(bus_message->from_addr);
+	else if (bus_message->cmd == BUS_CMD_NACK)
+		bus_message_nacked(bus_message->from_addr, bus_message->data[0]);
+	else if (bus_message->cmd == BUS_CMD_PING) {
+		if (bus_message->length > 1)
+			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], bus_message->length-1, (unsigned char *)(bus_message->data+1));
 		else
-			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
+			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);
 	}
 	else {
 	}
-	
-	//Drop the message from the RX queue
-	rx_queue_drop();
 }
 
 /*! Add a message to the event queue which will be run at the correct time
@@ -124,6 +118,8 @@ void event_run(void) {
 void send_ping(void) {
 	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
 }
+
+unsigned char print_pos = 0;
 
 /*! Main function of the front panel */
 int main(void){
@@ -162,10 +158,6 @@ int main(void){
 		bus_set_is_master(0,0);	
 	}
 	
-	if (bus_is_master()) {
-		tx_queue_dropall();
-	}
-	
 	init_timer_0();
 	
 	//Timer used for the communication bus. The interrupt is caught in bus.c
@@ -186,16 +178,21 @@ int main(void){
 	
 	printf("\n\r\n\rFinnPA control board started\n\r");
 	
-unsigned int motor_pos = 100;
+  unsigned int motor_pos = 100;
+  
+  BUS_MESSAGE mess;
 
-	while(1) {
-		if (!rx_queue_is_empty())
-			bus_parse_message();
+
+  motor_control_goto(0,100);
+      
+  while(1) {
+    if (bus_check_rx_status(&mess)) {
+      bus_parse_message(&mess);
+    }
+    
+    bus_check_tx_status();		
 		
-		if (!tx_queue_is_empty())
-			bus_check_tx_status();
-		
-		if (bus_is_master()) {
+    if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, (unsigned char *)DEF_NR_DEVICES);
 
@@ -203,19 +200,12 @@ unsigned int motor_pos = 100;
 			}
 		}
 
-		if ((counter_ms % 10000) == 0) {
-			motor_control_goto(0,motor_pos);
-			
-			motor_pos += 200;
-			
-			if (motor_pos > 900)
-				motor_pos = 100;
-		}
-
-		if ((counter_ms % 1000) == 0) {
-			printf("STEPPER_POS[0]: %i\n\r",motor_control_get_curr_pos(0));
-		}
-
+		if (print_pos == 1) {
+      printf("CURR_POS: %i\n",a2dConvert10bit(0)); 
+      
+      print_pos = 0;
+    }
+		
 		if (bus_allowed_to_send()) {
 		//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
@@ -225,7 +215,7 @@ unsigned int motor_pos = 100;
 			}
 		}
 
-    motor_control_process();
+    
 /*		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();
@@ -252,33 +242,11 @@ ISR(SIG_OUTPUT_COMPARE0A) {
       //main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	if ((counter_ms % 2000) == 0) {
-	//	if (dir == 1)
-		//	dir = 0;
-		//else
-		//	dir = 1;
+	if ((counter_ms % 1000) == 0) {
+    print_pos = 1;
 	}
 	
-	/*if ((counter_ms % step_period) == 0) {
-		if (dir == 0) {
-			phase--;
-			motor_control_set_phase(0,phase);
-			
-			motor_control_step_motor1();
-			
-			if (phase == 0)
-				phase = 8;
-		}
-		else if (dir == 1) {
-			motor_control_set_phase(0,phase);
-			phase++;
-			
-			motor_control_step_motor1();
-			
-			if (phase > 7)
-				phase = 0;	
-		}
-	}*/
+	motor_control_process();
 	
 	counter_ad_conversion++;
 		
