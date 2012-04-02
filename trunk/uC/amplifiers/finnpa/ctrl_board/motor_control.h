@@ -24,7 +24,7 @@
 #define _MOTOR_CONTROL_H_
 
 //! The delay between each tick of a stepper motor
-#define MOTOR_CONTROL_STEP_DELAY  3
+#define MOTOR_CONTROL_STEP_DELAY  2
 
 //Direction is from front of motor looking at the axle
 

@@ -41,14 +41,9 @@
 //! Flag to indicate that a preamble has been found in the bus
 #define BUS_STATUS_PREAMBLE_FOUND_BIT		1
 
-//! The size of the RX queue in buffers
-#define BUS_RX_QUEUE_SIZE 10
-//! The size of the TX queue in buffers
-#define BUS_TX_QUEUE_SIZE	25
+#define DEF_NR_DEVICES  25
 
-#define DEF_NR_DEVICES  3
-
-#define BUS_ADDR 0x01
+#define BUS_ADDR 0x10
 
 #define DEVICE_ID_AMP_CTRL_BOARD   1
 #define DEVICE_ID_AMP_CTRL_BOX     2
