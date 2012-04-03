@@ -51,6 +51,9 @@ void init_ports(void)
   DDRD = 0x0E;
   DDRF = 0x30;
   
+  PORTA |= (1<<3);
+  PORTE |= (1<<6);
+  
   //Trigger on falling edge
  //EICRB = (1<<ISC61) | (0<<ISC60);
   EICRB = (0<<ISC61) | (1<<ISC60);
