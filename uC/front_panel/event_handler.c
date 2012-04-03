@@ -199,6 +199,10 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
         
         break;
       case INT_COMM_PS2_KEYPRESSED:
+        #ifdef DEBUG_COMPUTER_USART_ENABLED
+          printf("PS2_KEYCODE: 0x%02X\n\r",message.data[0]);
+        #endif
+        
         event_handler_process_ps2(message.data[0]);
         break;
       case INT_COMM_GET_BAND_BCD_STATUS:

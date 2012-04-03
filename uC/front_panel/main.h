@@ -26,7 +26,7 @@
 //#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "298\0"
+#define FIRMWARE_REV "299\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -193,6 +193,22 @@
 //! The amplifier need to have a TUNE button pushed before changing band
 #define AMP_TUNE_ENABLED            4
 
+/*! Amplifier status bits */
+//! The status of the mains of the amplifier
+#define AMP_STATUS_MAINS      0
+//! The status of the operate/standby of the amplifier
+#define AMP_STATUS_OPR_STBY   1
+
+/*! The amplifier operational status */
+/*! The amplifier is in standby */
+#define AMP_OP_STATUS_STBY          0
+/*! The amplifier is ready */
+#define AMP_OP_STATUS_READY         1
+/*! An error has occured, amp in standby */
+#define AMP_OP_STATUS_ERROR         2
+/*! The amplifier is tuning */
+#define AMP_OP_STATUS_TUNING        3
+
 /****************************************************************/
 
 //! Different inhibit states
@@ -304,6 +320,14 @@ typedef struct {
   unsigned char last_critical_cmd_state;
   /*! Alarm state output */
   unsigned char alarm_output;
+  /*! Amplifier status flags */
+  unsigned char amp_flags;
+  /*! Amplifier band segment */
+  unsigned char amp_segment;
+  /*! Amplifier current band */
+  unsigned char amp_band;
+  /*! The amplifier operational status */
+  unsigned char amp_op_status;
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM

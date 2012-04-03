@@ -25,6 +25,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #include "menu.h"
 #include "board.h"
@@ -41,7 +42,7 @@
 #define MENU_OPTION_LEFT_POS 13
 
 //! Number of options in the menu system
-#define MENU_OPTIONS	9
+#define MENU_OPTIONS	10
 
 static void (*bootloader_start)(void) = (void *)0x1FE00;
 
@@ -67,6 +68,9 @@ const struct_menu_option menu_option_band_selection_mode[] = {{"Manual"},{"Auto"
 const struct_menu_option menu_option_amp_ptt_output[] = {{"ON"},{"OFF"}};
 //! Menu system option - radio ptt output
 const struct_menu_option menu_option_radio_ptt_output[] = {{"ON"},{"OFF"}};
+//! Menu system option - Amplifier ON/OFF
+const struct_menu_option menu_option_amp_status[] = {{"ON"},{"OFF"}};
+
 /********* SETUP MENUS *********/
 //! Menu system
 const struct_menu_text menu_system_text[] = {
@@ -78,6 +82,7 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_ANT_STATUS, "Antenna status", NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS},
+{MENU_POS_AMP_STATUS, "Power amplifier", (struct_menu_option *)menu_option_amp_status, 0, MENU_OPTION_TYPE_NORMAL},
 {MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL}
 };
 
@@ -118,6 +123,71 @@ void menu_show_text(struct_menu_text menu_text) {
     sprintf(temp,"Address: %i",bus_get_address());
     glcd_text(MENU_OPTION_LEFT_POS,18+10,FONT_SEVEN_DOT,temp,strlen(temp));
 	}
+	else if (menu_text.pos == MENU_POS_AMP_STATUS) {
+    glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
+    
+    //Draw a seperation line between the options and the header
+    glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
+    glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+    
+    char temp[30];
+    
+    /* MAINS */
+    if (status.amp_flags & (1<<AMP_STATUS_MAINS))
+      strcpy_P(temp,PSTR("Mains: ON"));
+    else
+      strcpy_P(temp,PSTR("Mains: OFF"));
+
+    glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
+    
+
+    /*! Operate/standby */
+    if (status.amp_flags & (1<<AMP_STATUS_OPR_STBY))
+      strcpy_P(temp,PSTR("Mode: Operate"));
+    else
+      strcpy_P(temp,PSTR("Mode: Standby"));
+
+    glcd_text(MENU_OPTION_LEFT_POS,18+10,FONT_SEVEN_DOT,temp,strlen(temp));
+    
+    
+    /*! Amp status */
+    if (status.amp_op_status == AMP_OP_STATUS_STBY)
+      strcpy_P(temp,PSTR("Status: Standby"));
+    else if (status.amp_op_status == AMP_OP_STATUS_READY)
+      strcpy_P(temp,PSTR("Status: Ready"));
+    else if (status.amp_op_status == AMP_OP_STATUS_ERROR)
+      strcpy_P(temp,PSTR("Status: ERROR"));
+    else if (status.amp_op_status == AMP_OP_STATUS_TUNING)
+      strcpy_P(temp,PSTR("Status: Tuning"));
+    
+    glcd_text(MENU_OPTION_LEFT_POS,18+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
+    
+    /*! Amp band info */
+    if (status.amp_band == BAND_UNDEFINED)
+      strcpy_P(temp,PSTR("Band: None"));
+    else if (status.amp_band == BAND_160M)
+      strcpy_P(temp,PSTR("Band: 160m"));
+    else if (status.amp_band == BAND_80M)
+      strcpy_P(temp,PSTR("Band: 80m"));
+    else if (status.amp_band == BAND_40M)
+      strcpy_P(temp,PSTR("Band: 40m"));
+    else if (status.amp_band == BAND_30M)
+      strcpy_P(temp,PSTR("Band: 30m"));
+    else if (status.amp_band == BAND_20M)
+      strcpy_P(temp,PSTR("Band: 20m"));
+    else if (status.amp_band == BAND_17M)
+      strcpy_P(temp,PSTR("Band: 17m"));
+    else if (status.amp_band == BAND_15M)
+      strcpy_P(temp,PSTR("Band: 15m"));
+    else if (status.amp_band == BAND_12M)
+      strcpy_P(temp,PSTR("Band: 12m"));
+    else if (status.amp_band == BAND_10M)
+      strcpy_P(temp,PSTR("Band: 10m"));
+
+    sprintf(temp+strlen(temp)," S%i",status.amp_segment);
+    
+    glcd_text(MENU_OPTION_LEFT_POS,18+10+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
+  }
 	else {
 		//Show the "Menu" text
 		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));

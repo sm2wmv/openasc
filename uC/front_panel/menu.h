@@ -77,7 +77,9 @@ typedef struct {
 //! Show the ant disable/enable feature
 #define MENU_POS_ANT_STATUS       7
 //! Show the error menu 
-#define MENU_POS_SHOW_ERRORS      8
+#define MENU_POS_AMP_STATUS      8
+//! Show the error menu 
+#define MENU_POS_SHOW_ERRORS      9
 
 //! Menu flag scroll up
 #define MENU_SCROLL_UP			0
