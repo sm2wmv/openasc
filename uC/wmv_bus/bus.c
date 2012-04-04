@@ -129,6 +129,16 @@ void bus_init(void) {
 		bus_usart_init(15);
 	#endif
     
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    //57.600kpbs
+    bus_usart_init(15);
+  #endif    
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    //57.600kpbs
+    bus_usart_init(15);
+  #endif    
+    
   #ifdef DEVICE_TYPE_AMP_CTRL_BOX
     //57.600kpbs
     bus_usart_init(15);
@@ -561,6 +571,14 @@ void __inline__ disable_bus_interrupt(void) {
   #ifdef DEVICE_TYPE_AMP_CTRL_BOX
     UCSR2B &= ~(1<<RXCIE2);
   #endif
+
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    UCSR2B &= ~(1<<RXCIE2);
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    UCSR2B &= ~(1<<RXCIE2);
+  #endif
 }
 
 void __inline__ enable_bus_interrupt(void) {
@@ -597,6 +615,14 @@ void __inline__ enable_bus_interrupt(void) {
   #endif   
       
   #ifdef DEVICE_TYPE_AMP_CTRL_BOX
+    UCSR2B |= (1<<RXCIE2);
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    UCSR2B |= (1<<RXCIE2);
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
     UCSR2B |= (1<<RXCIE2);
   #endif
 }

@@ -26,7 +26,9 @@
 #include <avr/interrupt.h>
 #include <string.h>
 
+#include "a2d.h"
 #include "motor_control.h"
+#include "main.h"
 
 //! Variable which contains the current information of the stepper motor, positions etc
 static struct_stepper_motor stepper_motor[3];
@@ -55,9 +57,12 @@ void motor_control_init(void) {
 void motor_control_goto(unsigned char motor_index, unsigned int pos) {
   if (motor_index < 3) {
 	
-		printf("GOTO[%i]: %i\n\r",motor_index,pos);
+		printf("GOTO[%i]: %i\n",motor_index,pos);
 		
-		stepper_motor[motor_index].current_pos = a2dConvert10bit(motor_index);
+		if (motor_index == 0)
+      stepper_motor[motor_index].current_pos = a2dConvert10bit(1);
+    else if (motor_index == 1)
+      stepper_motor[motor_index].current_pos = a2dConvert10bit(0);
 		
     if (stepper_motor[motor_index].current_pos != pos) {
       stepper_motor[motor_index].current_tick = 0;
@@ -65,15 +70,23 @@ void motor_control_goto(unsigned char motor_index, unsigned int pos) {
 			stepper_motor[motor_index].step_count = 0;
       
       if (stepper_motor[motor_index].target_pos > stepper_motor[motor_index].current_pos) {
-        printf("GOTO: DIR UP\n\r");
+        #ifdef DEBUG
+          printf("MOTOR[%i] >> GOTO: %i -> DIR CCW\n",motor_index,pos);
+        #endif
+				
+        stepper_motor[motor_index].current_dir = MOTOR_DIR_CCW;
+        stepper_motor[motor_index].current_phase = 7;
+      }
+      else if (stepper_motor[motor_index].target_pos < stepper_motor[motor_index].current_pos) {
+        #ifdef DEBUG
+          printf("MOTOR[%i] >> GOTO: %i -> DIR CW\n",motor_index,pos);
+        #endif
+        
 				stepper_motor[motor_index].current_dir = MOTOR_DIR_CW;
         stepper_motor[motor_index].current_phase = 0;
       }
-      else if (stepper_motor[motor_index].target_pos < stepper_motor[motor_index].current_pos) {
-        printf("GOTO: DIR DOWN\n\r");
-				stepper_motor[motor_index].current_dir = MOTOR_DIR_CCW;
-        stepper_motor[motor_index].current_phase = 7;
-      }
+      else
+        printf("NONE\n");
       
       stepper_motor[motor_index].next_tick = stepper_motor[motor_index].current_tick + MOTOR_CONTROL_STEP_DELAY;
     }
@@ -139,31 +152,6 @@ void motor_control_step_motor1(void) {
 		PORTL &= ~(1<<4);
 		PORTL |= (1<<5);
   }
-
- /* if (stepper_motor[0].current_phase == 0) {
-		PORTL |= (1<<2);
-		PORTL &= ~(1<<3);
-		PORTL &= ~(1<<4);
-		PORTL |= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 1) {
-		PORTL |= (1<<2);
-		PORTL |= (1<<3);
-		PORTL &= ~(1<<4);
-		PORTL &= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 2) {
-		PORTL &= ~(1<<2);
-		PORTL |= (1<<3);
-		PORTL |= ~(1<<4);
-		PORTL &= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 3) {
-		PORTL &= ~(1<<2);
-		PORTL &= ~(1<<3);
-		PORTL |= (1<<4);
-		PORTL |= ~(1<<5);
-  } */
 }
 
 void motor_control_step_motor2(void) {
@@ -179,59 +167,92 @@ void motor_control_process(void) {
   for (unsigned char i=0;i<3;i++) {
     if (stepper_motor[i].current_tick >= stepper_motor[i].next_tick) {
       //TODO: POLL the A/D value and compare it to the target position
-			stepper_motor[i].current_pos = a2dConvert10bit(i);
+			if (i == 0)
+        stepper_motor[i].current_pos = a2dConvert10bit(1);
+      else if (i==1)
+        stepper_motor[i].current_pos = a2dConvert10bit(0);
 
-			if (((stepper_motor[i].current_dir == MOTOR_DIR_CW) && (stepper_motor[i].current_pos <= stepper_motor[i].target_pos)) || ((stepper_motor[i].current_dir == MOTOR_DIR_CCW) && (stepper_motor[i].current_pos >= stepper_motor[i].target_pos))) {
+			if (((stepper_motor[i].current_dir == MOTOR_DIR_CW) && (stepper_motor[i].current_pos >= stepper_motor[i].target_pos)) || ((stepper_motor[i].current_dir == MOTOR_DIR_CCW) && (stepper_motor[i].current_pos <= stepper_motor[i].target_pos))) {
 				//Set when the next step should occur
 				stepper_motor[i].next_tick += MOTOR_CONTROL_STEP_DELAY;
 				
-				if (stepper_motor[i].current_dir == MOTOR_DIR_CCW) {
-					if (stepper_motor[i].current_pos > motor_limit_ccw[i]) {
-						if (stepper_motor[i].current_phase > 0)
-							stepper_motor[i].current_phase--;
-						else
-							stepper_motor[i].current_phase = 7;
-					}
-					else {
-						stepper_motor[i].current_dir = MOTOR_DIR_NONE;
-					}
-				}
+        if (stepper_motor[i].current_dir == MOTOR_DIR_CCW) {
+          if (stepper_motor[i].current_pos < motor_limit_ccw[i]) {
+            if (stepper_motor[i].current_phase > 0)
+              stepper_motor[i].current_phase--;
+            else
+              stepper_motor[i].current_phase = 7;
+          }
+          else {
+            motor_control_stepper_off(i);
+            
+            #ifdef DEBUG
+              printf("MOTOR[%i] >> END LIMIT REACHED CCW\n",i);
+            #endif
+          }
+        }
 				else if (stepper_motor[i].current_dir == MOTOR_DIR_CW) {
-					if (stepper_motor[i].current_pos <= motor_limit_cw[i]) {
-						if (stepper_motor[i].current_phase < 7)
-							stepper_motor[i].current_phase++;
-						else
-							stepper_motor[i].current_phase = 0;
-					}
-					else {
-						stepper_motor[i].current_dir = MOTOR_DIR_NONE;
-					}					
+          if (stepper_motor[i].current_pos > motor_limit_cw[i]) {
+            if (stepper_motor[i].current_phase < 7)
+              stepper_motor[i].current_phase++;
+            else
+              stepper_motor[i].current_phase = 0;
+          }
+          else {
+            motor_control_stepper_off(i);
+            
+            #ifdef DEBUG
+              printf("MOTOR[%i] >> END LIMIT REACHED CW\n",i);
+            #endif
+          }
 				}
 				
 				if (stepper_motor[i].current_dir != MOTOR_DIR_NONE) {
-					if (i == 0)
-						motor_control_step_motor1();
-					else if (i == 1)
-						motor_control_step_motor2();
-					else if (i == 2)
-						motor_control_step_motor3();
-				}
+
+          if ((stepper_motor[i].current_pos > motor_limit_cw[i]) && (stepper_motor[i].current_pos < motor_limit_ccw[i])) {
+            if (i == 0)
+              motor_control_step_motor1();
+            else if (i == 1)
+              motor_control_step_motor2();
+            else if (i == 2)
+              motor_control_step_motor3();
+          }
+          else {
+            motor_control_stepper_off(i);
+
+            #ifdef DEBUG
+              printf("MOTOR[%i] >> END LIMIT REACHED\n",i,stepper_motor[i].current_pos);
+            #endif
+          }
+        }
+				
 				stepper_motor[i].next_tick = stepper_motor[i].current_tick + MOTOR_CONTROL_STEP_DELAY;
 			}
 			else {
-				if (stepper_motor[i].current_dir != MOTOR_DIR_NONE) {
-					printf("DONE[%i]: %i\n\r",i,stepper_motor[i].current_pos);
-					
-					stepper_motor[i].current_dir = MOTOR_DIR_NONE;
+				if (stepper_motor[i].current_dir != MOTOR_DIR_NONE) {			
 					motor_control_stepper_off(i);
+
+          #ifdef DEBUG
+            printf("MOTOR[%i] >> DONE: %i\n",i,stepper_motor[i].current_pos);
+          #endif
 				}
 			}
 		}
   }
 }
 
+void motor_control_stepper_turn_cw(unsigned char index) {
+   motor_control_goto(index,MOTOR1_LIMIT_CW+5);
+}
+
+void motor_control_stepper_turn_ccw(unsigned char index) {
+  motor_control_goto(index,MOTOR1_LIMIT_CCW-5);
+}
+
 void motor_control_stepper_off(unsigned char index) {	
-	if (index == 0) {
+  stepper_motor[index].current_dir = MOTOR_DIR_NONE;
+  
+  if (index == 0) {
 		PORTL &= ~(1<<2);
 		PORTL &= ~(1<<3);
 		PORTL &= ~(1<<4);

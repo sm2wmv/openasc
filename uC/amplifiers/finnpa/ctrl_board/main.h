@@ -23,13 +23,17 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+#define DEBUG
+
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
 
-//! The size of the RX queue in buffers
-#define BUS_RX_QUEUE_SIZE 10
-//! The size of the TX queue in buffers
-#define BUS_TX_QUEUE_SIZE	10
+#define MODE_LOCAL    1
+#define MODE_REMOTE   0
+
+#define BAND_SEGMENT_LOW  0
+#define BAND_SEGMENT_MID  1
+#define BAND_SEGMENT_HIGH 2
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -45,10 +49,6 @@
 
 #define BUS_ADDR 0x10
 
-#define DEVICE_ID_AMP_CTRL_BOARD   1
-#define DEVICE_ID_AMP_CTRL_BOX     2
-#define DEVICE_ID_AMP_POWERMETER   3
-
 #define AD_CONV_INTERVAL	500
 
 //!Run the event first in the event queue
@@ -56,8 +56,46 @@
 //! Flag which indicates that the device has started properly
 #define FLAG_DEVICE_STARTED       1
 
+/*! Amplifier status bits */
+//! The status of the mains of the amplifier
+#define AMP_STATUS_MAINS      0
+//! The status of the operate/standby of the amplifier
+#define AMP_STATUS_OPR_STBY   1
+
+/*! The amplifier operational status */
+/*! The amplifier is in standby */
+#define AMP_OP_STATUS_STBY          0
+/*! The amplifier is ready */
+#define AMP_OP_STATUS_READY         1
+/*! An error has occured, amp in standby */
+#define AMP_OP_STATUS_ERROR         2
+/*! The amplifier is tuning */
+#define AMP_OP_STATUS_TUNING        3
+
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned int get_ad_curr_val(unsigned char ch);
 void send_ping(void);
+
+typedef struct {
+  /*! 1 = Local or 0 = remote mode */
+  unsigned char mode;
+  /*! The current band */
+  unsigned char curr_band;
+  /*! The current segment */
+  unsigned char curr_segment;
+  /*! The parent address of the openASC unit controlling the amp */
+  unsigned parent_addr;
+  /*! Amplifier status flags */
+  unsigned char amp_flags;
+  /*! The amplifier operational status */
+  unsigned char amp_op_status;
+  /*! The amplifier PTT status */
+  unsigned char ptt_status;
+} main_struct_status;
+
+typedef struct {
+  unsigned int tune_cap_pos[6][3];
+  unsigned int load_cap_pos[6][3];
+} main_struct_settings;
 
 #endif

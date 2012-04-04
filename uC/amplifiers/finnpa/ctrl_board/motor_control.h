@@ -29,16 +29,16 @@
 //Direction is from front of motor looking at the axle
 
 #define MOTOR_DIR_NONE  0
-#define MOTOR_DIR_CCW  1
+#define MOTOR_DIR_CCW   1
 #define MOTOR_DIR_CW    2
 
-#define MOTOR1_LIMIT_CCW	100
-#define MOTOR2_LIMIT_CCW	100
-#define MOTOR3_LIMIT_CCW	100
+#define MOTOR1_LIMIT_CCW	900
+#define MOTOR2_LIMIT_CCW	900
+#define MOTOR3_LIMIT_CCW	900
 
-#define MOTOR1_LIMIT_CW 900
-#define MOTOR2_LIMIT_CW 900
-#define MOTOR3_LIMIT_CW 900
+#define MOTOR1_LIMIT_CW 100
+#define MOTOR2_LIMIT_CW 100
+#define MOTOR3_LIMIT_CW 100
 
 typedef struct {
   //! The current position of the stepper motor
@@ -67,5 +67,9 @@ void motor_control_set_phase(unsigned char motor_index, unsigned char phase);
 void motor_control_stepper_off(unsigned char index);
 
 void motor_control_step_motor1(void);
+
+void motor_control_stepper_turn_cw(unsigned char index);
+void motor_control_stepper_turn_ccw(unsigned char index);
+
 
 #endif

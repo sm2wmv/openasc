@@ -71,6 +71,8 @@ unsigned char ascii_comm_device_addr = 0;
 
 static unsigned char ant_rotating_indicator = 0;
 
+static unsigned char amp_addr;
+
 /*! \brief This function goes through the bus and internal communcation queue to check if certain commands exist 
  *  \return 1 if a command in the command list is in either queue and 0 if not */
 unsigned char event_check_critical_cmd_list(void) {
@@ -391,6 +393,13 @@ void event_process_task(unsigned char task_index) {
     case EXT_CTRL_SEL_RX_NONE:
       event_set_rx_antenna(0);
 			display_handler_repaint();
+      break;
+    case EXT_CTRL_AMPLIFIER_TOGGLE_ON_OFF:
+      if (main_get_amp_ctrl_enabled()) {
+        amp_addr = main_get_amp_addr();
+        
+        bus_add_tx_message(bus_get_address(), amp_addr, 0 ,BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS,0,0);
+      }
       break;
 		default:
 			break;
@@ -1230,7 +1239,17 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
   }
   else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
     internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
-  }	
+  }
+  else if (bus_message.cmd == BUS_CMD_AMPLIFIER_GET_STATUS) {
+    if (bus_message.length > 1) {
+      status.amp_flags = bus_message.data[0];
+      status.amp_op_status = bus_message.data[1];
+      status.amp_band = bus_message.data[2];
+      status.amp_segment = bus_message.data[3];
+    }
+    
+    display_handler_repaint();
+  }
 	
 	#ifdef DEBUG_WMV_BUS
 		printf("DEBUG-> Message dropped\n");

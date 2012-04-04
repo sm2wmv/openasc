@@ -269,7 +269,6 @@ void comm_interface_1ms_tick(void) {
 }
 
 ISR(COMM_SIG_DATA_NAME) {
-
 }
 
 /*! Interrupt which is called when a byte has been received */

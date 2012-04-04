@@ -135,6 +135,13 @@ void main_set_band_change_mode(unsigned char mode) {
 	runtime_settings.band_change_mode = mode;
 }
 
+unsigned char main_get_amp_addr(void) {
+  return(settings.amp_addr);  
+}
+unsigned char main_get_amp_ctrl_enabled(void) {
+  return(settings.amp_ctrl_enabled);
+}
+
 unsigned char main_get_current_band(void) {
 	return(status.selected_band);
 }

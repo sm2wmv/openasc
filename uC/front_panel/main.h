@@ -26,7 +26,7 @@
 //#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
-#define FIRMWARE_REV "299\0"
+#define FIRMWARE_REV "300\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -392,5 +392,8 @@ unsigned char main_get_current_band(void);
 void main_process_lock(unsigned char lock_status);
 
 struct_setting* main_get_settings_ptr(void);
+
+unsigned char main_get_amp_addr(void);
+unsigned char main_get_amp_ctrl_enabled(void);
 
 #endif

@@ -66,13 +66,13 @@ void init_ports(void) {
 	DDRA = 0x00;
 	DDRB = 0xF7;
 	DDRC = 0xFF;
-	DDRD = 0x30;
-	DDRE = 0x82;
+	DDRD = 0xFB;
+	DDRE = 0x81;
   DDRF = 0x00;
 	DDRG = 0x1C;
 	DDRH = 0xFE;
-	DDRJ = 0x8A;
-	DDRK = 0xFF;
+	DDRJ = 0x7F;
+	DDRK = 0x00;
 	DDRL = 0xFF;
 	
 	PORTH |= (1<<0) | (1<<1);
