@@ -23,7 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-//#define DEBUG_COMPUTER_USART_ENABLED 1
+#define DEBUG_COMPUTER_USART_ENABLED 1
 
 //! The current firmware revision nr
 #define FIRMWARE_REV "300\0"
@@ -200,14 +200,14 @@
 #define AMP_STATUS_OPR_STBY   1
 
 /*! The amplifier operational status */
-/*! The amplifier is in standby */
-#define AMP_OP_STATUS_STBY          0
 /*! The amplifier is ready */
-#define AMP_OP_STATUS_READY         1
+#define AMP_OP_STATUS_READY         0
 /*! An error has occured, amp in standby */
-#define AMP_OP_STATUS_ERROR         2
+#define AMP_OP_STATUS_ERROR         1
 /*! The amplifier is tuning */
-#define AMP_OP_STATUS_TUNING        3
+#define AMP_OP_STATUS_TUNING        2
+/*! The amplifier is off */
+#define AMP_OP_STATUS_OFF           3
 
 /****************************************************************/
 

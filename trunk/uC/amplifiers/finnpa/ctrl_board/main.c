@@ -64,12 +64,15 @@ static unsigned int ad_curr_val[3] = {0,0,0};
 main_struct_status main_status;
 main_struct_settings main_settings;
 
+unsigned char flag_start_tune;
+
+unsigned char send_status_update = 0;
+
 #ifdef DEBUG
   unsigned char print_pos = 0;
 #endif
 
 void bus_parse_message(BUS_MESSAGE *bus_message) {
-
 	if (bus_message->cmd == BUS_CMD_ACK)
 		bus_message_acked(bus_message->from_addr);
 	else if (bus_message->cmd == BUS_CMD_NACK)
@@ -80,9 +83,64 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 		else
 			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);
 	}
-	
-	else {
-	}
+	else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS) {
+    if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+      ext_control_set_mains_off();
+      main_status.amp_flags &= ~(1<<AMP_STATUS_MAINS);
+      main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+      main_status.amp_op_status &= ~(1<<AMP_OP_STATUS_OFF);
+      
+      if (main_status.parent_addr != 0) {
+        send_amp_status();
+        main_status.parent_addr = 0;
+      }
+      #ifdef DEBUG
+        printf("BUS >> TURN MAINS OFF\n",bus_message->cmd);
+      #endif
+    }
+    else {
+      main_status.parent_addr = bus_message->from_addr;
+      ext_control_set_mains_on();
+      main_status.amp_flags |= (1<<AMP_STATUS_MAINS);
+
+      send_status_update = 1;
+      #ifdef DEBUG
+        printf("BUS >> TURN MAINS ON\n",bus_message->cmd);
+      #endif
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS) {
+    if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+      if (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) {
+        main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+        
+        ext_control_set_hv_off();
+        send_status_update = 1;
+        #ifdef DEBUG
+          printf("BUS >> ENTERED STDBY MODE\n");
+        #endif
+      }
+      else {
+        main_status.amp_flags |= (1<<AMP_STATUS_STDBY_OP);
+        
+        ext_control_set_hv_on();
+        send_status_update = 1;
+        #ifdef DEBUG
+          printf("BUS >> ENTERED READY MODE\n");
+        #endif        
+      }
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TUNE) {
+    if (main_status.mode == MODE_REMOTE) {
+      if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+        main_status.curr_band = bus_message->data[0];
+        main_status.curr_segment = bus_message->data[1];
+        
+        flag_start_tune = 1;
+      }
+    }
+  }
 }
 
 /*! Add a message to the event queue which will be run at the correct time
@@ -157,6 +215,34 @@ void send_ping(void) {
   #ifdef DEBUG
     printf("BUS >> SENT PING MSG\n");
   #endif
+}
+
+void main_update_tune_sequence_status(unsigned char sequence_index) {
+  main_status.tune_sequence_flags &= ~(1<<sequence_index);
+
+  if (main_status.tune_sequence_flags == 0) {
+    main_status.amp_op_status = AMP_OP_STATUS_READY;
+    send_status_update = 1;
+    
+    #ifdef DEBUG
+      printf("EVENT >> TUNE PROCESS DONE\n");
+    #endif      
+  }
+}
+
+void start_tune_amp(void) {
+  //Check that PTT is not enabled
+  if (main_status.ptt_status == 0) {
+    //TODO: Change to 1 on LOAD
+    main_status.tune_sequence_flags = (1<<TUNE_SEQUENCE_TUNE_DONE) | (0<<TUNE_SEQUENCE_LOAD_DONE) | (1<<TUNE_SEQUENCE_RELAY_DONE);
+    main_status.amp_op_status = AMP_OP_STATUS_TUNING;
+    
+    ext_control_activate_band_relay(main_status.curr_band);
+    motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+    
+    send_status_update = 1;
+    //motor_control_goto(1,main_settings.load_cap_pos[main_status.curr_band][main_status.curr_segment]);
+  }
 }
 
 void event_handler_control_panel(unsigned int state) {
@@ -376,13 +462,16 @@ int main(void){
   
   BUS_MESSAGE mess;
 
-//  motor_control_goto(0,100);
-
   unsigned int ext_control_state = 0;
 
-  //TEMPORARY
-  main_status.parent_addr = 7;
-  main_status.amp_op_status = AMP_OP_STATUS_READY;
+  main_status.amp_op_status = AMP_OP_STATUS_OFF;
+  main_status.amp_flags = 0;
+  main_status.ptt_status = 0;
+  main_status.parent_addr = 0;
+  main_status.curr_band = 0;
+  main_status.curr_segment = 0;
+
+  ext_control_init();
   
   while(1) {
     if (bus_check_rx_status(&mess)) {
@@ -390,7 +479,13 @@ int main(void){
     }
     
     bus_check_tx_status();		
-		
+	
+    if (flag_start_tune) {
+      start_tune_amp();
+      
+      flag_start_tune = 0;
+    }
+    
     if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, (unsigned char *)DEF_NR_DEVICES);
@@ -399,41 +494,40 @@ int main(void){
 			}
 		}
 
-		if (main_status.mode == MODE_LOCAL)
-      main_status.curr_band = ext_control_get_current_band_pos();
-
-		
     #ifdef DEBUG
       if (print_pos == 1) {
         printf("CURR_POS: %i\n",a2dConvert10bit(1)); 
-        printf("CURR_BAND: %i\n",ext_control_get_current_band_pos());
+        printf("CURR_BAND: %i\n",main_status.curr_band);
         
         print_pos = 0;
       }
     #endif
     
-    ext_control_state = ext_control_poll_inputs();
+    if ((counter_ms % 5) == 0) {
+      ext_control_state = ext_control_poll_inputs();
+      
+      if (main_status.mode == MODE_LOCAL)
+        main_status.curr_band = ext_control_get_current_band_pos();
+    }
     
     if (ext_control_state != 0) {
       event_handler_control_panel(ext_control_state);
     }
 		
 		if (bus_allowed_to_send()) {
+      if (send_status_update) {
+        send_amp_status();
+        
+        send_status_update = 0;
+      }
+      
 		//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
 				send_ping();
         
-        send_amp_status();
-        
 				counter_ping_interval = 0;
 			}
 		}
-
-/*		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
-			//Run the event in the queue
-			event_run();
-			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
-		}*/
 	}
 }
 
@@ -454,6 +548,10 @@ ISR(SIG_OUTPUT_COMPARE0A) {
       event_run();
       //main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
+	
+	if ((counter_ms % 1500) == 0) {
+    send_status_update = 1;
+  }
 	
   #ifdef DEBUG
     if ((counter_ms % 1000) == 0) {
