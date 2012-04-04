@@ -23,7 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#define DEBUG
+//#define DEBUG
 
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
@@ -59,18 +59,25 @@
 /*! Amplifier status bits */
 //! The status of the mains of the amplifier
 #define AMP_STATUS_MAINS      0
-//! The status of the operate/standby of the amplifier
-#define AMP_STATUS_OPR_STBY   1
+//! The amplifier is in operate/standby mode, 0 = standby, 1 = operate
+#define AMP_STATUS_STDBY_OP   1
 
 /*! The amplifier operational status */
-/*! The amplifier is in standby */
-#define AMP_OP_STATUS_STBY          0
 /*! The amplifier is ready */
-#define AMP_OP_STATUS_READY         1
+#define AMP_OP_STATUS_READY         0
 /*! An error has occured, amp in standby */
-#define AMP_OP_STATUS_ERROR         2
+#define AMP_OP_STATUS_ERROR         1
 /*! The amplifier is tuning */
-#define AMP_OP_STATUS_TUNING        3
+#define AMP_OP_STATUS_TUNING        2
+/*! The amplifier is off */
+#define AMP_OP_STATUS_OFF           3
+
+//! Flag that indicates that the TUNE cap has reached its position
+#define TUNE_SEQUENCE_TUNE_DONE     0
+//! Flag that indicates that the LOAD cap has reached its position
+#define TUNE_SEQUENCE_LOAD_DONE     1
+//! Flag that indicates that the RELAYS have been switched (SHOULD BE #3 and not #2)
+#define TUNE_SEQUENCE_RELAY_DONE    3
 
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned int get_ad_curr_val(unsigned char ch);
@@ -91,11 +98,15 @@ typedef struct {
   unsigned char amp_op_status;
   /*! The amplifier PTT status */
   unsigned char ptt_status;
+  /*! TUNE sequence flags */
+  unsigned char tune_sequence_flags;
 } main_struct_status;
 
 typedef struct {
   unsigned int tune_cap_pos[6][3];
   unsigned int load_cap_pos[6][3];
 } main_struct_settings;
+
+void main_update_tune_sequence_status(unsigned char sequence_index);
 
 #endif

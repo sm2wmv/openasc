@@ -114,10 +114,6 @@
 #define BUS_CMD_AMPLIFIER_RESET                       0x42
 //! Amplifier control command - Tune the amplifier
 #define BUS_CMD_AMPLIFIER_TUNE                        0x43
-//! Amplifier control - Set the band
-#define BUS_CMD_AMPLIFIER_SET_BAND                    0x44
-//! Amplifier control - Set band segment
-#define BUS_CMD_AMPLIFIER_SET_BAND_SEGMENT            0x45
 /*! Amplifier control - Get amplififer status
  *  Byte 0 = Amp status flags
  *  Byte 1 = Amp op status 

@@ -398,9 +398,59 @@ void event_process_task(unsigned char task_index) {
       if (main_get_amp_ctrl_enabled()) {
         amp_addr = main_get_amp_addr();
         
-        bus_add_tx_message(bus_get_address(), amp_addr, 0 ,BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS,0,0);
+        if (amp_addr != 0)
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS,0,0);
+        
+        #ifdef DEBUG_COMPUTER_USART_ENABLED
+          printf("SENT MAINS TOGGLE to: 0x%02X\n",amp_addr);
+        #endif        
       }
       break;
+    case EXT_CTRL_AMPLIFIER_TOGGLE_STANDBY:
+      if (main_get_amp_ctrl_enabled()) {
+        if (amp_addr == 0)
+          amp_addr = main_get_amp_addr();
+        
+        if (amp_addr != 0)
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS,0,0);
+        
+        #ifdef DEBUG_COMPUTER_USART_ENABLED
+          printf("SENT STDBY TOGGLE to: 0x%02X\n",amp_addr);
+        #endif        
+      }
+      break;
+    case EXT_CTRL_AMPLIFIER_TUNE:
+      if (main_get_amp_ctrl_enabled()) {
+        if (amp_addr == 0)
+          amp_addr = main_get_amp_addr();
+        
+        if (amp_addr != 0) {
+          unsigned char temp[2];
+          temp[0] = main_get_current_band();
+          temp[1] = 0;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,1,temp);
+        }
+        
+        #ifdef DEBUG_COMPUTER_USART_ENABLED
+          printf("SENT TUNE CMD to: 0x%02X\n",amp_addr);
+        #endif        
+      }
+      break;      
+    case EXT_CTRL_AMPLIFIER_RESET:
+      if (main_get_amp_ctrl_enabled()) {
+        if (amp_addr == 0)
+          amp_addr = main_get_amp_addr();
+        
+        if (amp_addr != 0) {
+          unsigned char temp[2];
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_RESET,0,0);
+        }
+        
+        #ifdef DEBUG_COMPUTER_USART_ENABLED
+          printf("SENT RESET CMD to: 0x%02X\n",amp_addr);
+        #endif        
+      }
+      break;      
 		default:
 			break;
 	}

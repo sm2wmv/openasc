@@ -232,6 +232,8 @@ void motor_control_process(void) {
 				if (stepper_motor[i].current_dir != MOTOR_DIR_NONE) {			
 					motor_control_stepper_off(i);
 
+          main_update_tune_sequence_status(i);
+          
           #ifdef DEBUG
             printf("MOTOR[%i] >> DONE: %i\n",i,stepper_motor[i].current_pos);
           #endif
