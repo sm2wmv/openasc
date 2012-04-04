@@ -119,6 +119,28 @@ void bus_usart_init(unsigned int baudrate) {
 		/* Enable receiver and transmitter */
 		UCSR2B = (1<<RXEN2) | (1<<TXEN2) | (1<<RXCIE2) | (1<<TXCIE2);
 	#endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    /* Set baud rate */
+    UBRR2H = (unsigned char) (baudrate>>8);
+    UBRR2L = (unsigned char) baudrate;
+    /* Set frame format: 8data, no parity & 1 stop bits */
+    UCSR2C = (1<<UCSZ21) | (1<<UCSZ20) | (0<<UCSZ22);
+    /* Enable receiver and transmitter */
+    UCSR2B = (1<<RXEN2) | (1<<TXEN2) | (1<<RXCIE2) | (1<<TXCIE2);
+  #endif
+
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    /* Set baud rate */
+    UBRR2H = (unsigned char) (baudrate>>8);
+    UBRR2L = (unsigned char) baudrate;
+    /* Set frame format: 8data, no parity & 1 stop bits */
+    UCSR2C = (1<<UCSZ21) | (1<<UCSZ20) | (0<<UCSZ22);
+    /* Enable receiver and transmitter */
+    UCSR2B = (1<<RXEN2) | (1<<TXEN2) | (1<<RXCIE2) | (1<<TXCIE2);
+  #endif
+    
 }
 
 /*! \brief Send a character to the USART
@@ -175,7 +197,21 @@ unsigned char bus_usart_transmit(unsigned char  data) {
 		/* Put data into buffer, sends the data */
 		UDR2 = data;
 	#endif
-	
+
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    /* Wait for empty transmit buffer */
+    while (!( UCSR2A & (1<<UDRE2)));
+    /* Put data into buffer, sends the data */
+    UDR2 = data;
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    /* Wait for empty transmit buffer */
+    while (!( UCSR2A & (1<<UDRE2)));
+    /* Put data into buffer, sends the data */
+    UDR2 = data;
+  #endif
+    
 	return 0;
 }
 
@@ -246,6 +282,20 @@ unsigned char bus_usart_receive(void ) {
 		/* Get and return received data from buffer */
 		return UDR2;
 	#endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    /* Wait for data to be received */
+    while (!(UCSR2A & (1<<RXC2)));
+    /* Get and return received data from buffer */
+    return UDR2;
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    /* Wait for data to be received */
+    while (!(UCSR2A & (1<<RXC2)));
+    /* Get and return received data from buffer */
+    return UDR2;
+  #endif    
 		
 	return(0);
 }
@@ -325,6 +375,26 @@ unsigned char bus_usart_receive_loopback(void ) {
 		bus_usart_transmit(rbuff);
 		return rbuff;
 	#endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    uint8_t rbuff;
+    /* Wait for data to be received */
+    while (!(UCSR2A & (1<<RXC2)));
+    /* Get and return received data from buffer */
+    rbuff = UDR2;
+    bus_usart_transmit(rbuff);
+    return rbuff;
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    uint8_t rbuff;
+    /* Wait for data to be received */
+    while (!(UCSR2A & (1<<RXC2)));
+    /* Get and return received data from buffer */
+    rbuff = UDR2;
+    bus_usart_transmit(rbuff);
+    return rbuff;
+  #endif
 
 	return(0);
 }
@@ -369,6 +439,16 @@ unsigned char bus_poll_usart_receive(void ) {
 		/* Check if data is received */
 		return ((UCSR2A & (1<<RXC2)));
 	#endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
+    /* Check if data is received */
+    return ((UCSR2A & (1<<RXC2)));
+  #endif
+    
+  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
+    /* Check if data is received */
+    return ((UCSR2A & (1<<RXC2)));
+  #endif
 		
 	return (0);
 }

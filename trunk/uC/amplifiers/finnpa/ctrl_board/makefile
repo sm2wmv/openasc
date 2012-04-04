@@ -69,10 +69,10 @@ DEVICE_TYPE = DEVICE_TYPE_AMP_CTRL_BOARD2
 #Root directories
 WMV_BUS_SRC = ../../../wmv_bus/bus.c ../../../wmv_bus/bus_usart.c ../../../wmv_bus/bus_ping.c ../../../queue.c
 
-GLOBAL_ROUTINES = ../../../delay.c ../../../event_queue.c 
+GLOBAL_ROUTINES = ../../../delay.c ../../../event_queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c motor_control.c a2d.c
+SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c motor_control.c a2d.c ext_control.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s

@@ -208,6 +208,8 @@
 #define DEVICE_ID_GENERAL_IO_SUPPORT  8
 //! Device ID for the Station control board
 #define DEVICE_ID_STN_CTRL_BOARD      9
+//! Device ID for an amplifier control board
+#define DEVICE_ID_AMP_CTRL_BOARD     10
 
 /*! The number of times a message is resent before it's dropped and an error flag is set */
 #define BUS_MAX_RESENDS	8

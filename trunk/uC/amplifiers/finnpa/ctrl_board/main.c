@@ -33,6 +33,7 @@
 #include "init.h"
 #include "motor_control.h"
 #include "a2d.h"
+#include "ext_control.h"
 
 #include "../../../delay.h"
 #include "../../../global.h"
@@ -43,10 +44,6 @@
 #include "../../../wmv_bus/bus_ping.h"
 #include "../../../wmv_bus/bus_commands.h"
 
-//#define ERROR_DEBUG 1
-
-//! Counter which counts up each time a compare0 interrupt has occured
-static unsigned int counter_compare0 = 0;
 //! Counter which is used to keep track of when we last received a sync message from the bus
 static unsigned int counter_sync = 32000;
 //! Counter which keeps track of when we should send out a ping to the communication bus
@@ -57,16 +54,19 @@ static unsigned int counter_ms = 0;
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 static unsigned int counter_event_timer = 0;
 
-static unsigned char counter_ad_conversion = 0;
-
 //! Ping message of the openASC device
 static unsigned char ping_message[3];
 
 static unsigned char main_flags = 0;
 
-static unsigned char ad_curr_ch = 0;
-static unsigned char ad_conv_started = 0;
-static unsigned int ad_curr_val[8] = {0,0,0,0,0,0,0,0};
+static unsigned int ad_curr_val[3] = {0,0,0};
+
+main_struct_status main_status;
+main_struct_settings main_settings;
+
+#ifdef DEBUG
+  unsigned char print_pos = 0;
+#endif
 
 void bus_parse_message(BUS_MESSAGE *bus_message) {
 
@@ -80,6 +80,7 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 		else
 			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);
 	}
+	
 	else {
 	}
 }
@@ -101,6 +102,25 @@ void event_add_message(void (*func), unsigned int offset, unsigned char id) {
 	event_queue_add(event);
 }
 
+unsigned char main_get_band_index(unsigned char band) {
+  unsigned char retval = 0;
+  
+  if (band == BAND_160M)
+    retval = 0;
+  else if (band == BAND_80M)
+    retval = 1;
+ else if (band == BAND_40M)
+    retval = 2;
+  else if (band == BAND_20M)
+    retval = 3;
+  else if (band == BAND_15M)
+    retval = 4;
+  else if (band == BAND_10M)
+    retval = 5;
+  
+  return(retval);
+}
+
 /*! \brief Run the first function in the event queue */
 void event_run(void) {
 	if (event_in_queue()) {
@@ -114,12 +134,184 @@ void event_run(void) {
 	}
 }
 
+void send_amp_status(void) {
+  if (main_status.parent_addr != 0) {
+    unsigned char message[4];
+    message[0] = main_status.amp_flags;
+    message[1] = main_status.amp_op_status;
+    message[2] = main_status.curr_band;
+    message[3] = main_status.curr_segment;
+    
+    bus_add_tx_message(bus_get_address(), main_status.parent_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 4, message);
+    
+    #ifdef DEBUG
+      printf("BUS >> SENT STATUS MSG\n");
+    #endif
+  }
+}
+
 /*! \brief Send a ping message out on the bus */
 void send_ping(void) {
 	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
+  
+  #ifdef DEBUG
+    printf("BUS >> SENT PING MSG\n");
+  #endif
 }
 
-unsigned char print_pos = 0;
+void event_handler_control_panel(unsigned int state) {
+  unsigned int curr_state = ext_control_get_curr_state();
+  
+  #ifdef DEBUG
+    printf("EVENT_HANDLER_CONTROL_CHANGED\n");
+  #endif
+    
+  if (state & (1<<EXT_CONTROL_PTT_INPUT_BIT)) {
+    if (curr_state  & (1<<EXT_CONTROL_PTT_INPUT_BIT)) {
+      if (main_status.amp_op_status == AMP_OP_STATUS_READY) {
+        ext_control_set_ptt_active();
+        main_status.ptt_status = 0;
+        
+        #ifdef DEBUG
+          printf("EVENT >> PTT ACTIVE\n");
+        #endif
+      }
+    }
+    else {
+      ext_control_set_ptt_deactive();
+      main_status.ptt_status = 0;
+      
+        #ifdef DEBUG
+          printf("EVENT >> PTT DEACTIVE\n");
+        #endif
+    }
+  }
+
+  if (state & (1<<EXT_CONTROL_MODE_SW_BIT)) {
+    if (curr_state & (1<<EXT_CONTROL_MODE_SW_BIT)) {
+      main_status.mode = 1;
+      
+      #ifdef DEBUG
+        printf("EVENT >> MODE: LOCAL\n");
+      #endif        
+    }
+    else {
+      main_status.mode = 0;
+      
+      #ifdef DEBUG
+        printf("EVENT >> MODE: REMOTE\n");
+      #endif
+    }
+  }
+  
+  if (state & (1<<EXT_CONTROL_DISPLAY_UP_BIT)) {
+    if (curr_state & (1<<EXT_CONTROL_DISPLAY_UP_BIT)) {
+      #ifdef DEBUG
+        printf("EVENT >> DISPLAY UP PRESSED\n");
+      #endif
+    }
+  }
+  
+  if (state & (1<<EXT_CONTROL_DISPLAY_DOWN_BIT)) {
+    if (curr_state & (1<<EXT_CONTROL_DISPLAY_DOWN_BIT)) {
+      #ifdef DEBUG
+        printf("EVENT >> DISPLAY DOWN PRESSED\n");
+      #endif
+    }
+  }
+
+  if (main_status.mode == MODE_LOCAL) {
+    if (state & (1<<EXT_CONTROL_SAVE_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_SAVE_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> SAVE PRESSED\n");
+        #endif
+         
+        main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(0);
+        //main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(1);
+      }
+    }  
+
+    if (state & (1<<EXT_CONTROL_RECALL_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_RECALL_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> RECALL PRESSED\n");
+        #endif
+          
+        motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+        //motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+      }
+    }
+    
+    if (state & (1<<EXT_CONTROL_TUNE_UP_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_TUNE_UP_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> TUNE UP POSITION\n");
+        #endif
+          
+        motor_control_stepper_turn_ccw(0);
+      }
+      else {
+        #ifdef DEBUG
+          printf("EVENT >> TUNE UP POSITION -> MID\n");
+        #endif
+          
+        motor_control_stepper_off(0);
+      }
+    }
+    
+    if (state & (1<<EXT_CONTROL_TUNE_DOWN_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_TUNE_DOWN_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> TUNE DOWN POSITION\n");
+        #endif
+          
+        motor_control_stepper_turn_cw(0);
+      }
+      else {
+        #ifdef DEBUG
+          printf("EVENT >> TUNE DOWN POSITION -> MID\n");
+        #endif
+          
+        motor_control_stepper_off(0);
+      }
+    }
+    
+    if (state & (1<<EXT_CONTROL_SEGMENT_HIGH_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_SEGMENT_HIGH_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> SEGMENT HIGH POSITION\n");
+        #endif
+          
+        main_status.curr_segment = BAND_SEGMENT_HIGH;
+      }
+      else {
+        #ifdef DEBUG
+          printf("EVENT >> SEGMENT MID POSITION\n");
+        #endif
+          
+        main_status.curr_segment = BAND_SEGMENT_MID;
+      }
+    }
+    
+    if (state & (1<<EXT_CONTROL_SEGMENT_LOW_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_SEGMENT_LOW_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> SEGMENT LOW POSITION\n");
+        #endif
+        
+        main_status.curr_segment = BAND_SEGMENT_LOW;
+      }
+      else {
+        #ifdef DEBUG
+          printf("EVENT >> SEGMENT MID POSITION\n");
+        #endif
+          
+        main_status.curr_segment = BAND_SEGMENT_MID;
+      }
+    }    
+  }
+}
 
 /*! Main function of the front panel */
 int main(void){
@@ -176,15 +368,22 @@ int main(void){
 	for (unsigned char i=0;i<2;i++)
 		ad_curr_val[i] = a2dConvert10bit(i);
 	
-	printf("\n\r\n\rFinnPA control board started\n\r");
+  #ifdef DEBUG
+    printf("\n\r\n\rFinnPA control board started\n\r");
+  #endif
 	
   unsigned int motor_pos = 100;
   
   BUS_MESSAGE mess;
 
+//  motor_control_goto(0,100);
 
-  motor_control_goto(0,100);
-      
+  unsigned int ext_control_state = 0;
+
+  //TEMPORARY
+  main_status.parent_addr = 7;
+  main_status.amp_op_status = AMP_OP_STATUS_READY;
+  
   while(1) {
     if (bus_check_rx_status(&mess)) {
       bus_parse_message(&mess);
@@ -200,22 +399,36 @@ int main(void){
 			}
 		}
 
-		if (print_pos == 1) {
-      printf("CURR_POS: %i\n",a2dConvert10bit(0)); 
-      
-      print_pos = 0;
+		if (main_status.mode == MODE_LOCAL)
+      main_status.curr_band = ext_control_get_current_band_pos();
+
+		
+    #ifdef DEBUG
+      if (print_pos == 1) {
+        printf("CURR_POS: %i\n",a2dConvert10bit(1)); 
+        printf("CURR_BAND: %i\n",ext_control_get_current_band_pos());
+        
+        print_pos = 0;
+      }
+    #endif
+    
+    ext_control_state = ext_control_poll_inputs();
+    
+    if (ext_control_state != 0) {
+      event_handler_control_panel(ext_control_state);
     }
 		
 		if (bus_allowed_to_send()) {
 		//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
 				send_ping();
-				
+        
+        send_amp_status();
+        
 				counter_ping_interval = 0;
 			}
 		}
 
-    
 /*		if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
 			//Run the event in the queue
 			event_run();
@@ -242,14 +455,14 @@ ISR(SIG_OUTPUT_COMPARE0A) {
       //main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
 	}
 	
-	if ((counter_ms % 1000) == 0) {
-    print_pos = 1;
-	}
+  #ifdef DEBUG
+    if ((counter_ms % 1000) == 0) {
+      print_pos = 1;
+    }
+  #endif
 	
 	motor_control_process();
 	
-	counter_ad_conversion++;
-		
 	counter_ping_interval++;
 	counter_ms++;
 	counter_event_timer++;

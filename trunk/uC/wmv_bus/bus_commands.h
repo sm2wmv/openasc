@@ -118,7 +118,12 @@
 #define BUS_CMD_AMPLIFIER_SET_BAND                    0x44
 //! Amplifier control - Set band segment
 #define BUS_CMD_AMPLIFIER_SET_BAND_SEGMENT            0x45
-//! Amplifier control - Get amplififer status
+/*! Amplifier control - Get amplififer status
+ *  Byte 0 = Amp status flags
+ *  Byte 1 = Amp op status 
+ *  Byte 2 = Current tuned band
+ *  Byte 3 = Current tuned band segment
+ */
 #define BUS_CMD_AMPLIFIER_GET_STATUS                  0x46
 //! Amplifier control - An error occured
 #define BUS_CMD_AMPLIFIER_ERROR                       0x47
