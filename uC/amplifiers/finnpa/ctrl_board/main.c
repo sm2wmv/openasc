@@ -192,7 +192,7 @@ void event_run(void) {
 	}
 }
 
-void send_amp_status(void) {
+void __inline__ send_amp_status(void) {
   if (main_status.parent_addr != 0) {
     unsigned char message[4];
     message[0] = main_status.amp_flags;
@@ -200,7 +200,7 @@ void send_amp_status(void) {
     message[2] = main_status.curr_band;
     message[3] = main_status.curr_segment;
     
-    bus_add_tx_message(bus_get_address(), main_status.parent_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 4, message);
+    bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 4, message);
     
     #ifdef DEBUG
       printf("BUS >> SENT STATUS MSG\n");
@@ -396,7 +396,7 @@ void event_handler_control_panel(unsigned int state) {
         main_status.curr_segment = BAND_SEGMENT_MID;
       }
     }    
-  }
+  }  
 }
 
 /*! Main function of the front panel */
@@ -508,10 +508,10 @@ int main(void){
       
       if (main_status.mode == MODE_LOCAL)
         main_status.curr_band = ext_control_get_current_band_pos();
-    }
     
-    if (ext_control_state != 0) {
-      event_handler_control_panel(ext_control_state);
+      if (ext_control_state != 0) {
+        event_handler_control_panel(ext_control_state);
+      }
     }
 		
 		if (bus_allowed_to_send()) {

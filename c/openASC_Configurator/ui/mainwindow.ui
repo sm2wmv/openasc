@@ -390,7 +390,7 @@
            <x>10</x>
            <y>225</y>
            <width>135</width>
-           <height>44</height>
+           <height>46</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayoutPollInterval">
@@ -3824,7 +3824,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>656</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">

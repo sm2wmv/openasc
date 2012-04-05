@@ -23,7 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-//#define DEBUG
+#define DEBUG
 
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
@@ -82,6 +82,7 @@
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
 unsigned int get_ad_curr_val(unsigned char ch);
 void send_ping(void);
+void __inline__ send_amp_status(void);
 
 typedef struct {
   /*! 1 = Local or 0 = remote mode */

@@ -59,9 +59,9 @@ FORMAT = ihex
 TARGET = main
 
 #The size of the RX queue in buffers
-BUS_RX_QUEUE_SIZE = 10
+BUS_RX_QUEUE_SIZE = 20
 #The size of the TX queue in buffers
-BUS_TX_QUEUE_SIZE = 10
+BUS_TX_QUEUE_SIZE = 20
 
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_AMP_CTRL_BOARD2

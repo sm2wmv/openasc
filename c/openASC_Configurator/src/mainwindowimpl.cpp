@@ -34,18 +34,25 @@ void MainWindowImpl::listExtButtonFunctionsLoad() {
 		listExtButtonFunctions << "Set Stack comb 1" << "Set Stack comb 2" << "Set Stack comb 3" << "Set Stack comb 4" << "Set Stack comb 5" << "Set Stack comb 6";
 
 
-		listExtButtonFunctions << "Amplifier toggle ON/OFF" << "Amplifier toggle standby" << "Amplifier tune" << "Amplifier reset";
+                listExtButtonFunctions << "Amp toggle ON/OFF" << "Amp toggle standby" << "Amp tune" << "Amp reset";
 
 		listExtButtonFunctions << "Rotate last antenna CW" << "Rotate last antenna CCW" << "Rotator stop";
 
 		listExtButtonFunctions << "Select band portion" << "Change band up" << "Change band down" << "Set RX Ant none";
 
-		listExtButtonFunctions << "Amplifier set band segment 1";
-		listExtButtonFunctions << "Amplifier set band segment 2";
-		listExtButtonFunctions << "Amplifier set band segment 3";
-		listExtButtonFunctions << "Amplifier set band segment 4";
-		listExtButtonFunctions << "Amplifier set band segment 5";
-		listExtButtonFunctions << "Amplifier set band segment 6";
+                listExtButtonFunctions << "Amp set band segment 1";
+                listExtButtonFunctions << "Amp set band segment 2";
+                listExtButtonFunctions << "Amp set band segment 3";
+                listExtButtonFunctions << "Amp set band segment 4";
+                listExtButtonFunctions << "Amp set band segment 5";
+                listExtButtonFunctions << "Amp set band segment 6";
+
+                listExtButtonFunctions << "Amp tune to segment 1";
+                listExtButtonFunctions << "Amp tune to segment 2";
+                listExtButtonFunctions << "Amp tune to segment 3";
+                listExtButtonFunctions << "Amp tune to segment 4";
+                listExtButtonFunctions << "Amp tune to segment 5";
+                listExtButtonFunctions << "Amp tune to segment 6";
 
 		comboBoxExtKeypadFunc->addItems(listExtButtonFunctions);
 		comboBoxButtonAUX1->addItems(listExtButtonFunctions);
