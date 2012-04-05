@@ -56,6 +56,8 @@
 
 #include "../queue.h"
 
+static unsigned char ack_list[BUS_TX_QUEUE_SIZE+1];
+
 CREATE_CRITICAL_LIST();
 
 /*! \brief Macros for creating the tx and rx queue for the bus communication */
@@ -86,8 +88,6 @@ unsigned int counter_sync_timeout = 0;
 
 //! Counter which keeps track of each time the 130us timer counts up
 unsigned int counter_130us = 0;
-
-
 
 /*! \brief Init the communication bus */
 void bus_init(void) {
@@ -144,6 +144,8 @@ void bus_init(void) {
     bus_usart_init(15);
   #endif
     
+  for (unsigned char i=0;i<BUS_TX_QUEUE_SIZE+1;i++)
+    ack_list[i] = 0;
 
 	bus_status.flags = 0;
 
@@ -331,7 +333,9 @@ void __inline__ bus_send_nack(unsigned char to_addr, unsigned char error_type) {
 
 /*! \brief Send an acknowledge */
 void __inline__ bus_send_ack(unsigned char to_addr) {
-	bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_ACK, 0, NULL);
+  ack_list[ack_list[0]+1] = to_addr;
+  ack_list[0]++;
+  //bus_add_tx_message(bus_status.ext_addr,to_addr, 0, BUS_CMD_ACK, 0, NULL);
 }
 
 /*! \brief Receive the device count on the bus
@@ -376,7 +380,43 @@ void __inline__ bus_resend_message(void) {
 
 /*! \brief Checks if there is anything that should be sent in the TX queue */
 void bus_check_tx_status(void) {
-	if (!queue_is_empty_bus_tx()) {
+  //Make sure we send all the ack messages first!
+  if (ack_list[0] > 0) {
+    if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
+      unsigned char checksum = 0;
+
+      checksum = bus_get_address(); //from addr
+      checksum += ack_list[1];  //To-addr
+      checksum += BUS_CMD_ACK;
+
+      bus_usart_transmit(BUS_MSG_PREAMBLE);
+      bus_usart_transmit(BUS_MSG_PREAMBLE);
+      bus_usart_transmit(bus_get_address());
+      bus_usart_transmit(ack_list[1]);
+      bus_usart_transmit(checksum);
+      bus_usart_transmit(0);
+      bus_usart_transmit(BUS_CMD_ACK);
+      bus_usart_transmit(0);
+      bus_usart_transmit(BUS_MSG_POSTAMBLE);
+      
+      disable_bus_interrupt();
+      //Move all elements in the ack list so that we get the next ack to be sent first
+      //In most cases there will not be many acks in this list
+      for (unsigned char i=1;i<sizeof(ack_list)-1;i++) {
+        if (ack_list[i+1] == 0) {
+          ack_list[i] = 0;
+          break;
+        }
+        
+        ack_list[i] = ack_list[i+1];
+      }
+      
+      if (ack_list[0] > 0)
+        ack_list[0]--;
+      enable_bus_interrupt();
+    }
+  }
+  else if (!queue_is_empty_bus_tx()) {
     if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
       if (bus_status.flags & (1<<BUS_STATUS_SEND_MESSAGE)) {
         bus_status.flags &= ~(1<<BUS_STATUS_SEND_MESSAGE);
@@ -693,7 +733,9 @@ ISR(ISR_BUS_USART_RECV) {
 				if (bus_status.flags & (1<<BUS_STATUS_RECEIVE_ON)) {
 					//Is the checksum OK? In that case we add the new message to the RX queue, if not we send a NACK (not sent if it's a broadcast)
 					if (calc_checksum == bus_new_message.checksum) {
-            bus_add_new_message();
+            //We don't need to add the SYNC message to the queue
+            if (bus_new_message.cmd != BUS_CMD_SYNC)
+              bus_add_new_message();
 					
 						if (bus_new_message.flags & (1<<BUS_MESSAGE_FLAGS_NEED_ACK))
 							bus_send_ack(bus_new_message.from_addr);

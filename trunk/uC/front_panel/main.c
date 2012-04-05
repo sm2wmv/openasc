@@ -368,18 +368,23 @@ void main_update_ptt_status(void) {
 	if (status.selected_band == BAND_UNDEFINED)
 		state = 1;
 	
-	if (radio_get_ptt_status() != 0)
-		state = 2;
-	
-	if (error_handler_is_ptt_locked() == 1) {
-		state = 3;
-	}
+  if (radio_get_ptt_status() != 0)
+    state = 2;
   
   if (status.curr_critical_cmd_state != 0)
     state = 3;
 
+  if (main_get_amp_ctrl_enabled()) {
+    if ((status.amp_flags & (1<<AMP_STATUS_MAINS)) && (status.amp_flags & (1<<AMP_STATUS_OPR_STBY))) {
+      if (status.amp_op_status != AMP_OP_STATUS_READY)
+        state = 3;
+    }
+  }
 
-	//Comment this part for testing outside the bus
+	if (error_handler_is_ptt_locked() == 1) {
+		state = 3;
+	}
+  	//Comment this part for testing outside the bus
 	//if (event_get_errors() != 0)
 	//	state = 1;
 	

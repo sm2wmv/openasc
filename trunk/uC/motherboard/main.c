@@ -48,6 +48,9 @@
 
 //#define PS2_DEBUG 1
 
+//This keeps track of how long ago it was we pressed a PS/2 key. So that we avoid bounces
+static unsigned int ps2_keyboard_timeout = 0;
+
 static unsigned char resend_count = 0;
 
 driver_status_struct driver_status;
@@ -389,8 +392,9 @@ void ps2_keyboard_send(unsigned char cmd) {
 
 /*! \brief Process a keystroke
  *  \param key_code The key code which was received */
-void ps2_process_key(unsigned char key_code) {
+void __inline__ ps2_process_key(unsigned char key_code) {
 	//printf("key_code: 0x%02X\n",key_code);
+	ps2_keyboard_timeout = 0;
 	internal_comm_add_tx_message(INT_COMM_PS2_KEYPRESSED,1,&key_code);
 }
 
@@ -556,7 +560,8 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	
 	ps2_send_counter++;
   counter_ps2++;
-	
+	ps2_keyboard_timeout++;
+  
   comm_interface_1ms_tick();
 	internal_comm_1ms_timer();
 }
@@ -596,7 +601,8 @@ ISR(SIG_INTERRUPT6) {
 				ps2.started = 0;
 				
 				if (ps2.prev_cmd == 0xF0) {
-					ps2_process_key(ps2.data);
+					if (ps2_keyboard_timeout > 250)
+            ps2_process_key(ps2.data);
 				}
 				
 				ps2.prev_cmd = ps2.data;

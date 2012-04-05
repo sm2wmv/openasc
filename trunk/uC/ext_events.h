@@ -134,5 +134,17 @@
 #define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_5  50
 //! Ext ctrl - Set amplifier band segment 6
 #define EXT_CTRL_SEL_AMPLIFIER_SEGMENT_6  51
+//! Ext ctrl - Tune the amplifier to current band and segment 1
+#define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_1  52
+//! Ext ctrl - Tune the amplifier to current band and segment 2
+#define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_2  53
+//! Ext ctrl - Tune the amplifier to current band and segment 3
+#define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_3  54
+//! Ext ctrl - Tune the amplifier to current band and segment 4
+#define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_4  55
+//! Ext ctrl - Tune the amplifier to current band and segment 5
+#define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_5  56
+//! Ext ctrl - Tune the amplifier to current band and segment 6
+#define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_6  57
 
 #endif
