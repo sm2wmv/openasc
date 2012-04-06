@@ -67,16 +67,16 @@ void powermeter_init(unsigned int text_update_rate, unsigned int bargraph_update
 /*! \param state If this is set to 1 we will activate the powermeter, if set to 0 we will deactivate it */
 void powermeter_set_active(unsigned char state) {
 	if (state != 0) {
-    if ((status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) == 0) {
+    //if ((status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) == 0) {
       powermeter_flags |= (1<<POWERMETER_FLAG_ACTIVE);
       display_handler_new_view_powermeter(powermeter_status.bargraph_update_rate, powermeter_status.text_update_rate, fwd_scale_value, ref_scale_value);
-    }
+    //}
 	}
 	else {
-    if ((status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) == 0) {
+    //if ((status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) == 0) {
       powermeter_flags &= ~(1<<POWERMETER_FLAG_ACTIVE);
       display_handler_prev_view();
-    }
+//    }
 	}
 }
 

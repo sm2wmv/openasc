@@ -57,7 +57,9 @@ void motor_control_init(void) {
 void motor_control_goto(unsigned char motor_index, unsigned int pos) {
   if (motor_index < 3) {
 	
-		printf("GOTO[%i]: %i\n",motor_index,pos);
+    #ifdef DEBUG
+      printf("GOTO[%i]: %i\n",motor_index,pos);
+    #endif
 		
 		if (motor_index == 0)
       stepper_motor[motor_index].current_pos = a2dConvert10bit(1);

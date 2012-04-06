@@ -23,7 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#define DEBUG
+//#define DEBUG
 
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
@@ -49,8 +49,6 @@
 
 #define BUS_ADDR 0x10
 
-#define AD_CONV_INTERVAL	500
-
 //!Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE      0
 //! Flag which indicates that the device has started properly
@@ -71,6 +69,8 @@
 #define AMP_OP_STATUS_TUNING        2
 /*! The amplifier is off */
 #define AMP_OP_STATUS_OFF           3
+/*! The amplifier is standby */
+#define AMP_OP_STATUS_STDBY         4
 
 //! Flag that indicates that the TUNE cap has reached its position
 #define TUNE_SEQUENCE_TUNE_DONE     0
@@ -97,8 +97,6 @@ typedef struct {
   unsigned char amp_flags;
   /*! The amplifier operational status */
   unsigned char amp_op_status;
-  /*! The amplifier PTT status */
-  unsigned char ptt_status;
   /*! TUNE sequence flags */
   unsigned char tune_sequence_flags;
 } main_struct_status;

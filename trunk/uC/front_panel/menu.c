@@ -159,6 +159,8 @@ void menu_show_text(struct_menu_text menu_text) {
       strcpy_P(temp,PSTR("Status: Tuning"));
     else if (status.amp_op_status == AMP_OP_STATUS_OFF)
       strcpy_P(temp,PSTR("Status: Amp off"));
+    else
+      strcpy_P(temp,PSTR("Status: Standby"));
     
     glcd_text(MENU_OPTION_LEFT_POS,18+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
     

@@ -754,7 +754,7 @@ void display_handler_prev_view(void) {
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER))    
     display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_MENU))    
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
   else if (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SCREENSAVER)
     display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;  
   else

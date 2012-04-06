@@ -49,6 +49,22 @@ void init_timer_0(void) {
 	TIMSK0 |= (1<<OCIE0A);	//enable the interrupt
 }
 
+/*!
+  * Initialize timer1 to use the main crystal clock and the output
+  * compare interrupt feature to generate an interrupt approximately
+  * once per 104 us.
+  */
+void init_timer_1(void) {
+  TCNT1L = 0;
+  TCNT1H = 0;
+  TCCR1A = 0;
+  TCCR1A = (0<<WGM11) | (0<<WGM10);
+  TCCR1B = (1<<CS12) | (0<<CS11) | (0<<CS10);  //Prescaler 256
+  OCR1AL = 6;  //Will give an interrupt every 104 us
+  OCR1AH = 0;
+  TIMSK1 |= (1<<OCIE1A);  //enable the interrupt
+}
+
 /*!Initializes timer 2
 */
 void init_timer_2(void) {
@@ -67,7 +83,7 @@ void init_ports(void) {
 	DDRB = 0xF7;
 	DDRC = 0xFF;
 	DDRD = 0xFB;
-	DDRE = 0x81;
+	DDRE = 0x81 | (1<<6);
   DDRF = 0x00;
 	DDRG = 0x1C;
 	DDRH = 0xFE;
@@ -75,5 +91,7 @@ void init_ports(void) {
 	DDRK = 0x00;
 	DDRL = 0xFF;
 	
+  PORTG |= (1<<5);
+  
 	PORTH |= (1<<0) | (1<<1);
 }
