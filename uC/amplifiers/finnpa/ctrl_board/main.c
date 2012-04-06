@@ -26,6 +26,7 @@
 #include <avr/interrupt.h>
 #include <string.h>
 #include <avr/wdt.h>
+#include <avr/eeprom.h>
 
 #include "main.h"
 #include "board.h"
@@ -68,10 +69,19 @@ unsigned char flag_start_tune;
 
 unsigned char send_status_update = 0;
 
+unsigned char flag_run_event = 0;
+
+unsigned int counter_100us;
+
 #ifdef DEBUG
   unsigned char print_pos = 0;
 #endif
 
+unsigned char flag_broadcast_amp_status = 0;
+  
+unsigned char curr_ptt_input_state = 0;
+unsigned char prev_ptt_input_state = 0;
+  
 void bus_parse_message(BUS_MESSAGE *bus_message) {
 	if (bus_message->cmd == BUS_CMD_ACK)
 		bus_message_acked(bus_message->from_addr);
@@ -84,60 +94,73 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);
 	}
 	else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS) {
-    if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-      ext_control_set_mains_off();
-      main_status.amp_flags &= ~(1<<AMP_STATUS_MAINS);
-      main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
-      main_status.amp_op_status &= ~(1<<AMP_OP_STATUS_OFF);
-      
-      if (main_status.parent_addr != 0) {
-        send_amp_status();
-        main_status.parent_addr = 0;
-      }
-      #ifdef DEBUG
-        printf("BUS >> TURN MAINS OFF\n",bus_message->cmd);
-      #endif
-    }
-    else {
-      main_status.parent_addr = bus_message->from_addr;
-      ext_control_set_mains_on();
-      main_status.amp_flags |= (1<<AMP_STATUS_MAINS);
-
-      send_status_update = 1;
-      #ifdef DEBUG
-        printf("BUS >> TURN MAINS ON\n",bus_message->cmd);
-      #endif
-    }
-  }
-  else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS) {
-    if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-      if (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) {
+    //Check that PTT is not enabled
+    if (ext_control_get_ptt_status() == 0) {
+      if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+        ext_control_set_mains_off();
+        main_status.amp_flags &= ~(1<<AMP_STATUS_MAINS);
         main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
         
-        ext_control_set_hv_off();
-        send_status_update = 1;
+        main_status.amp_op_status = AMP_OP_STATUS_OFF;
+        
+        if (main_status.parent_addr != 0) {
+          send_amp_status();
+          main_status.parent_addr = 0;
+        }
         #ifdef DEBUG
-          printf("BUS >> ENTERED STDBY MODE\n");
+          printf("BUS >> TURN MAINS OFF\n",bus_message->cmd);
         #endif
       }
       else {
-        main_status.amp_flags |= (1<<AMP_STATUS_STDBY_OP);
+        main_status.parent_addr = bus_message->from_addr;
+        ext_control_set_mains_on();
+        main_status.amp_flags |= (1<<AMP_STATUS_MAINS);
         
-        ext_control_set_hv_on();
+        main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+        main_status.amp_op_status = AMP_OP_STATUS_STDBY;
+        
         send_status_update = 1;
         #ifdef DEBUG
-          printf("BUS >> ENTERED READY MODE\n");
-        #endif        
+          printf("BUS >> TURN MAINS ON\n",bus_message->cmd);
+        #endif
+      }
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS) {
+    //Check that PTT is not enabled
+    if (ext_control_get_ptt_status() == 0) {
+      if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+        if (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) {
+          main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+          
+          ext_control_set_hv_off();
+          send_status_update = 1;
+          #ifdef DEBUG
+            printf("BUS >> ENTERED STDBY MODE\n");
+          #endif
+        }
+        else {
+          main_status.amp_flags |= (1<<AMP_STATUS_STDBY_OP);
+          
+          ext_control_set_hv_on();
+          send_status_update = 1;
+          #ifdef DEBUG
+            printf("BUS >> ENTERED READY MODE\n");
+          #endif        
+        }
       }
     }
   }
   else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TUNE) {
-    if (main_status.mode == MODE_REMOTE) {
-      if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-        main_status.curr_band = bus_message->data[0];
-        main_status.curr_segment = bus_message->data[1];
-        
-        flag_start_tune = 1;
+    //Check that PTT is not enabled
+    if (ext_control_get_ptt_status() == 0) {
+      if (main_status.mode == MODE_REMOTE) {
+        if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+          main_status.curr_band = bus_message->data[0];
+          main_status.curr_segment = bus_message->data[1];
+          
+          flag_start_tune = 1;
+        }
       }
     }
   }
@@ -208,6 +231,20 @@ void __inline__ send_amp_status(void) {
   }
 }
 
+void __inline__ broadcast_amp_status(void) {
+  unsigned char message[4];
+  message[0] = main_status.amp_flags;
+  message[1] = main_status.amp_op_status;
+  message[2] = main_status.curr_band;
+  message[3] = main_status.curr_segment;
+  
+  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR , 0, BUS_CMD_AMPLIFIER_GET_STATUS, 4, message);
+  
+  #ifdef DEBUG
+    printf("BUS >> BROADCAST STATUS MSG\n");
+  #endif
+}
+
 /*! \brief Send a ping message out on the bus */
 void send_ping(void) {
 	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
@@ -232,16 +269,30 @@ void main_update_tune_sequence_status(unsigned char sequence_index) {
 
 void start_tune_amp(void) {
   //Check that PTT is not enabled
-  if (main_status.ptt_status == 0) {
-    //TODO: Change to 1 on LOAD
-    main_status.tune_sequence_flags = (1<<TUNE_SEQUENCE_TUNE_DONE) | (0<<TUNE_SEQUENCE_LOAD_DONE) | (1<<TUNE_SEQUENCE_RELAY_DONE);
-    main_status.amp_op_status = AMP_OP_STATUS_TUNING;
-    
-    ext_control_activate_band_relay(main_status.curr_band);
-    motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
-    
-    send_status_update = 1;
-    //motor_control_goto(1,main_settings.load_cap_pos[main_status.curr_band][main_status.curr_segment]);
+  if (ext_control_get_ptt_status() == 0) {
+    if ((main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR1_LIMIT_CW) && (main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] < MOTOR1_LIMIT_CCW)) {// & (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR2_LIMIT_CW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] <MOTOR2_LIMIT_CCW)) {
+      //TODO: Change to 1 on LOAD
+      main_status.tune_sequence_flags = (1<<TUNE_SEQUENCE_TUNE_DONE) | (0<<TUNE_SEQUENCE_LOAD_DONE) | (1<<TUNE_SEQUENCE_RELAY_DONE);
+      main_status.amp_op_status = AMP_OP_STATUS_TUNING;
+      
+      ext_control_activate_band_relay(main_status.curr_band);
+      motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+      
+      send_status_update = 1;
+      
+      #ifdef DEBUG
+        printf("EVENT >> TUNING\n");
+      #endif
+    }
+    else {
+      main_status.amp_op_status = AMP_OP_STATUS_ERROR;
+      
+      #ifdef DEBUG
+        printf("ERROR >> TUNE FAILURE\n");
+      #endif
+      
+      send_status_update = 1;
+    }
   }
 }
 
@@ -252,27 +303,6 @@ void event_handler_control_panel(unsigned int state) {
     printf("EVENT_HANDLER_CONTROL_CHANGED\n");
   #endif
     
-  if (state & (1<<EXT_CONTROL_PTT_INPUT_BIT)) {
-    if (curr_state  & (1<<EXT_CONTROL_PTT_INPUT_BIT)) {
-      if (main_status.amp_op_status == AMP_OP_STATUS_READY) {
-        ext_control_set_ptt_active();
-        main_status.ptt_status = 0;
-        
-        #ifdef DEBUG
-          printf("EVENT >> PTT ACTIVE\n");
-        #endif
-      }
-    }
-    else {
-      ext_control_set_ptt_deactive();
-      main_status.ptt_status = 0;
-      
-        #ifdef DEBUG
-          printf("EVENT >> PTT DEACTIVE\n");
-        #endif
-    }
-  }
-
   if (state & (1<<EXT_CONTROL_MODE_SW_BIT)) {
     if (curr_state & (1<<EXT_CONTROL_MODE_SW_BIT)) {
       main_status.mode = 1;
@@ -315,6 +345,8 @@ void event_handler_control_panel(unsigned int state) {
          
         main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(0);
         //main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(1);
+        
+        eeprom_write_block(&main_settings,1,sizeof(main_settings));
       }
     }  
 
@@ -438,9 +470,13 @@ int main(void){
 	
 	init_timer_0();
 	
+  init_timer_1();
+  
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();
 
+  event_queue_init();
+  
 	sei();
 	
   ping_message[0] = DEVICE_ID_AMP_CTRL_BOARD;
@@ -464,15 +500,29 @@ int main(void){
 
   unsigned int ext_control_state = 0;
 
+  eeprom_read_block(&main_settings,1,sizeof(main_settings));
+  
   main_status.amp_op_status = AMP_OP_STATUS_OFF;
   main_status.amp_flags = 0;
-  main_status.ptt_status = 0;
   main_status.parent_addr = 0;
   main_status.curr_band = 0;
   main_status.curr_segment = 0;
 
   ext_control_init();
   
+  PORTJ &= ~(1<<2);
+  PORTJ &= ~(1<<3);
+  PORTJ &= ~(1<<4);
+  PORTJ &= ~(1<<5);
+  PORTJ &= ~(1<<6);
+  PORTG &= ~(1<<2);
+  PORTC &= ~(1<<7);
+  PORTC &= ~(1<<6);
+  PORTC &= ~(1<<5);
+  PORTC &= ~(1<<4);
+  PORTC &= ~(1<<3);
+  PORTC &= ~(1<<2);
+    
   while(1) {
     if (bus_check_rx_status(&mess)) {
       bus_parse_message(&mess);
@@ -486,6 +536,30 @@ int main(void){
       flag_start_tune = 0;
     }
     
+    curr_ptt_input_state = ext_control_get_ptt_input_state();
+
+    //The PTT input status has changed
+    if (curr_ptt_input_state != prev_ptt_input_state) {
+      if (curr_ptt_input_state) {
+        if ((main_status.amp_flags & (1<<AMP_STATUS_MAINS)) && (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) && (main_status.amp_op_status == AMP_OP_STATUS_READY)) {
+          ext_control_set_ptt_active();
+        
+          #ifdef DEBUG
+            printf("PTT >> PTT ACTIVE\n");
+          #endif  
+        }
+      }
+      else {
+        ext_control_set_ptt_deactive();
+        
+        #ifdef DEBUG
+          printf("PTT >> PTT DEACTIVE\n");   
+        #endif
+      }
+      
+      prev_ptt_input_state = curr_ptt_input_state;
+    }
+    
     if (bus_is_master()) {
 			if (counter_sync >= BUS_MASTER_SYNC_INTERVAL) {
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_SYNC, 1, (unsigned char *)DEF_NR_DEVICES);
@@ -494,6 +568,11 @@ int main(void){
 			}
 		}
 
+		if (flag_run_event) {
+      event_run();
+      flag_run_event = 0; 
+    }
+		
     #ifdef DEBUG
       if (print_pos == 1) {
         printf("CURR_POS: %i\n",a2dConvert10bit(1)); 
@@ -521,6 +600,12 @@ int main(void){
         send_status_update = 0;
       }
       
+      if (flag_broadcast_amp_status) {
+        broadcast_amp_status();
+        
+        flag_broadcast_amp_status = 0;
+      }
+      
 		//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
 				send_ping();
@@ -534,7 +619,7 @@ int main(void){
 unsigned char step_period = 2;
 unsigned char phase = 7;
 unsigned char dir = 1;
-
+unsigned char out = 0;
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0A) {
 	//If this device should act as master it should send out a SYNC command
@@ -545,12 +630,11 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 
 	if (event_in_queue()) {
 		if (counter_event_timer >= (event_queue_get()).time_target)
-      event_run();
-      //main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+      flag_run_event = 1;
 	}
 	
 	if ((counter_ms % 1500) == 0) {
-    send_status_update = 1;
+    flag_broadcast_amp_status = 1;
   }
 	
   #ifdef DEBUG
@@ -558,8 +642,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
       print_pos = 1;
     }
   #endif
-	
-	motor_control_process();
 	
 	counter_ping_interval++;
 	counter_ms++;
@@ -575,10 +657,23 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	bus_ping_tick();
-  
-  motor_control_tick();
 }
 
 /*!Output overflow 0 interrupt */
 ISR(SIG_OVERFLOW0) {
+}
+
+
+
+ISR(SIG_OUTPUT_COMPARE1A) {
+  motor_control_process();
+  motor_control_tick();
+
+  //Clear the counters
+  TCNT1L = 0;
+  TCNT1H = 0;
+}
+
+/*!Output overflow 1 interrupt */
+ISR(SIG_OVERFLOW1) {
 }

@@ -26,6 +26,7 @@
 #define _INIT_H_
 
 void init_timer_0(void);
+void init_timer_1(void);
 void init_timer_2(void);
 void init_ports(void);
 void init_usart_computer(void);

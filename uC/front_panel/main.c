@@ -378,6 +378,9 @@ void main_update_ptt_status(void) {
     if ((status.amp_flags & (1<<AMP_STATUS_MAINS)) && (status.amp_flags & (1<<AMP_STATUS_OPR_STBY))) {
       if (status.amp_op_status != AMP_OP_STATUS_READY)
         state = 3;
+      
+      if (status.amp_band != status.selected_band)
+        state = 3;
     }
   }
 
