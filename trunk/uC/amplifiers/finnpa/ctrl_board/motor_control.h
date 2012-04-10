@@ -23,8 +23,8 @@
 #ifndef _MOTOR_CONTROL_H_
 #define _MOTOR_CONTROL_H_
 
-//! The delay between each tick of a stepper motor
-#define MOTOR_CONTROL_STEP_DELAY  8
+//! The delay between each tick of a stepper motor, change the interrupt interval instead on timer 1
+#define MOTOR_CONTROL_STEP_DELAY  1
 
 //Direction is from front of motor looking at the axle
 
@@ -66,7 +66,9 @@ void motor_control_set_phase(unsigned char motor_index, unsigned char phase);
 
 void motor_control_stepper_off(unsigned char index);
 
-void motor_control_step_motor1(void);
+void __inline__ motor_control_step_motor1(void);
+void __inline__ motor_control_step_motor2(void);
+void __inline__ motor_control_step_motor3(void);
 
 void motor_control_stepper_turn_cw(unsigned char index);
 void motor_control_stepper_turn_ccw(unsigned char index);

@@ -91,7 +91,7 @@ void motor_control_goto(unsigned char motor_index, unsigned int pos) {
         printf("NONE\n");
       
       stepper_motor[motor_index].next_tick = stepper_motor[motor_index].current_tick + MOTOR_CONTROL_STEP_DELAY;
-    }
+    } 
   }
 }
 
@@ -105,62 +105,66 @@ unsigned int motor_control_get_pos(unsigned char motor_index) {
   return(0);
 }
 
-void motor_control_step_motor1(void) {
-  if (stepper_motor[0].current_phase == 0) {
-		PORTL |= (1<<2);
-		PORTL &= ~(1<<3);
-		PORTL &= ~(1<<4);
-		PORTL &= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 1) {
-		PORTL |= (1<<2);
-		PORTL |= (1<<3);
-		PORTL &= ~(1<<4);
-		PORTL &= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 2) {
-		PORTL &= ~(1<<2);
-		PORTL |= (1<<3);
-		PORTL &= ~(1<<4);
-		PORTL &= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 3) {
-		PORTL &= ~(1<<2);
-		PORTL |= (1<<3);
-		PORTL |= (1<<4);
-		PORTL &= ~(1<<5);
-  } 
-	else if (stepper_motor[0].current_phase == 4) {
-		PORTL &= ~(1<<2);
-		PORTL &= ~(1<<3);
-		PORTL |= (1<<4);
-		PORTL &= ~(1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 5) {
-		PORTL &= ~(1<<2);
-		PORTL &= ~(1<<3);
-		PORTL |= (1<<4);
-		PORTL |= (1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 6) {
-		PORTL &= ~(1<<2);
-		PORTL &= ~(1<<3);
-		PORTL &= ~(1<<4);
-		PORTL |= (1<<5);
-  }
-  else if (stepper_motor[0].current_phase == 7) {
-		PORTL |= (1<<2);
-		PORTL &= ~(1<<3);
-		PORTL &= ~(1<<4);
-		PORTL |= (1<<5);
+void __inline__ motor_control_step_motor1(void) {
+  switch(stepper_motor[0].current_phase) {
+    case 0:
+      PORTL |= (1<<2);
+      PORTL &= ~(1<<3);
+      PORTL &= ~(1<<4);
+      PORTL &= ~(1<<5);
+      break;
+    case 1
+      PORTL |= (1<<2);
+      PORTL |= (1<<3);
+      PORTL &= ~(1<<4);
+      PORTL &= ~(1<<5);
+      break;
+    case 2:
+      PORTL &= ~(1<<2);
+      PORTL |= (1<<3);
+      PORTL &= ~(1<<4);
+      PORTL &= ~(1<<5);
+      break;
+    case 3:
+      PORTL &= ~(1<<2);
+      PORTL |= (1<<3);
+      PORTL |= (1<<4);
+      PORTL &= ~(1<<5);
+      break;
+    case 4:
+      PORTL &= ~(1<<2);
+      PORTL &= ~(1<<3);
+      PORTL |= (1<<4);
+      PORTL &= ~(1<<5);
+      break;
+    case 5:
+      PORTL &= ~(1<<2);
+      PORTL &= ~(1<<3);
+      PORTL |= (1<<4);
+      PORTL |= (1<<5);
+      break;
+    case 6:
+      PORTL &= ~(1<<2);
+      PORTL &= ~(1<<3);
+      PORTL &= ~(1<<4);
+      PORTL |= (1<<5);
+      break;
+    case 7:
+      PORTL |= (1<<2);
+      PORTL &= ~(1<<3);
+      PORTL &= ~(1<<4);
+      PORTL |= (1<<5);
+      break;
+    default:
+      break;
   }
 }
 
-void motor_control_step_motor2(void) {
+void __inline__ motor_control_step_motor2(void) {
   
 }
 
-void motor_control_step_motor3(void) {
+void __inline__ motor_control_step_motor3(void) {
   
 }
 

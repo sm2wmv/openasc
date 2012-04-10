@@ -19,7 +19,14 @@
 //#define CAL_MODE	1
 
 //#define PICKUP_UNIT_ID_1
-#define PICKUP_UNIT_ID_2
+//#define PICKUP_UNIT_ID_2
+
+//#define PICKUP_UNIT_ID_SK3W_160M
+//#define PICKUP_UNIT_ID_SK3W_80M
+//#define PICKUP_UNIT_ID_SK3W_40M
+//#define PICKUP_UNIT_ID_SK3W_20M
+//#define PICKUP_UNIT_ID_SK3W_15M
+//#define PICKUP_UNIT_ID_SK3W_10M
 
 #ifndef CAL_MODE
 	//! The transmit interval of the power in ms, used when the meter is considered as active */
@@ -28,7 +35,7 @@
 	#define POWER_TRANSMIT_INTERVAL2 2000
 
 	//! The interval which the units polls the power */
-	#define POWER_POLL_INTERVAL	20
+	#define POWER_POLL_INTERVAL	40
 #endif
 
 #ifdef CAL_MODE

@@ -31,7 +31,7 @@
 
 /*! Init the UART for the computer communication */
 void init_usart_computer(void) {
-	usart0_init(47); //115.2kbit
+	usart0_init(7); //115.2kbit
 	fdevopen((void*)usart0_transmit, (void*)usart0_receive_loopback);
 }
 
@@ -49,18 +49,14 @@ void init_timer_0(void) {
 	TIMSK0 |= (1<<OCIE0A);	//enable the interrupt
 }
 
-/*!
-  * Initialize timer1 to use the main crystal clock and the output
-  * compare interrupt feature to generate an interrupt approximately
-  * once per 104 us.
-  */
+/*! This timer is used for the stepper motor ONLY */
 void init_timer_1(void) {
   TCNT1L = 0;
   TCNT1H = 0;
   TCCR1A = 0;
   TCCR1A = (0<<WGM11) | (0<<WGM10);
   TCCR1B = (1<<CS12) | (0<<CS11) | (0<<CS10);  //Prescaler 256
-  OCR1AL = 6;  //Will give an interrupt every 104 us
+  OCR1AL = 70;
   OCR1AH = 0;
   TIMSK1 |= (1<<OCIE1A);  //enable the interrupt
 }
