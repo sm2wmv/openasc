@@ -60,7 +60,7 @@ TARGET = main
 
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_POWERMETER_PICKUP_V2
-BASE_ADDRESS = 0
+BASE_ADDRESS = 15
 
 #The size of the RX queue in buffers
 BUS_RX_QUEUE_SIZE = 5

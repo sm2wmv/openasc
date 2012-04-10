@@ -120,7 +120,7 @@ void init_calib_values(void) {
 
 unsigned char get_band(unsigned int freq) {
 	//Default band configuration would be for 20m
-	unsigned char band = status.curr_band;
+	unsigned char band = 3;
 	
 	if ((freq >= 1000) && (freq < 2500))
 		band = 0;
@@ -136,10 +136,6 @@ unsigned char get_band(unsigned int freq) {
 		band = 5;
 	
 	return(band);
-}
-
-unsigned int get_freq(void) {
-	return(14000);
 }
 
 unsigned long gal_reg;

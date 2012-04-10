@@ -23,7 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-//#define DEBUG
+#define DEBUG
 
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
