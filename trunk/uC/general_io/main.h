@@ -24,9 +24,4 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-//! The size of the RX queue in buffers
-#define BUS_RX_QUEUE_SIZE 10
-//! The size of the TX queue in buffers
-#define BUS_TX_QUEUE_SIZE	10
-
 #endif

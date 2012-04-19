@@ -37,9 +37,8 @@
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
 #include "../wmv_bus/bus_ping.h"
-#include "../wmv_bus/bus_rx_queue.h"
-#include "../wmv_bus/bus_tx_queue.h"
 #include "../wmv_bus/bus_commands.h"
+#include "../queue.h"
 
 #define ADC_CHANNELS					5
 #define ADC_INTERVAL					20
@@ -164,72 +163,67 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
 /*! \brief Parse a message and exectute the proper commands
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
-void bus_parse_message(void) {
-	BUS_MESSAGE bus_message = rx_queue_get();
+void bus_parse_message(BUS_MESSAGE *bus_message) {
+  if (bus_message->cmd == BUS_CMD_ACK)
+    bus_message_acked(bus_message->from_addr);
+  else if (bus_message->cmd == BUS_CMD_NACK)
+    bus_message_nacked(bus_message->from_addr, bus_message->data[0]);
+  else if (bus_message->cmd == BUS_CMD_PING) {
+    if (bus_message->length > 1)
+      bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], bus_message->length-1, (unsigned char *)(bus_message->data+1));
+    else
+      bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);		
+  }	
+  else if (bus_message->cmd == BUS_CMD_ROTATOR_SET_ANGLE) {
+    unsigned char subaddr = bus_message->data[0];
+    if (subaddr < ADC_CHANNELS) {
+      unsigned int new_dir;
+      new_dir = bus_message->data[1] << 8;
+      new_dir |= bus_message->data[2];
+      if (new_dir > 1023) {
+	      new_dir = 1023;
+      }
+      if (new_dir > current_heading[subaddr]) {
+	      target_heading[subaddr] = new_dir;
+	      rotate_dir[subaddr] = 1;
+      }
+      else if (new_dir < current_heading[subaddr]) {
+	      target_heading[subaddr] = new_dir;
+	      rotate_dir[subaddr] = -1;
+      }
+      else {
+	      target_heading[subaddr] = -1;
+	      rotate_dir[subaddr] = 0;
+      }
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_ROTATOR_ROTATE_CW) {
+    unsigned char subaddr = bus_message->data[0];
+    if (subaddr < ADC_CHANNELS) {
+      rotate_dir[subaddr] = 1;
+      target_heading[subaddr] = -1;
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_ROTATOR_ROTATE_CCW) {
+    unsigned char subaddr = bus_message->data[0];
+    if (subaddr < ADC_CHANNELS) {
+      rotate_dir[subaddr] = -1;
+      target_heading[subaddr] = -1;
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_ROTATOR_STOP) {
+    unsigned char subaddr = bus_message->data[0];
+    if (subaddr < ADC_CHANNELS) {
+      rotate_dir[subaddr] = 0;
+      target_heading[subaddr] = -1;
+    }
+  }
+  else if (bus_message->cmd == BUS_CMD_ASCII_DATA) {
+    parse_ascii_cmd(&bus_message);
+  }
+  else {
 
-	if (bus_message.cmd == BUS_CMD_ACK)
-		bus_message_acked(bus_message.from_addr);
-	else if (bus_message.cmd == BUS_CMD_NACK)
-		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
-	else if (bus_message.cmd == BUS_CMD_PING) {
-		if (bus_message.length > 1)
-			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
-		else
-			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);		
-	}
-	else if (bus_message.cmd == BUS_CMD_ROTATOR_SET_ANGLE) {
-		unsigned char subaddr = bus_message.data[0];
-		if (subaddr < ADC_CHANNELS) {
-			unsigned int new_dir;
-			new_dir = bus_message.data[1] << 8;
-			new_dir |= bus_message.data[2];
-			if (new_dir > 1023) {
-				new_dir = 1023;
-			}
-			if (new_dir > current_heading[subaddr]) {
-				target_heading[subaddr] = new_dir;
-				rotate_dir[subaddr] = 1;
-			}
-			else if (new_dir < current_heading[subaddr]) {
-				target_heading[subaddr] = new_dir;
-				rotate_dir[subaddr] = -1;
-			}
-			else {
-				target_heading[subaddr] = -1;
-				rotate_dir[subaddr] = 0;
-			}
-		}
-	}
-	else if (bus_message.cmd == BUS_CMD_ROTATOR_ROTATE_CW) {
-		unsigned char subaddr = bus_message.data[0];
-		if (subaddr < ADC_CHANNELS) {
-				rotate_dir[subaddr] = 1;
-				target_heading[subaddr] = -1;
-		}
-	}
-	else if (bus_message.cmd == BUS_CMD_ROTATOR_ROTATE_CCW) {
-		unsigned char subaddr = bus_message.data[0];
-		if (subaddr < ADC_CHANNELS) {
-				rotate_dir[subaddr] = -1;
-				target_heading[subaddr] = -1;
-		}
-	}
-	else if (bus_message.cmd == BUS_CMD_ROTATOR_STOP) {
-		unsigned char subaddr = bus_message.data[0];
-		if (subaddr < ADC_CHANNELS) {
-				rotate_dir[subaddr] = 0;
-				target_heading[subaddr] = -1;
-		}
-	}
-	else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
-		parse_ascii_cmd(&bus_message);
-	}
-	else {
-	
-	}
-	
-	//Drop the message
-	rx_queue_drop();
+  }
 }
 
 /*! \brief Read the external DIP-switch.
@@ -283,13 +277,14 @@ int main(void)
 
 	unsigned char device_count = bus_get_device_count();
 
+	BUS_MESSAGE mess;
+	
 	while(1) {
-		if (!rx_queue_is_empty()) {
-			bus_parse_message();
-		}
-
-		if (!tx_queue_is_empty())
-			bus_check_tx_status();
+    if (bus_check_rx_status(&mess)) {
+      bus_parse_message(&mess);
+    }
+    
+    bus_check_tx_status();  
 			
 		//If this device should act as master it should send out a SYNC command
 		//and also the number of devices (for the time slots) that are active on the bus
