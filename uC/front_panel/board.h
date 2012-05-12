@@ -129,8 +129,8 @@
  * PG0 - Input  - AUX Button 1
  * PG1 - Input  - AUX Button 2
  * PG2 - Input  - Rotary button
- * PG3 - Input  - 32.768kHz crystal
- * PG4 - Input  - 32.768kHz crystal
+ * PG3 - Input  - INT from ethernet W5100 Wiznet chip
+ * PG4 - Input  - CS to ethernet W5100 Wiznet chip
  * PG5 - Output - RELAY PTT RADIO
  * =====================================================================================
  *

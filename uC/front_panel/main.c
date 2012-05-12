@@ -52,6 +52,7 @@
 #include "errors.h"
 #include "display_handler.h"
 #include "remote_control.h"
+#include "ethernet.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -133,6 +134,14 @@ void main_enable_device(void) {
 
 void main_set_band_change_mode(unsigned char mode) {
 	runtime_settings.band_change_mode = mode;
+}
+
+unsigned char main_get_amp_func_flags(void) {
+  return(settings.amp_func_conf);
+}
+
+unsigned char main_get_amp_sub_addr(void) {
+  return(settings.amp_sub_addr);
 }
 
 unsigned char main_get_amp_addr(void) {
@@ -626,6 +635,8 @@ int main(void){
 	
 	bus_init();
 
+  ethernet_init();
+  
 	//Init the power meter
 	powermeter_init(settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph);
 	
@@ -692,7 +703,7 @@ int main(void){
     }
     
     bus_check_tx_status();
-		
+
 		//This variable can be set to 0 to disable all the control of the device
 		//For example this is used when the box is about to shut down
 		if (device_online == 1) {
@@ -818,14 +829,15 @@ int main(void){
 		
 			radio_process_tasks();
       
+      //TODO: FIX BAND IN USE???
       //Check that we aren't on the same band as another box every 250 ms
-      if ((counter_compare0 % 250) == 0) {
+      /*if ((counter_compare0 % 250) == 0) {
         if (main_band_change_ok(status.selected_band) == 0) {
             if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) == 0) {
               error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);
             }
         }
-      }
+      }*/
 		}
 
     //Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
@@ -834,6 +846,8 @@ int main(void){
     //Poll the TX queue in the internal comm to see if we have any new messages to be SENT
     internal_comm_poll_tx_queue();
 
+    if (ethernet_get_chip_enabled())
+      ethernet_process();
 
     if ((counter_compare0 % DISPLAY_HANDLER_TICK_INTERVAL) == 0) {
       display_handler_tick();

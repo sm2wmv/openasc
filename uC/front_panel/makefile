@@ -80,7 +80,7 @@ WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c
 GLOBAL_ROUTINES = ../delay.c ../i2c.c ../internal_comm.c ../event_queue.c ../queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c ks0108.c glcd.c fonts.c radio_interface.c sequencer.c led_control.c interrupt_handler.c eeprom.c ds1307.c computer_interface.c antenna_ctrl.c band_ctrl.c eeprom_m24.c menu.c rotary_encoder.c event_handler.c  remote_control.c sub_menu.c powermeter.c errors.c display_handler.c
+SRC = $(TARGET).c $(WMV_BUS_SRC) $(GLOBAL_ROUTINES) init.c usart.c ks0108.c glcd.c fonts.c radio_interface.c sequencer.c led_control.c interrupt_handler.c eeprom.c ds1307.c computer_interface.c antenna_ctrl.c band_ctrl.c eeprom_m24.c menu.c rotary_encoder.c event_handler.c  remote_control.c sub_menu.c powermeter.c errors.c display_handler.c ethernet.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s

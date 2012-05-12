@@ -11,7 +11,7 @@
 #define _BUS_PING_H_
 
 //! The timeout for the bus ping. After this time has passed a device is considered "dead"
-#define BUS_PING_TIMEOUT_LIMIT	6000
+#define BUS_PING_TIMEOUT_LIMIT	30000
 
 //! Bit is set if the ping timeout has been processed
 #define PING_FLAG_PROCESSED	0

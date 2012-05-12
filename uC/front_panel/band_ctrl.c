@@ -219,6 +219,15 @@ void band_ctrl_change_band(unsigned char band) {
 				sub_menu_activate_all();
 			}
       
+      if (main_get_amp_func_flags() & (1<<AMP_AUTO_BAND_CTRL_ENABLED)) {
+        unsigned char temp[3];
+        temp[0] = main_get_amp_sub_addr(); 
+        temp[1] = band; //The new band
+        temp[2] = 0;    //Band segment
+        
+        bus_add_tx_message(bus_get_address(), main_get_amp_addr(), (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_BAND_CHANGE,3,temp);
+      }
+      
 			//Update the display
 			event_add_message((void*)display_handler_repaint,200,0);
       

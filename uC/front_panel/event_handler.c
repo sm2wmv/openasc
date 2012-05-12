@@ -71,7 +71,8 @@ unsigned char ascii_comm_device_addr = 0;
 
 static unsigned char ant_rotating_indicator = 0;
 
-static unsigned char amp_addr;
+static unsigned char amp_addr = 0;
+static unsigned char amp_sub_addr = 0;
 
 /*! \brief This function goes through the bus and internal communcation queue to check if certain commands exist 
  *  \return 1 if a command in the command list is in either queue and 0 if not */
@@ -397,9 +398,10 @@ void event_process_task(unsigned char task_index) {
     case EXT_CTRL_AMPLIFIER_TOGGLE_ON_OFF:
       if (main_get_amp_ctrl_enabled()) {
         amp_addr = main_get_amp_addr();
+        amp_sub_addr = main_get_amp_sub_addr();
         
         if (amp_addr != 0)
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS,0,0);
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS,1,&amp_sub_addr);
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
           printf("SENT MAINS TOGGLE to: 0x%02X\n",amp_addr);
@@ -408,11 +410,13 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_AMPLIFIER_TOGGLE_STANDBY:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0)
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS, 0, 0);
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS, 1, &amp_sub_addr);
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
           printf("SENT STDBY TOGGLE to: 0x%02X\n",amp_addr);
@@ -421,14 +425,17 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_AMPLIFIER_TUNE:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 0;
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 0;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -438,12 +445,14 @@ void event_process_task(unsigned char task_index) {
       break;      
     case EXT_CTRL_AMPLIFIER_RESET:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0) {
           unsigned char temp[2];
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_RESET,0,0);
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_RESET,1,&amp_sub_addr);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -453,14 +462,17 @@ void event_process_task(unsigned char task_index) {
       break;      
     case EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_1:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 0;  // segment #1
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 0;  // segment #1
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -470,16 +482,19 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_2:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
-        
-        if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 1;  // segment #2
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          amp_sub_addr = main_get_amp_sub_addr();
         }
         
+        if (amp_addr != 0) {
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 1;  // segment #2
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+        }
+
         #ifdef DEBUG_COMPUTER_USART_ENABLED
           printf("SENT TUNE CMD to: 0x%02X\n",amp_addr);
         #endif
@@ -487,16 +502,19 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_3:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
-        
-        if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 2;  // segment #3
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          amp_sub_addr = main_get_amp_sub_addr();
         }
         
+        if (amp_addr != 0) {
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 2;  // segment #3
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+        }
+
         #ifdef DEBUG_COMPUTER_USART_ENABLED
           printf("SENT TUNE CMD to: 0x%02X\n",amp_addr);
         #endif
@@ -504,14 +522,17 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_4:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 3;  // segment #4
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 3;  // segment #4
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -521,15 +542,19 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_5:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 4;  // segment #5
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 4;  // segment #5
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
         }
+
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
           printf("SENT TUNE CMD to: 0x%02X\n",amp_addr);
@@ -538,14 +563,17 @@ void event_process_task(unsigned char task_index) {
       break;
     case EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_6:
       if (main_get_amp_ctrl_enabled()) {
-        if (amp_addr == 0)
+        if (amp_addr == 0) {
           amp_addr = main_get_amp_addr();
+          amp_sub_addr = main_get_amp_sub_addr();
+        }
         
         if (amp_addr != 0) {
-          unsigned char temp[2];
-          temp[0] = main_get_current_band();
-          temp[1] = 5;  // segment #6
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,2,temp);
+          unsigned char temp[3];
+          temp[0] = amp_sub_addr;
+          temp[1] = main_get_current_band();
+          temp[2] = 5;  // segment #6
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -1393,16 +1421,17 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
     internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
   }
   else if (bus_message.cmd == BUS_CMD_AMPLIFIER_GET_STATUS) {
-    if (bus_message.length > 1) {
-      status.amp_flags = bus_message.data[0];
-      status.amp_op_status = bus_message.data[1];
-      status.amp_band = bus_message.data[2];
-      status.amp_segment = bus_message.data[3];
-      
-      main_update_ptt_status();
+    if ((main_get_amp_addr() == bus_message.from_addr) && (main_get_amp_sub_addr() == bus_message.data[0])) {
+      if (bus_message.length > 4) {
+        status.amp_flags = bus_message.data[1];
+        status.amp_op_status = bus_message.data[2];
+        status.amp_band = bus_message.data[3];
+        status.amp_segment = bus_message.data[4];
+        
+        main_update_ptt_status();
+        display_handler_repaint();
+      }
     }
-    
-    display_handler_repaint();
   }
 	
 	#ifdef DEBUG_WMV_BUS

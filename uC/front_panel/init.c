@@ -76,7 +76,7 @@ void init_ports(void) {
 	DDRE = 0x26;
 	//DDRE = 0x24;
 	DDRF = 0xFF;
-	DDRG = 0x20;
+	DDRG = 0x30;
 	DDRH = 0xAA;
 	DDRJ = 0x8A;
 	DDRK = 0xBF;
@@ -93,7 +93,7 @@ void init_ports(void) {
 	PORTK |= (1<<BUTTON_MENU_BIT);
 	PORTL |= (1<<BUTTON1_TX_BIT) | (1<<BUTTON2_TX_BIT) | (1<<BUTTON3_TX_BIT) | (1<<BUTTON4_TX_BIT);
 	PORTH |= (1<<BUTTON1_RX_BIT) | (1<<BUTTON2_RX_BIT) | (1<<BUTTON3_RX_BIT);
-	PORTB |= (1<<BUTTON4_RX_BIT);
+	PORTB |= (1<<BUTTON4_RX_BIT) | (1<<1);
 	PORTG = 0x07;
 
 	PORTJ |= (1<<0);

@@ -201,8 +201,8 @@
            <rect>
             <x>15</x>
             <y>20</y>
-            <width>145</width>
-            <height>87</height>
+            <width>151</width>
+            <height>89</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -389,7 +389,7 @@
           <rect>
            <x>10</x>
            <y>225</y>
-           <width>135</width>
+           <width>139</width>
            <height>46</height>
           </rect>
          </property>
@@ -822,7 +822,7 @@
          <rect>
           <x>215</x>
           <y>295</y>
-          <width>275</width>
+          <width>301</width>
           <height>258</height>
          </rect>
         </property>
@@ -1173,7 +1173,7 @@
          <rect>
           <x>5</x>
           <y>40</y>
-          <width>626</width>
+          <width>636</width>
           <height>322</height>
          </rect>
         </property>
@@ -2395,7 +2395,7 @@
            <rect>
             <x>15</x>
             <y>25</y>
-            <width>190</width>
+            <width>193</width>
             <height>77</height>
            </rect>
           </property>
@@ -2485,7 +2485,7 @@
           <rect>
            <x>285</x>
            <y>285</y>
-           <width>154</width>
+           <width>206</width>
            <height>141</height>
           </rect>
          </property>
@@ -3431,8 +3431,8 @@ a function to it</string>
          <rect>
           <x>255</x>
           <y>5</y>
-          <width>286</width>
-          <height>291</height>
+          <width>313</width>
+          <height>271</height>
          </rect>
         </property>
         <property name="title">
@@ -3444,225 +3444,183 @@ a function to it</string>
         <property name="checked">
          <bool>false</bool>
         </property>
-        <widget class="QCheckBox" name="checkBoxAmplifierPowerControl">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>140</y>
-           <width>106</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Mains ON/OFF</string>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkBoxAmplifierStandbyControl">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>160</y>
-           <width>126</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Operate/Standby</string>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkBoxAmplifierBandControl">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>180</y>
-           <width>161</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Automatic band control</string>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkBoxAmplifierReset">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>200</y>
-           <width>161</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Amplifier reset</string>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkBoxAmplifierTune">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>220</y>
-           <width>101</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Tune button</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="labelAmplifierAddress_2">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>120</y>
-           <width>141</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Functions available</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-        <widget class="QWidget" name="layoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>13</x>
-           <y>28</y>
-           <width>263</width>
-           <height>86</height>
-          </rect>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_16">
-          <item row="0" column="0">
-           <widget class="QLabel" name="labelAmplifierAddress">
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>90</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Address:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxAmplifierAddress">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>255</number>
-            </property>
-            <property name="value">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="labelAmplifierAddressDec">
-            <property name="text">
-             <string>(dec, 0 = disabled)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelAmplifierSubAddress">
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Sub address:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxAmplifierSubAddress">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>255</number>
-            </property>
-            <property name="value">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="labelAmplifierSubAddressDec">
-            <property name="text">
-             <string>(dec)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelAmplifierBandSegments">
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>90</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Band segments</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBoxAmplifierSegCount">
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>6</number>
-            </property>
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QLabel" name="labelAmplifierBandSegments2">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_16">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelAmplifierAddress">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Address:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinBoxAmplifierAddress">
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="labelAmplifierAddressDec">
+             <property name="text">
+              <string>(dec, 0 = disabled)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelAmplifierSubAddress">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sub address:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinBoxAmplifierSubAddress">
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="labelAmplifierSubAddressDec">
+             <property name="text">
+              <string>(dec)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelAmplifierBandSegments">
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Band segments</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="spinBoxAmplifierSegCount">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>6</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLabel" name="labelAmplifierBandSegments2">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelAmplifierAddress_2">
+           <property name="text">
+            <string>Functions available</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxAmplifierPowerControl">
+           <property name="text">
+            <string>Mains ON/OFF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxAmplifierStandbyControl">
+           <property name="text">
+            <string>Operate/Standby</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxAmplifierBandControl">
+           <property name="text">
+            <string>Automatic band control</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxAmplifierReset">
+           <property name="text">
+            <string>Amplifier reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxAmplifierTune">
+           <property name="text">
+            <string>Tune button</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QGroupBox" name="groupBoxAUX">
         <property name="geometry">
          <rect>
           <x>255</x>
-          <y>300</y>
+          <y>285</y>
           <width>246</width>
           <height>136</height>
          </rect>
@@ -3688,8 +3646,8 @@ a function to it</string>
           <rect>
            <x>10</x>
            <y>36</y>
-           <width>225</width>
-           <height>86</height>
+           <width>231</width>
+           <height>89</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
@@ -3824,7 +3782,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>656</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">

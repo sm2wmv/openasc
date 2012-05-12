@@ -34,6 +34,7 @@
 
 // include fonts
 #include "pictures.h"
+#include "ethernet.h"
 #include <string.h> 
 #include <stdio.h>
 
@@ -66,6 +67,11 @@ void glcd_update(unsigned int top, unsigned int bottom)
 	for (unsigned char y=yt;y<yb;y++)
 		for (unsigned char x=0;x<GLCD_X_BYTES;x++)
 			glcd_data_write(glcd_buffer[y][x]);
+    
+    
+  if (ethernet_is_active()) {
+    ethernet_send_display_data(0,&glcd_buffer,1024);
+  }
 }
 
 void glcd_glyph(unsigned char left, unsigned char top, unsigned char width, unsigned char height, const prog_char *glyph, unsigned char store_width)
