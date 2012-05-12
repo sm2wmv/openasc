@@ -115,14 +115,19 @@
 //! Amplifier control command - Tune the amplifier
 #define BUS_CMD_AMPLIFIER_TUNE                        0x43
 /*! Amplifier control - Get amplififer status
- *  Byte 0 = Amp status flags
- *  Byte 1 = Amp op status 
- *  Byte 2 = Current tuned band
- *  Byte 3 = Current tuned band segment
- */
+ *  Byte 0 = Sub address
+ *  Byte 1 = Amp status flags
+ *  Byte 2 = Amp op status 
+ *  Byte 3 = Current tuned band
+ *  Byte 4 = Current tuned band segment */
 #define BUS_CMD_AMPLIFIER_GET_STATUS                  0x46
 //! Amplifier control - An error occured
 #define BUS_CMD_AMPLIFIER_ERROR                       0x47
+/*! Amplifier control command - Band change command (Gets sent after a band change)
+ *  Byte 0 - Sub address
+ *  Byte 1 - Current band
+ *  Byte 2 - Current segment */
+#define BUS_CMD_AMPLIFIER_BAND_CHANGE                 0x48
 
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x60
