@@ -420,17 +420,17 @@ void MainWindowImpl::lineEditAntennaOutputStrChanged(QString str) {
 }
 
 void MainWindowImpl::actionSaveTriggered() {
-   QString s = QFileDialog::getSaveFileName(
+	configFile = QFileDialog::getSaveFileName(
                     this,
-                    "Choose a filename",
-                    "/home",
-                    "Config file (*.ini *.INI)");
+                    tr("Choose a filename"),
+                    configFile,
+                    tr("Config file (*.ini *.INI);;All Files (*)"));
 
 	//Check if there is a file ending, if not we add one
-	if (!s.contains("ini",Qt::CaseInsensitive))
-		s.append(".ini");
+	if (!configFile.contains("ini",Qt::CaseInsensitive))
+		configFile.append(".ini");
 
-	QSettings settings(s,QSettings::IniFormat,0);
+	QSettings settings(configFile,QSettings::IniFormat,0);
 	
 	for (int i=0;i<9;i++)
 		bandData[i].writeSettings(settings);
@@ -448,17 +448,17 @@ void MainWindowImpl::actionSaveTriggered() {
 	
 	rotators.writeSettings(settings);
 	
-	statusbar->showMessage("Saved configuration to: "+s,STATUSBAR_MESSAGE_TIME);
+	statusbar->showMessage("Saved configuration to: "+configFile,STATUSBAR_MESSAGE_TIME);
 }
 
 void MainWindowImpl::actionOpenTriggered() {
-    QString s = QFileDialog::getOpenFileName(
+	configFile = QFileDialog::getOpenFileName(
                     this,
-                    "Choose a file",
-                    "/home",
-                    "Config file (*.ini *.INI)");
-                    
-	QSettings settings(s,QSettings::IniFormat,0);
+                    tr("Choose a file"),
+                    configFile,
+                    tr("Config file (*.ini *.INI);;All Files (*)"));
+	
+	QSettings settings(configFile,QSettings::IniFormat,0);
 	
 	for (int i=0;i<9;i++)
 		bandData[i].loadSettings(settings);
@@ -477,7 +477,7 @@ void MainWindowImpl::actionOpenTriggered() {
 	rotators.loadSettings(settings);
 	
 	loadInitialGUIValues();
-	statusbar->showMessage("Loaded configuration from: "+s,STATUSBAR_MESSAGE_TIME);
+	statusbar->showMessage("Loaded configuration from: "+configFile,STATUSBAR_MESSAGE_TIME);
 }
 
 void MainWindowImpl::actionQuitTriggered() {
@@ -1645,7 +1645,7 @@ void MainWindowImpl::showInformationDialog(QString caption, QString text) {
 	qDebug("poop");
 }
 
-MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f) {
+MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f), configFile(QDir::currentPath() + "/openasc.ini") {
 	setupUi(this);
 
 	tabWidgetSettings->setCurrentIndex(0);

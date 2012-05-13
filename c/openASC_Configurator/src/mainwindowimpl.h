@@ -36,6 +36,7 @@ private:
 	void reloadCurrentRotatorProperties();
 	void listExtButtonFunctionsLoad();
 	QStringList listExtButtonFunctions;
+	QString configFile;
 protected:
 	SequencerClass sequencerFootswitch;
 	SequencerClass sequencerComputer;
