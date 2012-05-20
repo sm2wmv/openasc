@@ -106,6 +106,7 @@
 /*! Deactivate all sub menu outputs */
 #define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS	0x31
 
+
 //! Amplifier control command - Set mains status
 #define BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS         0x40
 //! Amplifier control command - Set operate/standby status
@@ -121,13 +122,36 @@
  *  Byte 3 = Current tuned band
  *  Byte 4 = Current tuned band segment */
 #define BUS_CMD_AMPLIFIER_GET_STATUS                  0x46
-//! Amplifier control - An error occured
+/*! Amplifier control - An error occured
+ *  Byte 0 = Sub address
+ *  Byte 1 = Current band */
 #define BUS_CMD_AMPLIFIER_ERROR                       0x47
 /*! Amplifier control command - Band change command (Gets sent after a band change)
  *  Byte 0 - Sub address
  *  Byte 1 - Current band
  *  Byte 2 - Current segment */
 #define BUS_CMD_AMPLIFIER_BAND_CHANGE                 0x48
+
+/*! Amplifier status bits */
+//! The status of the mains of the amplifier
+#define AMP_STATUS_MAINS      0
+//! The status of the operate/standby of the amplifier
+#define AMP_STATUS_OPR_STBY   1
+
+/*! The amplifier operational status */
+/*! The amplifier is ready */
+#define AMP_OP_STATUS_READY         0
+/*! An error has occured, amp in standby */
+#define AMP_OP_STATUS_ERROR         1
+/*! The amplifier is tuning */
+#define AMP_OP_STATUS_TUNING        2
+/*! The amplifier is off */
+#define AMP_OP_STATUS_OFF           3
+/*! The amplifier is warming up */
+#define AMP_OP_STATUS_WARMUP        4
+/*! The amplifier is cooling down before power down */
+#define AMP_OP_STATUS_COOLDOWN      5
+
 
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x60

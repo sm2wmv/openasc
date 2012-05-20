@@ -1433,6 +1433,11 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
       }
     }
   }
+  else if (bus_message.cmd == BUS_CMD_AMPLIFIER_ERROR) {
+    if ((main_get_amp_addr() == bus_message.from_addr) && (main_get_amp_sub_addr() == bus_message.data[0])) {
+      error_handler_set(ERROR_TYPE_PA_ERROR, 1, 0);
+    }
+  }
 	
 	#ifdef DEBUG_WMV_BUS
 		printf("DEBUG-> Message dropped\n");
