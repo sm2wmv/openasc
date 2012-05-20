@@ -321,6 +321,10 @@ static QState Pa_transmitting(Pa *me) {
 			DEBUG_PRINT("Pa_transmitting/TX_ACTIVE_OFF\r\n");
 			return Q_TRAN(&Pa_ready);
 		}
+    case TOGGLE_MAINS_SIG: {
+      DEBUG_PRINT("Pa_transmitting/TOGGLE_MAINS\r\n");
+      return Q_HANDLED();
+    }
 	}
 	return Q_SUPER(&Pa_operational);
 }
