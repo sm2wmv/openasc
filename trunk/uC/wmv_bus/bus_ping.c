@@ -76,7 +76,8 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 	#endif
 	*/
 	ping_list[from_addr-1].addr = from_addr;
-	ping_list[from_addr-1].device_type = device_type;
+  ping_list[from_addr-1].device_type = device_type;
+  ping_list[from_addr-1].flags |= (1<<PING_FLAG_DEV_PRESENT);
 	
   //This will populate the array with details of which addresses are of DEVICE_ID_MAINBOX
   if (device_type == DEVICE_ID_MAINBOX) {
@@ -110,9 +111,25 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 void bus_ping_tick(void) {
 	//Goes through the ping list and increase their last ping_time with 1ms
 	for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
-    if (ping_list[i].addr != 0)
-		  ping_list[i].time_last_ping++;
+    bus_struct_ping_status *ps = &ping_list[i];
+    if (ps->addr != 0) {
+      if (ps->flags & (1<<PING_FLAG_DEV_PRESENT)) {
+        ps->time_last_ping++;
+        if (ps->time_last_ping > BUS_PING_TIMEOUT_LIMIT) {
+          ps->flags &= ~(1<<PING_FLAG_DEV_PRESENT);
+        }
+      }
+    }
 	}
+}
+
+/*! \brief Check if the device with the specified from address is present or not
+ * \return Return 1 if the device is present or 0 if it's not */
+int8_t bus_ping_device_is_present(uint8_t fm_addr) {
+  if (fm_addr > DEF_NR_DEVICES) {
+    return 0;
+  }
+  return (ping_list[fm_addr-1].flags & (1<<PING_FLAG_DEV_PRESENT));
 }
 
 /*! \brief This function will return a ping which has failed and will mark it that it has been reported 

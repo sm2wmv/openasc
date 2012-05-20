@@ -193,21 +193,6 @@
 //! The amplifier need to have a TUNE button pushed before changing band
 #define AMP_TUNE_ENABLED            4
 
-/*! Amplifier status bits */
-//! The status of the mains of the amplifier
-#define AMP_STATUS_MAINS      0
-//! The status of the operate/standby of the amplifier
-#define AMP_STATUS_OPR_STBY   1
-
-/*! The amplifier operational status */
-/*! The amplifier is ready */
-#define AMP_OP_STATUS_READY         0
-/*! An error has occured, amp in standby */
-#define AMP_OP_STATUS_ERROR         1
-/*! The amplifier is tuning */
-#define AMP_OP_STATUS_TUNING        2
-/*! The amplifier is off */
-#define AMP_OP_STATUS_OFF           3
 
 /****************************************************************/
 

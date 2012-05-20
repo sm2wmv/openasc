@@ -47,9 +47,11 @@
 static void (*bootloader_start)(void) = (void *)0x1FE00;
 
 //! Menu options - Errors
-const struct_menu_option menu_errors[] = {{"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, 
-                                         {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"},{"Band in use"}, {"Int comm. TX full"}, {"Int comm. RX full"},
-                                         {"Event queue full"},{"High ref power"}};
+const struct_menu_option menu_errors[NR_OF_ERRORS] = {
+  {"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, 
+  {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"},{"Band in use"}, {"Int comm. TX full"},
+  {"Int comm. RX full"},{"Event queue full"},{"High ref power"},{"PA Error"}
+};
 
 
 const struct_menu_option menu_misc[] = {{"Reboot"}};
@@ -159,6 +161,10 @@ void menu_show_text(struct_menu_text menu_text) {
       strcpy_P(temp,PSTR("Status: Tuning"));
     else if (status.amp_op_status == AMP_OP_STATUS_OFF)
       strcpy_P(temp,PSTR("Status: Amp off"));
+    else if (status.amp_op_status == AMP_OP_STATUS_WARMUP)
+      strcpy_P(temp,PSTR("Status: Warmup"));
+    else if (status.amp_op_status == AMP_OP_STATUS_COOLDOWN)
+      strcpy_P(temp,PSTR("Status: Cooldown"));
     else
       strcpy_P(temp,PSTR("Status: Standby"));
     

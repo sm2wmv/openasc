@@ -14,7 +14,9 @@
 #define BUS_PING_TIMEOUT_LIMIT	30000
 
 //! Bit is set if the ping timeout has been processed
-#define PING_FLAG_PROCESSED	0
+#define PING_FLAG_PROCESSED   0
+//! Bit is set if the device is missing
+#define PING_FLAG_DEV_PRESENT 1
 
 //! Struct which contains information of the bus ping information	
 typedef struct {
@@ -32,6 +34,7 @@ typedef struct {
 
 void bus_ping_init(void);
 void bus_ping_tick(void);
+int8_t bus_ping_device_is_present(uint8_t fm_addr);
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data);
 bus_struct_ping_status bus_ping_get_failed_ping(void);
 unsigned char bus_ping_get_failed_count(void);
