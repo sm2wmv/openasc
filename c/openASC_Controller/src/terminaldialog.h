@@ -27,6 +27,7 @@ private:
 public slots:
 	void lineEditCommandReturnPressed();
 	void pushButtonSetAddressClicked();
+	void pushButtonClearClicked();
 };
 
 #endif // TERMINALDIALOG_H

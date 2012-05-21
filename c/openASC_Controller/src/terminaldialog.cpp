@@ -61,6 +61,10 @@ void terminalDialog::pushButtonSetAddressClicked() {
 	}
 }
 
+void terminalDialog::pushButtonClearClicked() {
+	ui->textEdit->clear();
+}
+
 void terminalDialog::setSerialPtr(CommClass *serialPtr) {
 	serial = serialPtr;
 }
@@ -80,4 +84,5 @@ terminalDialog::terminalDialog(QWidget *parent) :
 
 		connect(ui->lineEditCommand, SIGNAL(returnPressed()), this, SLOT(lineEditCommandReturnPressed()));
 		connect(ui->pushButtonSetAddress, SIGNAL(clicked()), this, SLOT(pushButtonSetAddressClicked()));
+		connect(ui->pushButtonClear, SIGNAL(clicked()), this, SLOT(pushButtonClearClicked()));
 }
