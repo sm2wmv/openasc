@@ -1,9 +1,3 @@
-/*****************************************************************************
-* Model: 
-* File:  ./pa.c
-*
-* Please visit www.state-machine.com/qm for more information.
-*****************************************************************************/
 #include <string.h>
 
 #include <avr/io.h>
@@ -39,6 +33,8 @@ enum PaSignals {
 	BAND_UNSELECTED_SIG
 };
 
+
+#if 0
 /** 
 * PA state machine class
 */
@@ -51,7 +47,9 @@ typedef struct PaTag {
 		uint8_t ctrlr;
 		uint8_t op_status;
 } Pa;
+#endif
 
+#include "pasm.h"
 
 //! Event queues for the state machines
 static QEvent pa_queue[SM_COUNT][SM_QUEUE_LEN];
@@ -85,6 +83,7 @@ Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
 static int8_t post_event(uint8_t subaddr, enum PaSignals sig, QParam par);
 
 static void Pa_ctor(Pa *pa, uint8_t band);
+#if 0
 static QState Pa_initial(Pa *me);
 static QState Pa_powerOff(Pa *me);
 static QState Pa_powerOn(Pa *me);
@@ -94,6 +93,7 @@ static QState Pa_ready(Pa *me);
 static QState Pa_transmitting(Pa *me);
 static QState Pa_unused(Pa *me);
 static QState Pa_cooldown(Pa *me);
+#endif
 static void Pa_setOpStatus(Pa *pa, uint8_t op_status);
 static void Pa_setCtrlr(Pa *pa, uint8_t ctrlr);
 
@@ -161,8 +161,8 @@ static int8_t post_event(uint8_t band, enum PaSignals sig, QParam par) {
 }
 
 
+#include "pasm.c"
 
-/* Pa class definition ------------------------------------------------*/
 static void Pa_ctor(Pa *pa, uint8_t band) {
 	pa->band = band;
 	pa->ctrlr = PA_CTRLR_UNUSED;
@@ -170,6 +170,7 @@ static void Pa_ctor(Pa *pa, uint8_t band) {
   QActive_ctor((QActive *)pa, (QStateHandler)&Pa_initial);
 }
 
+#if 0
 static QState Pa_initial(Pa *me) {
     return Q_TRAN(&Pa_powerOff);
 }
@@ -383,7 +384,7 @@ static QState Pa_cooldown(Pa *me) {
 	}
 	return Q_SUPER(&Pa_powerOn);
 }
-
+#endif
 
 static void Pa_setOpStatus(Pa *pa, uint8_t op_status) {
   pa->op_status = op_status;
