@@ -1,3 +1,12 @@
+/*! \file     general_io/sk3w_power_amp_ctrl/bus_handler.c
+ *  \ingroup  general_io_group
+ *  \brief    Handle bus communications for this application
+ *  \author   Tobias Blomberg, SN0SVX
+ *  \date     2012-05-23
+ * 
+ * Contains functions for handling application specific bus communications.
+ */
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>

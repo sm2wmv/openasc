@@ -12,13 +12,13 @@
      </initial_glyph>
     </initial>
     <state name="powerOff">
-     <entry brief="set_mains_off">DEBUG_PRINT(&quot;Pa_powerOff/ENTRY\r\n&quot;);
+     <entry brief="set_mains_off ^ op_status=OFF">DEBUG_PRINT(&quot;Pa_powerOff/ENTRY\r\n&quot;);
 Pa_setOpStatus(me, AMP_OP_STATUS_OFF);
 bsp_set_pa_mains(me-&gt;band, 0);</entry>
      <tran trig="TOGGLE_MAINS" target="../../2">
       <action>DEBUG_PRINT(&quot;Pa_powerOff/TOGGLE_MAINS\r\n&quot;);</action>
       <tran_glyph conn="38,13,1,3,20">
-       <action box="4,-2,13,2"/>
+       <action box="4,-2,11,2"/>
       </tran_glyph>
      </tran>
      <tran trig="BAND_SELECTED">
@@ -36,7 +36,7 @@ Pa_setCtrlr(me, PA_CTRLR_UNUSED);</action>
       </tran_glyph>
      </tran>
      <state_glyph node="9,8,29,23">
-      <entry box="1,2,15,2"/>
+      <entry box="1,2,24,2"/>
      </state_glyph>
     </state>
     <state name="powerOn">
@@ -45,7 +45,7 @@ bsp_set_pa_mains(me-&gt;band, 1);</entry>
      <initial target="../3">
       <action>DEBUG_PRINT(&quot;Pa_powerOn/INIT\r\n&quot;);</action>
       <initial_glyph conn="95,6,5,0,-10,2">
-       <action box="0,-2,6,2"/>
+       <action box="0,-2,4,2"/>
       </initial_glyph>
      </initial>
      <tran trig="BAND_SELECTED">
@@ -70,7 +70,7 @@ QActive_arm((QActive *)me, WARMUP_TIMEOUT);</entry>
       <tran trig="TOGGLE_MAINS" target="../../../1">
        <action>DEBUG_PRINT(&quot;Pa_warmup/TOGGLE_MAINS\r\n&quot;);</action>
        <tran_glyph conn="75,16,3,1,-37">
-        <action box="-33,-2,13,2"/>
+        <action box="-33,-2,11,2"/>
        </tran_glyph>
       </tran>
       <tran trig="Q_TIMEOUT" target="../../4">
@@ -91,7 +91,7 @@ Pa_setOpStatus(me, AMP_OP_STATUS_READY);</entry>
       <tran trig="TOGGLE_MAINS" target="../../5">
        <action>DEBUG_PRINT(&quot;Pa_powerOn/TOGGLE_MAINS\r\n&quot;);</action>
        <tran_glyph conn="67,64,2,3,9,19">
-        <action box="2,6,13,2"/>
+        <action box="2,7,11,2"/>
        </tran_glyph>
       </tran>
       <tran trig="Q_INIT">
@@ -107,7 +107,7 @@ Pa_setOpStatus(me, AMP_OP_STATUS_READY);</entry>
         </choice_glyph>
        </choice>
        <tran_glyph conn="60,35,3,-1,9">
-        <action box="1,-2,6,2"/>
+        <action box="1,-2,5,2"/>
        </tran_glyph>
       </tran>
       <state name="transmitting">
@@ -148,7 +148,7 @@ QActive_arm((QActive *)me, UNUSED_TIMEOUT);</entry>
         <action brief="ctrlr=subaddr">DEBUG_PRINT(&quot;Pa_unused/BAND_SELECTED\r\n&quot;);
 Pa_setCtrlr(me, Q_PAR(me));</action>
         <tran_glyph conn="98,52,0,2,-9">
-         <action box="-13,-3,13,2"/>
+         <action box="-13,-3,12,2"/>
         </tran_glyph>
        </tran>
        <tran trig="Q_TIMEOUT" target="../../../../1">
@@ -159,7 +159,7 @@ Pa_setCtrlr(me, Q_PAR(me));</action>
        </tran>
        <state_glyph node="76,52,26,8">
         <entry box="1,2,14,2"/>
-        <exit box="1,4,5,2"/>
+        <exit box="1,4,4,2"/>
        </state_glyph>
       </state>
       <state name="ready">
@@ -168,7 +168,7 @@ Pa_setCtrlr(me, Q_PAR(me));</action>
        <tran trig="BAND_UNSELECTED" target="../../3">
         <action brief="ctrlr=UNSELECTED">DEBUG_PRINT(&quot;Pa_ready/BAND_UNSELECTED\r\n&quot;);</action>
         <tran_glyph conn="79,43,2,0,9">
-         <action box="1,1,16,2"/>
+         <action box="1,1,14,2"/>
         </tran_glyph>
        </tran>
        <tran trig="TX_ACTIVE_ON" target="../../2">
@@ -201,7 +201,7 @@ QActive_arm((QActive *)me, COOLDOWN_TIMEOUT);</entry>
       <tran trig="TOGGLE_MAINS" target="../../4">
        <action>DEBUG_PRINT(&quot;Pa_cooldown/TOGGLE_MAINS\r\n&quot;);</action>
        <tran_glyph conn="112,73,1,2,17,-9">
-        <action box="1,-2,12,2"/>
+        <action box="1,-2,11,2"/>
        </tran_glyph>
       </tran>
       <state_glyph node="86,69,26,9">

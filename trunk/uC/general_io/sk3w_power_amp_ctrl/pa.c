@@ -1,3 +1,28 @@
+/*! \file     general_io/sk3w_power_amp_ctrl/pa.c
+ *  \ingroup  general_io_group
+ *  \brief    PA state machine base
+ *  \author   Tobias Blomberg, SN0SVX
+ *  \date     2012-05-23
+ * 
+ * Implements the base for the PA state machine. The actual state
+ * handling is done in the auto generated file pasm.c, which is included at
+ * the bottom of this file.
+ */
+//    Copyright (C) 2012  Mikael Larsmark, SM2WMV
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <string.h>
 
 #include <avr/io.h>
@@ -24,7 +49,7 @@ Q_DEFINE_THIS_FILE  /* Define file name to make assertions work */
 //#define DEBUG_PRINT(str...) send_ascii_data(0, str);
 #define DEBUG_PRINT(str...)
 
-
+//! Signals (events) for the PA state machine
 enum PaSignals {
 	TOGGLE_MAINS_SIG = Q_USER_SIG,
 	TX_ACTIVE_ON_SIG,
@@ -34,22 +59,9 @@ enum PaSignals {
 };
 
 
-#if 0
-/** 
-* PA state machine class
-*/
-typedef struct PaTag {
-/* protected: */
-    QActive super;
-
-/* private: */
-		uint8_t band;
-		uint8_t ctrlr;
-		uint8_t op_status;
-} Pa;
-#endif
-
+//! Include the tate machine declaration
 #include "pasm.h"
+
 
 //! Event queues for the state machines
 static QEvent pa_queue[SM_COUNT][SM_QUEUE_LEN];
@@ -83,17 +95,6 @@ Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
 static int8_t post_event(uint8_t subaddr, enum PaSignals sig, QParam par);
 
 static void Pa_ctor(Pa *pa, uint8_t band);
-#if 0
-static QState Pa_initial(Pa *me);
-static QState Pa_powerOff(Pa *me);
-static QState Pa_powerOn(Pa *me);
-static QState Pa_warmup(Pa *me);
-static QState Pa_operational(Pa *me);
-static QState Pa_ready(Pa *me);
-static QState Pa_transmitting(Pa *me);
-static QState Pa_unused(Pa *me);
-static QState Pa_cooldown(Pa *me);
-#endif
 static void Pa_setOpStatus(Pa *pa, uint8_t op_status);
 static void Pa_setCtrlr(Pa *pa, uint8_t ctrlr);
 
@@ -149,6 +150,12 @@ uint8_t pa_op_status(uint8_t band) {
 }
 
 
+/**
+ * \brief   Send an event to the state machine associated with the given band
+ * \param   band  The band (e.g. BAND_160M)
+ * \param   sig   The event (signal) to send to the state machine
+ * \param   par   The event parameter
+ */
 static int8_t post_event(uint8_t band, enum PaSignals sig, QParam par) {
 	Q_REQUIRE(band <= BAND_MAX);
 	uint8_t sm = band2sm[band];
@@ -161,238 +168,37 @@ static int8_t post_event(uint8_t band, enum PaSignals sig, QParam par) {
 }
 
 
-#include "pasm.c"
-
+/**
+ * \brief Constructor for the state machine
+ * \param pa    The Pa object to be initialized
+ * \param band  The band (e.g. BAND_160M)
+ */
 static void Pa_ctor(Pa *pa, uint8_t band) {
-	pa->band = band;
-	pa->ctrlr = PA_CTRLR_UNUSED;
-	pa->op_status = AMP_OP_STATUS_OFF;
+  pa->band = band;
+  pa->ctrlr = PA_CTRLR_UNUSED;
+  pa->op_status = AMP_OP_STATUS_OFF;
   QActive_ctor((QActive *)pa, (QStateHandler)&Pa_initial);
 }
 
-#if 0
-static QState Pa_initial(Pa *me) {
-    return Q_TRAN(&Pa_powerOff);
-}
-
-
-static QState Pa_powerOff(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_powerOff/ENTRY\r\n");
-      Pa_setOpStatus(me, AMP_OP_STATUS_OFF);
-			bsp_set_pa_mains(me->band, 0);
-			return Q_HANDLED();
-		}
-		case TOGGLE_MAINS_SIG: {
-			DEBUG_PRINT("Pa_powerOff/TOGGLE_MAINS\r\n");
-			return Q_TRAN(&Pa_powerOn);
-		}
-		case BAND_SELECTED_SIG: {
-			DEBUG_PRINT("Pa_powerOff/BAND_SELECTED\r\n");
-			Pa_setCtrlr(me, Q_PAR(me));
-			return Q_HANDLED();
-		}
-		case BAND_UNSELECTED_SIG: {
-			DEBUG_PRINT("Pa_powerOff/BAND_UNSELECTED\r\n");
-      Pa_setCtrlr(me, PA_CTRLR_UNUSED);
-			return Q_HANDLED();
-		}
-	}
-	return Q_SUPER(&QHsm_top);
-}
-
-
-static QState Pa_powerOn(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_powerOn/ENTRY\r\n");
-			bsp_set_pa_mains(me->band, 1);
-			return Q_HANDLED();
-		}
-		case Q_INIT_SIG: {
-			DEBUG_PRINT("Pa_powerOn/INIT\r\n");
-			return Q_TRAN(&Pa_warmup);
-		}
-		case TOGGLE_MAINS_SIG: {
-			DEBUG_PRINT("Pa_powerOn/TOGGLE_MAINS\r\n");
-			return Q_TRAN(&Pa_cooldown);
-		}
-		case BAND_UNSELECTED_SIG: {
-			DEBUG_PRINT("Pa_powerOn/BAND_UNSELECTED\r\n");
-      Pa_setCtrlr(me, PA_CTRLR_UNUSED);
-			return Q_HANDLED();
-		}
-		case BAND_SELECTED_SIG: {
-			DEBUG_PRINT("Pa_powerOn/BAND_SELECTED\r\n");
-      Pa_setCtrlr(me, Q_PAR(me));
-			return Q_HANDLED();
-		}
-	}
-	return Q_SUPER(&QHsm_top);
-}
-
-
-static QState Pa_warmup(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_warmup/ENTRY\r\n");
-      Pa_setOpStatus(me, AMP_OP_STATUS_WARMUP);
-			QActive_arm((QActive *)me, WARMUP_TIMEOUT);
-			return Q_HANDLED();
-		}
-		case Q_EXIT_SIG: {
-			DEBUG_PRINT("Pa_warmup/EXIT\r\n");
-			return Q_HANDLED();
-		}
-		case TOGGLE_MAINS_SIG: {
-			DEBUG_PRINT("Pa_warmup/TOGGLE_MAINS\r\n");
-			return Q_TRAN(&Pa_powerOff);
-		}
-		case Q_TIMEOUT_SIG: {
-			DEBUG_PRINT("Pa_warmup/TIMEOUT\r\n");
-			return Q_TRAN(&Pa_operational);
-		}
-	}
-	return Q_SUPER(&Pa_powerOn);
-}
-
-
-static QState Pa_operational(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_operational/ENTRY\r\n");
-      Pa_setOpStatus(me, AMP_OP_STATUS_READY);
-			return Q_HANDLED();
-		}
-		case Q_INIT_SIG: {
-			DEBUG_PRINT("Pa_operational/INIT\r\n");
-			if (me->ctrlr != PA_CTRLR_UNUSED) {
-				return Q_TRAN(&Pa_ready);
-			}
-			else {
-				return Q_TRAN(&Pa_unused);
-			}
-		}
-		case Q_EXIT_SIG: {
-			DEBUG_PRINT("Pa_operational/EXIT\r\n");
-			return Q_HANDLED();
-		}
-		case BAND_UNSELECTED_SIG: {
-			DEBUG_PRINT("Pa_operational/BAND_UNSELECTED\r\n");
-			return Q_TRAN(&Pa_unused);
-		}
-	}
-	return Q_SUPER(&Pa_powerOn);
-}
-
-
-static QState Pa_ready(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_ready/ENTRY\r\n");
-			return Q_HANDLED();
-		}
-		case Q_EXIT_SIG: {
-			DEBUG_PRINT("Pa_ready/EXIT\r\n");
-			return Q_HANDLED();
-		}
-		case TX_ACTIVE_ON_SIG: {
-			DEBUG_PRINT("Pa_ready/TX_ACTIVE_ON\r\n");
-			return Q_TRAN(&Pa_transmitting);
-		}
-	}
-	return Q_SUPER(&Pa_operational);
-}
-
-
-static QState Pa_transmitting(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_transmitting/ENTRY\r\n");
-			bsp_set_pa_ptt(me->band, 1);
-			return Q_HANDLED();
-		}
-		case Q_EXIT_SIG: {
-			DEBUG_PRINT("Pa_transmitting/EXIT\r\n");
-			bsp_set_pa_ptt(me->band, 0);
-			return Q_HANDLED();
-		}
-		case TX_ACTIVE_OFF_SIG: {
-			DEBUG_PRINT("Pa_transmitting/TX_ACTIVE_OFF\r\n");
-			return Q_TRAN(&Pa_ready);
-		}
-    case TOGGLE_MAINS_SIG: {
-      DEBUG_PRINT("Pa_transmitting/TOGGLE_MAINS\r\n");
-      return Q_HANDLED();
-    }
-	}
-	return Q_SUPER(&Pa_operational);
-}
-
-
-static QState Pa_unused(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_unused/ENTRY\r\n");
-      Pa_setCtrlr(me, PA_CTRLR_UNUSED);
-			QActive_arm((QActive *)me, UNUSED_TIMEOUT);
-			return Q_HANDLED();
-		}
-		case Q_EXIT_SIG: {
-			DEBUG_PRINT("Pa_unused/EXIT\r\n");
-			return Q_HANDLED();
-		}
-		case Q_TIMEOUT_SIG: {
-			DEBUG_PRINT("Pa_unused/TIMEOUT\r\n");
-			return Q_TRAN(&Pa_powerOff);
-		}
-		case BAND_SELECTED_SIG: {
-			DEBUG_PRINT("Pa_unused/BAND_SELECTED\r\n");
-      Pa_setCtrlr(me, Q_PAR(me));
-			return Q_TRAN(&Pa_operational);
-		}
-		case BAND_UNSELECTED_SIG: {
-			DEBUG_PRINT("Pa_unused/BAND_UNSELECTED\r\n");
-			return Q_HANDLED();
-		}
-	}
-	return Q_SUPER(&Pa_operational);
-}
-
-
-static QState Pa_cooldown(Pa *me) {
-	switch (Q_SIG(me)) {
-		case Q_ENTRY_SIG: {
-			DEBUG_PRINT("Pa_cooldown/ENTRY\r\n");
-      Pa_setOpStatus(me, AMP_OP_STATUS_COOLDOWN);
-			QActive_arm((QActive *)me, COOLDOWN_TIMEOUT);
-			return Q_HANDLED();
-		}
-		case Q_EXIT_SIG: {
-			DEBUG_PRINT("Pa_cooldown/EXIT\r\n");
-			return Q_HANDLED();
-		}
-		case Q_TIMEOUT_SIG: {
-			DEBUG_PRINT("Pa_cooldown/TIMEOUT\r\n");
-			return Q_TRAN(&Pa_powerOff);
-		}
-		case TOGGLE_MAINS_SIG: {
-			DEBUG_PRINT("Pa_cooldown/TOGGLE_MAINS\r\n");
-			return Q_TRAN(&Pa_operational);
-		}
-	}
-	return Q_SUPER(&Pa_powerOn);
-}
-#endif
-
+/**
+ * \brief Set the operational status also calling pa_op_status_changed
+ * \param pa        A previously initialized Pa object
+ * \param op_status The new operational staus to set (one of AMP_OP_STATUS_*)
+ */
 static void Pa_setOpStatus(Pa *pa, uint8_t op_status) {
   pa->op_status = op_status;
   pa_op_status_changed(pa->band);
 }
 
+/**
+ * \brief Set the controller also calling pa_ctrlr_changed
+ * \param pa    A previously initialized Pa object
+ * \param ctrlr The new controller to set
+ */
 static void Pa_setCtrlr(Pa *pa, uint8_t ctrlr) {
   pa->ctrlr = ctrlr;
   pa_ctrlr_changed(pa->band);
 }
 
+//! Include the state machine definition
+#include "pasm.c"
