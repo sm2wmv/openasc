@@ -1,3 +1,27 @@
+/*! \file     general_io/sk3w_power_amp_ctrl/controller.c
+ *  \ingroup  general_io_group
+ *  \brief    Handling of controllers (boxes)
+ *  \author   Tobias Blomberg, SN0SVX
+ *  \date     2012-05-23
+ * 
+ * Contains functions for handling controllers and actions performed by
+ * controllers.
+ */
+//    Copyright (C) 2012  Mikael Larsmark, SM2WMV
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <string.h>
 #include <avr/io.h>
 

@@ -1,9 +1,8 @@
-/*! \file general_io/main.c 
- *  \ingroup general_io_group
- *  \brief Main file of the General I/O card 
- *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-05-18
- *  \code #include "general_io/main.c" \endcode
+/*! \file     general_io/sk3w_power_amp_ctrl/main.c 
+ *  \ingroup  general_io_group
+ *  \brief    Main file of the SK3W PA control logic
+ *  \author   Tobias Blomberg, SM0SVX
+ *  \date     2010-05-18
  */
 //    Copyright (C) 2009  Mikael Larsmark, SM2WMV
 //
@@ -20,36 +19,22 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-
-#include "board.h"
 #include "qpn_port.h"
 #include "pa.h"
+#include "bsp.h"
 #include "bus_handler.h"
-#include <i2c.h>
-#include <delay.h>
 
 
 /*! Main function of the General I/O */
 int main(void)
 {
-	/*
-	DDRC = 0x3f;
-	DDRF = 0x00;
-	PORTF = 0xff;
-	for (;;)
-	{
-		PORTC = PINF;
-	}
-	*/
-	
+  QF_INT_DISABLE();
+  bsp_init();
+  bus_handler_init();
 	pa_init();
+  QF_INT_ENABLE();
+  
   QF_run();        /* transfer control to QF-nano */
-
+  
   return 0;
 }
