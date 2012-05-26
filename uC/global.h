@@ -40,6 +40,7 @@
 #define BAND_15M				7
 #define BAND_12M				8
 #define BAND_10M				9
+#define BAND_MAX				BAND_10M
 
 //! If it's neither the low or high portion of a band
 #define BAND_UNDEFINED	0
