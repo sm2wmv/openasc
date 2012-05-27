@@ -7,7 +7,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARoot directoriesRTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -58,6 +58,9 @@ FORMAT = ihex
 # Target file name (without extension).
 TARGET = main
 
+# Path to project root
+ROOT = ../..
+
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_GENERAL_IO
 BASE_ADDRESS = 0
@@ -67,13 +70,20 @@ BUS_RX_QUEUE_SIZE = 10
 #The size of the TX queue in buffers
 BUS_TX_QUEUE_SIZE = 10
 
-#Root directories
-WMV_BUS_SRC = ../../wmv_bus/bus.c ../../wmv_bus/bus_usart.c ../../wmv_bus/bus_ping.c ../../queue.c
+# WMW bus sources
+WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c
 
+# QP nano state machine sources
 QPN_SRC = qepn.c qfn.c qfn_init.c
 
+# Global sources
+GLOBAL_SRC =  i2c.c delay.c
+
+# Local sources
+LOCAL_SRC = $(TARGET).c controller.c pa.c bus_handler.c bsp.c
+
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c controller.c pa.c bus_handler.c bsp.c ../../i2c.c ../../delay.c $(WMV_BUS_SRC) $(QPN_SRC)
+SRC = $(LOCAL_SRC) $(GLOBAL_SRC) $(WMV_BUS_SRC) $(QPN_SRC)
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -112,7 +122,7 @@ CSTANDARD = -std=c99 -fgnu89-inline
 CDEFS =
 
 # Place -I options here
-CINCS = -I../..
+CINCS = -I$(ROOT) -I$(ROOT)/qpn/include
 
 
 # Compiler flags.
@@ -127,7 +137,7 @@ CFLAGS += $(CDEFS) $(CINCS)
 CFLAGS += -O$(OPT)
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
-CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
+CFLAGS += -Wa,-adhlns=$(notdir $(<:.c=.lst))
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE)
 
@@ -238,10 +248,13 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 NM = avr-nm
 AVRDUDE = avrdude
-REMOVE = rm -f
+REMOVE = remove() { echo $(MSG_REMOVING) $$@; $(RM) -f $$@; }; remove
 COPY = cp
 
-
+ifeq ($(AVRMAKE_ENHANCED_PRINTOUTS),1)
+BOLD = "\033[1m"
+NBOLD = "\033[0m"
+endif
 
 
 # Define Messages
@@ -249,18 +262,19 @@ COPY = cp
 MSG_ERRORS_NONE = Errors: none
 MSG_BEGIN = -------- begin --------
 MSG_END = --------  end  --------
-MSG_SIZE_BEFORE = Size before: 
-MSG_SIZE_AFTER = Size after:
-MSG_COFF = Converting to AVR COFF:
-MSG_EXTENDED_COFF = Converting to AVR Extended COFF:
-MSG_FLASH = Creating load file for Flash:
-MSG_EEPROM = Creating load file for EEPROM:
-MSG_EXTENDED_LISTING = Creating Extended Listing:
-MSG_SYMBOL_TABLE = Creating Symbol Table:
-MSG_LINKING = Linking:
-MSG_COMPILING = Compiling:
-MSG_ASSEMBLING = Assembling:
-MSG_CLEANING = Cleaning project:
+MSG_SIZE_BEFORE = --- Size before: 
+MSG_SIZE_AFTER = --- Size after:
+MSG_COFF = --- Converting to AVR COFF:
+MSG_EXTENDED_COFF = --- Converting to AVR Extended COFF:
+MSG_FLASH = --- Creating load file for Flash:
+MSG_EEPROM = --- Creating load file for EEPROM:
+MSG_EXTENDED_LISTING = --- Creating Extended Listing:
+MSG_SYMBOL_TABLE = --- Creating Symbol Table:
+MSG_LINKING = --- Linking:
+MSG_COMPILING = --- Compiling:
+MSG_ASSEMBLING = --- Assembling:
+MSG_CLEANING = --- Cleaning project
+MSG_REMOVING = --- Removing:
 
 
 
@@ -316,10 +330,10 @@ end:
 HEXSIZE = $(SIZE) --target=$(FORMAT) $(TARGET).hex
 ELFSIZE = $(SIZE) -A $(TARGET).elf
 sizebefore:
-	@if [ -f $(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(ELFSIZE); echo; fi
+	@if [ -f $(TARGET).elf ]; then echo; echo $(BOLD)$(MSG_SIZE_BEFORE)$(NBOLD); $(ELFSIZE); echo; fi
 
 sizeafter:
-	@if [ -f $(TARGET).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(ELFSIZE); echo; fi
+	@if [ -f $(TARGET).elf ]; then echo; echo $(BOLD)$(MSG_SIZE_AFTER)$(NBOLD); $(ELFSIZE); echo; fi
 
 
 
@@ -345,40 +359,34 @@ COFFCONVERT=$(OBJCOPY) --debugging \
 
 
 coff: $(TARGET).elf
-	@echo
-	@echo $(MSG_COFF) $(TARGET).cof
+	@echo $(BOLD)$(MSG_COFF) $(TARGET).cof...$(NBOLD)
 	$(COFFCONVERT) -O coff-avr $< $(TARGET).cof
 
 
 extcoff: $(TARGET).elf
-	@echo
-	@echo $(MSG_EXTENDED_COFF) $(TARGET).cof
+	@echo $(BOLD)$(MSG_EXTENDED_COFF) $(TARGET).cof...$(NBOLD)
 	$(COFFCONVERT) -O coff-ext-avr $< $(TARGET).cof
 
 
 
 # Create final output files (.hex, .eep) from ELF output file.
 %.hex: %.elf
-	@echo
-	@echo $(MSG_FLASH) $@
+	@echo $(BOLD)$(MSG_FLASH) $@...$(NBOLD)
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
 
 %.eep: %.elf
-	@echo
-	@echo $(MSG_EEPROM) $@
+	@echo $(BOLD)$(MSG_EEPROM) $@...$(NBOLD)
 	-$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom="alloc,load" \
 	--change-section-lma .eeprom=0 -O $(FORMAT) $< $@
 
 # Create extended listing file from ELF output file.
 %.lss: %.elf
-	@echo
-	@echo $(MSG_EXTENDED_LISTING) $@
+	@echo $(BOLD)$(MSG_EXTENDED_LISTING) $@...$(NBOLD)
 	$(OBJDUMP) -h -S $< > $@
 
 # Create a symbol table from ELF output file.
 %.sym: %.elf
-	@echo
-	@echo $(MSG_SYMBOL_TABLE) $@
+	@echo $(BOLD)$(MSG_SYMBOL_TABLE) $@...$(NBOLD)
 	$(NM) -n $< > $@
 
 
@@ -387,15 +395,13 @@ extcoff: $(TARGET).elf
 .SECONDARY : $(TARGET).elf
 .PRECIOUS : $(OBJ)
 %.elf: $(OBJ)
-	@echo
-	@echo $(MSG_LINKING) $@
+	@echo $(BOLD)$(MSG_LINKING) $@...$(NBOLD)
 	$(CC) $(ALL_CFLAGS) $(OBJ) --output $@ $(LDFLAGS)
 
 
 # Compile: create object files from C source files.
 %.o : %.c
-	@echo
-	@echo $(MSG_COMPILING) $<
+	@echo $(BOLD)$(MSG_COMPILING) $<...$(NBOLD)
 	$(CC) -c $(ALL_CFLAGS) $< -o $@ 
 
 
@@ -406,8 +412,7 @@ extcoff: $(TARGET).elf
 
 # Assemble: create object files from assembler source files.
 %.o : %.S
-	@echo
-	@echo $(MSG_ASSEMBLING) $<
+	@echo $(BOLD)$(MSG_ASSEMBLING) $<...$(NBOLD)
 	$(CC) -c $(ALL_ASFLAGS) $< -o $@
 
 
@@ -416,8 +421,7 @@ extcoff: $(TARGET).elf
 clean: begin clean_list finished end
 
 clean_list :
-	@echo
-	@echo $(MSG_CLEANING)
+	@echo $(BOLD)$(MSG_CLEANING)...$(NBOLD)
 	$(REMOVE) $(TARGET).hex
 	$(REMOVE) $(TARGET).eep
 	$(REMOVE) $(TARGET).obj
@@ -446,3 +450,10 @@ clean_list :
 build elf hex eep lss sym coff extcoff \
 clean clean_list program
 
+# Don't print each command line when executed
+.SILENT:
+
+# Look for C source code in the following directories
+vpath %.c $(ROOT)/wmv_bus
+vpath %.c $(ROOT)/qpn/source
+vpath %.c $(ROOT)
