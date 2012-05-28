@@ -52,7 +52,7 @@ void QActive_post(QActive *me, QSignal sig, QParam par)
 void QActive_post(QActive *me, QSignal sig)
 #endif
 {
-    QActiveCB const Q_ROM *acb = &QF_active[me->prio];
+    QActiveCB const Q_ROM_NOT_GNUC *acb = &QF_active[me->prio];
 
             /* the queue must be able to accept the event (cannot overflow) */
     Q_ASSERT(me->nUsed < Q_ROM_BYTE(acb->end));
@@ -91,7 +91,7 @@ void QActive_postISR(QActive *me, QSignal sig)
     QF_ISR_STAT_TYPE stat;
 #endif
 #endif
-    QActiveCB const Q_ROM *acb = &QF_active[me->prio];
+    QActiveCB const Q_ROM_NOT_GNUC *acb = &QF_active[me->prio];
 
             /* the queue must be able to accept the event (cannot overflow) */
     Q_ASSERT(me->nUsed < Q_ROM_BYTE(acb->end));
@@ -204,7 +204,7 @@ void QF_run(void) {
     for (;;) {                      /* the event loop of the vanilla kernel */
         QF_INT_DISABLE();
         if (QF_readySet_ != (uint8_t)0) {
-            QActiveCB const Q_ROM *acb;
+            QActiveCB const Q_ROM_NOT_GNUC *acb;
 
 #if (QF_MAX_ACTIVE > 4)
             if ((QF_readySet_ & 0xF0) != 0U) {        /* upper nibble used? */

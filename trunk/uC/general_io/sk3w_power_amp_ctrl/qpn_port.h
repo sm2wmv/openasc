@@ -5,6 +5,11 @@
 #define Q_ROM                   PROGMEM
 #define Q_ROM_BYTE(rom_var_)    pgm_read_byte_near(&(rom_var_))
 #define Q_ROM_PTR(rom_var_)     pgm_read_word_near(&(rom_var_))
+#ifdef __GNUC__
+  #define Q_ROM_NOT_GNUC
+#else
+  #define Q_ROM_NOT_GNUC          Q_ROM
+#endif
 
 //! Disable the simple Finite State Machine code to reduce size
 #define Q_NFSM

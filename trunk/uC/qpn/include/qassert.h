@@ -78,7 +78,7 @@
     * \param file file name where the assertion failed
     * \param line line number at which the assertion failed
     */
-    void Q_onAssert(char_t const Q_ROM * const Q_ROM_VAR file, int_t line);
+    void Q_onAssert(char_t const /*Q_ROM*/ * const Q_ROM_VAR file, int_t line);
 
     #ifdef __cplusplus
         }

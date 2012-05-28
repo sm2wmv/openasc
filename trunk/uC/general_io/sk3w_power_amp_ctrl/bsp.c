@@ -326,10 +326,10 @@ void QF_onIdle(void) {        /* entered with interrupts LOCKED, see NOTE01 */
  * an ASCII message containing the filename and the linenumber where
  * the assertion occurred.
  */
-void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line) {
+void Q_onAssert(char const /*Q_ROM*/ * const Q_ROM_VAR file, int line) {
   qf_tick_interval = 0; /* Disable calls to QF_tick() */
   
-  char const Q_ROM * Q_ROM_VAR s = file;
+  char const Q_ROM_NOT_GNUC * Q_ROM_VAR s = file;
   char filename[256];
   char *ptr = filename;
   while ((*ptr++ = Q_ROM_BYTE(*s++)) != 0) {}

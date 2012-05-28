@@ -44,7 +44,7 @@ Q_DEFINE_THIS_MODULE("qepn")
 #define QEP_MAX_NEST_DEPTH_   (uint8_t)5
 
 /*..........................................................................*/
-char_t const Q_ROM * Q_ROM_VAR QP_getVersion(void) {
+char_t const Q_ROM_NOT_GNUC * Q_ROM_VAR QP_getVersion(void) {
     static char_t const Q_ROM Q_ROM_VAR version[] = {
         (char_t)((uint8_t)((QP_VERSION >> 12) & 0xFU) + (uint8_t)'0'),
         (char_t)'.',
