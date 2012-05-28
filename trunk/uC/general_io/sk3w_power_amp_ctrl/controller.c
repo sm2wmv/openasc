@@ -48,6 +48,9 @@ int8_t controller_set_band(uint8_t ctrlr, uint8_t fm_addr, uint8_t band) {
 	if ((ctrlr >= MAX_CONTROLLERS) || (band > BAND_MAX)) {
 		return -1;
 	}
+	if (ctrlrs[ctrlr].band == band) {
+    return 0;
+  }
 	if (band != BAND_UNDEFINED) {
     for (int i=0; i<MAX_CONTROLLERS; ++i) {
       if (ctrlrs[i].band == band) {
