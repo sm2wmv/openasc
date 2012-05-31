@@ -28,17 +28,17 @@
 #include <avr/interrupt.h>
 
 
-#include "main.h"
-#include "board.h"
+//#include "main.h"
+//#include "board.h"
 #include "init.h"
-#include "../i2c.h"
-#include "../delay.h"
+#include <i2c.h>
+#include <delay.h>
 
 /* Include the bus headers */
-#include "../wmv_bus/bus.h"
-#include "../wmv_bus/bus_ping.h"
-#include "../wmv_bus/bus_commands.h"
-#include "../queue.h"
+#include <wmv_bus/bus.h>
+#include <wmv_bus/bus_ping.h>
+#include <wmv_bus/bus_commands.h>
+#include <queue.h>
 
 #define ADC_CHANNELS					5
 #define ADC_INTERVAL					20
@@ -219,7 +219,7 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
     }
   }
   else if (bus_message->cmd == BUS_CMD_ASCII_DATA) {
-    parse_ascii_cmd(&bus_message);
+    parse_ascii_cmd(bus_message);
   }
   else {
 
