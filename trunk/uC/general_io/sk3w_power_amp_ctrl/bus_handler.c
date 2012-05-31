@@ -6,10 +6,25 @@
  * 
  * Contains functions for handling application specific bus communications.
  */
+//    Copyright (C) 2012  Mikael Larsmark, SM2WMV
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <avr/io.h>
 
@@ -46,10 +61,12 @@ static const uint8_t amp_status_band[] = {
   BAND_160M, BAND_80M, BAND_40M, BAND_20M, BAND_15M, BAND_10M
 };
 
+static uint8_t decode_ctrlr(char ctrlr);
 static void parse_ascii_cmd(BUS_MESSAGE *bus_message);
 static void bus_parse_message(BUS_MESSAGE *bus_message);
 static unsigned char read_ext_addr(void);
 static void send_pa_status(uint8_t band);
+static void send_help(uint8_t addr);
 
 
 void bus_handler_init() {
@@ -156,7 +173,7 @@ void bus_handler_poll() {
 
 void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
 {
-	char str[41];
+	char str[46];
 	
 	va_list ap;
 	va_start(ap, fmt);
@@ -181,6 +198,23 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...)
 		len -= len_to_send;
 		ptr += len_to_send;
 	}
+}
+
+
+static uint8_t decode_ctrlr(char ctrlr) {
+	if ((ctrlr >= '0') && (ctrlr <= '5')) {
+		ctrlr -= '0';
+	}
+	else if ((ctrlr >= 'A') && (ctrlr <= 'F')) {
+		ctrlr -= 'A';
+	}
+	else if ((ctrlr >= 'a') && (ctrlr <= 'f')) {
+		ctrlr -= 'a';
+	}
+	else {
+		return 0xff;
+	}
+	return (uint8_t)ctrlr;
 }
 
 
@@ -216,25 +250,82 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message)
 		++argc;
 	}
 	
-	send_ascii_data(bus_message->from_addr, "\r\n");
+	/* send_ascii_data(bus_message->from_addr, "\r\n"); */
 	
 	if (argc > 0) {
 		if (strcmp(argv[0], "help") == 0) {
-			send_ascii_data(bus_message->from_addr,
-											"ptton\r\npttoff\r\n");
+			send_help(bus_message->from_addr);
 		}
 		else if (strcmp(argv[0], "ptton") == 0) {
-			controller_set_tx_active(0, 1);
+			if (argc != 2) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			uint8_t ctrlr = decode_ctrlr(argv[1][0]);
+			if (ctrlr == 0xff) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			controller_set_tx_active(ctrlr, 1);
+			send_ascii_data(bus_message->from_addr, "OK\r\n");
 		}
 		else if (strcmp(argv[0], "pttoff") == 0) {
-			controller_set_tx_active(0, 0);
+			if (argc != 2) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			uint8_t ctrlr = decode_ctrlr(argv[1][0]);
+			if (ctrlr == 0xff) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			controller_set_tx_active(ctrlr, 0);
+			send_ascii_data(bus_message->from_addr, "OK\r\n");
+		}
+		else if (strcmp(argv[0], "togglemains") == 0) {
+			if (argc != 2) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			uint8_t ctrlr = decode_ctrlr(argv[1][0]);
+			if (ctrlr == 0xff) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			controller_toggle_mains(ctrlr);
+			send_ascii_data(bus_message->from_addr, "OK\r\n");
+		}
+		else if (strcmp(argv[0], "warmuptmo") == 0) {
+			if (argc != 2) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			pa_set_warmup_timeout(atoi(argv[1]));
+			send_ascii_data(bus_message->from_addr, "OK\r\n");
+		}
+		else if (strcmp(argv[0], "unusedtmo") == 0) {
+			if (argc != 2) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			pa_set_unused_timeout(atoi(argv[1]));
+			send_ascii_data(bus_message->from_addr, "OK\r\n");
+		}
+		else if (strcmp(argv[0], "cooldowntmo") == 0) {
+			if (argc != 2) {
+				send_help(bus_message->from_addr);
+				return;
+			}
+			pa_set_cooldown_timeout(atoi(argv[1]));
+			send_ascii_data(bus_message->from_addr, "OK\r\n");
 		}
 		else {
 			send_ascii_data(bus_message->from_addr, "Huh?\r\n");
+			send_help(bus_message->from_addr);
 		}
 	}
 
-	send_ascii_data(bus_message->from_addr, "%d> ", bus_get_address());
+	/* send_ascii_data(bus_message->from_addr, "%d> ", bus_get_address()); */
 }
 
 
@@ -337,6 +428,16 @@ static void send_pa_status(uint8_t band) {
   msg[3] = band;
   msg[4] = 0;
   bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_AMPLIFIER_GET_STATUS, 5, msg); 
+}
+
+
+static void send_help(uint8_t addr) {
+	send_ascii_data(addr, "ptton <ctrlr>\r\n"
+												"pttoff <ctrlr>\r\n");
+	send_ascii_data(addr, "togglemains <ctrlr>\r\n"
+												"warmuptmo <tmo sec>\r\n");
+	send_ascii_data(addr, "unusedtmo <tmo sec>\r\n"
+												"cooldowntmo <tmo sec>\r\n");
 }
 
 
