@@ -100,6 +100,11 @@ EXTRAINCDIRS = $(ROOT) $(ROOT)/qpn/include
 # Place -D or -U options here
 CDEFS =
 
+# Fuse settings. Apply by running "make fuse"
+AVRDUDE_EFUSE = 0xff
+AVRDUDE_HFUSE = 0xd1
+AVRDUDE_LFUSE = 0x3f
+
 
 # Include main makefile
 include $(ROOT)/makefile.inc

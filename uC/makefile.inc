@@ -45,6 +45,8 @@
 # make program = Download the hex file to the device, using avrdude.  Please
 #                customize the avrdude settings below first!
 #
+# make fuse = Set the fuse bytes in the mcu.
+#
 # make filename.s = Just compile filename.c into the assembler code only
 #
 # To rebuild project do "make clean" then "make all".
@@ -194,6 +196,11 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
+AVRDUDE_WRITE_EFUSE = $(AVRDUDE_EFUSE:%=-U efuse:w:%:m)
+AVRDUDE_WRITE_HFUSE = $(AVRDUDE_HFUSE:%=-U hfuse:w:%:m)
+AVRDUDE_WRITE_LFUSE = $(AVRDUDE_LFUSE:%=-U lfuse:w:%:m)
+AVRDUDE_WRITE_FUSE = $(AVRDUDE_WRITE_EFUSE) $(AVRDUDE_WRITE_HFUSE) $(AVRDUDE_WRITE_LFUSE)
+
 
 
 # Uncomment the following if you want avrdude's erase cycle counter.
@@ -237,6 +244,7 @@ SIZE = avr-size
 NM = avr-nm
 AVRDUDE = avrdude
 REMOVE = remove() { echo $(MSG_REMOVING) $$@; $(RM) -f $$@; }; remove
+RECURSIVE_REMOVE = remove() { echo $(MSG_REMOVING) $$@; $(RM) -rf $$@; }; remove
 COPY = cp
 
 ifeq ($(AVRMAKE_ENHANCED_PRINTOUTS),1)
@@ -263,6 +271,7 @@ MSG_COMPILING = --- Compiling:
 MSG_ASSEMBLING = --- Assembling:
 MSG_CLEANING = --- Cleaning project
 MSG_REMOVING = --- Removing:
+MSG_FUSING = --- Setting fuse bytes
 
 
 
@@ -425,18 +434,19 @@ clean_list :
 	$(REMOVE) $(LST)
 	$(REMOVE) $(SRC:.c=.s)
 	$(REMOVE) $(SRC:.c=.d)
-	$(REMOVE) .dep/*
+	$(RECURSIVE_REMOVE) .dep
 
 
+fuse:
+	@echo $(BOLD)$(MSG_FUSING)...$(NBOLD)
+	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FUSE)
 
-# Include the dependency files.
--include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
 
 
 # Listing of phony targets.
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
 build elf hex eep lss sym coff extcoff \
-clean clean_list program
+clean clean_list program fuse
 
 # Don't print each command line when executed
 .SILENT:
@@ -445,3 +455,8 @@ clean clean_list program
 vpath %.c $(ROOT)/wmv_bus
 vpath %.c $(ROOT)/qpn/source
 vpath %.c $(ROOT)
+
+
+# Include the dependency files.
+-include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
+
