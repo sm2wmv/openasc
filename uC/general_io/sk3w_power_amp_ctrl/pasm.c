@@ -79,7 +79,7 @@ QState Pa_warmup(Pa *me) {
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_warmup/ENTRY\r\n");
             Pa_setOpStatus(me, AMP_OP_STATUS_WARMUP);
-            QActive_arm((QActive *)me, WARMUP_TIMEOUT);
+            QActive_arm((QActive *)me, warmup_timeout);
             return Q_HANDLED();
         }
         /* @(/1/0/3/2/3) */
@@ -175,7 +175,7 @@ QState Pa_unused(Pa *me) {
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_unused/ENTRY\r\n");
             Pa_setCtrlr(me, PA_CTRLR_UNUSED);
-            QActive_arm((QActive *)me, UNUSED_TIMEOUT);
+            QActive_arm((QActive *)me, unused_timeout);
             return Q_HANDLED();
         }
         /* @(/1/0/3/2/4/3) */
@@ -230,7 +230,7 @@ QState Pa_cooldown(Pa *me) {
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_cooldown/ENTRY\r\n");
             Pa_setOpStatus(me, AMP_OP_STATUS_COOLDOWN);
-            QActive_arm((QActive *)me, COOLDOWN_TIMEOUT);
+            QActive_arm((QActive *)me, cooldown_timeout);
             return Q_HANDLED();
         }
         /* @(/1/0/3/2/5) */

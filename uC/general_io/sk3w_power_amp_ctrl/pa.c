@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include <avr/io.h>
+#include <avr/eeprom.h>
 
 #include <global.h>
 #include <wmv_bus/bus_commands.h>
@@ -39,9 +40,9 @@
 Q_DEFINE_THIS_FILE  /* Define file name to make assertions work */
 
 
-#define UNUSED_TIMEOUT    2*60*60   /* 2 hours */
-#define WARMUP_TIMEOUT    3*60      /* 3 minutes */
-#define COOLDOWN_TIMEOUT  2*60      /* 2 minutes */
+#define DEFAULT_UNUSED_TIMEOUT		2*60*60   /* 2 hours */
+#define DEFAULT_WARMUP_TIMEOUT  	3*60      /* 3 minutes */
+#define DEFAULT_COOLDOWN_TIMEOUT	2*60      /* 2 minutes */
 #define SM_COUNT          6
 #define SM_QUEUE_LEN      3
 #define SM_UNUSED         255
@@ -62,6 +63,23 @@ enum PaSignals {
 //! Include the tate machine declaration
 #include "pasm.h"
 
+//! EEPROM variable for the "unused" timeout in seconds
+static uint16_t EEMEM ee_unused_timeout = DEFAULT_UNUSED_TIMEOUT;
+
+//! Unused timeout in seconds
+static uint16_t unused_timeout = 0;
+
+//! EEPROM variable for the "warmup" timeout in seconds
+static uint16_t EEMEM ee_warmup_timeout = DEFAULT_WARMUP_TIMEOUT;
+
+//! Warmup timeout in seconds
+static uint16_t warmup_timeout = 0;
+
+//! EEPROM variable for the "cooldown" timeout in seconds
+static uint16_t EEMEM ee_cooldown_timeout = DEFAULT_COOLDOWN_TIMEOUT;
+
+//! Cooldown timeout in seconds
+static uint16_t cooldown_timeout = 0;
 
 //! Event queues for the state machines
 static QEvent pa_queue[SM_COUNT][SM_QUEUE_LEN];
@@ -100,6 +118,10 @@ static void Pa_setCtrlr(Pa *pa, uint8_t ctrlr);
 
 
 void pa_init(void) {
+	unused_timeout = eeprom_read_word(&ee_unused_timeout);
+	warmup_timeout = eeprom_read_word(&ee_warmup_timeout);
+	cooldown_timeout = eeprom_read_word(&ee_cooldown_timeout);
+	
 	memset(band2sm, SM_UNUSED, sizeof(band2sm));
 	for (int i=0; i<SM_COUNT; ++i) {
       /* Set up the band to state machine map to match the
@@ -109,6 +131,30 @@ void pa_init(void) {
       /* Call the state machine constructor */
     Pa_ctor(&pa_sm[i], sm2band[i]);
 	}
+}
+
+void pa_set_unused_timeout(uint16_t new_timeout) {
+	if (new_timeout < 1) {
+		new_timeout = 1;
+	}
+	unused_timeout = new_timeout;
+	eeprom_update_word(&ee_unused_timeout, unused_timeout);
+}
+
+void pa_set_warmup_timeout(uint16_t new_timeout) {
+	if (new_timeout < 1) {
+		new_timeout = 1;
+	}
+	warmup_timeout = new_timeout;
+	eeprom_update_word(&ee_warmup_timeout, warmup_timeout);
+}
+
+void pa_set_cooldown_timeout(uint16_t new_timeout) {
+	if (new_timeout < 1) {
+		new_timeout = 1;
+	}
+	cooldown_timeout = new_timeout;
+	eeprom_update_word(&ee_cooldown_timeout, cooldown_timeout);
 }
 
 void pa_set_controller(uint8_t band, uint8_t ctrlr) {

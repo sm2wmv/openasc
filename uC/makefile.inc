@@ -195,7 +195,7 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 # E.g: AVRDUDE_PROGRAMMER_OPTS="-P usb -c avrispmkII -B1.1 "
 
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
-#AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
+AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
 AVRDUDE_WRITE_EFUSE = $(AVRDUDE_EFUSE:%=-U efuse:w:%:m)
 AVRDUDE_WRITE_HFUSE = $(AVRDUDE_HFUSE:%=-U hfuse:w:%:m)
 AVRDUDE_WRITE_LFUSE = $(AVRDUDE_LFUSE:%=-U lfuse:w:%:m)
@@ -340,9 +340,14 @@ gccversion :
 
 
 
-# Program the device.  
+# Program the flash of the device
 program: $(TARGET).hex $(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
+	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
+
+
+# Program the eeprom of the device
+eeprom: $(TARGET).hex $(TARGET).eep
+	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_EEPROM)
 
 
 
@@ -446,7 +451,7 @@ fuse:
 # Listing of phony targets.
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
 build elf hex eep lss sym coff extcoff \
-clean clean_list program fuse
+clean clean_list program fuse eeprom
 
 # Don't print each command line when executed
 .SILENT:

@@ -26,12 +26,33 @@
 #ifndef _PA_H_
 #define _PA_H_
 
+
+//! PA controller is unused indicator
 #define PA_CTRLR_UNUSED      255
+
 
 /**
  * \brief Initialize the PA state machine
  */
 void pa_init(void);
+
+/**
+ * \brief	Set the warmup timeout time
+ * \param	new_timeout	The new timeout value in seconds
+ */
+void pa_set_warmup_timeout(uint16_t new_timeout);
+
+/**
+ * \brief	Set the unused timeout time
+ * \param	new_timeout	The new timeout value in seconds
+ */
+void pa_set_unused_timeout(uint16_t new_timeout);
+
+/**
+ * \brief	Set the cooldown timeout time
+ * \param	new_timeout	The new timeout value in seconds
+ */
+void pa_set_cooldown_timeout(uint16_t new_timeout);
 
 /**
  * \brief Set which controller has allocated which band
