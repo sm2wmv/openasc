@@ -7,6 +7,7 @@ int setAddress = 0;
 void terminalDialog::lineEditCommandReturnPressed(){
 	if (ui->lineEditCommand->text().length() > 0) {
 		if (setAddress != 0) {
+			ui->textEdit->setTextColor(Qt::darkGreen);
 			ui->textEdit->append("<< " + ui->lineEditCommand->text());
 
 			if (serial->isOpen()) {
@@ -14,12 +15,16 @@ void terminalDialog::lineEditCommandReturnPressed(){
 					serial->addTXMessage(INT_COMM_PC_SEND_TO_ADDR,ui->lineEditCommand->text().length(), ui->lineEditCommand->text());
 					ui->lineEditCommand->clear();
 				}
-				else
+				else {
+					ui->textEdit->setTextColor(Qt::darkRed);
 					ui->textEdit->append("ERROR: Too long argument");
+				}
 			}
 		}
-		else
+		else {
+			ui->textEdit->setTextColor(Qt::darkRed);
 			ui->textEdit->append("ERROR: No address is set");
+		}
 	}
 }
 
@@ -30,6 +35,7 @@ void terminalDialog::addNewMessage(struct_message message) {
 				strTextEdit.append(message.data[i]);
 		}
 		else {
+			ui->textEdit->setTextColor(Qt::black);
 			ui->textEdit->append(">> " + strTextEdit);
 			strTextEdit.clear();
 		}
@@ -52,10 +58,12 @@ void terminalDialog::pushButtonSetAddressClicked() {
 	if (serial->isOpen()) {
 		serial->addTXMessage(INT_COMM_PC_CONNECT_TO_ADDR,ui->spinBoxAddress->value());
 
+		ui->textEdit->setTextColor(Qt::darkCyan);
 		ui->textEdit->append(">> Connecting to address: " + ui->spinBoxAddress->text());
 		setAddress = ui->spinBoxAddress->value();
 	}
 	else {
+		ui->textEdit->setTextColor(Qt::darkRed);
 		ui->textEdit->append("ERROR: Serial device is not open");
 		setAddress = 0;
 	}
