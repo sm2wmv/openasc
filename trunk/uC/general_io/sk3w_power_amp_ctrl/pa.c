@@ -141,6 +141,10 @@ void pa_set_unused_timeout(uint16_t new_timeout) {
   eeprom_update_word(&ee_unused_timeout, unused_timeout);
 }
 
+uint16_t pa_unused_timeout(void) {
+  return unused_timeout;
+}
+
 void pa_set_warmup_timeout(uint16_t new_timeout) {
   if (new_timeout < 1) {
     new_timeout = 1;
@@ -149,12 +153,20 @@ void pa_set_warmup_timeout(uint16_t new_timeout) {
   eeprom_update_word(&ee_warmup_timeout, warmup_timeout);
 }
 
+uint16_t pa_warmup_timeout(void) {
+  return warmup_timeout;
+}
+
 void pa_set_cooldown_timeout(uint16_t new_timeout) {
   if (new_timeout < 1) {
     new_timeout = 1;
   }
   cooldown_timeout = new_timeout;
   eeprom_update_word(&ee_cooldown_timeout, cooldown_timeout);
+}
+
+uint16_t pa_cooldown_timeout(void) {
+  return cooldown_timeout;
 }
 
 void pa_set_controller(uint8_t band, uint8_t ctrlr) {
@@ -183,7 +195,6 @@ void pa_set_tx_active(uint8_t band, int8_t on) {
   post_event(band, on ? TX_ACTIVE_ON_SIG : TX_ACTIVE_OFF_SIG, 0);
 }
 
-
 uint8_t pa_op_status(uint8_t band) {
   Q_REQUIRE(band <= BAND_MAX);
   uint8_t sm = band2sm[band];
@@ -204,12 +215,11 @@ static int8_t post_event(uint8_t band, enum PaSignals sig, QParam par) {
   Q_REQUIRE(band <= BAND_MAX);
   uint8_t sm = band2sm[band];
   if (sm != SM_UNUSED) {
-    QActive_post((QActive *) & pa_sm[sm], sig, par);
+    QActive_post((QActive *)&pa_sm[sm], sig, par);
     return 0;
   }
   return -1;
 }
-
 
 /**
  * \brief Constructor for the state machine
@@ -220,7 +230,7 @@ static void Pa_ctor(Pa *pa, uint8_t band) {
   pa->band = band;
   pa->ctrlr = PA_CTRLR_UNUSED;
   pa->op_status = AMP_OP_STATUS_OFF;
-  QActive_ctor((QActive *) pa, (QStateHandler) & Pa_initial);
+  QActive_ctor((QActive *)pa, (QStateHandler)&Pa_initial);
 }
 
 /**

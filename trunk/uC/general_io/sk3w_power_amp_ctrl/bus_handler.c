@@ -292,32 +292,40 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
       controller_toggle_mains(ctrlr);
       send_ascii_data(bus_message->from_addr, "OK\r\n");
     }
-    else if (strcmp(argv[0], "warmuptmo") == 0) {
-      if (argc != 2) {
+    else if (strcmp(argv[0], "warmup") == 0) {
+      if (argc == 2) {
+        pa_set_warmup_timeout(atoi(argv[1]));
+      }
+      else if (argc > 2) {
         send_help(bus_message->from_addr);
         return;
       }
-      pa_set_warmup_timeout(atoi(argv[1]));
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
+      send_ascii_data(bus_message->from_addr, "warmup=%d\r\n",
+                      pa_warmup_timeout());
     }
-    else if (strcmp(argv[0], "unusedtmo") == 0) {
-      if (argc != 2) {
+    else if (strcmp(argv[0], "unused") == 0) {
+      if (argc == 2) {
+        pa_set_unused_timeout(atoi(argv[1]));
+      }
+      else if (argc > 2) {
         send_help(bus_message->from_addr);
         return;
       }
-      pa_set_unused_timeout(atoi(argv[1]));
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
+      send_ascii_data(bus_message->from_addr, "unused=%d\r\n",
+                      pa_unused_timeout());
     }
-    else if (strcmp(argv[0], "cooldowntmo") == 0) {
-      if (argc != 2) {
+    else if (strcmp(argv[0], "cooldown") == 0) {
+      if (argc == 2) {
+        pa_set_cooldown_timeout(atoi(argv[1]));
+      }
+      else if (argc > 2) {
         send_help(bus_message->from_addr);
         return;
       }
-      pa_set_cooldown_timeout(atoi(argv[1]));
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
+      send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
+                      pa_cooldown_timeout());
     }
     else {
-      send_ascii_data(bus_message->from_addr, "Huh?\r\n");
       send_help(bus_message->from_addr);
     }
   }
@@ -325,8 +333,8 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
 
 
 /*! \brief Parse a message and exectute the proper commands
-* This function is used to parse a message that was receieved on the bus that is located
-* in the RX queue. */
+ * This function is used to parse a message that was receieved on the bus that is located
+ * in the RX queue. */
 static void bus_parse_message(BUS_MESSAGE *bus_message) {
   switch (bus_message->cmd) {
     case BUS_CMD_ACK:{
@@ -414,7 +422,7 @@ static void send_pa_status(uint8_t band) {
   uint8_t msg[5];
   msg[0] = pa_controller(band);
   msg[1] = ((op_status != AMP_OP_STATUS_OFF) << AMP_STATUS_MAINS)
-    | ((op_status == AMP_OP_STATUS_READY) << AMP_STATUS_OPR_STBY);
+         | ((op_status == AMP_OP_STATUS_READY) << AMP_STATUS_OPR_STBY);
   msg[2] = op_status;
   msg[3] = band;
   msg[4] = 0;
@@ -425,9 +433,9 @@ static void send_pa_status(uint8_t band) {
 
 static void send_help(uint8_t addr) {
   send_ascii_data(addr, "ptton <ctrlr>\r\n" "pttoff <ctrlr>\r\n");
-  send_ascii_data(addr, "togglemains <ctrlr>\r\n" "warmuptmo <tmo sec>\r\n");
-  send_ascii_data(addr, "unusedtmo <tmo sec>\r\n"
-                  "cooldowntmo <tmo sec>\r\n");
+  send_ascii_data(addr, "togglemains <ctrlr>\r\n" "warmup [tmo sec]\r\n");
+  send_ascii_data(addr, "unused [tmo sec]\r\n"
+                        "cooldown [tmo sec]\r\n");
 }
 
 
