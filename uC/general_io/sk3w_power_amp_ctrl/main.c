@@ -26,15 +26,14 @@
 
 
 /*! Main function of the General I/O */
-int main(void)
-{
+int main(void) {
   QF_INT_DISABLE();
   bsp_init();
   bus_handler_init();
-	pa_init();
+  pa_init();
   QF_INT_ENABLE();
-  
-  QF_run();        /* transfer control to QF-nano */
-  
+
+  QF_run();                     /* transfer control to QF-nano */
+
   return 0;
 }
