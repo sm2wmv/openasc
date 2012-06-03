@@ -1,0 +1,14 @@
+--braces-on-if-line
+--braces-on-func-def-line
+--case-indentation2
+--no-space-after-function-call-names
+--dont-break-procedure-type
+--no-tabs
+--case-brace-indentation0
+--honour-newlines
+--leave-optional-blank-lines
+--space-special-semicolon
+--no-space-after-casts
+-T uint8_t -T int8_t -T uint16_t -T int16_t
+-T BUS_MESSAGE
+-T Controller -T Pa
