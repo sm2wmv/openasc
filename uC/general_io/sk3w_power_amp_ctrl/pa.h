@@ -43,16 +43,34 @@ void pa_init(void);
 void pa_set_warmup_timeout(uint16_t new_timeout);
 
 /**
+ * \brief   Read the "warmup" timeout time
+ * \returns Returns the value set up for the "warmup" timeout in seconds
+ */
+uint16_t pa_warmup_timeout(void);
+
+/**
  * \brief	Set the unused timeout time
  * \param	new_timeout	The new timeout value in seconds
  */
 void pa_set_unused_timeout(uint16_t new_timeout);
 
 /**
+ * \brief   Read the "unused" timeout time
+ * \returns Returns the value set up for the "unused" timeout in seconds
+ */
+uint16_t pa_unused_timeout(void);
+
+/**
  * \brief	Set the cooldown timeout time
  * \param	new_timeout	The new timeout value in seconds
  */
 void pa_set_cooldown_timeout(uint16_t new_timeout);
+
+/**
+ * \brief   Read the "cooldown" timeout time
+ * \returns Returns the value set up for the "cooldown" timeout in seconds
+ */
+uint16_t pa_cooldown_timeout(void);
 
 /**
  * \brief Set which controller has allocated which band
