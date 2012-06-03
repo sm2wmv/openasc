@@ -82,171 +82,169 @@ void bsp_init(void) {
   delay_ms(250);
   bsp_init_ports();
   delay_ms(250);
-  bsp_init_timer_0();    
+  bsp_init_timer_0();
 }
 
 
 void bsp_init_timer_2(void) {
   TCCR2 = 0;
   TCNT2 = 0;
-  TCCR2 = (1<<WGM21) | (0<<WGM20) | (0<<CS22) | (1<<CS21) | (1<<CS20); //Normal operation, toggle on compare, prescale clk/64 
-  TIFR |= (1<<OCF2);
-  OCR2 = 30;  //Will trigger an interrupt each with an interval of 130us
-  TIMSK |= (1<<OCIE2);
+    /* Normal operation, toggle on compare, prescale clk/64 */
+  TCCR2 = (1 << WGM21) | (0 << WGM20) | (0 << CS22) | (1 << CS21) | (1 << CS20);
+  TIFR |= (1 << OCF2);
+    /* Will trigger an interrupt each with an interval of 130us */
+  OCR2 = 30;
+  TIMSK |= (1 << OCIE2);
 }
 
 
 uint8_t bsp_get_tx_active(void) {
-	return PINF & 0x3f;
+  return PINF & 0x3f;
 }
 
 
 uint16_t get_pa_alarm(void) {
   uint16_t alarm = 0;
-	const uint8_t portb = PORTB;
-	const uint8_t porte = PORTE;
-  
+  const uint8_t portb = PORTB;
+  const uint8_t porte = PORTE;
+
   SET_BAND_BIT(alarm, BAND_160M, porte, 7);
   SET_BAND_BIT(alarm, BAND_80M, porte, 6);
   SET_BAND_BIT(alarm, BAND_40M, portb, 7);
   SET_BAND_BIT(alarm, BAND_20M, portb, 6);
   SET_BAND_BIT(alarm, BAND_15M, portb, 5);
   SET_BAND_BIT(alarm, BAND_10M, portb, 4);
-	
-	return alarm;
+
+  return alarm;
 }
 
 
 void bsp_set_pa_ptt(unsigned char band, int on) {
-	int bv = 0;
-	switch (band) {
-		case BAND_160M:
-			bv = _BV(0);
-			break;
-		case BAND_80M:
-			bv = _BV(1);
-			break;
-		case BAND_40M:
-			bv = _BV(2);
-			break;
-		case BAND_20M:
-			bv = _BV(3);
-			break;
-		case BAND_15M:
-			bv = _BV(4);
-			break;
-		case BAND_10M:
-			bv = _BV(5);
-			break;
-		default:
-			/* Send ERROR? */
-			return;
-	}
-	
-	if (on)
-	{
-		PORTC |= bv;
-	}
-	else {
-		PORTC &= ~bv;
-	}
+  int bv = 0;
+  switch (band) {
+    case BAND_160M:
+      bv = _BV(0);
+      break;
+    case BAND_80M:
+      bv = _BV(1);
+      break;
+    case BAND_40M:
+      bv = _BV(2);
+      break;
+    case BAND_20M:
+      bv = _BV(3);
+      break;
+    case BAND_15M:
+      bv = _BV(4);
+      break;
+    case BAND_10M:
+      bv = _BV(5);
+      break;
+    default:
+      /* Send ERROR? */
+      return;
+  }
+
+  if (on) {
+    PORTC |= bv;
+  }
+  else {
+    PORTC &= ~bv;
+  }
 }
 
 
 void bsp_set_pa_mains(unsigned char band, int on) {
-	int pdbv = 0;
-	int pgbv = 0;
-	switch (band) {
-		case BAND_160M:
-			pgbv = _BV(1);
-			break;
-		case BAND_80M:
-			pgbv = _BV(0);
-			break;
-		case BAND_40M:
-			pdbv = _BV(7);
-			break;
-		case BAND_20M:
-			pdbv = _BV(6);
-			break;
-		case BAND_15M:
-			pdbv = _BV(5);
-			break;
-		case BAND_10M:
-			pdbv = _BV(4);
-			break;
-		default:
-			/* Send ERROR? */
-			return;
-	}
-	
-	if (on)
-	{
-		PORTD |= pdbv;
-		PORTG |= pgbv;
-	}
-	else {
-		PORTD &= ~pdbv;
-		PORTG &= ~pgbv;
-	}
+  int pdbv = 0;
+  int pgbv = 0;
+  switch (band) {
+    case BAND_160M:
+      pgbv = _BV(1);
+      break;
+    case BAND_80M:
+      pgbv = _BV(0);
+      break;
+    case BAND_40M:
+      pdbv = _BV(7);
+      break;
+    case BAND_20M:
+      pdbv = _BV(6);
+      break;
+    case BAND_15M:
+      pdbv = _BV(5);
+      break;
+    case BAND_10M:
+      pdbv = _BV(4);
+      break;
+    default:
+      /* Send ERROR? */
+      return;
+  }
+
+  if (on) {
+    PORTD |= pdbv;
+    PORTG |= pgbv;
+  }
+  else {
+    PORTD &= ~pdbv;
+    PORTG &= ~pgbv;
+  }
 }
 
 
-uint8_t bsp_mains_is_on(unsigned char band)
-{
-	switch (band) {
-		case BAND_160M:
-			return (PORTG >> 1) & 0x01;
-		case BAND_80M:
-			return (PORTG >> 0) & 0x01;
-		case BAND_40M:
-			return (PORTD >> 7) & 0x01;
-		case BAND_20M:
-			return (PORTD >> 6) & 0x01;
-		case BAND_15M:
-			return (PORTD >> 5) & 0x01;
-		case BAND_10M:
-			return (PORTD >> 4) & 0x01;
-		default:
-			/* Send ERROR? */
-			return 0;
-	}
+uint8_t bsp_mains_is_on(unsigned char band) {
+  switch (band) {
+    case BAND_160M:
+      return (PORTG >> 1) & 0x01;
+    case BAND_80M:
+      return (PORTG >> 0) & 0x01;
+    case BAND_40M:
+      return (PORTD >> 7) & 0x01;
+    case BAND_20M:
+      return (PORTD >> 6) & 0x01;
+    case BAND_15M:
+      return (PORTD >> 5) & 0x01;
+    case BAND_10M:
+      return (PORTD >> 4) & 0x01;
+    default:
+      /* Send ERROR? */
+      return 0;
+  }
 }
 
 
 void bsp_set_pa_reset(unsigned char band, int on) {
-	int bv = 0;
-	switch (band) {
-		case BAND_160M:
-			bv = _BV(6);
-			break;
-		case BAND_80M:
-			bv = _BV(4);
-			break;
-		case BAND_40M:
-			bv = _BV(3);
-			break;
-		case BAND_20M:
-			bv = _BV(2);
-			break;
-		case BAND_15M:
-			bv = _BV(1);
-			break;
-		case BAND_10M:
-			bv = _BV(0);
-			break;
-		default:
-			/* Send ERROR? */
-			return;
-	}
-	
-	if (on)
-	{
-		PORTA |= bv;
-	}
-	else {
-		PORTA &= ~bv;
-	}
+  int bv = 0;
+  switch (band) {
+    case BAND_160M:
+      bv = _BV(6);
+      break;
+    case BAND_80M:
+      bv = _BV(4);
+      break;
+    case BAND_40M:
+      bv = _BV(3);
+      break;
+    case BAND_20M:
+      bv = _BV(2);
+      break;
+    case BAND_15M:
+      bv = _BV(1);
+      break;
+    case BAND_10M:
+      bv = _BV(0);
+      break;
+    default:
+      /* Send ERROR? */
+      return;
+  }
+
+  if (on) {
+    PORTA |= bv;
+  }
+  else {
+    PORTA &= ~bv;
+  }
 }
 
 
@@ -260,11 +258,14 @@ void bsp_set_pa_reset(unsigned char band, int on) {
  * once per millisecond to use as a general purpose time base.
  */
 static void bsp_init_timer_0(void) {
-   TCCR0 = 0;
-   TIMSK |= (1<<OCIE0);         /* enable output compare interrupt */
-   TCCR0  = (1<<WGM01)|(1<<CS02)|(1<<CS01)|(1<<CS00); /* CTC, prescale = 1024 */
-   TCNT0  = 0;
-   OCR0   = OCR0_1MS;                     /* match in aprox 1 ms,  */
+  TCCR0 = 0;
+    /* enable output compare interrupt */
+  TIMSK |= (1 << OCIE0);
+    /* CTC, prescale = 1024 */
+  TCCR0 = (1 << WGM01) | (1 << CS02) | (1 << CS01) | (1 << CS00);
+  TCNT0 = 0;
+    /* match in aprox 1 ms,  */
+  OCR0 = OCR0_1MS;
 }
 
 
@@ -280,9 +281,9 @@ static void bsp_init_ports(void) {
   DDRF = 0x00;
   //PORTF = 0x3f; /* Enable pullups on TX_ACTIVE pins */
   DDRG = 0x03;
-  
-  PORTD |= (1<<2);
-  PORTD |= (1<<3);
+
+  PORTD |= (1 << 2);
+  PORTD |= (1 << 3);
 }
 
 
@@ -293,7 +294,8 @@ static void bsp_init_ports(void) {
 /**
  * \brief  Called by the QP framework on startup
  */
-void QF_onStartup(void) {}
+void QF_onStartup(void) {
+}
 
 
 /**
@@ -304,7 +306,7 @@ void QF_onStartup(void) {}
  * low power mode. In this application we use the idle interrupt to drive the
  * normal main loop.
  */
-void QF_onIdle(void) {        /* entered with interrupts LOCKED, see NOTE01 */
+void QF_onIdle(void) {          /* entered with interrupts LOCKED, see NOTE01 */
   QF_INT_ENABLE();
   bus_handler_poll();
 }
@@ -326,28 +328,25 @@ void QF_onIdle(void) {        /* entered with interrupts LOCKED, see NOTE01 */
  * an ASCII message containing the filename and the linenumber where
  * the assertion occurred.
  */
-void Q_onAssert(char const /*Q_ROM*/ * const Q_ROM_VAR file, int line) {
-  qf_tick_interval = 0; /* Disable calls to QF_tick() */
-  
-  char const Q_ROM_NOT_GNUC * Q_ROM_VAR s = file;
+void Q_onAssert(char const /*Q_ROM */ *const Q_ROM_VAR file, int line) {
+  qf_tick_interval = 0;         /* Disable calls to QF_tick() */
+
+  char const Q_ROM_NOT_GNUC *Q_ROM_VAR s = file;
   char filename[256];
   char *ptr = filename;
-  while ((*ptr++ = Q_ROM_BYTE(*s++)) != 0) {}
+  while ((*ptr++ = Q_ROM_BYTE(*s++)) != 0) ;
   *ptr = '\0';
-  
+
   //QF_INT_DISABLE();
   counter_qf_tick_interval = ASSERT_TX_INTERVAL;
   for (;;) {
     bus_handler_poll_core();
     if (counter_qf_tick_interval >= ASSERT_TX_INTERVAL) {
-      for (int i=0; i<6; ++i) {
+      for (int i = 0; i < 6; ++i) {
         uint8_t msg[] = { i, 0 };
         bus_add_tx_message(bus_get_address(),
-                            BUS_BROADCAST_ADDR,
-                            0,
-                            BUS_CMD_AMPLIFIER_ERROR,
-                            sizeof(msg),
-                            msg);
+                           BUS_BROADCAST_ADDR,
+                           0, BUS_CMD_AMPLIFIER_ERROR, sizeof(msg), msg);
       }
       send_ascii_data(0, "ASSERT[%s:%d]\r\n", filename, line);
       counter_qf_tick_interval = 0;
@@ -360,10 +359,9 @@ void Q_onAssert(char const /*Q_ROM*/ * const Q_ROM_VAR file, int line) {
  * \brief Output compare 0 interrupt - "called" with 1ms intervals
  */
 ISR(SIG_OUTPUT_COMPARE0) {
-	bus_handler_tick();
+  bus_handler_tick();
   if (++counter_qf_tick_interval == qf_tick_interval) {
     QF_tick();
     counter_qf_tick_interval = 0;
   }
 }
-

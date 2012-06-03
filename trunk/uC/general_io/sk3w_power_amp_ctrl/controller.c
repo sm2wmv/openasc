@@ -38,29 +38,29 @@ static Controller ctrlrs[MAX_CONTROLLERS];
 
 
 void controller_init(void) {
-  for (int i=0; i<MAX_CONTROLLERS; ++i) {
+  for (int i = 0; i < MAX_CONTROLLERS; ++i) {
     ctrlrs[i].addr = 0;
     ctrlrs[i].band = BAND_UNDEFINED;
   }
 }
 
 int8_t controller_set_band(uint8_t ctrlr, uint8_t fm_addr, uint8_t band) {
-	if ((ctrlr >= MAX_CONTROLLERS) || (band > BAND_MAX)) {
-		return -1;
-	}
-	if (ctrlrs[ctrlr].band == band) {
+  if ((ctrlr >= MAX_CONTROLLERS) || (band > BAND_MAX)) {
+    return -1;
+  }
+  if (ctrlrs[ctrlr].band == band) {
     return 0;
   }
-	if (band != BAND_UNDEFINED) {
-    for (int i=0; i<MAX_CONTROLLERS; ++i) {
+  if (band != BAND_UNDEFINED) {
+    for (int i = 0; i < MAX_CONTROLLERS; ++i) {
       if (ctrlrs[i].band == band) {
         return -1;
       }
     }
   }
-	if (ctrlrs[ctrlr].band != BAND_UNDEFINED) {
-		pa_clear_controller(ctrlrs[ctrlr].band);
-	}
+  if (ctrlrs[ctrlr].band != BAND_UNDEFINED) {
+    pa_clear_controller(ctrlrs[ctrlr].band);
+  }
   ctrlrs[ctrlr].band = band;
   if (band != BAND_UNDEFINED) {
     pa_set_controller(band, ctrlr);
@@ -81,7 +81,7 @@ uint8_t controller_band(uint8_t ctrlr) {
 
 uint8_t controller_band_list(const Controller **ctrlr_list) {
   *ctrlr_list = ctrlrs;
-  return sizeof(ctrlrs)/sizeof(*ctrlrs);
+  return sizeof(ctrlrs) / sizeof(*ctrlrs);
 }
 
 int8_t controller_toggle_mains(uint8_t ctrlr) {
@@ -97,4 +97,3 @@ void controller_set_tx_active(uint8_t ctrlr, int8_t is_active) {
   }
   pa_set_tx_active(ctrlrs[ctrlr].band, is_active);
 }
-
