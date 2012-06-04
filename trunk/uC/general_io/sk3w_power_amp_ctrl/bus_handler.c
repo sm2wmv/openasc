@@ -325,6 +325,15 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
       send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
                       pa_cooldown_timeout());
     }
+    else if (strcmp(argv[0], "defaults") == 0) {
+      pa_set_default_config();
+      send_ascii_data(bus_message->from_addr, "warmup=%d\r\n",
+                      pa_warmup_timeout());
+      send_ascii_data(bus_message->from_addr, "unused=%d\r\n",
+                      pa_unused_timeout());
+      send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
+                      pa_cooldown_timeout());
+    }
     else {
       send_help(bus_message->from_addr);
     }
@@ -432,10 +441,13 @@ static void send_pa_status(uint8_t band) {
 
 
 static void send_help(uint8_t addr) {
-  send_ascii_data(addr, "ptton <ctrlr>\r\n" "pttoff <ctrlr>\r\n");
-  send_ascii_data(addr, "togglemains <ctrlr>\r\n" "warmup [tmo sec]\r\n");
+  send_ascii_data(addr, "ptton <ctrlr>\r\n"
+                        "pttoff <ctrlr>\r\n");
+  send_ascii_data(addr, "togglemains <ctrlr>\r\n"
+                        "warmup [tmo sec]\r\n");
   send_ascii_data(addr, "unused [tmo sec]\r\n"
                         "cooldown [tmo sec]\r\n");
+  send_ascii_data(addr, "defaults\r\n");
 }
 
 

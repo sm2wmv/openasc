@@ -65,7 +65,7 @@ Pa_setCtrlr(me, PA_CTRLR_UNUSED);</action>
      <state name="warmup">
       <entry brief="op_status=WARMUP">DEBUG_PRINT(&quot;Pa_warmup/ENTRY\r\n&quot;);
 Pa_setOpStatus(me, AMP_OP_STATUS_WARMUP);
-QActive_arm((QActive *)me, warmup_timeout);</entry>
+QActive_arm((QActive *)me, cfg.warmup_timeout);</entry>
       <exit>DEBUG_PRINT(&quot;Pa_warmup/EXIT\r\n&quot;);</exit>
       <tran trig="TOGGLE_MAINS" target="../../../1">
        <action>DEBUG_PRINT(&quot;Pa_warmup/TOGGLE_MAINS\r\n&quot;);</action>
@@ -142,7 +142,7 @@ bsp_set_pa_ptt(me-&gt;band, 0);</exit>
       <state name="unused">
        <entry brief="ctrlr=UNUSED">DEBUG_PRINT(&quot;Pa_unused/ENTRY\r\n&quot;);
 Pa_setCtrlr(me, PA_CTRLR_UNUSED);
-QActive_arm((QActive *)me, unused_timeout);</entry>
+QActive_arm((QActive *)me, cfg.unused_timeout);</entry>
        <exit>DEBUG_PRINT(&quot;Pa_unused/EXIT\r\n&quot;);</exit>
        <tran trig="BAND_SELECTED" target="../../4">
         <action brief="ctrlr=subaddr">DEBUG_PRINT(&quot;Pa_unused/BAND_SELECTED\r\n&quot;);
@@ -190,7 +190,7 @@ Pa_setCtrlr(me, Q_PAR(me));</action>
      <state name="cooldown">
       <entry brief="op_status=COOLDOWN">DEBUG_PRINT(&quot;Pa_cooldown/ENTRY\r\n&quot;);
 Pa_setOpStatus(me, AMP_OP_STATUS_COOLDOWN);
-QActive_arm((QActive *)me, cooldown_timeout);</entry>
+QActive_arm((QActive *)me, cfg.cooldown_timeout);</entry>
       <exit>DEBUG_PRINT(&quot;Pa_cooldown/EXIT\r\n&quot;);</exit>
       <tran trig="Q_TIMEOUT" target="../../../1">
        <action>DEBUG_PRINT(&quot;Pa_cooldown/TIMEOUT\r\n&quot;);</action>
