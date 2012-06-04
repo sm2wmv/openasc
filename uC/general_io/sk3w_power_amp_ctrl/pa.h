@@ -73,6 +73,11 @@ void pa_set_cooldown_timeout(uint16_t new_timeout);
 uint16_t pa_cooldown_timeout(void);
 
 /**
+ * \brief Set all configuration variables to their default values
+ */
+void pa_set_default_config(void);
+
+/**
  * \brief Set which controller has allocated which band
  * \param band  The band (e.g. BAND_160M)
  * \param ctrlr The controller
