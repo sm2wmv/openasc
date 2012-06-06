@@ -26,11 +26,10 @@
 #include <string.h>
 
 #include <avr/io.h>
-#include <avr/eeprom.h>
-#include <util/crc16.h>
 
 #include <global.h>
 #include <wmv_bus/bus_commands.h>
+#include <general_io/eeprom.h>
 
 #include "qpn_port.h"
 #include "bsp.h"
@@ -64,22 +63,6 @@ enum PaSignals {
 //! Include the tate machine declaration
 #include "pasm.h"
 
-//! Configuration variables that are persisted in the EEPROM
-typedef struct {
-  uint16_t unused_timeout;      //! The "unused" timeout in seconds
-  uint16_t warmup_timeout;      //! The "warmup" timeout in seconds
-  uint16_t cooldown_timeout;    //! The "cooldown" timeout in seconds
-} Config;
-
-
-//! EEPROM config variable container
-static Config EEMEM ee_cfg;
-
-//! EEPROM CRC
-static uint16_t EEMEM ee_crc;
-
-//! Config variable container
-static Config cfg;
 
 //! Event queues for the state machines
 static QEvent pa_queue[SM_COUNT][SM_QUEUE_LEN];
@@ -111,8 +94,6 @@ Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
 
 
 static int8_t post_event(uint8_t subaddr, enum PaSignals sig, QParam par);
-static void save_config(void);
-static void read_config(void);
 
 static void Pa_ctor(Pa *pa, uint8_t band);
 static void Pa_setOpStatus(Pa *pa, uint8_t op_status);
@@ -120,7 +101,7 @@ static void Pa_setCtrlr(Pa *pa, uint8_t ctrlr);
 
 
 void pa_init(void) {
-  read_config();
+  eeprom_read_config();
   
   memset(band2sm, SM_UNUSED, sizeof(band2sm));
   for (int i = 0; i < SM_COUNT; ++i) {
@@ -138,7 +119,7 @@ void pa_set_unused_timeout(uint16_t new_timeout) {
     new_timeout = 1;
   }
   cfg.unused_timeout = new_timeout;
-  save_config();
+  eeprom_write_config();
 }
 
 uint16_t pa_unused_timeout(void) {
@@ -150,7 +131,7 @@ void pa_set_warmup_timeout(uint16_t new_timeout) {
     new_timeout = 1;
   }
   cfg.warmup_timeout = new_timeout;
-  save_config();
+  eeprom_write_config();
 }
 
 uint16_t pa_warmup_timeout(void) {
@@ -162,7 +143,7 @@ void pa_set_cooldown_timeout(uint16_t new_timeout) {
     new_timeout = 1;
   }
   cfg.cooldown_timeout = new_timeout;
-  save_config();
+  eeprom_write_config();
 }
 
 uint16_t pa_cooldown_timeout(void) {
@@ -170,10 +151,8 @@ uint16_t pa_cooldown_timeout(void) {
 }
 
 void pa_set_default_config(void) {
-  cfg.unused_timeout = DEFAULT_UNUSED_TIMEOUT;
-  cfg.warmup_timeout = DEFAULT_WARMUP_TIMEOUT;
-  cfg.cooldown_timeout = DEFAULT_COOLDOWN_TIMEOUT;
-  save_config();
+  eeprom_set_default_config();
+  eeprom_write_config();
 }
 
 void pa_set_controller(uint8_t band, uint8_t ctrlr) {
@@ -196,7 +175,6 @@ uint8_t pa_controller(uint8_t band) {
 int8_t pa_toggle_mains(uint8_t band) {
   return post_event(band, TOGGLE_MAINS_SIG, 0);
 }
-
 
 void pa_set_tx_active(uint8_t band, int8_t on) {
   post_event(band, on ? TX_ACTIVE_ON_SIG : TX_ACTIVE_OFF_SIG, 0);
@@ -226,35 +204,6 @@ static int8_t post_event(uint8_t band, enum PaSignals sig, QParam par) {
     return 0;
   }
   return -1;
-}
-
-/**
- * \brief   Save configuration to the EEPROM
- */
-static void save_config(void) {
-  eeprom_update_block(&cfg, &ee_cfg, sizeof(cfg));
-  uint16_t calculated_crc = 0xffff;
-  uint8_t *ptr = (uint8_t *)&cfg;
-  for (int i=0; i<sizeof(cfg); ++i) {
-    calculated_crc = _crc_ccitt_update(calculated_crc, *ptr++);
-  }
-  eeprom_update_word(&ee_crc, calculated_crc);
-}
-
-/**
- * \brief   Read configuration from the EEPROM
- */
-static void read_config(void) {
-  eeprom_read_block(&cfg, &ee_cfg, sizeof(cfg));
-  uint16_t calculated_crc = 0xffff;
-  uint8_t *ptr = (uint8_t *)&cfg;
-  for (int i=0; i<sizeof(cfg); ++i) {
-    calculated_crc = _crc_ccitt_update(calculated_crc, *ptr++);
-  }
-  uint16_t crc = eeprom_read_word(&ee_crc);
-  if (crc != calculated_crc) {
-    pa_set_default_config();
-  }
 }
 
 

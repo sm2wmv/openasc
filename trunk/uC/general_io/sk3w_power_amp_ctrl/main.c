@@ -25,7 +25,7 @@
 #include "bus_handler.h"
 
 
-/*! Main function of the General I/O */
+/*! Main function of the General I/O base SK3W PA control */
 int main(void) {
   QF_INT_DISABLE();
   bsp_init();

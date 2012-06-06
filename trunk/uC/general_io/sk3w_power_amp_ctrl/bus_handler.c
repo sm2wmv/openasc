@@ -27,6 +27,7 @@
 #include <stdlib.h>
 
 #include <avr/io.h>
+#include <avr/wdt.h>
 
 #include <delay.h>
 
@@ -334,6 +335,12 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
       send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
                       pa_cooldown_timeout());
     }
+    else if (strcmp(argv[0], "reset") == 0) {
+        /* Enable the watchdog timer and wait for it to reset
+         * in about one second */
+      wdt_enable(WDTO_1S);
+      send_ascii_data(bus_message->from_addr, "RESETTING\r\n");
+    }
     else {
       send_help(bus_message->from_addr);
     }
@@ -369,6 +376,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
     }
     case BUS_CMD_ASCII_DATA:{
       parse_ascii_cmd(bus_message);
+      break;
     }
     case BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS:{
       unsigned char subaddr = bus_message->data[0];
@@ -397,6 +405,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
                            BUS_BROADCAST_ADDR,
                            0, BUS_CMD_AMPLIFIER_ERROR, sizeof(msg), msg);
       }
+      break;
     }
     case BUS_CMD_AMPLIFIER_RESET:{
       /* FIXME: Implement when alarms have been implemented */
@@ -447,7 +456,8 @@ static void send_help(uint8_t addr) {
                         "warmup [tmo sec]\r\n");
   send_ascii_data(addr, "unused [tmo sec]\r\n"
                         "cooldown [tmo sec]\r\n");
-  send_ascii_data(addr, "defaults\r\n");
+  send_ascii_data(addr, "defaults\r\n"
+                        "reset\r\n");
 }
 
 
