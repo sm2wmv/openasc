@@ -78,11 +78,14 @@ QPN_SRC = qepn.c qfn.c qfn_init.c
 # Global sources
 GLOBAL_SRC =  i2c.c delay.c
 
+# Board related sources
+BOARD_SRC = eeprom.c
+
 # Local sources
 LOCAL_SRC = $(TARGET).c controller.c pa.c bus_handler.c bsp.c
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(LOCAL_SRC) $(GLOBAL_SRC) $(WMV_BUS_SRC) $(QPN_SRC)
+SRC = $(LOCAL_SRC) $(BOARD_SRC) $(GLOBAL_SRC) $(WMV_BUS_SRC) $(QPN_SRC)
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -104,6 +107,9 @@ CDEFS =
 AVRDUDE_EFUSE = 0xff
 AVRDUDE_HFUSE = 0xd1
 AVRDUDE_LFUSE = 0x3f
+
+# Additional paths where to look for C sources
+vpath %.c $(ROOT)/general_io
 
 
 # Include main makefile
