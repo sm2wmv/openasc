@@ -49,6 +49,11 @@
 
 #define BUS_ADDR 0x10
 
+/*! Time limit of the operate/standby mode change (in ms) */
+#define OPERATE_STBY_OPERATE_LIMIT  2000
+/*! Time limit of toggle the mains minimum interval (in ms) */
+#define OPERATE_MAINS_LIMIT         10000
+
 //!Run the event first in the event queue
 #define FLAG_RUN_EVENT_QUEUE      0
 //! Flag which indicates that the device has started properly

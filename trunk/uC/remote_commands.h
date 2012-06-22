@@ -38,4 +38,6 @@
 #define COMPUTER_COMM_SET_SUBMENU_OPTION           0xAE
 #define COMPUTER_COMM_REBOOT                       0xAF
 
+#define REMOTE_COMMAND_DISPLAY_DATA                0xB0
+
 #endif

@@ -440,6 +440,7 @@ clean_list :
 # Include the dependency files.
 -include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
 
+.SILENT:
 
 # Listing of phony targets.
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
