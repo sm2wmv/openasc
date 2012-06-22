@@ -113,7 +113,7 @@ void __inline__ motor_control_step_motor1(void) {
       PORTL &= ~(1<<4);
       PORTL &= ~(1<<5);
       break;
-    case 1
+    case 1:
       PORTL |= (1<<2);
       PORTL |= (1<<3);
       PORTL &= ~(1<<4);

@@ -52,6 +52,11 @@ static unsigned int counter_ping_interval = 0;
 //! Counter which counts up each millisecond
 static unsigned int counter_ms = 0;
 
+//! Counter which keeps track of how long time ago it was since we toggled the amplifier stdby/operate
+static unsigned int counter_ms_toggle_amp_stdby = 0;
+//! Counter which keeps track of how long time ago it was since we toggled the mains of the amplifier
+static unsigned int counter_ms_toggle_amp_mains = 0;
+
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 static unsigned int counter_event_timer = 0;
 
@@ -94,59 +99,67 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 			bus_ping_new_stamp(bus_message->from_addr, bus_message->data[0], 0, 0);
 	}
 	else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS) {
-    //Check that PTT is not enabled
-    if (ext_control_get_ptt_status() == 0) {
-      if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-        ext_control_set_mains_off();
-        main_status.amp_flags &= ~(1<<AMP_STATUS_MAINS);
-        main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
-        
-        main_status.amp_op_status = AMP_OP_STATUS_OFF;
-        
-        if (main_status.parent_addr != 0) {
-          send_amp_status();
-          main_status.parent_addr = 0;
+    if (counter_ms_toggle_amp_mains > OPERATE_MAINS_LIMIT) {
+      counter_ms_toggle_amp_mains = 0;
+      
+      //Check that PTT is not enabled
+      if (ext_control_get_ptt_status() == 0) {
+        if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+          ext_control_set_mains_off();
+          main_status.amp_flags &= ~(1<<AMP_STATUS_MAINS);
+          main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+          
+          main_status.amp_op_status = AMP_OP_STATUS_OFF;
+          
+          if (main_status.parent_addr != 0) {
+            send_amp_status();
+            main_status.parent_addr = 0;
+          }
+          #ifdef DEBUG
+            printf("BUS >> TURN MAINS OFF\n");
+          #endif
         }
-        #ifdef DEBUG
-          printf("BUS >> TURN MAINS OFF\n",bus_message->cmd);
-        #endif
-      }
-      else {
-        main_status.parent_addr = bus_message->from_addr;
-        ext_control_set_mains_on();
-        main_status.amp_flags |= (1<<AMP_STATUS_MAINS);
-        
-        main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
-        main_status.amp_op_status = AMP_OP_STATUS_STDBY;
-        
-        send_status_update = 1;
-        #ifdef DEBUG
-          printf("BUS >> TURN MAINS ON\n",bus_message->cmd);
-        #endif
+        else {
+          main_status.parent_addr = bus_message->from_addr;
+          ext_control_set_mains_on();
+          main_status.amp_flags |= (1<<AMP_STATUS_MAINS);
+          
+          main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+          main_status.amp_op_status = AMP_OP_STATUS_STDBY;
+          
+          send_status_update = 1;
+          #ifdef DEBUG
+            printf("BUS >> TURN MAINS ON\n");
+          #endif
+        }
       }
     }
   }
   else if (bus_message->cmd == BUS_CMD_AMPLIFIER_TOGGLE_OPERATE_STBY_STATUS) {
-    //Check that PTT is not enabled
-    if (ext_control_get_ptt_status() == 0) {
-      if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-        if (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) {
-          main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
-          
-          ext_control_set_hv_off();
-          send_status_update = 1;
-          #ifdef DEBUG
-            printf("BUS >> ENTERED STDBY MODE\n");
-          #endif
-        }
-        else {
-          main_status.amp_flags |= (1<<AMP_STATUS_STDBY_OP);
-          
-          ext_control_set_hv_on();
-          send_status_update = 1;
-          #ifdef DEBUG
-            printf("BUS >> ENTERED READY MODE\n");
-          #endif        
+    if (counter_ms_toggle_amp_stdby > OPERATE_STBY_OPERATE_LIMIT) {
+      counter_ms_toggle_amp_stdby = 0;
+
+      //Check that PTT is not enabled
+      if (ext_control_get_ptt_status() == 0) {
+        if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
+          if (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) {
+            main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+            
+            ext_control_set_hv_off();
+            send_status_update = 1;
+            #ifdef DEBUG
+              printf("BUS >> ENTERED STDBY MODE\n");
+            #endif
+          }
+          else {
+            main_status.amp_flags |= (1<<AMP_STATUS_STDBY_OP);
+            
+            ext_control_set_hv_on();
+            send_status_update = 1;
+            #ifdef DEBUG
+              printf("BUS >> ENTERED READY MODE\n");
+            #endif        
+          }
         }
       }
     }
@@ -346,7 +359,7 @@ void event_handler_control_panel(unsigned int state) {
         main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(0);
         //main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(1);
         
-        eeprom_write_block(&main_settings,1,sizeof(main_settings));
+        eeprom_write_block(&main_settings,(void *)1,sizeof(main_settings));
       }
     }  
 
@@ -500,7 +513,7 @@ int main(void){
 
   unsigned int ext_control_state = 0;
 
-  eeprom_read_block(&main_settings,1,sizeof(main_settings));
+  eeprom_read_block(&main_settings,(void *)1,sizeof(main_settings));
   
   main_status.amp_op_status = AMP_OP_STATUS_OFF;
   main_status.amp_flags = 0;
@@ -647,6 +660,15 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_ms++;
 	counter_event_timer++;
 
+  counter_ms_toggle_amp_stdby++;
+  counter_ms_toggle_amp_mains++;
+  
+  if (counter_ms_toggle_amp_stdby > 65000)
+    counter_ms_toggle_amp_stdby = OPERATE_STBY_OPERATE_LIMIT+1;
+  
+  if (counter_ms_toggle_amp_mains > 65000)
+    counter_ms_toggle_amp_mains = OPERATE_MAINS_LIMIT+1;  
+  
 	//If the value equals the half of it's range then
 	//we remove that amount from all target times in the event
 	//queue and set the counter to 0 again

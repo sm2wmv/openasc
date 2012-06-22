@@ -34,6 +34,7 @@
 #include "ethernet.h"
 #include "main.h"
 #include "../delay.h"
+#include "../remote_commands.h"
 
 static unsigned char ethernet_chip_enabled;
 
@@ -167,46 +168,31 @@ unsigned char ethernet_spi_read(unsigned int addr)
 }
 
 void ethernet_init(void) {
-  PORTG |= (1<<SPI_CS);
-    
   // Enable SPI, Master Mode 0, set the clock rate fck/2
   SPCR = (1<<SPE)|(1<<MSTR);
   SPSR |= (1<<SPI2X);
+
+  PORTG |= (1<<SPI_CS);
   
   #ifdef ETHERNET_DEBUG_ENABLED
     printf("Ethernet: SPI enabled\n");
   #endif
     
   // Ethernet Setup
-  unsigned char mac_addr[] = {0x00,0x16,0x36,0xDE,0x58,0xF6};
-  unsigned char ip_addr[] = {77,110,45,196};
+  unsigned char mac_addr[] = {0x00,0x16,0x36,0xDE,0x58,0xF7};
+  unsigned char ip_addr[] = {192,168,1,11};
   unsigned char sub_mask[] = {255,255,255,0};
-  unsigned char gtw_addr[] = {192,168,2,1};
+  unsigned char gtw_addr[] = {0,0,0,0};
+
+  delay_ms(250);
   
   // Setting the Wiznet W5100 Mode Register: 0x0000
   ethernet_spi_write(MR,0x80);            // MR = 0b10000000;
-  delay_ms(1);
-  #ifdef ETHERNET_DEBUG_ENABLED
-    printf("ETH >> Reading MR: %d\n\n",ethernet_spi_read(MR));
-    // Setting the Wiznet W5100 Gateway Address (GAR): 0x0001 to 0x0004
-    printf("ETH >> Setting Gateway Address %d.%d.%d.%d\n",gtw_addr[0],gtw_addr[1],gtw_addr[2],gtw_addr[3]);
-  #endif
-  ethernet_spi_write(GAR + 0,gtw_addr[0]);
-  ethernet_spi_write(GAR + 1,gtw_addr[1]);
-  ethernet_spi_write(GAR + 2,gtw_addr[2]);
-  ethernet_spi_write(GAR + 3,gtw_addr[3]);
-  delay_ms(1);
-  
-  if ((ethernet_spi_read(GAR + 0) != gtw_addr[0])) {
-    ethernet_chip_enabled = 0;
-    return;
-  }
-  
 
+  delay_ms(1);
   
   #ifdef ETHERNET_DEBUG_ENABLED
-    printf("ETH >> Reading GAR: %d.%d.%d.%d\n\n",ethernet_spi_read(GAR + 0),ethernet_spi_read(GAR + 1),ethernet_spi_read(GAR + 2),ethernet_spi_read(GAR + 3));
-  // Setting the Wiznet W5100 Source Address Register (SAR): 0x0009 to 0x000E
+    // Setting the Wiznet W5100 Source Address Register (SAR): 0x0009 to 0x000E
     printf("ETH >> Setting Source Address %.2x:%.2x:%.2x:%.2x:%.2x:%.2x\n",mac_addr[0],mac_addr[1],mac_addr[2],mac_addr[3],mac_addr[4],mac_addr[5]);
   #endif
   ethernet_spi_write(SAR + 0,mac_addr[0]);
@@ -215,12 +201,40 @@ void ethernet_init(void) {
   ethernet_spi_write(SAR + 3,mac_addr[3]);
   ethernet_spi_write(SAR + 4,mac_addr[4]);
   ethernet_spi_write(SAR + 5,mac_addr[5]);
+
   delay_ms(1);
+  
+  //Check that we get responses from the ethernet chip
+  if (ethernet_spi_read(SAR + 5) != mac_addr[5]) {
+    ethernet_chip_enabled = 0;
+    
+    #ifdef ETHERNET_DEBUG_ENABLED
+      printf("ETH >> No ethernet chip found\n");
+    #endif
+    
+    return(0);
+  }
+  
   #ifdef ETHERNET_DEBUG_ENABLED
     printf("ETH >> Reading SAR: %.2x:%.2x:%.2x:%.2x:%.2x:%.2x\n\n",ethernet_spi_read(SAR + 0),ethernet_spi_read(SAR + 1),ethernet_spi_read(SAR + 2),ethernet_spi_read(SAR + 3),ethernet_spi_read(SAR + 4),ethernet_spi_read(SAR + 5));
     // Setting the Wiznet W5100 Sub Mask Address (SUBR): 0x0005 to 0x0008
     printf("ETH >> Setting Sub Mask Address %d.%d.%d.%d\n",sub_mask[0],sub_mask[1],sub_mask[2],sub_mask[3]);
+  #endif  
+
+  #ifdef ETHERNET_DEBUG_ENABLED
+    // Setting the Wiznet W5100 Gateway Address (GAR): 0x0001 to 0x0004
+    printf("ETH >> Setting Gateway Address %d.%d.%d.%d\n",gtw_addr[0],gtw_addr[1],gtw_addr[2],gtw_addr[3]);
   #endif
+  ethernet_spi_write(GAR + 0,gtw_addr[0]);
+  ethernet_spi_write(GAR + 1,gtw_addr[1]);
+  ethernet_spi_write(GAR + 2,gtw_addr[2]);
+  ethernet_spi_write(GAR + 3,gtw_addr[3]);
+  delay_ms(1);
+
+  #ifdef ETHERNET_DEBUG_ENABLED
+    printf("ETH >> Reading GAR: %d.%d.%d.%d\n\n",ethernet_spi_read(GAR + 0),ethernet_spi_read(GAR + 1),ethernet_spi_read(GAR + 2),ethernet_spi_read(GAR + 3));
+  #endif
+  
   ethernet_spi_write(SUBR + 0,sub_mask[0]);
   ethernet_spi_write(SUBR + 1,sub_mask[1]);
   ethernet_spi_write(SUBR + 2,sub_mask[2]);
@@ -247,7 +261,11 @@ void ethernet_init(void) {
   #ifdef ETHERNET_DEBUG_ENABLED
     printf("ETH >> Done Wiznet W5100 Initialized!\n");
   #endif
-    
+
+  #ifdef ETHERNET_DEBUG_ENABLED
+    printf("ETH >> Reading MR: %d\n\n",ethernet_spi_read(MR));
+  #endif
+ 
   #ifdef ETHERNET_DEBUG_ENABLED
     printf("ETH >> Created TCP socket on port %i\n",TCP_PORT);
   #endif
@@ -322,7 +340,7 @@ unsigned char ethernet_listen(unsigned char sock) {
 }
 
 unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, unsigned int buflen) {
-  unsigned char preamble[3] = {0xFE,0xFE,buflen};
+  unsigned char preamble[3] = {0xFE,0xFE,REMOTE_COMMAND_DISPLAY_DATA,buflen};
   
   unsigned int ptr,offaddr,realaddr,txsize,timeout;   
 
@@ -351,7 +369,7 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
 
   unsigned char i=0;
   
-  while(i<3) {
+  while(i<4) {
     // Calculate the real W5100 physical Tx Buffer Address
     realaddr = TXBUFADDR + (offaddr & TX_BUF_MASK);
     // Copy the application data to the W5100 Tx Buffer
@@ -383,7 +401,7 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
   ethernet_spi_write(S0_CR,CR_SEND);
 
   // Wait for Sending Process
-  while(ethernet_spi_read(S0_CR)); 
+  //while(ethernet_spi_read(S0_CR)); 
 
   return 1;
 }
