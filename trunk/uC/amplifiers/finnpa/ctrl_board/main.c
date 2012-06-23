@@ -290,6 +290,7 @@ void start_tune_amp(void) {
       
       ext_control_activate_band_relay(main_status.curr_band);
       motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+      motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
       
       send_status_update = 1;
       
@@ -357,7 +358,7 @@ void event_handler_control_panel(unsigned int state) {
         #endif
          
         main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(0);
-        //main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(1);
+        main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(1);
         
         eeprom_write_block(&main_settings,(void *)1,sizeof(main_settings));
       }
@@ -370,7 +371,7 @@ void event_handler_control_panel(unsigned int state) {
         #endif
           
         motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
-        //motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+        motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
       }
     }
     
@@ -407,6 +408,40 @@ void event_handler_control_panel(unsigned int state) {
         motor_control_stepper_off(0);
       }
     }
+
+    if (state & (1<<EXT_CONTROL_LOAD_UP_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_LOAD_UP_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> LOAD UP POSITION\n");
+        #endif
+          
+        motor_control_stepper_turn_ccw(1);
+      }
+      else {
+        #ifdef DEBUG
+          printf("EVENT >> LOAD UP POSITION -> MID\n");
+        #endif
+          
+        motor_control_stepper_off(1);
+      }
+    }    
+    
+    if (state & (1<<EXT_CONTROL_LOAD_DOWN_BIT)) {
+      if (curr_state & (1<<EXT_CONTROL_LOAD_DOWN_BIT)) {
+        #ifdef DEBUG
+          printf("EVENT >> LOAD DOWN POSITION\n");
+        #endif
+          
+        motor_control_stepper_turn_cw(1);
+      }
+      else {
+        #ifdef DEBUG
+          printf("EVENT >> LOAD DOWN POSITION -> MID\n");
+        #endif
+          
+        motor_control_stepper_off(1);
+      }
+    }    
     
     if (state & (1<<EXT_CONTROL_SEGMENT_HIGH_BIT)) {
       if (curr_state & (1<<EXT_CONTROL_SEGMENT_HIGH_BIT)) {
@@ -535,7 +570,7 @@ int main(void){
   PORTC &= ~(1<<4);
   PORTC &= ~(1<<3);
   PORTC &= ~(1<<2);
-    
+   
   while(1) {
     if (bus_check_rx_status(&mess)) {
       bus_parse_message(&mess);
@@ -588,7 +623,8 @@ int main(void){
 		
     #ifdef DEBUG
       if (print_pos == 1) {
-        printf("CURR_POS: %i\n",a2dConvert10bit(1)); 
+        printf("CURR_POS (TUNE): %i\n",a2dConvert10bit(1));
+        printf("CURR_POS (LOAD): %i\n",a2dConvert10bit(0));
         printf("CURR_BAND: %i\n",main_status.curr_band);
         
         print_pos = 0;
