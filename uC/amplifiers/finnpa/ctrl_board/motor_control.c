@@ -160,8 +160,68 @@ void __inline__ motor_control_step_motor1(void) {
   }
 }
 
+/* PL0 - Output - Driver 4 Phase
+ * PL1 - Output - Driver 4 D2
+ * PL2 - Output - Driver 1 D2     *
+ * PL3 - Output - Driver 1 Phase  *
+ * PL4 - Output - Driver 1 D1     *
+ * PL5 - Output - Driver 2 D0     *
+ * PL6 - Output - Driver 1 D0
+ * PL7 - Output - Driver 2 D1 */
+
 void __inline__ motor_control_step_motor2(void) {
-  
+  switch(stepper_motor[1].current_phase) {
+    case 0:
+      PORTL |= (1<<6);
+      PORTL &= ~(1<<7);
+      PORTD &= ~(1<<4);
+      PORTD &= ~(1<<5);
+      break;
+    case 1:
+      PORTL |= (1<<6);
+      PORTL |= (1<<7);
+      PORTD &= ~(1<<4);
+      PORTD &= ~(1<<5);
+      break;
+    case 2:
+      PORTL &= ~(1<<6);
+      PORTL |= (1<<7);
+      PORTD &= ~(1<<4);
+      PORTD &= ~(1<<5);
+      break;
+    case 3:
+      PORTL &= ~(1<<6);
+      PORTL |= (1<<7);
+      PORTD |= (1<<4);
+      PORTD &= ~(1<<5);
+      break;
+    case 4:
+      PORTL &= ~(1<<6);
+      PORTL &= ~(1<<7);
+      PORTD |= (1<<4);
+      PORTD &= ~(1<<5);
+      break;
+    case 5:
+      PORTL &= ~(1<<6);
+      PORTL &= ~(1<<7);
+      PORTD |= (1<<4);
+      PORTD |= (1<<5);
+      break;
+    case 6:
+      PORTL &= ~(1<<6);
+      PORTL &= ~(1<<7);
+      PORTD &= ~(1<<4);
+      PORTD |= (1<<5);
+      break;
+    case 7:
+      PORTL |= (1<<6);
+      PORTL &= ~(1<<7);
+      PORTD &= ~(1<<4);
+      PORTD |= (1<<5);
+      break;
+    default:
+      break;
+  }  
 }
 
 void __inline__ motor_control_step_motor3(void) {
@@ -266,6 +326,13 @@ void motor_control_stepper_off(unsigned char index) {
 		PORTL &= ~(1<<4);
 		PORTL &= ~(1<<5);
 	}
+	
+  if (index == 1) {
+    PORTL &= ~(1<<6);
+    PORTL &= ~(1<<7);
+    PORTD &= ~(1<<4);
+    PORTD &= ~(1<<5);
+  }
 }
 
 unsigned int motor_control_get_curr_pos(unsigned char motor_index){
