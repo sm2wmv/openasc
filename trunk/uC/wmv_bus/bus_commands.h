@@ -35,6 +35,8 @@
 #define BUS_CMD_SYNC	0x01	
 /*! Sends a ping which all devices can use to see what's connected to the bus */
 #define BUS_CMD_PING	0x02	
+/*! Will set a certain mainbox into PTT ON or OFF */
+#define BUS_CMD_SET_PTT_STATUS  0x03
 
 /*! Activate TX/RX mode */
 #define BUS_CMD_DRIVER_ACTIVATE_TXRX_MODE							0x10
@@ -151,7 +153,8 @@
 #define AMP_OP_STATUS_WARMUP        4
 /*! The amplifier is cooling down before power down */
 #define AMP_OP_STATUS_COOLDOWN      5
-
+/*! The amplifier is standby */
+#define AMP_OP_STATUS_STDBY         6
 
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x60

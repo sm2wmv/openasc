@@ -1438,6 +1438,16 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
       error_handler_set(ERROR_TYPE_PA_ERROR, 1, 0);
     }
   }
+  else if (bus_message.cmd == BUS_CMD_SET_PTT_STATUS) {
+    if (bus_message.length > 1) {
+      if (bus_message.data[1] == 1) {
+        sequencer_footsw_pressed();
+      }
+      else {
+        sequencer_footsw_released();
+      }
+    }
+  }
 	
 	#ifdef DEBUG_WMV_BUS
 		printf("DEBUG-> Message dropped\n");
