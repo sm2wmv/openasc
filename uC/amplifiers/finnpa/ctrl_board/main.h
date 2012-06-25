@@ -23,6 +23,8 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+#include "../../../wmv_bus/bus_commands.h"
+
 #define DEBUG
 
 //! The current firmware revision nr
@@ -58,24 +60,6 @@
 #define FLAG_RUN_EVENT_QUEUE      0
 //! Flag which indicates that the device has started properly
 #define FLAG_DEVICE_STARTED       1
-
-/*! Amplifier status bits */
-//! The status of the mains of the amplifier
-#define AMP_STATUS_MAINS      0
-//! The amplifier is in operate/standby mode, 0 = standby, 1 = operate
-#define AMP_STATUS_STDBY_OP   1
-
-/*! The amplifier operational status */
-/*! The amplifier is ready */
-#define AMP_OP_STATUS_READY         0
-/*! An error has occured, amp in standby */
-#define AMP_OP_STATUS_ERROR         1
-/*! The amplifier is tuning */
-#define AMP_OP_STATUS_TUNING        2
-/*! The amplifier is off */
-#define AMP_OP_STATUS_OFF           3
-/*! The amplifier is standby */
-#define AMP_OP_STATUS_STDBY         4
 
 //! Flag that indicates that the TUNE cap has reached its position
 #define TUNE_SEQUENCE_TUNE_DONE     0

@@ -77,11 +77,11 @@
  * PC0 - Output - Relay board
  * PC1 - Output - Relay board
  * PC2 - Output - Driver output #14   - 
- * PC3 - Output - Driver output #13   - Input relay 160m
- * PC4 - Output - Driver output #12   - Input relay 80m
- * PC5 - Output - Driver output #11   - Input relay 40m
- * PC6 - Output - Driver output #10   - Input relay 20m
- * PC7 - Output - Driver output #9    - Input relay 15m
+ * PC3 - Output - Driver output #13   -
+ * PC4 - Output - Driver output #12   -
+ * PC5 - Output - Driver output #11   -
+ * PC6 - Output - Driver output #10   -
+ * PC7 - Output - Driver output #9    -
  * =====================================================================================
  *
  *
@@ -103,10 +103,10 @@
  * PE0 - Input  - USB RXD
  * PE1 - Output - USB TXD
  * PE2 - I/O    - Digital I/O
- * PE3 - I/O    - Digital I/O   - Relay Padding 1000pF C2
- * PE4 - I/O    - Digital I/O   - Relay Padding 2000pF C2
- * PE5 - I/O    - Digital I/O   - Relay Anode choke relay
- * PE6 - I/O    - Digital I/O   - Band relay 10m
+ * PE3 - I/O    - Digital I/O
+ * PE4 - I/O    - Digital I/O
+ * PE5 - I/O    - Digital I/O
+ * PE6 - I/O    - Digital I/O
  * PE7 - Output - Driver 5 D2
  * =====================================================================================
  *
@@ -128,7 +128,7 @@
  * =====================================================================================
  * PG0 - I/O    - Digital I/O
  * PG1 - I/O    - Digital I/O
- * PG2 - Output - Driver output #1    - Relay Padding cap C1
+ * PG2 - Output - Driver output #1 
  * PG3 - Output - Driver 3 D0
  * PG4 - Output - Driver 4 D1
  * PG5 - I/O    - Digital I/O
@@ -150,13 +150,13 @@
  *
  * PORTJ
  * =====================================================================================
- * PJ0 - Output - Driver output #8    - Input relay 10m
- * PJ1 - Output - Driver output #7    - Band relay 160m
- * PJ2 - Output - Driver output #6    - Band relay 80m CW
- * PJ3 - Output - Driver output #5    - Band relay 80m PH
- * PJ4 - Output - Driver output #4    - Band relay 40m
- * PJ5 - Output - Driver output #3    - Band relay 20m
- * PJ6 - Output - Driver output #2    - Band relay 15m
+ * PJ0 - Output - Driver output #8    -
+ * PJ1 - Output - Driver output #7    - 
+ * PJ2 - Output - Driver output #6    - 
+ * PJ3 - Output - Driver output #5    - 
+ * PJ4 - Output - Driver output #4    - 
+ * PJ5 - Output - Driver output #3    - 
+ * PJ6 - Output - Driver output #2    - 
  * PJ7 - 
  * =====================================================================================
  *

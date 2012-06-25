@@ -230,7 +230,7 @@ void __inline__ motor_control_step_motor3(void) {
 
 /*! \brief This function is called from the main loop, and is called as often as possible */
 void motor_control_process(void) {
-  for (unsigned char i=0;i<3;i++) {
+  for (unsigned char i=0;i<2;i++) {
     if (stepper_motor[i].current_tick >= stepper_motor[i].next_tick) {
       //TODO: POLL the A/D value and compare it to the target position
 			if (i == 0)

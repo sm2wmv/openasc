@@ -53,9 +53,9 @@ static unsigned int counter_ping_interval = 0;
 static unsigned int counter_ms = 0;
 
 //! Counter which keeps track of how long time ago it was since we toggled the amplifier stdby/operate
-static unsigned int counter_ms_toggle_amp_stdby = 0;
+static unsigned int counter_ms_toggle_amp_stdby = OPERATE_STBY_OPERATE_LIMIT+1;
 //! Counter which keeps track of how long time ago it was since we toggled the mains of the amplifier
-static unsigned int counter_ms_toggle_amp_mains = 0;
+static unsigned int counter_ms_toggle_amp_mains = OPERATE_MAINS_LIMIT+1;
 
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 static unsigned int counter_event_timer = 0;
@@ -107,7 +107,7 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
         if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
           ext_control_set_mains_off();
           main_status.amp_flags &= ~(1<<AMP_STATUS_MAINS);
-          main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+          main_status.amp_flags &= ~(1<<AMP_STATUS_OPR_STBY);
           
           main_status.amp_op_status = AMP_OP_STATUS_OFF;
           
@@ -124,8 +124,8 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
           ext_control_set_mains_on();
           main_status.amp_flags |= (1<<AMP_STATUS_MAINS);
           
-          main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
-          main_status.amp_op_status = AMP_OP_STATUS_STDBY;
+          main_status.amp_flags &= ~(1<<AMP_STATUS_OPR_STBY);
+          main_status.amp_op_status = AMP_STATUS_OPR_STBY;
           
           send_status_update = 1;
           #ifdef DEBUG
@@ -142,8 +142,8 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
       //Check that PTT is not enabled
       if (ext_control_get_ptt_status() == 0) {
         if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-          if (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) {
-            main_status.amp_flags &= ~(1<<AMP_STATUS_STDBY_OP);
+          if (main_status.amp_flags & (1<<AMP_STATUS_OPR_STBY)) {
+            main_status.amp_flags &= ~(1<<AMP_STATUS_OPR_STBY);
             
             ext_control_set_hv_off();
             send_status_update = 1;
@@ -152,8 +152,8 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
             #endif
           }
           else {
-            main_status.amp_flags |= (1<<AMP_STATUS_STDBY_OP);
-            
+            main_status.amp_flags |= (1<<AMP_STATUS_OPR_STBY);
+                        
             ext_control_set_hv_on();
             send_status_update = 1;
             #ifdef DEBUG
@@ -169,8 +169,8 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
     if (ext_control_get_ptt_status() == 0) {
       if (main_status.mode == MODE_REMOTE) {
         if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-          main_status.curr_band = bus_message->data[0];
-          main_status.curr_segment = bus_message->data[1];
+          main_status.curr_band = bus_message->data[1];
+          main_status.curr_segment = bus_message->data[2];
           
           flag_start_tune = 1;
         }
@@ -230,13 +230,14 @@ void event_run(void) {
 
 void __inline__ send_amp_status(void) {
   if (main_status.parent_addr != 0) {
-    unsigned char message[4];
-    message[0] = main_status.amp_flags;
-    message[1] = main_status.amp_op_status;
-    message[2] = main_status.curr_band;
-    message[3] = main_status.curr_segment;
+    unsigned char message[5];
+    message[0] = 0; //Sub addr
+    message[1] = main_status.amp_flags;
+    message[2] = main_status.amp_op_status;
+    message[3] = main_status.curr_band;
+    message[4] = main_status.curr_segment;
     
-    bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 4, message);
+    bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 5, message);
     
     #ifdef DEBUG
       printf("BUS >> SENT STATUS MSG\n");
@@ -245,13 +246,14 @@ void __inline__ send_amp_status(void) {
 }
 
 void __inline__ broadcast_amp_status(void) {
-  unsigned char message[4];
-  message[0] = main_status.amp_flags;
-  message[1] = main_status.amp_op_status;
-  message[2] = main_status.curr_band;
-  message[3] = main_status.curr_segment;
+  unsigned char message[5];
+  message[0] = 0; //Sub addr
+  message[1] = main_status.amp_flags;
+  message[2] = main_status.amp_op_status;
+  message[3] = main_status.curr_band;
+  message[4] = main_status.curr_segment;
   
-  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR , 0, BUS_CMD_AMPLIFIER_GET_STATUS, 4, message);
+  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR , 0, BUS_CMD_AMPLIFIER_GET_STATUS, 5, message);
   
   #ifdef DEBUG
     printf("BUS >> BROADCAST STATUS MSG\n");
@@ -283,8 +285,7 @@ void main_update_tune_sequence_status(unsigned char sequence_index) {
 void start_tune_amp(void) {
   //Check that PTT is not enabled
   if (ext_control_get_ptt_status() == 0) {
-    if ((main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR1_LIMIT_CW) && (main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] < MOTOR1_LIMIT_CCW)) {// & (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR2_LIMIT_CW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] <MOTOR2_LIMIT_CCW)) {
-      //TODO: Change to 1 on LOAD
+    if ((main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR1_LIMIT_CW) && (main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] < MOTOR1_LIMIT_CCW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR2_LIMIT_CW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] <MOTOR2_LIMIT_CCW)) {
       main_status.tune_sequence_flags = (1<<TUNE_SEQUENCE_TUNE_DONE) | (0<<TUNE_SEQUENCE_LOAD_DONE) | (1<<TUNE_SEQUENCE_RELAY_DONE);
       main_status.amp_op_status = AMP_OP_STATUS_TUNING;
       
@@ -336,9 +337,20 @@ void event_handler_control_panel(unsigned int state) {
   
   if (state & (1<<EXT_CONTROL_DISPLAY_UP_BIT)) {
     if (curr_state & (1<<EXT_CONTROL_DISPLAY_UP_BIT)) {
+      unsigned char mess[2] = {0,1};
+      bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_SET_PTT_STATUS, 2, mess);
+      
       #ifdef DEBUG
-        printf("EVENT >> DISPLAY UP PRESSED\n");
+        printf("EVENT >> PTT ACTIVE COMMAND SENT TO MAINBOX\n");
       #endif
+    }
+    else {
+      unsigned char mess[2] = {0,0};
+      bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_SET_PTT_STATUS, 2, mess);
+      
+      #ifdef DEBUG
+        printf("EVENT >> PTT DEACTIVE COMMAND SENT TO MAINBOX\n");
+      #endif      
     }
   }
   
@@ -589,7 +601,7 @@ int main(void){
     //The PTT input status has changed
     if (curr_ptt_input_state != prev_ptt_input_state) {
       if (curr_ptt_input_state) {
-        if ((main_status.amp_flags & (1<<AMP_STATUS_MAINS)) && (main_status.amp_flags & (1<<AMP_STATUS_STDBY_OP)) && (main_status.amp_op_status == AMP_OP_STATUS_READY)) {
+        if ((main_status.amp_flags & (1<<AMP_STATUS_MAINS)) && (main_status.amp_flags & (1<<AMP_STATUS_OPR_STBY)) && (main_status.amp_op_status == AMP_OP_STATUS_READY)) {
           ext_control_set_ptt_active();
         
           #ifdef DEBUG
