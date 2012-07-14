@@ -21,6 +21,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+/******************************************************************************
+ *
+ * Standard library includes
+ *
+ *****************************************************************************/
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -29,48 +36,80 @@
 #include <avr/io.h>
 #include <avr/wdt.h>
 
-#include <delay.h>
 
-/* Include the bus headers */
+/******************************************************************************
+ *
+ * Project includes
+ *
+ *****************************************************************************/
+
+#include <delay.h>
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_ping.h>
 #include <wmv_bus/bus_commands.h>
 #include <queue.h>
 #include <global.h>
 
+
+/******************************************************************************
+ *
+ * Local includes
+ *
+ *****************************************************************************/
+
 #include "rotator.h"
 #include "bsp.h"
 #include "bus_handler.h"
 
 
-#define MAX_ASCII_CMD_ARGS      5
-#define ROT_STATUS_INTERVAL     5000/6  /* ~6 rotators per five second */
+/******************************************************************************
+ *
+ * Macros and type definitions
+ *
+ *****************************************************************************/
 
+#define MAX_ASCII_CMD_ARGS      5
+
+
+/******************************************************************************
+ *
+ * Global variable declarations
+ *
+ *****************************************************************************/
 
 //! Counter to keep track of the time elapsed since the last sync message was sent
 static uint16_t counter_sync = 0;
 //! Counter to keep track of when to send a ping out on the bus
 static uint16_t counter_ping_interval = 0;
-//! Counter to keep track of when ot send rotator status updates
-static uint16_t counter_send_rot_status_interval = 0;
 
-static uint8_t next_rot_status_idx = 0;
+
+/******************************************************************************
+ *
+ * Function prototypes for private functions
+ *
+ *****************************************************************************/
 
 static int16_t range_adjust_heading(int16_t heading);
 static void parse_ascii_cmd(BUS_MESSAGE *bus_message);
 static void bus_parse_message(BUS_MESSAGE *bus_message);
 static unsigned char read_ext_addr(void);
-static void send_rot_status(uint8_t idx);
 static void send_help(uint8_t addr);
 
+
+/******************************************************************************
+ *
+ * Public functions
+ *
+ *****************************************************************************/
 
 void bus_handler_init() {
     /* Read the external address of the device */
   bus_set_address(BUS_BASE_ADDR + read_ext_addr());
 
-    /* This delay is simply so that if you have the devices connected to the same power supply
-     * all units should not send their status messages at the same time. Therefor we insert a delay
-     * that is based on the external address of the device */
+    /* This delay is simply so that if you have the devices connected to the
+     * same power supply all units should not send their status messages at the
+     * same time. Therefor we insert a delay that is based on the external
+     * address of the device */
   for (unsigned char i = 0; i < bus_get_address(); i++) {
     delay_ms(DEFAULT_STARTUP_DELAY);
   }
@@ -94,7 +133,6 @@ void bus_handler_init() {
 void bus_handler_tick(void) {
   ++counter_sync;
   ++counter_ping_interval;
-  ++counter_send_rot_status_interval;
 
   bus_ping_tick();
 }
@@ -134,15 +172,6 @@ void bus_handler_poll() {
                          BUS_CMD_PING, 1, &device_id);
       counter_ping_interval = 0;
     }
-
-    if (counter_send_rot_status_interval >= ROT_STATUS_INTERVAL) {
-      uint8_t idx = next_rot_status_idx++;
-      if (next_rot_status_idx == 6) {   // FIXME: Use a constant instead
-        next_rot_status_idx = 0;
-      }
-      send_rot_status(idx);
-      counter_send_rot_status_interval = 0;
-    }
   }
 }
 
@@ -174,6 +203,20 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...) {
 }
 
 
+/******************************************************************************
+ *
+ * Externally declared functions
+ *
+ *****************************************************************************/
+
+/**
+ * \brief Called by the rotator code when a new heading measurement is available
+ * \param rot_idx The rotator index
+ * \param dir The heading in degrees
+ *
+ * This function is called from the rotator handling code when a new heading
+ * value is available for a specific rotator.
+ */
 extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
   if (bus_allowed_to_send()) {
     unsigned char data[6];
@@ -181,11 +224,9 @@ extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
     uint16_t current_heading = range_adjust_heading(dir);
     int16_t target_heading =
         range_adjust_heading(rotator_target_heading(rot_idx));
-    /*
-    if (target_heading == 0) {
+    if (target_heading == INT16_MAX) {
       target_heading = current_heading;
     }
-    */
 
     data[1] = rot_idx;                   /* Sub address */
     data[2] = (current_heading >> 8);    /* Hi current heading */
@@ -198,6 +239,17 @@ extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
 }
 
 
+/******************************************************************************
+ *
+ * Private functions
+ *
+ *****************************************************************************/
+
+/**
+ * \brief   Range adjust the given heading so that it lies within 0-359 degrees
+ * \param   me The state machine object
+ * \returns Returns the range adjusted heading
+ */
 static int16_t range_adjust_heading(int16_t heading) {
   while (heading < 0) {
     heading += 360;
@@ -209,6 +261,15 @@ static int16_t range_adjust_heading(int16_t heading) {
 }
 
 
+/**
+ * \brief Parse a received ASCII message
+ * \param bus_message The received message
+ *
+ * This function will parse a received ASCII message and execute the command
+ * it contains. The command name should be a single word followed by space
+ * separated command arguments. The total command length must not exceed
+ * 15 characters since that is the maximum length for a bus message.
+ */
 static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
   char data[16];
   memcpy(data, bus_message->data, bus_message->length);
@@ -240,6 +301,11 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
     ++argc;
   }
 
+    /* The argc variable now contain the number of parts in the command.
+     * The command name is also included in the count. The argv variable
+     * contain the command and the arguments. argv[0] is the command name and
+     * argv[1] is the first argument etc.
+     */
   if (argc > 0) {
     if (strcmp(argv[0], "help") == 0) {
       send_help(bus_message->from_addr);
@@ -376,21 +442,6 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
       rotator_stop(rot_idx);
       break;
     }
-#if 0
-    case BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS:{
-      unsigned char subaddr = bus_message->data[0];
-      if (controller_toggle_mains(subaddr) == -1) {
-        uint8_t msg[] = {
-          subaddr,
-          controller_band(subaddr)
-        };
-        bus_add_tx_message(bus_get_address(),
-                           BUS_BROADCAST_ADDR,
-                           0, BUS_CMD_AMPLIFIER_ERROR, sizeof(msg), msg);
-      }
-      break;
-    }
-#endif
     default: {
       /* FIXME: What should we do when receiving an unrecognized message? */
       break;
@@ -403,29 +454,17 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
  * \brief   Read the external DIP-switch.
  * \return  The address of the external DIP-switch
  * 
- * This function is used to read the external offset address on the General I/O card
+ * This function is used to read the external offset address on the
+ * General I/O card
  */
 static unsigned char read_ext_addr(void) {
   return (~(PINE >> 2) & 0x0F);
 }
 
 
-static void send_rot_status(uint8_t band) {
-#if 0
-  uint8_t op_status = pa_op_status(band);
-  uint8_t msg[5];
-  msg[0] = pa_controller(band);
-  msg[1] = ((op_status != AMP_OP_STATUS_OFF) << AMP_STATUS_MAINS)
-         | ((op_status == AMP_OP_STATUS_READY) << AMP_STATUS_OPR_STBY);
-  msg[2] = op_status;
-  msg[3] = band;
-  msg[4] = 0;
-  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
-                     BUS_CMD_AMPLIFIER_GET_STATUS, 5, msg);
-#endif
-}
-
-
+/**
+ * \brief Send a ASCII command help text to the given address
+ */
 static void send_help(uint8_t addr) {
   send_ascii_data(addr, "defaults\r\n"
                         "reset\r\n"
