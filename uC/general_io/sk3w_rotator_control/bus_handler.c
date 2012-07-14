@@ -472,6 +472,6 @@ static void send_help(uint8_t addr) {
   send_ascii_data(addr, "caloff <idx>\r\n"
                         "ccwlim <idx> <deg>\r\n");
   send_ascii_data(addr, "cwlim <idx> <deg>\r\n"
-                        "dir <idx>");
+                        "dir <idx>\r\n");
 }
 
