@@ -29,22 +29,93 @@
 
 /**
  * \brief Initialize the board support package
+ *
+ * Call this function once at the start of the application to initialize the
+ * board support package. Since it initializes low level stuff it should be
+ * called early in the statup code.
  */
 void bsp_init(void);
 
 /**
  * \brief Initialize timer 2 that is used for the bus communications
+ *
+ * This function is called from the bus communications code to set up the
+ * communications timer.
  */
 void bsp_init_timer_2(void);
 
-int8_t bsp_rotator_release_break(uint8_t rot_idx);
-int8_t bsp_rotator_apply_break(uint8_t rot_idx);
+/**
+ * \brief   Release the break
+ * \param   rot_idx The rotator index
+ *
+ * Call this function to release the break for the specified rotator.
+ */
+void bsp_rotator_release_break(uint8_t rot_idx);
+
+/**
+ * \brief   Apply the break
+ * \param   rot_idx The rotator index
+ *
+ * Call this function to apply the break for the specified rotator
+ */
+void bsp_rotator_apply_break(uint8_t rot_idx);
+
+/**
+ * \brief   Start running counter clockwise
+ * \param   rot_idx The rotator index
+ *
+ * Call this function to start turning the specified rotator counter clockwise.
+ * If it is running clockwise, that control output will be set to off first.
+ *
+ * Note that the break have to be released by calling bsp_rotator_release_break
+ * prior to starting rotation. This is NOT done automatically.
+ */
 void bsp_rotator_run_ccw(uint8_t rot_idx);
+
+/**
+ * \brief   Start running clockwise
+ * \param   rot_idx The rotator index
+ *
+ * Call this function to start turning the specified rotator clockwise.
+ * If it is running counter clockwise, that control output will be set
+ * to off first.
+ *
+ * Note that the break have to be released by calling bsp_rotator_release_break
+ * prior to starting rotation. This is NOT done automatically.
+ */
 void bsp_rotator_run_cw(uint8_t rot_idx);
+
+/**
+ * \brief   Read the hardware registers to see if the rotator is running or not
+ * \param   rot_idx The rotator index
+ * \returns Returns 1 if the rotator is running or 0 if it's not
+ *
+ * This function will read the output port register directly to see if the
+ * rotator is running or not. Reading the output port register just returns
+ * what was previously written to it so it should reflect the state of the port.
+ */
 int8_t bsp_rotator_is_running(uint8_t rot_idx);
+
+/**
+ * \brief   Stop rotation
+ * \param   rot_idx The rotator index
+ *
+ * Immediately stop the rotation for the specified rotator.
+ */
 void bsp_rotator_stop(uint8_t rot_idx);
 
-extern void bsp_direction_updated(uint8_t rot_idx, uint16_t dir);
+
+/**
+ * \brief   Called by the BSP code when a new heading has been measured
+ * \param   rot_idx The rotator index
+ * \param   adc The raw ADC value expressed as a two byte unsigned
+ *
+ * This function is declared here and should be implemented in external code.
+ * It will then serve as a callback for when a new heading is available.
+ * The ADC value is a 10 bit value that is left adjusted in a 16 bit unsigned
+ * variable,
+ */
+extern void bsp_heading_updated(uint8_t rot_idx, uint16_t adc);
 
 
 #endif

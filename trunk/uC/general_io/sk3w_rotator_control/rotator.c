@@ -293,14 +293,14 @@ int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg) {
  * direction value have been measured for the specified rotator. The value is
  * the raw ADC value and so it must be filtered and converted to degrees.
  */
-void bsp_direction_updated(uint8_t rot_idx, uint16_t dir) {
+void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
   
   Rotator *me = &rotator_sm[rot_idx];
   RotatorConfig *conf = &cfg.rot[me->rot_idx];
 
     /* Convert the raw ADC unsigned value to a signed integer */
-  int16_t heading = (int16_t)(dir >> 1) - 0x4000;
+  int16_t heading = (int16_t)(adc >> 1) - 0x4000;
   
     // Apply IIR filter
   heading = ((heading - me->prev_heading) >> 1) + me->prev_heading;
