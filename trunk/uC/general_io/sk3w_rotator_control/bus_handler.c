@@ -289,9 +289,10 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
         send_help(bus_message->from_addr);
         return;
       }
-      int16_t dir;
-      int16_t dir_deg;
-      if (rotator_direction(argv[1][0]-'0', &dir, &dir_deg) == -1) {
+      uint8_t rot_idx = argv[1][0]-'0';
+      int16_t dir = rotator_current_heading_raw(rot_idx);
+      int16_t dir_deg = rotator_current_heading(rot_idx);
+      if ((dir == -1) || (dir_deg == -1)) {
         send_help(bus_message->from_addr);
         return;
       }
@@ -430,7 +431,8 @@ static void send_help(uint8_t addr) {
                         "reset\r\n"
                         "calon <idx>\r\n");
   send_ascii_data(addr, "caloff <idx>\r\n"
-                        "ccwlim <idx>\r\n");
-  send_ascii_data(addr, "cwlim <idx>\r\n");
+                        "ccwlim <idx> <deg>\r\n");
+  send_ascii_data(addr, "cwlim <idx> <deg>\r\n"
+                        "dir <idx>");
 }
 
