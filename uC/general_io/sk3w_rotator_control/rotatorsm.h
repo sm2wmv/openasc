@@ -24,6 +24,8 @@ typedef struct RotatorTag {
     int16_t heading_scale;
     int16_t heading_offset;
     uint8_t stuck_cnt;
+    uint16_t median_buf[3];
+    uint8_t median_head;
 } Rotator;
 
 /* protected: */
