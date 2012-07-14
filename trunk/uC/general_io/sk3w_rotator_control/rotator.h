@@ -53,7 +53,7 @@ int8_t rotator_rotate_ccw(uint8_t rot_idx);
 int8_t rotator_stop(uint8_t rot_idx);
 int16_t rotator_current_heading(uint8_t rot_idx);
 int16_t rotator_target_heading(uint8_t rot_idx);
-int8_t rotator_set_angle(uint8_t rot_idx, int16_t target_heading_deg);
+int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg);
 int8_t rotator_set_ccw_limit(uint8_t rot_idx, int16_t limit_deg);
 int8_t rotator_set_cw_limit(uint8_t rot_idx, int16_t limit_deg);
 int8_t rotator_direction(uint8_t rot_idx, int16_t *dir, int16_t *dir_deg);

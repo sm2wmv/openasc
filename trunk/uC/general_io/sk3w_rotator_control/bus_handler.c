@@ -357,7 +357,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
       uint8_t rot_idx = bus_message->data[0];
       uint16_t angle = bus_message->data[1] << 8;
       angle |= bus_message->data[2];
-      rotator_set_angle(rot_idx, angle);
+      rotator_set_target_heading(rot_idx, angle);
       break;
     }
     case BUS_CMD_ROTATOR_ROTATE_CW: {
