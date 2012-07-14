@@ -17,7 +17,7 @@
 #
 # Hey Emacs, this is a -*- makefile -*-
 #
-# WinAVR Sample makefile written by Eric B. Weddington, J�rg Wunsch, et al.
+# WinAVR Sample makefile written by Eric B. Weddington, Jürg Wunsch, et al.
 # Released to the Public Domain
 # Please read the make user manual!
 #
@@ -73,16 +73,19 @@ BUS_TX_QUEUE_SIZE = 10
 WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c
 
 # QP nano state machine sources
-#QPN_SRC = qepn.c qfn.c qfn_init.c
+QPN_SRC = qepn.c qfn.c qfn_init.c
 
 # Global sources
 GLOBAL_SRC =  i2c.c delay.c
 
+# Board related sources
+BOARD_SRC = eeprom.c
+
 # Local sources
-LOCAL_SRC = $(TARGET).c init.c
+LOCAL_SRC = $(TARGET).c bus_handler.c bsp.c rotator.c
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(LOCAL_SRC) $(GLOBAL_SRC) $(WMV_BUS_SRC) $(QPN_SRC)
+SRC = $(LOCAL_SRC) $(BOARD_SRC) $(GLOBAL_SRC) $(WMV_BUS_SRC) $(QPN_SRC)
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -99,6 +102,9 @@ EXTRAINCDIRS = $(ROOT) $(ROOT)/qpn/include
 
 # Place -D or -U options here
 CDEFS =
+
+# Additional paths where to look for C sources
+vpath %.c $(ROOT)/general_io
 
 
 # Include main makefile
