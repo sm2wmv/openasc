@@ -13,6 +13,8 @@
    <attribute name="heading_scale" type="int16_t" visibility="0x02" properties="0x00"/>
    <attribute name="heading_offset" type="int16_t" visibility="0x02" properties="0x00"/>
    <attribute name="stuck_cnt" type="uint8_t" visibility="0x02" properties="0x00"/>
+   <attribute name="median_buf[3]" type="uint16_t" visibility="0x02" properties="0x00"/>
+   <attribute name="median_head" type="uint8_t" visibility="0x02" properties="0x00"/>
    <statechart>
     <initial target="../1">
      <initial_glyph conn="21,3,4,0,5">

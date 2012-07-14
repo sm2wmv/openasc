@@ -131,6 +131,7 @@ static int8_t post_event(uint8_t rot_idx, enum RotatorSignals sig, QParam par);
 static int8_t ccw_limit_exceeded(Rotator *me);
 static int8_t cw_limit_exceeded(Rotator *me);
 static int16_t range_adjust_heading(int16_t heading);
+static uint16_t median_filter(Rotator *me, uint16_t adc);
 
 static void Rotator_ctor(Rotator *rot, uint8_t rot_idx);
 static void Rotator_set_ccw_limit(Rotator *me, int16_t limit_deg);
@@ -299,6 +300,9 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
   Rotator *me = &rotator_sm[rot_idx];
   RotatorConfig *conf = &cfg.rot[me->rot_idx];
 
+    /* Apply a median filter to remove transients */
+  adc = median_filter(me, adc);
+
     /* Convert the raw ADC unsigned value to a signed integer */
   int16_t heading = (int16_t)(adc >> 1) - 0x4000;
   
@@ -425,6 +429,48 @@ static int16_t range_adjust_heading(int16_t heading) {
   return heading;
 }
 
+/**
+ * \brief   Median filter the incoming signal
+ * \param   me The state machine object
+ * \param   adc The incoming ADC value to filter
+ * \returns Returns a filtered ADC value
+ *
+ * The incoming signal will be filtered using a median filter. A median filter
+ * will keep the last N samples in a circular buffer. For each sample, the
+ * median in the buffer is calculated and returned. This will effectively
+ * remove extreme values in the incoming data stream.
+ *
+ * In this implementation the filter length (N) is 3 so only glitches of one
+ * sample in length can be suppressed.
+ */
+static uint16_t median_filter(Rotator *me, uint16_t adc) {
+  me->median_buf[me->median_head] = adc;
+  if (me->median_head >= 2) {
+    me->median_head = 0;
+  }
+  else {
+    me->median_head++;
+  }
+
+  uint16_t a = me->median_buf[0];
+  uint16_t b = me->median_buf[1];
+  uint16_t c = me->median_buf[2];
+  
+  if ((a <= b) && (a <= c))
+  {
+      /* a is the smallest value so the median must be either b or c */
+    return (b <= c) ? b : c;
+  }
+  else if ((b <= a) && (b <= c))
+  {
+      /* b is the smallest value so the median must be either a or c */
+    return (a <= c) ? a : c;
+  }
+
+    /* c is the smallest value so the median must be either a or b */
+  return (a <= b) ? a : b;
+}
+
 
 /******************************************************************************
  *
@@ -448,6 +494,8 @@ static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
   me->wrong_dir_cnt = 0;
   me->stuck_cnt = 0;
   Rotator_calc_heading_coeffs(me);
+  memset(me->median_buf, 0, sizeof(me->median_buf));
+  me->median_head = 0;
   QActive_ctor((QActive *)me, (QStateHandler)&Rotator_initial);
 }
 
