@@ -22,7 +22,7 @@
     <state name="Idle">
      <entry>DEBUG_PRINT(&quot;Idle: ENTER\r\n&quot;);
 me-&gt;rotate_dir = 0;
-me-&gt;target_heading = 0;</entry>
+me-&gt;target_heading = INT16_MAX;</entry>
      <exit>DEBUG_PRINT(&quot;Idle: EXIT\r\n&quot;);</exit>
      <tran trig="CAL_ENABLE" target="../../2">
       <tran_glyph conn="8,43,2,0,12">
@@ -86,36 +86,31 @@ eeprom_write_config();</exit>
       </tran_glyph>
      </tran>
      <tran trig="ROTATE_CW">
-      <action>DEBUG_PRINT(&quot;Calibrate: ROTATE_CW\r\n&quot;);
-bsp_rotator_run_cw(me-&gt;rot_idx);</action>
+      <action>bsp_rotator_run_cw(me-&gt;rot_idx);</action>
       <tran_glyph conn="4,64,3,-1,15">
        <action box="1,-2,9,2"/>
       </tran_glyph>
      </tran>
      <tran trig="ROTATE_CCW">
-      <action>DEBUG_PRINT(&quot;Calibrate: ROTATE_CCW\r\n&quot;);
-bsp_rotator_run_ccw(me-&gt;rot_idx);</action>
+      <action>bsp_rotator_run_ccw(me-&gt;rot_idx);</action>
       <tran_glyph conn="4,67,3,-1,15">
        <action box="1,-2,10,2"/>
       </tran_glyph>
      </tran>
      <tran trig="STOP">
-      <action>DEBUG_PRINT(&quot;Calibrate: STOP\r\n&quot;);
-bsp_rotator_stop(me-&gt;rot_idx);</action>
+      <action>bsp_rotator_stop(me-&gt;rot_idx);</action>
       <tran_glyph conn="4,70,3,-1,15">
        <action box="1,-2,4,2"/>
       </tran_glyph>
      </tran>
      <tran trig="SET_CCW_LIMIT">
-      <action>DEBUG_PRINT(&quot;Calibrate: SET_CCW_LIMIT\r\n&quot;);
-Rotator_set_ccw_limit(me, Q_PAR(me));</action>
+      <action>Rotator_set_ccw_limit(me, Q_PAR(me));</action>
       <tran_glyph conn="4,73,3,-1,15">
        <action box="1,-2,11,2"/>
       </tran_glyph>
      </tran>
      <tran trig="SET_CW_LIMIT">
-      <action>DEBUG_PRINT(&quot;Calibrate: SET_CW_LIMIT\r\n&quot;);
-Rotator_set_cw_limit(me, Q_PAR(me));</action>
+      <action>Rotator_set_cw_limit(me, Q_PAR(me));</action>
       <tran_glyph conn="4,76,3,-1,15">
        <action box="1,-2,10,2"/>
       </tran_glyph>
@@ -130,7 +125,7 @@ Rotator_set_cw_limit(me, Q_PAR(me));</action>
 bsp_rotator_release_break(me-&gt;rot_idx);</entry>
      <exit brief="apply_break">DEBUG_PRINT(&quot;BreakReleased: EXIT\r\n&quot;);
 me-&gt;rotate_dir = 0;
-me-&gt;target_heading = 0;
+me-&gt;target_heading = INT16_MAX;
 bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
      <initial target="../5">
       <initial_glyph conn="112,9,4,0,4">
@@ -218,7 +213,7 @@ QActive_arm((QActive *)me, 30);</entry>
       <entry>DEBUG_PRINT(&quot;Running: ENTER\r\n&quot;);
 Q_REQUIRE(me-&gt;rotate_dir != 0);</entry>
       <exit>DEBUG_PRINT(&quot;Running: EXIT\r\n&quot;);
-me-&gt;target_heading = 0;
+me-&gt;target_heading = INT16_MAX;
 bsp_rotator_stop(me-&gt;rot_idx);</exit>
       <tran trig="Q_INIT">
        <choice guard="else" target="../../3">

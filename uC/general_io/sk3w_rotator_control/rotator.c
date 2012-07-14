@@ -87,8 +87,9 @@ Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
 
 
 static int8_t post_event(uint8_t rot_idx, enum RotatorSignals sig, QParam par);
-static int8_t cw_limit_exceeded(Rotator *me);
 static int8_t ccw_limit_exceeded(Rotator *me);
+static int8_t cw_limit_exceeded(Rotator *me);
+static int16_t range_adjust_heading(int16_t heading);
 
 static void Rotator_ctor(Rotator *rot, uint8_t rot_idx);
 static void Rotator_set_ccw_limit(Rotator *me, int16_t limit_deg);
@@ -153,11 +154,46 @@ int16_t rotator_target_heading(uint8_t rot_idx) {
   return Rotator_adc2deg(me, rotator_sm[rot_idx].target_heading);
 }
 
-int8_t rotator_set_angle(uint8_t rot_idx, int16_t target_heading_deg) {
+int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg) {
   if (rot_idx >= ROTATOR_COUNT) {
     return -1;
   }
   Rotator *me = &rotator_sm[rot_idx];
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+
+  target_heading_deg = range_adjust_heading(target_heading_deg);
+  int16_t unadj_current_heading_deg = Rotator_adc2deg(me, me->current_heading);
+  int16_t current_heading_deg = range_adjust_heading(unadj_current_heading_deg);
+
+  if (target_heading_deg == current_heading_deg) {
+    return 0;
+  }
+  
+  int16_t ccw_diff_deg =
+      range_adjust_heading(current_heading_deg - target_heading_deg);
+  int16_t cw_diff_deg =
+      range_adjust_heading(target_heading_deg - current_heading_deg);
+
+  if (unadj_current_heading_deg - ccw_diff_deg < conf->ccw_limit_deg) {
+    ccw_diff_deg = INT16_MAX;
+  }
+  if (unadj_current_heading_deg + cw_diff_deg > conf->cw_limit_deg) {
+    cw_diff_deg = INT16_MAX;
+  }
+  
+  int16_t diff_deg;
+  if (ccw_diff_deg < cw_diff_deg) {
+    diff_deg = -ccw_diff_deg;
+  }
+  else {
+    diff_deg = cw_diff_deg;
+  }
+
+  if (diff_deg == INT16_MAX) {
+    return -1;
+  }
+
+  target_heading_deg = unadj_current_heading_deg + diff_deg;
   
   me->target_heading = Rotator_deg2adc(me, target_heading_deg);
   if (me->target_heading > me->current_heading) {
@@ -167,7 +203,7 @@ int8_t rotator_set_angle(uint8_t rot_idx, int16_t target_heading_deg) {
     return post_event(rot_idx, ROTATE_CCW_SIG, 0);
   }
   
-  me->target_heading = 0;
+  me->target_heading = INT16_MAX;
   rotator_stop(rot_idx);
   
   return 0;
@@ -210,16 +246,9 @@ void bsp_direction_updated(uint8_t rot_idx, uint16_t dir) {
   int16_t heading = (int16_t)(dir >> 1) - 0x4000;
   
     // Apply IIR filter
-  heading = ((heading - me->prev_heading) >> 3) + me->prev_heading;
-
+  heading = ((heading - me->prev_heading) >> 1) + me->prev_heading;
+  
   int16_t speed = heading - me->prev_heading;
-  /*
-  if (rot_idx == 0) {
-    send_ascii_data(0, "speed=%d scale=%d stuck_cnt=%d\r\n",
-                    speed, me->heading_scale, me->stuck_cnt);
-  }
-  */
-
   me->prev_heading = heading;
   me->current_heading = heading;
 
@@ -232,7 +261,7 @@ void bsp_direction_updated(uint8_t rot_idx, uint16_t dir) {
   }
 
     /* Check if the target heading has been reached, if set */
-  if (me->target_heading > 0) {
+  if (me->target_heading != INT16_MAX) {
     if ((me->rotate_dir > 0) && (me->current_heading >= me->target_heading)) {
       (void)post_event(rot_idx, STOP_SIG, 0);
     }
@@ -308,6 +337,17 @@ static int8_t cw_limit_exceeded(Rotator *me) {
   return me->current_heading >= conf->cw_limit;
 }
 
+static int16_t range_adjust_heading(int16_t heading) {
+  while (heading < 0) {
+    heading += 360;
+  }
+  while (heading > 359) {
+    heading -= 360;
+  }
+  return heading;
+}
+
+
 /**
  * \brief Constructor for the state machine
  * \param me	  The Rotator object to be initialized
@@ -315,7 +355,7 @@ static int8_t cw_limit_exceeded(Rotator *me) {
  */
 static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
   me->current_heading = 0;
-  me->target_heading = -1;
+  me->target_heading = INT16_MAX;
   me->rotate_dir = 0;
   me->rot_idx = rot_idx;
   me->dir_update_counter = rot_idx * 2;
@@ -395,6 +435,7 @@ static const char *Rotator_strerror(Rotator *me) {
   }
   return "?";
 }
+
 
 //! Include the state machine definition
 #include "rotatorsm.c"
