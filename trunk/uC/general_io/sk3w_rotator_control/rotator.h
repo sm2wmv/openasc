@@ -162,6 +162,9 @@ int16_t rotator_current_heading_raw(uint8_t rot_idx);
  * \brief   Return the target rotator heading in degrees
  * \param   rot_idx The rotator index
  * \returns Returns the target heading in degrees
+ *
+ * This function will return the currently set target heading. If it is unset,
+ * INT16_MAX will be returned.
  */
 int16_t rotator_target_heading(uint8_t rot_idx);
 
