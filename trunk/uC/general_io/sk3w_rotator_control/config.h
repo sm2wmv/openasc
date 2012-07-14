@@ -27,11 +27,11 @@
 #define _CONFIG_H_
 
 
-#define DEFAULT_COOLDOWN_TIMEOUT  2*60          /* 2 minutes */
-
-
+/**
+ * Default config that is loaded on command or when the CRC checksum mismatch
+ * for the configuration data stored in the EEPROM.
+ */
 #define DEFAULT_CONFIG { \
-  cooldown_timeout: DEFAULT_COOLDOWN_TIMEOUT, \
   rot: { \
     { \
       ccw_limit: 0, \
@@ -66,19 +66,23 @@
   } \
 }
 
+
+/**
+ * The config variables for each rotator
+ */
 typedef struct {
-  int16_t ccw_limit;
-  int16_t ccw_limit_deg;
-  int16_t cw_limit;
-  int16_t cw_limit_deg;
+  int16_t ccw_limit;            /*!< CCW limit as a raw heading value */
+  int16_t ccw_limit_deg;        /*!< CCW limit in degrees */
+  int16_t cw_limit;             /*!< CW limit as a raw heading value */
+  int16_t cw_limit_deg;         /*!< CW limit in degrees */
 } RotatorConfig;
 
 
-//! Configuration variables that are persisted in the EEPROM
+/**
+ * Configuration variables that are persisted in the EEPROM
+ */
 typedef struct {
-  uint16_t cooldown_timeout;    //! The "cooldown" timeout in seconds
-
-  RotatorConfig rot[5];
+  RotatorConfig rot[5];         /*!< Config for each rotator */
 } Config;
 
 
