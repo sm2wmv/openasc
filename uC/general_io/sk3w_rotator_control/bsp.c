@@ -23,18 +23,43 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+/******************************************************************************
+ *
+ * Standard library includes
+ *
+ *****************************************************************************/
+
 #include <avr/io.h>
+
+
+/******************************************************************************
+ *
+ * Project includes
+ *
+ *****************************************************************************/
 
 #include <delay.h>
 #include <i2c.h>
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_commands.h>
 
+
+/******************************************************************************
+ *
+ * Local includes
+ *
+ *****************************************************************************/
+
 #include "qpn_port.h"
 #include "bus_handler.h"
 #include "bsp.h"
 
 
+/******************************************************************************
+ *
+ * Macros and type definitions
+ *
+ *****************************************************************************/
 
 //! Used for timer compare to match 1 ms
 #define OCR0_1MS 14
@@ -44,8 +69,15 @@
 #define ASSERT_TX_INTERVAL  5000
 //! The number of rotators that we can control
 #define ROTATOR_COUNT           QF_MAX_ACTIVE
-
+//! The interval between each ADC measurement
 #define ADC_INTERVAL            20
+
+
+/******************************************************************************
+ *
+ * Global variable declarations
+ *
+ *****************************************************************************/
 
 Q_DEFINE_THIS_FILE              /* Define file name to make assertions work */
 
@@ -60,14 +92,26 @@ unsigned int counter_adc_interval = 0;
 static uint8_t adc_ch = 0;
 //! The last read ADC value
 static uint16_t adc_value = 0;
-
+//! Map the rotator indexes to their corresponding ADC channels
 static const int adc_mapping[ROTATOR_COUNT] = {0, 2, 4, 1, 3};
 
+
+/******************************************************************************
+ *
+ * Function prototypes for private functions
+ *
+ *****************************************************************************/
 
 static void bsp_init_timer_0(void);
 static void bsp_init_ports(void);
 static void bsp_init_adc(void);
 
+
+/******************************************************************************
+ *
+ * Public functions
+ *
+ *****************************************************************************/
 
 void bsp_init(void) {
   delay_ms(250);
@@ -90,23 +134,23 @@ void bsp_init_timer_2(void) {
 }
 
 
-int8_t bsp_rotator_release_break(uint8_t rot_idx) {
+void bsp_rotator_release_break(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
+
+    /* Only rotators 3,4 and 5 have a break */
   if ((rot_idx > 2) && (rot_idx < 6)) {
     PORTA |= _BV((rot_idx-3)*3+2);
-    return 0;
   }
-  return -1;
 }
 
 
-int8_t bsp_rotator_apply_break(uint8_t rot_idx) {
+void bsp_rotator_apply_break(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
+
+    /* Only rotators 3,4 and 5 have a break */
   if ((rot_idx > 2) && (rot_idx < 6)) {
     PORTA &= ~_BV((rot_idx-3)*3+2);
-    return 0;
   }
-  return -1;
 }
 
 
@@ -116,8 +160,8 @@ void bsp_rotator_run_ccw(uint8_t rot_idx) {
     PORTC &= ~_BV(4-rot_idx*2);
     PORTC |= _BV(5-rot_idx*2);
   } else {
-    PORTA |= _BV((rot_idx-3)*3);
     PORTA &= ~_BV((rot_idx-3)*3+1);
+    PORTA |= _BV((rot_idx-3)*3);
   }
 }
 
@@ -125,8 +169,8 @@ void bsp_rotator_run_ccw(uint8_t rot_idx) {
 void bsp_rotator_run_cw(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
   if (rot_idx <= 2) {
-    PORTC |= _BV(4-rot_idx*2);
     PORTC &= ~_BV(5-rot_idx*2);
+    PORTC |= _BV(4-rot_idx*2);
   } else {
     PORTA &= ~_BV((rot_idx-3)*3);
     PORTA |= _BV((rot_idx-3)*3+1);
@@ -155,6 +199,12 @@ void bsp_rotator_stop(uint8_t rot_idx) {
 }
 
 
+/******************************************************************************
+ *
+ * Private functions
+ *
+ *****************************************************************************/
+
 /**
  * \brief Initialize time 0 which is used as a 1ms time reference
  * 
@@ -173,7 +223,6 @@ static void bsp_init_timer_0(void) {
   OCR0 = OCR0_1MS;
 }
 
-
 /**
  * \brief Set the direction and initial values of the ports
  */
@@ -188,23 +237,11 @@ static void bsp_init_ports(void) {
 
   PORTD |= (1<<2);
   PORTD |= (1<<3);
-
-#if 0
-  DDRA = 0xFF;
-  DDRB = 0x07;
-  DDRC = 0xFF;
-  DDRD = 0xFB;
-  DDRE = 0x00;
-  DDRF = 0x00;
-  //PORTF = 0x3f; /* Enable pullups on TX_ACTIVE pins */
-  DDRG = 0x03;
-
-  PORTD |= (1 << 2);
-  PORTD |= (1 << 3);
-#endif
 }
 
-
+/**
+ * \brief Initialize the AD converter
+ */
 static void bsp_init_adc(void) {
     /* AREF as reference voltage */
     /* ADC left adjust result.   */
@@ -216,16 +253,17 @@ static void bsp_init_adc(void) {
 }
 
 
-
-
-
+/******************************************************************************
+ *
+ * QP Nano Framewaork functions
+ *
+ *****************************************************************************/
 
 /**
  * \brief  Called by the QP framework on startup
  */
 void QF_onStartup(void) {
 }
-
 
 /**
  * \brief  Called by the QP framework when no state machine want to run
@@ -242,7 +280,7 @@ void QF_onIdle(void) {          /* entered with interrupts LOCKED, see NOTE01 */
   if (counter_adc_interval >= ADC_INTERVAL) {
     counter_adc_interval = 0;
 
-    bsp_direction_updated(adc_ch, adc_value);
+    bsp_heading_updated(adc_ch, adc_value);
 
       /* Switch to next ADC channel and start a conversion. */
     if (++adc_ch == ROTATOR_COUNT) {
@@ -252,7 +290,6 @@ void QF_onIdle(void) {          /* entered with interrupts LOCKED, see NOTE01 */
     ADCSRA |= (_BV(ADEN) | _BV(ADSC));
   }
 }
-
 
 /**
  * \brief Called by the QP framework if something goes seriously wrong
@@ -297,6 +334,12 @@ void Q_onAssert(char const /*Q_ROM */ *const Q_ROM_VAR file, int line) {
 }
 
 
+/******************************************************************************
+ *
+ * Interrupt Service Routines
+ *
+ *****************************************************************************/
+
 /**
  * \brief Output compare 0 interrupt - "called" with 1ms intervals
  */
@@ -309,9 +352,13 @@ ISR(SIG_OUTPUT_COMPARE0) {
   counter_adc_interval++;
 }
 
-
-
-/*! \brief Interrupt service routine for ADC conversion finished */
+/**
+ * \brief Interrupt service routine for ADC conversion finished
+ *
+ * This ISR will catch the ADC conversion finished interrupt and put the
+ * conversion result into the adc_value variable. This value is then picked
+ * up in the main loop (QF_onIdle).
+ */
 SIGNAL(SIG_ADC) {
     /* Read the ADC conversion result */
   adc_value = ADCL;
