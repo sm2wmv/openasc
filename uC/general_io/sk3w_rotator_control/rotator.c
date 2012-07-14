@@ -1,0 +1,402 @@
+/*! \file     general_io/sk3w_rotator_control/rotator.c
+ *  \ingroup  general_io_group
+ *  \brief    Rotator state machine base
+ *  \author   Tobias Blomberg, SN0SVX
+ *  \date     2012-06-16
+ *
+ * Implements the base for the Rotator state machine. The actual state
+ * handling is done in the auto generated file rotatorsm.c, which is included at
+ * the bottom of this file.
+ */
+//    Copyright (C) 2012  Mikael Larsmark, SM2WMV
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <string.h>
+#include <stdlib.h>
+
+#include <avr/io.h>
+
+#include <global.h>
+#include <wmv_bus/bus_commands.h>
+#include <general_io/eeprom.h>
+
+#include "qpn_port.h"
+#include "bsp.h"
+#include "bus_handler.h"
+#include "rotator.h"
+
+
+Q_DEFINE_THIS_FILE              /* Define file name to make assertions work */
+
+
+#define ROTATOR_COUNT           QF_MAX_ACTIVE
+#define SM_QUEUE_LEN            3
+#define SM_UNUSED               255
+#define DEBUG_PRINT(str...)     send_ascii_data(0, str);
+//#define DEBUG_PRINT(str...)
+
+
+//! Signals (events) for the state machine
+enum RotatorSignals {
+  CAL_ENABLE_SIG = Q_USER_SIG,
+  CAL_DISABLE_SIG,
+  SET_CCW_LIMIT_SIG,
+  SET_CW_LIMIT_SIG,
+  ROTATE_CW_SIG,
+  ROTATE_CCW_SIG,
+  STOP_SIG,
+  ROTATION_LIMIT_SIG,
+  ROTATOR_ERROR_SIG
+};
+
+
+//! Include the tate machine declaration
+#include "rotatorsm.h"
+
+
+//! Event queues for the state machines
+static QEvent rotator_queue[ROTATOR_COUNT][SM_QUEUE_LEN];
+
+//! One state machine for each Rotator
+static Rotator rotator_sm[ROTATOR_COUNT];
+
+//! QF_active[] array defines all active object control blocks
+QActiveCB const Q_ROM Q_ROM_VAR QF_active[ROTATOR_COUNT + 1] = {
+  {(QActive *)0,              (QEvent *)0,      0                      },
+  {(QActive *)&rotator_sm[0], rotator_queue[0], Q_DIM(rotator_queue[0])},
+  {(QActive *)&rotator_sm[1], rotator_queue[1], Q_DIM(rotator_queue[1])},
+  {(QActive *)&rotator_sm[2], rotator_queue[2], Q_DIM(rotator_queue[2])},
+  {(QActive *)&rotator_sm[3], rotator_queue[3], Q_DIM(rotator_queue[3])},
+  {(QActive *)&rotator_sm[4], rotator_queue[4], Q_DIM(rotator_queue[4])}
+};
+
+/* make sure that the QF_active[] array matches QF_MAX_ACTIVE in qpn_port.h */
+Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
+
+
+static int8_t post_event(uint8_t rot_idx, enum RotatorSignals sig, QParam par);
+static int8_t cw_limit_exceeded(Rotator *me);
+static int8_t ccw_limit_exceeded(Rotator *me);
+
+static void Rotator_ctor(Rotator *rot, uint8_t rot_idx);
+static void Rotator_set_ccw_limit(Rotator *me, int16_t limit_deg);
+static void Rotator_set_cw_limit(Rotator *me, int16_t limit_deg);
+static void Rotator_calc_heading_coeffs(Rotator *me);
+static int16_t Rotator_adc2deg(Rotator *me, int16_t adc);
+static int16_t Rotator_deg2adc(Rotator *me, int16_t deg);
+static const char *Rotator_strerror(Rotator *me);
+
+
+void rotator_init(void) {
+  eeprom_read_config();
+
+  for (int i = 0; i < ROTATOR_COUNT; ++i) {
+    Rotator_ctor(&rotator_sm[i], i);
+  }
+}
+
+
+void rotator_tick(void) {
+
+}
+
+void rotator_set_default_config(void) {
+  eeprom_set_default_config();
+  eeprom_write_config();
+}
+
+int8_t rotator_cal_on(uint8_t rot_idx) {
+  return post_event(rot_idx, CAL_ENABLE_SIG, 0);
+}
+
+int8_t rotator_cal_off(uint8_t rot_idx) {
+  return post_event(rot_idx, CAL_DISABLE_SIG, 0);
+}
+
+int8_t rotator_rotate_cw(uint8_t rot_idx) {
+  return post_event(rot_idx, ROTATE_CW_SIG, 0);
+}
+
+int8_t rotator_rotate_ccw(uint8_t rot_idx) {
+  return post_event(rot_idx, ROTATE_CCW_SIG, 0);
+}
+
+int8_t rotator_stop(uint8_t rot_idx) {
+  return post_event(rot_idx, STOP_SIG, 0);
+}
+
+int16_t rotator_current_heading(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return 0;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  return Rotator_adc2deg(me, rotator_sm[rot_idx].current_heading);
+}
+
+int16_t rotator_target_heading(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return 0;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  return Rotator_adc2deg(me, rotator_sm[rot_idx].target_heading);
+}
+
+int8_t rotator_set_angle(uint8_t rot_idx, int16_t target_heading_deg) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  
+  me->target_heading = Rotator_deg2adc(me, target_heading_deg);
+  if (me->target_heading > me->current_heading) {
+    return post_event(rot_idx, ROTATE_CW_SIG, 0);
+  }
+  else if (me->target_heading < me->current_heading) {
+    return post_event(rot_idx, ROTATE_CCW_SIG, 0);
+  }
+  
+  me->target_heading = 0;
+  rotator_stop(rot_idx);
+  
+  return 0;
+}
+
+int8_t rotator_set_ccw_limit(uint8_t rot_idx, int16_t limit_deg) {
+  return post_event(rot_idx, SET_CCW_LIMIT_SIG, limit_deg);
+}
+
+int8_t rotator_set_cw_limit(uint8_t rot_idx, int16_t limit_deg) {
+  return post_event(rot_idx, SET_CW_LIMIT_SIG, limit_deg);
+}
+
+int8_t rotator_direction(uint8_t rot_idx, int16_t *dir, int16_t *dir_deg) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  *dir = me->current_heading;
+  *dir_deg = Rotator_adc2deg(me, me->current_heading);
+  return 0;
+}
+
+/**
+ * @brief Called from the BSP code when a new direction value have been measured
+ * @param rot_idx The rotator index
+ * @param dir     The raw direction directly from the ADC
+ *
+ * This function is declared in bsp.h and called from the BSP code when a new
+ * direction value have been measured for the specified rotator. The value is
+ * the raw ADC value and so it must be filtered and converted to degrees.
+ */
+void bsp_direction_updated(uint8_t rot_idx, uint16_t dir) {
+  Q_REQUIRE(rot_idx < ROTATOR_COUNT);
+  
+  Rotator *me = &rotator_sm[rot_idx];
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+
+    /* Convert the raw ADC unsigned value to a signed integer */
+  int16_t heading = (int16_t)(dir >> 1) - 0x4000;
+  
+    // Apply IIR filter
+  heading = ((heading - me->prev_heading) >> 3) + me->prev_heading;
+
+  int16_t speed = heading - me->prev_heading;
+  /*
+  if (rot_idx == 0) {
+    send_ascii_data(0, "speed=%d scale=%d stuck_cnt=%d\r\n",
+                    speed, me->heading_scale, me->stuck_cnt);
+  }
+  */
+
+  me->prev_heading = heading;
+  me->current_heading = heading;
+
+    /* Check if we have hit the CW or CCW limits */
+  if ((me->rotate_dir > 0) && (me->current_heading >= conf->cw_limit)) {
+    (void)post_event(rot_idx, ROTATION_LIMIT_SIG, 0);
+  }
+  else if ((me->rotate_dir < 0) && (me->current_heading <= conf->ccw_limit)) {
+    (void)post_event(rot_idx, ROTATION_LIMIT_SIG, 0);
+  }
+
+    /* Check if the target heading has been reached, if set */
+  if (me->target_heading > 0) {
+    if ((me->rotate_dir > 0) && (me->current_heading >= me->target_heading)) {
+      (void)post_event(rot_idx, STOP_SIG, 0);
+    }
+    else if ((me->rotate_dir < 0) && (me->current_heading <= me->target_heading)) {
+      (void)post_event(rot_idx, STOP_SIG, 0);
+    }
+  }
+
+  if (bsp_rotator_is_running(me->rot_idx)) {
+      /* Check if the rotator is stuck. We require at least one
+       * degree per second */
+    if (abs(speed) < me->heading_scale) {
+      if (++me->stuck_cnt >= 10) {
+        me->stuck_cnt = 0;
+        me->error = ERROR_ROTATOR_STUCK;
+        (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
+      }
+    }
+    else if (me->stuck_cnt > 0) {
+      me->stuck_cnt--;
+    }
+    
+      /* Check if the rotator is turning in the correct direction */
+    if (((me->rotate_dir ^ speed) & 0x8000) != 0) {
+      if (++me->wrong_dir_cnt >= 10) {
+        me->wrong_dir_cnt = 0;
+        me->error = ERROR_WRONG_DIR;
+        (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
+      }
+    }
+    else if (me->wrong_dir_cnt > 0) {
+      me->wrong_dir_cnt--;
+    }
+  }
+  else {
+    me->wrong_dir_cnt = 0;
+    me->stuck_cnt = 0;
+  }
+
+    /* Check if we should send a heading update */
+  if (me->dir_update_counter == 0) {
+    rotator_direction_updated(rot_idx,
+                              Rotator_adc2deg(me, me->current_heading));
+    me->dir_update_counter = 9;
+  }
+  else {
+    me->dir_update_counter--;
+  }
+}
+
+
+/**
+ * \brief   Send an event to the state machine associated with the given band
+ * \param   rot_idx The rotator index
+ * \param   sig     The event (signal) to send to the state machine
+ * \param   par     The event parameter
+ */
+static int8_t post_event(uint8_t rot_idx, enum RotatorSignals sig, QParam par) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+  QActive_post((QActive *)&rotator_sm[rot_idx], sig, par);
+  return 0;
+}
+
+static int8_t ccw_limit_exceeded(Rotator *me) {
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  return me->current_heading <= conf->ccw_limit;
+}
+
+static int8_t cw_limit_exceeded(Rotator *me) {
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  return me->current_heading >= conf->cw_limit;
+}
+
+/**
+ * \brief Constructor for the state machine
+ * \param me	  The Rotator object to be initialized
+ * \param rot_idx The rotator index
+ */
+static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
+  me->current_heading = 0;
+  me->target_heading = -1;
+  me->rotate_dir = 0;
+  me->rot_idx = rot_idx;
+  me->dir_update_counter = rot_idx * 2;
+  me->error = ERROR_NONE;
+  me->prev_heading = 0;
+  me->wrong_dir_cnt = 0;
+  me->stuck_cnt = 0;
+  Rotator_calc_heading_coeffs(me);
+  QActive_ctor((QActive *)me, (QStateHandler)&Rotator_initial);
+}
+
+static void Rotator_set_ccw_limit(Rotator *me, int16_t limit_deg) {
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  conf->ccw_limit = me->current_heading;
+  conf->ccw_limit_deg = limit_deg;
+  if ((conf->cw_limit < conf->ccw_limit)
+      || (conf->cw_limit_deg < conf->ccw_limit_deg)) {
+    Rotator_set_cw_limit(me, limit_deg);
+  }
+}
+
+static void Rotator_set_cw_limit(Rotator *me, int16_t limit_deg) {
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  conf->cw_limit = me->current_heading;
+  conf->cw_limit_deg = limit_deg;
+  if ((conf->cw_limit < conf->ccw_limit)
+      || (conf->cw_limit_deg < conf->ccw_limit_deg)) {
+    Rotator_set_ccw_limit(me, limit_deg);
+  }
+}
+
+static void Rotator_set_rotate_dir(Rotator *me, int8_t dir) {
+  if (dir == me->rotate_dir) {
+    return;
+  }
+  
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  if ((dir > 0) && (me->current_heading < conf->cw_limit)) {
+    me->rotate_dir = dir;
+  }
+  else if ((dir < 0) && (me->current_heading > conf->ccw_limit)) {
+    me->rotate_dir = dir;
+  }
+  else {
+    me->rotate_dir = 0;
+  }
+}
+
+static void Rotator_calc_heading_coeffs(Rotator *me) {
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  if (conf->cw_limit_deg == conf->ccw_limit_deg) {
+    me->heading_scale = 0;
+    me->heading_offset = 0;
+    return;
+  }
+  me->heading_scale = (conf->cw_limit - conf->ccw_limit)
+                      / (conf->cw_limit_deg - conf->ccw_limit_deg);
+  me->heading_offset = conf->cw_limit / me->heading_scale - conf->cw_limit_deg;
+}
+
+static int16_t Rotator_adc2deg(Rotator *me, int16_t adc) {
+  return adc / me->heading_scale - me->heading_offset;
+}
+
+static int16_t Rotator_deg2adc(Rotator *me, int16_t deg) {
+  return (deg + me->heading_offset) * me->heading_scale;
+}
+
+static const char *Rotator_strerror(Rotator *me) {
+  switch (me->error) {
+    case ERROR_NONE:
+      return "NONE";
+    case ERROR_WRONG_DIR:
+      return "WRONG DIRECTION";
+    case ERROR_ROTATOR_STUCK:
+      return "ROTATOR STUCK";
+  }
+  return "?";
+}
+
+//! Include the state machine definition
+#include "rotatorsm.c"
+
+
