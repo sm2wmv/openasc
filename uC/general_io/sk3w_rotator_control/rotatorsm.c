@@ -60,6 +60,14 @@ QState Rotator_Idle(Rotator *me) {
         case ROTATOR_ERROR_SIG: {
             return Q_TRAN(&Rotator_Error);
         }
+        /* @(/1/0/13/1/4) */
+        case Q_INIT_SIG: {
+            if (!is_calibrated(me)) {
+              me->error = ROTATOR_ERROR_NO_CAL;
+              QActive_post((QActive *)me, ROTATOR_ERROR_SIG, 0);
+            }
+            return Q_HANDLED();
+        }
     }
     return Q_SUPER(&QHsm_top);
 }
@@ -200,7 +208,7 @@ QState Rotator_StopWait(Rotator *me) {
         /* @(/1/0/13/3/6/0) */
         case Q_TIMEOUT_SIG: {
             /* @(/1/0/13/3/6/0/0) */
-            if (me->error != ROTATOR_ERROR_NONE) {
+            if (me->error != ROTATOR_ERROR_OK) {
                 return Q_TRAN(&Rotator_Error);
             }
             /* @(/1/0/13/3/6/0/1) */
@@ -324,7 +332,7 @@ QState Rotator_Error(Rotator *me) {
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Error: EXIT\r\n");
             me->rotate_dir = 0;
-            me->error = ROTATOR_ERROR_NONE;
+            me->error = ROTATOR_ERROR_OK;
             rotator_error(me->rot_idx, me->error);
             return Q_HANDLED();
         }
@@ -353,6 +361,10 @@ QState Rotator_Error(Rotator *me) {
             me->rotate_dir = 0;
             QActive_disarm((QActive *)me);
             return Q_HANDLED();
+        }
+        /* @(/1/0/13/4/4) */
+        case CAL_ENABLE_SIG: {
+            return Q_TRAN(&Rotator_Calibrate);
         }
     }
     return Q_SUPER(&QHsm_top);

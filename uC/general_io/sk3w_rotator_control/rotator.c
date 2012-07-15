@@ -42,6 +42,7 @@
  *****************************************************************************/
 
 #include <global.h>
+#include <delay.h>
 #include <wmv_bus/bus_commands.h>
 #include <general_io/eeprom.h>
 
@@ -52,7 +53,6 @@
  *
  *****************************************************************************/
 
-#include "qpn_port.h"
 #include "bsp.h"
 #include "bus_handler.h"
 #include "rotator.h"
@@ -64,8 +64,6 @@
  *
  *****************************************************************************/
 
-//! The number of rotators that we can handle
-#define ROTATOR_COUNT           QF_MAX_ACTIVE
 //! The length of each state machines event queue
 #define SM_QUEUE_LEN            3
 //! Macro used to print text debugging messages using the bus.
@@ -132,6 +130,7 @@ static int8_t ccw_limit_exceeded(Rotator *me);
 static int8_t cw_limit_exceeded(Rotator *me);
 static int16_t range_adjust_heading(int16_t heading);
 static uint16_t median_filter(Rotator *me, uint16_t adc);
+static int8_t is_calibrated(Rotator *me);
 
 static void Rotator_ctor(Rotator *rot, uint8_t rot_idx);
 static void Rotator_set_ccw_limit(Rotator *me, int16_t limit_deg);
@@ -149,7 +148,6 @@ static int16_t Rotator_deg2adc(Rotator *me, int16_t deg);
 
 void rotator_init(void) {
   eeprom_read_config();
-
   for (int i = 0; i < ROTATOR_COUNT; ++i) {
     Rotator_ctor(&rotator_sm[i], i);
   }
@@ -159,6 +157,10 @@ void rotator_init(void) {
 void rotator_set_default_config(void) {
   eeprom_set_default_config();
   eeprom_write_config();
+  for (int i = 0; i < ROTATOR_COUNT; ++i) {
+    bsp_rotator_stop(i);
+    Rotator_calc_heading_coeffs(&rotator_sm[i]);
+  }
 }
 
 
@@ -290,14 +292,26 @@ int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg) {
 }
 
 
+RotatorError rotator_current_error(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return ROTATOR_ERROR_OK;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  return me->error;
+}
+
 const char *rotator_strerror(RotatorError error) {
   switch (error) {
-    case ROTATOR_ERROR_NONE:
-      return "NONE";
+    case ROTATOR_ERROR_OK:
+      return "OK";
     case ROTATOR_ERROR_WRONG_DIR:
       return "WRONG DIRECTION";
     case ROTATOR_ERROR_STUCK:
       return "ROTATOR STUCK";
+    case ROTATOR_ERROR_ASSERT:
+      return "ASSERTION FAILED";
+    case ROTATOR_ERROR_NO_CAL:
+      return "NOT CALIBRATED";
   }
   return "?";
 }
@@ -504,6 +518,17 @@ static uint16_t median_filter(Rotator *me, uint16_t adc) {
 }
 
 
+/**
+ * \brief   Check if this rotator has been calibrated or not
+ * \param   me The state machine object
+ * \returns Return 1 if calibrated or 0 if not
+ */
+static int8_t is_calibrated(Rotator *me) {
+  RotatorConfig *conf = &cfg.rot[me->rot_idx];
+  return (conf->ccw_limit != conf->cw_limit);
+}
+
+
 
 /******************************************************************************
  *
@@ -522,11 +547,11 @@ static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
   me->rotate_dir = 0;
   me->rot_idx = rot_idx;
   me->dir_update_counter = rot_idx * 2;
-  me->error = ROTATOR_ERROR_NONE;
+  me->error = ROTATOR_ERROR_OK;
   me->prev_heading = 0;
   me->wrong_dir_cnt = 0;
-  me->stuck_cnt = 0;
   Rotator_calc_heading_coeffs(me);
+  me->stuck_cnt = 0;
   memset(me->median_buf, 0, sizeof(me->median_buf));
   me->median_head = 0;
   QActive_ctor((QActive *)me, (QStateHandler)&Rotator_initial);

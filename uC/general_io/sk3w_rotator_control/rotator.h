@@ -26,14 +26,22 @@
 #ifndef _ROTATOR_H_
 #define _ROTATOR_H_
 
+#include "qpn_port.h"
+
+
+//! The number of rotators that we can handle
+#define ROTATOR_COUNT           QF_MAX_ACTIVE
+
 
 /**
  * Error codes which the rotator state machine may emit
  */
 typedef enum {
-  ROTATOR_ERROR_NONE,      /*!< No error */
+  ROTATOR_ERROR_OK,        /*!< No error */
   ROTATOR_ERROR_WRONG_DIR, /*!< The rotator is turning in the wrong direction */
-  ROTATOR_ERROR_STUCK      /*!< The rotator is stuck */
+  ROTATOR_ERROR_STUCK,     /*!< The rotator is stuck */
+  ROTATOR_ERROR_ASSERT,    /*!< Fatal error. An assertion occurred */
+  ROTATOR_ERROR_NO_CAL     /*!< Calibration has not been performed */
 } RotatorError;
 
 
@@ -179,6 +187,13 @@ int16_t rotator_target_heading(uint8_t rot_idx);
  * cannot be reached, nothing will happen.
  */
 int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg);
+
+/**
+ * \brief   Return the current error for the given rotator
+ * \param   rot_idx The rotator index
+ * \returns Returns the current error or ROTATOR_ERROR_OK if there are no error
+ */
+RotatorError rotator_current_error(uint8_t rot_idx);
 
 /**
  * \brief   Translate the given error code into a readable string

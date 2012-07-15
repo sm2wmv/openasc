@@ -34,7 +34,6 @@
 #include <stdlib.h>
 
 #include <avr/io.h>
-#include <avr/wdt.h>
 
 
 /******************************************************************************
@@ -245,20 +244,23 @@ extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
  * \param   error The error code
  */
 extern void rotator_error(uint8_t rot_idx, RotatorError error) {
-  uint8_t data[3];
-  data[0] = rot_idx;
-  data[2] = error;
-  if (error != ROTATOR_ERROR_NONE) {
-    data[1] = 1;
-    send_ascii_data(0, "ROTATOR #%d ERROR: %s\r\n",
-                    rot_idx, rotator_strerror(error));
-  }
-  else {
-    data[1] = 0;
-    send_ascii_data(0, "ROTATOR #%d ERROR CLEARED\r\n", rot_idx);
-  }
-  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
-                      BUS_CMD_ROTATOR_ERROR, sizeof(data), data);
+  if (bus_allowed_to_send()) {
+    uint8_t data[3];
+    data[0] = rot_idx;
+    data[2] = error;
+    if (error != ROTATOR_ERROR_OK) {
+      data[1] = 1;
+      send_ascii_data(0, "ROTATOR #%d ERROR: %s\r\n",
+                      rot_idx, rotator_strerror(error));
+    }
+    else {
+      data[1] = 0;
+      send_ascii_data(0, "ROTATOR #%d ERROR CLEARED\r\n", rot_idx);
+    }
+    bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
+                        BUS_CMD_ROTATOR_ERROR, sizeof(data), data);
+
+  }  
 }
 
 
@@ -400,10 +402,31 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
 #endif
     }
     else if (strcmp(argv[0], "reset") == 0) {
-        /* Enable the watchdog timer and wait for it to reset
-         * in about one second */
-      wdt_enable(WDTO_1S);
+      bsp_failsafe_setup();
+      bsp_reset();
       send_ascii_data(bus_message->from_addr, "RESETTING\r\n");
+    }
+    else if (strcmp(argv[0], "status") == 0) {
+      if (argc > 1) {
+        if (strcmp(argv[1], "clear") == 0) {
+          bsp_last_assertion_clear();
+        }
+        else {
+          send_help(bus_message->from_addr);
+          return;
+        }
+      }
+      for (int i=0; i<ROTATOR_COUNT; ++i) {
+        send_ascii_data(bus_message->from_addr, "%d: %s\r\n",
+                        i, rotator_strerror(rotator_current_error(i)));
+      }
+      
+      char last_assertion_str[LAST_ASSERTION_SIZE];
+      bsp_last_assertion(last_assertion_str);
+      if (last_assertion_str[0] != 0) {
+        send_ascii_data(bus_message->from_addr, "\r\nASSERT[%s]\r\n",
+                        last_assertion_str);
+      }
     }
     else {
       send_help(bus_message->from_addr);
@@ -496,5 +519,6 @@ static void send_help(uint8_t addr) {
                         "ccwlim <idx> <deg>\r\n");
   send_ascii_data(addr, "cwlim <idx> <deg>\r\n"
                         "dir <idx>\r\n");
+  send_ascii_data(addr, "status [clear]\r\n");
 }
 

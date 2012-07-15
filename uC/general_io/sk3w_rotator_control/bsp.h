@@ -27,6 +27,10 @@
 #define _BSP_H_
 
 
+//! The maximum size of the last assertion string
+#define LAST_ASSERTION_SIZE 28
+
+
 /**
  * \brief Initialize the board support package
  *
@@ -43,6 +47,34 @@ void bsp_init(void);
  * communications timer.
  */
 void bsp_init_timer_2(void);
+
+/**
+ * \brief Reset the microcontroller using the watchdog timer
+ *
+ * This function will activate the watchdog timer. If the timer is not reset
+ * within one second, the CPU will reset.
+ */
+void bsp_reset(void);
+
+/**
+ * \brief Fetch the last assertion stored in EEPROM
+ * \param str The string buffer to store the assertion text into
+ *
+ * When an assertion occurrs, the filename and line number for where the
+ * assertion occurred will be stored in EEPROM.
+ * This function will fetch that string and store it into the given buffer.
+ * The buffer must be at least as big as given by LAST_ASSERTION_SIZE.
+ */
+void bsp_last_assertion(char *str);
+
+/**
+ * \brief Clear the last assertion stored in EEPROM
+ * 
+ * When an assertion occurrs, the filename and line number for where the
+ * assertion occurred will be stored in EEPROM.
+ * This function will clear the last assertion memory area.
+ */
+void bsp_last_assertion_clear(void);
 
 /**
  * \brief   Release the break
@@ -103,6 +135,14 @@ int8_t bsp_rotator_is_running(uint8_t rot_idx);
  * Immediately stop the rotation for the specified rotator.
  */
 void bsp_rotator_stop(uint8_t rot_idx);
+
+/**
+ * \brief   Set up outputs to a failsafe state
+ *
+ * This function will set up outputs in a failsafe state. This can be used at
+ * initialization or in a situation of abnormal program termination.
+ */
+void bsp_failsafe_setup(void);
 
 
 /**
