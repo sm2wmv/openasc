@@ -7,7 +7,7 @@
    <attribute name="rotate_dir" type="int8_t" visibility="0x02" properties="0x00"/>
    <attribute name="rot_idx" type="int8_t" visibility="0x02" properties="0x00"/>
    <attribute name="dir_update_counter" type="uint8_t" visibility="0x02" properties="0x00"/>
-   <attribute name="error" type="int8_t" visibility="0x02" properties="0x00"/>
+   <attribute name="error" type="RotatorError" visibility="0x02" properties="0x00"/>
    <attribute name="prev_heading" type="int16_t" visibility="0x02" properties="0x00"/>
    <attribute name="wrong_dir_cnt" type="uint8_t" visibility="0x02" properties="0x00"/>
    <attribute name="heading_scale" type="int16_t" visibility="0x02" properties="0x00"/>
@@ -182,9 +182,9 @@ QActive_arm((QActive *)me, 10);</entry>
 QActive_arm((QActive *)me, 30);</entry>
       <exit>DEBUG_PRINT(&quot;StopWait: EXIT\r\n&quot;);</exit>
       <tran trig="Q_TIMEOUT">
-       <choice guard="me-&gt;error != 0" target="../../../../4">
+       <choice guard="me-&gt;error != ROTATOR_ERROR_NONE" target="../../../../4">
         <choice_glyph conn="85,77,5,1,-34">
-         <action box="-28,-2,10,2"/>
+         <action box="-31,-4,18,4"/>
         </choice_glyph>
        </choice>
        <choice guard="else">
@@ -297,13 +297,14 @@ bsp_rotator_run_cw(me-&gt;rot_idx);</entry>
     <state name="Error">
      <entry>DEBUG_PRINT(&quot;Error: ENTER\r\n&quot;);
 me-&gt;rotate_dir = 0;
-send_ascii_data(0, &quot;ROTATOR #%d ERROR: %s\r\n&quot;, me-&gt;rot_idx, Rotator_strerror(me));</entry>
+rotator_error(me-&gt;rot_idx, me-&gt;error);</entry>
      <exit>DEBUG_PRINT(&quot;Error: EXIT\r\n&quot;);
 me-&gt;rotate_dir = 0;
-me-&gt;error = 0;
-send_ascii_data(0, &quot;ROTATOR #%d ERROR CLEARED\r\n&quot;, me-&gt;rot_idx);</exit>
+me-&gt;error = ROTATOR_ERROR_NONE;
+rotator_error(me-&gt;rot_idx, me-&gt;error);</exit>
      <tran trig="ROTATE_CW">
-      <action>if (++me-&gt;rotate_dir == 2) {
+      <action>rotator_error(me-&gt;rot_idx, me-&gt;error);
+if (++me-&gt;rotate_dir == 2) {
   QActive_arm((QActive *)me, 30);
 }</action>
       <tran_glyph conn="29,64,3,-1,16">
@@ -311,7 +312,8 @@ send_ascii_data(0, &quot;ROTATOR #%d ERROR CLEARED\r\n&quot;, me-&gt;rot_idx);</
       </tran_glyph>
      </tran>
      <tran trig="ROTATE_CCW">
-      <action>if (++me-&gt;rotate_dir == 2) {
+      <action>rotator_error(me-&gt;rot_idx, me-&gt;error);
+if (++me-&gt;rotate_dir == 2) {
   QActive_arm((QActive *)me, 30);
 }</action>
       <tran_glyph conn="29,67,3,-1,16">

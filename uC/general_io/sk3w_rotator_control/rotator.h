@@ -30,11 +30,11 @@
 /**
  * Error codes which the rotator state machine may emit
  */
-enum {
-  ERROR_NONE,           /*!< No error */
-  ERROR_WRONG_DIR,      /*!< The rotator is turning in the wrong direction */ 
-  ERROR_ROTATOR_STUCK   /*!< The rotator is stuck */
-};
+typedef enum {
+  ROTATOR_ERROR_NONE,      /*!< No error */
+  ROTATOR_ERROR_WRONG_DIR, /*!< The rotator is turning in the wrong direction */
+  ROTATOR_ERROR_STUCK      /*!< The rotator is stuck */
+} RotatorError;
 
 
 /**
@@ -180,6 +180,13 @@ int16_t rotator_target_heading(uint8_t rot_idx);
  */
 int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg);
 
+/**
+ * \brief   Translate the given error code into a readable string
+ * \param   error The error number to translate
+ * \returns Returns the error string
+ */
+const char *rotator_strerror(RotatorError error);
+
 
 /**
  * \brief   Called by the rotator code when the heading display is to be updated
@@ -191,6 +198,17 @@ int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg);
  * function when the heading displpay should be updated.
  */
 extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir);
+
+/**
+ * \brief   Called by the rotator code when an error condition occurrs
+ * \param   rot_idx The rotator index
+ * \param   error The error code
+ * 
+ * This function must be implemented by code external to the rotator. It will
+ * then act as a callback to the other code. The rotator code will call this
+ * function when an error condition occurrs.
+ */
+extern void rotator_error(uint8_t rot_idx, RotatorError error);
 
 
 #endif /* _ROTATOR_H_ */

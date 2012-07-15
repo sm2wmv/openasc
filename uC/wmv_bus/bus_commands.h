@@ -170,6 +170,11 @@
 #define BUS_CMD_ROTATOR_TRANSPARENT	0x65
 /*! Rotator unit status message */
 #define BUS_CMD_ROTATOR_STATUS_UPDATE	0x66
+/*! Rotator error condition
+ * Byte 0 - Sub address
+ * Byte 1 - Status (1=error set, 0=error cleared)
+ * Byte 2 - Error code (only valid when status == 1) */
+#define BUS_CMD_ROTATOR_ERROR				0x67
 
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70

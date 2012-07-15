@@ -18,7 +18,7 @@ typedef struct RotatorTag {
     int8_t rotate_dir;
     int8_t rot_idx;
     uint8_t dir_update_counter;
-    int8_t error;
+    RotatorError error;
     int16_t prev_heading;
     uint8_t wrong_dir_cnt;
     int16_t heading_scale;
