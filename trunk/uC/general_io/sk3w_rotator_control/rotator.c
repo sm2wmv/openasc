@@ -366,20 +366,22 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
         (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
       }
     }
-    else if (me->stuck_cnt > 0) {
-      me->stuck_cnt--;
-    }
-    
-      /* Check if the rotator is turning in the correct direction */
-    if (((me->rotate_dir ^ speed) & 0x8000) != 0) {
-      if (++me->wrong_dir_cnt >= 10) {
-        me->wrong_dir_cnt = 0;
-        me->error = ROTATOR_ERROR_WRONG_DIR;
-        (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
+    else {
+      if (me->stuck_cnt > 0) {
+        me->stuck_cnt--;
       }
-    }
-    else if (me->wrong_dir_cnt > 0) {
-      me->wrong_dir_cnt--;
+      
+        /* Check if the rotator is turning in the correct direction */
+      if (((me->rotate_dir ^ speed) & 0x8000) != 0) {
+        if (++me->wrong_dir_cnt >= 10) {
+          me->wrong_dir_cnt = 0;
+          me->error = ROTATOR_ERROR_WRONG_DIR;
+          (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
+        }
+      }
+      else if (me->wrong_dir_cnt > 0) {
+        me->wrong_dir_cnt--;
+      }
     }
   }
   else {
