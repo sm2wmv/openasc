@@ -24,7 +24,7 @@
 #define _ERRORS_H_
 
 //! Define which tells us how many different error types that currently exist
-#define NR_OF_ERRORS	14
+#define NR_OF_ERRORS	15
 
 //! Error that the bus had to resend a message more times than the max limit
 #define ERROR_TYPE_BUS_RESEND						0
@@ -58,6 +58,8 @@
 #define ERROR_TYPE_HIGH_REF_POWER       12
 //! PA Error
 #define ERROR_TYPE_PA_ERROR             13
+//! Rotator Stuck or turning in the wrong direction etc
+#define ERROR_TYPE_ROTATOR_ERROR        14
 
 
 /*! \brief Set the error flag of a certain error type

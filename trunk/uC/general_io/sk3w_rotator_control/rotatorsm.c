@@ -200,7 +200,7 @@ QState Rotator_StopWait(Rotator *me) {
         /* @(/1/0/13/3/6/0) */
         case Q_TIMEOUT_SIG: {
             /* @(/1/0/13/3/6/0/0) */
-            if (me->error != 0) {
+            if (me->error != ROTATOR_ERROR_NONE) {
                 return Q_TRAN(&Rotator_Error);
             }
             /* @(/1/0/13/3/6/0/1) */
@@ -317,19 +317,20 @@ QState Rotator_Error(Rotator *me) {
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Error: ENTER\r\n");
             me->rotate_dir = 0;
-            send_ascii_data(0, "ROTATOR #%d ERROR: %s\r\n", me->rot_idx, Rotator_strerror(me));
+            rotator_error(me->rot_idx, me->error);
             return Q_HANDLED();
         }
         /* @(/1/0/13/4) */
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Error: EXIT\r\n");
             me->rotate_dir = 0;
-            me->error = 0;
-            send_ascii_data(0, "ROTATOR #%d ERROR CLEARED\r\n", me->rot_idx);
+            me->error = ROTATOR_ERROR_NONE;
+            rotator_error(me->rot_idx, me->error);
             return Q_HANDLED();
         }
         /* @(/1/0/13/4/0) */
         case ROTATE_CW_SIG: {
+            rotator_error(me->rot_idx, me->error);
             if (++me->rotate_dir == 2) {
               QActive_arm((QActive *)me, 30);
             }
@@ -337,6 +338,7 @@ QState Rotator_Error(Rotator *me) {
         }
         /* @(/1/0/13/4/1) */
         case ROTATE_CCW_SIG: {
+            rotator_error(me->rot_idx, me->error);
             if (++me->rotate_dir == 2) {
               QActive_arm((QActive *)me, 30);
             }

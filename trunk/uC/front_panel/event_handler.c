@@ -451,7 +451,6 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[2];
           bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_RESET,1,&amp_sub_addr);
         }
         
@@ -1410,6 +1409,23 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 			}
 		}
 	}
+  else if (bus_message.cmd == BUS_CMD_ROTATOR_ERROR) {
+    uint8_t subaddr = bus_message.data[0];
+    uint8_t status = bus_message.data[1];
+    for (unsigned char i=0;i<4;i++) {
+      if (antenna_ctrl_get_rotator_addr(i) == bus_message.from_addr) {
+        if (antenna_ctrl_get_rotator_sub_addr(i) == subaddr) {
+          if (status != 0) {
+            uint8_t error_code = bus_message.data[2];
+            error_handler_set(ERROR_TYPE_ROTATOR_ERROR, 1, error_code);
+          }
+          else {
+            error_handler_clear(ERROR_TYPE_ROTATOR_ERROR);
+          }
+        }
+      }
+    }
+  }
 	else if (bus_message.cmd == BUS_CMD_POWERMETER_STATUS) {
     //Lets check if the data is meant for us or if we should just ignore it
 		if ((runtime_settings.powermeter_address == 0x00) && (bus_message.from_addr == main_get_powermeter_address(status.selected_band-1)))

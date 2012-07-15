@@ -139,7 +139,6 @@ static void Rotator_set_cw_limit(Rotator *me, int16_t limit_deg);
 static void Rotator_calc_heading_coeffs(Rotator *me);
 static int16_t Rotator_adc2deg(Rotator *me, int16_t adc);
 static int16_t Rotator_deg2adc(Rotator *me, int16_t deg);
-static const char *Rotator_strerror(Rotator *me);
 
 
 /******************************************************************************
@@ -156,38 +155,47 @@ void rotator_init(void) {
   }
 }
 
+
 void rotator_set_default_config(void) {
   eeprom_set_default_config();
   eeprom_write_config();
 }
 
+
 int8_t rotator_cal_on(uint8_t rot_idx) {
   return post_event(rot_idx, CAL_ENABLE_SIG, 0);
 }
+
 
 int8_t rotator_cal_off(uint8_t rot_idx) {
   return post_event(rot_idx, CAL_DISABLE_SIG, 0);
 }
 
+
 int8_t rotator_set_ccw_limit(uint8_t rot_idx, int16_t limit_deg) {
   return post_event(rot_idx, SET_CCW_LIMIT_SIG, limit_deg);
 }
+
 
 int8_t rotator_set_cw_limit(uint8_t rot_idx, int16_t limit_deg) {
   return post_event(rot_idx, SET_CW_LIMIT_SIG, limit_deg);
 }
 
+
 int8_t rotator_rotate_cw(uint8_t rot_idx) {
   return post_event(rot_idx, ROTATE_CW_SIG, 0);
 }
+
 
 int8_t rotator_rotate_ccw(uint8_t rot_idx) {
   return post_event(rot_idx, ROTATE_CCW_SIG, 0);
 }
 
+
 int8_t rotator_stop(uint8_t rot_idx) {
   return post_event(rot_idx, STOP_SIG, 0);
 }
+
 
 int16_t rotator_current_heading(uint8_t rot_idx) {
   if (rot_idx >= ROTATOR_COUNT) {
@@ -197,12 +205,14 @@ int16_t rotator_current_heading(uint8_t rot_idx) {
   return Rotator_adc2deg(me, rotator_sm[rot_idx].current_heading);
 }
 
+
 int16_t rotator_current_heading_raw(uint8_t rot_idx) {
   if (rot_idx >= ROTATOR_COUNT) {
     return 0;
   }
   return rotator_sm[rot_idx].current_heading;
 }
+
 
 int16_t rotator_target_heading(uint8_t rot_idx) {
   if (rot_idx >= ROTATOR_COUNT) {
@@ -211,6 +221,7 @@ int16_t rotator_target_heading(uint8_t rot_idx) {
   Rotator *me = &rotator_sm[rot_idx];
   return Rotator_adc2deg(me, rotator_sm[rot_idx].target_heading);
 }
+
 
 int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg) {
   if (rot_idx >= ROTATOR_COUNT) {
@@ -279,6 +290,20 @@ int8_t rotator_set_target_heading(uint8_t rot_idx, int16_t target_heading_deg) {
 }
 
 
+const char *rotator_strerror(RotatorError error) {
+  switch (error) {
+    case ROTATOR_ERROR_NONE:
+      return "NONE";
+    case ROTATOR_ERROR_WRONG_DIR:
+      return "WRONG DIRECTION";
+    case ROTATOR_ERROR_STUCK:
+      return "ROTATOR STUCK";
+  }
+  return "?";
+}
+
+
+
 /******************************************************************************
  *
  * Externally declared functions
@@ -337,7 +362,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
     if (abs(speed) < me->heading_scale) {
       if (++me->stuck_cnt >= 10) {
         me->stuck_cnt = 0;
-        me->error = ERROR_ROTATOR_STUCK;
+        me->error = ROTATOR_ERROR_STUCK;
         (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
       }
     }
@@ -349,7 +374,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
     if (((me->rotate_dir ^ speed) & 0x8000) != 0) {
       if (++me->wrong_dir_cnt >= 10) {
         me->wrong_dir_cnt = 0;
-        me->error = ERROR_WRONG_DIR;
+        me->error = ROTATOR_ERROR_WRONG_DIR;
         (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
       }
     }
@@ -374,6 +399,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
 }
 
 
+
 /******************************************************************************
  *
  * Private functions
@@ -394,6 +420,7 @@ static int8_t post_event(uint8_t rot_idx, enum RotatorSignals sig, QParam par) {
   return 0;
 }
 
+
 /**
  * \brief   Check if the CCW limit have been exceeded or not
  * \param   me The state machine object
@@ -404,6 +431,7 @@ static int8_t ccw_limit_exceeded(Rotator *me) {
   return me->current_heading <= conf->ccw_limit;
 }
 
+
 /**
  * \brief   Check if the CW limit have been exceeded or not
  * \param   me The state machine object
@@ -413,6 +441,7 @@ static int8_t cw_limit_exceeded(Rotator *me) {
   RotatorConfig *conf = &cfg.rot[me->rot_idx];
   return me->current_heading >= conf->cw_limit;
 }
+
 
 /**
  * \brief   Range adjust the given heading so that it lies within 0-359 degrees
@@ -428,6 +457,7 @@ static int16_t range_adjust_heading(int16_t heading) {
   }
   return heading;
 }
+
 
 /**
  * \brief   Median filter the incoming signal
@@ -472,6 +502,7 @@ static uint16_t median_filter(Rotator *me, uint16_t adc) {
 }
 
 
+
 /******************************************************************************
  *
  * Private class methods
@@ -489,7 +520,7 @@ static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
   me->rotate_dir = 0;
   me->rot_idx = rot_idx;
   me->dir_update_counter = rot_idx * 2;
-  me->error = ERROR_NONE;
+  me->error = ROTATOR_ERROR_NONE;
   me->prev_heading = 0;
   me->wrong_dir_cnt = 0;
   me->stuck_cnt = 0;
@@ -602,24 +633,6 @@ static int16_t Rotator_adc2deg(Rotator *me, int16_t adc) {
 static int16_t Rotator_deg2adc(Rotator *me, int16_t deg) {
   return (deg + me->heading_offset) * me->heading_scale;
 }
-
-/**
- * \brief   Translate the currently set error code into a readable string
- * \param   me The state machine object
- * \returns Returns the error string
- */
-static const char *Rotator_strerror(Rotator *me) {
-  switch (me->error) {
-    case ERROR_NONE:
-      return "NONE";
-    case ERROR_WRONG_DIR:
-      return "WRONG DIRECTION";
-    case ERROR_ROTATOR_STUCK:
-      return "ROTATOR STUCK";
-  }
-  return "?";
-}
-
 
 //! Include the state machine definition
 #include "rotatorsm.c"

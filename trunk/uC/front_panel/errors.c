@@ -61,7 +61,8 @@ struct_errors error_list[NR_OF_ERRORS] = {
   {ERROR_TYPE_INT_COMM_RX_FULL,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
   {ERROR_TYPE_EVENT_QUEUE_FULL,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
   {ERROR_TYPE_HIGH_REF_POWER,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
-  {ERROR_TYPE_PA_ERROR,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0}
+  {ERROR_TYPE_PA_ERROR,0,(1<<ERROR_FLAG_LOCK_PTT) | (1<<ERROR_FLAG_SHOW_ERROR_MENU),0},
+  {ERROR_TYPE_ROTATOR_ERROR,0,(1<<ERROR_FLAG_SHOW_ERROR_MENU),0}
 };
 
 
@@ -123,9 +124,14 @@ unsigned char error_handler_clear_all(void) {
 }
 
 void error_handler_clear(unsigned char error_type) {
+  error_list[error_type].state = 0;
 	lock_status = error_handler_ptt_check();
-	
-	error_list[error_type].state = 0;
+  if (lock_status == 0) {
+    main_update_ptt_status();
+  }
+  if (error_handler_get_errors() == 0) {
+    led_set_error(LED_STATE_OFF);
+  }
 }
 
 unsigned char error_handler_is_ptt_locked(void) {

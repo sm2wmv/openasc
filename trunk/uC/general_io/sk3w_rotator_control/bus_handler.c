@@ -239,6 +239,29 @@ extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
 }
 
 
+/**
+ * \brief   Called by the rotator code when an error condition occurrs
+ * \param   rot_idx The rotator index
+ * \param   error The error code
+ */
+extern void rotator_error(uint8_t rot_idx, RotatorError error) {
+  uint8_t data[3];
+  data[0] = rot_idx;
+  data[2] = error;
+  if (error != ROTATOR_ERROR_NONE) {
+    data[1] = 1;
+    send_ascii_data(0, "ROTATOR #%d ERROR: %s\r\n",
+                    rot_idx, rotator_strerror(error));
+  }
+  else {
+    data[1] = 0;
+    send_ascii_data(0, "ROTATOR #%d ERROR CLEARED\r\n", rot_idx);
+  }
+  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
+                      BUS_CMD_ROTATOR_ERROR, sizeof(data), data);
+}
+
+
 /******************************************************************************
  *
  * Private functions
