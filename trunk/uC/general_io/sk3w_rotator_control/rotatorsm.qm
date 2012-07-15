@@ -17,8 +17,8 @@
    <attribute name="median_head" type="uint8_t" visibility="0x02" properties="0x00"/>
    <statechart>
     <initial target="../1">
-     <initial_glyph conn="21,3,4,0,5">
-      <action box="1,0,9,2"/>
+     <initial_glyph conn="22,4,4,0,4">
+      <action box="0,-2,6,2"/>
      </initial_glyph>
     </initial>
     <state name="Idle">
@@ -34,41 +34,50 @@ me-&gt;target_heading = INT16_MAX;</entry>
      <tran trig="ROTATE_CW">
       <choice guard="else" target="../../../3">
        <action>me-&gt;rotate_dir = 1;</action>
-       <choice_glyph conn="57,22,5,3,16">
+       <choice_glyph conn="57,22,5,3,22">
         <action box="2,-2,4,2"/>
        </choice_glyph>
       </choice>
       <choice guard="cw_limit_exceeded(me)" target="../..">
-       <choice_glyph conn="57,22,4,1,3,-22">
+       <choice_glyph conn="57,22,4,1,3,-19">
         <action box="-17,1,15,2"/>
        </choice_glyph>
       </choice>
-      <tran_glyph conn="35,22,1,-1,22">
+      <tran_glyph conn="38,22,1,-1,19">
        <action box="1,-2,9,2"/>
       </tran_glyph>
      </tran>
      <tran trig="ROTATE_CCW">
       <choice guard="else" target="../../../3">
        <action>me-&gt;rotate_dir = -1;</action>
-       <choice_glyph conn="57,29,5,3,16">
+       <choice_glyph conn="57,29,5,3,22">
         <action box="2,-2,4,2"/>
        </choice_glyph>
       </choice>
       <choice guard="ccw_limit_exceeded(me)" target="../..">
-       <choice_glyph conn="57,29,4,1,3,-22">
+       <choice_glyph conn="57,29,4,1,3,-19">
         <action box="-17,1,16,2"/>
        </choice_glyph>
       </choice>
-      <tran_glyph conn="35,29,1,-1,22">
+      <tran_glyph conn="38,29,1,-1,19">
        <action box="1,-2,10,2"/>
       </tran_glyph>
      </tran>
      <tran trig="ROTATOR_ERROR" target="../../4">
-      <tran_glyph conn="32,43,2,0,12">
+      <tran_glyph conn="35,43,2,0,12">
        <action box="1,1,13,2"/>
       </tran_glyph>
      </tran>
-     <state_glyph node="4,8,31,35">
+     <tran trig="Q_INIT">
+      <action brief="error_if_not_calibrated">if (!is_calibrated(me)) {
+  me-&gt;error = ROTATOR_ERROR_NO_CAL;
+  QActive_post((QActive *)me, ROTATOR_ERROR_SIG, 0);
+}</action>
+      <tran_glyph conn="4,17,3,-1,25">
+       <action box="1,-2,20,2"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="4,8,34,35">
       <entry box="1,2,5,2"/>
       <exit box="1,4,5,2"/>
      </state_glyph>
@@ -130,7 +139,7 @@ me-&gt;rotate_dir = 0;
 me-&gt;target_heading = INT16_MAX;
 bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
      <initial target="../5">
-      <initial_glyph conn="112,9,4,0,4">
+      <initial_glyph conn="112,9,5,0,2,4">
        <action box="0,-2,6,2"/>
       </initial_glyph>
      </initial>
@@ -148,7 +157,7 @@ bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
      </tran>
      <tran trig="ROTATOR_ERROR" target="../6">
       <action>Rotator_set_rotate_dir(me, 0);</action>
-      <tran_glyph conn="156,76,1,1,-27">
+      <tran_glyph conn="156,76,1,1,-25">
        <action box="-24,-2,13,2"/>
       </tran_glyph>
      </tran>
@@ -163,16 +172,16 @@ bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
 QActive_arm((QActive *)me, 10);</entry>
       <exit>DEBUG_PRINT(&quot;StartWait: EXIT\r\n&quot;);</exit>
       <tran trig="Q_TIMEOUT" target="../../7">
-       <tran_glyph conn="112,26,2,0,5">
+       <tran_glyph conn="114,26,2,0,5">
         <action box="1,1,8,2"/>
        </tran_glyph>
       </tran>
       <tran trig="STOP" target="../../../1">
-       <tran_glyph conn="97,17,3,1,-62">
+       <tran_glyph conn="99,17,3,1,-61">
         <action box="-16,-2,4,2"/>
        </tran_glyph>
       </tran>
-      <state_glyph node="97,13,31,13">
+      <state_glyph node="99,13,31,13">
        <entry box="1,2,5,2"/>
        <exit box="1,4,5,2"/>
       </state_glyph>
@@ -182,31 +191,31 @@ QActive_arm((QActive *)me, 10);</entry>
 QActive_arm((QActive *)me, 30);</entry>
       <exit>DEBUG_PRINT(&quot;StopWait: EXIT\r\n&quot;);</exit>
       <tran trig="Q_TIMEOUT">
-       <choice guard="me-&gt;error != ROTATOR_ERROR_NONE" target="../../../../4">
-        <choice_glyph conn="85,77,5,1,-34">
-         <action box="-31,-4,18,4"/>
+       <choice guard="me-&gt;error != ROTATOR_ERROR_OK" target="../../../../4">
+        <choice_glyph conn="87,77,5,1,-33">
+         <action box="-27,-4,18,4"/>
         </choice_glyph>
        </choice>
        <choice guard="else">
         <choice guard="else" target="../../../../7">
-         <choice_glyph conn="85,68,4,2,-7">
+         <choice_glyph conn="87,68,4,2,-5,0,-2">
           <action box="-4,-4,4,2"/>
          </choice_glyph>
         </choice>
         <choice guard="me-&gt;rotate_dir == 0" target="../../../../../1">
-         <choice_glyph conn="85,68,5,1,-31,-32,-19">
-          <action box="-28,-2,13,2"/>
+         <choice_glyph conn="87,68,5,1,-25,-32,-24">
+          <action box="-23,-2,13,2"/>
          </choice_glyph>
         </choice>
-        <choice_glyph conn="85,77,4,-1,-9">
+        <choice_glyph conn="87,77,4,-1,-9">
          <action box="-4,-4,4,2"/>
         </choice_glyph>
        </choice>
-       <tran_glyph conn="98,77,3,-1,-13">
+       <tran_glyph conn="100,77,3,-1,-13">
         <action box="-10,-2,8,2"/>
        </tran_glyph>
       </tran>
-      <state_glyph node="98,66,31,14">
+      <state_glyph node="100,66,31,14">
        <entry box="1,2,5,2"/>
        <exit box="1,4,5,2"/>
       </state_glyph>
@@ -219,28 +228,28 @@ me-&gt;target_heading = INT16_MAX;
 bsp_rotator_stop(me-&gt;rot_idx);</exit>
       <tran trig="Q_INIT">
        <choice guard="else" target="../../3">
-        <choice_glyph conn="115,40,5,0,-13,2">
+        <choice_glyph conn="117,40,5,0,-13,2">
          <action box="-6,-2,4,2"/>
         </choice_glyph>
        </choice>
        <choice guard="me-&gt;rotate_dir &gt; 0" target="../../4">
-        <choice_glyph conn="115,40,5,0,17,2">
+        <choice_glyph conn="117,40,5,0,17,2">
          <action box="2,-2,13,2"/>
         </choice_glyph>
        </choice>
-       <tran_glyph conn="152,36,1,-1,-37,4">
+       <tran_glyph conn="153,36,1,-1,-36,4">
         <action box="-7,-2,6,2"/>
        </tran_glyph>
       </tran>
       <tran trig="STOP" target="../../6">
        <action>Rotator_set_rotate_dir(me, 0);</action>
-       <tran_glyph conn="113,61,2,0,5">
+       <tran_glyph conn="115,61,2,0,5">
         <action box="1,1,4,2"/>
        </tran_glyph>
       </tran>
       <tran trig="ROTATION_LIMIT" target="../../6">
        <action>Rotator_set_rotate_dir(me, 0);</action>
-       <tran_glyph conn="147,61,2,1,9,-18">
+       <tran_glyph conn="149,61,2,1,9,-18">
         <action box="-15,7,12,2"/>
        </tran_glyph>
       </tran>
@@ -249,17 +258,17 @@ bsp_rotator_stop(me-&gt;rot_idx);</exit>
 bsp_rotator_run_ccw(me-&gt;rot_idx);</entry>
        <exit>DEBUG_PRINT(&quot;CCW: EXIT\r\n&quot;);</exit>
        <tran trig="ROTATE_CCW">
-        <tran_glyph conn="88,51,3,-1,16">
+        <tran_glyph conn="90,51,3,-1,16">
          <action box="1,-2,10,2"/>
         </tran_glyph>
        </tran>
        <tran trig="ROTATE_CW" target="../../../6">
         <action>Rotator_set_rotate_dir(me, 1);</action>
-        <tran_glyph conn="102,55,2,0,11">
+        <tran_glyph conn="104,55,2,0,11">
          <action box="1,2,9,2"/>
         </tran_glyph>
        </tran>
-       <state_glyph node="88,42,20,13">
+       <state_glyph node="90,42,20,13">
         <entry box="1,2,5,2"/>
         <exit box="1,4,5,2"/>
        </state_glyph>
@@ -269,27 +278,27 @@ bsp_rotator_run_ccw(me-&gt;rot_idx);</entry>
 bsp_rotator_run_cw(me-&gt;rot_idx);</entry>
        <exit>DEBUG_PRINT(&quot;CW: EXIT\r\n&quot;);</exit>
        <tran trig="ROTATE_CW">
-        <tran_glyph conn="121,51,3,-1,17">
+        <tran_glyph conn="123,51,3,-1,17">
          <action box="1,-2,9,2"/>
         </tran_glyph>
        </tran>
        <tran trig="ROTATE_CCW" target="../../../6">
         <action>Rotator_set_rotate_dir(me, -1);</action>
-        <tran_glyph conn="125,55,2,0,11">
+        <tran_glyph conn="127,55,2,0,11">
          <action box="1,2,10,2"/>
         </tran_glyph>
        </tran>
-       <state_glyph node="121,42,21,13">
+       <state_glyph node="123,42,21,13">
         <entry box="1,2,5,2"/>
         <exit box="1,4,5,2"/>
        </state_glyph>
       </state>
-      <state_glyph node="77,31,75,30">
+      <state_glyph node="82,31,71,30">
        <entry box="1,2,5,2"/>
        <exit box="1,4,5,2"/>
       </state_glyph>
      </state>
-     <state_glyph node="73,3,83,80">
+     <state_glyph node="79,3,77,80">
       <entry box="1,2,15,2"/>
       <exit box="1,4,15,2"/>
      </state_glyph>
@@ -300,15 +309,15 @@ me-&gt;rotate_dir = 0;
 rotator_error(me-&gt;rot_idx, me-&gt;error);</entry>
      <exit>DEBUG_PRINT(&quot;Error: EXIT\r\n&quot;);
 me-&gt;rotate_dir = 0;
-me-&gt;error = ROTATOR_ERROR_NONE;
+me-&gt;error = ROTATOR_ERROR_OK;
 rotator_error(me-&gt;rot_idx, me-&gt;error);</exit>
      <tran trig="ROTATE_CW">
       <action>rotator_error(me-&gt;rot_idx, me-&gt;error);
 if (++me-&gt;rotate_dir == 2) {
   QActive_arm((QActive *)me, 30);
 }</action>
-      <tran_glyph conn="29,64,3,-1,16">
-       <action box="0,-2,9,2"/>
+      <tran_glyph conn="32,64,3,-1,16">
+       <action box="1,-2,9,2"/>
       </tran_glyph>
      </tran>
      <tran trig="ROTATE_CCW">
@@ -316,23 +325,28 @@ if (++me-&gt;rotate_dir == 2) {
 if (++me-&gt;rotate_dir == 2) {
   QActive_arm((QActive *)me, 30);
 }</action>
-      <tran_glyph conn="29,67,3,-1,16">
-       <action box="0,-2,10,2"/>
+      <tran_glyph conn="32,67,3,-1,16">
+       <action box="1,-2,10,2"/>
       </tran_glyph>
      </tran>
      <tran trig="Q_TIMEOUT" target="../../1">
-      <tran_glyph conn="48,55,0,1,-15,-13">
+      <tran_glyph conn="51,55,0,1,-15,-13">
        <action box="-9,-3,8,2"/>
       </tran_glyph>
      </tran>
      <tran trig="STOP">
       <action>me-&gt;rotate_dir = 0;
 QActive_disarm((QActive *)me);</action>
-      <tran_glyph conn="29,70,3,-1,16">
-       <action box="0,-2,4,2"/>
+      <tran_glyph conn="32,70,3,-1,16">
+       <action box="1,-2,4,2"/>
       </tran_glyph>
      </tran>
-     <state_glyph node="29,55,22,25">
+     <tran trig="CAL_ENABLE" target="../../2">
+      <tran_glyph conn="43,80,2,2,4,-29,-4">
+       <action box="-18,2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="32,55,22,25">
       <entry box="1,2,5,2"/>
       <exit box="1,4,5,2"/>
      </state_glyph>

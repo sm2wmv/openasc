@@ -30,6 +30,11 @@
  *****************************************************************************/
 
 #include <avr/io.h>
+#include <avr/wdt.h>
+#include <avr/eeprom.h>
+#include <string.h>
+#include <stdio.h>
+#include <util/crc16.h>
 
 
 /******************************************************************************
@@ -52,6 +57,7 @@
 
 #include "qpn_port.h"
 #include "bus_handler.h"
+#include "rotator.h"
 #include "bsp.h"
 
 
@@ -71,6 +77,8 @@
 #define ROTATOR_COUNT           QF_MAX_ACTIVE
 //! The interval between each ADC measurement
 #define ADC_INTERVAL            20
+//! Initial value for the CRC calculations
+#define CRC_INIT        0xffff;
 
 
 /******************************************************************************
@@ -95,6 +103,9 @@ static uint16_t adc_value = 0;
 //! Map the rotator indexes to their corresponding ADC channels
 static const int adc_mapping[ROTATOR_COUNT] = {0, 2, 4, 1, 3};
 
+static char EEMEM last_assertion_str[LAST_ASSERTION_SIZE] = "";
+static uint16_t EEMEM last_assertion_str_crc = 0xffff;
+
 
 /******************************************************************************
  *
@@ -105,6 +116,7 @@ static const int adc_mapping[ROTATOR_COUNT] = {0, 2, 4, 1, 3};
 static void bsp_init_timer_0(void);
 static void bsp_init_ports(void);
 static void bsp_init_adc(void);
+static void write_last_assertion(const char *str);
 
 
 /******************************************************************************
@@ -116,9 +128,10 @@ static void bsp_init_adc(void);
 void bsp_init(void) {
   delay_ms(250);
   bsp_init_ports();
-  delay_ms(250);
   bsp_init_timer_0();
   bsp_init_adc();
+  bsp_failsafe_setup();
+  delay_ms(250);
 }
 
 
@@ -131,6 +144,32 @@ void bsp_init_timer_2(void) {
     /* Will trigger an interrupt each with an interval of 130us */
   OCR2 = 30;
   TIMSK |= (1 << OCIE2);
+}
+
+
+void bsp_reset(void) {
+    /* Enable the watchdog timer and wait for it to reset
+     * in about one second */
+  wdt_enable(WDTO_1S);
+}
+
+
+void bsp_last_assertion(char *str) {
+  eeprom_read_block(str, &last_assertion_str, sizeof(last_assertion_str));
+  uint16_t calculated_crc = CRC_INIT;
+  char *ptr = str;
+  for (int i=0; i<LAST_ASSERTION_SIZE; ++i) {
+    calculated_crc = _crc_ccitt_update(calculated_crc, *ptr++);
+  }
+  uint16_t crc = eeprom_read_word(&last_assertion_str_crc);
+  if (crc != calculated_crc) {
+    str[0] = 0;
+  }
+}
+
+
+void bsp_last_assertion_clear(void) {
+  write_last_assertion("");
 }
 
 
@@ -199,6 +238,16 @@ void bsp_rotator_stop(uint8_t rot_idx) {
 }
 
 
+void bsp_failsafe_setup(void) {
+  for (int i=0; i<ROTATOR_COUNT; ++i) {
+    bsp_rotator_stop(i);
+  }
+  for (int i=0; i<ROTATOR_COUNT; ++i) {
+    bsp_rotator_apply_break(i);
+  }
+}
+
+
 /******************************************************************************
  *
  * Private functions
@@ -253,6 +302,20 @@ static void bsp_init_adc(void) {
 }
 
 
+/**
+ * \brief Write the given string to the last assertion memory
+ * \param str The string to write
+ */
+static void write_last_assertion(const char *str) {
+  eeprom_write_block(str, &last_assertion_str, LAST_ASSERTION_SIZE);
+  uint16_t calculated_crc = CRC_INIT;
+  for (int i=0; i<LAST_ASSERTION_SIZE; ++i) {
+    calculated_crc = _crc_ccitt_update(calculated_crc, *str++);
+  }
+  eeprom_write_word(&last_assertion_str_crc, calculated_crc);
+}
+
+
 /******************************************************************************
  *
  * QP Nano Framewaork functions
@@ -291,6 +354,7 @@ void QF_onIdle(void) {          /* entered with interrupts LOCKED, see NOTE01 */
   }
 }
 
+
 /**
  * \brief Called by the QP framework if something goes seriously wrong
  * \param file The name of the file where the assertion occurred
@@ -307,29 +371,41 @@ void QF_onIdle(void) {          /* entered with interrupts LOCKED, see NOTE01 */
  * an ASCII message containing the filename and the linenumber where
  * the assertion occurred.
  */
-void Q_onAssert(char const /*Q_ROM */ *const Q_ROM_VAR file, int line) {
+void Q_onAssert(char const Q_ROM_NOT_GNUC *const Q_ROM_VAR file, int line) {
+  
   qf_tick_interval = 0;         /* Disable calls to QF_tick() */
 
+  bsp_failsafe_setup();
+
+    /* Read the filename from program memory (flash) */
   char const Q_ROM_NOT_GNUC *Q_ROM_VAR s = file;
   char filename[256];
   char *ptr = filename;
   while ((*ptr++ = Q_ROM_BYTE(*s++)) != 0) ;
   *ptr = '\0';
 
-  //QF_INT_DISABLE();
-  counter_qf_tick_interval = ASSERT_TX_INTERVAL;
+    /* Store a message about the assertion in EEPROM */
+  char str[LAST_ASSERTION_SIZE];
+  memset(str, 0, LAST_ASSERTION_SIZE);
+  sprintf(str, "%s:%d", filename, line);
+  write_last_assertion(str);
+
+    /* Broadcast an ASCII message to the bus */
+  send_ascii_data(0, "ASSERT[%s]\r\n", str);
+
+    /* Broadcast a rotator error message for each rotator */
+  for (int i=0; i<ROTATOR_COUNT; ++i) {
+    uint8_t msg[] = { i, 1, ROTATOR_ERROR_ASSERT };
+    bus_add_tx_message(bus_get_address(),
+                        BUS_BROADCAST_ADDR,
+                        0, BUS_CMD_ROTATOR_ERROR, sizeof(msg), msg);
+  }
+
+    /* Trigger the watchdog to reset within one second then wait
+     * for it to reset */
+  bsp_reset();
   for (;;) {
     bus_handler_poll_core();
-    if (counter_qf_tick_interval >= ASSERT_TX_INTERVAL) {
-      for (int i = 0; i < 6; ++i) {
-        uint8_t msg[] = { i, 0 };
-        bus_add_tx_message(bus_get_address(),
-                           BUS_BROADCAST_ADDR,
-                           0, BUS_CMD_AMPLIFIER_ERROR, sizeof(msg), msg);
-      }
-      send_ascii_data(0, "ASSERT[%s:%d]\r\n", filename, line);
-      counter_qf_tick_interval = 0;
-    }
   }
 }
 
