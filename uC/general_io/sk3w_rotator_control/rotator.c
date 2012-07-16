@@ -158,8 +158,12 @@ void rotator_set_default_config(void) {
   eeprom_set_default_config();
   eeprom_write_config();
   for (int i = 0; i < ROTATOR_COUNT; ++i) {
-    bsp_rotator_stop(i);
-    Rotator_calc_heading_coeffs(&rotator_sm[i]);
+    Rotator *me = &rotator_sm[i];
+    Rotator_calc_heading_coeffs(me);
+    if (!is_calibrated(me)) {
+      me->error = ROTATOR_ERROR_NO_CAL;
+      post_event(i, ROTATOR_ERROR_SIG, 0);
+    }
   }
 }
 
