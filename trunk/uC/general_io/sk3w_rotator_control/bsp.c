@@ -47,6 +47,7 @@
 #include <i2c.h>
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_commands.h>
+#include <general_io/eeprom.h>
 
 
 /******************************************************************************
@@ -103,8 +104,14 @@ static uint16_t adc_value = 0;
 //! Map the rotator indexes to their corresponding ADC channels
 static const int adc_mapping[ROTATOR_COUNT] = {0, 2, 4, 1, 3};
 
+//! EEPROM variable for storing information about the last assertion.
 static char EEMEM last_assertion_str[LAST_ASSERTION_SIZE] = "";
+//! EEPROM variable for storing a CRC for the last assertion info
 static uint16_t EEMEM last_assertion_str_crc = 0xffff;
+//! Default value for the last assertion information
+static const char PROGMEM last_assertion_str_default[] = "";
+//! EEPROM context for the last assertion information
+static EepromContext last_assertion_ctx;
 
 
 /******************************************************************************
@@ -155,16 +162,11 @@ void bsp_reset(void) {
 
 
 void bsp_last_assertion(char *str) {
-  eeprom_read_block(str, &last_assertion_str, sizeof(last_assertion_str));
-  uint16_t calculated_crc = CRC_INIT;
-  char *ptr = str;
-  for (int i=0; i<LAST_ASSERTION_SIZE; ++i) {
-    calculated_crc = _crc_ccitt_update(calculated_crc, *ptr++);
-  }
-  uint16_t crc = eeprom_read_word(&last_assertion_str_crc);
-  if (crc != calculated_crc) {
-    str[0] = 0;
-  }
+  eeprom_read_data(&last_assertion_ctx,
+                   str, LAST_ASSERTION_SIZE,
+                   last_assertion_str, &last_assertion_str_crc,
+                   last_assertion_str_default
+                  );
 }
 
 
@@ -307,12 +309,10 @@ static void bsp_init_adc(void) {
  * \param str The string to write
  */
 static void write_last_assertion(const char *str) {
-  eeprom_write_block(str, &last_assertion_str, LAST_ASSERTION_SIZE);
-  uint16_t calculated_crc = CRC_INIT;
-  for (int i=0; i<LAST_ASSERTION_SIZE; ++i) {
-    calculated_crc = _crc_ccitt_update(calculated_crc, *str++);
-  }
-  eeprom_write_word(&last_assertion_str_crc, calculated_crc);
+  eeprom_write_data(&last_assertion_ctx,
+                    last_assertion_str, &last_assertion_str_crc,
+                    str, LAST_ASSERTION_SIZE
+                   );
 }
 
 
