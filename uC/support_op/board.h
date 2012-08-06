@@ -42,10 +42,10 @@
  * =====================================================================================
  * PB0	-	Output - Relay K4
  * PB1	-	Input  - SCK
- * PB2	-	Input  - VIP S3
- * PB3	-	Input  - VIP S2
- * PB4	-	Input  - VIP S1
- * PB5	-	Input  - VIP S4
+ * PB2	-	Input  - VIP S3 (Mounted)
+ * PB3	-	Input  - VIP S2 (Mounted)
+ * PB4	-	Input  - VIP S1 (Not mounted)
+ * PB5	-	Input  - VIP S4 (Not mounted)
  * PB6	-	Input  - 
  * PB7	-	Output - PTT R1 AMP
  * =====================================================================================

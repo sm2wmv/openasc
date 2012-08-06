@@ -10,7 +10,7 @@
 #include "../delay.h"
 
 //! Counter to keep track of the numbers of ticks from timer0
-unsigned int counter_compare0 = 0;
+unsigned long counter_compare0 = 0;
 unsigned char st = 0;
 
 
@@ -21,7 +21,7 @@ void main(void) {
   init_timer_0();
   
   sei();  
-  
+ 
   while(1) {
   }
 }
@@ -31,8 +31,8 @@ ISR(SIG_OUTPUT_COMPARE0) {
   
   if ((counter_compare0 % 250) == 0) {
     if (PINA & (1<<0))
-      ext_control_set_led_yellow(LED_STATE_OFF);
+      ext_control_set_led_yellow(LED_OFF);
     else
-      ext_control_set_led_yellow(LED_STATE_ON);
+      ext_control_set_led_yellow(LED_ON);
   }
 }
