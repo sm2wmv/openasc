@@ -111,3 +111,53 @@ void ext_control_r2_ptt_amp(enum ptt_state state) {
     PORTF &= ~(1<<0);
   }
 }
+
+enum ptt_state ext_control_get_r1_footswitch_input(void) {
+  if ((PIND & (1<<7)) == 0)
+    return(PTT_ACTIVE);
+  
+  return(PTT_DEACTIVE);
+}
+
+enum ptt_state ext_control_get_r2_footswitch_input(void) {
+  if ((PINF & (1<<4)) == 0)
+    return(PTT_ACTIVE);
+  
+  return(PTT_DEACTIVE);
+}
+
+unsigned char ext_control_get_int_vip_state(void) {
+  return((PINB >> 2) & 0x0F);
+}
+
+enum rx_tx_ant_state ext_control_get_r1_rx_tx_ant_state(void) {
+  if (PIND & (1<<4))
+    return(TX_ANT);
+  
+  return(RX_ANT);
+}
+
+enum rx_tx_ant_state ext_control_get_r2_rx_tx_ant_state(void) {
+  if (PINF & (1<<2))
+    return(TX_ANT);
+  
+  return(RX_ANT);
+}
+
+enum mult_support_state ext_control_get_mult_support_state(void) {
+  if (PINF & (1<<3))
+    return(SUPPORT_STATE);
+  
+  return(MULT_STATE);
+}
+
+enum priority_state ext_control_get_priority_state(void) {
+    unsigned char state = (PIND >> 5) & 0x03;
+    
+    if (state == 0)
+      return(FIRST_WINS);
+    else if (state == 1)
+      return(RUN_WINS);
+    
+  return(MULT_WINS);
+}

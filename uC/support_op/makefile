@@ -59,7 +59,7 @@ FORMAT = ihex
 TARGET = main
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c init.c ../delay.c ext_control.c
+SRC = $(TARGET).c init.c ../delay.c ext_control.c ../event_queue.c sequencer.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -70,6 +70,7 @@ SRC = $(TARGET).c init.c ../delay.c ext_control.c
 # care about how the name is spelled on its command-line.
 ASRC = 
 
+EVENT_LIST_SIZE = 10
 
 
 # Optimization level, can be [0, 1, 2, 3, s]. 
@@ -115,7 +116,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD)
+CFLAGS += $(CSTANDARD) -DEVENT_LIST_SIZE=$(EVENT_LIST_SIZE)
 
 
 
