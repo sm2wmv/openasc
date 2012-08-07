@@ -114,3 +114,8 @@
  */
  
 #endif
+
+#define VIP_S3_BIT  0
+#define VIP_S2_BIT  1
+#define VIP_S1_BIT  2
+#define VIP_S4_BIT  3
