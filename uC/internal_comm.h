@@ -109,7 +109,7 @@
 #define UC_COMM_RX_TIMEOUT	5
 
 //! After this many ms a resend will occur if a message has not been acked (in ms) (change back to 25?)
-#define UC_COMM_TX_TIMEOUT	15
+#define UC_COMM_TX_TIMEOUT	100
 
 //! Number of resends that is allowed (change back to 10?)
 #define UC_COMM_RESEND_COUNT	5

@@ -545,5 +545,6 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	
 	check_ptt_status = 1;
 
+  bus_check_ack_list();
 	bus_ping_tick();
 }

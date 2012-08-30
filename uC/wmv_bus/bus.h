@@ -371,4 +371,6 @@ void bus_check_tx_status(void);
 unsigned char bus_check_rx_status(BUS_MESSAGE* mess);
 unsigned char bus_check_critical_cmd_state(void);
 
+void bus_check_ack_list(void);
+
 #endif

@@ -378,9 +378,8 @@ void __inline__ bus_resend_message(void) {
 	}
 }
 
-/*! \brief Checks if there is anything that should be sent in the TX queue */
-void bus_check_tx_status(void) {
-  //Make sure we send all the ack messages first!
+void bus_check_ack_list(void) {
+  //Checks if there are any messages that need to be acked, if so we do it
   if (ack_list[0] > 0) {
     if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
       unsigned char checksum = 0;
@@ -416,7 +415,13 @@ void bus_check_tx_status(void) {
       enable_bus_interrupt();
     }
   }
-  else if (!queue_is_empty_bus_tx()) {
+}
+
+/*! \brief Checks if there is anything that should be sent in the TX queue */
+void bus_check_tx_status(void) {
+  bus_check_ack_list();
+  
+  if (!queue_is_empty_bus_tx()) {
     if ((bus_status.flags & (1<<BUS_STATUS_TIME_SLOT_ACTIVE)) && (bus_status.flags & (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT))) {
       if (bus_status.flags & (1<<BUS_STATUS_SEND_MESSAGE)) {
         bus_status.flags &= ~(1<<BUS_STATUS_SEND_MESSAGE);

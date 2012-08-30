@@ -872,6 +872,8 @@ int main(void){
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0A) {
+  bus_check_ack_list();
+  
 	//If this device should act as master it should send out a SYNC command
 	//and also the number of devices (for the time slots) that are active on the bus
 	if ((device_started == 1) && (bus_is_master())) {
