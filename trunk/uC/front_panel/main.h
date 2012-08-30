@@ -65,7 +65,7 @@
 /*! This is the delay that is inserted after a critical command has happened, for example
     the time after an antenna change until the PTT is unlocked. This is so that we are sure
     that relays etc has had enough time to actually switch */
-#define CRITICAL_CMD_CHANGE_TAIL_TIME 50
+#define CRITICAL_CMD_CHANGE_TAIL_TIME 200
 
 /****************************************************************/
 
