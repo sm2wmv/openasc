@@ -43,6 +43,18 @@ class SettingsClass {
 		unsigned char getAmpSubAddr();
 		unsigned char getAmpBandSegmentCount();
 		void setAmpBandSegmentCount(unsigned char segments);
+                void setEthernetIPAddr(QString address);
+                void setEthernetGatewayAddr(QString address);
+                void setEthernetUsername(QString username);
+                void setEthernetPassword(QString password);
+                void setEthernetPort(unsigned int port);
+                QString getEthernetIPAddr(void);
+                QString getEthernetGatewayAddr(void);
+                QString getEthernetUsername(void);
+                QString getEthernetPassword(void);
+                unsigned int getEthernetPort(void);
+                bool getEthernetEnabled(void);
+                void setEthernetEnabled(bool state);
 	private:
 		int networkAddress;
 		bool deviceIsMaster;
@@ -58,6 +70,12 @@ class SettingsClass {
 		unsigned char ampSubAddr;
 		unsigned int ampFuncStatus;
 		unsigned char ampBandSegmentCount;
+                bool ethernetEnabled;
+                QString ethernetIPAddr;
+                QString ethernetGatewayAddr;
+                QString ethernetUsername;
+                QString ethernetPassword;
+                unsigned int ethernetPort;
 	protected:
 };
 
