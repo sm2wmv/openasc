@@ -24,6 +24,14 @@ SettingsClass::SettingsClass() {
 	ampSubAddr = 0;
 	ampFuncStatus = 0;
 	ampBandSegmentCount = 1;
+
+        /*! Ethernet */
+        ethernetPort = 4750;
+        ethernetUsername = "sj2w";
+        ethernetPassword = "somepass";
+        ethernetIPAddr = "192.168.1.130";
+        ethernetGatewayAddr = "192.168.1.1";
+        ethernetEnabled = false;
 }
 
 void SettingsClass::writeSettings(QSettings& settings) {
@@ -79,6 +87,13 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("AmpSubAddr",ampSubAddr);
 	settings.setValue("AmpFuncStatus",ampFuncStatus);
 	settings.setValue("AmpBandSegmentCount",ampBandSegmentCount);
+
+        settings.setValue("EthernetEnabled",ethernetEnabled);
+        settings.setValue("EthernetIPAddr",ethernetIPAddr);
+        settings.setValue("EthernetGatewayAddr",ethernetGatewayAddr);
+        settings.setValue("EthernetPort",ethernetPort);
+        settings.setValue("EthernetUsername",ethernetUsername);
+        settings.setValue("EthernetPassword",ethernetPassword);
 
 	settings.endGroup();
 }
@@ -136,6 +151,13 @@ void SettingsClass::loadSettings(QSettings& settings) {
 	ampSubAddr = settings.value("AmpSubAddr").toInt();
 	ampFuncStatus = settings.value("AmpFuncStatus").toInt();
 	ampBandSegmentCount = settings.value("AmpBandSegmentCount").toInt();
+
+        ethernetEnabled = settings.value("EthernetEnabled").toBool();
+        ethernetIPAddr = settings.value("EthernetIPAddr").toString();
+        ethernetGatewayAddr = settings.value("EthernetGatewayAddr").toString();
+        ethernetPort = settings.value("EthernetPort").toInt();
+        ethernetUsername = settings.value("EthernetUsername").toString();
+        ethernetPassword = settings.value("EthernetPassword").toString();
 
 	settings.endGroup();
 }
@@ -361,4 +383,52 @@ unsigned char SettingsClass::getAmpBandSegmentCount() {
 
 void SettingsClass::setAmpBandSegmentCount(unsigned char segments) {
 	ampBandSegmentCount = segments;
+}
+
+void SettingsClass::setEthernetIPAddr(QString address) {
+    ethernetIPAddr = address;
+}
+
+void SettingsClass::setEthernetGatewayAddr(QString address) {
+    ethernetGatewayAddr = address;
+}
+
+void SettingsClass::setEthernetUsername(QString username) {
+    ethernetUsername = username;
+}
+
+void SettingsClass::setEthernetPassword(QString password) {
+    ethernetPassword = password;
+}
+
+void SettingsClass::setEthernetPort(unsigned int port) {
+    ethernetPort = port;
+}
+
+QString SettingsClass::getEthernetIPAddr(void) {
+    return(ethernetIPAddr);
+}
+
+QString SettingsClass::getEthernetGatewayAddr(void) {
+    return(ethernetGatewayAddr);
+}
+
+QString SettingsClass::getEthernetUsername(void) {
+    return(ethernetUsername);
+}
+
+QString SettingsClass::getEthernetPassword(void) {
+    return(ethernetPassword);
+}
+
+unsigned int SettingsClass::getEthernetPort(void) {
+    return(ethernetPort);
+}
+
+bool SettingsClass::getEthernetEnabled(void) {
+    return(ethernetEnabled);
+}
+
+void SettingsClass::setEthernetEnabled(bool state) {
+    ethernetEnabled = state;
 }

@@ -207,6 +207,13 @@ void MainWindowImpl::loadInitialGUIValues() {
 	checkBoxAmplifierBandControl->setChecked(settingsClass.getAmpFuncStatus(2));
 	checkBoxAmplifierReset->setChecked(settingsClass.getAmpFuncStatus(3));
 	checkBoxAmplifierTune->setChecked(settingsClass.getAmpFuncStatus(4));
+
+        groupBoxEthernet->setChecked(settingsClass.getEthernetEnabled());
+        lineEditEthernetIP->setText(settingsClass.getEthernetIPAddr());
+        lineEditEthernetGatewayAddr->setText(settingsClass.getEthernetGatewayAddr());
+        lineEditEthernetUsername->setText(settingsClass.getEthernetUsername());
+        lineEditEthernetPassword->setText(settingsClass.getEthernetPassword());
+        spinBoxEthernetPort->setValue(settingsClass.getEthernetPort());
 }
 
 void MainWindowImpl::pushButtonDefaultBandLimitsPressed() {
@@ -444,6 +451,14 @@ void MainWindowImpl::actionSaveTriggered() {
 	radioInterface.writeSettings(settings);
 	
 	extInput.writeSettings(settings);
+
+        settingsClass.setEthernetEnabled(groupBoxEthernet->isChecked());
+        settingsClass.setEthernetIPAddr(lineEditEthernetIP->text());
+        settingsClass.setEthernetGatewayAddr(lineEditEthernetGatewayAddr->text());
+        settingsClass.setEthernetUsername(lineEditEthernetUsername->text());
+        settingsClass.setEthernetPassword(lineEditEthernetPassword->text());
+        settingsClass.setEthernetPort(spinBoxEthernetPort->value());
+
 	settingsClass.writeSettings(settings);
 	
 	rotators.writeSettings(settings);
@@ -1658,6 +1673,22 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(pa
 	sequencerFootswitch.setName("SequencerFootswitch");
 	
 	setupConnections();
+
+        QRegExpValidator *v = new QRegExpValidator(this);
+        QRegExp rx("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})");
+        v->setRegExp(rx);
+        lineEditEthernetIP->setValidator(v);
+        lineEditEthernetGatewayAddr->setValidator(v);
+
+        lineEditEthernetIP->setText("192.168.1.130");
+        lineEditEthernetGatewayAddr->setText("192.168.1.1");
+
+        lineEditEthernetUsername->setMaxLength(10);
+        lineEditEthernetPassword->setMaxLength(10);
+        lineEditEthernetUsername->setText("sj2w");
+        lineEditEthernetPassword->setText("somepass");
+
+        groupBoxEthernet->setChecked(false);
 
 	//Set the index of the class	
 	for (int i=0;i<9;i++) {
