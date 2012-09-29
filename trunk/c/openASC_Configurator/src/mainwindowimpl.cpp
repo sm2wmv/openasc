@@ -1169,7 +1169,7 @@ void MainWindowImpl::pushButtonExtGPressed() {
 }
 
 void MainWindowImpl::pushButtonExtE1Pressed() {
-	extInput.setCurrSelectedButton(17);
+  extInput.setCurrSelectedButton(17);
 
 	comboBoxExtKeypadFunc->setCurrentIndex(extInput.getButtonFunction());
 	labelExtKeyPadFunc->setText("Key E1 function");

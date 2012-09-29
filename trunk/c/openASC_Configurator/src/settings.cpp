@@ -25,13 +25,13 @@ SettingsClass::SettingsClass() {
 	ampFuncStatus = 0;
 	ampBandSegmentCount = 1;
 
-        /*! Ethernet */
-        ethernetPort = 4750;
-        ethernetUsername = "sj2w";
-        ethernetPassword = "somepass";
-        ethernetIPAddr = "192.168.1.130";
-        ethernetGatewayAddr = "192.168.1.1";
-        ethernetEnabled = false;
+  /*! Ethernet */
+  ethernetPort = 4750;
+  ethernetUsername = "sj2w";
+  ethernetPassword = "somepass";
+  ethernetIPAddr = "192.168.1.130";
+  ethernetGatewayAddr = "192.168.1.1";
+  ethernetEnabled = false;
 }
 
 void SettingsClass::writeSettings(QSettings& settings) {
@@ -88,12 +88,12 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("AmpFuncStatus",ampFuncStatus);
 	settings.setValue("AmpBandSegmentCount",ampBandSegmentCount);
 
-        settings.setValue("EthernetEnabled",ethernetEnabled);
-        settings.setValue("EthernetIPAddr",ethernetIPAddr);
-        settings.setValue("EthernetGatewayAddr",ethernetGatewayAddr);
-        settings.setValue("EthernetPort",ethernetPort);
-        settings.setValue("EthernetUsername",ethernetUsername);
-        settings.setValue("EthernetPassword",ethernetPassword);
+  settings.setValue("EthernetEnabled",ethernetEnabled);
+  settings.setValue("EthernetIPAddr",ethernetIPAddr);
+  settings.setValue("EthernetGatewayAddr",ethernetGatewayAddr);
+  settings.setValue("EthernetPort",ethernetPort);
+  settings.setValue("EthernetUsername",ethernetUsername);
+  settings.setValue("EthernetPassword",ethernetPassword);
 
 	settings.endGroup();
 }
@@ -152,12 +152,12 @@ void SettingsClass::loadSettings(QSettings& settings) {
 	ampFuncStatus = settings.value("AmpFuncStatus").toInt();
 	ampBandSegmentCount = settings.value("AmpBandSegmentCount").toInt();
 
-        ethernetEnabled = settings.value("EthernetEnabled").toBool();
-        ethernetIPAddr = settings.value("EthernetIPAddr").toString();
-        ethernetGatewayAddr = settings.value("EthernetGatewayAddr").toString();
-        ethernetPort = settings.value("EthernetPort").toInt();
-        ethernetUsername = settings.value("EthernetUsername").toString();
-        ethernetPassword = settings.value("EthernetPassword").toString();
+  ethernetEnabled = settings.value("EthernetEnabled").toBool();
+  ethernetIPAddr = settings.value("EthernetIPAddr").toString();
+  ethernetGatewayAddr = settings.value("EthernetGatewayAddr").toString();
+  ethernetPort = settings.value("EthernetPort").toInt();
+  ethernetUsername = settings.value("EthernetUsername").toString();
+  ethernetPassword = settings.value("EthernetPassword").toString();
 
 	settings.endGroup();
 }
@@ -247,6 +247,61 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[7] = ampBandSegmentCount; // The number of band segments the amplifier has got
 
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 8, tx_buff);
+
+
+  QStringList listIP = ethernetIPAddr.split(QRegExp("[.]"));
+  QStringList listGateway = ethernetGatewayAddr.split(QRegExp("[.]"));
+
+  tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_ETHERNET;
+
+  if (listIP.size() == 4) {
+    tx_buff[1] = listIP.takeFirst().toInt();
+    tx_buff[2] = listIP.takeFirst().toInt();
+    tx_buff[3] = listIP.takeFirst().toInt();
+    tx_buff[4] = listIP.takeFirst().toInt();
+  }
+  else
+  {
+    tx_buff[1] = 0;
+    tx_buff[2] = 0;
+    tx_buff[3] = 0;
+    tx_buff[4] = 0;
+  }
+
+  if (listGateway.size() == 4) {
+    tx_buff[5] = listGateway.takeFirst().toInt();
+    tx_buff[6] = listGateway.takeFirst().toInt();
+    tx_buff[7] = listGateway.takeFirst().toInt();
+    tx_buff[8] = listGateway.takeFirst().toInt();
+  }
+  else
+  {
+    tx_buff[5] = 0;
+    tx_buff[6] = 0;
+    tx_buff[7] = 0;
+    tx_buff[8] = 0;
+  }
+
+  tx_buff[9] = (ethernetPort >> 8) & 0xFF; //Upper byte
+  tx_buff[10] = ethernetPort & 0xFF;       //Lower byte
+
+  for (int i=0;i<ethernetUsername.size();i++) {
+    tx_buff[11+i] = ethernetUsername.at(i).toAscii();
+  }
+
+  //Fill up the rest with 0
+  for (int i=0;i<(11-ethernetUsername.size());i++)
+    tx_buff[11+ethernetUsername.size()] = 0;
+
+  for (int i=0;i<ethernetPassword.size();i++) {
+    tx_buff[22+i] = ethernetPassword.at(i).toAscii();
+  }
+
+  //Fill up the rest with 0
+  for (int i=0;i<(11-ethernetPassword.size());i++)
+    tx_buff[22+ethernetPassword.size()] = 0;
+
+  serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 33, tx_buff);
 
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
@@ -386,49 +441,49 @@ void SettingsClass::setAmpBandSegmentCount(unsigned char segments) {
 }
 
 void SettingsClass::setEthernetIPAddr(QString address) {
-    ethernetIPAddr = address;
+  ethernetIPAddr = address;
 }
 
 void SettingsClass::setEthernetGatewayAddr(QString address) {
-    ethernetGatewayAddr = address;
+  ethernetGatewayAddr = address;
 }
 
 void SettingsClass::setEthernetUsername(QString username) {
-    ethernetUsername = username;
+  ethernetUsername = username;
 }
 
 void SettingsClass::setEthernetPassword(QString password) {
-    ethernetPassword = password;
+  ethernetPassword = password;
 }
 
 void SettingsClass::setEthernetPort(unsigned int port) {
-    ethernetPort = port;
+  ethernetPort = port;
 }
 
 QString SettingsClass::getEthernetIPAddr(void) {
-    return(ethernetIPAddr);
+  return(ethernetIPAddr);
 }
 
 QString SettingsClass::getEthernetGatewayAddr(void) {
-    return(ethernetGatewayAddr);
+  return(ethernetGatewayAddr);
 }
 
 QString SettingsClass::getEthernetUsername(void) {
-    return(ethernetUsername);
+  return(ethernetUsername);
 }
 
 QString SettingsClass::getEthernetPassword(void) {
-    return(ethernetPassword);
+  return(ethernetPassword);
 }
 
 unsigned int SettingsClass::getEthernetPort(void) {
-    return(ethernetPort);
+  return(ethernetPort);
 }
 
 bool SettingsClass::getEthernetEnabled(void) {
-    return(ethernetEnabled);
+  return(ethernetEnabled);
 }
 
 void SettingsClass::setEthernetEnabled(bool state) {
-    ethernetEnabled = state;
+  ethernetEnabled = state;
 }
