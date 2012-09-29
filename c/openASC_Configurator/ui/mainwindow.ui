@@ -3743,8 +3743,8 @@ a function to it</string>
         <property name="geometry">
          <rect>
           <x>255</x>
-          <y>425</y>
-          <width>385</width>
+          <y>430</y>
+          <width>256</width>
           <height>130</height>
          </rect>
         </property>
@@ -3770,23 +3770,10 @@ a function to it</string>
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEditEthernetIP"/>
            </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="labelButtonEthernetUsername">
-             <property name="text">
-              <string>Username:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLineEdit" name="lineEditEthernetUsername"/>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="labelButtonEthernetGatewayAddr">
              <property name="text">
-              <string>Gateway addr:</string>
+              <string>Sub mask:</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3794,20 +3781,7 @@ a function to it</string>
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditEthernetGatewayAddr"/>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="labelButtonEthernetPassword">
-             <property name="text">
-              <string>Password:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QLineEdit" name="lineEditEthernetPassword"/>
+            <widget class="QLineEdit" name="lineEditEthernetSubmask"/>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="labelButtonEthernetPort">
@@ -3879,7 +3853,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>656</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">

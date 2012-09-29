@@ -160,6 +160,8 @@
 #define CTRL_SET_DEVICE_SETTINGS_OTHER			0x03
 //! CTRL command: External input settings
 #define CTRL_SET_DEVICE_SETTINGS_EXT_INPUTS	0x04
+//! CTRL command: Ethernet settings
+#define CTRL_SET_DEVICE_SETTINGS_ETHERNET   0x05
 //! CTRL command: Save data to eeprom
 #define CTRL_SET_DEVICE_SETTINGS_SAVE				0x07
 
@@ -616,6 +618,22 @@ void computer_interface_parse_data(void) {
 					
 					computer_interface_send_ack();
 					break;
+        case CTRL_SET_DEVICE_SETTINGS_ETHERNET:
+          settings_ptr->ethernet_ip_addr[0] = computer_comm.rx_buffer_start[1];
+          settings_ptr->ethernet_ip_addr[1] = computer_comm.rx_buffer_start[2];
+          settings_ptr->ethernet_ip_addr[2] = computer_comm.rx_buffer_start[3];
+          settings_ptr->ethernet_ip_addr[3] = computer_comm.rx_buffer_start[4];
+          
+          settings_ptr->ethernet_submask[0] = computer_comm.rx_buffer_start[5];
+          settings_ptr->ethernet_submask[1] = computer_comm.rx_buffer_start[6];
+          settings_ptr->ethernet_submask[2] = computer_comm.rx_buffer_start[7];
+          settings_ptr->ethernet_submask[3] = computer_comm.rx_buffer_start[8];
+          
+          settings_ptr->ethernet_port = computer_comm.rx_buffer_start[9] << 8;
+          settings_ptr->ethernet_port |= computer_comm.rx_buffer_start[10];
+          
+          computer_interface_send_ack();
+          break;
 				case CTRL_SET_DEVICE_SETTINGS_OTHER:
 					settings_ptr->ptt_interlock_input = computer_comm.rx_buffer_start[1];
           

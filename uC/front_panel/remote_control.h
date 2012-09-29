@@ -38,6 +38,7 @@ void remote_control_deactivate_remote_mode(void);
 unsigned char remote_control_get_remote_mode(void);
 void remote_control_parse_command(unsigned char command, unsigned char length, char *data);
 
+void remote_control_send_rx_antennas(void);
 void remote_control_parse_button(unsigned char button);
 
 void remote_control_send_band_info(unsigned char band);

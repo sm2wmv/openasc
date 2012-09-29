@@ -635,8 +635,6 @@ int main(void){
 	
 	bus_init();
 
-  ethernet_init();
-  
 	//Init the power meter
 	powermeter_init(settings.powermeter_update_rate_text, settings.powermeter_update_rate_bargraph);
 	
@@ -660,7 +658,9 @@ int main(void){
 	led_set_all(LED_STATE_ON);
 	delay_ms(250);
 	led_set_all(LED_STATE_OFF);
-	
+
+  ethernet_init();
+  
 	//Initialize the menu system
 	menu_init();
 	
