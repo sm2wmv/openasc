@@ -23,10 +23,8 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-//#define DEBUG_COMPUTER_USART_ENABLED 1
-
 //! The current firmware revision nr
-#define FIRMWARE_REV "309\0"
+#define FIRMWARE_REV "361\0"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -250,6 +248,12 @@ typedef struct {
   unsigned int amp_func_conf;
   //! The number of band segments the amplifier has got per band
   unsigned char amp_band_seg_count;
+  //! The ethernet ip address
+  unsigned char ethernet_ip_addr[4];
+  //! The ethernet submask address
+  unsigned char ethernet_submask[4];
+  //! The ethernet port
+  unsigned int ethernet_port;
 } struct_setting;
 
 //! This struct only contains information that is temporary

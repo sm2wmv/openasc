@@ -147,4 +147,16 @@
 //! Ext ctrl - Tune the amplifier to current band and segment 6
 #define EXT_CTRL_TUNE_AMPLIFIER_SEGMENT_6  57
 
+//! Ext ctrl - Rotate button pressed
+#define EXT_CTRL_TOGGLE_ROTATE_BUTTON   58
+//! Ext ctrl - Sub menu button pressed
+#define EXT_CTRL_TOGGLE_SUBMENU_BUTTON  59
+//! Ext ctrl - Menu button pressed
+#define EXT_CTRL_TOGGLE_MENU_BUTTON     60
+//! Ext ctrl - Knob rotate CW
+#define EXT_CTRL_TOGGLE_KNOB_ROTATE_CW  61
+//! Ext ctrl - Knob rotate CCW
+#define EXT_CTRL_TOGGLE_KNOB_ROTATE_CCW 62
+//! Ext ctrl - Knob pressed
+#define EXT_CTRL_TOGGLE_KNOB_BUTTON     63
 #endif

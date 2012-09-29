@@ -580,6 +580,24 @@ void event_process_task(unsigned char task_index) {
         #endif
       }
       break;
+    case EXT_CTRL_TOGGLE_ROTATE_BUTTON:
+      event_rotate_button_pressed();
+      break;
+    case EXT_CTRL_TOGGLE_SUBMENU_BUTTON:
+      event_sub_button_pressed();
+      break;
+    case EXT_CTRL_TOGGLE_MENU_BUTTON:
+      event_menu_button_pressed();
+      break;
+    case EXT_CTRL_TOGGLE_KNOB_ROTATE_CW:
+      event_pulse_sensor_up();
+      break;
+    case EXT_CTRL_TOGGLE_KNOB_ROTATE_CCW:
+      event_pulse_sensor_down();
+      break;
+    case EXT_CTRL_TOGGLE_KNOB_BUTTON:
+      event_pulse_button_pressed();
+      break;
 		default:
 			break;
 	}
@@ -608,7 +626,7 @@ void event_pulse_sensor_up(void) {
 	if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
 		menu_action(MENU_SCROLL_UP);
     
-    display_handler_repaint();
+    //display_handler_repaint();
 	}
 	else {
 		//If the knob function is RX ANT SELECT then go up the list of 
@@ -660,7 +678,7 @@ void event_pulse_sensor_down(void) {
 	if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
 		menu_action(MENU_SCROLL_DOWN);
     
-    display_handler_repaint();
+    //display_handler_repaint();
 	}
 	else {
 		//If the knob function is RX ANT SELECT then go down the list of 
@@ -704,6 +722,54 @@ void event_pulse_sensor_down(void) {
 			}
 		}
 	}
+}
+
+void event_pulse_button_pressed(void) {
+  if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE))
+    menu_action(MENU_BUTTON_PRESSED);
+  else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
+    main_set_new_band(status.new_band);
+  }
+  else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
+    if (status.antenna_to_rotate != 0) {
+      antenna_ctrl_rotate(status.antenna_to_rotate-1,status.new_beamheading);
+    
+      led_set_rotate(LED_STATE_OFF);
+      status.function_status &= ~(1<<FUNC_STATUS_ROTATE);
+
+      status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
+      status.antenna_to_rotate = 0;
+
+      set_knob_function(KNOB_FUNCTION_AUTO);
+    
+      display_handler_prev_view();
+    }
+  }
+  else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
+    clear_screensaver_timer();
+    
+    //If we press the rotary knob while selecting sub menu we exit the sub menu. This
+    //is so that the function is equal to other functions of the device
+    led_set_submenu(LED_STATE_OFF);
+    status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
+    set_knob_function(KNOB_FUNCTION_AUTO);
+
+    display_handler_prev_view();        
+  }
+}
+
+void event_menu_button_pressed(void) {
+  if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
+    status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
+    display_handler_prev_view();
+    led_set_menu(LED_STATE_OFF);
+  }
+  else {
+    menu_reset();
+    status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
+    display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
+    led_set_menu(LED_STATE_ON);
+  }
 }
 
 /*! \brief The TX/RX mode button was pressed */
@@ -751,7 +817,57 @@ void event_poll_buttons(void) {
     }    
         
     if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
-			event_rotate_button_pressed();
+			//event_rotate_button_pressed();
+      unsigned char rotator_count=0, rotator_index=0;
+      
+      for (unsigned char i=0;i<4;i++)
+        if (antenna_ctrl_get_flags(i) & (1<<ANTENNA_ROTATOR_FLAG)) {
+          rotator_count++;
+          
+          //This variable is used if only one antenna has got a rotator
+          rotator_index = i;
+        }
+        
+      if (rotator_count > 0) {
+        if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
+          if (((status.function_status & (1<<FUNC_STATUS_ROTATE)) == 0) || ((status.function_status & (1<<FUNC_STATUS_ROTATE)) && (status.knob_function != KNOB_FUNCTION_SET_HEADING))) {
+            if (rotator_count == 1) {
+              status.antenna_to_rotate = rotator_index+1;
+              status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
+            
+              status.function_status |= (1<<FUNC_STATUS_ROTATE);
+              
+              led_set_rotate(LED_STATE_ON);
+              
+              antenna_ctrl_set_antenna_to_rotate(rotator_index);
+              
+              status.new_beamheading = antenna_ctrl_get_direction(rotator_index);
+              set_knob_function(KNOB_FUNCTION_SET_HEADING);
+              
+              display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
+            }
+            else {
+              led_set_rotate(LED_STATE_ON);
+              status.function_status |= (1<<FUNC_STATUS_ROTATE);
+              set_knob_function(KNOB_FUNCTION_SET_HEADING);
+                
+              status.function_status |= (1<<FUNC_STATUS_SELECT_ANT_ROTATE);
+            }
+          }
+          else {
+            led_set_rotate(LED_STATE_OFF);
+            status.function_status &= ~(1<<FUNC_STATUS_ROTATE);
+              
+            status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
+            status.antenna_to_rotate = 0;
+            set_tx_ant_leds();
+              
+            set_knob_function(KNOB_FUNCTION_AUTO);
+            
+            display_handler_prev_view();
+          }
+        }
+      }			
 		}
 		
 		if (btn_status & (1<<FLAG_BUTTON_RXANT_BIT)) {
@@ -760,26 +876,18 @@ void event_poll_buttons(void) {
 		}
 	
 		if (btn_status & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
-			event_sub_button_pressed();
+      if (status.buttons_current_state & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
+        event_sub_button_pressed();
+      }
 		}
 		
 	//Check if the MENU button has been pressed
 		if (btn_status & (1<<FLAG_BUTTON_MENU_BIT)) {
       clear_screensaver_timer();
       
-			if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
-				if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
-          status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
-          display_handler_prev_view();
-					led_set_menu(LED_STATE_OFF);
-				}
-				else {
-					menu_reset();
-          status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
-          display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
-          led_set_menu(LED_STATE_ON);
-				}
-			}
+      if (status.buttons_current_state & (1<<FLAG_BUTTON_MENU_BIT)) {
+        event_menu_button_pressed();
+      }
 		}
 
 	
@@ -787,38 +895,8 @@ void event_poll_buttons(void) {
       clear_screensaver_timer();
       
 			if (status.buttons_current_state & (1<<	FLAG_BUTTON_PULSE_BIT)) {
-				if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE))
-					menu_action(MENU_BUTTON_PRESSED);
-				else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
-					main_set_new_band(status.new_band);
-				}
-				else if (status.knob_function == KNOB_FUNCTION_SET_HEADING) {
-					if (status.antenna_to_rotate != 0) {
-						antenna_ctrl_rotate(status.antenna_to_rotate-1,status.new_beamheading);
-					
-						led_set_rotate(LED_STATE_OFF);
-						status.function_status &= ~(1<<FUNC_STATUS_ROTATE);
-				
-						status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
-						status.antenna_to_rotate = 0;
-				
-						set_knob_function(KNOB_FUNCTION_AUTO);
-					
-            display_handler_prev_view();
-          }
-				}
-				else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
-          clear_screensaver_timer();
-          
-					//If we press the rotary knob while selecting sub menu we exit the sub menu. This
-					//is so that the function is equal to other functions of the device
-					led_set_submenu(LED_STATE_OFF);
-					status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
-					set_knob_function(KNOB_FUNCTION_AUTO);
-				
-          display_handler_prev_view();				
-        }
-			}
+        event_pulse_button_pressed();
+      }
 		}
 
 		if (btn_status & (1<<FLAG_BUTTON_AUX1_BIT)) {
@@ -1212,39 +1290,37 @@ void event_aux2_button_released(void) {
 void event_sub_button_pressed(void) {
 	clear_screensaver_timer();
 	
-	if (status.buttons_current_state & (1<<FLAG_BUTTON_SUBMENU_BIT)) {
-		if (sub_menu_get_count() != 0) {
-			if ((status.function_status & (1<<FUNC_STATUS_SUBMENU)) == 0) {
-				led_set_submenu(LED_STATE_ON);
-				status.function_status |= (1<<FUNC_STATUS_SUBMENU);
-				set_knob_function(KNOB_FUNCTION_SET_SUBMENU);
-							
-				if (sub_menu_get_count() == 1) {
-					for (unsigned char i=0;i<4;i++)
-						if ((antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY) || (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_STACK))
-							status.sub_menu_antenna_index = i;
-					
-            display_handler_new_view(DISPLAY_HANDLER_VIEW_SUBMENU);
-				}
-			}
-			else if (status.knob_function != KNOB_FUNCTION_SET_SUBMENU) {
-				set_knob_function(KNOB_FUNCTION_SET_SUBMENU);
-			}
-			else {
-				led_set_submenu(LED_STATE_OFF);
-				status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
-				set_knob_function(KNOB_FUNCTION_AUTO);
+  if (sub_menu_get_count() != 0) {
+    if ((status.function_status & (1<<FUNC_STATUS_SUBMENU)) == 0) {
+      led_set_submenu(LED_STATE_ON);
+      status.function_status |= (1<<FUNC_STATUS_SUBMENU);
+      set_knob_function(KNOB_FUNCTION_SET_SUBMENU);
+            
+      if (sub_menu_get_count() == 1) {
+        for (unsigned char i=0;i<4;i++)
+          if ((antenna_ctrl_get_sub_menu_type(i) == SUBMENU_VERT_ARRAY) || (antenna_ctrl_get_sub_menu_type(i) == SUBMENU_STACK))
+            status.sub_menu_antenna_index = i;
+        
+          display_handler_new_view(DISPLAY_HANDLER_VIEW_SUBMENU);
+      }
+    }
+    else if (status.knob_function != KNOB_FUNCTION_SET_SUBMENU) {
+      set_knob_function(KNOB_FUNCTION_SET_SUBMENU);
+    }
+    else {
+      led_set_submenu(LED_STATE_OFF);
+      status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
+      set_knob_function(KNOB_FUNCTION_AUTO);
 
-        display_handler_prev_view();
-			}
-		}
-		else {
-			//Make sure that no sub menu stuff is used
-			led_set_submenu(LED_STATE_OFF);
-			status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
-			set_knob_function(KNOB_FUNCTION_AUTO);
-		}
-	}
+      display_handler_prev_view();
+    }
+  }
+  else {
+    //Make sure that no sub menu stuff is used
+    led_set_submenu(LED_STATE_OFF);
+    status.function_status &= ~(1<<FUNC_STATUS_SUBMENU);
+    set_knob_function(KNOB_FUNCTION_AUTO);
+  }
 }
 
 /*! \brief Perform the action of RX antenna button if it was pressed */
@@ -1293,58 +1369,7 @@ void event_rxant_button_pressed(void) {
 
 /*! \brief Perform the action of Rotate button if it was pressed */
 void event_rotate_button_pressed(void) {
-	clear_screensaver_timer();
-  
-	unsigned char rotator_count=0, rotator_index=0;
-	
-	for (unsigned char i=0;i<4;i++)
-		if (antenna_ctrl_get_flags(i) & (1<<ANTENNA_ROTATOR_FLAG)) {
-			rotator_count++;
-			
-			//This variable is used if only one antenna has got a rotator
-			rotator_index = i;
-		}
-		
-	if (rotator_count > 0) {
-		if (status.buttons_current_state & (1<<FLAG_BUTTON_ROTATE_BIT)) {
-			if (((status.function_status & (1<<FUNC_STATUS_ROTATE)) == 0) || ((status.function_status & (1<<FUNC_STATUS_ROTATE)) && (status.knob_function != KNOB_FUNCTION_SET_HEADING))) {
-				if (rotator_count == 1) {
-					status.antenna_to_rotate = rotator_index+1;
-					status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
-				
-          status.function_status |= (1<<FUNC_STATUS_ROTATE);
-          
-          led_set_rotate(LED_STATE_ON);
-          
-          antenna_ctrl_set_antenna_to_rotate(rotator_index);
-          
-					status.new_beamheading = antenna_ctrl_get_direction(rotator_index);
-					set_knob_function(KNOB_FUNCTION_SET_HEADING);
-					
-          display_handler_new_view(DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR);
-        }
-				else {
-					led_set_rotate(LED_STATE_ON);
-					status.function_status |= (1<<FUNC_STATUS_ROTATE);
-					set_knob_function(KNOB_FUNCTION_SET_HEADING);
-						
-					status.function_status |= (1<<FUNC_STATUS_SELECT_ANT_ROTATE);
-				}
-			}
-			else {
-				led_set_rotate(LED_STATE_OFF);
-				status.function_status &= ~(1<<FUNC_STATUS_ROTATE);
-					
-				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
-				status.antenna_to_rotate = 0;
-				set_tx_ant_leds();
-					
-				set_knob_function(KNOB_FUNCTION_AUTO);
-				
-				display_handler_prev_view();
-			}
-		}
-	}
+
 }
 
 /*! \brief Parse a message from the communication bus */

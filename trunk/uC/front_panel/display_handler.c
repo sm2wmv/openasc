@@ -353,8 +353,6 @@ void display_handler_show_rx_ant(unsigned char ant_index) {
     
     glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_SIX_DOT, temp, strlen(temp));
   }
-  
-  glcd_update_all();
 }
 
 /**
@@ -632,6 +630,10 @@ void display_handler_show_set_heading(unsigned int rotator_heading) {
 void display_handler_tick(void) {
   //Check if there is a new display to be viewed or we force a repaint of the current view
   if ((display_handler_status.new_display != display_handler_status.active_display) || (display_handler_status.force_repaint == 1)) {
+    #ifdef DEBUG_COMPUTER_USART_ENABLED
+      printf("FORCE_STATUS: %i\r\n",display_handler_status.force_repaint);
+    #endif
+    
     display_handler_status.force_repaint = 0;
     
     if (display_handler_status.active_display != display_handler_status.new_display)

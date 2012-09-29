@@ -29,12 +29,12 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-//#define ETHERNET_DEBUG_ENABLED
-
 #include "ethernet.h"
 #include "main.h"
 #include "../delay.h"
 #include "../remote_commands.h"
+#include "remote_control.h"
+#include "../wmv_bus/bus.h"
 
 static unsigned char ethernet_chip_enabled;
 
@@ -115,6 +115,7 @@ static unsigned char sockstat = 0;
 static unsigned char last_sockstat = 1;
 static unsigned char sockreg = 0;
 static unsigned char rx_msg_size=0;
+static unsigned int ethernet_tcp_port = 4475;
 
 void ethernet_spi_write(unsigned int addr,unsigned char data)
 {
@@ -177,13 +178,21 @@ void ethernet_init(void) {
   #ifdef ETHERNET_DEBUG_ENABLED
     printf("Ethernet: SPI enabled\n");
   #endif
-    
+
+  struct_setting *settings = main_get_settings_ptr();
+  
   // Ethernet Setup
-  unsigned char mac_addr[] = {0x00,0x16,0x36,0xDE,0x58,0xF7};
-  unsigned char ip_addr[] = {192,168,1,11};
-  unsigned char sub_mask[] = {255,255,255,0};
+  //We set the MAC address based on the bus address to avoid having the same MAC on several units
+  unsigned char mac_addr[] = {0x00,0x22,0x15,0xDE,0xE0,0x35};
+  
+  unsigned char ip_addr[] = {settings->ethernet_ip_addr[0],settings->ethernet_ip_addr[1],settings->ethernet_ip_addr[2],settings->ethernet_ip_addr[3]};
+  unsigned char sub_mask[] = {settings->ethernet_submask[0],settings->ethernet_submask[1],settings->ethernet_submask[2],settings->ethernet_submask[3]};
+  //unsigned char ip_addr[] = {77,110,45,191};
+  //unsigned char sub_mask[] = {255,255,255,0};
   unsigned char gtw_addr[] = {0,0,0,0};
 
+  ethernet_tcp_port = settings->ethernet_port;
+  
   delay_ms(250);
   
   // Setting the Wiznet W5100 Mode Register: 0x0000
@@ -213,6 +222,11 @@ void ethernet_init(void) {
     #endif
     
     return(0);
+  }
+  else {
+    #ifdef ETHERNET_DEBUG_ENABLED
+      printf("ETH >> Ethernet chip detected\n");
+    #endif
   }
   
   #ifdef ETHERNET_DEBUG_ENABLED
@@ -267,7 +281,7 @@ void ethernet_init(void) {
   #endif
  
   #ifdef ETHERNET_DEBUG_ENABLED
-    printf("ETH >> Created TCP socket on port %i\n",TCP_PORT);
+    printf("ETH >> Created TCP socket on port %i\n",settings->ethernet_port);
   #endif
 
   ethernet_chip_enabled = 1;
@@ -340,7 +354,7 @@ unsigned char ethernet_listen(unsigned char sock) {
 }
 
 unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, unsigned int buflen) {
-  unsigned char preamble[3] = {0xFE,0xFE,REMOTE_COMMAND_DISPLAY_DATA,buflen};
+  unsigned char preamble[5] = {0xFE,0xFE,REMOTE_COMMAND_DISPLAY_DATA,(buflen >> 8) & 0xFF,buflen & 0xFF};
   
   unsigned int ptr,offaddr,realaddr,txsize,timeout;   
 
@@ -352,7 +366,7 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
   txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
   timeout=0;
-  while (txsize < (buflen+3)) {
+  while (txsize < (buflen+5)) {
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
     // Timeout for approx 1000 ms
@@ -369,7 +383,7 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
 
   unsigned char i=0;
   
-  while(i<4) {
+  while(i<5) {
     // Calculate the real W5100 physical Tx Buffer Address
     realaddr = TXBUFADDR + (offaddr & TX_BUF_MASK);
     // Copy the application data to the W5100 Tx Buffer
@@ -497,7 +511,7 @@ void ethernet_process(void) {
   
   switch(sockstat) {
     case SOCK_CLOSED:
-      if (ethernet_socket(sockreg,MR_TCP,TCP_PORT) > 0)
+      if (ethernet_socket(sockreg,MR_TCP,ethernet_tcp_port) > 0)
         if (ethernet_listen(sockreg) <= 0) {
           #ifdef ETHERNET_DEBUG_ENABLED
             printf("ETH >> SOCK LISTEN SUCCESS\n");
@@ -513,6 +527,16 @@ void ethernet_process(void) {
         if (last_sockstat != sockstat)
           printf("ETH >> Socket ESTABLISHED\n");
       #endif
+      
+      //Check if the connection was just established, if so we need to send some data to the client
+      if (last_sockstat != sockstat) {
+        #ifdef ETHERNET_DEBUG_ENABLED
+          printf("ETH >> Sending RX antenna info\r\n");
+        #endif
+
+        remote_control_send_rx_antennas();
+      }
+          
       rx_msg_size = ethernet_recv_size();
           
       if (rx_msg_size > 0) {
@@ -522,11 +546,17 @@ void ethernet_process(void) {
             
         ethernet_recv(sockreg,ethernet_buf,rx_msg_size);
         
-        //ethernet_send(sockreg,"hahaha",6);
-        
         #ifdef ETHERNET_DEBUG_ENABLED
           printf("ETH >> RX MSG: %s\n", ethernet_buf);
         #endif
+        
+        #ifdef ETHERNET_DEBUG_ENABLED
+          for (unsigned char i=0;i<rx_msg_size;i++)
+            printf("DATA[%i]: 0x%02X\r\n",i,ethernet_buf[i]);
+        #endif
+          
+        if (rx_msg_size > 4)
+          remote_control_parse_command(ethernet_buf[2],ethernet_buf[3],(char *)(ethernet_buf+4));
       }
       break;
     case SOCK_INIT:
