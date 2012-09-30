@@ -579,5 +579,5 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	connect(pushButtonSubMenuArray1, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray1Clicked()));
 	connect(pushButtonSubMenuArray2, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray2Clicked()));
 	connect(pushButtonSubMenuArray3, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray3Clicked()));
-	connect(pushButtonSubMenuArray4, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray4Clicked()));
+        connect(pushButtonSubMenuArray4, SIGNAL(clicked()), this, SLOT(pushButtonSubMenuArray4Clicked()));
 }

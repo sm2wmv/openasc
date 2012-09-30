@@ -7,7 +7,7 @@
 #include "settingsdialog.h"
 #include "terminaldialog.h"
 #include "tcpclass.h"
-#include "errordialog.h"
+#include "keypad.h"
 
 #include <QtNetwork>
 #include <QTcpSocket>
@@ -20,7 +20,6 @@ typedef struct {
 	unsigned char currentBand;
 	unsigned char currentAntennas;
 	unsigned char currentRXAntennas;
-	unsigned int currentErrors;
 	unsigned char subMenuType[4];
 	unsigned char antennaFlags[4];
 	unsigned char antSubOptSelected[4];
@@ -40,11 +39,11 @@ public:
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
 		terminalDialog *terminalWindow;
-		ErrorDialog *errorDialog;
 		void pushButtonPressed(unsigned char button);
 		QString getBandName(int bandIndex);
 		unsigned char glcd_buffer[8][128];
 		TCPClass *TCPComm;
+    Keypad *keypadWindow;
 		void updateDisplay();
 private:
 		int interfaceType;
@@ -61,8 +60,8 @@ public slots:
 		void actionConnectTriggered();
 		void actionDisconnectTriggered();
 		void actionSettingsEditTriggered();
-		void actionErrorDialogTriggered();
 		void actionTerminalTriggered();
+    void actionKeypadTriggered();
 
 		void pushButtonTX1Clicked();
 		void pushButtonTX2Clicked();

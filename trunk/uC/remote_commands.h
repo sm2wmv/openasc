@@ -41,5 +41,6 @@
 #define REMOTE_COMMAND_DISPLAY_DATA               0xB0
 #define REMOTE_COMMAND_BUTTON_EVENT               0xB1
 #define REMOTE_COMMAND_RX_ANT_INFO                0xB2
+#define REMOTE_COMMAND_KEYPAD_BUTTON_EVENT        0xB3
 
 #endif

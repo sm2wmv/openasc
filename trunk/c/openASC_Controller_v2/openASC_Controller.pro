@@ -14,7 +14,7 @@ FORMS = ui/mainwindow.ui \
     ui/rotatorwindow.ui \
     ui/settingsdialog.ui \
     ui/terminaldialog.ui \
-		ui/errordialog.ui
+    ui/keypad.ui
 HEADERS = src/mainwindowimpl.h \
     src/generic.h \
     src/main.h \
@@ -22,13 +22,13 @@ HEADERS = src/mainwindowimpl.h \
     src/settingsdialog.h \
     src/commands.h \
     src/terminaldialog.h \
-		src/errordialog.h \
-		src/tcpclass.h
+    src/tcpclass.h \
+    src/keypad.h
 SOURCES = src/mainwindowimpl.cpp \
     src/main.cpp \
     src/generic.cpp \
     src/rotatordialog.cpp \
     src/settingsdialog.cpp \
     src/terminaldialog.cpp \
-		src/errordialog.cpp \
-		src/tcpclass.cpp
+    src/tcpclass.cpp \
+    src/keypad.cpp
