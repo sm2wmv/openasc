@@ -1,265 +1,194 @@
 <!DOCTYPE QtCreatorProject>
 <qtcreator>
  <data>
-  <variable>RunConfiguration0-Arguments</variable>
-  <valuelist type="QVariantList"/>
- </data>
- <data>
-  <variable>RunConfiguration0-BaseEnvironmentBase</variable>
+  <variable>ProjectExplorer.Project.ActiveTarget</variable>
   <value type="int">0</value>
  </data>
  <data>
-  <variable>RunConfiguration0-Executable</variable>
-  <value type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller/bin/openASC_Controller</value>
- </data>
- <data>
-  <variable>RunConfiguration0-RunConfiguration.name</variable>
-  <value type="QString">openASC Controller</value>
- </data>
- <data>
-  <variable>RunConfiguration0-UseTerminal</variable>
-  <value type="bool">false</value>
- </data>
- <data>
-  <variable>RunConfiguration0-UserEnvironmentChanges</variable>
-  <valuelist type="QVariantList"/>
- </data>
- <data>
-  <variable>RunConfiguration0-UserName</variable>
-  <value type="QString">openASC Controller</value>
- </data>
- <data>
-  <variable>RunConfiguration0-UserSetName</variable>
-  <value type="bool">true</value>
- </data>
- <data>
-  <variable>RunConfiguration0-WorkingDirectory</variable>
-  <value type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller/bin</value>
- </data>
- <data>
-  <variable>RunConfiguration0-type</variable>
-  <value type="QString">ProjectExplorer.CustomExecutableRunConfiguration</value>
- </data>
- <data>
-  <variable>activeRunConfiguration</variable>
-  <value type="int">0</value>
- </data>
- <data>
-  <variable>activebuildconfiguration</variable>
-  <value type="QString">Release</value>
- </data>
- <data>
-  <variable>buildConfiguration-Release</variable>
+  <variable>ProjectExplorer.Project.EditorSettings</variable>
   <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-   <value key="QtVersionId" type="int">2</value>
-   <value key="ToolChain" type="int">0</value>
-   <value key="addQDumper" type=""></value>
-   <value key="buildConfiguration" type="int">0</value>
+   <value key="EditorConfiguration.AutoIndent" type="bool">true</value>
+   <value key="EditorConfiguration.AutoSpacesForTabs" type="bool">false</value>
+   <value key="EditorConfiguration.Codec" type="QByteArray">UTF-8</value>
+   <value key="EditorConfiguration.DoubleIndentBlocks" type="bool">false</value>
+   <value key="EditorConfiguration.IndentBraces" type="bool">false</value>
+   <value key="EditorConfiguration.IndentSize" type="int">4</value>
+   <value key="EditorConfiguration.MouseNavigation" type="bool">true</value>
+   <value key="EditorConfiguration.PaddingMode" type="int">1</value>
+   <value key="EditorConfiguration.ScrollWheelZooming" type="bool">true</value>
+   <value key="EditorConfiguration.SmartBackspace" type="bool">false</value>
+   <value key="EditorConfiguration.SpacesForTabs" type="bool">true</value>
+   <value key="EditorConfiguration.TabKeyBehavior" type="int">0</value>
+   <value key="EditorConfiguration.TabSize" type="int">8</value>
+   <value key="EditorConfiguration.UseGlobal" type="bool">true</value>
+   <value key="EditorConfiguration.Utf8BomBehavior" type="int">1</value>
+   <value key="EditorConfiguration.addFinalNewLine" type="bool">true</value>
+   <value key="EditorConfiguration.cleanIndentation" type="bool">true</value>
+   <value key="EditorConfiguration.cleanWhitespace" type="bool">true</value>
+   <value key="EditorConfiguration.inEntireDocument" type="bool">false</value>
   </valuemap>
  </data>
  <data>
-  <variable>buildconfiguration-Release-buildstep0</variable>
+  <variable>ProjectExplorer.Project.Target.0</variable>
   <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-   <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Qac2rsrRf5,guid=1eb8c790db610944902cc7514eec4e9f</value>
-    <value type="QString">DESKTOP_SESSION=kde</value>
-    <value type="QString">DISPLAY=:0</value>
-    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-AoeWtt/S.gpg-agent:1832:1</value>
-    <value type="QString">GS_LIB=/home/micke/.fonts</value>
-    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/micke/.gtkrc-2.0:/home/micke/.gtkrc-2.0-kde4:/home/micke/.kde/share/config/gtkrc-2.0</value>
-    <value type="QString">GTK_MODULES=canberra-gtk-module</value>
-    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/micke/.gtkrc::/home/micke/.kde/share/config/gtkrc</value>
-    <value type="QString">HOME=/home/micke</value>
-    <value type="QString">KDE_FULL_SESSION=true</value>
-    <value type="QString">KDE_MULTIHEAD=false</value>
-    <value type="QString">KDE_SESSION_UID=1000</value>
-    <value type="QString">KDE_SESSION_VERSION=4</value>
-    <value type="QString">LANG=en_US.UTF-8</value>
-    <value type="QString">LANGUAGE=</value>
-    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
-    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/dri:/usr/lib32/dri</value>
-    <value type="QString">LOGNAME=micke</value>
-    <value type="QString">PATH=/usr/bin:/home/micke/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
-    <value type="QString">PWD=/home/micke</value>
-    <value type="QString">QTDIR=/usr/share/qt4</value>
-    <value type="QString">QT_PLUGIN_PATH=/home/micke/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/beavis:@/tmp/.ICE-unix/1958,unix/beavis:/tmp/.ICE-unix/1958</value>
-    <value type="QString">SHELL=/bin/bash</value>
-    <value type="QString">SHLVL=0</value>
-    <value type="QString">SPEECHD_PORT=7560</value>
-    <value type="QString">SSH_AGENT_PID=1831</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-thIxvq1777/agent.1777</value>
-    <value type="QString">USER=micke</value>
-    <value type="QString">WINDOWPATH=7</value>
-    <value type="QString">XCURSOR_THEME=oxy-white</value>
-    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1324109471.520846-117629243</value>
-    <value type="QString">XDM_MANAGED=method=classic</value>
-   </valuelist>
-   <valuelist key="abstractProcess.arguments" type="QVariantList">
-    <value type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller/openASC_Controller.pro</value>
-    <value type="QString">-spec</value>
-    <value type="QString">linux-g++</value>
-    <value type="QString">-r</value>
-   </valuelist>
-   <value key="abstractProcess.command" type="QString">/usr/bin/qmake-qt4</value>
-   <value key="abstractProcess.enabled" type="bool">false</value>
-   <value key="abstractProcess.workingDirectory" type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller</value>
+   <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString"></value>
+   <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString"></value>
+   <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">Qt4ProjectManager.Target.DesktopTarget</value>
+   <value key="ProjectExplorer.Target.ActiveBuildConfiguration" type="int">0</value>
+   <value key="ProjectExplorer.Target.ActiveDeployConfiguration" type="int">0</value>
+   <value key="ProjectExplorer.Target.ActiveRunConfiguration" type="int">0</value>
+   <valuemap key="ProjectExplorer.Target.BuildConfiguration.0" type="QVariantMap">
+    <value key="ProjectExplorer.BuildCOnfiguration.ToolChain" type="QString">ProjectExplorer.ToolChain.Gcc:/usr/bin/g++.x86-linux-generic-elf-64bit.</value>
+    <valuemap key="ProjectExplorer.BuildConfiguration.BuildStepList.0" type="QVariantMap">
+     <valuemap key="ProjectExplorer.BuildStepList.Step.0" type="QVariantMap">
+      <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">qmake</value>
+      <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString"></value>
+      <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">QtProjectManager.QMakeBuildStep</value>
+      <value key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary" type="bool">false</value>
+      <value key="QtProjectManager.QMakeBuildStep.QMakeArguments" type="QString"></value>
+      <value key="QtProjectManager.QMakeBuildStep.QMakeForced" type="bool">false</value>
+     </valuemap>
+     <valuemap key="ProjectExplorer.BuildStepList.Step.1" type="QVariantMap">
+      <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Make</value>
+      <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString"></value>
+      <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">Qt4ProjectManager.MakeStep</value>
+      <value key="Qt4ProjectManager.MakeStep.Clean" type="bool">false</value>
+      <value key="Qt4ProjectManager.MakeStep.MakeArguments" type="QString"></value>
+      <value key="Qt4ProjectManager.MakeStep.MakeCommand" type="QString"></value>
+     </valuemap>
+     <value key="ProjectExplorer.BuildStepList.StepsCount" type="int">2</value>
+     <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Build</value>
+     <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">Build</value>
+     <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap key="ProjectExplorer.BuildConfiguration.BuildStepList.1" type="QVariantMap">
+     <valuemap key="ProjectExplorer.BuildStepList.Step.0" type="QVariantMap">
+      <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Make</value>
+      <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString"></value>
+      <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">Qt4ProjectManager.MakeStep</value>
+      <value key="Qt4ProjectManager.MakeStep.Clean" type="bool">true</value>
+      <value key="Qt4ProjectManager.MakeStep.MakeArguments" type="QString">clean</value>
+      <value key="Qt4ProjectManager.MakeStep.MakeCommand" type="QString"></value>
+     </valuemap>
+     <value key="ProjectExplorer.BuildStepList.StepsCount" type="int">1</value>
+     <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Clean</value>
+     <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">Clean</value>
+     <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value key="ProjectExplorer.BuildConfiguration.BuildStepListCount" type="int">2</value>
+    <value key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment" type="bool">false</value>
+    <valuelist key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges" type="QVariantList"/>
+    <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Release</value>
+    <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">Release</value>
+    <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration" type="int">0</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.BuildDirectory" type="QString">/home/larsmark/private/Projects/openASC_google/c/openASC_Controller-build-desktop</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.QtVersionId" type="int">2</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.ToolChain" type="QString">ProjectExplorer.ToolChain.Gcc:/usr/bin/g++.x86-linux-generic-elf-64bit.</value>
+    <value key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild" type="bool">false</value>
+   </valuemap>
+   <value key="ProjectExplorer.Target.BuildConfigurationCount" type="int">1</value>
+   <valuemap key="ProjectExplorer.Target.DeployConfiguration.0" type="QVariantMap">
+    <valuemap key="ProjectExplorer.BuildConfiguration.BuildStepList.0" type="QVariantMap">
+     <value key="ProjectExplorer.BuildStepList.StepsCount" type="int">0</value>
+     <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Deploy</value>
+     <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">Deploy</value>
+     <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">ProjectExplorer.BuildSteps.Deploy</value>
+    </valuemap>
+    <value key="ProjectExplorer.BuildConfiguration.BuildStepListCount" type="int">1</value>
+    <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">No deployment</value>
+    <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">No deployment</value>
+    <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">ProjectExplorer.DefaultDeployConfiguration</value>
+   </valuemap>
+   <value key="ProjectExplorer.Target.DeployConfigurationCount" type="int">1</value>
+   <valuemap key="ProjectExplorer.Target.RunConfiguration.0" type="QVariantMap">
+    <valuelist key="Analyzer.Valgrind.AddedSupressionFiles" type="QVariantList"/>
+    <value key="Analyzer.Valgrind.FilterExternalIssues" type="bool">true</value>
+    <value key="Analyzer.Valgrind.NumCallers" type="int">25</value>
+    <valuelist key="Analyzer.Valgrind.RemovedSupressionFiles" type="QVariantList"/>
+    <value key="Analyzer.Valgrind.TrackOrigins" type="bool">true</value>
+    <value key="Analyzer.Valgrind.ValgrindExecutable" type="QString">valgrind</value>
+    <valuelist key="Analyzer.Valgrind.VisibleErrorKinds" type="QVariantList">
+     <value type="int">0</value>
+     <value type="int">1</value>
+     <value type="int">2</value>
+     <value type="int">3</value>
+     <value type="int">4</value>
+     <value type="int">5</value>
+     <value type="int">6</value>
+     <value type="int">7</value>
+     <value type="int">8</value>
+     <value type="int">9</value>
+     <value type="int">10</value>
+     <value type="int">11</value>
+     <value type="int">12</value>
+     <value type="int">13</value>
+     <value type="int">14</value>
+    </valuelist>
+    <value key="ProjectExplorer.CustomExecutableRunConfiguration.Arguments" type="QString"></value>
+    <value key="ProjectExplorer.CustomExecutableRunConfiguration.BaseEnvironmentBase" type="int">0</value>
+    <value key="ProjectExplorer.CustomExecutableRunConfiguration.Executable" type="QString">/home/larsmark/private/Projects/openASC_google/c/openASC_Controller/bin/openASC_Controller</value>
+    <value key="ProjectExplorer.CustomExecutableRunConfiguration.UseTerminal" type="bool">false</value>
+    <valuelist key="ProjectExplorer.CustomExecutableRunConfiguration.UserEnvironmentChanges" type="QVariantList"/>
+    <value key="ProjectExplorer.CustomExecutableRunConfiguration.WorkingDirectory" type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller/bin</value>
+    <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">Run /home/larsmark/private/Projects/openASC_google/c/openASC_Controller/bin/openASC_Controller</value>
+    <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString">openASC Controller</value>
+    <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">ProjectExplorer.CustomExecutableRunConfiguration</value>
+    <value key="RunConfiguration.QmlDebugServerPort" type="uint">3768</value>
+    <value key="RunConfiguration.UseCppDebugger" type="bool">true</value>
+    <value key="RunConfiguration.UseQmlDebugger" type="bool">false</value>
+   </valuemap>
+   <valuemap key="ProjectExplorer.Target.RunConfiguration.1" type="QVariantMap">
+    <valuelist key="Analyzer.Valgrind.AddedSupressionFiles" type="QVariantList"/>
+    <value key="Analyzer.Valgrind.FilterExternalIssues" type="bool">true</value>
+    <value key="Analyzer.Valgrind.NumCallers" type="int">25</value>
+    <valuelist key="Analyzer.Valgrind.RemovedSupressionFiles" type="QVariantList"/>
+    <value key="Analyzer.Valgrind.TrackOrigins" type="bool">true</value>
+    <value key="Analyzer.Valgrind.ValgrindExecutable" type="QString">valgrind</value>
+    <valuelist key="Analyzer.Valgrind.VisibleErrorKinds" type="QVariantList">
+     <value type="int">0</value>
+     <value type="int">1</value>
+     <value type="int">2</value>
+     <value type="int">3</value>
+     <value type="int">4</value>
+     <value type="int">5</value>
+     <value type="int">6</value>
+     <value type="int">7</value>
+     <value type="int">8</value>
+     <value type="int">9</value>
+     <value type="int">10</value>
+     <value type="int">11</value>
+     <value type="int">12</value>
+     <value type="int">13</value>
+     <value type="int">14</value>
+    </valuelist>
+    <value key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName" type="QString">openASC_Controller</value>
+    <value key="ProjectExplorer.ProjectConfiguration.DisplayName" type="QString"></value>
+    <value key="ProjectExplorer.ProjectConfiguration.Id" type="QString">Qt4ProjectManager.Qt4RunConfiguration</value>
+    <value key="Qt4ProjectManager.Qt4RunConfiguration.BaseEnvironmentBase" type="int">2</value>
+    <value key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments" type="QString"></value>
+    <value key="Qt4ProjectManager.Qt4RunConfiguration.ProFile" type="QString">openASC_Controller.pro</value>
+    <value key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix" type="bool">false</value>
+    <value key="Qt4ProjectManager.Qt4RunConfiguration.UseTerminal" type="bool">false</value>
+    <valuelist key="Qt4ProjectManager.Qt4RunConfiguration.UserEnvironmentChanges" type="QVariantList"/>
+    <value key="Qt4ProjectManager.Qt4RunConfiguration.UserWorkingDirectory" type="QString"></value>
+    <value key="RunConfiguration.QmlDebugServerPort" type="uint">3768</value>
+    <value key="RunConfiguration.UseCppDebugger" type="bool">true</value>
+    <value key="RunConfiguration.UseQmlDebugger" type="bool">false</value>
+   </valuemap>
+   <value key="ProjectExplorer.Target.RunConfigurationCount" type="int">2</value>
   </valuemap>
  </data>
  <data>
-  <variable>buildconfiguration-Release-buildstep1</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-   <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Qac2rsrRf5,guid=1eb8c790db610944902cc7514eec4e9f</value>
-    <value type="QString">DESKTOP_SESSION=kde</value>
-    <value type="QString">DISPLAY=:0</value>
-    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-AoeWtt/S.gpg-agent:1832:1</value>
-    <value type="QString">GS_LIB=/home/micke/.fonts</value>
-    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/micke/.gtkrc-2.0:/home/micke/.gtkrc-2.0-kde4:/home/micke/.kde/share/config/gtkrc-2.0</value>
-    <value type="QString">GTK_MODULES=canberra-gtk-module</value>
-    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/micke/.gtkrc::/home/micke/.kde/share/config/gtkrc</value>
-    <value type="QString">HOME=/home/micke</value>
-    <value type="QString">KDE_FULL_SESSION=true</value>
-    <value type="QString">KDE_MULTIHEAD=false</value>
-    <value type="QString">KDE_SESSION_UID=1000</value>
-    <value type="QString">KDE_SESSION_VERSION=4</value>
-    <value type="QString">LANG=en_US.UTF-8</value>
-    <value type="QString">LANGUAGE=</value>
-    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
-    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/dri:/usr/lib32/dri</value>
-    <value type="QString">LOGNAME=micke</value>
-    <value type="QString">PATH=/usr/bin:/home/micke/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
-    <value type="QString">PWD=/home/micke</value>
-    <value type="QString">QTDIR=/usr/share/qt4</value>
-    <value type="QString">QT_PLUGIN_PATH=/home/micke/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/beavis:@/tmp/.ICE-unix/1958,unix/beavis:/tmp/.ICE-unix/1958</value>
-    <value type="QString">SHELL=/bin/bash</value>
-    <value type="QString">SHLVL=0</value>
-    <value type="QString">SPEECHD_PORT=7560</value>
-    <value type="QString">SSH_AGENT_PID=1831</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-thIxvq1777/agent.1777</value>
-    <value type="QString">USER=micke</value>
-    <value type="QString">WINDOWPATH=7</value>
-    <value type="QString">XCURSOR_THEME=oxy-white</value>
-    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1324109471.520846-117629243</value>
-    <value type="QString">XDM_MANAGED=method=classic</value>
-   </valuelist>
-   <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
-   <valuelist key="abstractProcess.arguments" type="QVariantList">
-    <value type="QString">-w</value>
-   </valuelist>
-   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
-   <value key="abstractProcess.enabled" type="bool">true</value>
-   <value key="abstractProcess.workingDirectory" type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller</value>
-  </valuemap>
+  <variable>ProjectExplorer.Project.TargetCount</variable>
+  <value type="int">1</value>
  </data>
  <data>
-  <variable>buildconfiguration-Release-cleanstep0</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
-   <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gPgL9Rc0AW,guid=e9c241fa6febc59d97d3c0e44edd09b4</value>
-    <value type="QString">DESKTOP_SESSION=kde</value>
-    <value type="QString">DISPLAY=:0</value>
-    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/gpg-0ucylB/S.gpg-agent:1343:1</value>
-    <value type="QString">GS_LIB=/home/micke/.fonts</value>
-    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/micke/.gtkrc-2.0:/home/micke/.gtkrc-2.0-kde4:/home/micke/.kde/share/config/gtkrc-2.0</value>
-    <value type="QString">GTK_MODULES=canberra-gtk-module</value>
-    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/micke/.gtkrc::/home/micke/.kde/share/config/gtkrc</value>
-    <value type="QString">HOME=/home/micke</value>
-    <value type="QString">KDE_FULL_SESSION=true</value>
-    <value type="QString">KDE_MULTIHEAD=false</value>
-    <value type="QString">KDE_SESSION_UID=1000</value>
-    <value type="QString">KDE_SESSION_VERSION=4</value>
-    <value type="QString">LANG=en_US.UTF-8</value>
-    <value type="QString">LANGUAGE=</value>
-    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
-    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/dri:/usr/lib32/dri</value>
-    <value type="QString">LOGNAME=micke</value>
-    <value type="QString">PATH=/usr/bin:/home/micke/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games</value>
-    <value type="QString">PWD=/home/micke</value>
-    <value type="QString">QTDIR=/usr/share/qt4</value>
-    <value type="QString">QT_PLUGIN_PATH=/home/micke/.kde/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
-    <value type="QString">SESSION_MANAGER=local/beavis:@/tmp/.ICE-unix/1831,unix/beavis:/tmp/.ICE-unix/1831</value>
-    <value type="QString">SHELL=/bin/bash</value>
-    <value type="QString">SHLVL=0</value>
-    <value type="QString">SPEECHD_PORT=7560</value>
-    <value type="QString">SSH_AGENT_PID=1342</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-UpMiqi1278/agent.1278</value>
-    <value type="QString">USER=micke</value>
-    <value type="QString">WINDOWPATH=7</value>
-    <value type="QString">XCURSOR_THEME=oxy-white</value>
-    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
-    <value type="QString">XDG_SESSION_COOKIE=d61dba326df2f0cb75cb878f49918d13-1323108787.383426-1982366049</value>
-    <value type="QString">XDM_MANAGED=method=classic</value>
-   </valuelist>
-   <value key="abstractProcess.IgnoreReturnValue" type="bool">true</value>
-   <valuelist key="abstractProcess.arguments" type="QVariantList">
-    <value type="QString">clean</value>
-    <value type="QString">-w</value>
-   </valuelist>
-   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
-   <value key="abstractProcess.enabled" type="bool">true</value>
-   <value key="abstractProcess.workingDirectory" type="QString">/home/micke/projects/openASC_google/trunk/c/openASC_Controller</value>
-   <value key="cleanConfig" type="bool">true</value>
-   <valuelist key="makeargs" type="QVariantList">
-    <value type="QString">clean</value>
-   </valuelist>
-  </valuemap>
+  <variable>ProjectExplorer.Project.Updater.EnvironmentId</variable>
+  <value type="QString">{a15d795d-4177-4ba1-9d51-8abef1275203}</value>
  </data>
  <data>
-  <variable>buildconfigurations</variable>
-  <valuelist type="QVariantList">
-   <value type="QString">Release</value>
-  </valuelist>
- </data>
- <data>
-  <variable>buildstep0</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
-   <value key="mkspec" type="QString"></value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildstep1</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildsteps</variable>
-  <valuelist type="QVariantList">
-   <value type="QString">trolltech.qt4projectmanager.qmake</value>
-   <value type="QString">trolltech.qt4projectmanager.make</value>
-  </valuelist>
- </data>
- <data>
-  <variable>cleanstep0</variable>
-  <valuemap type="QVariantMap">
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
-   <value key="clean" type="bool">true</value>
-  </valuemap>
- </data>
- <data>
-  <variable>cleansteps</variable>
-  <valuelist type="QVariantList">
-   <value type="QString">trolltech.qt4projectmanager.make</value>
-  </valuelist>
- </data>
- <data>
-  <variable>defaultFileEncoding</variable>
-  <value type="QByteArray">UTF-8</value>
- </data>
- <data>
-  <variable>project</variable>
-  <valuemap type="QVariantMap"/>
+  <variable>ProjectExplorer.Project.Updater.FileVersion</variable>
+  <value type="int">9</value>
  </data>
 </qtcreator>

@@ -268,15 +268,15 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 	}
 }
 
-void MainWindowImpl::actionErrorDialogTriggered() {
-	errorDialog->show();
-}
-
 void MainWindowImpl::actionRebootTriggered() {
 }
 
 void MainWindowImpl::updateDisplay() {
 
+}
+
+void MainWindowImpl::actionKeypadTriggered() {
+  keypadWindow->show();
 }
 
 void MainWindowImpl::paintEvent(QPaintEvent *event) {
@@ -308,10 +308,12 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	rotatorWindow = new RotatorDialog(this);
 	rotatorWindow->hide();
 
+  keypadWindow = new Keypad(this);
+  keypadWindow->hide();
+
 	TCPComm = new TCPClass();
 
-	errorDialog = new ErrorDialog();
-	errorDialog->hide();
+  keypadWindow->setCOMMPtr(TCPComm);
 
 	//displayArea = new DisplayWidget();
 
@@ -356,7 +358,7 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
 	connect(actionDisconnect, SIGNAL(triggered()), this, SLOT(actionDisconnectTriggered()));
 	connect(actionTerminal, SIGNAL(triggered()), this, SLOT(actionTerminalTriggered()));
-	connect(actionErrorDialog, SIGNAL(triggered()), this, SLOT(actionErrorDialogTriggered()));
+  connect(actionKeypad, SIGNAL(triggered()), this, SLOT(actionKeypadTriggered()));
 
 	connect(comboBoxBand, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxBandIndexChanged(int)));
 

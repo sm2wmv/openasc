@@ -7,20 +7,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>465</height>
+    <width>566</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>552</width>
-    <height>465</height>
+    <width>566</width>
+    <height>468</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>590</width>
-    <height>465</height>
+    <width>566</width>
+    <height>468</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -54,7 +54,7 @@
          <x>10</x>
          <y>10</y>
          <width>145</width>
-         <height>386</height>
+         <height>421</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -94,12 +94,18 @@
           <x>10</x>
           <y>30</y>
           <width>127</width>
-          <height>346</height>
+          <height>381</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt1">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="font">
             <font>
              <underline>false</underline>
@@ -121,6 +127,12 @@
          </item>
          <item row="1" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt2">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -131,6 +143,12 @@
          </item>
          <item row="2" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -141,6 +159,12 @@
          </item>
          <item row="3" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt4">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -151,6 +175,12 @@
          </item>
          <item row="4" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt5">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -161,6 +191,12 @@
          </item>
          <item row="5" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt6">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -171,6 +207,12 @@
          </item>
          <item row="6" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt7">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -181,6 +223,12 @@
          </item>
          <item row="8" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt9">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -191,6 +239,12 @@
          </item>
          <item row="9" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt10">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -201,6 +255,12 @@
          </item>
          <item row="7" column="0">
           <widget class="QPushButton" name="pushButtonRXAnt8">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -217,8 +277,8 @@
         <rect>
          <x>160</x>
          <y>10</y>
-         <width>176</width>
-         <height>70</height>
+         <width>131</width>
+         <height>72</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -230,7 +290,7 @@
        <widget class="QLabel" name="labelBand">
         <property name="geometry">
          <rect>
-          <x>25</x>
+          <x>15</x>
           <y>5</y>
           <width>121</width>
           <height>20</height>
@@ -255,7 +315,7 @@
        <widget class="QComboBox" name="comboBoxBand">
         <property name="geometry">
          <rect>
-          <x>35</x>
+          <x>15</x>
           <y>25</y>
           <width>104</width>
           <height>26</height>
@@ -321,9 +381,21 @@
         <rect>
          <x>160</x>
          <y>85</y>
-         <width>381</width>
+         <width>391</width>
          <height>150</height>
         </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>391</width>
+         <height>150</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>391</width>
+         <height>150</height>
+        </size>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -335,10 +407,10 @@
       <widget class="QFrame" name="frameMisc">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>292</x>
          <y>10</y>
-         <width>200</width>
-         <height>71</height>
+         <width>259</width>
+         <height>72</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -351,6 +423,106 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
+           <widget class="QLabel" name="labelLEDRotate">
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="labelLEDTXRX">
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="labelLEDRXMode">
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="labelLEDSub">
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>58</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
            <widget class="QPushButton" name="pushButtonRotate">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -358,10 +530,16 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>70</width>
-              <height>16777215</height>
+              <width>58</width>
+              <height>30</height>
              </size>
             </property>
             <property name="text">
@@ -372,7 +550,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="1" column="1">
            <widget class="QPushButton" name="pushButtonTXRXMode">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -380,10 +558,16 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>70</width>
-              <height>16777215</height>
+              <width>58</width>
+              <height>30</height>
              </size>
             </property>
             <property name="text">
@@ -394,7 +578,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
+          <item row="1" column="2">
            <widget class="QPushButton" name="pushButtonRXAnt">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -402,10 +586,16 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>70</width>
-              <height>16777215</height>
+              <width>58</width>
+              <height>30</height>
              </size>
             </property>
             <property name="text">
@@ -416,7 +606,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
+          <item row="1" column="3">
            <widget class="QPushButton" name="pushButtonSub">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -424,10 +614,16 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>58</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>70</width>
-              <height>16777215</height>
+              <width>58</width>
+              <height>30</height>
              </size>
             </property>
             <property name="text">
@@ -440,63 +636,15 @@
           </item>
          </layout>
         </item>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0">
-           <widget class="QLabel" name="labelPTT">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>PTT:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="labelPTTStatus">
-            <property name="minimumSize">
-             <size>
-              <width>150</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
        </layout>
       </widget>
       <widget class="QFrame" name="frameStatus">
        <property name="geometry">
         <rect>
          <x>160</x>
-         <y>325</y>
-         <width>381</width>
-         <height>70</height>
+         <y>360</y>
+         <width>261</width>
+         <height>71</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -505,15 +653,197 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout"/>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelLEDError">
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_red_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="labelError">
+            <property name="text">
+             <string>ERROR</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="labelLEDPTT">
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_blank_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLabel" name="labelPTT">
+            <property name="text">
+             <string>PTT</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+           <widget class="QLabel" name="labelLEDAUX">
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_yellow_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="7">
+           <widget class="QLabel" name="labelAUX">
+            <property name="text">
+             <string>AUX</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="labelLEDRotating">
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_yellow_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="labelRotating">
+            <property name="text">
+             <string>Rotating</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="labelLEDRemote">
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>15</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="labelRemote">
+            <property name="text">
+             <string>Remote</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>-1</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+           </layout>
+          </item>
+          <item row="0" column="5">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
       <widget class="QFrame" name="frameTXRXAntButtons">
        <property name="geometry">
         <rect>
          <x>160</x>
-         <y>240</y>
-         <width>251</width>
-         <height>80</height>
+         <y>239</y>
+         <width>261</width>
+         <height>118</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -526,7 +856,119 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
+           <widget class="QLabel" name="labelLEDTX1">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="labelLEDTX2">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="labelLEDTX3">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="labelLEDTX4">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
            <widget class="QPushButton" name="pushButtonTX1">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>TX ANT 1</string>
             </property>
@@ -535,8 +977,20 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="1" column="1">
            <widget class="QPushButton" name="pushButtonTX2">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>TX ANT 2</string>
             </property>
@@ -545,8 +999,20 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
+          <item row="1" column="2">
            <widget class="QPushButton" name="pushButtonTX3">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>TX ANT 3</string>
             </property>
@@ -555,8 +1021,20 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
+          <item row="1" column="3">
            <widget class="QPushButton" name="pushButtonTX4">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>TX ANT 4</string>
             </property>
@@ -565,8 +1043,120 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelLEDRX1">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_red_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="labelLEDRX2">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_red_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="labelLEDRX3">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_red_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="labelLEDRX4">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>../src/leds/led_red_off_15x15.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
            <widget class="QPushButton" name="pushButtonRX1">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>RX ANT 1</string>
             </property>
@@ -575,8 +1165,20 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="3" column="1">
            <widget class="QPushButton" name="pushButtonRX2">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>RX ANT 2</string>
             </property>
@@ -585,8 +1187,20 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
+          <item row="3" column="2">
            <widget class="QPushButton" name="pushButtonRX3">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>RX ANT 3</string>
             </property>
@@ -595,8 +1209,20 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
+          <item row="3" column="3">
            <widget class="QPushButton" name="pushButtonRX4">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>RX ANT 4</string>
             </property>
@@ -612,10 +1238,10 @@
       <widget class="QFrame" name="frameMenu">
        <property name="geometry">
         <rect>
-         <x>415</x>
-         <y>240</y>
+         <x>425</x>
+         <y>239</y>
          <width>125</width>
-         <height>80</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -680,8 +1306,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>565</width>
-     <height>22</height>
+     <width>566</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">
@@ -703,7 +1329,7 @@
     </property>
     <addaction name="actionWindowsRotators"/>
     <addaction name="actionTerminal"/>
-    <addaction name="actionErrorDialog"/>
+    <addaction name="actionKeypad"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
     <property name="title">
@@ -768,6 +1394,11 @@
   <action name="actionReboot">
    <property name="text">
     <string>Reboot</string>
+   </property>
+  </action>
+  <action name="actionKeypad">
+   <property name="text">
+    <string>Keypad</string>
    </property>
   </action>
  </widget>
