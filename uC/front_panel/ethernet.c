@@ -30,6 +30,7 @@
 #include <avr/eeprom.h>
 
 #include "ethernet.h"
+#include "glcd.h"
 #include "main.h"
 #include "../delay.h"
 #include "../remote_commands.h"
@@ -420,6 +421,23 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
   return 1;
 }
 
+void ethernet_send_data(unsigned char sock, unsigned char cmd, unsigned char length, unsigned char *buf) {
+  unsigned char tx_buff[ETHERNET_TX_BUF_LEN];
+  
+  tx_buff[0] = 0xFE;
+  tx_buff[1] = 0xFE;
+  tx_buff[2] = cmd;
+  tx_buff[3] = 0;
+  tx_buff[4] = length;
+  
+  for (unsigned char i=0;i<length;i++)
+    tx_buff[5+i] = buf[i];
+  
+  tx_buff[5+length] = 0xFD;
+  
+  ethernet_send(sock, tx_buff, 6+length);
+}
+
 unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned int buflen) {
   unsigned int ptr,offaddr,realaddr,txsize,timeout;   
 
@@ -534,7 +552,9 @@ void ethernet_process(void) {
           printf("ETH >> Sending RX antenna info\r\n");
         #endif
 
+        remote_control_send_status();
         remote_control_send_rx_antennas();
+        glcd_ethernet_send_disp();
       }
           
       rx_msg_size = ethernet_recv_size();

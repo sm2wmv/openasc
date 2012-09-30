@@ -53,6 +53,7 @@
 #include "display_handler.h"
 #include "remote_control.h"
 #include "ethernet.h"
+#include "../remote_commands.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -125,6 +126,12 @@ void clear_screensaver_timer(void) {
 
 struct_setting* main_get_settings_ptr(void) {
   return((struct_setting *)&settings);
+}
+
+void forceHardReset(void) { 
+  cli(); // disable interrupts 
+  wdt_enable(WDTO_15MS); // enable watchdog 
+  while(1); // wait for watchdog to reset processor 
 }
 
 //This function is just used at startup
@@ -826,6 +833,12 @@ int main(void){
 					counter_ping_interval = 0;
 				}
 			}
+		
+      if (ethernet_is_active()) {
+        if (led_status_changed()) {
+          remote_control_send_status();
+        }
+      }
 		
 			radio_process_tasks();
       

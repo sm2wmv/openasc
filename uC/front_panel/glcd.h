@@ -98,5 +98,6 @@ void glcd_update_area(unsigned char x1, unsigned char x2, unsigned char y1, unsi
 void glcd_clear_area(unsigned char x1, unsigned char x2, unsigned char y1, unsigned char y2);
 
 void glcd_set_byte(unsigned char x, unsigned char y, unsigned char curr_byte);
+void glcd_ethernet_send_disp(void);
 
 #endif

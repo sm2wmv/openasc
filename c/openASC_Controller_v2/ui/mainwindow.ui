@@ -326,7 +326,7 @@
         </property>
         <item>
          <property name="text">
-          <string>Select</string>
+          <string>None</string>
          </property>
         </item>
         <item>
@@ -372,6 +372,11 @@
         <item>
          <property name="text">
           <string>10m</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Auto</string>
          </property>
         </item>
        </widget>
@@ -643,7 +648,7 @@
         <rect>
          <x>160</x>
          <y>360</y>
-         <width>261</width>
+         <width>281</width>
          <height>71</height>
         </rect>
        </property>
@@ -812,14 +817,14 @@
           <item row="1" column="7">
            <widget class="QLabel" name="labelRemote">
             <property name="text">
-             <string>Remote</string>
+             <string>Connected</string>
             </property>
            </widget>
           </item>
           <item row="1" column="2">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="spacing">
-             <number>-1</number>
+             <number>6</number>
             </property>
             <property name="leftMargin">
              <number>12</number>
@@ -1307,7 +1312,7 @@
      <x>0</x>
      <y>0</y>
      <width>566</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">

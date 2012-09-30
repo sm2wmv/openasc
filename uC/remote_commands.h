@@ -42,5 +42,8 @@
 #define REMOTE_COMMAND_BUTTON_EVENT               0xB1
 #define REMOTE_COMMAND_RX_ANT_INFO                0xB2
 #define REMOTE_COMMAND_KEYPAD_BUTTON_EVENT        0xB3
+#define REMOTE_COMMAND_STATUS                     0xB4
+#define REMOTE_COMMAND_SET_NEW_BAND               0xB5
+#define REMOTE_COMMAND_FORCE_RESET                0xB6
 
 #endif

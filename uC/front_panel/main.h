@@ -387,4 +387,6 @@ unsigned char main_get_amp_sub_addr(void);
 unsigned char main_get_amp_ctrl_enabled(void);
 unsigned char main_get_amp_func_flags(void);
 
+void forceHardReset(void);
+
 #endif
