@@ -15,6 +15,7 @@
 #include <QImage>
 #include <QProgressBar>
 #include <QCheckBox>
+#include <QMessageBox>
 
 typedef struct {
 	unsigned char currentBand;
@@ -36,6 +37,7 @@ class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
 public:
 		MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+		QMessageBox *msgBox;
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
 		terminalDialog *terminalWindow;
@@ -45,12 +47,13 @@ public:
 		TCPClass *TCPComm;
     Keypad *keypadWindow;
 		void updateDisplay();
+		void closeEvent ( QCloseEvent * event );
+		void setLEDStatus(unsigned int led_status, unsigned char led_ptt_status);
 private:
 		int interfaceType;
 		QTimer *timerPollRXQueue;
 		QTimer *timerPollStatus;
 		status_struct status;
-		unsigned char bandChangedFlag;
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:

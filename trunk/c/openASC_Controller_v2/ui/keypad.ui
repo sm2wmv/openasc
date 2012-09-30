@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>222</width>
-    <height>330</height>
+    <width>250</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>220</width>
-    <height>330</height>
+    <width>250</width>
+    <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>222</width>
-    <height>330</height>
+    <width>250</width>
+    <height>360</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -28,7 +28,7 @@
   <property name="windowTitle">
    <string>Keypad</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout_13">
      <item row="0" column="0">
@@ -504,13 +504,13 @@
        <property name="minimumSize">
         <size>
          <width>50</width>
-         <height>50</height>
+         <height>106</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>50</width>
-         <height>105</height>
+         <height>106</height>
         </size>
        </property>
        <property name="font">

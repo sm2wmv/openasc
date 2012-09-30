@@ -23,6 +23,28 @@
 #ifndef _LED_CONTROL_H_
 #define _LED_CONTROL_H_
 
+//! Bits which indicate the status of each individual LED
+#define LED_STATUS_ERROR      0
+#define LED_STATUS_TX_ANT1    1
+#define LED_STATUS_TX_ANT2    2
+#define LED_STATUS_TX_ANT3    3
+#define LED_STATUS_TX_ANT4    4
+#define LED_STATUS_RX_ANT1    5
+#define LED_STATUS_RX_ANT2    6
+#define LED_STATUS_RX_ANT3    7
+#define LED_STATUS_RX_ANT4    8
+#define LED_STATUS_AUX        9
+#define LED_STATUS_ROTATING   10
+#define LED_STATUS_ROTATE     11
+#define LED_STATUS_TXRX       12
+#define LED_STATUS_RXANT      13
+#define LED_STATUS_SUB        14
+#define LED_STATUS_MENU       15
+
+#define LED_PTT_STATUS_OK       0
+#define LED_PTT_STATUS_INHIBIT  1
+#define LED_PTT_STATUS_ACTIVE   2
+
 //! PTT led state
 enum enum_led_ptt_state {
 	//! Used to set the LED to PTT active color
@@ -40,6 +62,11 @@ enum enum_led_state {
 	//! Used to set the LED as OFF
 	LED_STATE_OFF
 };
+
+unsigned char led_status_changed(void);
+unsigned int led_get_status(void);
+unsigned char led_get_ptt_status(void);
+void led_status_clear(void);
 
 void led_set_band(unsigned char band);
 void led_set_band_none(void);

@@ -63,32 +63,54 @@ static unsigned char remote_update_sub_menu_info_ant4 = 0;
 
 /*! \brief Parses an ethernet remote command */
 void remote_control_parse_command(unsigned char command, unsigned char length, char *data) {
-  if (command == REMOTE_COMMAND_BUTTON_EVENT)
-    event_process_task(data[0]);
+  switch(command) {
+    case REMOTE_COMMAND_BUTTON_EVENT: 
+      event_process_task(data[0]);
+      break;
+    case REMOTE_COMMAND_KEYPAD_BUTTON_EVENT:
+      event_process_task(ext_key_get_assignment(data[0]));
+      break;
+    case REMOTE_COMMAND_SET_NEW_BAND:
+      if (length > 0)
+        main_set_new_band(data[0]);
+      break;
+    case REMOTE_COMMAND_FORCE_RESET:
+      forceHardReset();
+      break;
+    default:
+      break;
+  }
+}
+
+void remote_control_send_status(void) {
+  unsigned char var[5] = {0};
+
+  var[0] = led_get_ptt_status();
+  var[1] = (led_get_status() >> 8) & 0xFF;
+  var[2] = led_get_status() & 0xFF;
+  var[3] = status.selected_band;
+  var[4] = runtime_settings.band_change_mode;
+
+  led_status_clear();
+
+  ethernet_send_data(0, REMOTE_COMMAND_STATUS, 5, var);
 }
 
 void remote_control_send_rx_antennas(void) {
-  char buff[25];
+  unsigned char buff[25];
   
   char *rx_ant_name;
   
   for (unsigned char i=0;i<antenna_ctrl_get_rx_antenna_count();i++) {
     rx_ant_name = antenna_ctrl_get_rx_antenna_name(i);
     
-    buff[0] = 0xFE;
-    buff[1] = 0xFE;
-    buff[2] = REMOTE_COMMAND_RX_ANT_INFO;
-    buff[3] = 0;
-    buff[4] = antenna_ctrl_get_rx_antenna_name_length(i)+1;
-    buff[5] = i;  //Antenna index
+    buff[0] = i;  //Antenna index
     
     for (unsigned char cnt=0;cnt<antenna_ctrl_get_rx_antenna_name_length(i);cnt++) {
-      buff[6+cnt] = *(rx_ant_name+cnt);
+      buff[1+cnt] = *(rx_ant_name+cnt);
     }
     
-    buff[antenna_ctrl_get_rx_antenna_name_length(i)+6] = 0xFD;
-    
-    ethernet_send(0,buff,buff[4]+6);
+    ethernet_send_data(0,REMOTE_COMMAND_RX_ANT_INFO,antenna_ctrl_get_rx_antenna_name_length(i)+1,buff);
   }
 }
 

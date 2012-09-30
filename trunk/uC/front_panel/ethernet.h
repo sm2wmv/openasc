@@ -23,11 +23,15 @@
 #ifndef _ETHERNET_H_
 #define _ETHERNET_H_
 
+#define ETHERNET_TX_BUF_LEN 50
+
 void ethernet_init(void);
 void ethernet_process(void);
 unsigned char ethernet_is_active(void);
 unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned int buflen);
 unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, unsigned int buflen);
 unsigned char ethernet_get_chip_enabled(void);
+
+void ethernet_send_data(unsigned char sock, unsigned char cmd, unsigned char length, unsigned char *buf);
 
 #endif

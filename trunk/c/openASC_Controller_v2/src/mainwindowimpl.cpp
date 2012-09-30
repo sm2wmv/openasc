@@ -9,6 +9,32 @@
 #include "terminaldialog.h"
 #include "../../../uC/remote_commands.h"
 #include "../../../uC/ext_events.h"
+#include "../../../uC/front_panel/led_control.h"
+
+//! Band changes are done manually
+#define BAND_CHANGE_MODE_MANUAL		0
+//! Band changes are done automatically
+#define BAND_CHANGE_MODE_AUTO			1
+
+#define BAND_UNDEFINED	0
+#define BAND_160M				1
+#define BAND_80M				2
+#define BAND_40M				3
+#define BAND_30M				4
+#define BAND_20M				5
+#define BAND_17M				6
+#define BAND_15M				7
+#define BAND_12M				8
+#define BAND_10M				9
+#define BAND_MAX				BAND_10M
+
+#define PIXMAP_BLANK "../src/leds/led_blank_15x15.png"
+#define PIXMAP_RED_ON "../src/leds/led_red_on_15x15.png"
+#define PIXMAP_GREEN_ON "../src/leds/led_green_on_15x15.png"
+#define PIXMAP_RED_OFF "../src/leds/led_red_off_15x15.png"
+#define PIXMAP_GREEN_OFF "../src/leds/led_green_off_15x15.png"
+#define PIXMAP_YELLOW_ON "../src/leds/led_yellow_on_15x15.png"
+#define PIXMAP_YELLOW_OFF "../src/leds/led_yellow_off_15x15.png"
 
 QPalette antSelPal(QColor(Qt::darkGreen));
 QPalette antNotSelPal(QColor(Qt::white));
@@ -167,6 +193,8 @@ void MainWindowImpl::actionSettingsEditTriggered() {
 void MainWindowImpl::actionDisconnectTriggered() {
 	timerPollStatus->stop();
 
+	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
 	TCPComm->stopConnection();
 
 	actionConnect->setEnabled(true);
@@ -177,6 +205,8 @@ void MainWindowImpl::actionConnectTriggered() {
 	TCPComm->connect(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
 	TCPComm->start();
 
+	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+
 	actionConnect->setEnabled(false);
 	actionDisconnect->setEnabled(true);
 
@@ -185,6 +215,9 @@ void MainWindowImpl::actionConnectTriggered() {
 }
 
 void MainWindowImpl::comboBoxBandIndexChanged(int index) {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_SET_NEW_BAND,comboBoxBand->currentIndex());
+	}
 }
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
@@ -204,6 +237,93 @@ void MainWindowImpl::pushButtonSubClicked(){
 
 void MainWindowImpl::actionTerminalTriggered() {
 	terminalWindow->show();
+}
+
+void MainWindowImpl::setLEDStatus(unsigned int led_status, unsigned char led_ptt_status) {
+	if (led_ptt_status == LED_PTT_STATUS_OK) {
+		labelLEDPTT->setPixmap(QPixmap(PIXMAP_BLANK));
+	}
+	else if (led_ptt_status == LED_PTT_STATUS_INHIBIT) {
+		labelLEDPTT->setPixmap(QPixmap(PIXMAP_RED_ON));
+	}
+	else if (led_ptt_status == LED_PTT_STATUS_ACTIVE) {
+		labelLEDPTT->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	}
+
+	if (led_status & (1<<LED_STATUS_ERROR))
+		labelLEDError->setPixmap(QPixmap(PIXMAP_RED_ON));
+	else
+		labelLEDError->setPixmap(QPixmap(PIXMAP_RED_OFF));
+
+	if (led_status & (1<<LED_STATUS_TX_ANT1))
+		labelLEDTX1->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDTX1->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_TX_ANT2))
+		labelLEDTX2->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDTX2->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_TX_ANT3))
+		labelLEDTX3->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDTX3->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_TX_ANT4))
+		labelLEDTX4->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDTX4->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_RX_ANT1))
+		labelLEDRX1->setPixmap(QPixmap(PIXMAP_RED_ON));
+	else
+		labelLEDRX1->setPixmap(QPixmap(PIXMAP_RED_OFF));
+
+	if (led_status & (1<<LED_STATUS_RX_ANT2))
+		labelLEDRX2->setPixmap(QPixmap(PIXMAP_RED_ON));
+	else
+		labelLEDRX2->setPixmap(QPixmap(PIXMAP_RED_OFF));
+
+	if (led_status & (1<<LED_STATUS_RX_ANT3))
+		labelLEDRX3->setPixmap(QPixmap(PIXMAP_RED_ON));
+	else
+		labelLEDRX3->setPixmap(QPixmap(PIXMAP_RED_OFF));
+
+	if (led_status & (1<<LED_STATUS_RX_ANT4))
+		labelLEDRX4->setPixmap(QPixmap(PIXMAP_RED_ON));
+	else
+		labelLEDRX4->setPixmap(QPixmap(PIXMAP_RED_OFF));
+
+	if (led_status & (1<<LED_STATUS_AUX))
+		labelLEDAUX->setPixmap(QPixmap(PIXMAP_YELLOW_ON));
+	else
+		labelLEDAUX->setPixmap(QPixmap(PIXMAP_YELLOW_OFF));
+
+	if (led_status & (1<<LED_STATUS_ROTATING))
+		labelLEDRotating->setPixmap(QPixmap(PIXMAP_YELLOW_ON));
+	else
+		labelLEDRotating->setPixmap(QPixmap(PIXMAP_YELLOW_OFF));
+
+	if (led_status & (1<<LED_STATUS_ROTATE))
+		labelLEDRotate->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDRotate->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_TXRX))
+		labelLEDTXRX->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDTXRX->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_RXANT))
+		labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+	if (led_status & (1<<LED_STATUS_SUB))
+		labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+	else
+		labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
 }
 
 void MainWindowImpl::timerPollRXQueueUpdate(void) {
@@ -264,11 +384,82 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 						break;
 				}
 			}
+			else if (cmd == REMOTE_COMMAND_STATUS) {
+				setLEDStatus((rxMessage.at(4) << 8) | rxMessage.at(5),rxMessage.at(3));
+
+				comboBoxBand->blockSignals(true);
+
+				if (rxMessage.at(7) == BAND_CHANGE_MODE_AUTO)
+					comboBoxBand->setCurrentIndex(10);
+
+				switch(rxMessage.at(6)) {
+					case BAND_UNDEFINED:
+						labelBand->setText("Band: None");
+						comboBoxBand->setCurrentIndex(0);
+						break;
+					case BAND_160M:
+						labelBand->setText("Band: 160m");
+						comboBoxBand->setCurrentIndex(1);
+						break;
+					case BAND_80M:
+						labelBand->setText("Band: 80m");
+						comboBoxBand->setCurrentIndex(2);
+						break;
+					case BAND_40M:
+						labelBand->setText("Band: 40m");
+						comboBoxBand->setCurrentIndex(3);
+						break;
+					case BAND_30M:
+						labelBand->setText("Band: 30m");
+						comboBoxBand->setCurrentIndex(4);
+						break;
+					case BAND_20M:
+						labelBand->setText("Band: 20m");
+						comboBoxBand->setCurrentIndex(5);
+						break;
+					case BAND_17M:
+						labelBand->setText("Band: 17m");
+						comboBoxBand->setCurrentIndex(6);
+						break;
+					case BAND_15M:
+						labelBand->setText("Band: 15m");
+						comboBoxBand->setCurrentIndex(7);
+						break;
+					case BAND_12M:
+						labelBand->setText("Band: 12m");
+						comboBoxBand->setCurrentIndex(8);
+						break;
+					case BAND_10M:
+						labelBand->setText("Band: 10m");
+						comboBoxBand->setCurrentIndex(9);
+						break;
+				default:
+						labelBand->setText("Band: None");
+						comboBoxBand->setCurrentIndex(0);
+						break;
+				}
+
+				comboBoxBand->blockSignals(false);
+			}
 		}
 	}
 }
 
+void MainWindowImpl::closeEvent ( QCloseEvent * event ) {
+	event->ignore();
+
+	TCPComm->stopConnection();
+
+	event->accept();
+};
+
 void MainWindowImpl::actionRebootTriggered() {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_FORCE_RESET);
+
+		QTimer::singleShot(1000, this, SLOT(actionDisconnectTriggered()));
+		QTimer::singleShot(5000, this, SLOT(actionConnectTriggered()));
+	}
 }
 
 void MainWindowImpl::updateDisplay() {
@@ -314,37 +505,6 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	TCPComm = new TCPClass();
 
   keypadWindow->setCOMMPtr(TCPComm);
-
-	//displayArea = new DisplayWidget();
-
-	QFrame *status_frame = new QFrame();
-	status_frame->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-
-	QHBoxLayout *layout = new QHBoxLayout(status_frame);
-	layout->setContentsMargins(0, 0, 0, 0);
-	QProgressBar *bar = new QProgressBar(status_frame);
-	bar->setMaximumHeight(10);
-	bar->setMaximumWidth(100);
-
-	QCheckBox *box = new QCheckBox(tr("Check Mode"), status_frame);
-	box->setChecked(true);
-
-	layout->addWidget(bar);
-	layout->addWidget(box);
-	//ui->statusBar->insertWidget(5, status_frame);
-
-	/*QGridLayout dispLayout = new QGridLayout;
-	dispLayout.addWidget(displayArea);
-	displayArea->show();
-	frame->setLayout(dispLayout);*/
-
-	//Create paint area
-	bandChangedFlag = 0;
-
-	/*QPalette palette = frameDisplay->palette();
-	palette.setColor(backgroundRole(),QColor(0,0,255));
-	frameDisplay->setPalette(palette);
-	frameDisplay->setAutoFillBackground(true);*/
 
 	timerPollRXQueue = new QTimer(this);
 	connect(timerPollRXQueue, SIGNAL(timeout()), this, SLOT(timerPollRXQueueUpdate()));
