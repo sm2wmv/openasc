@@ -215,8 +215,10 @@ void MainWindowImpl::actionConnectTriggered() {
 }
 
 void MainWindowImpl::comboBoxBandIndexChanged(int index) {
-	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_SET_NEW_BAND,comboBoxBand->currentIndex());
+	if (index < 10) {
+		if (TCPComm->isConnected()) {
+			TCPComm->addTXMessage(REMOTE_COMMAND_SET_NEW_BAND,comboBoxBand->currentIndex());
+		}
 	}
 }
 
@@ -330,116 +332,121 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 	if (TCPComm->isConnected()) {
 		if (TCPComm->rxQueueSize() > 0) {
 			QByteArray rxMessage = TCPComm->getMessage();
-			unsigned int len = (rxMessage.at(1) << 8) + rxMessage.at(2);
-			unsigned char cmd = rxMessage.at(0);
+			if (rxMessage.size() > 3) {
 
-			qDebug("HR Size: %i\r\n",len);
+				unsigned int len = (rxMessage.at(1) << 8) + rxMessage.at(2);
+				unsigned char cmd = rxMessage.at(0);
 
-			if (cmd == REMOTE_COMMAND_DISPLAY_DATA) {
-				qDebug() << "REMOTE COMMAND DISPLAY DATA";
+				qDebug("HR Size: %i\r\n",len);
 
-				if (len == 1024) {
-					unsigned int i=3;
+				if (cmd == REMOTE_COMMAND_DISPLAY_DATA) {
+					qDebug() << "REMOTE COMMAND DISPLAY DATA";
 
-					for (unsigned int y=0;y<8;y++)
-						for (unsigned int x=0;x<128;x++)
-							glcd_buffer[y][x] = ~rxMessage.at(i++);
+					if (len == 1024) {
+						unsigned int i=3;
 
-					repaint();
+						for (unsigned int y=0;y<8;y++)
+							for (unsigned int x=0;x<128;x++)
+								glcd_buffer[y][x] = ~rxMessage.at(i++);
+
+						repaint();
+					}
 				}
-			}
-			else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
-				switch(rxMessage.at(3)) {
-					case 0:
-						pushButtonRXAnt1->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 1:
-						pushButtonRXAnt2->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 2:
-						pushButtonRXAnt3->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 3:
-						pushButtonRXAnt4->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 4:
-						pushButtonRXAnt5->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 5:
-						pushButtonRXAnt6->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 6:
-						pushButtonRXAnt7->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 7:
-						pushButtonRXAnt8->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 8:
-						pushButtonRXAnt9->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					case 9:
-						pushButtonRXAnt10->setText(QString(rxMessage.mid(4,len-1)));
-						break;
-					default:
-						break;
+				else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
+					switch(rxMessage.at(3)) {
+						case 0:
+							pushButtonRXAnt1->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 1:
+							pushButtonRXAnt2->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 2:
+							pushButtonRXAnt3->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 3:
+							pushButtonRXAnt4->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 4:
+							pushButtonRXAnt5->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 5:
+							pushButtonRXAnt6->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 6:
+							pushButtonRXAnt7->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 7:
+							pushButtonRXAnt8->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 8:
+							pushButtonRXAnt9->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						case 9:
+							pushButtonRXAnt10->setText(QString(rxMessage.mid(4,len-1)));
+							break;
+						default:
+							break;
+					}
 				}
-			}
-			else if (cmd == REMOTE_COMMAND_STATUS) {
-				setLEDStatus((rxMessage.at(4) << 8) | rxMessage.at(5),rxMessage.at(3));
+				else if (cmd == REMOTE_COMMAND_STATUS) {
+					if (rxMessage.size() > 5) {
+						setLEDStatus((rxMessage.at(4) << 8) | rxMessage.at(5),rxMessage.at(3));
 
-				comboBoxBand->blockSignals(true);
+						comboBoxBand->blockSignals(true);
 
-				if (rxMessage.at(7) == BAND_CHANGE_MODE_AUTO)
-					comboBoxBand->setCurrentIndex(10);
+						if (rxMessage.at(7) == BAND_CHANGE_MODE_AUTO)
+							comboBoxBand->setCurrentIndex(10);
 
-				switch(rxMessage.at(6)) {
-					case BAND_UNDEFINED:
-						labelBand->setText("Band: None");
-						comboBoxBand->setCurrentIndex(0);
-						break;
-					case BAND_160M:
-						labelBand->setText("Band: 160m");
-						comboBoxBand->setCurrentIndex(1);
-						break;
-					case BAND_80M:
-						labelBand->setText("Band: 80m");
-						comboBoxBand->setCurrentIndex(2);
-						break;
-					case BAND_40M:
-						labelBand->setText("Band: 40m");
-						comboBoxBand->setCurrentIndex(3);
-						break;
-					case BAND_30M:
-						labelBand->setText("Band: 30m");
-						comboBoxBand->setCurrentIndex(4);
-						break;
-					case BAND_20M:
-						labelBand->setText("Band: 20m");
-						comboBoxBand->setCurrentIndex(5);
-						break;
-					case BAND_17M:
-						labelBand->setText("Band: 17m");
-						comboBoxBand->setCurrentIndex(6);
-						break;
-					case BAND_15M:
-						labelBand->setText("Band: 15m");
-						comboBoxBand->setCurrentIndex(7);
-						break;
-					case BAND_12M:
-						labelBand->setText("Band: 12m");
-						comboBoxBand->setCurrentIndex(8);
-						break;
-					case BAND_10M:
-						labelBand->setText("Band: 10m");
-						comboBoxBand->setCurrentIndex(9);
-						break;
-				default:
-						labelBand->setText("Band: None");
-						comboBoxBand->setCurrentIndex(0);
-						break;
+						switch(rxMessage.at(6)) {
+							case BAND_UNDEFINED:
+								labelBand->setText("Band: None");
+								comboBoxBand->setCurrentIndex(0);
+								break;
+							case BAND_160M:
+								labelBand->setText("Band: 160m");
+								comboBoxBand->setCurrentIndex(1);
+								break;
+							case BAND_80M:
+								labelBand->setText("Band: 80m");
+								comboBoxBand->setCurrentIndex(2);
+								break;
+							case BAND_40M:
+								labelBand->setText("Band: 40m");
+								comboBoxBand->setCurrentIndex(3);
+								break;
+							case BAND_30M:
+								labelBand->setText("Band: 30m");
+								comboBoxBand->setCurrentIndex(4);
+								break;
+							case BAND_20M:
+								labelBand->setText("Band: 20m");
+								comboBoxBand->setCurrentIndex(5);
+								break;
+							case BAND_17M:
+								labelBand->setText("Band: 17m");
+								comboBoxBand->setCurrentIndex(6);
+								break;
+							case BAND_15M:
+								labelBand->setText("Band: 15m");
+								comboBoxBand->setCurrentIndex(7);
+								break;
+							case BAND_12M:
+								labelBand->setText("Band: 12m");
+								comboBoxBand->setCurrentIndex(8);
+								break;
+							case BAND_10M:
+								labelBand->setText("Band: 10m");
+								comboBoxBand->setCurrentIndex(9);
+								break;
+						default:
+								labelBand->setText("Band: None");
+								comboBoxBand->setCurrentIndex(0);
+								break;
+						}
+
+						comboBoxBand->blockSignals(false);
+					}
 				}
-
-				comboBoxBand->blockSignals(false);
 			}
 		}
 	}
