@@ -420,7 +420,7 @@ void menu_action(unsigned char menu_action_type) {
 			}
 			else if (current_menu_pos == MENU_POS_MISC) {
 				if (current_menu_option_selected[current_menu_pos] == 0)
-					bootloader_start();
+					forceHardReset();
 			}
 		}
 		

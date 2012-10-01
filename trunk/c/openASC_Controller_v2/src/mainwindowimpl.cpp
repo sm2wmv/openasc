@@ -389,7 +389,7 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 					}
 				}
 				else if (cmd == REMOTE_COMMAND_STATUS) {
-					if (rxMessage.size() > 5) {
+					if (rxMessage.size() > 7) {
 						setLEDStatus((rxMessage.at(4) << 8) | rxMessage.at(5),rxMessage.at(3));
 
 						comboBoxBand->blockSignals(true);
