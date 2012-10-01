@@ -184,7 +184,7 @@ void ethernet_init(void) {
   
   // Ethernet Setup
   //We set the MAC address based on the bus address to avoid having the same MAC on several units
-  unsigned char mac_addr[] = {0x00,0x22,0x15,0xDE,0xE0,0x35};
+  unsigned char mac_addr[] = {0x00,0x1C,0x25,0x70,0xCD,0x8A};
   
   unsigned char ip_addr[] = {settings->ethernet_ip_addr[0],settings->ethernet_ip_addr[1],settings->ethernet_ip_addr[2],settings->ethernet_ip_addr[3]};
   unsigned char sub_mask[] = {settings->ethernet_submask[0],settings->ethernet_submask[1],settings->ethernet_submask[2],settings->ethernet_submask[3]};
