@@ -56,13 +56,6 @@
 	#define	INTERNAL_COMM_UDR							UDR0
 #endif
 
-#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT_REMOTE
-  #define ISR_INTERNAL_COMM_USART_RECV  SIG_USART0_RECV
-  #define ISR_INTERNAL_COMM_USART_DATA  SIG_USART0_DATA
-  
-  #define INTERNAL_COMM_UDR             UDR0
-#endif
-
 //! if the device is a frontpanel we need to set the proper USARTs used
 #ifdef DEVICE_TYPE_AMP_CTRL_BOX
   #define ISR_INTERNAL_COMM_USART_RECV  SIG_USART0_RECV
@@ -106,7 +99,7 @@
 #define UC_MESSAGE_DATA_SIZE	15
 
 //! After this many ms it will reset the rx flags (in ms) (change back to 25?)
-#define UC_COMM_RX_TIMEOUT	5
+#define UC_COMM_RX_TIMEOUT	10
 
 //! After this many ms a resend will occur if a message has not been acked (in ms) (change back to 25?)
 #define UC_COMM_TX_TIMEOUT	100
