@@ -76,30 +76,23 @@ typedef enum {
 
 //! EEPROM config variable container
 static Config EEMEM eep_cfg;
-
 //! EEPROM CRC
 static uint16_t EEMEM eep_cfg_crc;
-
 //! Config variable container
 Config cfg;
-
-//! The CRC to write
-static uint16_t crc;
-
-//! The state of the EEPROM writer
-static WriteState write_state = WRITE_STATE_IDLE;
-
-//! Pointer into RAM to read data from when writing to the EEPROM
-static const uint8_t *write_ram_ptr;
-
+//! Default config values stored in flash memory
+static const Config PROGMEM default_cfg = DEFAULT_CONFIG;
 //! EEPROM context for the config reader/writer
 static EepromContext cfg_ctx;
 
+//! The CRC to write
+static uint16_t crc;
+//! The state of the EEPROM writer
+static WriteState write_state = WRITE_STATE_IDLE;
+//! Pointer into RAM to read data from when writing to the EEPROM
+static const uint8_t *write_ram_ptr;
 //! The active EEPROM context being written at the moment
 static EepromContext *active = NULL;
-
-//! Default config values stored in flash memory
-static const Config PROGMEM default_cfg = DEFAULT_CONFIG;
 
 
 /******************************************************************************
