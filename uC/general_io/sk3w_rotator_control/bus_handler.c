@@ -518,6 +518,7 @@ static unsigned char read_ext_addr(void) {
 static void send_help(uint8_t addr) {
   send_ascii_data(addr, "defaults\r\n"
                         "reset\r\n"
+                        "ver\r\n"
                         "calon <idx>\r\n");
   send_ascii_data(addr, "caloff <idx>\r\n"
                         "ccwlim <idx> <deg>\r\n");

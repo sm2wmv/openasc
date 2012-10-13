@@ -461,7 +461,8 @@ static void send_help(uint8_t addr) {
   send_ascii_data(addr, "unused [tmo sec]\r\n"
                         "cooldown [tmo sec]\r\n");
   send_ascii_data(addr, "defaults\r\n"
-                        "reset\r\n");
+                        "reset\r\n"
+                        "ver\r\n");
 }
 
 
