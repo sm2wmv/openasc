@@ -59,6 +59,7 @@
 #include "rotator.h"
 #include "bsp.h"
 #include "bus_handler.h"
+#include "version.h"
 
 
 /******************************************************************************
@@ -334,6 +335,9 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
   if (argc > 0) {
     if (strcmp(argv[0], "help") == 0) {
       send_help(bus_message->from_addr);
+    }
+    else if (strcmp(argv[0], "ver") == 0) {
+      send_ascii_data(bus_message->from_addr, "Ver: " VERSION "\r\n");
     }
     else if (strcmp(argv[0], "calon") == 0) {
       if (argc != 2) {
