@@ -32,6 +32,7 @@ private:
 		QByteArray rxMessage;
 		QLinkedList<QByteArray> txQueue;
 		QLinkedList<QByteArray> rxQueue;
+    unsigned int rxTimeout;
 protected:
     //void run();
 

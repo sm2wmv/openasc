@@ -8,6 +8,7 @@ TCPClass::TCPClass() {
 	PREAMBLE.append(0xFE);
 
 	threadActive = false;
+  rxTimeout = 0;
 }
 
 void TCPClass::startTransfer() {
@@ -42,10 +43,14 @@ void TCPClass::receiveMsg() {
 	QByteArray buff;
 	unsigned int numBytes = client.bytesAvailable();
 
-	if (numBytes > 0)
-		qDebug() << "Bytes available: " << client.bytesAvailable();
+  rxTimeout++;
 
-	if (numBytes > 0) {
+  if (rxTimeout > 100) {
+    rxMessage.clear();
+    rxTimeout = 0;
+  }
+
+  if (numBytes > 0) {
 		if (numBytes > TCP_BUF_LEN)
 			numBytes = TCP_BUF_LEN;
 
@@ -60,6 +65,7 @@ void TCPClass::receiveMsg() {
 
 		while(char_count < rxMessage.size()) {
 			preamble_pos = -1;
+      postamble_pos = -1;
 
 			preamble_pos = rxMessage.indexOf(PREAMBLE,0);
 			int curr_pos = preamble_pos+5;
@@ -81,24 +87,18 @@ void TCPClass::receiveMsg() {
 				}
 
 				if (postamble_pos != -1) {
-					qDebug() << "Data size: " << msg_size;
-
 					//The message seem to be of valid size
 					if ((postamble_pos-preamble_pos - 5) == msg_size) {
-						qDebug() << "DATA OK";
-
+            rxTimeout = 0;
 						rxQueue.append(rxMessage.mid(preamble_pos+2,preamble_pos+postamble_pos-2));
 						rxMessage.remove(preamble_pos,postamble_pos-preamble_pos+1);
 					}
 				}
-
-				qDebug() << "Size left: " << rxMessage.size();
-				qDebug() << "Preamble POS " << preamble_pos;
-				qDebug() << "Postamble POS " << postamble_pos;
 			}
 			else {
 				//If we dont find any preamble in the data, then its corrupt and we clear the whole buffer
 				rxMessage.clear();
+        rxTimeout = 0;
 			}
 
 			char_count++;
