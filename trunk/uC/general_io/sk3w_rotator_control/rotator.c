@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_rotator_control/rotator.c
  *  \ingroup  general_io_group
  *  \brief    Rotator state machine base
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
  *
  * Implements the base for the Rotator state machine. The actual state

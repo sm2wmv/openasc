@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_power_amp_ctrl/config.h
  *  \ingroup  general_io_group
  *  \brief    Definition of configuration data to store in the EEPROM
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-06
  *
  * This file contains definitions used by the eeprom routines to read and

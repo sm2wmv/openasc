@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_power_amp_ctrl/controller.h
  *  \ingroup  general_io_group
  *  \brief    Handling of controllers (boxes)
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-05-23
  * 
  * Contains functions for handling controllers and actions performed by

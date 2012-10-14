@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_rotator_control/bsp.h
  *  \ingroup  general_io_group
  *  \brief    Board support package for the SK3W rotator controller
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
  *
  * The board support package is used to isolate hardware access from other

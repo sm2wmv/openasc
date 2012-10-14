@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_rotator_control/bus_handler.h
  *  \ingroup  general_io_group
  *  \brief    Handle bus communications for this application
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
  * 
  * Contains functions for handling application specific bus communications.
