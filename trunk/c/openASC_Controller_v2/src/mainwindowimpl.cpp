@@ -337,27 +337,21 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 	if (TCPComm->isConnected()) {
 		if (TCPComm->rxQueueSize() > 0) {
 			QByteArray rxMessage = TCPComm->getMessage();
-			if (rxMessage.size() > 3) {
-
+        if (rxMessage.size() > 3) {
 				unsigned int len = (rxMessage.at(1) << 8) + rxMessage.at(2);
 				unsigned char cmd = rxMessage.at(0);
-
-				qDebug("HR Size: %i\r\n",len);
-
-				if (cmd == REMOTE_COMMAND_DISPLAY_DATA) {
-					qDebug() << "REMOTE COMMAND DISPLAY DATA";
-
-					if (len == 1024) {
-						unsigned int i=3;
+        if (cmd == REMOTE_COMMAND_DISPLAY_DATA) {
+          if ((len == 1024) && (rxMessage.size() == 1027)) {
+            unsigned int i=3;
 
 						for (unsigned int y=0;y<8;y++)
 							for (unsigned int x=0;x<128;x++)
 								glcd_buffer[y][x] = ~rxMessage.at(i++);
 
-						repaint();
-					}
+            repaint();
+          }
 				}
-				else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
+        else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
 					switch(rxMessage.at(3)) {
 						case 0:
 							pushButtonRXAnt1->setText(QString(rxMessage.mid(4,len-1)));
@@ -452,8 +446,8 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 						comboBoxBand->blockSignals(false);
 					}
 				}
-			}
-		}
+      }
+    }
 	}
 }
 
