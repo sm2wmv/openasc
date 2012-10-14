@@ -175,7 +175,9 @@ QState Pa_unused(Pa *me) {
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_unused/ENTRY\r\n");
             Pa_setCtrlr(me, PA_CTRLR_UNUSED);
-            QActive_arm((QActive *)me, cfg.unused_timeout);
+            if (cfg.unused_timeout > 0) {
+              QActive_arm((QActive *)me, cfg.unused_timeout);
+            }
             return Q_HANDLED();
         }
         /* @(/1/0/3/2/4/3) */
