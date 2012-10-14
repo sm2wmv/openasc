@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_power_amp_ctrl/bsp.h
  *  \ingroup  general_io_group
  *  \brief    Board support package for the SK3W PA controller
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-05-23
  * 
  * The board support package is used to isolate hardware access from other

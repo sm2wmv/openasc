@@ -1,7 +1,7 @@
 /*! \file     general_io/sk3w_power_amp_ctrl/pa.h
  *  \ingroup  general_io_group
  *  \brief    PA state machine base
- *  \author   Tobias Blomberg, SN0SVX
+ *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-05-23
  * 
  * Implements the base for the PA state machine. The actual state
