@@ -163,9 +163,9 @@ void MainWindowImpl::pushButtonRXAnt10Clicked() {
 }
 
 void MainWindowImpl::pushButtonMenuClicked() {
-	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_MENU_BUTTON);
-	}
+//  if (TCPComm->isConnected()) {
+  TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_MENU_BUTTON);
+//  }
 }
 
 void MainWindowImpl::pushButtonMenuEnterClicked() {
@@ -203,7 +203,7 @@ void MainWindowImpl::actionDisconnectTriggered() {
 
 void MainWindowImpl::actionConnectTriggered() {
 	TCPComm->connect(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
-	TCPComm->start();
+//	TCPComm->start();
 
 	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_ON));
 
@@ -212,6 +212,9 @@ void MainWindowImpl::actionConnectTriggered() {
 
 	timerPollRXQueue->setInterval(1);
 	timerPollRXQueue->start();
+
+  timerPollStatus->setInterval(1);
+  timerPollStatus->start();
 }
 
 void MainWindowImpl::comboBoxBandIndexChanged(int index) {
@@ -223,6 +226,8 @@ void MainWindowImpl::comboBoxBandIndexChanged(int index) {
 }
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
+  TCPComm->receiveMsg();
+  TCPComm->transmitMsg();
 }
 
 void MainWindowImpl::pushButtonRXAntClicked() {
