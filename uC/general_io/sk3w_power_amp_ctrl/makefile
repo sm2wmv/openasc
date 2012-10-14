@@ -67,7 +67,7 @@ BASE_ADDRESS = 0
 BUS_RX_QUEUE_SIZE = 10
 
 # The size of the TX queue in buffers
-BUS_TX_QUEUE_SIZE = 15
+BUS_TX_QUEUE_SIZE = 20
 
 # WMW bus sources
 WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c

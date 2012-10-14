@@ -173,6 +173,52 @@ int8_t pa_toggle_mains(uint8_t band) {
   return post_event(band, TOGGLE_MAINS_SIG, 0);
 }
 
+int8_t pa_mains_on(uint8_t band) {
+  Q_REQUIRE(band <= BAND_MAX);
+  uint8_t sm = band2sm[band];
+  if (sm == SM_UNUSED) {
+    return -1;
+  }
+  uint8_t op_status = pa_sm[sm].op_status;
+  if ((op_status == AMP_OP_STATUS_OFF)
+      || (op_status == AMP_OP_STATUS_COOLDOWN)) {
+    return pa_toggle_mains(band);
+  }
+  return 0;
+}
+
+int8_t pa_mains_off(uint8_t band) {
+  Q_REQUIRE(band <= BAND_MAX);
+  uint8_t sm = band2sm[band];
+  if (sm == SM_UNUSED) {
+    return -1;
+  }
+  uint8_t op_status = pa_sm[sm].op_status;
+  if ((op_status == AMP_OP_STATUS_WARMUP)
+      || (op_status == AMP_OP_STATUS_READY)) {
+    return pa_toggle_mains(band);
+  }
+  return 0;
+}
+
+int8_t pa_mains_all_on(void) {
+  int8_t sm;
+  int8_t ret = 0;
+  for (sm=0; sm<SM_COUNT; ++sm) {
+    pa_mains_on(pa_sm[sm].band);
+  }
+  return ret < 0 ? -1 : 0;
+}
+
+int8_t pa_mains_all_off(void) {
+  int8_t sm;
+  int8_t ret = 0;
+  for (sm=0; sm<SM_COUNT; ++sm) {
+    ret += pa_mains_off(pa_sm[sm].band);
+  }
+  return ret < 0 ? -1 : 0;
+}
+
 void pa_set_tx_active(uint8_t band, int8_t on) {
   post_event(band, on ? TX_ACTIVE_ON_SIG : TX_ACTIVE_OFF_SIG, 0);
 }

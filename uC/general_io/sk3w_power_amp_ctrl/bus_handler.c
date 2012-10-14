@@ -69,6 +69,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message);
 static unsigned char read_ext_addr(void);
 static void send_pa_status(uint8_t band);
 static void send_help(uint8_t addr);
+static int8_t wl2band(uint8_t wl);
 
 
 void bus_handler_init() {
@@ -297,6 +298,54 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
       controller_toggle_mains(ctrlr);
       send_ascii_data(bus_message->from_addr, "OK\r\n");
     }
+    else if (strcmp(argv[0], "mainsoff") == 0) {
+      int8_t ret = 0;
+      if (argc == 2) {
+        int8_t band = wl2band(atoi(argv[1]));
+        if (band == -1) {
+          send_ascii_data(bus_message->from_addr, "*** Invalid band\r\n");
+          send_help(bus_message->from_addr);
+          return;
+        }
+        ret = pa_mains_off(band);
+      }
+      else if (argc == 1) {
+        ret = pa_mains_all_off();
+      }
+      else {
+        send_help(bus_message->from_addr);
+        return;
+      }
+      if (ret == -1) {
+        send_ascii_data(bus_message->from_addr, "*** Error\r\n");
+        return;
+      }
+      send_ascii_data(bus_message->from_addr, "OK\r\n");
+    }
+    else if (strcmp(argv[0], "mainson") == 0) {
+      int8_t ret = 0;
+      if (argc == 2) {
+        int8_t band = wl2band(atoi(argv[1]));
+        if (band == -1) {
+          send_ascii_data(bus_message->from_addr, "*** Invalid band\r\n");
+          send_help(bus_message->from_addr);
+          return;
+        }
+        ret = pa_mains_on(band);
+      }
+      else if (argc == 1) {
+        ret = pa_mains_all_on();
+      }
+      else {
+        send_help(bus_message->from_addr);
+        return;
+      }
+      if (ret == -1) {
+        send_ascii_data(bus_message->from_addr, "*** Error\r\n");
+        return;
+      }
+      send_ascii_data(bus_message->from_addr, "OK\r\n");
+    }
     else if (strcmp(argv[0], "warmup") == 0) {
       if (argc == 2) {
         pa_set_warmup_timeout(atoi(argv[1]));
@@ -456,6 +505,8 @@ static void send_pa_status(uint8_t band) {
 static void send_help(uint8_t addr) {
   send_ascii_data(addr, "ptton <ctrlr>\r\n"
                         "pttoff <ctrlr>\r\n");
+  send_ascii_data(addr, "mainson [band]\r\n"
+                        "mainsoff [band]\r\n");
   send_ascii_data(addr, "togglemains <ctrlr>\r\n"
                         "warmup [tmo sec]\r\n");
   send_ascii_data(addr, "unused [tmo sec]\r\n"
@@ -463,6 +514,32 @@ static void send_help(uint8_t addr) {
   send_ascii_data(addr, "defaults\r\n"
                         "reset\r\n"
                         "ver\r\n");
+}
+
+
+/*!
+ * \brief Convert wavelength to a band enum
+ * \param wl The wavelength as and integer (160, 80, 40, 20, 15 or 10)
+ * \returns Return the corresponding band enum or -1 or error
+ */
+static int8_t wl2band(uint8_t wl)
+{
+  switch (wl) {
+    case 160:
+      return BAND_160M;
+    case 80:
+      return BAND_80M;
+    case 40:
+      return BAND_40M;
+    case 20:
+      return BAND_20M;
+    case 15:
+      return BAND_15M;
+    case 10:
+      return BAND_10M;
+    default:
+      return -1;
+  }
 }
 
 
