@@ -27,7 +27,7 @@ bool TCPClass::isConnected() {
 	return(client.isOpen());
 }
 
-void TCPClass::run() {
+/*void TCPClass::run() {
 	threadActive = true;
 
 	while(threadActive) {
@@ -36,7 +36,7 @@ void TCPClass::run() {
 
 		QThread::usleep(100);
 	}
-}
+}*/
 
 void TCPClass::receiveMsg() {
 	QByteArray buff;
