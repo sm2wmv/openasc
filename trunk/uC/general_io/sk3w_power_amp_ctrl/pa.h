@@ -105,6 +105,32 @@ uint8_t pa_controller(uint8_t band);
 int8_t pa_toggle_mains(uint8_t band);
 
 /**
+ * \brief   Set mains to on on given band
+ * \param   band  The band (e.g. BAND_160M)
+ * \returns Returns 0 on success or -1 if an error occurred
+ */
+int8_t pa_mains_on(uint8_t band);
+
+/**
+ * \brief   Set mains to off on given band
+ * \param   band  The band (e.g. BAND_160M)
+ * \returns Returns 0 on success or -1 if an error occurred
+ */
+int8_t pa_mains_off(uint8_t band);
+
+/**
+ * \brief   Set mains to on on all bands
+ * \returns Returns 0 on success or -1 if an error occurred
+ */
+int8_t pa_mains_all_on(void);
+
+/**
+ * \brief   Set mains to off on all bands
+ * \returns Returns 0 on success or -1 if an error occurred
+ */
+int8_t pa_mains_all_off(void);
+
+/**
  * \brief Tell the state machine that the tx_active pin have changed its state
  * \param band  The band (e.g. BAND_160M)
  * \param on    Set to 1 if tx_active is on or 0 otherwise
