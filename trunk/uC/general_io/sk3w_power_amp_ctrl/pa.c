@@ -115,9 +115,6 @@ void pa_init(void) {
 }
 
 void pa_set_unused_timeout(uint16_t new_timeout) {
-  if (new_timeout < 1) {
-    new_timeout = 1;
-  }
   cfg.unused_timeout = new_timeout;
   eeprom_write_config();
 }
