@@ -24,7 +24,7 @@
 #define _MOTOR_CONTROL_H_
 
 //! The delay between each tick of a stepper motor, change the interrupt interval instead on timer 1
-#define MOTOR_CONTROL_STEP_DELAY  1
+#define MOTOR_CONTROL_STEP_DELAY  2
 
 //Direction is from front of motor looking at the axle
 
@@ -32,8 +32,8 @@
 #define MOTOR_DIR_CCW   1
 #define MOTOR_DIR_CW    2
 
-#define MOTOR1_LIMIT_CCW	900
-#define MOTOR2_LIMIT_CCW	900
+#define MOTOR1_LIMIT_CCW	950
+#define MOTOR2_LIMIT_CCW	950
 #define MOTOR3_LIMIT_CCW	900
 
 #define MOTOR1_LIMIT_CW 100

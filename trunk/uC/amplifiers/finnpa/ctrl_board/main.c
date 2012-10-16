@@ -384,6 +384,8 @@ void event_handler_control_panel(unsigned int state) {
           
         motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
         motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+		
+		ext_control_activate_band_relay(main_status.curr_band);
       }
     }
     
@@ -727,6 +729,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	bus_ping_tick();
+	
+	motor_control_check_out_of_bounds();
 }
 
 /*!Output overflow 0 interrupt */

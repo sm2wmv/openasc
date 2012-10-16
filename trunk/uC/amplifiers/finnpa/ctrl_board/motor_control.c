@@ -39,6 +39,8 @@ static unsigned int counter_ms = 0;
 static unsigned int motor_limit_cw[3] = {MOTOR1_LIMIT_CW,MOTOR2_LIMIT_CW,MOTOR3_LIMIT_CW};
 static unsigned int motor_limit_ccw[3] = {MOTOR1_LIMIT_CCW,MOTOR2_LIMIT_CCW,MOTOR3_LIMIT_CCW};
 
+static unsigned int ad_chk_val=0;
+
 /*! \brief Motor control init */
 void motor_control_init(void) {
   for (unsigned char i=0;i<3;i++) {
@@ -350,4 +352,25 @@ void motor_control_tick(void) {
 
 void motor_control_set_phase(unsigned char motor_index, unsigned char phase) {
 	stepper_motor[motor_index].current_phase = phase;
+}
+
+void motor_control_check_out_of_bounds(void) {	
+	unsigned char state_active = 0;
+	
+	ad_chk_val = a2dConvert10bit(1);
+	
+	if ((ad_chk_val > motor_limit_ccw[0]) || (ad_chk_val < motor_limit_cw[0])) {
+		state_active = 1;
+	}
+	
+	ad_chk_val = a2dConvert10bit(0);
+	
+	if ((ad_chk_val > motor_limit_ccw[1]) || (ad_chk_val < motor_limit_cw[1])) {
+		state_active = 1;
+	}	
+	
+	if (state_active)
+		ext_control_out_of_bounds_active();
+	else
+		ext_control_out_of_bounds_deactive();
 }
