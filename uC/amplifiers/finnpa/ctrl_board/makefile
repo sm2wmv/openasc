@@ -131,8 +131,8 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE) -DEVENT_LIST_SIZE=$(EVENT_LIST_SIZE)
-
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE) -DEVENT_LIST_SIZE=$(EVENT_LIST_SIZE)
+CFLAGS += -DDEBUG
 
 
 # Assembler flags.

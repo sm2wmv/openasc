@@ -25,8 +25,6 @@
 
 #include "../../../wmv_bus/bus_commands.h"
 
-#define DEBUG
-
 //! The current firmware revision nr
 #define FIRMWARE_REV "0.1b\0"
 
@@ -49,7 +47,7 @@
 
 #define DEF_NR_DEVICES  25
 
-#define BUS_ADDR 0x10
+#define BUS_ADDR 0x0D
 
 /*! Time limit of the operate/standby mode change (in ms) */
 #define OPERATE_STBY_OPERATE_LIMIT  2000

@@ -116,11 +116,11 @@ void ext_control_set_grid_relay_off(void) {
 }
 
 void ext_control_set_txrx_relay_on(void) {
-  PORTJ |= (1<<2);
+  PORTJ |= (1<<0);
 }
 
 void ext_control_set_txrx_relay_off(void) {
-  PORTJ &= ~(1<<2);
+  PORTJ &= ~(1<<0);
 }
 
 void ext_control_set_ptt_active(void) {
@@ -221,4 +221,12 @@ unsigned int ext_control_get_curr_state(void) {
 
 unsigned char ext_control_get_ptt_status(void) {
   return(curr_state & (1<<EXT_CONTROL_PTT_STATUS));
+}
+
+void ext_control_out_of_bounds_active(void) {
+	PORTG |= (1<<2);
+}
+
+void ext_control_out_of_bounds_deactive(void) {
+	PORTG &= ~(1<<2);
 }

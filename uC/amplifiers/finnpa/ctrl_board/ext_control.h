@@ -50,4 +50,7 @@ void ext_control_set_ptt_deactive(void);
 unsigned char ext_control_get_ptt_input_state(void);
 unsigned char ext_control_get_ptt_status(void);
 
+void ext_control_out_of_bounds_active(void);
+void ext_control_out_of_bounds_deactive(void);
+
 #endif
