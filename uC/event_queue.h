@@ -58,9 +58,11 @@ EVENT_MESSAGE event_list[EVENT_LIST_SIZE];
 #define SEQUENCER_EVENT_TYPE_PTT_AMP_OFF        8
 //! Event that the inhibit should be deactiated from footswitch
 #define SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF    9
-
 /*! We will update the PTT status after this has run */
 #define EVENT_TYPE_CRITICAL_CMD_UPDATE  10
+//! Event that we need to check the PTT status after the end of a PTT event
+#define SEQUENCER_EVENT_TYPE_PTT_CHECK          11
+
 
 void event_queue_init(void);
 char event_queue_add(EVENT_MESSAGE event);

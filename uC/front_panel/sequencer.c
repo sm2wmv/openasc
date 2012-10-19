@@ -29,6 +29,7 @@
 #include "radio_interface.h"
 #include "sequencer.h"
 #include "main.h"
+#include "event_handler.h"
 #include "led_control.h"
 #include "usart.h"
 #include "../global.h"
@@ -98,19 +99,28 @@ void sequencer_footsw_released(void) {
 	if (ptt_sequencer.ptt_input & (1<<PTT_INPUT_FOOTSWITCH)) {
 		//If the computer does PTT, we cannot stop the sequence, the computer will
 		if (((ptt_sequencer.ptt_input & (1<<PTT_INPUT_COMPUTER_RTS)) && ((ptt_active & (1<<PTT_ACTIVE_COMPUTER_RTS)) == 0)) || (ptt_sequencer.ptt_input & (1<<PTT_INPUT_COMPUTER_RTS)) == 0) {
-			//Checks so that the footswitch wasn't relased premature, if it was, we drop the message to PTT the radio or amp
+			unsigned char temp_time = 0;
+      
+      //Checks so that the footswitch wasn't relased premature, if it was, we drop the message to PTT the radio or amp
 			//That way if we accidentally press the footswitch shortly we don't need to go through the sequencer cycle if the
 			//delays are longer than the footswitch was pressed (not very likely though)
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_RADIO_ON) == 0) {
 				event_add_message((void *)radio_ptt_deactive, ptt_sequencer.footswitch.radio_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_RADIO_OFF);
+        temp_time = ptt_sequencer.footswitch.radio_post_delay;
 			}
 				
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_AMP_ON) == 0) {
 				event_add_message((void *)radio_amp_ptt_deactive, ptt_sequencer.footswitch.amp_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_AMP_OFF);
+
+        if (ptt_sequencer.footswitch.amp_post_delay > temp_time)
+          temp_time = ptt_sequencer.footswitch.amp_post_delay;
 			}
 	
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_ON) == 0) {
 				event_add_message((void *)radio_tx_deactive, ptt_sequencer.footswitch.antennas_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_OFF);
+        
+        if (ptt_sequencer.footswitch.antennas_post_delay > temp_time)
+          temp_time = ptt_sequencer.footswitch.antennas_post_delay;
 			}
 			
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_INHIBIT_ON) == 0) {
@@ -118,7 +128,14 @@ void sequencer_footsw_released(void) {
 					event_add_message((void *)radio_inhibit_high, ptt_sequencer.footswitch.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
 				else
 					event_add_message((void *)radio_inhibit_low, ptt_sequencer.footswitch.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
+        
+        if (ptt_sequencer.footswitch.inhibit_post_delay > temp_time)
+          temp_time = ptt_sequencer.footswitch.inhibit_post_delay;        
 			}
+			
+			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_CHECK) == 0) {
+        event_add_message((void *)event_check_ptt_inputs,temp_time*10,SEQUENCER_EVENT_TYPE_PTT_CHECK);
+      }
 		}
 	
 		ptt_active &= ~(1<<PTT_ACTIVE_FOOTSWITCH);
@@ -166,19 +183,28 @@ void sequencer_computer_rts_deactivated(void) {
 	if (ptt_sequencer.ptt_input & (1<<PTT_INPUT_COMPUTER_RTS)) {
 		//If the footswitch does PTT, we cannot stop the sequence, the footswitch will
 		if (((ptt_sequencer.ptt_input & (1<<PTT_INPUT_FOOTSWITCH)) && ((ptt_active & (1<<PTT_ACTIVE_FOOTSWITCH)) == 0)) || (ptt_sequencer.ptt_input & (1<<PTT_INPUT_FOOTSWITCH)) == 0) {
-			//Checks so that the footswitch wasn't relased premature, if it was, we drop the message to PTT the radio or amp
+      unsigned char temp_time = 0;
+      
+      //Checks so that the footswitch wasn't relased premature, if it was, we drop the message to PTT the radio or amp
 			//That way if we accidentally press the footswitch shortly we don't need to go through the sequencer cycle if the
 			//delays are longer than the footswitch was pressed (not very likely though)
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_RADIO_ON) == 0) {
 				event_add_message((void *)radio_ptt_deactive, ptt_sequencer.computer.radio_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_RADIO_OFF);
+        temp_time = ptt_sequencer.computer.radio_post_delay;
 			}
 				
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_AMP_ON) == 0) {
 				event_add_message((void *)radio_amp_ptt_deactive, ptt_sequencer.computer.amp_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_AMP_OFF);
+        
+        if (ptt_sequencer.computer.amp_post_delay > temp_time)
+          temp_time = ptt_sequencer.computer.amp_post_delay;
 			}
 	
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_ON) == 0) {
 				event_add_message((void *)radio_tx_deactive, ptt_sequencer.computer.antennas_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_TX_ACTIVE_OFF);
+        
+        if (ptt_sequencer.computer.amp_post_delay > temp_time)
+          temp_time = ptt_sequencer.computer.antennas_post_delay;
 			}
 			
 			if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_INHIBIT_ON) == 0) {
@@ -186,7 +212,14 @@ void sequencer_computer_rts_deactivated(void) {
 					event_add_message((void *)radio_inhibit_high, ptt_sequencer.computer.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
 				else
 					event_add_message((void *)radio_inhibit_low, ptt_sequencer.computer.inhibit_post_delay * 10, SEQUENCER_EVENT_TYPE_PTT_INHIBIT_OFF);
+        
+        if (ptt_sequencer.computer.inhibit_post_delay > temp_time)
+          temp_time = ptt_sequencer.computer.inhibit_post_delay;
 			}
+			
+      if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_CHECK) == 0) {
+        event_add_message((void *)event_check_ptt_inputs,temp_time*10,SEQUENCER_EVENT_TYPE_PTT_CHECK);
+      }
 		}
 
 		ptt_active &= ~(1<<PTT_ACTIVE_COMPUTER_RTS);

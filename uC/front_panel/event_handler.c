@@ -1495,6 +1495,24 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 	#endif	
 }
 
+void event_check_ptt_inputs(void) {
+  unsigned char state = ih_poll_ext_devices();
+  
+  if ((state & (1<<STATUS_FOOTSWITCH_BIT)) == 0) {
+    sequencer_footsw_pressed();
+  }
+  
+  //TODO: This need to be tested below, I THINK it works
+/*  if (state & (1<<STATUS_USB2_RTS_BIT)) {
+    if (sequencer_get_rts_polarity() != 0)
+      sequencer_computer_rts_activated();
+  }
+  else {
+    if (sequencer_get_rts_polarity() == 0)
+      sequencer_computer_rts_activated();
+  }*/
+}
+
 /*! \brief Parse an external event and perform the proper action
  *  \param ext_event_status The status of the external "hardware" event flags */
 void event_parse_ext_event(unsigned int ext_event_status) {

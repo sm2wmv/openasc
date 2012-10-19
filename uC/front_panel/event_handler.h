@@ -125,4 +125,6 @@ void event_txrx_mode_pressed(void);
 
 unsigned char event_check_critical_cmd_list(void);
 
+void event_check_ptt_inputs(void);
+
 #endif
