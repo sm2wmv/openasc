@@ -189,12 +189,17 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...) {
     len = sizeof(str) - 1;
   }
 
+  unsigned char flags = 0;
+  if (to_addr != BUS_BROADCAST_ADDR) {
+    flags = (1 << BUS_MESSAGE_FLAGS_NEED_ACK);
+  }
+
   char *ptr = str;
   while (len > 0) {
     unsigned char len_to_send = len < 15 ? len : 15;
     bus_add_tx_message(bus_get_address(),
                        to_addr,
-                       (1 << BUS_MESSAGE_FLAGS_NEED_ACK),
+                       flags,
                        BUS_CMD_ASCII_DATA,
                        len_to_send, (unsigned char *)ptr);
     len -= len_to_send;
