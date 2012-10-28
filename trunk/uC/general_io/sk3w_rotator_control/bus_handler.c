@@ -445,6 +445,10 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
  * is located in the RX queue.
  */
 static void bus_parse_message(BUS_MESSAGE *bus_message) {
+  if (bus_message->from_addr == BUS_BROADCAST_ADDR) {
+    return;
+  }
+
   switch (bus_message->cmd) {
     case BUS_CMD_ACK: {
       bus_message_acked(bus_message->from_addr);
