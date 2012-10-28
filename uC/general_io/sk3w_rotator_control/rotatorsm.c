@@ -77,14 +77,14 @@ QState Rotator_Calibrate(Rotator *me) {
         /* @(/1/0/13/2) */
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Calibrate: ENTER\r\n");
-            bsp_rotator_release_break(me->rot_idx);
+            //bsp_rotator_release_break(me->rot_idx);
             return Q_HANDLED();
         }
         /* @(/1/0/13/2) */
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Calibrate: EXIT\r\n");
             bsp_rotator_stop(me->rot_idx);
-            bsp_rotator_apply_break(me->rot_idx);
+            //bsp_rotator_apply_break(me->rot_idx);
             me->error = 0;
             Rotator_calc_heading_coeffs(me);
             eeprom_write_config();
