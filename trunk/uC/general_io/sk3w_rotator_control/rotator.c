@@ -352,7 +352,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
     // Apply IIR filter
   heading = ((heading - me->prev_heading) >> 1) + me->prev_heading;
   
-  int16_t speed = heading - me->prev_heading;
+  int16_t speed = 10 * (heading - me->prev_heading);
   me->prev_heading = heading;
   me->current_heading = heading;
 
