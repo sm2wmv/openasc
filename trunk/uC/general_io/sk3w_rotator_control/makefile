@@ -64,10 +64,10 @@ DEVICE_TYPE = DEVICE_TYPE_GENERAL_IO
 BASE_ADDRESS = 0
 
 # The size of the RX queue in buffers
-BUS_RX_QUEUE_SIZE = 10
+BUS_RX_QUEUE_SIZE = 30
 
 # The size of the TX queue in buffers
-BUS_TX_QUEUE_SIZE = 15
+BUS_TX_QUEUE_SIZE = 30
 
 # WMW bus sources
 WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c
