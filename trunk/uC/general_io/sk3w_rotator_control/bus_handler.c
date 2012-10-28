@@ -445,7 +445,9 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
  * is located in the RX queue.
  */
 static void bus_parse_message(BUS_MESSAGE *bus_message) {
-  if (bus_message->from_addr == BUS_BROADCAST_ADDR) {
+    /* Ignore all broadcast messages except ping */
+  if ((bus_message->from_addr == BUS_BROADCAST_ADDR)
+      && (bus_message->cmd != BUS_CMD_PING)) {
     return;
   }
 
