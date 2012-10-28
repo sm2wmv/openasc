@@ -190,6 +190,11 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...) {
     len = sizeof(str) - 1;
   }
 
+  unsigned char flags = 0;
+  if (to_addr != BUS_BROADCAST_ADDR) {
+    flags = (1 << BUS_MESSAGE_FLAGS_NEED_ACK);
+  }
+
   char *ptr = str;
   while (len > 0) {
     unsigned char len_to_send = len < 15 ? len : 15;
@@ -406,7 +411,7 @@ static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
  * in the RX queue. */
 static void bus_parse_message(BUS_MESSAGE *bus_message) {
     /* Ignore all broadcast messages except ping */
-  if ((bus_message->from_addr == BUS_BROADCAST_ADDR)
+  if ((bus_message->to_addr == BUS_BROADCAST_ADDR)
       && (bus_message->cmd != BUS_CMD_PING)) {
     return;
   }
