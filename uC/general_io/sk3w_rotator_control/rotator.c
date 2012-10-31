@@ -189,16 +189,31 @@ int8_t rotator_set_cw_limit(uint8_t rot_idx, int16_t limit_deg) {
 
 
 int8_t rotator_rotate_cw(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  me->target_heading = INT16_MAX;
   return post_event(rot_idx, ROTATE_CW_SIG, 0);
 }
 
 
 int8_t rotator_rotate_ccw(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  me->target_heading = INT16_MAX;
   return post_event(rot_idx, ROTATE_CCW_SIG, 0);
 }
 
 
 int8_t rotator_stop(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  me->target_heading = INT16_MAX;
   return post_event(rot_idx, STOP_SIG, 0);
 }
 
@@ -358,18 +373,22 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
 
     /* Check if we have hit the CW or CCW limits */
   if ((me->rotate_dir > 0) && (me->current_heading >= conf->cw_limit)) {
+    me->target_heading = INT16_MAX;
     (void)post_event(rot_idx, ROTATION_LIMIT_SIG, 0);
   }
   else if ((me->rotate_dir < 0) && (me->current_heading <= conf->ccw_limit)) {
+    me->target_heading = INT16_MAX;
     (void)post_event(rot_idx, ROTATION_LIMIT_SIG, 0);
   }
 
     /* Check if the target heading has been reached, if set */
   if (me->target_heading != INT16_MAX) {
     if ((me->rotate_dir > 0) && (me->current_heading >= me->target_heading)) {
+      me->target_heading = INT16_MAX;
       (void)post_event(rot_idx, STOP_SIG, 0);
     }
     else if ((me->rotate_dir < 0) && (me->current_heading <= me->target_heading)) {
+      me->target_heading = INT16_MAX;
       (void)post_event(rot_idx, STOP_SIG, 0);
     }
   }
@@ -381,6 +400,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
       if (++me->stuck_cnt >= 10) {
         me->stuck_cnt = 0;
         me->error = ROTATOR_ERROR_STUCK;
+        me->target_heading = INT16_MAX;
         (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
       }
     }
@@ -394,6 +414,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
         if (++me->wrong_dir_cnt >= 10) {
           me->wrong_dir_cnt = 0;
           me->error = ROTATOR_ERROR_WRONG_DIR;
+          me->target_heading = INT16_MAX;
           (void)post_event(rot_idx, ROTATOR_ERROR_SIG, 0);
         }
       }
@@ -665,7 +686,7 @@ static int16_t Rotator_deg2adc(Rotator *me, int16_t deg) {
   return (deg + me->heading_offset) * me->heading_scale;
 }
 
+
 //! Include the state machine definition
 #include "rotatorsm.c"
-
 

@@ -20,7 +20,6 @@ QState Rotator_Idle(Rotator *me) {
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Idle: ENTER\r\n");
             me->rotate_dir = 0;
-            me->target_heading = INT16_MAX;
             return Q_HANDLED();
         }
         /* @(/1/0/13/1) */
@@ -135,7 +134,6 @@ QState Rotator_BreakReleased(Rotator *me) {
         case Q_EXIT_SIG: {
             DEBUG_PRINT("BreakReleased: EXIT\r\n");
             me->rotate_dir = 0;
-            me->target_heading = INT16_MAX;
             bsp_rotator_apply_break(me->rot_idx);
             return Q_HANDLED();
         }
@@ -238,7 +236,6 @@ QState Rotator_Running(Rotator *me) {
         /* @(/1/0/13/3/7) */
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Running: EXIT\r\n");
-            me->target_heading = INT16_MAX;
             bsp_rotator_stop(me->rot_idx);
             return Q_HANDLED();
         }
