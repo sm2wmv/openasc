@@ -23,8 +23,7 @@
     </initial>
     <state name="Idle">
      <entry>DEBUG_PRINT(&quot;Idle: ENTER\r\n&quot;);
-me-&gt;rotate_dir = 0;
-me-&gt;target_heading = INT16_MAX;</entry>
+me-&gt;rotate_dir = 0;</entry>
      <exit>DEBUG_PRINT(&quot;Idle: EXIT\r\n&quot;);</exit>
      <tran trig="CAL_ENABLE" target="../../2">
       <tran_glyph conn="8,43,2,0,12">
@@ -136,7 +135,6 @@ eeprom_write_config();</exit>
 bsp_rotator_release_break(me-&gt;rot_idx);</entry>
      <exit brief="apply_break">DEBUG_PRINT(&quot;BreakReleased: EXIT\r\n&quot;);
 me-&gt;rotate_dir = 0;
-me-&gt;target_heading = INT16_MAX;
 bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
      <initial target="../5">
       <initial_glyph conn="112,9,5,0,2,4">
@@ -224,7 +222,6 @@ QActive_arm((QActive *)me, 30);</entry>
       <entry>DEBUG_PRINT(&quot;Running: ENTER\r\n&quot;);
 Q_REQUIRE(me-&gt;rotate_dir != 0);</entry>
       <exit>DEBUG_PRINT(&quot;Running: EXIT\r\n&quot;);
-me-&gt;target_heading = INT16_MAX;
 bsp_rotator_stop(me-&gt;rot_idx);</exit>
       <tran trig="Q_INIT">
        <choice guard="else" target="../../3">
