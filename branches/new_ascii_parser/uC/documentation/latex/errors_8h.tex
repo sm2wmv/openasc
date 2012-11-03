@@ -1,0 +1,58 @@
+\hypertarget{errors_8h}{
+\section{front\_\-panel/errors.h File Reference}
+\label{errors_8h}\index{front\_\-panel/errors.h@{front\_\-panel/errors.h}}
+}
+List of error codes.  
+
+
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{errors_8h_836e6fba25a1128a6ad56438a68899d9}{
+\#define \hyperlink{errors_8h_836e6fba25a1128a6ad56438a68899d9}{NR\_\-OF\_\-ERRORS}~5}
+\label{errors_8h_836e6fba25a1128a6ad56438a68899d9}
+
+\begin{CompactList}\small\item\em Define which tells us how many different error types that currently exist. \item\end{CompactList}\item 
+\hypertarget{errors_8h_e67b67012731233a401d45fd1f47872e}{
+\#define \hyperlink{errors_8h_e67b67012731233a401d45fd1f47872e}{ERROR\_\-TYPE\_\-BUS\_\-RESEND}~0}
+\label{errors_8h_e67b67012731233a401d45fd1f47872e}
+
+\begin{CompactList}\small\item\em Error that the bus had to resend a message more times than the max limit. \item\end{CompactList}\item 
+\hypertarget{errors_8h_47bb35725a56ba79ceac4c43545b9fbb}{
+\#define \hyperlink{errors_8h_47bb35725a56ba79ceac4c43545b9fbb}{ERROR\_\-TYPE\_\-BUS\_\-SYNC}~1}
+\label{errors_8h_47bb35725a56ba79ceac4c43545b9fbb}
+
+\begin{CompactList}\small\item\em Error that no sync was recieved within the default time frame. \item\end{CompactList}\item 
+\hypertarget{errors_8h_15c0d788cdf5e92783cc619ac77e2455}{
+\#define \hyperlink{errors_8h_15c0d788cdf5e92783cc619ac77e2455}{ERROR\_\-TYPE\_\-BUS\_\-TX\_\-QUEUE\_\-FULL}~2}
+\label{errors_8h_15c0d788cdf5e92783cc619ac77e2455}
+
+\begin{CompactList}\small\item\em The TX queue of the bus has gotten full. \item\end{CompactList}\item 
+\hypertarget{errors_8h_ff4cfde62cfc5d691fb95e4be3dd5d92}{
+\#define \hyperlink{errors_8h_ff4cfde62cfc5d691fb95e4be3dd5d92}{ERROR\_\-TYPE\_\-BUS\_\-RX\_\-QUEUE\_\-FULL}~3}
+\label{errors_8h_ff4cfde62cfc5d691fb95e4be3dd5d92}
+
+\begin{CompactList}\small\item\em The RX queue of the bus has gotten full. \item\end{CompactList}\item 
+\hypertarget{errors_8h_d252e6eed9c034f1d139f5407a23f899}{
+\#define \hyperlink{errors_8h_d252e6eed9c034f1d139f5407a23f899}{ERROR\_\-TYPE\_\-INT\_\-COMM\_\-RESEND}~4}
+\label{errors_8h_d252e6eed9c034f1d139f5407a23f899}
+
+\begin{CompactList}\small\item\em Internal communication resend fail. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+List of error codes. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/errors.h" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{errors_8h-source}{errors.h}.

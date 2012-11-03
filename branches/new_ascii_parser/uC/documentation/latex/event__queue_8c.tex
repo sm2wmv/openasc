@@ -1,0 +1,192 @@
+\hypertarget{event__queue_8c}{
+\section{event\_\-queue.c File Reference}
+\label{event__queue_8c}\index{event\_\-queue.c@{event\_\-queue.c}}
+}
+Event queue.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include \char`\"{}event\_\-queue.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{event__queue_8c_b349b553420f1ca1156ab636ac982b99}{
+void \hyperlink{event__queue_8c_b349b553420f1ca1156ab636ac982b99}{event\_\-queue\_\-init} (void)}
+\label{event__queue_8c_b349b553420f1ca1156ab636ac982b99}
+
+\begin{CompactList}\small\item\em Initialize the event queue. \item\end{CompactList}\item 
+char \hyperlink{event__queue_8c_ba537066c4389ff92fe0fad790ceb054}{event\_\-queue\_\-add} (\hyperlink{structEVENT__MESSAGE}{EVENT\_\-MESSAGE} event)
+\begin{CompactList}\small\item\em Insert a message into the event queue. It will end up on a position based on it's time\_\-target. \item\end{CompactList}\item 
+void \hyperlink{event__queue_8c_d7ae30db0c54e95fe9ebbd3423e5c9bb}{event\_\-queue\_\-wrap} (unsigned int remove\_\-val)
+\begin{CompactList}\small\item\em Removes a certain amount of numbers from the time\_\-target. \item\end{CompactList}\item 
+\hyperlink{structEVENT__MESSAGE}{EVENT\_\-MESSAGE} \hyperlink{event__queue_8c_ba3a286f2ef5381e7ddfe06c0be00eae}{event\_\-queue\_\-get} ()
+\begin{CompactList}\small\item\em Retrieve the first message from the event queue. \item\end{CompactList}\item 
+unsigned char \hyperlink{event__queue_8c_a50489a27b433a38d659d48499ddac8b}{event\_\-in\_\-queue} (void)
+\begin{CompactList}\small\item\em Checks if there is any event in the queue. \item\end{CompactList}\item 
+\hypertarget{event__queue_8c_23d38e483485f2e1d608a93cab3f8a82}{
+void \hyperlink{event__queue_8c_23d38e483485f2e1d608a93cab3f8a82}{event\_\-queue\_\-drop} (void)}
+\label{event__queue_8c_23d38e483485f2e1d608a93cab3f8a82}
+
+\begin{CompactList}\small\item\em Drops the first message in the queue. \item\end{CompactList}\item 
+unsigned char \hyperlink{event__queue_8c_78ee0eba90d4e455b9cbc5edbc3902e6}{event\_\-queue\_\-count} (void)
+\begin{CompactList}\small\item\em Retrieve the number of items in the event queue. \item\end{CompactList}\item 
+\hypertarget{event__queue_8c_c28f5f56c196e422db35b3c7657b5a8c}{
+void \hyperlink{event__queue_8c_c28f5f56c196e422db35b3c7657b5a8c}{event\_\-queue\_\-dropall} (void)}
+\label{event__queue_8c_c28f5f56c196e422db35b3c7657b5a8c}
+
+\begin{CompactList}\small\item\em Erase all content in the event queue. \item\end{CompactList}\item 
+int \hyperlink{event__queue_8c_bf734c18b872c4ecc29108b083cc2a36}{event\_\-queue\_\-drop\_\-id} (unsigned char id)
+\begin{CompactList}\small\item\em Drops all messages in the queue with a certain ID. \item\end{CompactList}\item 
+unsigned char \hyperlink{event__queue_8c_f011f18678e0b51d1c416457cb011f9c}{event\_\-queue\_\-check\_\-id} (unsigned char id)
+\begin{CompactList}\small\item\em Check if a specific ID exist in the event queue. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Event queue. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "event_queue.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{event__queue_8c-source}{event\_\-queue.c}.
+
+\subsection{Function Documentation}
+\hypertarget{event__queue_8c_a50489a27b433a38d659d48499ddac8b}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-in\_\-queue@{event\_\-in\_\-queue}}
+\index{event\_\-in\_\-queue@{event\_\-in\_\-queue}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-in\_\-queue}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char event\_\-in\_\-queue (void)}}
+\label{event__queue_8c_a50489a27b433a38d659d48499ddac8b}
+
+
+Checks if there is any event in the queue. 
+
+\begin{Desc}
+\item[Returns:]1 if there is an event in the queue and 0 otherwise \end{Desc}
+
+
+Definition at line 85 of file event\_\-queue.c.
+
+References event\_\-list.
+
+Referenced by event\_\-add\_\-message(), event\_\-run(), and ISR().\hypertarget{event__queue_8c_ba537066c4389ff92fe0fad790ceb054}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-queue\_\-add@{event\_\-queue\_\-add}}
+\index{event\_\-queue\_\-add@{event\_\-queue\_\-add}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-queue\_\-add}]{\setlength{\rightskip}{0pt plus 5cm}char event\_\-queue\_\-add ({\bf EVENT\_\-MESSAGE} {\em event})}}
+\label{event__queue_8c_ba537066c4389ff92fe0fad790ceb054}
+
+
+Insert a message into the event queue. It will end up on a position based on it's time\_\-target. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em event}]- The event that should be inserted into the queue \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The position the event was inserted into, -1 means queue was full \end{Desc}
+
+
+Definition at line 43 of file event\_\-queue.c.
+
+References event\_\-list, EVENT\_\-LIST\_\-SIZE, and EVENT\_\-MESSAGE::time\_\-target.
+
+Referenced by event\_\-add\_\-message().\hypertarget{event__queue_8c_f011f18678e0b51d1c416457cb011f9c}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-queue\_\-check\_\-id@{event\_\-queue\_\-check\_\-id}}
+\index{event\_\-queue\_\-check\_\-id@{event\_\-queue\_\-check\_\-id}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-queue\_\-check\_\-id}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char event\_\-queue\_\-check\_\-id (unsigned char {\em id})}}
+\label{event__queue_8c_f011f18678e0b51d1c416457cb011f9c}
+
+
+Check if a specific ID exist in the event queue. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em id}]The id we which to check for \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]1 if it exist, 0 if it doesn't \end{Desc}
+
+
+Definition at line 155 of file event\_\-queue.c.
+
+References event\_\-list, and EVENT\_\-LIST\_\-SIZE.\hypertarget{event__queue_8c_78ee0eba90d4e455b9cbc5edbc3902e6}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-queue\_\-count@{event\_\-queue\_\-count}}
+\index{event\_\-queue\_\-count@{event\_\-queue\_\-count}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-queue\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char event\_\-queue\_\-count (void)}}
+\label{event__queue_8c_78ee0eba90d4e455b9cbc5edbc3902e6}
+
+
+Retrieve the number of items in the event queue. 
+
+\begin{Desc}
+\item[Returns:]Numbers of items in the queue \end{Desc}
+
+
+Definition at line 104 of file event\_\-queue.c.
+
+References event\_\-list, and EVENT\_\-LIST\_\-SIZE.\hypertarget{event__queue_8c_bf734c18b872c4ecc29108b083cc2a36}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-queue\_\-drop\_\-id@{event\_\-queue\_\-drop\_\-id}}
+\index{event\_\-queue\_\-drop\_\-id@{event\_\-queue\_\-drop\_\-id}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-queue\_\-drop\_\-id}]{\setlength{\rightskip}{0pt plus 5cm}int event\_\-queue\_\-drop\_\-id (unsigned char {\em id})}}
+\label{event__queue_8c_bf734c18b872c4ecc29108b083cc2a36}
+
+
+Drops all messages in the queue with a certain ID. 
+
+\begin{Desc}
+\item[Returns:]the number of events that were dropped \end{Desc}
+
+
+Definition at line 126 of file event\_\-queue.c.
+
+References event\_\-list, EVENT\_\-LIST\_\-SIZE, EVENT\_\-MESSAGE::func, EVENT\_\-MESSAGE::id, and EVENT\_\-MESSAGE::time\_\-target.
+
+Referenced by sequencer\_\-computer\_\-rts\_\-deactivated(), and sequencer\_\-footsw\_\-released().\hypertarget{event__queue_8c_ba3a286f2ef5381e7ddfe06c0be00eae}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-queue\_\-get@{event\_\-queue\_\-get}}
+\index{event\_\-queue\_\-get@{event\_\-queue\_\-get}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-queue\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}{\bf EVENT\_\-MESSAGE} event\_\-queue\_\-get (void)}}
+\label{event__queue_8c_ba3a286f2ef5381e7ddfe06c0be00eae}
+
+
+Retrieve the first message from the event queue. 
+
+\begin{Desc}
+\item[Returns:]The first message in the queue \end{Desc}
+
+
+Definition at line 78 of file event\_\-queue.c.
+
+References event\_\-list.
+
+Referenced by event\_\-run(), and ISR().\hypertarget{event__queue_8c_d7ae30db0c54e95fe9ebbd3423e5c9bb}{
+\index{event\_\-queue.c@{event\_\-queue.c}!event\_\-queue\_\-wrap@{event\_\-queue\_\-wrap}}
+\index{event\_\-queue\_\-wrap@{event\_\-queue\_\-wrap}!event_queue.c@{event\_\-queue.c}}
+\subsubsection[{event\_\-queue\_\-wrap}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-queue\_\-wrap (unsigned int {\em remove\_\-val})}}
+\label{event__queue_8c_d7ae30db0c54e95fe9ebbd3423e5c9bb}
+
+
+Removes a certain amount of numbers from the time\_\-target. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em remove\_\-val}]The number we want to remove from all time targets \end{description}
+\end{Desc}
+
+
+Definition at line 69 of file event\_\-queue.c.
+
+References event\_\-list, EVENT\_\-LIST\_\-SIZE, and EVENT\_\-MESSAGE::time\_\-target.
+
+Referenced by ISR().

@@ -1,0 +1,527 @@
+\hypertarget{event__handler_8h}{
+\section{front\_\-panel/event\_\-handler.h File Reference}
+\label{event__handler_8h}\index{front\_\-panel/event\_\-handler.h@{front\_\-panel/event\_\-handler.h}}
+}
+Event handler of various things.  
+
+
+{\tt \#include \char`\"{}../wmv\_\-bus/bus.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-rx\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-tx\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}../wmv\_\-bus/bus\_\-commands.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm\_\-commands.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{event__handler_8h_8b2904edead8da7c8ee3a6e78438d07c}{
+\#define \hyperlink{event__handler_8h_8b2904edead8da7c8ee3a6e78438d07c}{KEYPAD\_\-BTN\_\-1}~0x69}
+\label{event__handler_8h_8b2904edead8da7c8ee3a6e78438d07c}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 1. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_d4b988deeae5fefe29ba9af406097913}{
+\#define \hyperlink{event__handler_8h_d4b988deeae5fefe29ba9af406097913}{KEYPAD\_\-BTN\_\-2}~0x72}
+\label{event__handler_8h_d4b988deeae5fefe29ba9af406097913}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 2. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_288c828963ad04fca024cf8bc7df64b0}{
+\#define \hyperlink{event__handler_8h_288c828963ad04fca024cf8bc7df64b0}{KEYPAD\_\-BTN\_\-3}~0x7A}
+\label{event__handler_8h_288c828963ad04fca024cf8bc7df64b0}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 3. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_5bd3dad8e087606c9b3a0d889402e38f}{
+\#define \hyperlink{event__handler_8h_5bd3dad8e087606c9b3a0d889402e38f}{KEYPAD\_\-BTN\_\-4}~0x6B}
+\label{event__handler_8h_5bd3dad8e087606c9b3a0d889402e38f}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 4. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_da45c7775cfb003c425ece408de414a9}{
+\#define \hyperlink{event__handler_8h_da45c7775cfb003c425ece408de414a9}{KEYPAD\_\-BTN\_\-5}~0x73}
+\label{event__handler_8h_da45c7775cfb003c425ece408de414a9}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 5. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_2bb78df2299e91ef7a5f095510528dbf}{
+\#define \hyperlink{event__handler_8h_2bb78df2299e91ef7a5f095510528dbf}{KEYPAD\_\-BTN\_\-6}~0x74}
+\label{event__handler_8h_2bb78df2299e91ef7a5f095510528dbf}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 6. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_254cd54677663224ffdb1b832fe55018}{
+\#define \hyperlink{event__handler_8h_254cd54677663224ffdb1b832fe55018}{KEYPAD\_\-BTN\_\-7}~0x6C}
+\label{event__handler_8h_254cd54677663224ffdb1b832fe55018}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 7. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_b0059fecf1eb15c4998c25cfe3e7c84f}{
+\#define \hyperlink{event__handler_8h_b0059fecf1eb15c4998c25cfe3e7c84f}{KEYPAD\_\-BTN\_\-8}~0x75}
+\label{event__handler_8h_b0059fecf1eb15c4998c25cfe3e7c84f}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 8. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_5708b3dcd7dba9d5b639d67becda2fdd}{
+\#define \hyperlink{event__handler_8h_5708b3dcd7dba9d5b639d67becda2fdd}{KEYPAD\_\-BTN\_\-9}~0x7D}
+\label{event__handler_8h_5708b3dcd7dba9d5b639d67becda2fdd}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 9. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_4be97b6ea3d2c5c517ff055a5b20232f}{
+\#define \hyperlink{event__handler_8h_4be97b6ea3d2c5c517ff055a5b20232f}{KEYPAD\_\-BTN\_\-0}~0x70}
+\label{event__handler_8h_4be97b6ea3d2c5c517ff055a5b20232f}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button 0. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_c17b9743737c9cc54a429f7bac99e140}{
+\#define \hyperlink{event__handler_8h_c17b9743737c9cc54a429f7bac99e140}{KEYPAD\_\-BTN\_\-A}~0x77}
+\label{event__handler_8h_c17b9743737c9cc54a429f7bac99e140}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button A. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_0baaa5c0d64b8c0990272a17f08f1166}{
+\#define \hyperlink{event__handler_8h_0baaa5c0d64b8c0990272a17f08f1166}{KEYPAD\_\-BTN\_\-B}~0x4A}
+\label{event__handler_8h_0baaa5c0d64b8c0990272a17f08f1166}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button B. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_a84529f20060232ed692f0f4e888a8d5}{
+\#define \hyperlink{event__handler_8h_a84529f20060232ed692f0f4e888a8d5}{KEYPAD\_\-BTN\_\-C}~0x7C}
+\label{event__handler_8h_a84529f20060232ed692f0f4e888a8d5}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button C. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_57466133548d70179ae683f062653193}{
+\#define \hyperlink{event__handler_8h_57466133548d70179ae683f062653193}{KEYPAD\_\-BTN\_\-D}~0x7B}
+\label{event__handler_8h_57466133548d70179ae683f062653193}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button D. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_2f68d816d87371de760116d7f1f39dfc}{
+\#define \hyperlink{event__handler_8h_2f68d816d87371de760116d7f1f39dfc}{KEYPAD\_\-BTN\_\-E}~0x79}
+\label{event__handler_8h_2f68d816d87371de760116d7f1f39dfc}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button E. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_f72728f61f72a99839529d4694eb37be}{
+\#define \hyperlink{event__handler_8h_f72728f61f72a99839529d4694eb37be}{KEYPAD\_\-BTN\_\-F}~0x5A}
+\label{event__handler_8h_f72728f61f72a99839529d4694eb37be}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button F. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_bea3fcae4e0e494c668fd2cb054f6b94}{
+\#define \hyperlink{event__handler_8h_bea3fcae4e0e494c668fd2cb054f6b94}{KEYPAD\_\-BTN\_\-G}~0x71}
+\label{event__handler_8h_bea3fcae4e0e494c668fd2cb054f6b94}
+
+\begin{CompactList}\small\item\em External keyboard keycode for Button G. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_2174262ba610c03019ae8e67e966e95b}{
+\#define \hyperlink{event__handler_8h_2174262ba610c03019ae8e67e966e95b}{EXT\_\-CTRL\_\-SEL\_\-NONE}~0}
+\label{event__handler_8h_2174262ba610c03019ae8e67e966e95b}
+
+\begin{CompactList}\small\item\em Ext ctrl - No function assigned. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_4e5473ac7217b5607bb4222ca1699620}{
+\#define \hyperlink{event__handler_8h_4e5473ac7217b5607bb4222ca1699620}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT1}~1}
+\label{event__handler_8h_4e5473ac7217b5607bb4222ca1699620}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#1. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_b6277d711c7bef8af58eed6c08bdda2f}{
+\#define \hyperlink{event__handler_8h_b6277d711c7bef8af58eed6c08bdda2f}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT2}~2}
+\label{event__handler_8h_b6277d711c7bef8af58eed6c08bdda2f}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#2. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_ae8f9e9f0b6aef7406b64be613cd24ff}{
+\#define \hyperlink{event__handler_8h_ae8f9e9f0b6aef7406b64be613cd24ff}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT3}~3}
+\label{event__handler_8h_ae8f9e9f0b6aef7406b64be613cd24ff}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#3. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_8241a87eca5ef2a026679a1e8959753c}{
+\#define \hyperlink{event__handler_8h_8241a87eca5ef2a026679a1e8959753c}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT4}~4}
+\label{event__handler_8h_8241a87eca5ef2a026679a1e8959753c}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#4. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_ed3bc8f17665be0f55e1de9cbac3c8c7}{
+\#define \hyperlink{event__handler_8h_ed3bc8f17665be0f55e1de9cbac3c8c7}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT5}~5}
+\label{event__handler_8h_ed3bc8f17665be0f55e1de9cbac3c8c7}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#5. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_cf11bf72f3be62693bbd19688b818163}{
+\#define \hyperlink{event__handler_8h_cf11bf72f3be62693bbd19688b818163}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT6}~6}
+\label{event__handler_8h_cf11bf72f3be62693bbd19688b818163}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#6. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_18f5db99aa596f21d7ba670682e1bcb3}{
+\#define \hyperlink{event__handler_8h_18f5db99aa596f21d7ba670682e1bcb3}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT7}~7}
+\label{event__handler_8h_18f5db99aa596f21d7ba670682e1bcb3}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#7. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_49a6a8b4bc63e34a1813a785a1dd3750}{
+\#define \hyperlink{event__handler_8h_49a6a8b4bc63e34a1813a785a1dd3750}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT8}~8}
+\label{event__handler_8h_49a6a8b4bc63e34a1813a785a1dd3750}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#8. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_f8b1b066a1bd17bb80031461a4ffd15b}{
+\#define \hyperlink{event__handler_8h_f8b1b066a1bd17bb80031461a4ffd15b}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT9}~9}
+\label{event__handler_8h_f8b1b066a1bd17bb80031461a4ffd15b}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#9. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_e557059c79e1082f835e74ca11c97781}{
+\#define \hyperlink{event__handler_8h_e557059c79e1082f835e74ca11c97781}{EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT10}~10}
+\label{event__handler_8h_e557059c79e1082f835e74ca11c97781}
+
+\begin{CompactList}\small\item\em Ext ctrl - Set RX antenna \#10. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_94d6f2bd15bbc3a450b31ada961b7e78}{
+\#define \hyperlink{event__handler_8h_94d6f2bd15bbc3a450b31ada961b7e78}{EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT1}~9}
+\label{event__handler_8h_94d6f2bd15bbc3a450b31ada961b7e78}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle TX antenna combination \#1. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_5319b5fc9f2980144b5d2f4c739cae11}{
+\#define \hyperlink{event__handler_8h_5319b5fc9f2980144b5d2f4c739cae11}{EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT2}~10}
+\label{event__handler_8h_5319b5fc9f2980144b5d2f4c739cae11}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle TX antenna combination \#2. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_f8d73b321a2449d433c673767d756517}{
+\#define \hyperlink{event__handler_8h_f8d73b321a2449d433c673767d756517}{EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT3}~11}
+\label{event__handler_8h_f8d73b321a2449d433c673767d756517}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle TX antenna combination \#3. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_c45a7e73c0e30ff6061b70c2a4d5f175}{
+\#define \hyperlink{event__handler_8h_c45a7e73c0e30ff6061b70c2a4d5f175}{EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT4}~12}
+\label{event__handler_8h_c45a7e73c0e30ff6061b70c2a4d5f175}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle TX antenna combination \#4. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_ca6d90a6f323d190f6ac48c079bbf411}{
+\#define \hyperlink{event__handler_8h_ca6d90a6f323d190f6ac48c079bbf411}{EXT\_\-CTRL\_\-TOGGLE\_\-RX\_\-ANT1}~13}
+\label{event__handler_8h_ca6d90a6f323d190f6ac48c079bbf411}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle RX antenna combination \#1. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_8969b898b7b81091fa8f1f6ce9eac2fa}{
+\#define \hyperlink{event__handler_8h_8969b898b7b81091fa8f1f6ce9eac2fa}{EXT\_\-CTRL\_\-TOGGLE\_\-RX\_\-ANT2}~14}
+\label{event__handler_8h_8969b898b7b81091fa8f1f6ce9eac2fa}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle RX antenna combination \#2. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_1aefa8fbb02b78a30642cbef15c8eb31}{
+\#define \hyperlink{event__handler_8h_1aefa8fbb02b78a30642cbef15c8eb31}{EXT\_\-CTRL\_\-TOGGLE\_\-RX\_\-ANT3}~15}
+\label{event__handler_8h_1aefa8fbb02b78a30642cbef15c8eb31}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle RX antenna combination \#3. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_7f5b5a43219a49adbb8dd26f961d4516}{
+\#define \hyperlink{event__handler_8h_7f5b5a43219a49adbb8dd26f961d4516}{EXT\_\-CTRL\_\-TOGGLE\_\-RX\_\-ANT4}~16}
+\label{event__handler_8h_7f5b5a43219a49adbb8dd26f961d4516}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle RX antenna combination \#4. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_43683afb37fc1c2919ba2c8a7776d7d2}{
+\#define \hyperlink{event__handler_8h_43683afb37fc1c2919ba2c8a7776d7d2}{EXT\_\-CTRL\_\-TOGGLE\_\-RX\_\-ANT\_\-MODE}~17}
+\label{event__handler_8h_43683afb37fc1c2919ba2c8a7776d7d2}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle RX antenna enabled. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_f495b690a3914ba138a1dbb73d5ecf30}{
+\#define \hyperlink{event__handler_8h_f495b690a3914ba138a1dbb73d5ecf30}{EXT\_\-CTRL\_\-TOGGLE\_\-TXRX\_\-MODE}~18}
+\label{event__handler_8h_f495b690a3914ba138a1dbb73d5ecf30}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle TX/RX mode on/off. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_c9407de68ffaf4a713f228724bbe8732}{
+\#define \hyperlink{event__handler_8h_c9407de68ffaf4a713f228724bbe8732}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR1}~19}
+\label{event__handler_8h_c9407de68ffaf4a713f228724bbe8732}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#1. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_d4a95fd62eba583698e3a56b14264c35}{
+\#define \hyperlink{event__handler_8h_d4a95fd62eba583698e3a56b14264c35}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR2}~20}
+\label{event__handler_8h_d4a95fd62eba583698e3a56b14264c35}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#2. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_c6af3d3910d215494c3e63853860575e}{
+\#define \hyperlink{event__handler_8h_c6af3d3910d215494c3e63853860575e}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR3}~21}
+\label{event__handler_8h_c6af3d3910d215494c3e63853860575e}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#3. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_66d97a4d744e336c355c8a299e014616}{
+\#define \hyperlink{event__handler_8h_66d97a4d744e336c355c8a299e014616}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR4}~22}
+\label{event__handler_8h_66d97a4d744e336c355c8a299e014616}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#4. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_34bd3d5fa41ce43fd4659a7e00f53c15}{
+\#define \hyperlink{event__handler_8h_34bd3d5fa41ce43fd4659a7e00f53c15}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR5}~23}
+\label{event__handler_8h_34bd3d5fa41ce43fd4659a7e00f53c15}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#5. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_e034e3c7ec0bec06de1ac142dae69aab}{
+\#define \hyperlink{event__handler_8h_e034e3c7ec0bec06de1ac142dae69aab}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR6}~24}
+\label{event__handler_8h_e034e3c7ec0bec06de1ac142dae69aab}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#6. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_347f0e1cd3bde6058fa389c2c18be398}{
+\#define \hyperlink{event__handler_8h_347f0e1cd3bde6058fa389c2c18be398}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR7}~25}
+\label{event__handler_8h_347f0e1cd3bde6058fa389c2c18be398}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#7. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_081c05413f7fc088001ad7b0b53d405a}{
+\#define \hyperlink{event__handler_8h_081c05413f7fc088001ad7b0b53d405a}{EXT\_\-CTRL\_\-SET\_\-ARRAY\_\-DIR8}~26}
+\label{event__handler_8h_081c05413f7fc088001ad7b0b53d405a}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select array direction \#8. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_512ae962859f22776dfc57f2b880fdc5}{
+\#define \hyperlink{event__handler_8h_512ae962859f22776dfc57f2b880fdc5}{EXT\_\-CTRL\_\-SET\_\-STACK\_\-COMB1}~27}
+\label{event__handler_8h_512ae962859f22776dfc57f2b880fdc5}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select stack combo \#1. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_7f4d33d9970261a94caa8b9ccc67150a}{
+\#define \hyperlink{event__handler_8h_7f4d33d9970261a94caa8b9ccc67150a}{EXT\_\-CTRL\_\-SET\_\-STACK\_\-COMB2}~28}
+\label{event__handler_8h_7f4d33d9970261a94caa8b9ccc67150a}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select stack combo \#2. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_b370466e13f55721a6e7f8dcca9401e6}{
+\#define \hyperlink{event__handler_8h_b370466e13f55721a6e7f8dcca9401e6}{EXT\_\-CTRL\_\-SET\_\-STACK\_\-COMB3}~29}
+\label{event__handler_8h_b370466e13f55721a6e7f8dcca9401e6}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select stack combo \#3. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_d8f607978d0d2c46e58bf54ba64e8a98}{
+\#define \hyperlink{event__handler_8h_d8f607978d0d2c46e58bf54ba64e8a98}{EXT\_\-CTRL\_\-SET\_\-STACK\_\-COMB4}~30}
+\label{event__handler_8h_d8f607978d0d2c46e58bf54ba64e8a98}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select stack combo \#4. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_f9d1cc40b424d02aa32ece8b1c5cc146}{
+\#define \hyperlink{event__handler_8h_f9d1cc40b424d02aa32ece8b1c5cc146}{EXT\_\-CTRL\_\-SET\_\-STACK\_\-COMB5}~31}
+\label{event__handler_8h_f9d1cc40b424d02aa32ece8b1c5cc146}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select stack combo \#5. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_be7c656e79c81031c806d2d1b2a27314}{
+\#define \hyperlink{event__handler_8h_be7c656e79c81031c806d2d1b2a27314}{EXT\_\-CTRL\_\-SET\_\-STACK\_\-COMB6}~32}
+\label{event__handler_8h_be7c656e79c81031c806d2d1b2a27314}
+
+\begin{CompactList}\small\item\em Ext ctrl - Select stack combo \#6. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_71d464cd775a06bdc162b1136a458fc0}{
+\#define \hyperlink{event__handler_8h_71d464cd775a06bdc162b1136a458fc0}{EXT\_\-CTRL\_\-AMPLIFIER\_\-TOGGLE\_\-ON\_\-OFF}~33}
+\label{event__handler_8h_71d464cd775a06bdc162b1136a458fc0}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle the amplifier on/off. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_56bc5273e64ab1d3a0f2afe7522c8187}{
+\#define \hyperlink{event__handler_8h_56bc5273e64ab1d3a0f2afe7522c8187}{EXT\_\-CTRL\_\-AMPLIFIER\_\-TOGGLE\_\-STANDBY}~34}
+\label{event__handler_8h_56bc5273e64ab1d3a0f2afe7522c8187}
+
+\begin{CompactList}\small\item\em Ext ctrl - Toggle the amplifier standby. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_03f9dfd7d3651f90bf6c91ac47b04b4a}{
+\#define \hyperlink{event__handler_8h_03f9dfd7d3651f90bf6c91ac47b04b4a}{EXT\_\-CTRL\_\-AMPLIFIER\_\-TUNE}~35}
+\label{event__handler_8h_03f9dfd7d3651f90bf6c91ac47b04b4a}
+
+\begin{CompactList}\small\item\em Ext ctrl - Tune the amplifier to the correct band. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_25bc0c3831a439ad8eec9bb71eb05b10}{
+\#define \hyperlink{event__handler_8h_25bc0c3831a439ad8eec9bb71eb05b10}{EXT\_\-CTRL\_\-AMPLIFIER\_\-RESET}~36}
+\label{event__handler_8h_25bc0c3831a439ad8eec9bb71eb05b10}
+
+\begin{CompactList}\small\item\em Ext ctrl - Reset the amplifier. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{event__handler_8h_632e5b342e5ac553e16febfe66be431d}{event\_\-set\_\-error} (unsigned char error\_\-type, unsigned char state)
+\begin{CompactList}\small\item\em Set that an error has occured. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_aefc9239bce459297733216904acbe85}{
+unsigned char \hyperlink{event__handler_8h_aefc9239bce459297733216904acbe85}{event\_\-get\_\-errors} (void)}
+\label{event__handler_8h_aefc9239bce459297733216904acbe85}
+
+\begin{CompactList}\small\item\em Retrieve the state error flags. \item\end{CompactList}\item 
+unsigned char \hyperlink{event__handler_8h_ae1c682f593e5e0e43093e9bf9391871}{event\_\-get\_\-error\_\-state} (unsigned char error\_\-type)
+\begin{CompactList}\small\item\em Retrieve the state of a specific error type. \item\end{CompactList}\item 
+void \hyperlink{event__handler_8h_32acf4e703c1e015c422014d22976b9f}{event\_\-internal\_\-comm\_\-parse\_\-message} (\hyperlink{structUC__MESSAGE}{UC\_\-MESSAGE} message)
+\begin{CompactList}\small\item\em Function which will parse the internal communication message. \item\end{CompactList}\item 
+void \hyperlink{event__handler_8h_b842189487606c37f6dfecff12714f6b}{event\_\-handler\_\-process\_\-ps2} (unsigned char key\_\-code)
+\begin{CompactList}\small\item\em Process an PS2 event. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_a8857be72780f3261f81a9a3ebf0d8aa}{
+void \hyperlink{event__handler_8h_a8857be72780f3261f81a9a3ebf0d8aa}{event\_\-pulse\_\-sensor\_\-up} (void)}
+\label{event__handler_8h_a8857be72780f3261f81a9a3ebf0d8aa}
+
+\begin{CompactList}\small\item\em The pulse sensor was turned up. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_b9a00ca4749b502864c535afc6f1f5a0}{
+void \hyperlink{event__handler_8h_b9a00ca4749b502864c535afc6f1f5a0}{event\_\-pulse\_\-sensor\_\-down} (void)}
+\label{event__handler_8h_b9a00ca4749b502864c535afc6f1f5a0}
+
+\begin{CompactList}\small\item\em The pulse sensor was turned down. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_c6178284e4debda791894aa3df3c9e82}{
+void \hyperlink{event__handler_8h_c6178284e4debda791894aa3df3c9e82}{event\_\-update\_\-display} (void)}
+\label{event__handler_8h_c6178284e4debda791894aa3df3c9e82}
+
+\begin{CompactList}\small\item\em Function to be called if we wish to update the display. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_5bc6c77effa965993a69575d51ceb87b}{
+void \hyperlink{event__handler_8h_5bc6c77effa965993a69575d51ceb87b}{event\_\-poll\_\-buttons} (void)}
+\label{event__handler_8h_5bc6c77effa965993a69575d51ceb87b}
+
+\begin{CompactList}\small\item\em Function which will poll all buttons and perform the proper action depending on their state. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_2622900ad0ca1e8d1d47a5d9d00ef86d}{
+void \hyperlink{event__handler_8h_2622900ad0ca1e8d1d47a5d9d00ef86d}{event\_\-poll\_\-ext\_\-device} (void)}
+\label{event__handler_8h_2622900ad0ca1e8d1d47a5d9d00ef86d}
+
+\begin{CompactList}\small\item\em Function which will poll the external devices and perform the proper actions depending on their state. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_774a4e20c7cf1ae54090699ad3aee5ec}{
+void \hyperlink{event__handler_8h_774a4e20c7cf1ae54090699ad3aee5ec}{event\_\-bus\_\-parse\_\-message} (void)}
+\label{event__handler_8h_774a4e20c7cf1ae54090699ad3aee5ec}
+
+\begin{CompactList}\small\item\em Parse a message from the communication bus. \item\end{CompactList}\item 
+void \hyperlink{event__handler_8h_4f0ca3f469d0211229552dcefebd6084}{event\_\-parse\_\-ext\_\-event} (unsigned int ext\_\-event\_\-status)
+\begin{CompactList}\small\item\em Parse an external event and perform the proper action. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_2a40fb545ab22321ace64dd3ea229ea0}{
+void \hyperlink{event__handler_8h_2a40fb545ab22321ace64dd3ea229ea0}{event\_\-sub\_\-button\_\-pressed} (void)}
+\label{event__handler_8h_2a40fb545ab22321ace64dd3ea229ea0}
+
+\begin{CompactList}\small\item\em Perform the actions that should be done when the SUB menu button is pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_6ded1fef0ab85bdcd464a3f53bd84c6f}{
+void \hyperlink{event__handler_8h_6ded1fef0ab85bdcd464a3f53bd84c6f}{event\_\-tx\_\-button1\_\-pressed} (void)}
+\label{event__handler_8h_6ded1fef0ab85bdcd464a3f53bd84c6f}
+
+\begin{CompactList}\small\item\em Perform the action of TX antenna button 1 if it was pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_44c1527b187d3e8fd723bf6aa84f8333}{
+void \hyperlink{event__handler_8h_44c1527b187d3e8fd723bf6aa84f8333}{event\_\-tx\_\-button2\_\-pressed} (void)}
+\label{event__handler_8h_44c1527b187d3e8fd723bf6aa84f8333}
+
+\begin{CompactList}\small\item\em Perform the action of TX antenna button 2 if it was pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_dcd46584264f5e558f7159954f062297}{
+void \hyperlink{event__handler_8h_dcd46584264f5e558f7159954f062297}{event\_\-tx\_\-button3\_\-pressed} (void)}
+\label{event__handler_8h_dcd46584264f5e558f7159954f062297}
+
+\begin{CompactList}\small\item\em Perform the action of TX antenna button 3 if it was pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_c37acb56cc859cea8e655a8bbcf36250}{
+void \hyperlink{event__handler_8h_c37acb56cc859cea8e655a8bbcf36250}{event\_\-tx\_\-button4\_\-pressed} (void)}
+\label{event__handler_8h_c37acb56cc859cea8e655a8bbcf36250}
+
+\begin{CompactList}\small\item\em Perform the action of TX antenna button 4 if it was pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_18c3dccbdf1ce8952d45aca4c06e7fc8}{
+void \hyperlink{event__handler_8h_18c3dccbdf1ce8952d45aca4c06e7fc8}{event\_\-rotate\_\-button\_\-pressed} (void)}
+\label{event__handler_8h_18c3dccbdf1ce8952d45aca4c06e7fc8}
+
+\begin{CompactList}\small\item\em Perform the action of Rotate button if it was pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_cd8774b170000657a389c451485b12d2}{
+void \hyperlink{event__handler_8h_cd8774b170000657a389c451485b12d2}{event\_\-rxant\_\-button\_\-pressed} (void)}
+\label{event__handler_8h_cd8774b170000657a389c451485b12d2}
+
+\begin{CompactList}\small\item\em Perform the action of RX antenna button if it was pressed. \item\end{CompactList}\item 
+\hypertarget{event__handler_8h_f890f754a450c484ac7e61555f73e472}{
+void \hyperlink{event__handler_8h_f890f754a450c484ac7e61555f73e472}{event\_\-aux2\_\-button\_\-pressed} (void)}
+\label{event__handler_8h_f890f754a450c484ac7e61555f73e472}
+
+\begin{CompactList}\small\item\em Perform the actions that should be done when AUX 2 button is pressed. \item\end{CompactList}\item 
+void \_\-\_\-inline\_\-\_\- \hyperlink{event__handler_8h_a505034c27af0141e92295c18cc89a0f}{event\_\-set\_\-rx\_\-antenna} (unsigned char ant\_\-index)
+\begin{CompactList}\small\item\em Set an RX antenna. Will set the proper flags and call the antenna\_\-ctrl\_\-change\_\-rx\_\-ant function. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Event handler of various things. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/event_handler.h" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{event__handler_8h-source}{event\_\-handler.h}.
+
+\subsection{Function Documentation}
+\hypertarget{event__handler_8h_ae1c682f593e5e0e43093e9bf9391871}{
+\index{event\_\-handler.h@{event\_\-handler.h}!event\_\-get\_\-error\_\-state@{event\_\-get\_\-error\_\-state}}
+\index{event\_\-get\_\-error\_\-state@{event\_\-get\_\-error\_\-state}!event_handler.h@{event\_\-handler.h}}
+\subsubsection[{event\_\-get\_\-error\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char event\_\-get\_\-error\_\-state (unsigned char {\em error\_\-type})}}
+\label{event__handler_8h_ae1c682f593e5e0e43093e9bf9391871}
+
+
+Retrieve the state of a specific error type. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em error\_\-type}]Which kind of error we wish to check the state for \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The current state of this error \end{Desc}
+
+
+Definition at line 82 of file event\_\-handler.c.
+
+References flag\_\-errors.\hypertarget{event__handler_8h_b842189487606c37f6dfecff12714f6b}{
+\index{event\_\-handler.h@{event\_\-handler.h}!event\_\-handler\_\-process\_\-ps2@{event\_\-handler\_\-process\_\-ps2}}
+\index{event\_\-handler\_\-process\_\-ps2@{event\_\-handler\_\-process\_\-ps2}!event_handler.h@{event\_\-handler.h}}
+\subsubsection[{event\_\-handler\_\-process\_\-ps2}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-handler\_\-process\_\-ps2 (unsigned char {\em key\_\-code})}}
+\label{event__handler_8h_b842189487606c37f6dfecff12714f6b}
+
+
+Process an PS2 event. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em key\_\-code}]The key that was pressed \end{description}
+\end{Desc}
+
+
+Definition at line 149 of file event\_\-handler.c.
+
+References event\_\-rxant\_\-button\_\-pressed(), event\_\-set\_\-rx\_\-antenna(), event\_\-tx\_\-button1\_\-pressed(), event\_\-tx\_\-button2\_\-pressed(), event\_\-tx\_\-button3\_\-pressed(), event\_\-tx\_\-button4\_\-pressed(), EXT\_\-CTRL\_\-SEL\_\-NONE, EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT1, EXT\_\-CTRL\_\-SEL\_\-RX\_\-ANT10, EXT\_\-CTRL\_\-TOGGLE\_\-RX\_\-ANT\_\-MODE, EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT1, EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT2, EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT3, EXT\_\-CTRL\_\-TOGGLE\_\-TX\_\-ANT4, ext\_\-key\_\-get\_\-assignment(), KEYPAD\_\-BTN\_\-0, KEYPAD\_\-BTN\_\-1, KEYPAD\_\-BTN\_\-2, KEYPAD\_\-BTN\_\-3, KEYPAD\_\-BTN\_\-4, KEYPAD\_\-BTN\_\-5, KEYPAD\_\-BTN\_\-6, KEYPAD\_\-BTN\_\-7, KEYPAD\_\-BTN\_\-8, KEYPAD\_\-BTN\_\-9, KEYPAD\_\-BTN\_\-A, KEYPAD\_\-BTN\_\-B, KEYPAD\_\-BTN\_\-C, KEYPAD\_\-BTN\_\-D, KEYPAD\_\-BTN\_\-E, KEYPAD\_\-BTN\_\-F, and KEYPAD\_\-BTN\_\-G.
+
+Referenced by event\_\-internal\_\-comm\_\-parse\_\-message().\hypertarget{event__handler_8h_32acf4e703c1e015c422014d22976b9f}{
+\index{event\_\-handler.h@{event\_\-handler.h}!event\_\-internal\_\-comm\_\-parse\_\-message@{event\_\-internal\_\-comm\_\-parse\_\-message}}
+\index{event\_\-internal\_\-comm\_\-parse\_\-message@{event\_\-internal\_\-comm\_\-parse\_\-message}!event_handler.h@{event\_\-handler.h}}
+\subsubsection[{event\_\-internal\_\-comm\_\-parse\_\-message}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-internal\_\-comm\_\-parse\_\-message ({\bf UC\_\-MESSAGE} {\em message})}}
+\label{event__handler_8h_32acf4e703c1e015c422014d22976b9f}
+
+
+Function which will parse the internal communication message. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em message}]The message that we wish to parse \end{description}
+\end{Desc}
+
+
+Definition at line 91 of file event\_\-handler.c.
+
+References band\_\-ctrl\_\-change\_\-band(), UC\_\-MESSAGE::cmd, computer\_\-interface\_\-is\_\-active(), struct\_\-status::current\_\-display, CURRENT\_\-DISPLAY\_\-SHUTDOWN\_\-VIEW, UC\_\-MESSAGE::data, display\_\-shutdown\_\-view(), event\_\-add\_\-message(), event\_\-handler\_\-process\_\-ps2(), INT\_\-COMM\_\-GET\_\-BAND\_\-BCD\_\-STATUS, INT\_\-COMM\_\-PC\_\-CTRL, INT\_\-COMM\_\-PS2\_\-KEYPRESSED, INT\_\-COMM\_\-TURN\_\-DEVICE\_\-OFF, main\_\-save\_\-settings(), radio\_\-get\_\-current\_\-band(), radio\_\-set\_\-current\_\-band(), remote\_\-control\_\-parse\_\-command(), send\_\-ping(), shutdown\_\-device(), and status.
+
+Referenced by main().\hypertarget{event__handler_8h_4f0ca3f469d0211229552dcefebd6084}{
+\index{event\_\-handler.h@{event\_\-handler.h}!event\_\-parse\_\-ext\_\-event@{event\_\-parse\_\-ext\_\-event}}
+\index{event\_\-parse\_\-ext\_\-event@{event\_\-parse\_\-ext\_\-event}!event_handler.h@{event\_\-handler.h}}
+\subsubsection[{event\_\-parse\_\-ext\_\-event}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-parse\_\-ext\_\-event (unsigned int {\em ext\_\-event\_\-status})}}
+\label{event__handler_8h_4f0ca3f469d0211229552dcefebd6084}
+
+
+Parse an external event and perform the proper action. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em ext\_\-event\_\-status}]The status of the external \char`\"{}hardware\char`\"{} event flags \end{description}
+\end{Desc}
+
+
+Definition at line 900 of file event\_\-handler.c.
+
+References struct\_\-status::ext\_\-devices\_\-current\_\-state, sequencer\_\-computer\_\-rts\_\-activated(), sequencer\_\-computer\_\-rts\_\-deactivated(), sequencer\_\-footsw\_\-pressed(), sequencer\_\-footsw\_\-released(), sequencer\_\-get\_\-radio\_\-sense(), sequencer\_\-get\_\-rts\_\-polarity(), sequencer\_\-get\_\-sense\_\-polarity(), sequencer\_\-radio\_\-sense\_\-activated(), sequencer\_\-radio\_\-sense\_\-deactivated(), status, STATUS\_\-FOOTSWITCH\_\-BIT, STATUS\_\-RADIO\_\-SENSE1\_\-BIT, STATUS\_\-RADIO\_\-SENSE2\_\-BIT, and STATUS\_\-USB2\_\-RTS\_\-BIT.
+
+Referenced by event\_\-poll\_\-ext\_\-device().\hypertarget{event__handler_8h_632e5b342e5ac553e16febfe66be431d}{
+\index{event\_\-handler.h@{event\_\-handler.h}!event\_\-set\_\-error@{event\_\-set\_\-error}}
+\index{event\_\-set\_\-error@{event\_\-set\_\-error}!event_handler.h@{event\_\-handler.h}}
+\subsubsection[{event\_\-set\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}void event\_\-set\_\-error (unsigned char {\em error\_\-type}, \/  unsigned char {\em state})}}
+\label{event__handler_8h_632e5b342e5ac553e16febfe66be431d}
+
+
+Set that an error has occured. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em error\_\-type}]The type of error that has occured, defines can be found in \hyperlink{errors_8h}{errors.h} \item[{\em state}]State of the error \end{description}
+\end{Desc}
+
+
+Definition at line 65 of file event\_\-handler.c.
+
+References flag\_\-errors, and main\_\-update\_\-ptt\_\-status().
+
+Referenced by bus\_\-resend\_\-message(), internal\_\-comm\_\-resend(), ISR(), menu\_\-action(), rx\_\-queue\_\-add(), and tx\_\-queue\_\-add().\hypertarget{event__handler_8h_a505034c27af0141e92295c18cc89a0f}{
+\index{event\_\-handler.h@{event\_\-handler.h}!event\_\-set\_\-rx\_\-antenna@{event\_\-set\_\-rx\_\-antenna}}
+\index{event\_\-set\_\-rx\_\-antenna@{event\_\-set\_\-rx\_\-antenna}!event_handler.h@{event\_\-handler.h}}
+\subsubsection[{event\_\-set\_\-rx\_\-antenna}]{\setlength{\rightskip}{0pt plus 5cm}void \_\-\_\-inline\_\-\_\- event\_\-set\_\-rx\_\-antenna (unsigned char {\em ant\_\-index})}}
+\label{event__handler_8h_a505034c27af0141e92295c18cc89a0f}
+
+
+Set an RX antenna. Will set the proper flags and call the antenna\_\-ctrl\_\-change\_\-rx\_\-ant function. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em ant\_\-index}]The index of the RX antenna we wish to chose \end{description}
+\end{Desc}
+
+
+Definition at line 140 of file event\_\-handler.c.
+
+References antenna\_\-ctrl\_\-change\_\-rx\_\-ant(), FLAG\_\-UPDATE\_\-DISPLAY, main\_\-flags, struct\_\-status::selected\_\-rx\_\-antenna, and status.
+
+Referenced by event\_\-handler\_\-process\_\-ps2().

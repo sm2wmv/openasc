@@ -1,0 +1,1064 @@
+\contentsline {chapter}{\numberline {1}Module Index}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Modules}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}Class Index}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Class List}{3}{section.2.1}
+\contentsline {chapter}{\numberline {3}File Index}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}File List}{5}{section.3.1}
+\contentsline {chapter}{\numberline {4}Module Documentation}{9}{chapter.4}
+\contentsline {section}{\numberline {4.1}Driver unit version 1}{9}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Detailed Description}{9}{subsection.4.1.1}
+\contentsline {section}{\numberline {4.2}Driver unit version 2}{10}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Detailed Description}{10}{subsection.4.2.1}
+\contentsline {section}{\numberline {4.3}Event QUEUE library}{11}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Detailed Description}{11}{subsection.4.3.1}
+\contentsline {section}{\numberline {4.4}Front panel}{12}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Detailed Description}{14}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Define Documentation}{15}{subsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.2.1}GLCD\_\discretionary {-}{}{}LEFT}{15}{subsubsection.4.4.2.1}
+\contentsline {subsubsection}{\numberline {4.4.2.2}GLCD\_\discretionary {-}{}{}ON\_\discretionary {-}{}{}CTRL}{15}{subsubsection.4.4.2.2}
+\contentsline {section}{\numberline {4.5}General I/O card}{16}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Detailed Description}{16}{subsection.4.5.1}
+\contentsline {section}{\numberline {4.6}I2C Serial Interface Function Library (i2c.c)}{17}{section.4.6}
+\contentsline {section}{\numberline {4.7}Internal communication routines}{18}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Detailed Description}{18}{subsection.4.7.1}
+\contentsline {section}{\numberline {4.8}Motherboard}{19}{section.4.8}
+\contentsline {subsection}{\numberline {4.8.1}Detailed Description}{19}{subsection.4.8.1}
+\contentsline {section}{\numberline {4.9}A/D Converter Function Library (a2d.c)}{20}{section.4.9}
+\contentsline {subsection}{\numberline {4.9.1}Detailed Description}{23}{subsection.4.9.1}
+\contentsline {subsection}{\numberline {4.9.2}Function Documentation}{23}{subsection.4.9.2}
+\contentsline {subsubsection}{\numberline {4.9.2.1}a2dConvert10bit}{23}{subsubsection.4.9.2.1}
+\contentsline {subsubsection}{\numberline {4.9.2.2}a2dConvert8bit}{23}{subsubsection.4.9.2.2}
+\contentsline {subsubsection}{\numberline {4.9.2.3}a2dInit}{24}{subsubsection.4.9.2.3}
+\contentsline {subsubsection}{\numberline {4.9.2.4}a2dSetPrescaler}{24}{subsubsection.4.9.2.4}
+\contentsline {subsubsection}{\numberline {4.9.2.5}a2dSetReference}{24}{subsubsection.4.9.2.5}
+\contentsline {section}{\numberline {4.10}Character LCD Driver for HD44780/SED1278-based displays (lcd.c)}{25}{section.4.10}
+\contentsline {section}{\numberline {4.11}BUS communication}{26}{section.4.11}
+\contentsline {subsection}{\numberline {4.11.1}Detailed Description}{26}{subsection.4.11.1}
+\contentsline {chapter}{\numberline {5}Class Documentation}{27}{chapter.5}
+\contentsline {section}{\numberline {5.1}BUS\_\discretionary {-}{}{}MESSAGE Struct Reference}{27}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Detailed Description}{27}{subsection.5.1.1}
+\contentsline {section}{\numberline {5.2}bus\_\discretionary {-}{}{}status\_\discretionary {-}{}{}struct Struct Reference}{29}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Detailed Description}{29}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Member Data Documentation}{29}{subsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.2.1}flags}{29}{subsubsection.5.2.2.1}
+\contentsline {section}{\numberline {5.3}bus\_\discretionary {-}{}{}struct\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}status Struct Reference}{31}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Detailed Description}{31}{subsection.5.3.1}
+\contentsline {section}{\numberline {5.4}computer\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}struct Struct Reference}{32}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Detailed Description}{32}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Member Data Documentation}{32}{subsection.5.4.2}
+\contentsline {subsubsection}{\numberline {5.4.2.1}command}{32}{subsubsection.5.4.2.1}
+\contentsline {subsubsection}{\numberline {5.4.2.2}count}{33}{subsubsection.5.4.2.2}
+\contentsline {subsubsection}{\numberline {5.4.2.3}flags}{33}{subsubsection.5.4.2.3}
+\contentsline {subsubsection}{\numberline {5.4.2.4}length}{33}{subsubsection.5.4.2.4}
+\contentsline {section}{\numberline {5.5}driver\_\discretionary {-}{}{}status\_\discretionary {-}{}{}struct Struct Reference}{34}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Detailed Description}{34}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Member Data Documentation}{34}{subsection.5.5.2}
+\contentsline {subsubsection}{\numberline {5.5.2.1}ptt\_\discretionary {-}{}{}interlock\_\discretionary {-}{}{}input}{34}{subsubsection.5.5.2.1}
+\contentsline {section}{\numberline {5.6}EVENT\_\discretionary {-}{}{}MESSAGE Struct Reference}{35}{section.5.6}
+\contentsline {subsection}{\numberline {5.6.1}Detailed Description}{35}{subsection.5.6.1}
+\contentsline {section}{\numberline {5.7}powermeter\_\discretionary {-}{}{}struct Struct Reference}{36}{section.5.7}
+\contentsline {subsection}{\numberline {5.7.1}Detailed Description}{36}{subsection.5.7.1}
+\contentsline {section}{\numberline {5.8}PS2\_\discretionary {-}{}{}STRUCT Struct Reference}{37}{section.5.8}
+\contentsline {subsection}{\numberline {5.8.1}Detailed Description}{37}{subsection.5.8.1}
+\contentsline {section}{\numberline {5.9}rx\_\discretionary {-}{}{}linked\_\discretionary {-}{}{}list Struct Reference}{38}{section.5.9}
+\contentsline {subsection}{\numberline {5.9.1}Detailed Description}{38}{subsection.5.9.1}
+\contentsline {subsection}{\numberline {5.9.2}Member Data Documentation}{38}{subsection.5.9.2}
+\contentsline {subsubsection}{\numberline {5.9.2.1}first}{38}{subsubsection.5.9.2.1}
+\contentsline {subsubsection}{\numberline {5.9.2.2}last}{38}{subsubsection.5.9.2.2}
+\contentsline {section}{\numberline {5.10}struct\_\discretionary {-}{}{}antenna Struct Reference}{40}{section.5.10}
+\contentsline {subsection}{\numberline {5.10.1}Detailed Description}{41}{subsection.5.10.1}
+\contentsline {subsection}{\numberline {5.10.2}Member Data Documentation}{41}{subsection.5.10.2}
+\contentsline {subsubsection}{\numberline {5.10.2.1}antenna\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{41}{subsubsection.5.10.2.1}
+\contentsline {subsubsection}{\numberline {5.10.2.2}antenna\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{41}{subsubsection.5.10.2.2}
+\contentsline {section}{\numberline {5.11}struct\_\discretionary {-}{}{}band Struct Reference}{42}{section.5.11}
+\contentsline {subsection}{\numberline {5.11.1}Detailed Description}{42}{subsection.5.11.1}
+\contentsline {section}{\numberline {5.12}struct\_\discretionary {-}{}{}band\_\discretionary {-}{}{}limits Struct Reference}{43}{section.5.12}
+\contentsline {subsection}{\numberline {5.12.1}Detailed Description}{43}{subsection.5.12.1}
+\contentsline {section}{\numberline {5.13}struct\_\discretionary {-}{}{}coupler\_\discretionary {-}{}{}settings Struct Reference}{44}{section.5.13}
+\contentsline {subsection}{\numberline {5.13.1}Detailed Description}{44}{subsection.5.13.1}
+\contentsline {section}{\numberline {5.14}struct\_\discretionary {-}{}{}eeprom\_\discretionary {-}{}{}table Struct Reference}{45}{section.5.14}
+\contentsline {subsection}{\numberline {5.14.1}Detailed Description}{46}{subsection.5.14.1}
+\contentsline {section}{\numberline {5.15}struct\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}option Struct Reference}{47}{section.5.15}
+\contentsline {subsection}{\numberline {5.15.1}Detailed Description}{47}{subsection.5.15.1}
+\contentsline {section}{\numberline {5.16}struct\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}text Struct Reference}{48}{section.5.16}
+\contentsline {subsection}{\numberline {5.16.1}Detailed Description}{48}{subsection.5.16.1}
+\contentsline {subsection}{\numberline {5.16.2}Member Data Documentation}{48}{subsection.5.16.2}
+\contentsline {subsubsection}{\numberline {5.16.2.1}option\_\discretionary {-}{}{}type}{48}{subsubsection.5.16.2.1}
+\contentsline {section}{\numberline {5.17}struct\_\discretionary {-}{}{}ptt Struct Reference}{49}{section.5.17}
+\contentsline {subsection}{\numberline {5.17.1}Detailed Description}{49}{subsection.5.17.1}
+\contentsline {subsection}{\numberline {5.17.2}Member Data Documentation}{49}{subsection.5.17.2}
+\contentsline {subsubsection}{\numberline {5.17.2.1}ptt\_\discretionary {-}{}{}input}{49}{subsubsection.5.17.2.1}
+\contentsline {section}{\numberline {5.18}struct\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}sequencer Struct Reference}{50}{section.5.18}
+\contentsline {subsection}{\numberline {5.18.1}Detailed Description}{50}{subsection.5.18.1}
+\contentsline {section}{\numberline {5.19}struct\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}settings Struct Reference}{51}{section.5.19}
+\contentsline {subsection}{\numberline {5.19.1}Detailed Description}{51}{subsection.5.19.1}
+\contentsline {subsection}{\numberline {5.19.2}Member Data Documentation}{51}{subsection.5.19.2}
+\contentsline {subsubsection}{\numberline {5.19.2.1}poll\_\discretionary {-}{}{}interval}{51}{subsubsection.5.19.2.1}
+\contentsline {subsubsection}{\numberline {5.19.2.2}ptt\_\discretionary {-}{}{}input}{52}{subsubsection.5.19.2.2}
+\contentsline {section}{\numberline {5.20}struct\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}status Struct Reference}{53}{section.5.20}
+\contentsline {subsection}{\numberline {5.20.1}Detailed Description}{53}{subsection.5.20.1}
+\contentsline {subsection}{\numberline {5.20.2}Member Data Documentation}{53}{subsection.5.20.2}
+\contentsline {subsubsection}{\numberline {5.20.2.1}box\_\discretionary {-}{}{}sent\_\discretionary {-}{}{}request}{53}{subsubsection.5.20.2.1}
+\contentsline {section}{\numberline {5.21}struct\_\discretionary {-}{}{}runtime\_\discretionary {-}{}{}settings Struct Reference}{54}{section.5.21}
+\contentsline {subsection}{\numberline {5.21.1}Detailed Description}{54}{subsection.5.21.1}
+\contentsline {section}{\numberline {5.22}struct\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antennas Struct Reference}{55}{section.5.22}
+\contentsline {subsection}{\numberline {5.22.1}Detailed Description}{55}{subsection.5.22.1}
+\contentsline {section}{\numberline {5.23}struct\_\discretionary {-}{}{}setting Struct Reference}{56}{section.5.23}
+\contentsline {subsection}{\numberline {5.23.1}Detailed Description}{56}{subsection.5.23.1}
+\contentsline {subsection}{\numberline {5.23.2}Member Data Documentation}{56}{subsection.5.23.2}
+\contentsline {subsubsection}{\numberline {5.23.2.1}ptt\_\discretionary {-}{}{}interlock\_\discretionary {-}{}{}input}{56}{subsubsection.5.23.2.1}
+\contentsline {section}{\numberline {5.24}struct\_\discretionary {-}{}{}status Struct Reference}{58}{section.5.24}
+\contentsline {subsection}{\numberline {5.24.1}Detailed Description}{59}{subsection.5.24.1}
+\contentsline {subsection}{\numberline {5.24.2}Member Data Documentation}{59}{subsection.5.24.2}
+\contentsline {subsubsection}{\numberline {5.24.2.1}antenna\_\discretionary {-}{}{}to\_\discretionary {-}{}{}rotate}{59}{subsubsection.5.24.2.1}
+\contentsline {subsubsection}{\numberline {5.24.2.2}current\_\discretionary {-}{}{}display}{59}{subsubsection.5.24.2.2}
+\contentsline {subsubsection}{\numberline {5.24.2.3}current\_\discretionary {-}{}{}display\_\discretionary {-}{}{}level}{59}{subsubsection.5.24.2.3}
+\contentsline {subsubsection}{\numberline {5.24.2.4}knob\_\discretionary {-}{}{}function}{60}{subsubsection.5.24.2.4}
+\contentsline {subsubsection}{\numberline {5.24.2.5}last\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna}{60}{subsubsection.5.24.2.5}
+\contentsline {subsubsection}{\numberline {5.24.2.6}rotator\_\discretionary {-}{}{}step\_\discretionary {-}{}{}resolution}{60}{subsubsection.5.24.2.6}
+\contentsline {subsubsection}{\numberline {5.24.2.7}selected\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna}{60}{subsubsection.5.24.2.7}
+\contentsline {subsubsection}{\numberline {5.24.2.8}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}index}{60}{subsubsection.5.24.2.8}
+\contentsline {section}{\numberline {5.25}struct\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}array Struct Reference}{61}{section.5.25}
+\contentsline {subsection}{\numberline {5.25.1}Detailed Description}{61}{subsection.5.25.1}
+\contentsline {section}{\numberline {5.26}struct\_\discretionary {-}{}{}uc\_\discretionary {-}{}{}com Struct Reference}{62}{section.5.26}
+\contentsline {subsection}{\numberline {5.26.1}Detailed Description}{62}{subsection.5.26.1}
+\contentsline {section}{\numberline {5.27}tx\_\discretionary {-}{}{}linked\_\discretionary {-}{}{}list Struct Reference}{63}{section.5.27}
+\contentsline {subsection}{\numberline {5.27.1}Detailed Description}{63}{subsection.5.27.1}
+\contentsline {subsection}{\numberline {5.27.2}Member Data Documentation}{63}{subsection.5.27.2}
+\contentsline {subsubsection}{\numberline {5.27.2.1}first}{63}{subsubsection.5.27.2.1}
+\contentsline {subsubsection}{\numberline {5.27.2.2}last}{63}{subsubsection.5.27.2.2}
+\contentsline {section}{\numberline {5.28}UC\_\discretionary {-}{}{}MESSAGE Struct Reference}{65}{section.5.28}
+\contentsline {subsection}{\numberline {5.28.1}Detailed Description}{65}{subsection.5.28.1}
+\contentsline {chapter}{\numberline {6}File Documentation}{67}{chapter.6}
+\contentsline {section}{\numberline {6.1}driver\_\discretionary {-}{}{}unit/board.h File Reference}{67}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Detailed Description}{69}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Define Documentation}{69}{subsection.6.1.2}
+\contentsline {subsubsection}{\numberline {6.1.2.1}FLAG\_\discretionary {-}{}{}TXRX\_\discretionary {-}{}{}MODE\_\discretionary {-}{}{}ENABLED}{69}{subsubsection.6.1.2.1}
+\contentsline {section}{\numberline {6.2}driver\_\discretionary {-}{}{}unit\_\discretionary {-}{}{}v2/board.h File Reference}{70}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Detailed Description}{70}{subsection.6.2.1}
+\contentsline {section}{\numberline {6.3}front\_\discretionary {-}{}{}panel/board.h File Reference}{71}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Detailed Description}{75}{subsection.6.3.1}
+\contentsline {section}{\numberline {6.4}general\_\discretionary {-}{}{}io/board.h File Reference}{76}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Detailed Description}{76}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}motherboard/board.h File Reference}{77}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}Detailed Description}{78}{subsection.6.5.1}
+\contentsline {section}{\numberline {6.6}driver\_\discretionary {-}{}{}unit/global.h File Reference}{79}{section.6.6}
+\contentsline {subsection}{\numberline {6.6.1}Detailed Description}{79}{subsection.6.6.1}
+\contentsline {section}{\numberline {6.7}driver\_\discretionary {-}{}{}unit\_\discretionary {-}{}{}v2/global.h File Reference}{80}{section.6.7}
+\contentsline {subsection}{\numberline {6.7.1}Detailed Description}{80}{subsection.6.7.1}
+\contentsline {section}{\numberline {6.8}general\_\discretionary {-}{}{}io/global.h File Reference}{81}{section.6.8}
+\contentsline {subsection}{\numberline {6.8.1}Detailed Description}{81}{subsection.6.8.1}
+\contentsline {section}{\numberline {6.9}wmv\_\discretionary {-}{}{}bus/global.h File Reference}{82}{section.6.9}
+\contentsline {subsection}{\numberline {6.9.1}Detailed Description}{82}{subsection.6.9.1}
+\contentsline {section}{\numberline {6.10}driver\_\discretionary {-}{}{}unit/init.c File Reference}{83}{section.6.10}
+\contentsline {subsection}{\numberline {6.10.1}Detailed Description}{83}{subsection.6.10.1}
+\contentsline {subsection}{\numberline {6.10.2}Function Documentation}{83}{subsection.6.10.2}
+\contentsline {subsubsection}{\numberline {6.10.2.1}init\_\discretionary {-}{}{}ports}{83}{subsubsection.6.10.2.1}
+\contentsline {subsubsection}{\numberline {6.10.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{83}{subsubsection.6.10.2.2}
+\contentsline {subsubsection}{\numberline {6.10.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{84}{subsubsection.6.10.2.3}
+\contentsline {section}{\numberline {6.11}driver\_\discretionary {-}{}{}unit\_\discretionary {-}{}{}v2/init.c File Reference}{85}{section.6.11}
+\contentsline {subsection}{\numberline {6.11.1}Detailed Description}{85}{subsection.6.11.1}
+\contentsline {subsection}{\numberline {6.11.2}Function Documentation}{85}{subsection.6.11.2}
+\contentsline {subsubsection}{\numberline {6.11.2.1}init\_\discretionary {-}{}{}ports}{85}{subsubsection.6.11.2.1}
+\contentsline {subsubsection}{\numberline {6.11.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{85}{subsubsection.6.11.2.2}
+\contentsline {subsubsection}{\numberline {6.11.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{86}{subsubsection.6.11.2.3}
+\contentsline {section}{\numberline {6.12}front\_\discretionary {-}{}{}panel/init.c File Reference}{87}{section.6.12}
+\contentsline {subsection}{\numberline {6.12.1}Detailed Description}{87}{subsection.6.12.1}
+\contentsline {subsection}{\numberline {6.12.2}Function Documentation}{87}{subsection.6.12.2}
+\contentsline {subsubsection}{\numberline {6.12.2.1}init\_\discretionary {-}{}{}backlight}{87}{subsubsection.6.12.2.1}
+\contentsline {subsubsection}{\numberline {6.12.2.2}init\_\discretionary {-}{}{}ports}{88}{subsubsection.6.12.2.2}
+\contentsline {subsubsection}{\numberline {6.12.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{88}{subsubsection.6.12.2.3}
+\contentsline {subsubsection}{\numberline {6.12.2.4}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{88}{subsubsection.6.12.2.4}
+\contentsline {subsubsection}{\numberline {6.12.2.5}init\_\discretionary {-}{}{}usart}{88}{subsubsection.6.12.2.5}
+\contentsline {subsubsection}{\numberline {6.12.2.6}init\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}computer}{88}{subsubsection.6.12.2.6}
+\contentsline {section}{\numberline {6.13}general\_\discretionary {-}{}{}io/init.c File Reference}{89}{section.6.13}
+\contentsline {subsection}{\numberline {6.13.1}Detailed Description}{89}{subsection.6.13.1}
+\contentsline {subsection}{\numberline {6.13.2}Function Documentation}{89}{subsection.6.13.2}
+\contentsline {subsubsection}{\numberline {6.13.2.1}init\_\discretionary {-}{}{}ports}{89}{subsubsection.6.13.2.1}
+\contentsline {subsubsection}{\numberline {6.13.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{89}{subsubsection.6.13.2.2}
+\contentsline {subsubsection}{\numberline {6.13.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{90}{subsubsection.6.13.2.3}
+\contentsline {section}{\numberline {6.14}motherboard/init.c File Reference}{91}{section.6.14}
+\contentsline {subsection}{\numberline {6.14.1}Detailed Description}{91}{subsection.6.14.1}
+\contentsline {subsection}{\numberline {6.14.2}Function Documentation}{91}{subsection.6.14.2}
+\contentsline {subsubsection}{\numberline {6.14.2.1}init\_\discretionary {-}{}{}ports}{91}{subsubsection.6.14.2.1}
+\contentsline {subsubsection}{\numberline {6.14.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{92}{subsubsection.6.14.2.2}
+\contentsline {subsubsection}{\numberline {6.14.2.3}init\_\discretionary {-}{}{}usart}{92}{subsubsection.6.14.2.3}
+\contentsline {section}{\numberline {6.15}driver\_\discretionary {-}{}{}unit/init.h File Reference}{93}{section.6.15}
+\contentsline {subsection}{\numberline {6.15.1}Detailed Description}{93}{subsection.6.15.1}
+\contentsline {subsection}{\numberline {6.15.2}Function Documentation}{93}{subsection.6.15.2}
+\contentsline {subsubsection}{\numberline {6.15.2.1}init\_\discretionary {-}{}{}ports}{93}{subsubsection.6.15.2.1}
+\contentsline {subsubsection}{\numberline {6.15.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{93}{subsubsection.6.15.2.2}
+\contentsline {subsubsection}{\numberline {6.15.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{94}{subsubsection.6.15.2.3}
+\contentsline {section}{\numberline {6.16}driver\_\discretionary {-}{}{}unit\_\discretionary {-}{}{}v2/init.h File Reference}{95}{section.6.16}
+\contentsline {subsection}{\numberline {6.16.1}Detailed Description}{95}{subsection.6.16.1}
+\contentsline {subsection}{\numberline {6.16.2}Function Documentation}{95}{subsection.6.16.2}
+\contentsline {subsubsection}{\numberline {6.16.2.1}init\_\discretionary {-}{}{}ports}{95}{subsubsection.6.16.2.1}
+\contentsline {subsubsection}{\numberline {6.16.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{95}{subsubsection.6.16.2.2}
+\contentsline {subsubsection}{\numberline {6.16.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{96}{subsubsection.6.16.2.3}
+\contentsline {section}{\numberline {6.17}front\_\discretionary {-}{}{}panel/init.h File Reference}{97}{section.6.17}
+\contentsline {subsection}{\numberline {6.17.1}Detailed Description}{97}{subsection.6.17.1}
+\contentsline {subsection}{\numberline {6.17.2}Function Documentation}{97}{subsection.6.17.2}
+\contentsline {subsubsection}{\numberline {6.17.2.1}init\_\discretionary {-}{}{}backlight}{97}{subsubsection.6.17.2.1}
+\contentsline {subsubsection}{\numberline {6.17.2.2}init\_\discretionary {-}{}{}ports}{97}{subsubsection.6.17.2.2}
+\contentsline {subsubsection}{\numberline {6.17.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{98}{subsubsection.6.17.2.3}
+\contentsline {subsubsection}{\numberline {6.17.2.4}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{98}{subsubsection.6.17.2.4}
+\contentsline {subsubsection}{\numberline {6.17.2.5}init\_\discretionary {-}{}{}usart}{98}{subsubsection.6.17.2.5}
+\contentsline {subsubsection}{\numberline {6.17.2.6}init\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}computer}{98}{subsubsection.6.17.2.6}
+\contentsline {section}{\numberline {6.18}general\_\discretionary {-}{}{}io/init.h File Reference}{99}{section.6.18}
+\contentsline {subsection}{\numberline {6.18.1}Detailed Description}{99}{subsection.6.18.1}
+\contentsline {subsection}{\numberline {6.18.2}Function Documentation}{99}{subsection.6.18.2}
+\contentsline {subsubsection}{\numberline {6.18.2.1}init\_\discretionary {-}{}{}ports}{99}{subsubsection.6.18.2.1}
+\contentsline {subsubsection}{\numberline {6.18.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{99}{subsubsection.6.18.2.2}
+\contentsline {subsubsection}{\numberline {6.18.2.3}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}2}{100}{subsubsection.6.18.2.3}
+\contentsline {section}{\numberline {6.19}motherboard/init.h File Reference}{101}{section.6.19}
+\contentsline {subsection}{\numberline {6.19.1}Detailed Description}{101}{subsection.6.19.1}
+\contentsline {subsection}{\numberline {6.19.2}Function Documentation}{101}{subsection.6.19.2}
+\contentsline {subsubsection}{\numberline {6.19.2.1}init\_\discretionary {-}{}{}ports}{101}{subsubsection.6.19.2.1}
+\contentsline {subsubsection}{\numberline {6.19.2.2}init\_\discretionary {-}{}{}timer\_\discretionary {-}{}{}0}{101}{subsubsection.6.19.2.2}
+\contentsline {subsubsection}{\numberline {6.19.2.3}init\_\discretionary {-}{}{}usart}{102}{subsubsection.6.19.2.3}
+\contentsline {section}{\numberline {6.20}driver\_\discretionary {-}{}{}unit/main.c File Reference}{103}{section.6.20}
+\contentsline {subsection}{\numberline {6.20.1}Detailed Description}{104}{subsection.6.20.1}
+\contentsline {subsection}{\numberline {6.20.2}Function Documentation}{104}{subsection.6.20.2}
+\contentsline {subsubsection}{\numberline {6.20.2.1}activate\_\discretionary {-}{}{}output}{104}{subsubsection.6.20.2.1}
+\contentsline {subsubsection}{\numberline {6.20.2.2}deactivate\_\discretionary {-}{}{}output}{105}{subsubsection.6.20.2.2}
+\contentsline {subsubsection}{\numberline {6.20.2.3}ISR}{105}{subsubsection.6.20.2.3}
+\contentsline {subsubsection}{\numberline {6.20.2.4}lm76\_\discretionary {-}{}{}get\_\discretionary {-}{}{}temp}{105}{subsubsection.6.20.2.4}
+\contentsline {subsubsection}{\numberline {6.20.2.5}main}{106}{subsubsection.6.20.2.5}
+\contentsline {subsubsection}{\numberline {6.20.2.6}read\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}addr}{106}{subsubsection.6.20.2.6}
+\contentsline {section}{\numberline {6.21}driver\_\discretionary {-}{}{}unit\_\discretionary {-}{}{}v2/main.c File Reference}{107}{section.6.21}
+\contentsline {subsection}{\numberline {6.21.1}Detailed Description}{108}{subsection.6.21.1}
+\contentsline {subsection}{\numberline {6.21.2}Function Documentation}{109}{subsection.6.21.2}
+\contentsline {subsubsection}{\numberline {6.21.2.1}activate\_\discretionary {-}{}{}output}{109}{subsubsection.6.21.2.1}
+\contentsline {subsubsection}{\numberline {6.21.2.2}deactivate\_\discretionary {-}{}{}output}{109}{subsubsection.6.21.2.2}
+\contentsline {subsubsection}{\numberline {6.21.2.3}get\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}status}{109}{subsubsection.6.21.2.3}
+\contentsline {subsubsection}{\numberline {6.21.2.4}lm76\_\discretionary {-}{}{}get\_\discretionary {-}{}{}temp}{109}{subsubsection.6.21.2.4}
+\contentsline {subsubsection}{\numberline {6.21.2.5}main}{110}{subsubsection.6.21.2.5}
+\contentsline {subsubsection}{\numberline {6.21.2.6}read\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}addr}{110}{subsubsection.6.21.2.6}
+\contentsline {section}{\numberline {6.22}front\_\discretionary {-}{}{}panel/main.c File Reference}{111}{section.6.22}
+\contentsline {subsection}{\numberline {6.22.1}Detailed Description}{114}{subsection.6.22.1}
+\contentsline {subsection}{\numberline {6.22.2}Function Documentation}{114}{subsection.6.22.2}
+\contentsline {subsubsection}{\numberline {6.22.2.1}event\_\discretionary {-}{}{}add\_\discretionary {-}{}{}message}{114}{subsubsection.6.22.2.1}
+\contentsline {subsubsection}{\numberline {6.22.2.2}ext\_\discretionary {-}{}{}key\_\discretionary {-}{}{}get\_\discretionary {-}{}{}assignment}{114}{subsubsection.6.22.2.2}
+\contentsline {subsubsection}{\numberline {6.22.2.3}ext\_\discretionary {-}{}{}key\_\discretionary {-}{}{}set\_\discretionary {-}{}{}assignment}{115}{subsubsection.6.22.2.3}
+\contentsline {subsubsection}{\numberline {6.22.2.4}ISR}{115}{subsubsection.6.22.2.4}
+\contentsline {subsubsection}{\numberline {6.22.2.5}ISR}{115}{subsubsection.6.22.2.5}
+\contentsline {subsubsection}{\numberline {6.22.2.6}main}{116}{subsubsection.6.22.2.6}
+\contentsline {subsubsection}{\numberline {6.22.2.7}main\_\discretionary {-}{}{}get\_\discretionary {-}{}{}inhibit\_\discretionary {-}{}{}state}{116}{subsubsection.6.22.2.7}
+\contentsline {subsubsection}{\numberline {6.22.2.8}main\_\discretionary {-}{}{}set\_\discretionary {-}{}{}inhibit\_\discretionary {-}{}{}state}{117}{subsubsection.6.22.2.8}
+\contentsline {subsubsection}{\numberline {6.22.2.9}set\_\discretionary {-}{}{}knob\_\discretionary {-}{}{}function}{117}{subsubsection.6.22.2.9}
+\contentsline {subsection}{\numberline {6.22.3}Variable Documentation}{117}{subsection.6.22.3}
+\contentsline {subsubsection}{\numberline {6.22.3.1}radio\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}data\_\discretionary {-}{}{}counter}{117}{subsubsection.6.22.3.1}
+\contentsline {section}{\numberline {6.23}general\_\discretionary {-}{}{}io/main.c File Reference}{118}{section.6.23}
+\contentsline {subsection}{\numberline {6.23.1}Detailed Description}{119}{subsection.6.23.1}
+\contentsline {subsection}{\numberline {6.23.2}Function Documentation}{119}{subsection.6.23.2}
+\contentsline {subsubsection}{\numberline {6.23.2.1}main}{119}{subsubsection.6.23.2.1}
+\contentsline {subsubsection}{\numberline {6.23.2.2}read\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}addr}{119}{subsubsection.6.23.2.2}
+\contentsline {section}{\numberline {6.24}motherboard/main.c File Reference}{120}{section.6.24}
+\contentsline {subsection}{\numberline {6.24.1}Detailed Description}{121}{subsection.6.24.1}
+\contentsline {subsection}{\numberline {6.24.2}Function Documentation}{122}{subsection.6.24.2}
+\contentsline {subsubsection}{\numberline {6.24.2.1}activate\_\discretionary {-}{}{}output}{122}{subsubsection.6.24.2.1}
+\contentsline {subsubsection}{\numberline {6.24.2.2}deactivate\_\discretionary {-}{}{}output}{122}{subsubsection.6.24.2.2}
+\contentsline {subsubsection}{\numberline {6.24.2.3}parse\_\discretionary {-}{}{}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}message}{122}{subsubsection.6.24.2.3}
+\contentsline {subsubsection}{\numberline {6.24.2.4}ps2\_\discretionary {-}{}{}keyboard\_\discretionary {-}{}{}send}{123}{subsubsection.6.24.2.4}
+\contentsline {subsubsection}{\numberline {6.24.2.5}ps2\_\discretionary {-}{}{}process\_\discretionary {-}{}{}key}{123}{subsubsection.6.24.2.5}
+\contentsline {subsection}{\numberline {6.24.3}Variable Documentation}{123}{subsection.6.24.3}
+\contentsline {subsubsection}{\numberline {6.24.3.1}counter\_\discretionary {-}{}{}time\_\discretionary {-}{}{}start}{123}{subsubsection.6.24.3.1}
+\contentsline {section}{\numberline {6.25}driver\_\discretionary {-}{}{}unit/main.h File Reference}{124}{section.6.25}
+\contentsline {subsection}{\numberline {6.25.1}Detailed Description}{124}{subsection.6.25.1}
+\contentsline {section}{\numberline {6.26}driver\_\discretionary {-}{}{}unit\_\discretionary {-}{}{}v2/main.h File Reference}{125}{section.6.26}
+\contentsline {subsection}{\numberline {6.26.1}Detailed Description}{125}{subsection.6.26.1}
+\contentsline {subsection}{\numberline {6.26.2}Define Documentation}{125}{subsection.6.26.2}
+\contentsline {subsubsection}{\numberline {6.26.2.1}FLAG\_\discretionary {-}{}{}TXRX\_\discretionary {-}{}{}MODE\_\discretionary {-}{}{}ENABLED}{125}{subsubsection.6.26.2.1}
+\contentsline {section}{\numberline {6.27}front\_\discretionary {-}{}{}panel/main.h File Reference}{126}{section.6.27}
+\contentsline {subsection}{\numberline {6.27.1}Detailed Description}{131}{subsection.6.27.1}
+\contentsline {subsection}{\numberline {6.27.2}Define Documentation}{131}{subsection.6.27.2}
+\contentsline {subsubsection}{\numberline {6.27.2.1}RADIO\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}DATA\_\discretionary {-}{}{}TIMEOUT}{131}{subsubsection.6.27.2.1}
+\contentsline {subsection}{\numberline {6.27.3}Enumeration Type Documentation}{131}{subsection.6.27.3}
+\contentsline {subsubsection}{\numberline {6.27.3.1}enum\_\discretionary {-}{}{}inhibit\_\discretionary {-}{}{}state}{131}{subsubsection.6.27.3.1}
+\contentsline {subsection}{\numberline {6.27.4}Function Documentation}{132}{subsection.6.27.4}
+\contentsline {subsubsection}{\numberline {6.27.4.1}event\_\discretionary {-}{}{}add\_\discretionary {-}{}{}message}{132}{subsubsection.6.27.4.1}
+\contentsline {subsubsection}{\numberline {6.27.4.2}ext\_\discretionary {-}{}{}key\_\discretionary {-}{}{}get\_\discretionary {-}{}{}assignment}{132}{subsubsection.6.27.4.2}
+\contentsline {subsubsection}{\numberline {6.27.4.3}ext\_\discretionary {-}{}{}key\_\discretionary {-}{}{}set\_\discretionary {-}{}{}assignment}{132}{subsubsection.6.27.4.3}
+\contentsline {subsubsection}{\numberline {6.27.4.4}main\_\discretionary {-}{}{}get\_\discretionary {-}{}{}inhibit\_\discretionary {-}{}{}state}{133}{subsubsection.6.27.4.4}
+\contentsline {subsubsection}{\numberline {6.27.4.5}main\_\discretionary {-}{}{}set\_\discretionary {-}{}{}inhibit\_\discretionary {-}{}{}state}{133}{subsubsection.6.27.4.5}
+\contentsline {subsubsection}{\numberline {6.27.4.6}set\_\discretionary {-}{}{}knob\_\discretionary {-}{}{}function}{133}{subsubsection.6.27.4.6}
+\contentsline {section}{\numberline {6.28}general\_\discretionary {-}{}{}io/main.h File Reference}{134}{section.6.28}
+\contentsline {subsection}{\numberline {6.28.1}Detailed Description}{134}{subsection.6.28.1}
+\contentsline {section}{\numberline {6.29}motherboard/main.h File Reference}{135}{section.6.29}
+\contentsline {subsection}{\numberline {6.29.1}Detailed Description}{135}{subsection.6.29.1}
+\contentsline {section}{\numberline {6.30}event\_\discretionary {-}{}{}queue.c File Reference}{136}{section.6.30}
+\contentsline {subsection}{\numberline {6.30.1}Detailed Description}{136}{subsection.6.30.1}
+\contentsline {subsection}{\numberline {6.30.2}Function Documentation}{137}{subsection.6.30.2}
+\contentsline {subsubsection}{\numberline {6.30.2.1}event\_\discretionary {-}{}{}in\_\discretionary {-}{}{}queue}{137}{subsubsection.6.30.2.1}
+\contentsline {subsubsection}{\numberline {6.30.2.2}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{137}{subsubsection.6.30.2.2}
+\contentsline {subsubsection}{\numberline {6.30.2.3}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}check\_\discretionary {-}{}{}id}{137}{subsubsection.6.30.2.3}
+\contentsline {subsubsection}{\numberline {6.30.2.4}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}count}{138}{subsubsection.6.30.2.4}
+\contentsline {subsubsection}{\numberline {6.30.2.5}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop\_\discretionary {-}{}{}id}{138}{subsubsection.6.30.2.5}
+\contentsline {subsubsection}{\numberline {6.30.2.6}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{138}{subsubsection.6.30.2.6}
+\contentsline {subsubsection}{\numberline {6.30.2.7}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}wrap}{138}{subsubsection.6.30.2.7}
+\contentsline {section}{\numberline {6.31}event\_\discretionary {-}{}{}queue.h File Reference}{139}{section.6.31}
+\contentsline {subsection}{\numberline {6.31.1}Detailed Description}{140}{subsection.6.31.1}
+\contentsline {subsection}{\numberline {6.31.2}Function Documentation}{140}{subsection.6.31.2}
+\contentsline {subsubsection}{\numberline {6.31.2.1}event\_\discretionary {-}{}{}in\_\discretionary {-}{}{}queue}{140}{subsubsection.6.31.2.1}
+\contentsline {subsubsection}{\numberline {6.31.2.2}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{140}{subsubsection.6.31.2.2}
+\contentsline {subsubsection}{\numberline {6.31.2.3}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}check\_\discretionary {-}{}{}id}{140}{subsubsection.6.31.2.3}
+\contentsline {subsubsection}{\numberline {6.31.2.4}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}count}{141}{subsubsection.6.31.2.4}
+\contentsline {subsubsection}{\numberline {6.31.2.5}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop\_\discretionary {-}{}{}id}{141}{subsubsection.6.31.2.5}
+\contentsline {subsubsection}{\numberline {6.31.2.6}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{141}{subsubsection.6.31.2.6}
+\contentsline {subsubsection}{\numberline {6.31.2.7}event\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}wrap}{141}{subsubsection.6.31.2.7}
+\contentsline {section}{\numberline {6.32}front\_\discretionary {-}{}{}panel/antenna\_\discretionary {-}{}{}ctrl.c File Reference}{143}{section.6.32}
+\contentsline {subsection}{\numberline {6.32.1}Detailed Description}{146}{subsection.6.32.1}
+\contentsline {subsection}{\numberline {6.32.2}Function Documentation}{146}{subsection.6.32.2}
+\contentsline {subsubsection}{\numberline {6.32.2.1}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}read\_\discretionary {-}{}{}eeprom}{146}{subsubsection.6.32.2.1}
+\contentsline {subsubsection}{\numberline {6.32.2.2}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}selected}{147}{subsubsection.6.32.2.2}
+\contentsline {subsubsection}{\numberline {6.32.2.3}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}change\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant}{147}{subsubsection.6.32.2.3}
+\contentsline {subsubsection}{\numberline {6.32.2.4}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{147}{subsubsection.6.32.2.4}
+\contentsline {subsubsection}{\numberline {6.32.2.5}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}deactivate\_\discretionary {-}{}{}outputs}{147}{subsubsection.6.32.2.5}
+\contentsline {subsubsection}{\numberline {6.32.2.6}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}text}{148}{subsubsection.6.32.2.6}
+\contentsline {subsubsection}{\numberline {6.32.2.7}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}text\_\discretionary {-}{}{}length}{148}{subsubsection.6.32.2.7}
+\contentsline {subsubsection}{\numberline {6.32.2.8}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{148}{subsubsection.6.32.2.8}
+\contentsline {subsubsection}{\numberline {6.32.2.9}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}direction}{149}{subsubsection.6.32.2.9}
+\contentsline {subsubsection}{\numberline {6.32.2.10}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}flags}{149}{subsubsection.6.32.2.10}
+\contentsline {subsubsection}{\numberline {6.32.2.11}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}max\_\discretionary {-}{}{}rotation}{149}{subsubsection.6.32.2.11}
+\contentsline {subsubsection}{\numberline {6.32.2.12}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}output\_\discretionary {-}{}{}comb}{150}{subsubsection.6.32.2.12}
+\contentsline {subsubsection}{\numberline {6.32.2.13}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}output\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}length}{150}{subsubsection.6.32.2.13}
+\contentsline {subsubsection}{\numberline {6.32.2.14}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rotatable}{150}{subsubsection.6.32.2.14}
+\contentsline {subsubsection}{\numberline {6.32.2.15}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}addr}{151}{subsubsection.6.32.2.15}
+\contentsline {subsubsection}{\numberline {6.32.2.16}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}flags}{151}{subsubsection.6.32.2.16}
+\contentsline {subsubsection}{\numberline {6.32.2.17}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}count}{151}{subsubsection.6.32.2.17}
+\contentsline {subsubsection}{\numberline {6.32.2.18}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}name}{151}{subsubsection.6.32.2.18}
+\contentsline {subsubsection}{\numberline {6.32.2.19}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{152}{subsubsection.6.32.2.19}
+\contentsline {subsubsection}{\numberline {6.32.2.20}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}start\_\discretionary {-}{}{}heading}{152}{subsubsection.6.32.2.20}
+\contentsline {subsubsection}{\numberline {6.32.2.21}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}type}{152}{subsubsection.6.32.2.21}
+\contentsline {subsubsection}{\numberline {6.32.2.22}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}send\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}band\_\discretionary {-}{}{}data\_\discretionary {-}{}{}to\_\discretionary {-}{}{}bus}{153}{subsubsection.6.32.2.22}
+\contentsline {subsubsection}{\numberline {6.32.2.23}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}send\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}data\_\discretionary {-}{}{}to\_\discretionary {-}{}{}bus}{153}{subsubsection.6.32.2.23}
+\contentsline {subsubsection}{\numberline {6.32.2.24}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{153}{subsubsection.6.32.2.24}
+\contentsline {subsubsection}{\numberline {6.32.2.25}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}text}{154}{subsubsection.6.32.2.25}
+\contentsline {subsubsection}{\numberline {6.32.2.26}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{154}{subsubsection.6.32.2.26}
+\contentsline {subsubsection}{\numberline {6.32.2.27}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}direction}{154}{subsubsection.6.32.2.27}
+\contentsline {subsubsection}{\numberline {6.32.2.28}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}flags}{154}{subsubsection.6.32.2.28}
+\contentsline {subsubsection}{\numberline {6.32.2.29}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}output\_\discretionary {-}{}{}comb}{155}{subsubsection.6.32.2.29}
+\contentsline {subsubsection}{\numberline {6.32.2.30}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}flags}{155}{subsubsection.6.32.2.30}
+\contentsline {subsubsection}{\numberline {6.32.2.31}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{155}{subsubsection.6.32.2.31}
+\contentsline {section}{\numberline {6.33}front\_\discretionary {-}{}{}panel/antenna\_\discretionary {-}{}{}ctrl.h File Reference}{156}{section.6.33}
+\contentsline {subsection}{\numberline {6.33.1}Detailed Description}{159}{subsection.6.33.1}
+\contentsline {subsection}{\numberline {6.33.2}Function Documentation}{159}{subsection.6.33.2}
+\contentsline {subsubsection}{\numberline {6.33.2.1}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}read\_\discretionary {-}{}{}eeprom}{159}{subsubsection.6.33.2.1}
+\contentsline {subsubsection}{\numberline {6.33.2.2}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}selected}{159}{subsubsection.6.33.2.2}
+\contentsline {subsubsection}{\numberline {6.33.2.3}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}change\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant}{159}{subsubsection.6.33.2.3}
+\contentsline {subsubsection}{\numberline {6.33.2.4}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{160}{subsubsection.6.33.2.4}
+\contentsline {subsubsection}{\numberline {6.33.2.5}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}deactivate\_\discretionary {-}{}{}outputs}{160}{subsubsection.6.33.2.5}
+\contentsline {subsubsection}{\numberline {6.33.2.6}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}text}{160}{subsubsection.6.33.2.6}
+\contentsline {subsubsection}{\numberline {6.33.2.7}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}text\_\discretionary {-}{}{}length}{161}{subsubsection.6.33.2.7}
+\contentsline {subsubsection}{\numberline {6.33.2.8}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{161}{subsubsection.6.33.2.8}
+\contentsline {subsubsection}{\numberline {6.33.2.9}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}direction}{161}{subsubsection.6.33.2.9}
+\contentsline {subsubsection}{\numberline {6.33.2.10}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}flags}{162}{subsubsection.6.33.2.10}
+\contentsline {subsubsection}{\numberline {6.33.2.11}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}max\_\discretionary {-}{}{}rotation}{162}{subsubsection.6.33.2.11}
+\contentsline {subsubsection}{\numberline {6.33.2.12}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}output\_\discretionary {-}{}{}comb}{162}{subsubsection.6.33.2.12}
+\contentsline {subsubsection}{\numberline {6.33.2.13}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}output\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}length}{163}{subsubsection.6.33.2.13}
+\contentsline {subsubsection}{\numberline {6.33.2.14}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rotatable}{163}{subsubsection.6.33.2.14}
+\contentsline {subsubsection}{\numberline {6.33.2.15}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}addr}{163}{subsubsection.6.33.2.15}
+\contentsline {subsubsection}{\numberline {6.33.2.16}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}flags}{163}{subsubsection.6.33.2.16}
+\contentsline {subsubsection}{\numberline {6.33.2.17}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}count}{164}{subsubsection.6.33.2.17}
+\contentsline {subsubsection}{\numberline {6.33.2.18}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}name}{164}{subsubsection.6.33.2.18}
+\contentsline {subsubsection}{\numberline {6.33.2.19}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{164}{subsubsection.6.33.2.19}
+\contentsline {subsubsection}{\numberline {6.33.2.20}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}start\_\discretionary {-}{}{}heading}{165}{subsubsection.6.33.2.20}
+\contentsline {subsubsection}{\numberline {6.33.2.21}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}type}{165}{subsubsection.6.33.2.21}
+\contentsline {subsubsection}{\numberline {6.33.2.22}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}send\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}band\_\discretionary {-}{}{}data\_\discretionary {-}{}{}to\_\discretionary {-}{}{}bus}{165}{subsubsection.6.33.2.22}
+\contentsline {subsubsection}{\numberline {6.33.2.23}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}send\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}data\_\discretionary {-}{}{}to\_\discretionary {-}{}{}bus}{166}{subsubsection.6.33.2.23}
+\contentsline {subsubsection}{\numberline {6.33.2.24}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{166}{subsubsection.6.33.2.24}
+\contentsline {subsubsection}{\numberline {6.33.2.25}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}text}{166}{subsubsection.6.33.2.25}
+\contentsline {subsubsection}{\numberline {6.33.2.26}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}comb\_\discretionary {-}{}{}allowed}{166}{subsubsection.6.33.2.26}
+\contentsline {subsubsection}{\numberline {6.33.2.27}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}direction}{167}{subsubsection.6.33.2.27}
+\contentsline {subsubsection}{\numberline {6.33.2.28}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}flags}{167}{subsubsection.6.33.2.28}
+\contentsline {subsubsection}{\numberline {6.33.2.29}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}output\_\discretionary {-}{}{}comb}{167}{subsubsection.6.33.2.29}
+\contentsline {subsubsection}{\numberline {6.33.2.30}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}flags}{167}{subsubsection.6.33.2.30}
+\contentsline {subsubsection}{\numberline {6.33.2.31}antenna\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{168}{subsubsection.6.33.2.31}
+\contentsline {section}{\numberline {6.34}front\_\discretionary {-}{}{}panel/band\_\discretionary {-}{}{}ctrl.c File Reference}{169}{section.6.34}
+\contentsline {subsection}{\numberline {6.34.1}Detailed Description}{170}{subsection.6.34.1}
+\contentsline {subsection}{\numberline {6.34.2}Function Documentation}{171}{subsection.6.34.2}
+\contentsline {subsubsection}{\numberline {6.34.2.1}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}change\_\discretionary {-}{}{}band}{171}{subsubsection.6.34.2.1}
+\contentsline {subsubsection}{\numberline {6.34.2.2}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}change\_\discretionary {-}{}{}band\_\discretionary {-}{}{}portion}{171}{subsubsection.6.34.2.2}
+\contentsline {subsubsection}{\numberline {6.34.2.3}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}high\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{171}{subsubsection.6.34.2.3}
+\contentsline {subsubsection}{\numberline {6.34.2.4}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}high\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}high}{172}{subsubsection.6.34.2.4}
+\contentsline {subsubsection}{\numberline {6.34.2.5}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}high\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}low}{172}{subsubsection.6.34.2.5}
+\contentsline {subsubsection}{\numberline {6.34.2.6}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}low\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{172}{subsubsection.6.34.2.6}
+\contentsline {subsubsection}{\numberline {6.34.2.7}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}low\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}high}{172}{subsubsection.6.34.2.7}
+\contentsline {subsubsection}{\numberline {6.34.2.8}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}low\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}low}{173}{subsubsection.6.34.2.8}
+\contentsline {subsubsection}{\numberline {6.34.2.9}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}portion}{173}{subsubsection.6.34.2.9}
+\contentsline {subsubsection}{\numberline {6.34.2.10}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}load\_\discretionary {-}{}{}band}{173}{subsubsection.6.34.2.10}
+\contentsline {section}{\numberline {6.35}front\_\discretionary {-}{}{}panel/band\_\discretionary {-}{}{}ctrl.h File Reference}{174}{section.6.35}
+\contentsline {subsection}{\numberline {6.35.1}Detailed Description}{175}{subsection.6.35.1}
+\contentsline {subsection}{\numberline {6.35.2}Function Documentation}{175}{subsection.6.35.2}
+\contentsline {subsubsection}{\numberline {6.35.2.1}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}change\_\discretionary {-}{}{}band}{175}{subsubsection.6.35.2.1}
+\contentsline {subsubsection}{\numberline {6.35.2.2}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}change\_\discretionary {-}{}{}band\_\discretionary {-}{}{}portion}{175}{subsubsection.6.35.2.2}
+\contentsline {subsubsection}{\numberline {6.35.2.3}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}high\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{176}{subsubsection.6.35.2.3}
+\contentsline {subsubsection}{\numberline {6.35.2.4}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}high\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}high}{176}{subsubsection.6.35.2.4}
+\contentsline {subsubsection}{\numberline {6.35.2.5}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}high\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}low}{176}{subsubsection.6.35.2.5}
+\contentsline {subsubsection}{\numberline {6.35.2.6}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}low\_\discretionary {-}{}{}output\_\discretionary {-}{}{}str}{176}{subsubsection.6.35.2.6}
+\contentsline {subsubsection}{\numberline {6.35.2.7}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}low\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}high}{177}{subsubsection.6.35.2.7}
+\contentsline {subsubsection}{\numberline {6.35.2.8}band\_\discretionary {-}{}{}ctrl\_\discretionary {-}{}{}get\_\discretionary {-}{}{}low\_\discretionary {-}{}{}portion\_\discretionary {-}{}{}low}{177}{subsubsection.6.35.2.8}
+\contentsline {section}{\numberline {6.36}front\_\discretionary {-}{}{}panel/computer\_\discretionary {-}{}{}interface.c File Reference}{178}{section.6.36}
+\contentsline {subsection}{\numberline {6.36.1}Detailed Description}{183}{subsection.6.36.1}
+\contentsline {subsection}{\numberline {6.36.2}Define Documentation}{183}{subsection.6.36.2}
+\contentsline {subsubsection}{\numberline {6.36.2.1}CTRL\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}DEVICE\_\discretionary {-}{}{}SETTINGS\_\discretionary {-}{}{}EXT\_\discretionary {-}{}{}INPUTS}{183}{subsubsection.6.36.2.1}
+\contentsline {subsubsection}{\numberline {6.36.2.2}CTRL\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}DEVICE\_\discretionary {-}{}{}SETTINGS\_\discretionary {-}{}{}EXT\_\discretionary {-}{}{}INPUTS}{183}{subsubsection.6.36.2.2}
+\contentsline {subsubsection}{\numberline {6.36.2.3}CTRL\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}DEVICE\_\discretionary {-}{}{}SETTINGS\_\discretionary {-}{}{}SAVE}{184}{subsubsection.6.36.2.3}
+\contentsline {subsubsection}{\numberline {6.36.2.4}CTRL\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}DEVICE\_\discretionary {-}{}{}SETTINGS\_\discretionary {-}{}{}SAVE}{184}{subsubsection.6.36.2.4}
+\contentsline {subsubsection}{\numberline {6.36.2.5}CTRL\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}EXT\_\discretionary {-}{}{}KEYPAD\_\discretionary {-}{}{}FUNCTIONS}{184}{subsubsection.6.36.2.5}
+\contentsline {subsection}{\numberline {6.36.3}Function Documentation}{184}{subsection.6.36.3}
+\contentsline {subsubsection}{\numberline {6.36.3.1}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}is\_\discretionary {-}{}{}active}{184}{subsubsection.6.36.3.1}
+\contentsline {subsubsection}{\numberline {6.36.3.2}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}data}{184}{subsubsection.6.36.3.2}
+\contentsline {subsubsection}{\numberline {6.36.3.3}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}send}{185}{subsubsection.6.36.3.3}
+\contentsline {section}{\numberline {6.37}motherboard/computer\_\discretionary {-}{}{}interface.c File Reference}{186}{section.6.37}
+\contentsline {subsection}{\numberline {6.37.1}Detailed Description}{187}{subsection.6.37.1}
+\contentsline {subsection}{\numberline {6.37.2}Function Documentation}{188}{subsection.6.37.2}
+\contentsline {subsubsection}{\numberline {6.37.2.1}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}init}{188}{subsubsection.6.37.2.1}
+\contentsline {subsubsection}{\numberline {6.37.2.2}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}data}{188}{subsubsection.6.37.2.2}
+\contentsline {subsubsection}{\numberline {6.37.2.3}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}send}{189}{subsubsection.6.37.2.3}
+\contentsline {subsubsection}{\numberline {6.37.2.4}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}send\_\discretionary {-}{}{}data}{190}{subsubsection.6.37.2.4}
+\contentsline {subsubsection}{\numberline {6.37.2.5}ISR}{190}{subsubsection.6.37.2.5}
+\contentsline {section}{\numberline {6.38}front\_\discretionary {-}{}{}panel/computer\_\discretionary {-}{}{}interface.h File Reference}{191}{section.6.38}
+\contentsline {subsection}{\numberline {6.38.1}Detailed Description}{191}{subsection.6.38.1}
+\contentsline {subsection}{\numberline {6.38.2}Function Documentation}{191}{subsection.6.38.2}
+\contentsline {subsubsection}{\numberline {6.38.2.1}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}is\_\discretionary {-}{}{}active}{191}{subsubsection.6.38.2.1}
+\contentsline {subsubsection}{\numberline {6.38.2.2}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}data}{192}{subsubsection.6.38.2.2}
+\contentsline {section}{\numberline {6.39}motherboard/computer\_\discretionary {-}{}{}interface.h File Reference}{193}{section.6.39}
+\contentsline {subsection}{\numberline {6.39.1}Detailed Description}{193}{subsection.6.39.1}
+\contentsline {subsection}{\numberline {6.39.2}Function Documentation}{193}{subsection.6.39.2}
+\contentsline {subsubsection}{\numberline {6.39.2.1}computer\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}data}{193}{subsubsection.6.39.2.1}
+\contentsline {section}{\numberline {6.40}front\_\discretionary {-}{}{}panel/display.c File Reference}{195}{section.6.40}
+\contentsline {subsection}{\numberline {6.40.1}Detailed Description}{197}{subsection.6.40.1}
+\contentsline {subsection}{\numberline {6.40.2}Function Documentation}{197}{subsection.6.40.2}
+\contentsline {subsubsection}{\numberline {6.40.2.1}display\_\discretionary {-}{}{}antennas}{197}{subsubsection.6.40.2.1}
+\contentsline {subsubsection}{\numberline {6.40.2.2}display\_\discretionary {-}{}{}calculate\_\discretionary {-}{}{}width}{198}{subsubsection.6.40.2.2}
+\contentsline {subsubsection}{\numberline {6.40.2.3}display\_\discretionary {-}{}{}invert\_\discretionary {-}{}{}antenna}{198}{subsubsection.6.40.2.3}
+\contentsline {subsubsection}{\numberline {6.40.2.4}display\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}freq}{198}{subsubsection.6.40.2.4}
+\contentsline {subsubsection}{\numberline {6.40.2.5}display\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}directions}{199}{subsubsection.6.40.2.5}
+\contentsline {subsubsection}{\numberline {6.40.2.6}display\_\discretionary {-}{}{}screensaver\_\discretionary {-}{}{}mode}{199}{subsubsection.6.40.2.6}
+\contentsline {subsubsection}{\numberline {6.40.2.7}display\_\discretionary {-}{}{}set\_\discretionary {-}{}{}backlight}{199}{subsubsection.6.40.2.7}
+\contentsline {subsubsection}{\numberline {6.40.2.8}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}bargraph\_\discretionary {-}{}{}fwd}{199}{subsubsection.6.40.2.8}
+\contentsline {subsubsection}{\numberline {6.40.2.9}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}bargraph\_\discretionary {-}{}{}ref}{200}{subsubsection.6.40.2.9}
+\contentsline {subsubsection}{\numberline {6.40.2.10}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}powermeter\_\discretionary {-}{}{}bargraph}{200}{subsubsection.6.40.2.10}
+\contentsline {subsubsection}{\numberline {6.40.2.11}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}powermeter\_\discretionary {-}{}{}text}{200}{subsubsection.6.40.2.11}
+\contentsline {subsubsection}{\numberline {6.40.2.12}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant}{200}{subsubsection.6.40.2.12}
+\contentsline {subsubsection}{\numberline {6.40.2.13}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}set\_\discretionary {-}{}{}heading}{201}{subsubsection.6.40.2.13}
+\contentsline {subsubsection}{\numberline {6.40.2.14}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu}{201}{subsubsection.6.40.2.14}
+\contentsline {subsubsection}{\numberline {6.40.2.15}display\_\discretionary {-}{}{}text\_\discretionary {-}{}{}center\_\discretionary {-}{}{}adjust}{201}{subsubsection.6.40.2.15}
+\contentsline {subsubsection}{\numberline {6.40.2.16}display\_\discretionary {-}{}{}text\_\discretionary {-}{}{}right\_\discretionary {-}{}{}adjust}{202}{subsubsection.6.40.2.16}
+\contentsline {subsubsection}{\numberline {6.40.2.17}display\_\discretionary {-}{}{}update}{202}{subsubsection.6.40.2.17}
+\contentsline {subsubsection}{\numberline {6.40.2.18}display\_\discretionary {-}{}{}view}{202}{subsubsection.6.40.2.18}
+\contentsline {section}{\numberline {6.41}front\_\discretionary {-}{}{}panel/display.h File Reference}{204}{section.6.41}
+\contentsline {subsection}{\numberline {6.41.1}Detailed Description}{207}{subsection.6.41.1}
+\contentsline {subsection}{\numberline {6.41.2}Function Documentation}{207}{subsection.6.41.2}
+\contentsline {subsubsection}{\numberline {6.41.2.1}display\_\discretionary {-}{}{}antennas}{207}{subsubsection.6.41.2.1}
+\contentsline {subsubsection}{\numberline {6.41.2.2}display\_\discretionary {-}{}{}calculate\_\discretionary {-}{}{}width}{208}{subsubsection.6.41.2.2}
+\contentsline {subsubsection}{\numberline {6.41.2.3}display\_\discretionary {-}{}{}invert\_\discretionary {-}{}{}antenna}{208}{subsubsection.6.41.2.3}
+\contentsline {subsubsection}{\numberline {6.41.2.4}display\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}freq}{208}{subsubsection.6.41.2.4}
+\contentsline {subsubsection}{\numberline {6.41.2.5}display\_\discretionary {-}{}{}rotator\_\discretionary {-}{}{}directions}{209}{subsubsection.6.41.2.5}
+\contentsline {subsubsection}{\numberline {6.41.2.6}display\_\discretionary {-}{}{}screensaver\_\discretionary {-}{}{}mode}{209}{subsubsection.6.41.2.6}
+\contentsline {subsubsection}{\numberline {6.41.2.7}display\_\discretionary {-}{}{}set\_\discretionary {-}{}{}backlight}{209}{subsubsection.6.41.2.7}
+\contentsline {subsubsection}{\numberline {6.41.2.8}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}powermeter\_\discretionary {-}{}{}bargraph}{210}{subsubsection.6.41.2.8}
+\contentsline {subsubsection}{\numberline {6.41.2.9}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}powermeter\_\discretionary {-}{}{}text}{210}{subsubsection.6.41.2.9}
+\contentsline {subsubsection}{\numberline {6.41.2.10}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant}{210}{subsubsection.6.41.2.10}
+\contentsline {subsubsection}{\numberline {6.41.2.11}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}set\_\discretionary {-}{}{}heading}{210}{subsubsection.6.41.2.11}
+\contentsline {subsubsection}{\numberline {6.41.2.12}display\_\discretionary {-}{}{}show\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu}{211}{subsubsection.6.41.2.12}
+\contentsline {subsubsection}{\numberline {6.41.2.13}display\_\discretionary {-}{}{}text\_\discretionary {-}{}{}center\_\discretionary {-}{}{}adjust}{211}{subsubsection.6.41.2.13}
+\contentsline {subsubsection}{\numberline {6.41.2.14}display\_\discretionary {-}{}{}update}{211}{subsubsection.6.41.2.14}
+\contentsline {subsubsection}{\numberline {6.41.2.15}display\_\discretionary {-}{}{}view}{212}{subsubsection.6.41.2.15}
+\contentsline {section}{\numberline {6.42}front\_\discretionary {-}{}{}panel/ds1307.c File Reference}{213}{section.6.42}
+\contentsline {subsection}{\numberline {6.42.1}Detailed Description}{213}{subsection.6.42.1}
+\contentsline {subsection}{\numberline {6.42.2}Function Documentation}{214}{subsection.6.42.2}
+\contentsline {subsubsection}{\numberline {6.42.2.1}ds1307\_\discretionary {-}{}{}get\_\discretionary {-}{}{}hours}{214}{subsubsection.6.42.2.1}
+\contentsline {subsubsection}{\numberline {6.42.2.2}ds1307\_\discretionary {-}{}{}get\_\discretionary {-}{}{}minutes}{214}{subsubsection.6.42.2.2}
+\contentsline {subsubsection}{\numberline {6.42.2.3}ds1307\_\discretionary {-}{}{}get\_\discretionary {-}{}{}seconds}{214}{subsubsection.6.42.2.3}
+\contentsline {subsubsection}{\numberline {6.42.2.4}ds1307\_\discretionary {-}{}{}set\_\discretionary {-}{}{}time}{215}{subsubsection.6.42.2.4}
+\contentsline {section}{\numberline {6.43}front\_\discretionary {-}{}{}panel/ds1307.h File Reference}{216}{section.6.43}
+\contentsline {subsection}{\numberline {6.43.1}Detailed Description}{216}{subsection.6.43.1}
+\contentsline {subsection}{\numberline {6.43.2}Function Documentation}{217}{subsection.6.43.2}
+\contentsline {subsubsection}{\numberline {6.43.2.1}ds1307\_\discretionary {-}{}{}get\_\discretionary {-}{}{}hours}{217}{subsubsection.6.43.2.1}
+\contentsline {subsubsection}{\numberline {6.43.2.2}ds1307\_\discretionary {-}{}{}get\_\discretionary {-}{}{}minutes}{217}{subsubsection.6.43.2.2}
+\contentsline {subsubsection}{\numberline {6.43.2.3}ds1307\_\discretionary {-}{}{}get\_\discretionary {-}{}{}seconds}{217}{subsubsection.6.43.2.3}
+\contentsline {subsubsection}{\numberline {6.43.2.4}ds1307\_\discretionary {-}{}{}set\_\discretionary {-}{}{}time}{217}{subsubsection.6.43.2.4}
+\contentsline {section}{\numberline {6.44}front\_\discretionary {-}{}{}panel/eeprom.c File Reference}{218}{section.6.44}
+\contentsline {subsection}{\numberline {6.44.1}Detailed Description}{219}{subsection.6.44.1}
+\contentsline {subsection}{\numberline {6.44.2}Function Documentation}{220}{subsection.6.44.2}
+\contentsline {subsubsection}{\numberline {6.44.2.1}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}array\_\discretionary {-}{}{}structure}{220}{subsubsection.6.44.2.1}
+\contentsline {subsubsection}{\numberline {6.44.2.2}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{220}{subsubsection.6.44.2.2}
+\contentsline {subsubsection}{\numberline {6.44.2.3}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}band\_\discretionary {-}{}{}data}{220}{subsubsection.6.44.2.3}
+\contentsline {subsubsection}{\numberline {6.44.2.4}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}data}{221}{subsubsection.6.44.2.4}
+\contentsline {subsubsection}{\numberline {6.44.2.5}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{221}{subsubsection.6.44.2.5}
+\contentsline {subsubsection}{\numberline {6.44.2.6}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}runtime\_\discretionary {-}{}{}settings}{221}{subsubsection.6.44.2.6}
+\contentsline {subsubsection}{\numberline {6.44.2.7}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{221}{subsubsection.6.44.2.7}
+\contentsline {subsubsection}{\numberline {6.44.2.8}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{222}{subsubsection.6.44.2.8}
+\contentsline {subsubsection}{\numberline {6.44.2.9}eeprom\_\discretionary {-}{}{}read\_\discretionary {-}{}{}startup\_\discretionary {-}{}{}byte}{222}{subsubsection.6.44.2.9}
+\contentsline {subsubsection}{\numberline {6.44.2.10}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}structure}{222}{subsubsection.6.44.2.10}
+\contentsline {subsubsection}{\numberline {6.44.2.11}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}array\_\discretionary {-}{}{}structure}{222}{subsubsection.6.44.2.11}
+\contentsline {subsubsection}{\numberline {6.44.2.12}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}band\_\discretionary {-}{}{}data}{223}{subsubsection.6.44.2.12}
+\contentsline {subsubsection}{\numberline {6.44.2.13}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}data}{223}{subsubsection.6.44.2.13}
+\contentsline {subsubsection}{\numberline {6.44.2.14}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{223}{subsubsection.6.44.2.14}
+\contentsline {subsubsection}{\numberline {6.44.2.15}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}runtime\_\discretionary {-}{}{}settings}{223}{subsubsection.6.44.2.15}
+\contentsline {subsubsection}{\numberline {6.44.2.16}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}structure}{224}{subsubsection.6.44.2.16}
+\contentsline {subsubsection}{\numberline {6.44.2.17}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{224}{subsubsection.6.44.2.17}
+\contentsline {subsubsection}{\numberline {6.44.2.18}eeprom\_\discretionary {-}{}{}write\_\discretionary {-}{}{}startup\_\discretionary {-}{}{}byte}{224}{subsubsection.6.44.2.18}
+\contentsline {section}{\numberline {6.45}front\_\discretionary {-}{}{}panel/eeprom.h File Reference}{225}{section.6.45}
+\contentsline {subsection}{\numberline {6.45.1}Detailed Description}{226}{subsection.6.45.1}
+\contentsline {subsection}{\numberline {6.45.2}Function Documentation}{227}{subsection.6.45.2}
+\contentsline {subsubsection}{\numberline {6.45.2.1}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}array\_\discretionary {-}{}{}structure}{227}{subsubsection.6.45.2.1}
+\contentsline {subsubsection}{\numberline {6.45.2.2}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{227}{subsubsection.6.45.2.2}
+\contentsline {subsubsection}{\numberline {6.45.2.3}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}band\_\discretionary {-}{}{}data}{227}{subsubsection.6.45.2.3}
+\contentsline {subsubsection}{\numberline {6.45.2.4}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}data}{228}{subsubsection.6.45.2.4}
+\contentsline {subsubsection}{\numberline {6.45.2.5}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{228}{subsubsection.6.45.2.5}
+\contentsline {subsubsection}{\numberline {6.45.2.6}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}runtime\_\discretionary {-}{}{}settings}{228}{subsubsection.6.45.2.6}
+\contentsline {subsubsection}{\numberline {6.45.2.7}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna\_\discretionary {-}{}{}data}{228}{subsubsection.6.45.2.7}
+\contentsline {subsubsection}{\numberline {6.45.2.8}eeprom\_\discretionary {-}{}{}get\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{229}{subsubsection.6.45.2.8}
+\contentsline {subsubsection}{\numberline {6.45.2.9}eeprom\_\discretionary {-}{}{}read\_\discretionary {-}{}{}startup\_\discretionary {-}{}{}byte}{229}{subsubsection.6.45.2.9}
+\contentsline {subsubsection}{\numberline {6.45.2.10}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}structure}{229}{subsubsection.6.45.2.10}
+\contentsline {subsubsection}{\numberline {6.45.2.11}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}array\_\discretionary {-}{}{}structure}{229}{subsubsection.6.45.2.11}
+\contentsline {subsubsection}{\numberline {6.45.2.12}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}band\_\discretionary {-}{}{}data}{230}{subsubsection.6.45.2.12}
+\contentsline {subsubsection}{\numberline {6.45.2.13}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}data}{230}{subsubsection.6.45.2.13}
+\contentsline {subsubsection}{\numberline {6.45.2.14}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{230}{subsubsection.6.45.2.14}
+\contentsline {subsubsection}{\numberline {6.45.2.15}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}runtime\_\discretionary {-}{}{}settings}{230}{subsubsection.6.45.2.15}
+\contentsline {subsubsection}{\numberline {6.45.2.16}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant\_\discretionary {-}{}{}structure}{231}{subsubsection.6.45.2.16}
+\contentsline {subsubsection}{\numberline {6.45.2.17}eeprom\_\discretionary {-}{}{}save\_\discretionary {-}{}{}settings\_\discretionary {-}{}{}structure}{231}{subsubsection.6.45.2.17}
+\contentsline {subsubsection}{\numberline {6.45.2.18}eeprom\_\discretionary {-}{}{}write\_\discretionary {-}{}{}startup\_\discretionary {-}{}{}byte}{231}{subsubsection.6.45.2.18}
+\contentsline {section}{\numberline {6.46}front\_\discretionary {-}{}{}panel/eeprom\_\discretionary {-}{}{}m24.c File Reference}{232}{section.6.46}
+\contentsline {subsection}{\numberline {6.46.1}Detailed Description}{232}{subsection.6.46.1}
+\contentsline {subsection}{\numberline {6.46.2}Function Documentation}{233}{subsection.6.46.2}
+\contentsline {subsubsection}{\numberline {6.46.2.1}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}read\_\discretionary {-}{}{}block}{233}{subsubsection.6.46.2.1}
+\contentsline {subsubsection}{\numberline {6.46.2.2}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}read\_\discretionary {-}{}{}byte}{233}{subsubsection.6.46.2.2}
+\contentsline {subsubsection}{\numberline {6.46.2.3}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}write\_\discretionary {-}{}{}block}{233}{subsubsection.6.46.2.3}
+\contentsline {subsubsection}{\numberline {6.46.2.4}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}write\_\discretionary {-}{}{}byte}{234}{subsubsection.6.46.2.4}
+\contentsline {subsubsection}{\numberline {6.46.2.5}eeprom\_\discretionary {-}{}{}tiny\_\discretionary {-}{}{}delay}{234}{subsubsection.6.46.2.5}
+\contentsline {section}{\numberline {6.47}front\_\discretionary {-}{}{}panel/eeprom\_\discretionary {-}{}{}m24.h File Reference}{235}{section.6.47}
+\contentsline {subsection}{\numberline {6.47.1}Detailed Description}{235}{subsection.6.47.1}
+\contentsline {subsection}{\numberline {6.47.2}Function Documentation}{235}{subsection.6.47.2}
+\contentsline {subsubsection}{\numberline {6.47.2.1}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}read\_\discretionary {-}{}{}block}{235}{subsubsection.6.47.2.1}
+\contentsline {subsubsection}{\numberline {6.47.2.2}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}read\_\discretionary {-}{}{}byte}{236}{subsubsection.6.47.2.2}
+\contentsline {subsubsection}{\numberline {6.47.2.3}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}write\_\discretionary {-}{}{}block}{236}{subsubsection.6.47.2.3}
+\contentsline {subsubsection}{\numberline {6.47.2.4}eeprom\_\discretionary {-}{}{}m24\_\discretionary {-}{}{}write\_\discretionary {-}{}{}byte}{237}{subsubsection.6.47.2.4}
+\contentsline {section}{\numberline {6.48}front\_\discretionary {-}{}{}panel/errors.h File Reference}{238}{section.6.48}
+\contentsline {subsection}{\numberline {6.48.1}Detailed Description}{238}{subsection.6.48.1}
+\contentsline {section}{\numberline {6.49}front\_\discretionary {-}{}{}panel/event\_\discretionary {-}{}{}handler.c File Reference}{239}{section.6.49}
+\contentsline {subsection}{\numberline {6.49.1}Detailed Description}{241}{subsection.6.49.1}
+\contentsline {subsection}{\numberline {6.49.2}Function Documentation}{241}{subsection.6.49.2}
+\contentsline {subsubsection}{\numberline {6.49.2.1}event\_\discretionary {-}{}{}get\_\discretionary {-}{}{}error\_\discretionary {-}{}{}state}{241}{subsubsection.6.49.2.1}
+\contentsline {subsubsection}{\numberline {6.49.2.2}event\_\discretionary {-}{}{}handler\_\discretionary {-}{}{}process\_\discretionary {-}{}{}ps2}{242}{subsubsection.6.49.2.2}
+\contentsline {subsubsection}{\numberline {6.49.2.3}event\_\discretionary {-}{}{}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}message}{242}{subsubsection.6.49.2.3}
+\contentsline {subsubsection}{\numberline {6.49.2.4}event\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}event}{242}{subsubsection.6.49.2.4}
+\contentsline {subsubsection}{\numberline {6.49.2.5}event\_\discretionary {-}{}{}set\_\discretionary {-}{}{}error}{243}{subsubsection.6.49.2.5}
+\contentsline {subsubsection}{\numberline {6.49.2.6}event\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna}{243}{subsubsection.6.49.2.6}
+\contentsline {section}{\numberline {6.50}front\_\discretionary {-}{}{}panel/event\_\discretionary {-}{}{}handler.h File Reference}{244}{section.6.50}
+\contentsline {subsection}{\numberline {6.50.1}Detailed Description}{249}{subsection.6.50.1}
+\contentsline {subsection}{\numberline {6.50.2}Function Documentation}{249}{subsection.6.50.2}
+\contentsline {subsubsection}{\numberline {6.50.2.1}event\_\discretionary {-}{}{}get\_\discretionary {-}{}{}error\_\discretionary {-}{}{}state}{249}{subsubsection.6.50.2.1}
+\contentsline {subsubsection}{\numberline {6.50.2.2}event\_\discretionary {-}{}{}handler\_\discretionary {-}{}{}process\_\discretionary {-}{}{}ps2}{249}{subsubsection.6.50.2.2}
+\contentsline {subsubsection}{\numberline {6.50.2.3}event\_\discretionary {-}{}{}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}message}{250}{subsubsection.6.50.2.3}
+\contentsline {subsubsection}{\numberline {6.50.2.4}event\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}event}{250}{subsubsection.6.50.2.4}
+\contentsline {subsubsection}{\numberline {6.50.2.5}event\_\discretionary {-}{}{}set\_\discretionary {-}{}{}error}{250}{subsubsection.6.50.2.5}
+\contentsline {subsubsection}{\numberline {6.50.2.6}event\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}antenna}{251}{subsubsection.6.50.2.6}
+\contentsline {section}{\numberline {6.51}front\_\discretionary {-}{}{}panel/glcd.c File Reference}{252}{section.6.51}
+\contentsline {subsection}{\numberline {6.51.1}Detailed Description}{253}{subsection.6.51.1}
+\contentsline {section}{\numberline {6.52}front\_\discretionary {-}{}{}panel/glcd.h File Reference}{254}{section.6.52}
+\contentsline {subsection}{\numberline {6.52.1}Detailed Description}{255}{subsection.6.52.1}
+\contentsline {section}{\numberline {6.53}front\_\discretionary {-}{}{}panel/interrupt\_\discretionary {-}{}{}handler.c File Reference}{256}{section.6.53}
+\contentsline {subsection}{\numberline {6.53.1}Detailed Description}{256}{subsection.6.53.1}
+\contentsline {subsection}{\numberline {6.53.2}Function Documentation}{256}{subsection.6.53.2}
+\contentsline {subsubsection}{\numberline {6.53.2.1}ih\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}buttons}{256}{subsubsection.6.53.2.1}
+\contentsline {subsubsection}{\numberline {6.53.2.2}ih\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}devices}{257}{subsubsection.6.53.2.2}
+\contentsline {section}{\numberline {6.54}front\_\discretionary {-}{}{}panel/interrupt\_\discretionary {-}{}{}handler.h File Reference}{258}{section.6.54}
+\contentsline {subsection}{\numberline {6.54.1}Detailed Description}{258}{subsection.6.54.1}
+\contentsline {subsection}{\numberline {6.54.2}Function Documentation}{258}{subsection.6.54.2}
+\contentsline {subsubsection}{\numberline {6.54.2.1}ih\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}buttons}{258}{subsubsection.6.54.2.1}
+\contentsline {subsubsection}{\numberline {6.54.2.2}ih\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}ext\_\discretionary {-}{}{}devices}{259}{subsubsection.6.54.2.2}
+\contentsline {section}{\numberline {6.55}front\_\discretionary {-}{}{}panel/ks0108.c File Reference}{260}{section.6.55}
+\contentsline {subsection}{\numberline {6.55.1}Detailed Description}{261}{subsection.6.55.1}
+\contentsline {section}{\numberline {6.56}front\_\discretionary {-}{}{}panel/ks0108.h File Reference}{262}{section.6.56}
+\contentsline {subsection}{\numberline {6.56.1}Detailed Description}{263}{subsection.6.56.1}
+\contentsline {section}{\numberline {6.57}front\_\discretionary {-}{}{}panel/ks0108conf.h File Reference}{264}{section.6.57}
+\contentsline {subsection}{\numberline {6.57.1}Detailed Description}{264}{subsection.6.57.1}
+\contentsline {section}{\numberline {6.58}front\_\discretionary {-}{}{}panel/led\_\discretionary {-}{}{}control.c File Reference}{265}{section.6.58}
+\contentsline {subsection}{\numberline {6.58.1}Detailed Description}{266}{subsection.6.58.1}
+\contentsline {subsection}{\numberline {6.58.2}Function Documentation}{266}{subsection.6.58.2}
+\contentsline {subsubsection}{\numberline {6.58.2.1}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}all}{266}{subsubsection.6.58.2.1}
+\contentsline {subsubsection}{\numberline {6.58.2.2}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}aux}{266}{subsubsection.6.58.2.2}
+\contentsline {subsubsection}{\numberline {6.58.2.3}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}band}{267}{subsubsection.6.58.2.3}
+\contentsline {subsubsection}{\numberline {6.58.2.4}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}error}{267}{subsubsection.6.58.2.4}
+\contentsline {subsubsection}{\numberline {6.58.2.5}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}menu}{267}{subsubsection.6.58.2.5}
+\contentsline {subsubsection}{\numberline {6.58.2.6}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}ptt}{267}{subsubsection.6.58.2.6}
+\contentsline {subsubsection}{\numberline {6.58.2.7}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rotate}{268}{subsubsection.6.58.2.7}
+\contentsline {subsubsection}{\numberline {6.58.2.8}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rotation\_\discretionary {-}{}{}active}{268}{subsubsection.6.58.2.8}
+\contentsline {subsubsection}{\numberline {6.58.2.9}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant}{268}{subsubsection.6.58.2.9}
+\contentsline {subsubsection}{\numberline {6.58.2.10}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rxant}{268}{subsubsection.6.58.2.10}
+\contentsline {subsubsection}{\numberline {6.58.2.11}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}submenu}{269}{subsubsection.6.58.2.11}
+\contentsline {subsubsection}{\numberline {6.58.2.12}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}ant}{269}{subsubsection.6.58.2.12}
+\contentsline {subsubsection}{\numberline {6.58.2.13}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}txrx}{269}{subsubsection.6.58.2.13}
+\contentsline {section}{\numberline {6.59}front\_\discretionary {-}{}{}panel/led\_\discretionary {-}{}{}control.h File Reference}{270}{section.6.59}
+\contentsline {subsection}{\numberline {6.59.1}Detailed Description}{271}{subsection.6.59.1}
+\contentsline {subsection}{\numberline {6.59.2}Enumeration Type Documentation}{271}{subsection.6.59.2}
+\contentsline {subsubsection}{\numberline {6.59.2.1}enum\_\discretionary {-}{}{}led\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}state}{271}{subsubsection.6.59.2.1}
+\contentsline {subsubsection}{\numberline {6.59.2.2}enum\_\discretionary {-}{}{}led\_\discretionary {-}{}{}state}{271}{subsubsection.6.59.2.2}
+\contentsline {subsection}{\numberline {6.59.3}Function Documentation}{272}{subsection.6.59.3}
+\contentsline {subsubsection}{\numberline {6.59.3.1}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}all}{272}{subsubsection.6.59.3.1}
+\contentsline {subsubsection}{\numberline {6.59.3.2}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}aux}{272}{subsubsection.6.59.3.2}
+\contentsline {subsubsection}{\numberline {6.59.3.3}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}band}{272}{subsubsection.6.59.3.3}
+\contentsline {subsubsection}{\numberline {6.59.3.4}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}error}{272}{subsubsection.6.59.3.4}
+\contentsline {subsubsection}{\numberline {6.59.3.5}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}menu}{273}{subsubsection.6.59.3.5}
+\contentsline {subsubsection}{\numberline {6.59.3.6}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}ptt}{273}{subsubsection.6.59.3.6}
+\contentsline {subsubsection}{\numberline {6.59.3.7}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rotate}{273}{subsubsection.6.59.3.7}
+\contentsline {subsubsection}{\numberline {6.59.3.8}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rotation\_\discretionary {-}{}{}active}{273}{subsubsection.6.59.3.8}
+\contentsline {subsubsection}{\numberline {6.59.3.9}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}ant}{274}{subsubsection.6.59.3.9}
+\contentsline {subsubsection}{\numberline {6.59.3.10}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}rxant}{274}{subsubsection.6.59.3.10}
+\contentsline {subsubsection}{\numberline {6.59.3.11}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}submenu}{274}{subsubsection.6.59.3.11}
+\contentsline {subsubsection}{\numberline {6.59.3.12}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}ant}{274}{subsubsection.6.59.3.12}
+\contentsline {subsubsection}{\numberline {6.59.3.13}led\_\discretionary {-}{}{}set\_\discretionary {-}{}{}txrx}{275}{subsubsection.6.59.3.13}
+\contentsline {section}{\numberline {6.60}front\_\discretionary {-}{}{}panel/menu.c File Reference}{276}{section.6.60}
+\contentsline {subsection}{\numberline {6.60.1}Detailed Description}{277}{subsection.6.60.1}
+\contentsline {subsection}{\numberline {6.60.2}Function Documentation}{277}{subsection.6.60.2}
+\contentsline {subsubsection}{\numberline {6.60.2.1}menu\_\discretionary {-}{}{}action}{277}{subsubsection.6.60.2.1}
+\contentsline {subsubsection}{\numberline {6.60.2.2}menu\_\discretionary {-}{}{}show\_\discretionary {-}{}{}text}{278}{subsubsection.6.60.2.2}
+\contentsline {subsection}{\numberline {6.60.3}Variable Documentation}{278}{subsection.6.60.3}
+\contentsline {subsubsection}{\numberline {6.60.3.1}menu\_\discretionary {-}{}{}system\_\discretionary {-}{}{}text}{278}{subsubsection.6.60.3.1}
+\contentsline {section}{\numberline {6.61}front\_\discretionary {-}{}{}panel/menu.h File Reference}{280}{section.6.61}
+\contentsline {subsection}{\numberline {6.61.1}Detailed Description}{281}{subsection.6.61.1}
+\contentsline {subsection}{\numberline {6.61.2}Function Documentation}{281}{subsection.6.61.2}
+\contentsline {subsubsection}{\numberline {6.61.2.1}menu\_\discretionary {-}{}{}action}{281}{subsubsection.6.61.2.1}
+\contentsline {section}{\numberline {6.62}front\_\discretionary {-}{}{}panel/pictures.h File Reference}{283}{section.6.62}
+\contentsline {subsection}{\numberline {6.62.1}Detailed Description}{283}{subsection.6.62.1}
+\contentsline {section}{\numberline {6.63}front\_\discretionary {-}{}{}panel/powermeter.c File Reference}{284}{section.6.63}
+\contentsline {subsection}{\numberline {6.63.1}Detailed Description}{285}{subsection.6.63.1}
+\contentsline {subsection}{\numberline {6.63.2}Function Documentation}{285}{subsection.6.63.2}
+\contentsline {subsubsection}{\numberline {6.63.2.1}powermeter\_\discretionary {-}{}{}init}{285}{subsubsection.6.63.2.1}
+\contentsline {subsubsection}{\numberline {6.63.2.2}powermeter\_\discretionary {-}{}{}set\_\discretionary {-}{}{}active}{285}{subsubsection.6.63.2.2}
+\contentsline {subsubsection}{\numberline {6.63.2.3}powermeter\_\discretionary {-}{}{}update\_\discretionary {-}{}{}values}{286}{subsubsection.6.63.2.3}
+\contentsline {section}{\numberline {6.64}front\_\discretionary {-}{}{}panel/powermeter.h File Reference}{287}{section.6.64}
+\contentsline {subsection}{\numberline {6.64.1}Detailed Description}{287}{subsection.6.64.1}
+\contentsline {subsection}{\numberline {6.64.2}Function Documentation}{287}{subsection.6.64.2}
+\contentsline {subsubsection}{\numberline {6.64.2.1}powermeter\_\discretionary {-}{}{}init}{287}{subsubsection.6.64.2.1}
+\contentsline {subsubsection}{\numberline {6.64.2.2}powermeter\_\discretionary {-}{}{}update\_\discretionary {-}{}{}values}{288}{subsubsection.6.64.2.2}
+\contentsline {section}{\numberline {6.65}front\_\discretionary {-}{}{}panel/radio\_\discretionary {-}{}{}interface.c File Reference}{289}{section.6.65}
+\contentsline {subsection}{\numberline {6.65.1}Detailed Description}{292}{subsection.6.65.1}
+\contentsline {subsection}{\numberline {6.65.2}Function Documentation}{292}{subsection.6.65.2}
+\contentsline {subsubsection}{\numberline {6.65.2.1}radio\_\discretionary {-}{}{}communicaton\_\discretionary {-}{}{}timeout}{292}{subsubsection.6.65.2.1}
+\contentsline {subsubsection}{\numberline {6.65.2.2}radio\_\discretionary {-}{}{}freq\_\discretionary {-}{}{}to\_\discretionary {-}{}{}band}{292}{subsubsection.6.65.2.2}
+\contentsline {subsubsection}{\numberline {6.65.2.3}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}band\_\discretionary {-}{}{}portion}{293}{subsubsection.6.65.2.3}
+\contentsline {subsubsection}{\numberline {6.65.2.4}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}cat\_\discretionary {-}{}{}status}{293}{subsubsection.6.65.2.4}
+\contentsline {subsubsection}{\numberline {6.65.2.5}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}current\_\discretionary {-}{}{}band}{293}{subsubsection.6.65.2.5}
+\contentsline {subsubsection}{\numberline {6.65.2.6}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}current\_\discretionary {-}{}{}freq}{293}{subsubsection.6.65.2.6}
+\contentsline {subsubsection}{\numberline {6.65.2.7}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}baudrate}{294}{subsubsection.6.65.2.7}
+\contentsline {subsubsection}{\numberline {6.65.2.8}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}civ\_\discretionary {-}{}{}addr}{294}{subsubsection.6.65.2.8}
+\contentsline {subsubsection}{\numberline {6.65.2.9}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}interface}{294}{subsubsection.6.65.2.9}
+\contentsline {subsubsection}{\numberline {6.65.2.10}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}model}{294}{subsubsection.6.65.2.10}
+\contentsline {subsubsection}{\numberline {6.65.2.11}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}interval}{294}{subsubsection.6.65.2.11}
+\contentsline {subsubsection}{\numberline {6.65.2.12}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}input}{295}{subsubsection.6.65.2.12}
+\contentsline {subsubsection}{\numberline {6.65.2.13}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}stopbits}{295}{subsubsection.6.65.2.13}
+\contentsline {subsubsection}{\numberline {6.65.2.14}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}baudrate}{295}{subsubsection.6.65.2.14}
+\contentsline {subsubsection}{\numberline {6.65.2.15}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}civ\_\discretionary {-}{}{}addr}{295}{subsubsection.6.65.2.15}
+\contentsline {subsubsection}{\numberline {6.65.2.16}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}interface}{296}{subsubsection.6.65.2.16}
+\contentsline {subsubsection}{\numberline {6.65.2.17}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}model}{296}{subsubsection.6.65.2.17}
+\contentsline {subsubsection}{\numberline {6.65.2.18}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}interval}{296}{subsubsection.6.65.2.18}
+\contentsline {subsubsection}{\numberline {6.65.2.19}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}input}{296}{subsubsection.6.65.2.19}
+\contentsline {subsubsection}{\numberline {6.65.2.20}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}stopbits}{296}{subsubsection.6.65.2.20}
+\contentsline {subsubsection}{\numberline {6.65.2.21}radio\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}freq}{297}{subsubsection.6.65.2.21}
+\contentsline {subsubsection}{\numberline {6.65.2.22}radio\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}ptt}{297}{subsubsection.6.65.2.22}
+\contentsline {subsubsection}{\numberline {6.65.2.23}radio\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}status}{297}{subsubsection.6.65.2.23}
+\contentsline {subsubsection}{\numberline {6.65.2.24}radio\_\discretionary {-}{}{}set\_\discretionary {-}{}{}current\_\discretionary {-}{}{}band}{298}{subsubsection.6.65.2.24}
+\contentsline {section}{\numberline {6.66}front\_\discretionary {-}{}{}panel/radio\_\discretionary {-}{}{}interface.h File Reference}{299}{section.6.66}
+\contentsline {subsection}{\numberline {6.66.1}Detailed Description}{303}{subsection.6.66.1}
+\contentsline {subsection}{\numberline {6.66.2}Function Documentation}{303}{subsection.6.66.2}
+\contentsline {subsubsection}{\numberline {6.66.2.1}radio\_\discretionary {-}{}{}communicaton\_\discretionary {-}{}{}timeout}{303}{subsubsection.6.66.2.1}
+\contentsline {subsubsection}{\numberline {6.66.2.2}radio\_\discretionary {-}{}{}freq\_\discretionary {-}{}{}to\_\discretionary {-}{}{}band}{303}{subsubsection.6.66.2.2}
+\contentsline {subsubsection}{\numberline {6.66.2.3}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}band\_\discretionary {-}{}{}portion}{303}{subsubsection.6.66.2.3}
+\contentsline {subsubsection}{\numberline {6.66.2.4}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}cat\_\discretionary {-}{}{}status}{304}{subsubsection.6.66.2.4}
+\contentsline {subsubsection}{\numberline {6.66.2.5}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}current\_\discretionary {-}{}{}band}{304}{subsubsection.6.66.2.5}
+\contentsline {subsubsection}{\numberline {6.66.2.6}radio\_\discretionary {-}{}{}get\_\discretionary {-}{}{}current\_\discretionary {-}{}{}freq}{304}{subsubsection.6.66.2.6}
+\contentsline {subsubsection}{\numberline {6.66.2.7}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}baudrate}{304}{subsubsection.6.66.2.7}
+\contentsline {subsubsection}{\numberline {6.66.2.8}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}civ\_\discretionary {-}{}{}addr}{305}{subsubsection.6.66.2.8}
+\contentsline {subsubsection}{\numberline {6.66.2.9}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}interface}{305}{subsubsection.6.66.2.9}
+\contentsline {subsubsection}{\numberline {6.66.2.10}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}model}{305}{subsubsection.6.66.2.10}
+\contentsline {subsubsection}{\numberline {6.66.2.11}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}interval}{305}{subsubsection.6.66.2.11}
+\contentsline {subsubsection}{\numberline {6.66.2.12}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}input}{306}{subsubsection.6.66.2.12}
+\contentsline {subsubsection}{\numberline {6.66.2.13}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}get\_\discretionary {-}{}{}stopbits}{306}{subsubsection.6.66.2.13}
+\contentsline {subsubsection}{\numberline {6.66.2.14}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}baudrate}{306}{subsubsection.6.66.2.14}
+\contentsline {subsubsection}{\numberline {6.66.2.15}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}civ\_\discretionary {-}{}{}addr}{306}{subsubsection.6.66.2.15}
+\contentsline {subsubsection}{\numberline {6.66.2.16}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}interface}{306}{subsubsection.6.66.2.16}
+\contentsline {subsubsection}{\numberline {6.66.2.17}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}model}{307}{subsubsection.6.66.2.17}
+\contentsline {subsubsection}{\numberline {6.66.2.18}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}interval}{307}{subsubsection.6.66.2.18}
+\contentsline {subsubsection}{\numberline {6.66.2.19}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}input}{307}{subsubsection.6.66.2.19}
+\contentsline {subsubsection}{\numberline {6.66.2.20}radio\_\discretionary {-}{}{}interface\_\discretionary {-}{}{}set\_\discretionary {-}{}{}stopbits}{307}{subsubsection.6.66.2.20}
+\contentsline {subsubsection}{\numberline {6.66.2.21}radio\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}status}{308}{subsubsection.6.66.2.21}
+\contentsline {subsubsection}{\numberline {6.66.2.22}radio\_\discretionary {-}{}{}set\_\discretionary {-}{}{}current\_\discretionary {-}{}{}band}{308}{subsubsection.6.66.2.22}
+\contentsline {section}{\numberline {6.67}front\_\discretionary {-}{}{}panel/remote\_\discretionary {-}{}{}control.c File Reference}{309}{section.6.67}
+\contentsline {subsection}{\numberline {6.67.1}Detailed Description}{309}{subsection.6.67.1}
+\contentsline {subsection}{\numberline {6.67.2}Function Documentation}{310}{subsection.6.67.2}
+\contentsline {subsubsection}{\numberline {6.67.2.1}remote\_\discretionary {-}{}{}control\_\discretionary {-}{}{}get\_\discretionary {-}{}{}remote\_\discretionary {-}{}{}mode}{310}{subsubsection.6.67.2.1}
+\contentsline {subsubsection}{\numberline {6.67.2.2}remote\_\discretionary {-}{}{}control\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}button}{310}{subsubsection.6.67.2.2}
+\contentsline {subsubsection}{\numberline {6.67.2.3}remote\_\discretionary {-}{}{}control\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}command}{310}{subsubsection.6.67.2.3}
+\contentsline {section}{\numberline {6.68}front\_\discretionary {-}{}{}panel/remote\_\discretionary {-}{}{}control.h File Reference}{311}{section.6.68}
+\contentsline {subsection}{\numberline {6.68.1}Detailed Description}{311}{subsection.6.68.1}
+\contentsline {subsection}{\numberline {6.68.2}Function Documentation}{312}{subsection.6.68.2}
+\contentsline {subsubsection}{\numberline {6.68.2.1}remote\_\discretionary {-}{}{}control\_\discretionary {-}{}{}get\_\discretionary {-}{}{}remote\_\discretionary {-}{}{}mode}{312}{subsubsection.6.68.2.1}
+\contentsline {subsubsection}{\numberline {6.68.2.2}remote\_\discretionary {-}{}{}control\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}button}{312}{subsubsection.6.68.2.2}
+\contentsline {subsubsection}{\numberline {6.68.2.3}remote\_\discretionary {-}{}{}control\_\discretionary {-}{}{}parse\_\discretionary {-}{}{}command}{312}{subsubsection.6.68.2.3}
+\contentsline {section}{\numberline {6.69}front\_\discretionary {-}{}{}panel/rotary\_\discretionary {-}{}{}encoder.c File Reference}{313}{section.6.69}
+\contentsline {subsection}{\numberline {6.69.1}Detailed Description}{313}{subsection.6.69.1}
+\contentsline {subsection}{\numberline {6.69.2}Function Documentation}{313}{subsection.6.69.2}
+\contentsline {subsubsection}{\numberline {6.69.2.1}poll\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}state}{313}{subsubsection.6.69.2.1}
+\contentsline {subsubsection}{\numberline {6.69.2.2}rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}poll}{314}{subsubsection.6.69.2.2}
+\contentsline {section}{\numberline {6.70}front\_\discretionary {-}{}{}panel/rotary\_\discretionary {-}{}{}encoder.h File Reference}{315}{section.6.70}
+\contentsline {subsection}{\numberline {6.70.1}Detailed Description}{315}{subsection.6.70.1}
+\contentsline {subsection}{\numberline {6.70.2}Function Documentation}{315}{subsection.6.70.2}
+\contentsline {subsubsection}{\numberline {6.70.2.1}rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}poll}{315}{subsubsection.6.70.2.1}
+\contentsline {section}{\numberline {6.71}front\_\discretionary {-}{}{}panel/sequencer.c File Reference}{316}{section.6.71}
+\contentsline {subsection}{\numberline {6.71.1}Detailed Description}{317}{subsection.6.71.1}
+\contentsline {subsection}{\numberline {6.71.2}Function Documentation}{318}{subsection.6.71.2}
+\contentsline {subsubsection}{\numberline {6.71.2.1}sequencer\_\discretionary {-}{}{}get\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}sense}{318}{subsubsection.6.71.2.1}
+\contentsline {subsubsection}{\numberline {6.71.2.2}sequencer\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rts\_\discretionary {-}{}{}polarity}{318}{subsubsection.6.71.2.2}
+\contentsline {subsubsection}{\numberline {6.71.2.3}sequencer\_\discretionary {-}{}{}get\_\discretionary {-}{}{}sense\_\discretionary {-}{}{}polarity}{318}{subsubsection.6.71.2.3}
+\contentsline {subsubsection}{\numberline {6.71.2.4}sequencer\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}active}{318}{subsubsection.6.71.2.4}
+\contentsline {section}{\numberline {6.72}front\_\discretionary {-}{}{}panel/sequencer.h File Reference}{319}{section.6.72}
+\contentsline {subsection}{\numberline {6.72.1}Detailed Description}{321}{subsection.6.72.1}
+\contentsline {subsection}{\numberline {6.72.2}Define Documentation}{321}{subsection.6.72.2}
+\contentsline {subsubsection}{\numberline {6.72.2.1}SEQUENCER\_\discretionary {-}{}{}EVENT\_\discretionary {-}{}{}TYPE\_\discretionary {-}{}{}PTT\_\discretionary {-}{}{}INHIBIT\_\discretionary {-}{}{}OFF}{321}{subsubsection.6.72.2.1}
+\contentsline {subsubsection}{\numberline {6.72.2.2}SEQUENCER\_\discretionary {-}{}{}EVENT\_\discretionary {-}{}{}TYPE\_\discretionary {-}{}{}PTT\_\discretionary {-}{}{}INHIBIT\_\discretionary {-}{}{}OFF}{321}{subsubsection.6.72.2.2}
+\contentsline {subsubsection}{\numberline {6.72.2.3}SEQUENCER\_\discretionary {-}{}{}EVENT\_\discretionary {-}{}{}TYPE\_\discretionary {-}{}{}PTT\_\discretionary {-}{}{}TX\_\discretionary {-}{}{}ACTIVE\_\discretionary {-}{}{}ON}{322}{subsubsection.6.72.2.3}
+\contentsline {subsection}{\numberline {6.72.3}Function Documentation}{322}{subsection.6.72.3}
+\contentsline {subsubsection}{\numberline {6.72.3.1}sequencer\_\discretionary {-}{}{}get\_\discretionary {-}{}{}radio\_\discretionary {-}{}{}sense}{322}{subsubsection.6.72.3.1}
+\contentsline {subsubsection}{\numberline {6.72.3.2}sequencer\_\discretionary {-}{}{}get\_\discretionary {-}{}{}rts\_\discretionary {-}{}{}polarity}{322}{subsubsection.6.72.3.2}
+\contentsline {subsubsection}{\numberline {6.72.3.3}sequencer\_\discretionary {-}{}{}get\_\discretionary {-}{}{}sense\_\discretionary {-}{}{}polarity}{322}{subsubsection.6.72.3.3}
+\contentsline {subsubsection}{\numberline {6.72.3.4}sequencer\_\discretionary {-}{}{}ptt\_\discretionary {-}{}{}active}{323}{subsubsection.6.72.3.4}
+\contentsline {section}{\numberline {6.73}front\_\discretionary {-}{}{}panel/sub\_\discretionary {-}{}{}menu.c File Reference}{324}{section.6.73}
+\contentsline {subsection}{\numberline {6.73.1}Detailed Description}{325}{subsection.6.73.1}
+\contentsline {subsection}{\numberline {6.73.2}Function Documentation}{325}{subsection.6.73.2}
+\contentsline {subsubsection}{\numberline {6.73.2.1}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}count}{325}{subsubsection.6.73.2.1}
+\contentsline {subsubsection}{\numberline {6.73.2.2}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}current\_\discretionary {-}{}{}pos}{326}{subsubsection.6.73.2.2}
+\contentsline {subsubsection}{\numberline {6.73.2.3}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}text}{326}{subsubsection.6.73.2.3}
+\contentsline {subsubsection}{\numberline {6.73.2.4}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}type}{326}{subsubsection.6.73.2.4}
+\contentsline {subsubsection}{\numberline {6.73.2.5}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}load}{327}{subsubsection.6.73.2.5}
+\contentsline {subsubsection}{\numberline {6.73.2.6}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}pos\_\discretionary {-}{}{}down}{327}{subsubsection.6.73.2.6}
+\contentsline {subsubsection}{\numberline {6.73.2.7}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}pos\_\discretionary {-}{}{}up}{327}{subsubsection.6.73.2.7}
+\contentsline {subsubsection}{\numberline {6.73.2.8}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}send\_\discretionary {-}{}{}data\_\discretionary {-}{}{}to\_\discretionary {-}{}{}bus}{328}{subsubsection.6.73.2.8}
+\contentsline {subsubsection}{\numberline {6.73.2.9}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}set\_\discretionary {-}{}{}current\_\discretionary {-}{}{}pos}{328}{subsubsection.6.73.2.9}
+\contentsline {section}{\numberline {6.74}front\_\discretionary {-}{}{}panel/sub\_\discretionary {-}{}{}menu.h File Reference}{329}{section.6.74}
+\contentsline {subsection}{\numberline {6.74.1}Detailed Description}{330}{subsection.6.74.1}
+\contentsline {subsection}{\numberline {6.74.2}Function Documentation}{330}{subsection.6.74.2}
+\contentsline {subsubsection}{\numberline {6.74.2.1}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}count}{330}{subsubsection.6.74.2.1}
+\contentsline {subsubsection}{\numberline {6.74.2.2}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}current\_\discretionary {-}{}{}pos}{330}{subsubsection.6.74.2.2}
+\contentsline {subsubsection}{\numberline {6.74.2.3}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}text}{330}{subsubsection.6.74.2.3}
+\contentsline {subsubsection}{\numberline {6.74.2.4}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}get\_\discretionary {-}{}{}type}{331}{subsubsection.6.74.2.4}
+\contentsline {subsubsection}{\numberline {6.74.2.5}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}load}{331}{subsubsection.6.74.2.5}
+\contentsline {subsubsection}{\numberline {6.74.2.6}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}pos\_\discretionary {-}{}{}down}{331}{subsubsection.6.74.2.6}
+\contentsline {subsubsection}{\numberline {6.74.2.7}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}pos\_\discretionary {-}{}{}up}{332}{subsubsection.6.74.2.7}
+\contentsline {subsubsection}{\numberline {6.74.2.8}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}send\_\discretionary {-}{}{}data\_\discretionary {-}{}{}to\_\discretionary {-}{}{}bus}{332}{subsubsection.6.74.2.8}
+\contentsline {subsubsection}{\numberline {6.74.2.9}sub\_\discretionary {-}{}{}menu\_\discretionary {-}{}{}set\_\discretionary {-}{}{}current\_\discretionary {-}{}{}pos}{332}{subsubsection.6.74.2.9}
+\contentsline {section}{\numberline {6.75}front\_\discretionary {-}{}{}panel/usart.c File Reference}{334}{section.6.75}
+\contentsline {subsection}{\numberline {6.75.1}Detailed Description}{335}{subsection.6.75.1}
+\contentsline {subsection}{\numberline {6.75.2}Function Documentation}{336}{subsection.6.75.2}
+\contentsline {subsubsection}{\numberline {6.75.2.1}poll\_\discretionary {-}{}{}usart0\_\discretionary {-}{}{}receive}{336}{subsubsection.6.75.2.1}
+\contentsline {subsubsection}{\numberline {6.75.2.2}poll\_\discretionary {-}{}{}usart1\_\discretionary {-}{}{}receive}{336}{subsubsection.6.75.2.2}
+\contentsline {subsubsection}{\numberline {6.75.2.3}poll\_\discretionary {-}{}{}usart3\_\discretionary {-}{}{}receive}{336}{subsubsection.6.75.2.3}
+\contentsline {subsubsection}{\numberline {6.75.2.4}usart0\_\discretionary {-}{}{}init}{336}{subsubsection.6.75.2.4}
+\contentsline {subsubsection}{\numberline {6.75.2.5}usart0\_\discretionary {-}{}{}receive}{336}{subsubsection.6.75.2.5}
+\contentsline {subsubsection}{\numberline {6.75.2.6}usart0\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{337}{subsubsection.6.75.2.6}
+\contentsline {subsubsection}{\numberline {6.75.2.7}usart0\_\discretionary {-}{}{}sendstring}{337}{subsubsection.6.75.2.7}
+\contentsline {subsubsection}{\numberline {6.75.2.8}usart0\_\discretionary {-}{}{}transmit}{337}{subsubsection.6.75.2.8}
+\contentsline {subsubsection}{\numberline {6.75.2.9}usart1\_\discretionary {-}{}{}init}{337}{subsubsection.6.75.2.9}
+\contentsline {subsubsection}{\numberline {6.75.2.10}usart1\_\discretionary {-}{}{}receive}{338}{subsubsection.6.75.2.10}
+\contentsline {subsubsection}{\numberline {6.75.2.11}usart1\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{338}{subsubsection.6.75.2.11}
+\contentsline {subsubsection}{\numberline {6.75.2.12}usart1\_\discretionary {-}{}{}sendstring}{338}{subsubsection.6.75.2.12}
+\contentsline {subsubsection}{\numberline {6.75.2.13}usart1\_\discretionary {-}{}{}transmit}{338}{subsubsection.6.75.2.13}
+\contentsline {subsubsection}{\numberline {6.75.2.14}usart3\_\discretionary {-}{}{}init}{339}{subsubsection.6.75.2.14}
+\contentsline {subsubsection}{\numberline {6.75.2.15}usart3\_\discretionary {-}{}{}receive}{339}{subsubsection.6.75.2.15}
+\contentsline {subsubsection}{\numberline {6.75.2.16}usart3\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{339}{subsubsection.6.75.2.16}
+\contentsline {subsubsection}{\numberline {6.75.2.17}usart3\_\discretionary {-}{}{}sendstring}{339}{subsubsection.6.75.2.17}
+\contentsline {subsubsection}{\numberline {6.75.2.18}usart3\_\discretionary {-}{}{}transmit}{340}{subsubsection.6.75.2.18}
+\contentsline {section}{\numberline {6.76}motherboard/usart.c File Reference}{341}{section.6.76}
+\contentsline {subsection}{\numberline {6.76.1}Detailed Description}{342}{subsection.6.76.1}
+\contentsline {subsection}{\numberline {6.76.2}Function Documentation}{342}{subsection.6.76.2}
+\contentsline {subsubsection}{\numberline {6.76.2.1}poll\_\discretionary {-}{}{}usart0\_\discretionary {-}{}{}receive}{342}{subsubsection.6.76.2.1}
+\contentsline {subsubsection}{\numberline {6.76.2.2}poll\_\discretionary {-}{}{}usart1\_\discretionary {-}{}{}receive}{342}{subsubsection.6.76.2.2}
+\contentsline {subsubsection}{\numberline {6.76.2.3}usart0\_\discretionary {-}{}{}init}{343}{subsubsection.6.76.2.3}
+\contentsline {subsubsection}{\numberline {6.76.2.4}usart0\_\discretionary {-}{}{}receive}{343}{subsubsection.6.76.2.4}
+\contentsline {subsubsection}{\numberline {6.76.2.5}usart0\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{343}{subsubsection.6.76.2.5}
+\contentsline {subsubsection}{\numberline {6.76.2.6}usart0\_\discretionary {-}{}{}sendstring}{343}{subsubsection.6.76.2.6}
+\contentsline {subsubsection}{\numberline {6.76.2.7}usart0\_\discretionary {-}{}{}transmit}{344}{subsubsection.6.76.2.7}
+\contentsline {subsubsection}{\numberline {6.76.2.8}usart1\_\discretionary {-}{}{}init}{344}{subsubsection.6.76.2.8}
+\contentsline {subsubsection}{\numberline {6.76.2.9}usart1\_\discretionary {-}{}{}receive}{344}{subsubsection.6.76.2.9}
+\contentsline {subsubsection}{\numberline {6.76.2.10}usart1\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{344}{subsubsection.6.76.2.10}
+\contentsline {subsubsection}{\numberline {6.76.2.11}usart1\_\discretionary {-}{}{}sendstring}{345}{subsubsection.6.76.2.11}
+\contentsline {subsubsection}{\numberline {6.76.2.12}usart1\_\discretionary {-}{}{}transmit}{345}{subsubsection.6.76.2.12}
+\contentsline {section}{\numberline {6.77}front\_\discretionary {-}{}{}panel/usart.h File Reference}{346}{section.6.77}
+\contentsline {subsection}{\numberline {6.77.1}Detailed Description}{347}{subsection.6.77.1}
+\contentsline {subsection}{\numberline {6.77.2}Function Documentation}{347}{subsection.6.77.2}
+\contentsline {subsubsection}{\numberline {6.77.2.1}poll\_\discretionary {-}{}{}usart0\_\discretionary {-}{}{}receive}{347}{subsubsection.6.77.2.1}
+\contentsline {subsubsection}{\numberline {6.77.2.2}poll\_\discretionary {-}{}{}usart1\_\discretionary {-}{}{}receive}{348}{subsubsection.6.77.2.2}
+\contentsline {subsubsection}{\numberline {6.77.2.3}poll\_\discretionary {-}{}{}usart3\_\discretionary {-}{}{}receive}{348}{subsubsection.6.77.2.3}
+\contentsline {subsubsection}{\numberline {6.77.2.4}usart0\_\discretionary {-}{}{}init}{348}{subsubsection.6.77.2.4}
+\contentsline {subsubsection}{\numberline {6.77.2.5}usart0\_\discretionary {-}{}{}receive}{349}{subsubsection.6.77.2.5}
+\contentsline {subsubsection}{\numberline {6.77.2.6}usart0\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{349}{subsubsection.6.77.2.6}
+\contentsline {subsubsection}{\numberline {6.77.2.7}usart0\_\discretionary {-}{}{}sendstring}{349}{subsubsection.6.77.2.7}
+\contentsline {subsubsection}{\numberline {6.77.2.8}usart0\_\discretionary {-}{}{}transmit}{350}{subsubsection.6.77.2.8}
+\contentsline {subsubsection}{\numberline {6.77.2.9}usart1\_\discretionary {-}{}{}init}{350}{subsubsection.6.77.2.9}
+\contentsline {subsubsection}{\numberline {6.77.2.10}usart1\_\discretionary {-}{}{}receive}{350}{subsubsection.6.77.2.10}
+\contentsline {subsubsection}{\numberline {6.77.2.11}usart1\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{351}{subsubsection.6.77.2.11}
+\contentsline {subsubsection}{\numberline {6.77.2.12}usart1\_\discretionary {-}{}{}sendstring}{351}{subsubsection.6.77.2.12}
+\contentsline {subsubsection}{\numberline {6.77.2.13}usart3\_\discretionary {-}{}{}init}{351}{subsubsection.6.77.2.13}
+\contentsline {subsubsection}{\numberline {6.77.2.14}usart3\_\discretionary {-}{}{}receive}{352}{subsubsection.6.77.2.14}
+\contentsline {subsubsection}{\numberline {6.77.2.15}usart3\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{352}{subsubsection.6.77.2.15}
+\contentsline {subsubsection}{\numberline {6.77.2.16}usart3\_\discretionary {-}{}{}sendstring}{352}{subsubsection.6.77.2.16}
+\contentsline {section}{\numberline {6.78}motherboard/usart.h File Reference}{353}{section.6.78}
+\contentsline {subsection}{\numberline {6.78.1}Detailed Description}{354}{subsection.6.78.1}
+\contentsline {subsection}{\numberline {6.78.2}Function Documentation}{354}{subsection.6.78.2}
+\contentsline {subsubsection}{\numberline {6.78.2.1}poll\_\discretionary {-}{}{}usart0\_\discretionary {-}{}{}receive}{354}{subsubsection.6.78.2.1}
+\contentsline {subsubsection}{\numberline {6.78.2.2}poll\_\discretionary {-}{}{}usart1\_\discretionary {-}{}{}receive}{354}{subsubsection.6.78.2.2}
+\contentsline {subsubsection}{\numberline {6.78.2.3}usart0\_\discretionary {-}{}{}init}{355}{subsubsection.6.78.2.3}
+\contentsline {subsubsection}{\numberline {6.78.2.4}usart0\_\discretionary {-}{}{}receive}{355}{subsubsection.6.78.2.4}
+\contentsline {subsubsection}{\numberline {6.78.2.5}usart0\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{355}{subsubsection.6.78.2.5}
+\contentsline {subsubsection}{\numberline {6.78.2.6}usart0\_\discretionary {-}{}{}sendstring}{356}{subsubsection.6.78.2.6}
+\contentsline {subsubsection}{\numberline {6.78.2.7}usart1\_\discretionary {-}{}{}init}{356}{subsubsection.6.78.2.7}
+\contentsline {subsubsection}{\numberline {6.78.2.8}usart1\_\discretionary {-}{}{}receive}{356}{subsubsection.6.78.2.8}
+\contentsline {subsubsection}{\numberline {6.78.2.9}usart1\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{357}{subsubsection.6.78.2.9}
+\contentsline {subsubsection}{\numberline {6.78.2.10}usart1\_\discretionary {-}{}{}sendstring}{357}{subsubsection.6.78.2.10}
+\contentsline {section}{\numberline {6.79}i2c.c File Reference}{358}{section.6.79}
+\contentsline {subsection}{\numberline {6.79.1}Detailed Description}{359}{subsection.6.79.1}
+\contentsline {section}{\numberline {6.80}i2c.h File Reference}{360}{section.6.80}
+\contentsline {subsection}{\numberline {6.80.1}Detailed Description}{362}{subsection.6.80.1}
+\contentsline {section}{\numberline {6.81}i2cconf.h File Reference}{363}{section.6.81}
+\contentsline {subsection}{\numberline {6.81.1}Detailed Description}{363}{subsection.6.81.1}
+\contentsline {subsection}{\numberline {6.81.2}Define Documentation}{363}{subsection.6.81.2}
+\contentsline {subsubsection}{\numberline {6.81.2.1}I2C\_\discretionary {-}{}{}SEND\_\discretionary {-}{}{}DATA\_\discretionary {-}{}{}BUFFER\_\discretionary {-}{}{}SIZE}{363}{subsubsection.6.81.2.1}
+\contentsline {section}{\numberline {6.82}internal\_\discretionary {-}{}{}comm.c File Reference}{364}{section.6.82}
+\contentsline {subsection}{\numberline {6.82.1}Detailed Description}{365}{subsection.6.82.1}
+\contentsline {subsection}{\numberline {6.82.2}Function Documentation}{366}{subsection.6.82.2}
+\contentsline {subsubsection}{\numberline {6.82.2.1}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}add\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}message}{366}{subsubsection.6.82.2.1}
+\contentsline {subsubsection}{\numberline {6.82.2.2}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}init}{366}{subsubsection.6.82.2.2}
+\contentsline {subsubsection}{\numberline {6.82.2.3}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue}{366}{subsubsection.6.82.2.3}
+\contentsline {subsubsection}{\numberline {6.82.2.4}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue}{367}{subsubsection.6.82.2.4}
+\contentsline {subsubsection}{\numberline {6.82.2.5}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}send\_\discretionary {-}{}{}message}{367}{subsubsection.6.82.2.5}
+\contentsline {section}{\numberline {6.83}internal\_\discretionary {-}{}{}comm.h File Reference}{368}{section.6.83}
+\contentsline {subsection}{\numberline {6.83.1}Detailed Description}{369}{subsection.6.83.1}
+\contentsline {subsection}{\numberline {6.83.2}Define Documentation}{369}{subsection.6.83.2}
+\contentsline {subsubsection}{\numberline {6.83.2.1}UC\_\discretionary {-}{}{}COMM\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}ACK}{369}{subsubsection.6.83.2.1}
+\contentsline {subsubsection}{\numberline {6.83.2.2}UC\_\discretionary {-}{}{}COMM\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}NACK}{370}{subsubsection.6.83.2.2}
+\contentsline {subsubsection}{\numberline {6.83.2.3}UC\_\discretionary {-}{}{}COMM\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}POSTAMBLE}{370}{subsubsection.6.83.2.3}
+\contentsline {subsubsection}{\numberline {6.83.2.4}UC\_\discretionary {-}{}{}COMM\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}PREAMBLE}{370}{subsubsection.6.83.2.4}
+\contentsline {subsubsection}{\numberline {6.83.2.5}UC\_\discretionary {-}{}{}PREAMBLE\_\discretionary {-}{}{}FOUND}{370}{subsubsection.6.83.2.5}
+\contentsline {subsection}{\numberline {6.83.3}Function Documentation}{370}{subsection.6.83.3}
+\contentsline {subsubsection}{\numberline {6.83.3.1}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}add\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}message}{370}{subsubsection.6.83.3.1}
+\contentsline {subsubsection}{\numberline {6.83.3.2}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}init}{371}{subsubsection.6.83.3.2}
+\contentsline {subsubsection}{\numberline {6.83.3.3}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue}{371}{subsubsection.6.83.3.3}
+\contentsline {subsubsection}{\numberline {6.83.3.4}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue}{371}{subsubsection.6.83.3.4}
+\contentsline {subsubsection}{\numberline {6.83.3.5}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}send\_\discretionary {-}{}{}message}{372}{subsubsection.6.83.3.5}
+\contentsline {section}{\numberline {6.84}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}commands.h File Reference}{373}{section.6.84}
+\contentsline {subsection}{\numberline {6.84.1}Detailed Description}{373}{subsection.6.84.1}
+\contentsline {section}{\numberline {6.85}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue.c File Reference}{374}{section.6.85}
+\contentsline {subsection}{\numberline {6.85.1}Detailed Description}{374}{subsection.6.85.1}
+\contentsline {subsection}{\numberline {6.85.2}Function Documentation}{375}{subsection.6.85.2}
+\contentsline {subsubsection}{\numberline {6.85.2.1}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{375}{subsubsection.6.85.2.1}
+\contentsline {subsubsection}{\numberline {6.85.2.2}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{375}{subsubsection.6.85.2.2}
+\contentsline {subsubsection}{\numberline {6.85.2.3}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{375}{subsubsection.6.85.2.3}
+\contentsline {subsubsection}{\numberline {6.85.2.4}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{375}{subsubsection.6.85.2.4}
+\contentsline {subsubsection}{\numberline {6.85.2.5}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{376}{subsubsection.6.85.2.5}
+\contentsline {section}{\numberline {6.86}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue.h File Reference}{377}{section.6.86}
+\contentsline {subsection}{\numberline {6.86.1}Detailed Description}{377}{subsection.6.86.1}
+\contentsline {subsection}{\numberline {6.86.2}Function Documentation}{378}{subsection.6.86.2}
+\contentsline {subsubsection}{\numberline {6.86.2.1}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{378}{subsubsection.6.86.2.1}
+\contentsline {subsubsection}{\numberline {6.86.2.2}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{378}{subsubsection.6.86.2.2}
+\contentsline {subsubsection}{\numberline {6.86.2.3}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{378}{subsubsection.6.86.2.3}
+\contentsline {subsubsection}{\numberline {6.86.2.4}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{378}{subsubsection.6.86.2.4}
+\contentsline {subsubsection}{\numberline {6.86.2.5}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{379}{subsubsection.6.86.2.5}
+\contentsline {section}{\numberline {6.87}internal\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue.c File Reference}{380}{section.6.87}
+\contentsline {subsection}{\numberline {6.87.1}Detailed Description}{380}{subsection.6.87.1}
+\contentsline {subsection}{\numberline {6.87.2}Function Documentation}{381}{subsection.6.87.2}
+\contentsline {subsubsection}{\numberline {6.87.2.1}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}init}{381}{subsubsection.6.87.2.1}
+\contentsline {subsubsection}{\numberline {6.87.2.2}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{381}{subsubsection.6.87.2.2}
+\contentsline {subsubsection}{\numberline {6.87.2.3}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{381}{subsubsection.6.87.2.3}
+\contentsline {subsubsection}{\numberline {6.87.2.4}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{381}{subsubsection.6.87.2.4}
+\contentsline {subsubsection}{\numberline {6.87.2.5}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{381}{subsubsection.6.87.2.5}
+\contentsline {subsubsection}{\numberline {6.87.2.6}int\_\discretionary {-}{}{}comm\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{382}{subsubsection.6.87.2.6}
+\contentsline {section}{\numberline {6.88}powermeter/display\_\discretionary {-}{}{}unit/lcd.c File Reference}{383}{section.6.88}
+\contentsline {subsection}{\numberline {6.88.1}Detailed Description}{383}{subsection.6.88.1}
+\contentsline {section}{\numberline {6.89}powermeter/display\_\discretionary {-}{}{}unit/lcd.h File Reference}{384}{section.6.89}
+\contentsline {subsection}{\numberline {6.89.1}Detailed Description}{385}{subsection.6.89.1}
+\contentsline {section}{\numberline {6.90}powermeter/display\_\discretionary {-}{}{}unit/lcdconf.h File Reference}{386}{section.6.90}
+\contentsline {subsection}{\numberline {6.90.1}Detailed Description}{386}{subsection.6.90.1}
+\contentsline {section}{\numberline {6.91}powermeter/display\_\discretionary {-}{}{}unit/output.h File Reference}{387}{section.6.91}
+\contentsline {subsection}{\numberline {6.91.1}Detailed Description}{387}{subsection.6.91.1}
+\contentsline {section}{\numberline {6.92}wmv\_\discretionary {-}{}{}bus/bus.c File Reference}{388}{section.6.92}
+\contentsline {subsection}{\numberline {6.92.1}Detailed Description}{390}{subsection.6.92.1}
+\contentsline {subsection}{\numberline {6.92.2}Function Documentation}{390}{subsection.6.92.2}
+\contentsline {subsubsection}{\numberline {6.92.2.1}bus\_\discretionary {-}{}{}add\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}message}{390}{subsubsection.6.92.2.1}
+\contentsline {subsubsection}{\numberline {6.92.2.2}bus\_\discretionary {-}{}{}add\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}message}{391}{subsubsection.6.92.2.2}
+\contentsline {subsubsection}{\numberline {6.92.2.3}bus\_\discretionary {-}{}{}allowed\_\discretionary {-}{}{}to\_\discretionary {-}{}{}send}{391}{subsubsection.6.92.2.3}
+\contentsline {subsubsection}{\numberline {6.92.2.4}bus\_\discretionary {-}{}{}get\_\discretionary {-}{}{}address}{391}{subsubsection.6.92.2.4}
+\contentsline {subsubsection}{\numberline {6.92.2.5}bus\_\discretionary {-}{}{}get\_\discretionary {-}{}{}device\_\discretionary {-}{}{}count}{392}{subsubsection.6.92.2.5}
+\contentsline {subsubsection}{\numberline {6.92.2.6}bus\_\discretionary {-}{}{}is\_\discretionary {-}{}{}master}{392}{subsubsection.6.92.2.6}
+\contentsline {subsubsection}{\numberline {6.92.2.7}bus\_\discretionary {-}{}{}message\_\discretionary {-}{}{}nacked}{392}{subsubsection.6.92.2.7}
+\contentsline {subsubsection}{\numberline {6.92.2.8}bus\_\discretionary {-}{}{}send\_\discretionary {-}{}{}nack}{392}{subsubsection.6.92.2.8}
+\contentsline {subsubsection}{\numberline {6.92.2.9}bus\_\discretionary {-}{}{}set\_\discretionary {-}{}{}address}{393}{subsubsection.6.92.2.9}
+\contentsline {subsubsection}{\numberline {6.92.2.10}bus\_\discretionary {-}{}{}set\_\discretionary {-}{}{}device\_\discretionary {-}{}{}count}{393}{subsubsection.6.92.2.10}
+\contentsline {subsubsection}{\numberline {6.92.2.11}bus\_\discretionary {-}{}{}set\_\discretionary {-}{}{}is\_\discretionary {-}{}{}master}{393}{subsubsection.6.92.2.11}
+\contentsline {subsubsection}{\numberline {6.92.2.12}ISR}{393}{subsubsection.6.92.2.12}
+\contentsline {subsubsection}{\numberline {6.92.2.13}ISR}{394}{subsubsection.6.92.2.13}
+\contentsline {subsubsection}{\numberline {6.92.2.14}ISR}{394}{subsubsection.6.92.2.14}
+\contentsline {subsubsection}{\numberline {6.92.2.15}ISR}{394}{subsubsection.6.92.2.15}
+\contentsline {section}{\numberline {6.93}wmv\_\discretionary {-}{}{}bus/bus.h File Reference}{395}{section.6.93}
+\contentsline {subsection}{\numberline {6.93.1}Detailed Description}{398}{subsection.6.93.1}
+\contentsline {subsection}{\numberline {6.93.2}Define Documentation}{398}{subsection.6.93.2}
+\contentsline {subsubsection}{\numberline {6.93.2.1}BUS\_\discretionary {-}{}{}ACK\_\discretionary {-}{}{}WRAPAROUND\_\discretionary {-}{}{}LIMIT}{398}{subsubsection.6.93.2.1}
+\contentsline {subsubsection}{\numberline {6.93.2.2}BUS\_\discretionary {-}{}{}BROADCAST\_\discretionary {-}{}{}ADDR}{398}{subsubsection.6.93.2.2}
+\contentsline {subsubsection}{\numberline {6.93.2.3}BUS\_\discretionary {-}{}{}DEVICE\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}MESSAGE\_\discretionary {-}{}{}INTERVAL}{398}{subsubsection.6.93.2.3}
+\contentsline {subsubsection}{\numberline {6.93.2.4}BUS\_\discretionary {-}{}{}MASTER\_\discretionary {-}{}{}SYNC\_\discretionary {-}{}{}INTERVAL}{398}{subsubsection.6.93.2.4}
+\contentsline {subsubsection}{\numberline {6.93.2.5}BUS\_\discretionary {-}{}{}MAX\_\discretionary {-}{}{}RESENDS}{398}{subsubsection.6.93.2.5}
+\contentsline {subsubsection}{\numberline {6.93.2.6}BUS\_\discretionary {-}{}{}MESSAGE\_\discretionary {-}{}{}FLAGS\_\discretionary {-}{}{}NEED\_\discretionary {-}{}{}ACK}{398}{subsubsection.6.93.2.6}
+\contentsline {subsubsection}{\numberline {6.93.2.7}BUS\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}ACK}{399}{subsubsection.6.93.2.7}
+\contentsline {subsubsection}{\numberline {6.93.2.8}BUS\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}NACK}{399}{subsubsection.6.93.2.8}
+\contentsline {subsubsection}{\numberline {6.93.2.9}BUS\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}POSTAMBLE}{399}{subsubsection.6.93.2.9}
+\contentsline {subsubsection}{\numberline {6.93.2.10}BUS\_\discretionary {-}{}{}MSG\_\discretionary {-}{}{}PREAMBLE}{399}{subsubsection.6.93.2.10}
+\contentsline {subsubsection}{\numberline {6.93.2.11}BUS\_\discretionary {-}{}{}SLOT\_\discretionary {-}{}{}DEAD\_\discretionary {-}{}{}TIME}{399}{subsubsection.6.93.2.11}
+\contentsline {subsubsection}{\numberline {6.93.2.12}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}ALLOWED\_\discretionary {-}{}{}TO\_\discretionary {-}{}{}SEND\_\discretionary {-}{}{}BIT}{399}{subsubsection.6.93.2.12}
+\contentsline {subsubsection}{\numberline {6.93.2.13}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}DEVICE\_\discretionary {-}{}{}IS\_\discretionary {-}{}{}MASTER\_\discretionary {-}{}{}BIT}{399}{subsubsection.6.93.2.13}
+\contentsline {subsubsection}{\numberline {6.93.2.14}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}FORCE\_\discretionary {-}{}{}SYNC}{400}{subsubsection.6.93.2.14}
+\contentsline {subsubsection}{\numberline {6.93.2.15}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}MASTER\_\discretionary {-}{}{}SENT\_\discretionary {-}{}{}SYNC\_\discretionary {-}{}{}BIT}{400}{subsubsection.6.93.2.15}
+\contentsline {subsubsection}{\numberline {6.93.2.16}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}MESSAGE\_\discretionary {-}{}{}ACK\_\discretionary {-}{}{}TIMEOUT}{400}{subsubsection.6.93.2.16}
+\contentsline {subsubsection}{\numberline {6.93.2.17}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}PREAMBLE\_\discretionary {-}{}{}FOUND\_\discretionary {-}{}{}BIT}{400}{subsubsection.6.93.2.17}
+\contentsline {subsubsection}{\numberline {6.93.2.18}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}RECEIVE\_\discretionary {-}{}{}ON}{400}{subsubsection.6.93.2.18}
+\contentsline {subsubsection}{\numberline {6.93.2.19}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}SEND\_\discretionary {-}{}{}ACTIVE}{400}{subsubsection.6.93.2.19}
+\contentsline {subsubsection}{\numberline {6.93.2.20}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}SEND\_\discretionary {-}{}{}MESSAGE}{400}{subsubsection.6.93.2.20}
+\contentsline {subsubsection}{\numberline {6.93.2.21}BUS\_\discretionary {-}{}{}STATUS\_\discretionary {-}{}{}TIME\_\discretionary {-}{}{}SLOT\_\discretionary {-}{}{}ACTIVE}{401}{subsubsection.6.93.2.21}
+\contentsline {subsubsection}{\numberline {6.93.2.22}BUS\_\discretionary {-}{}{}SYNC\_\discretionary {-}{}{}TIMEOUT\_\discretionary {-}{}{}LIMIT}{401}{subsubsection.6.93.2.22}
+\contentsline {subsubsection}{\numberline {6.93.2.23}BUS\_\discretionary {-}{}{}TIME\_\discretionary {-}{}{}FRAME\_\discretionary {-}{}{}LIMIT}{401}{subsubsection.6.93.2.23}
+\contentsline {subsubsection}{\numberline {6.93.2.24}BUS\_\discretionary {-}{}{}TIME\_\discretionary {-}{}{}INTERRUPT\_\discretionary {-}{}{}INTERVAL}{401}{subsubsection.6.93.2.24}
+\contentsline {subsubsection}{\numberline {6.93.2.25}BUS\_\discretionary {-}{}{}TIME\_\discretionary {-}{}{}MULTIPLIER}{401}{subsubsection.6.93.2.25}
+\contentsline {subsubsection}{\numberline {6.93.2.26}BUS\_\discretionary {-}{}{}TIMEOUT\_\discretionary {-}{}{}LIMIT}{401}{subsubsection.6.93.2.26}
+\contentsline {subsubsection}{\numberline {6.93.2.27}DEF\_\discretionary {-}{}{}NR\_\discretionary {-}{}{}DEVICES}{401}{subsubsection.6.93.2.27}
+\contentsline {subsection}{\numberline {6.93.3}Function Documentation}{402}{subsection.6.93.3}
+\contentsline {subsubsection}{\numberline {6.93.3.1}bus\_\discretionary {-}{}{}add\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}message}{402}{subsubsection.6.93.3.1}
+\contentsline {subsubsection}{\numberline {6.93.3.2}bus\_\discretionary {-}{}{}add\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}message}{402}{subsubsection.6.93.3.2}
+\contentsline {subsubsection}{\numberline {6.93.3.3}bus\_\discretionary {-}{}{}allowed\_\discretionary {-}{}{}to\_\discretionary {-}{}{}send}{403}{subsubsection.6.93.3.3}
+\contentsline {subsubsection}{\numberline {6.93.3.4}bus\_\discretionary {-}{}{}get\_\discretionary {-}{}{}address}{403}{subsubsection.6.93.3.4}
+\contentsline {subsubsection}{\numberline {6.93.3.5}bus\_\discretionary {-}{}{}get\_\discretionary {-}{}{}device\_\discretionary {-}{}{}count}{403}{subsubsection.6.93.3.5}
+\contentsline {subsubsection}{\numberline {6.93.3.6}bus\_\discretionary {-}{}{}is\_\discretionary {-}{}{}master}{403}{subsubsection.6.93.3.6}
+\contentsline {subsubsection}{\numberline {6.93.3.7}bus\_\discretionary {-}{}{}message\_\discretionary {-}{}{}nacked}{404}{subsubsection.6.93.3.7}
+\contentsline {subsubsection}{\numberline {6.93.3.8}bus\_\discretionary {-}{}{}send\_\discretionary {-}{}{}nack}{404}{subsubsection.6.93.3.8}
+\contentsline {subsubsection}{\numberline {6.93.3.9}bus\_\discretionary {-}{}{}set\_\discretionary {-}{}{}address}{404}{subsubsection.6.93.3.9}
+\contentsline {subsubsection}{\numberline {6.93.3.10}bus\_\discretionary {-}{}{}set\_\discretionary {-}{}{}device\_\discretionary {-}{}{}count}{404}{subsubsection.6.93.3.10}
+\contentsline {subsubsection}{\numberline {6.93.3.11}bus\_\discretionary {-}{}{}set\_\discretionary {-}{}{}is\_\discretionary {-}{}{}master}{405}{subsubsection.6.93.3.11}
+\contentsline {section}{\numberline {6.94}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}commands.h File Reference}{406}{section.6.94}
+\contentsline {subsection}{\numberline {6.94.1}Detailed Description}{407}{subsection.6.94.1}
+\contentsline {subsection}{\numberline {6.94.2}Define Documentation}{407}{subsection.6.94.2}
+\contentsline {subsubsection}{\numberline {6.94.2.1}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ACK}{407}{subsubsection.6.94.2.1}
+\contentsline {subsubsection}{\numberline {6.94.2.2}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}OUTPUT}{407}{subsubsection.6.94.2.2}
+\contentsline {subsubsection}{\numberline {6.94.2.3}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}BAND\_\discretionary {-}{}{}OUTPUT}{407}{subsubsection.6.94.2.3}
+\contentsline {subsubsection}{\numberline {6.94.2.4}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}COMBO}{408}{subsubsection.6.94.2.4}
+\contentsline {subsubsection}{\numberline {6.94.2.5}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}OUTPUT}{408}{subsubsection.6.94.2.5}
+\contentsline {subsubsection}{\numberline {6.94.2.6}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}BAND\_\discretionary {-}{}{}OUTPUT}{408}{subsubsection.6.94.2.6}
+\contentsline {subsubsection}{\numberline {6.94.2.7}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT1\_\discretionary {-}{}{}OUTPUT}{408}{subsubsection.6.94.2.7}
+\contentsline {subsubsection}{\numberline {6.94.2.8}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT2\_\discretionary {-}{}{}OUTPUT}{408}{subsubsection.6.94.2.8}
+\contentsline {subsubsection}{\numberline {6.94.2.9}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT3\_\discretionary {-}{}{}OUTPUT}{408}{subsubsection.6.94.2.9}
+\contentsline {subsubsection}{\numberline {6.94.2.10}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT4\_\discretionary {-}{}{}OUTPUT}{408}{subsubsection.6.94.2.10}
+\contentsline {subsubsection}{\numberline {6.94.2.11}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}TX\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}COMBO}{409}{subsubsection.6.94.2.11}
+\contentsline {subsubsection}{\numberline {6.94.2.12}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}ACTIVATE\_\discretionary {-}{}{}TXRX\_\discretionary {-}{}{}MODE}{409}{subsubsection.6.94.2.12}
+\contentsline {subsubsection}{\numberline {6.94.2.13}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}OUTPUTS}{409}{subsubsection.6.94.2.13}
+\contentsline {subsubsection}{\numberline {6.94.2.14}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}BAND\_\discretionary {-}{}{}OUTPUTS}{409}{subsubsection.6.94.2.14}
+\contentsline {subsubsection}{\numberline {6.94.2.15}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}OUTPUTS}{409}{subsubsection.6.94.2.15}
+\contentsline {subsubsection}{\numberline {6.94.2.16}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}ANTENNA\_\discretionary {-}{}{}OUTPUTS}{409}{subsubsection.6.94.2.16}
+\contentsline {subsubsection}{\numberline {6.94.2.17}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}BAND\_\discretionary {-}{}{}OUTPUTS}{410}{subsubsection.6.94.2.17}
+\contentsline {subsubsection}{\numberline {6.94.2.18}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT1\_\discretionary {-}{}{}OUTPUTS}{410}{subsubsection.6.94.2.18}
+\contentsline {subsubsection}{\numberline {6.94.2.19}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT2\_\discretionary {-}{}{}OUTPUTS}{410}{subsubsection.6.94.2.19}
+\contentsline {subsubsection}{\numberline {6.94.2.20}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT3\_\discretionary {-}{}{}OUTPUTS}{410}{subsubsection.6.94.2.20}
+\contentsline {subsubsection}{\numberline {6.94.2.21}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ALL\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT4\_\discretionary {-}{}{}OUTPUTS}{410}{subsubsection.6.94.2.21}
+\contentsline {subsubsection}{\numberline {6.94.2.22}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}OUTPUT}{410}{subsubsection.6.94.2.22}
+\contentsline {subsubsection}{\numberline {6.94.2.23}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}BAND\_\discretionary {-}{}{}OUTPUT}{411}{subsubsection.6.94.2.23}
+\contentsline {subsubsection}{\numberline {6.94.2.24}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}COMBO}{411}{subsubsection.6.94.2.24}
+\contentsline {subsubsection}{\numberline {6.94.2.25}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}OUTPUT}{411}{subsubsection.6.94.2.25}
+\contentsline {subsubsection}{\numberline {6.94.2.26}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}RX\_\discretionary {-}{}{}BAND\_\discretionary {-}{}{}OUTPUT}{411}{subsubsection.6.94.2.26}
+\contentsline {subsubsection}{\numberline {6.94.2.27}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT1\_\discretionary {-}{}{}OUTPUT}{411}{subsubsection.6.94.2.27}
+\contentsline {subsubsection}{\numberline {6.94.2.28}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT2\_\discretionary {-}{}{}OUTPUT}{411}{subsubsection.6.94.2.28}
+\contentsline {subsubsection}{\numberline {6.94.2.29}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT3\_\discretionary {-}{}{}OUTPUT}{411}{subsubsection.6.94.2.29}
+\contentsline {subsubsection}{\numberline {6.94.2.30}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}SUBMENU\_\discretionary {-}{}{}ANT4\_\discretionary {-}{}{}OUTPUT}{412}{subsubsection.6.94.2.30}
+\contentsline {subsubsection}{\numberline {6.94.2.31}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}TX\_\discretionary {-}{}{}ANT\_\discretionary {-}{}{}COMBO}{412}{subsubsection.6.94.2.31}
+\contentsline {subsubsection}{\numberline {6.94.2.32}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}DEACTIVATE\_\discretionary {-}{}{}TXRX\_\discretionary {-}{}{}MODE}{412}{subsubsection.6.94.2.32}
+\contentsline {subsubsection}{\numberline {6.94.2.33}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}DRIVER\_\discretionary {-}{}{}GET\_\discretionary {-}{}{}STATUS}{412}{subsubsection.6.94.2.33}
+\contentsline {subsubsection}{\numberline {6.94.2.34}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}GET\_\discretionary {-}{}{}TEMPERATURE}{412}{subsubsection.6.94.2.34}
+\contentsline {subsubsection}{\numberline {6.94.2.35}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}NACK}{412}{subsubsection.6.94.2.35}
+\contentsline {subsubsection}{\numberline {6.94.2.36}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}PING}{412}{subsubsection.6.94.2.36}
+\contentsline {subsubsection}{\numberline {6.94.2.37}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}POWERMETER\_\discretionary {-}{}{}CALIBRATE}{413}{subsubsection.6.94.2.37}
+\contentsline {subsubsection}{\numberline {6.94.2.38}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}POWERMETER\_\discretionary {-}{}{}STATUS}{413}{subsubsection.6.94.2.38}
+\contentsline {subsubsection}{\numberline {6.94.2.39}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ROTATOR\_\discretionary {-}{}{}GET\_\discretionary {-}{}{}ANGLE}{413}{subsubsection.6.94.2.39}
+\contentsline {subsubsection}{\numberline {6.94.2.40}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ROTATOR\_\discretionary {-}{}{}GET\_\discretionary {-}{}{}STATUS}{413}{subsubsection.6.94.2.40}
+\contentsline {subsubsection}{\numberline {6.94.2.41}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ROTATOR\_\discretionary {-}{}{}ROTATE\_\discretionary {-}{}{}CCW}{413}{subsubsection.6.94.2.41}
+\contentsline {subsubsection}{\numberline {6.94.2.42}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ROTATOR\_\discretionary {-}{}{}ROTATE\_\discretionary {-}{}{}CW}{413}{subsubsection.6.94.2.42}
+\contentsline {subsubsection}{\numberline {6.94.2.43}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ROTATOR\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}ANGLE}{413}{subsubsection.6.94.2.43}
+\contentsline {subsubsection}{\numberline {6.94.2.44}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}ROTATOR\_\discretionary {-}{}{}STOP}{413}{subsubsection.6.94.2.44}
+\contentsline {subsubsection}{\numberline {6.94.2.45}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}PTT\_\discretionary {-}{}{}SETTINGS}{413}{subsubsection.6.94.2.45}
+\contentsline {subsubsection}{\numberline {6.94.2.46}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}SYNC}{414}{subsubsection.6.94.2.46}
+\contentsline {subsubsection}{\numberline {6.94.2.47}BUS\_\discretionary {-}{}{}CMD\_\discretionary {-}{}{}TRANSPARENT}{414}{subsubsection.6.94.2.47}
+\contentsline {section}{\numberline {6.95}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}ping.c File Reference}{415}{section.6.95}
+\contentsline {subsection}{\numberline {6.95.1}Detailed Description}{415}{subsection.6.95.1}
+\contentsline {subsection}{\numberline {6.95.2}Function Documentation}{416}{subsection.6.95.2}
+\contentsline {subsubsection}{\numberline {6.95.2.1}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}get\_\discretionary {-}{}{}failed\_\discretionary {-}{}{}count}{416}{subsubsection.6.95.2.1}
+\contentsline {subsubsection}{\numberline {6.95.2.2}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}get\_\discretionary {-}{}{}failed\_\discretionary {-}{}{}ping}{416}{subsubsection.6.95.2.2}
+\contentsline {subsubsection}{\numberline {6.95.2.3}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}data}{416}{subsubsection.6.95.2.3}
+\contentsline {subsubsection}{\numberline {6.95.2.4}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}new\_\discretionary {-}{}{}stamp}{417}{subsubsection.6.95.2.4}
+\contentsline {section}{\numberline {6.96}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}ping.h File Reference}{418}{section.6.96}
+\contentsline {subsection}{\numberline {6.96.1}Detailed Description}{418}{subsection.6.96.1}
+\contentsline {subsection}{\numberline {6.96.2}Function Documentation}{419}{subsection.6.96.2}
+\contentsline {subsubsection}{\numberline {6.96.2.1}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}get\_\discretionary {-}{}{}failed\_\discretionary {-}{}{}count}{419}{subsubsection.6.96.2.1}
+\contentsline {subsubsection}{\numberline {6.96.2.2}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}get\_\discretionary {-}{}{}failed\_\discretionary {-}{}{}ping}{419}{subsubsection.6.96.2.2}
+\contentsline {subsubsection}{\numberline {6.96.2.3}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}get\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}data}{419}{subsubsection.6.96.2.3}
+\contentsline {subsubsection}{\numberline {6.96.2.4}bus\_\discretionary {-}{}{}ping\_\discretionary {-}{}{}new\_\discretionary {-}{}{}stamp}{420}{subsubsection.6.96.2.4}
+\contentsline {section}{\numberline {6.97}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue.c File Reference}{421}{section.6.97}
+\contentsline {subsection}{\numberline {6.97.1}Detailed Description}{421}{subsection.6.97.1}
+\contentsline {subsection}{\numberline {6.97.2}Function Documentation}{422}{subsection.6.97.2}
+\contentsline {subsubsection}{\numberline {6.97.2.1}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{422}{subsubsection.6.97.2.1}
+\contentsline {subsubsection}{\numberline {6.97.2.2}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{422}{subsubsection.6.97.2.2}
+\contentsline {subsubsection}{\numberline {6.97.2.3}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{422}{subsubsection.6.97.2.3}
+\contentsline {subsubsection}{\numberline {6.97.2.4}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{422}{subsubsection.6.97.2.4}
+\contentsline {subsubsection}{\numberline {6.97.2.5}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{423}{subsubsection.6.97.2.5}
+\contentsline {subsubsection}{\numberline {6.97.2.6}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}size}{423}{subsubsection.6.97.2.6}
+\contentsline {section}{\numberline {6.98}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}rx\_\discretionary {-}{}{}queue.h File Reference}{424}{section.6.98}
+\contentsline {subsection}{\numberline {6.98.1}Detailed Description}{424}{subsection.6.98.1}
+\contentsline {subsection}{\numberline {6.98.2}Function Documentation}{424}{subsection.6.98.2}
+\contentsline {subsubsection}{\numberline {6.98.2.1}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{424}{subsubsection.6.98.2.1}
+\contentsline {subsubsection}{\numberline {6.98.2.2}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{425}{subsubsection.6.98.2.2}
+\contentsline {subsubsection}{\numberline {6.98.2.3}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{425}{subsubsection.6.98.2.3}
+\contentsline {subsubsection}{\numberline {6.98.2.4}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{425}{subsubsection.6.98.2.4}
+\contentsline {subsubsection}{\numberline {6.98.2.5}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{425}{subsubsection.6.98.2.5}
+\contentsline {subsubsection}{\numberline {6.98.2.6}rx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}size}{426}{subsubsection.6.98.2.6}
+\contentsline {section}{\numberline {6.99}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue.c File Reference}{427}{section.6.99}
+\contentsline {subsection}{\numberline {6.99.1}Detailed Description}{427}{subsection.6.99.1}
+\contentsline {subsection}{\numberline {6.99.2}Function Documentation}{428}{subsection.6.99.2}
+\contentsline {subsubsection}{\numberline {6.99.2.1}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{428}{subsubsection.6.99.2.1}
+\contentsline {subsubsection}{\numberline {6.99.2.2}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{428}{subsubsection.6.99.2.2}
+\contentsline {subsubsection}{\numberline {6.99.2.3}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{428}{subsubsection.6.99.2.3}
+\contentsline {subsubsection}{\numberline {6.99.2.4}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{428}{subsubsection.6.99.2.4}
+\contentsline {subsubsection}{\numberline {6.99.2.5}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{429}{subsubsection.6.99.2.5}
+\contentsline {subsubsection}{\numberline {6.99.2.6}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}size}{429}{subsubsection.6.99.2.6}
+\contentsline {section}{\numberline {6.100}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}tx\_\discretionary {-}{}{}queue.h File Reference}{430}{section.6.100}
+\contentsline {subsection}{\numberline {6.100.1}Detailed Description}{430}{subsection.6.100.1}
+\contentsline {subsection}{\numberline {6.100.2}Function Documentation}{430}{subsection.6.100.2}
+\contentsline {subsubsection}{\numberline {6.100.2.1}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}add}{430}{subsubsection.6.100.2.1}
+\contentsline {subsubsection}{\numberline {6.100.2.2}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}drop}{431}{subsubsection.6.100.2.2}
+\contentsline {subsubsection}{\numberline {6.100.2.3}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}dropall}{431}{subsubsection.6.100.2.3}
+\contentsline {subsubsection}{\numberline {6.100.2.4}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}get}{431}{subsubsection.6.100.2.4}
+\contentsline {subsubsection}{\numberline {6.100.2.5}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}is\_\discretionary {-}{}{}empty}{431}{subsubsection.6.100.2.5}
+\contentsline {subsubsection}{\numberline {6.100.2.6}tx\_\discretionary {-}{}{}queue\_\discretionary {-}{}{}size}{432}{subsubsection.6.100.2.6}
+\contentsline {section}{\numberline {6.101}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}usart.c File Reference}{433}{section.6.101}
+\contentsline {subsection}{\numberline {6.101.1}Detailed Description}{433}{subsection.6.101.1}
+\contentsline {subsection}{\numberline {6.101.2}Function Documentation}{434}{subsection.6.101.2}
+\contentsline {subsubsection}{\numberline {6.101.2.1}bus\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}receive}{434}{subsubsection.6.101.2.1}
+\contentsline {subsubsection}{\numberline {6.101.2.2}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}init}{434}{subsubsection.6.101.2.2}
+\contentsline {subsubsection}{\numberline {6.101.2.3}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}receive}{434}{subsubsection.6.101.2.3}
+\contentsline {subsubsection}{\numberline {6.101.2.4}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{434}{subsubsection.6.101.2.4}
+\contentsline {subsubsection}{\numberline {6.101.2.5}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}sendstring}{435}{subsubsection.6.101.2.5}
+\contentsline {subsubsection}{\numberline {6.101.2.6}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}transmit}{435}{subsubsection.6.101.2.6}
+\contentsline {section}{\numberline {6.102}wmv\_\discretionary {-}{}{}bus/bus\_\discretionary {-}{}{}usart.h File Reference}{436}{section.6.102}
+\contentsline {subsection}{\numberline {6.102.1}Detailed Description}{436}{subsection.6.102.1}
+\contentsline {subsection}{\numberline {6.102.2}Function Documentation}{437}{subsection.6.102.2}
+\contentsline {subsubsection}{\numberline {6.102.2.1}bus\_\discretionary {-}{}{}poll\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}receive}{437}{subsubsection.6.102.2.1}
+\contentsline {subsubsection}{\numberline {6.102.2.2}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}init}{437}{subsubsection.6.102.2.2}
+\contentsline {subsubsection}{\numberline {6.102.2.3}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}receive}{437}{subsubsection.6.102.2.3}
+\contentsline {subsubsection}{\numberline {6.102.2.4}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}receive\_\discretionary {-}{}{}loopback}{437}{subsubsection.6.102.2.4}
+\contentsline {subsubsection}{\numberline {6.102.2.5}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}sendstring}{438}{subsubsection.6.102.2.5}
+\contentsline {subsubsection}{\numberline {6.102.2.6}bus\_\discretionary {-}{}{}usart\_\discretionary {-}{}{}transmit}{438}{subsubsection.6.102.2.6}
