@@ -57,8 +57,15 @@ void bus_handler_poll(void);
 /**
  * \brief Send an ASCII message on the bus
  * \param to_addr The address to send the message to
+ * \param str     The string to send
+ */
+void send_ascii_data(unsigned char to_addr, const char *str);
+
+/**
+ * \brief Send a formatted ASCII message on the bus
+ * \param to_addr The address to send the message to
  * \param fmt     A formatted string with arguments, if any. Just like printf.
  */
-void send_ascii_data(unsigned char to_addr, const char *fmt, ...);
+void send_ascii_dataf(unsigned char to_addr, const char *fmt, ...);
 
 #endif
