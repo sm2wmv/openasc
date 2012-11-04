@@ -73,8 +73,6 @@ unsigned char device_online = 0;
 //! Ping list, so we dont need to make space in the memory for it each time
 static bus_struct_ping_status main_ping_list;
 
-//! Counter which counts up each time a compare0 interrupt has occured
-static unsigned int counter_compare0 = 0;
 //! Counter which is used to keep track of when we last received a sync message from the bus
 static unsigned int counter_sync = 32000;
 //! Counter which keeps track of when we should poll the buttons
@@ -715,7 +713,7 @@ int main(void){
 		//For example this is used when the box is about to shut down
 		if (device_online == 1) {
 			if (runtime_settings.band_change_mode != BAND_CHANGE_MODE_MANUAL) {
-				if ((counter_compare0 % (radio_interface_get_poll_interval()*10)) == 0) {
+				if ((counter_ms % (radio_interface_get_poll_interval()*10)) == 0) {
 					if (radio_get_current_band() != status.selected_band) {
 						if (main_band_change_ok(radio_get_current_band()) == 1) {
 							main_set_new_band(radio_get_current_band());
@@ -862,7 +860,7 @@ int main(void){
     if (ethernet_get_chip_enabled())
       ethernet_process();
 
-    if ((counter_compare0 % DISPLAY_HANDLER_TICK_INTERVAL) == 0) {
+    if ((counter_ms % DISPLAY_HANDLER_TICK_INTERVAL) == 0) {
       display_handler_tick();
     }
 

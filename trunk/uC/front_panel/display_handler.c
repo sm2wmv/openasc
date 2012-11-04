@@ -700,7 +700,7 @@ void display_handler_tick(void) {
     
     if (display_handler_status.counter_powermeter_update_bargraph >= powermeter_get_bargraph_update_rate()) {
       display_handler_show_powermeter_bargraph(powermeter_get_fwd_power()*display_handler_status.powermeter_fwd_scale_val, powermeter_get_ref_power()*display_handler_status.powermeter_ref_scale_val);
-      
+
       glcd_update_all();
       
       display_handler_status.counter_powermeter_update_bargraph = 0;

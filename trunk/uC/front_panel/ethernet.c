@@ -282,16 +282,13 @@ void ethernet_init(void) {
   #endif
  
   #ifdef ETHERNET_DEBUG_ENABLED
-    printf("ETH >> Created TCP socket on port %i\n",settings->ethernet_port);
+    printf("ETH >> Created TCP socket on port %u\n",settings->ethernet_port);
   #endif
 
   ethernet_chip_enabled = 1;
 }
 
 void ethernet_close(uint8_t sock) {
-  if (sock != 0) 
-    return;
-
   // Send Close Command
   ethernet_spi_write(S0_CR,CR_CLOSE);
   // Waiting until the S0_CR is clear
@@ -299,13 +296,14 @@ void ethernet_close(uint8_t sock) {
 }
 
 void ethernet_disconnect(uint8_t sock) {
-   if (sock != 0) 
-     return;
-   
-   // Send Disconnect Command
-   ethernet_spi_write(S0_CR,CR_DISCON);
-   // Wait for Disconecting Process
-   while(ethernet_spi_read(S0_CR));
+  #ifdef ETHERNET_DEBUG_ENABLED
+    printf("ETH >> Trying to disconnect socket %i\r\n",sock);
+  #endif
+
+  // Send Disconnect Command
+  ethernet_spi_write(S0_CR,CR_DISCON);
+  // Wait for Disconecting Process
+  while(ethernet_spi_read(S0_CR));
 }
 
 unsigned char ethernet_socket(unsigned char sock, unsigned char protocol, unsigned int tcp_port) {
@@ -331,6 +329,8 @@ unsigned char ethernet_socket(unsigned char sock, unsigned char protocol, unsign
   else
     ethernet_close(sock);
 
+  sockreg = sock;
+  
   return retval;
 }
 
@@ -338,6 +338,8 @@ unsigned char ethernet_listen(unsigned char sock) {
   uint8_t retval = 0;
   if (sock != 0) 
     return retval;
+  
+  sockreg = sock;
   
   if (ethernet_spi_read(S0_SR) == SOCK_INIT) {
     // Send the LISTEN Command
@@ -535,6 +537,7 @@ void ethernet_process(void) {
             printf("ETH >> SOCK LISTEN SUCCESS\n");
           #endif
         }
+        
         #ifdef ETHERNET_DEBUG_ENABLED
           if (last_sockstat != sockstat)
             printf("ETH >> Socket CLOSED\n");
@@ -596,35 +599,40 @@ void ethernet_process(void) {
         if (last_sockstat != sockstat)
           printf("ETH >> Socket LAST ACK\n");
       #endif
-      ethernet_disconnect(sockreg);
+      //ethernet_disconnect(sockreg);
+      ethernet_close(sockreg);
       break;
     case SOCK_FIN_WAIT:
       #ifdef ETHERNET_DEBUG_ENABLED
         if (last_sockstat != sockstat)
           printf("ETH >> Socket SOCK_FIN_WAIT\n");
       #endif
-      ethernet_disconnect(sockreg);
+      //ethernet_disconnect(sockreg);
+      ethernet_close(sockreg);
       break;
     case SOCK_CLOSING:
       #ifdef ETHERNET_DEBUG_ENABLED
         if (last_sockstat != sockstat)
           printf("ETH >> Socket SOCK_CLOSING\n");
       #endif
-      ethernet_disconnect(sockreg);
+      //ethernet_disconnect(sockreg);
+      ethernet_close(sockreg);
       break;
     case SOCK_TIME_WAIT:
       #ifdef ETHERNET_DEBUG_ENABLED
         if (last_sockstat != sockstat)
           printf("ETH >> Socket SOCK_TIME_WAIT\n");
       #endif
-      ethernet_disconnect(sockreg);
+      //ethernet_disconnect(sockreg);
+      ethernet_close(sockreg);
       break;
     case SOCK_CLOSE_WAIT:
       #ifdef ETHERNET_DEBUG_ENABLED
         if (last_sockstat != sockstat)
           printf("ETH >> Socket SOCK_CLOSE_WAIT\n");
       #endif
-      ethernet_disconnect(sockreg);
+      //ethernet_disconnect(sockreg);
+      ethernet_close(sockreg);
       break;
     default:
       break;
