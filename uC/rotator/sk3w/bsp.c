@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_rotator_control/bsp.h
- *  \ingroup  general_io_group
+/*! \file     rotator/sk3w/bsp.h
+ *  \ingroup  rotator_group
  *  \brief    Board support package for the SK3W rotator controller
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
@@ -47,7 +47,7 @@
 #include <i2c.h>
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_commands.h>
-#include <general_io/eeprom.h>
+#include <misc/eeprom.h>
 
 
 /******************************************************************************
@@ -74,8 +74,6 @@
 #define QF_TICK_INTERVAL    100
 //! The TX interval for the assertion bus messages
 #define ASSERT_TX_INTERVAL  5000
-//! The number of rotators that we can control
-#define ROTATOR_COUNT           QF_MAX_ACTIVE
 //! The interval between each ADC measurement
 #define ADC_INTERVAL            20
 //! Initial value for the CRC calculations

@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_rotator_control/bus_handler.h
- *  \ingroup  general_io_group
+/*! \file     rotator/bus_handler.h
+ *  \ingroup  rotator_group
  *  \brief    Handle bus communications for this application
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16

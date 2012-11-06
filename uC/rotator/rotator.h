@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_rotator_control/rotator.h
- *  \ingroup  general_io_group
+/*! \file     rotator/rotator.h
+ *  \ingroup  rotator_group
  *  \brief    Rotator state machine base
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
@@ -28,9 +28,6 @@
 
 #include "qpn_port.h"
 
-
-//! The number of rotators that we can handle
-#define ROTATOR_COUNT           QF_MAX_ACTIVE
 
 
 /**

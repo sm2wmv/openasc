@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_power_amp_ctrl/config.h
- *  \ingroup  general_io_group
+/*! \file     rotator/config.h
+ *  \ingroup  rotator_group
  *  \brief    Definition of configuration data to store in the EEPROM
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-06

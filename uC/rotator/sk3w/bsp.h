@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_rotator_control/bsp.h
- *  \ingroup  general_io_group
+/*! \file     rotator/sk3w/bsp.h
+ *  \ingroup  rotator_group
  *  \brief    Board support package for the SK3W rotator controller
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
@@ -26,9 +26,15 @@
 #ifndef _BSP_H_
 #define _BSP_H_
 
+#include <stdint.h>
+
 
 //! The maximum size of the last assertion string
 #define LAST_ASSERTION_SIZE 28
+
+
+//! The number of rotators that we can handle
+#define ROTATOR_COUNT 5
 
 
 /**

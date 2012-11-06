@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_rotator_control/rotator.c
- *  \ingroup  general_io_group
+/*! \file     rotator/rotator.c
+ *  \ingroup  rotator_group
  *  \brief    Rotator state machine base
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-06-16
@@ -44,7 +44,7 @@
 #include <global.h>
 #include <delay.h>
 #include <wmv_bus/bus_commands.h>
-#include <general_io/eeprom.h>
+#include <misc/eeprom.h>
 
 
 /******************************************************************************
