@@ -75,7 +75,7 @@
 //! The TX interval for the assertion bus messages
 #define ASSERT_TX_INTERVAL  5000
 //! The interval between each ADC measurement
-#define ADC_INTERVAL            20
+#define ADC_INTERVAL            (HEADING_UPDATE_INTERVAL / ROTATOR_COUNT)
 //! Initial value for the CRC calculations
 #define CRC_INIT        0xffff;
 

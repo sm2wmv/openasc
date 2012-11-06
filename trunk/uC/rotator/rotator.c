@@ -70,6 +70,7 @@
 #define DEBUG_PRINT(str...)     send_ascii_data(0, str);
 //#define DEBUG_PRINT(str...)
 
+#define HEADING_UPDATES_PER_SEC (1000 / HEADING_UPDATE_INTERVAL)
 
 /**
  * Signals (events) for the state machine
@@ -367,7 +368,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
     // Apply IIR filter
   heading = ((heading - me->prev_heading) >> 1) + me->prev_heading;
   
-  int16_t speed = 10 * (heading - me->prev_heading);
+  int16_t speed = HEADING_UPDATES_PER_SEC * (heading - me->prev_heading);
   me->prev_heading = heading;
   me->current_heading = heading;
 
@@ -397,7 +398,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
       /* Check if the rotator is stuck. We require at least one
        * degree per second */
     if (abs(speed) < me->heading_scale) {
-      if (++me->stuck_cnt >= 10) {
+      if (++me->stuck_cnt >= HEADING_UPDATES_PER_SEC) {
         me->stuck_cnt = 0;
         me->error = ROTATOR_ERROR_STUCK;
         me->target_heading = INT16_MAX;
@@ -411,7 +412,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
       
         /* Check if the rotator is turning in the correct direction */
       if (((me->rotate_dir ^ speed) & 0x8000) != 0) {
-        if (++me->wrong_dir_cnt >= 10) {
+        if (++me->wrong_dir_cnt >= HEADING_UPDATES_PER_SEC) {
           me->wrong_dir_cnt = 0;
           me->error = ROTATOR_ERROR_WRONG_DIR;
           me->target_heading = INT16_MAX;
@@ -432,7 +433,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
   if (me->dir_update_counter == 0) {
     rotator_direction_updated(rot_idx,
                               Rotator_adc2deg(me, me->current_heading));
-    me->dir_update_counter = 9;
+    me->dir_update_counter = HEADING_UPDATES_PER_SEC - 1;
   }
   else {
     me->dir_update_counter--;
@@ -571,7 +572,7 @@ static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
   me->target_heading = INT16_MAX;
   me->rotate_dir = 0;
   me->rot_idx = rot_idx;
-  me->dir_update_counter = rot_idx * 2;
+  me->dir_update_counter = rot_idx * (HEADING_UPDATES_PER_SEC / ROTATOR_COUNT);
   me->error = ROTATOR_ERROR_OK;
   me->prev_heading = 0;
   me->wrong_dir_cnt = 0;
