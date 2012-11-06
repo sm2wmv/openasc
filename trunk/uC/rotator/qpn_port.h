@@ -1,6 +1,9 @@
 #ifndef qpn_port_h
 #define qpn_port_h
 
+#include <bsp.h>
+
+
 //! Setup macros for reading data from program memory
 #define Q_ROM                   PROGMEM
 #define Q_ROM_BYTE(rom_var_)    pgm_read_byte_near(&(rom_var_))
@@ -21,7 +24,7 @@
 #define QF_TIMEEVT_CTR_SIZE     2
 
 //! Maximum # active objects--must match EXACTLY the QF_active[] definition
-#define QF_MAX_ACTIVE           5
+#define QF_MAX_ACTIVE           ROTATOR_COUNT
 
 //! Macros for enabling/disabling interrupts
 #define QF_INT_DISABLE()        cli()

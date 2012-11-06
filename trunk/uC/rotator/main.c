@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_rotator_control/main.c
- *  \ingroup  general_io_group
+/*! \file     rotator/main.c
+ *  \ingroup  rotator_group
  *  \brief    Main file of the SK3W rotator control logic
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2010-05-18

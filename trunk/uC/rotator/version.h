@@ -1,5 +1,5 @@
-/*! \file     general_io/sk3w_power_amp_ctrl/bsp.h
- *  \ingroup  general_io_group
+/*! \file     rotator/sk3w/bsp.h
+ *  \ingroup  rotator_group
  *  \brief    Board support package for the SK3W PA controller
  *  \author   Tobias Blomberg, SM0SVX
  *  \date     2012-05-23
