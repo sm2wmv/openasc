@@ -9,20 +9,24 @@
  * bus_ascii_cmd_list, bus_ascii_cmd_cnt, bus_ascii_cmd_prompt and
  * bus_ascii_cmd_help. Example:
  *
+ * //! Command specification for ASCII commands. Points to flash memory.
  * AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
  *   { "help",     0, 0, handle_help_cmd },
  *   { "ver",      0, 0, handle_ver_cmd },
  *   { "reset",    0, 1, handle_reset_cmd },
  *   { "status",   1, 1, handle_status_cmd }
  * };
- * const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(ascii_cmd_list)
+ * //! The number of defined commands
+ * const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(bus_ascii_cmd_list)
  *                                           / sizeof(AsciiCommand);
- * char bus_ascii_cmd_prompt[] = "#> ";
+ * //! Help text for ASCII commands. Points to flash memory.
  * const char bus_ascii_cmd_help[] PROGMEM = 
  *   "help\t\t"                 "Load default setup\n"
- *   "ver\t\t"                  "Load default setup\n"
- *   "reset\t\t"                "Hardware reset\n"
- *   "status\t\t"               "Hardware reset\n"
+ *   "ver\t\t"                  "Print firmware version\n"
+ *   "reset [idx]\t"            "Hardware reset\n"
+ *   "status <idx>\t"           "Print status\n";
+ * //! Command prompt. Points to RAM.
+ * char bus_ascii_cmd_prompt[] = "> ";
  *
  * This will define four commands: help, ver, reset and status. The help and
  * ver commands do not take an argument. The reset command have one optional
