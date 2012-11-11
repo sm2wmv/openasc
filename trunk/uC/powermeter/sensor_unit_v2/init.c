@@ -41,7 +41,7 @@ void init_ports(void) {
 	DDRA = 0x80;
 	PORTA = (1<<3);
 	DDRB = 0x1E;
-	PORTB = 0x00;
+	PORTB = (1<<7) | (1<<6) | (1<<5);
 	DDRC = 0x03;
 	PORTC = 0x00;
 	DDRD = 0x02;
