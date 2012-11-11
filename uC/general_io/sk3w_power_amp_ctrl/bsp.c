@@ -29,6 +29,7 @@
 #include <i2c.h>
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_commands.h>
+#include <wmv_bus/bus_ascii_cmd.h>
 
 #include "qpn_port.h"
 #include "bus_handler.h"
@@ -348,7 +349,7 @@ void Q_onAssert(char const /*Q_ROM */ *const Q_ROM_VAR file, int line) {
                            BUS_BROADCAST_ADDR,
                            0, BUS_CMD_AMPLIFIER_ERROR, sizeof(msg), msg);
       }
-      send_ascii_data(0, "ASSERT[%s:%d]\r\n", filename, line);
+      bus_ascii_cmd_sendf(0, "ASSERT[%s:%d]\n", filename, line);
       counter_qf_tick_interval = 0;
     }
   }

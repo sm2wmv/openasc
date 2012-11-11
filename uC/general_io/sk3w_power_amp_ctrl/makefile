@@ -67,10 +67,10 @@ BASE_ADDRESS = 0
 BUS_RX_QUEUE_SIZE = 10
 
 # The size of the TX queue in buffers
-BUS_TX_QUEUE_SIZE = 20
+BUS_TX_QUEUE_SIZE = 30
 
 # WMW bus sources
-WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c
+WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c bus_ascii_cmd.c
 
 # QP nano state machine sources
 QPN_SRC = qepn.c qfn.c qfn_init.c
