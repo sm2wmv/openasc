@@ -24,6 +24,7 @@ protected:
     void changeEvent(QEvent *e);
 private:
 		Ui::terminalDialog *ui;
+                void appendText(const QString &text);
 public slots:
 	void lineEditCommandReturnPressed();
 	void pushButtonSetAddressClicked();

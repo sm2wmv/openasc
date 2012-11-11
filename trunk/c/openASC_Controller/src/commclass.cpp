@@ -306,7 +306,7 @@ void CommClass::sendMessage(struct_message message) {
   serialPort->write(txArray);
 }
 
-void CommClass::addTXMessage(unsigned char cmd, unsigned char length, char *data) {
+void CommClass::addTXMessage(unsigned char cmd, unsigned char length, const char *data) {
   struct_message message;
 
   message.checksum = 0;
