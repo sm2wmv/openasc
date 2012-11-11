@@ -103,19 +103,16 @@ static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static uint16_t counter_sync = 0;
 //! Counter to keep track of when to send a ping out on the bus
 static uint16_t counter_ping_interval = 0;
-//! Help text for ASCII commands
-static const char ascii_cmd_help[] PROGMEM = 
-  "defaults\t\t"             "Load default setup\n"
-  "reset\t\t"                "Hardware reset\n"
-  "ver\t\t"                  "Print version\n"
-  "calon <idx>\t"            "Enter calibration mode\n"
-  "caloff <idx>\t"           "Exit calibration mode\n"
-  "ccwlim <idx> <deg>\t"     "Set CCW limit\n"
-  "cwlim <idx> <deg>\t"      "Set CW limit\n"
-  "dir <idx>\t\t"            "Print direction\n"
-  "status [clear]\t"         "Print or clear rotator status\n";
+
+
+/******************************************************************************
+ *
+ * Global variables used by the ASCII parser
+ *
+ *****************************************************************************/
+
 //! Command specification for ASCII commands
-static AsciiCommand ascii_cmds[] PROGMEM = {
+AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
   { "help",     0, 0, handle_help_cmd },
   { "ver",      0, 0, handle_ver_cmd },
   { "calon",    1, 1, handle_calon_cmd },
@@ -127,8 +124,22 @@ static AsciiCommand ascii_cmds[] PROGMEM = {
   { "reset",    0, 0, handle_reset_cmd },
   { "status",   0, 1, handle_status_cmd }
 };
+//! The number of defined commands
+const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(bus_ascii_cmd_list)
+                                          / sizeof(AsciiCommand);
 //! ASCII command prompt
-static char ascii_cmd_prompt[4] = "> ";
+char bus_ascii_cmd_prompt[] = "> ";
+//! Help text for ASCII commands
+const char bus_ascii_cmd_help[] PROGMEM = 
+  "defaults\t\t"             "Load default setup\n"
+  "reset\t\t"                "Hardware reset\n"
+  "ver\t\t"                  "Print version\n"
+  "calon <idx>\t"            "Enter calibration mode\n"
+  "caloff <idx>\t"           "Exit calibration mode\n"
+  "ccwlim <idx> <deg>\t"     "Set CCW limit\n"
+  "cwlim <idx> <deg>\t"      "Set CW limit\n"
+  "dir <idx>\t\t"            "Print direction\n"
+  "status [clear]\t"         "Print or clear rotator status\n";
 
 
 /******************************************************************************
@@ -152,8 +163,6 @@ void bus_handler_init() {
     /* Initialize the communication bus */
   bus_init();
   bus_ping_init();
-  bus_ascii_cmd_init(sizeof(ascii_cmds) / sizeof(AsciiCommand), ascii_cmds,
-                     ascii_cmd_help, ascii_cmd_prompt);
 
   if ((BUS_BASE_ADDR + read_ext_addr()) == 0x01) {
     bus_set_is_master(1, DEF_NR_DEVICES);
@@ -299,7 +308,7 @@ static int16_t range_adjust_heading(int16_t heading) {
 
 
 static int8_t handle_help_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  bus_ascii_cmd_send_P(from_addr, ascii_cmd_help);
+  bus_ascii_cmd_send_P(from_addr, bus_ascii_cmd_help);
   return 0;
 }
 
