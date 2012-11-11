@@ -18,13 +18,13 @@ QState Rotator_Idle(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/1) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("Idle: ENTER\r\n");
+            DEBUG_PRINT("Idle: ENTER\n");
             me->rotate_dir = 0;
             return Q_HANDLED();
         }
         /* @(/1/0/13/1) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("Idle: EXIT\r\n");
+            DEBUG_PRINT("Idle: EXIT\n");
             return Q_HANDLED();
         }
         /* @(/1/0/13/1/0) */
@@ -75,13 +75,13 @@ QState Rotator_Calibrate(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/2) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("Calibrate: ENTER\r\n");
+            DEBUG_PRINT("Calibrate: ENTER\n");
             //bsp_rotator_release_break(me->rot_idx);
             return Q_HANDLED();
         }
         /* @(/1/0/13/2) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("Calibrate: EXIT\r\n");
+            DEBUG_PRINT("Calibrate: EXIT\n");
             bsp_rotator_stop(me->rot_idx);
             //bsp_rotator_apply_break(me->rot_idx);
             me->error = 0;
@@ -126,13 +126,13 @@ QState Rotator_BreakReleased(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/3) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("BreakReleased: ENTER\r\n");
+            DEBUG_PRINT("BreakReleased: ENTER\n");
             bsp_rotator_release_break(me->rot_idx);
             return Q_HANDLED();
         }
         /* @(/1/0/13/3) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("BreakReleased: EXIT\r\n");
+            DEBUG_PRINT("BreakReleased: EXIT\n");
             me->rotate_dir = 0;
             bsp_rotator_apply_break(me->rot_idx);
             return Q_HANDLED();
@@ -169,13 +169,13 @@ QState Rotator_StartWait(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/3/5) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("StartWait: ENTER\r\n");
+            DEBUG_PRINT("StartWait: ENTER\n");
             QActive_arm((QActive *)me, 10);
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/5) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("StartWait: EXIT\r\n");
+            DEBUG_PRINT("StartWait: EXIT\n");
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/5/0) */
@@ -194,13 +194,13 @@ QState Rotator_StopWait(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/3/6) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("StopWait: ENTER\r\n");
+            DEBUG_PRINT("StopWait: ENTER\n");
             QActive_arm((QActive *)me, 30);
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/6) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("StopWait: EXIT\r\n");
+            DEBUG_PRINT("StopWait: EXIT\n");
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/6/0) */
@@ -229,13 +229,13 @@ QState Rotator_Running(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/3/7) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("Running: ENTER\r\n");
+            DEBUG_PRINT("Running: ENTER\n");
             Q_REQUIRE(me->rotate_dir != 0);
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/7) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("Running: EXIT\r\n");
+            DEBUG_PRINT("Running: EXIT\n");
             bsp_rotator_stop(me->rot_idx);
             return Q_HANDLED();
         }
@@ -268,13 +268,13 @@ QState Rotator_CCW(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/3/7/3) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("CCW: ENTER\r\n");
+            DEBUG_PRINT("CCW: ENTER\n");
             bsp_rotator_run_ccw(me->rot_idx);
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/7/3) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("CCW: EXIT\r\n");
+            DEBUG_PRINT("CCW: EXIT\n");
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/7/3/0) */
@@ -294,13 +294,13 @@ QState Rotator_CW(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/3/7/4) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("CW: ENTER\r\n");
+            DEBUG_PRINT("CW: ENTER\n");
             bsp_rotator_run_cw(me->rot_idx);
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/7/4) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("CW: EXIT\r\n");
+            DEBUG_PRINT("CW: EXIT\n");
             return Q_HANDLED();
         }
         /* @(/1/0/13/3/7/4/0) */
@@ -320,14 +320,14 @@ QState Rotator_Error(Rotator *me) {
     switch (Q_SIG(me)) {
         /* @(/1/0/13/4) */
         case Q_ENTRY_SIG: {
-            DEBUG_PRINT("Error: ENTER\r\n");
+            DEBUG_PRINT("Error: ENTER\n");
             me->rotate_dir = 0;
             rotator_error(me->rot_idx, me->error);
             return Q_HANDLED();
         }
         /* @(/1/0/13/4) */
         case Q_EXIT_SIG: {
-            DEBUG_PRINT("Error: EXIT\r\n");
+            DEBUG_PRINT("Error: EXIT\n");
             me->rotate_dir = 0;
             me->error = ROTATOR_ERROR_OK;
             rotator_error(me->rot_idx, me->error);

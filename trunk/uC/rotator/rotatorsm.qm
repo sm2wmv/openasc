@@ -22,9 +22,9 @@
      </initial_glyph>
     </initial>
     <state name="Idle">
-     <entry>DEBUG_PRINT(&quot;Idle: ENTER\r\n&quot;);
+     <entry>DEBUG_PRINT(&quot;Idle: ENTER\n&quot;);
 me-&gt;rotate_dir = 0;</entry>
-     <exit>DEBUG_PRINT(&quot;Idle: EXIT\r\n&quot;);</exit>
+     <exit>DEBUG_PRINT(&quot;Idle: EXIT\n&quot;);</exit>
      <tran trig="CAL_ENABLE" target="../../2">
       <tran_glyph conn="8,43,2,0,12">
        <action box="1,1,9,2"/>
@@ -82,9 +82,9 @@ me-&gt;rotate_dir = 0;</entry>
      </state_glyph>
     </state>
     <state name="Calibrate">
-     <entry>DEBUG_PRINT(&quot;Calibrate: ENTER\r\n&quot;);
+     <entry>DEBUG_PRINT(&quot;Calibrate: ENTER\n&quot;);
 //bsp_rotator_release_break(me-&gt;rot_idx);</entry>
-     <exit>DEBUG_PRINT(&quot;Calibrate: EXIT\r\n&quot;);
+     <exit>DEBUG_PRINT(&quot;Calibrate: EXIT\n&quot;);
 bsp_rotator_stop(me-&gt;rot_idx);
 //bsp_rotator_apply_break(me-&gt;rot_idx);
 me-&gt;error = 0;
@@ -131,9 +131,9 @@ eeprom_write_config();</exit>
      </state_glyph>
     </state>
     <state name="BreakReleased">
-     <entry brief="release_break">DEBUG_PRINT(&quot;BreakReleased: ENTER\r\n&quot;);
+     <entry brief="release_break">DEBUG_PRINT(&quot;BreakReleased: ENTER\n&quot;);
 bsp_rotator_release_break(me-&gt;rot_idx);</entry>
-     <exit brief="apply_break">DEBUG_PRINT(&quot;BreakReleased: EXIT\r\n&quot;);
+     <exit brief="apply_break">DEBUG_PRINT(&quot;BreakReleased: EXIT\n&quot;);
 me-&gt;rotate_dir = 0;
 bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
      <initial target="../5">
@@ -166,9 +166,9 @@ bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
       </tran_glyph>
      </tran>
      <state name="StartWait">
-      <entry>DEBUG_PRINT(&quot;StartWait: ENTER\r\n&quot;);
+      <entry>DEBUG_PRINT(&quot;StartWait: ENTER\n&quot;);
 QActive_arm((QActive *)me, 10);</entry>
-      <exit>DEBUG_PRINT(&quot;StartWait: EXIT\r\n&quot;);</exit>
+      <exit>DEBUG_PRINT(&quot;StartWait: EXIT\n&quot;);</exit>
       <tran trig="Q_TIMEOUT" target="../../7">
        <tran_glyph conn="114,26,2,0,5">
         <action box="1,1,8,2"/>
@@ -185,9 +185,9 @@ QActive_arm((QActive *)me, 10);</entry>
       </state_glyph>
      </state>
      <state name="StopWait">
-      <entry>DEBUG_PRINT(&quot;StopWait: ENTER\r\n&quot;);
+      <entry>DEBUG_PRINT(&quot;StopWait: ENTER\n&quot;);
 QActive_arm((QActive *)me, 30);</entry>
-      <exit>DEBUG_PRINT(&quot;StopWait: EXIT\r\n&quot;);</exit>
+      <exit>DEBUG_PRINT(&quot;StopWait: EXIT\n&quot;);</exit>
       <tran trig="Q_TIMEOUT">
        <choice guard="me-&gt;error != ROTATOR_ERROR_OK" target="../../../../4">
         <choice_glyph conn="87,77,5,1,-33">
@@ -219,9 +219,9 @@ QActive_arm((QActive *)me, 30);</entry>
       </state_glyph>
      </state>
      <state name="Running">
-      <entry>DEBUG_PRINT(&quot;Running: ENTER\r\n&quot;);
+      <entry>DEBUG_PRINT(&quot;Running: ENTER\n&quot;);
 Q_REQUIRE(me-&gt;rotate_dir != 0);</entry>
-      <exit>DEBUG_PRINT(&quot;Running: EXIT\r\n&quot;);
+      <exit>DEBUG_PRINT(&quot;Running: EXIT\n&quot;);
 bsp_rotator_stop(me-&gt;rot_idx);</exit>
       <tran trig="Q_INIT">
        <choice guard="else" target="../../3">
@@ -251,9 +251,9 @@ bsp_rotator_stop(me-&gt;rot_idx);</exit>
        </tran_glyph>
       </tran>
       <state name="CCW">
-       <entry>DEBUG_PRINT(&quot;CCW: ENTER\r\n&quot;);
+       <entry>DEBUG_PRINT(&quot;CCW: ENTER\n&quot;);
 bsp_rotator_run_ccw(me-&gt;rot_idx);</entry>
-       <exit>DEBUG_PRINT(&quot;CCW: EXIT\r\n&quot;);</exit>
+       <exit>DEBUG_PRINT(&quot;CCW: EXIT\n&quot;);</exit>
        <tran trig="ROTATE_CCW">
         <tran_glyph conn="90,51,3,-1,16">
          <action box="1,-2,10,2"/>
@@ -271,9 +271,9 @@ bsp_rotator_run_ccw(me-&gt;rot_idx);</entry>
        </state_glyph>
       </state>
       <state name="CW">
-       <entry>DEBUG_PRINT(&quot;CW: ENTER\r\n&quot;);
+       <entry>DEBUG_PRINT(&quot;CW: ENTER\n&quot;);
 bsp_rotator_run_cw(me-&gt;rot_idx);</entry>
-       <exit>DEBUG_PRINT(&quot;CW: EXIT\r\n&quot;);</exit>
+       <exit>DEBUG_PRINT(&quot;CW: EXIT\n&quot;);</exit>
        <tran trig="ROTATE_CW">
         <tran_glyph conn="123,51,3,-1,17">
          <action box="1,-2,9,2"/>
@@ -301,10 +301,10 @@ bsp_rotator_run_cw(me-&gt;rot_idx);</entry>
      </state_glyph>
     </state>
     <state name="Error">
-     <entry>DEBUG_PRINT(&quot;Error: ENTER\r\n&quot;);
+     <entry>DEBUG_PRINT(&quot;Error: ENTER\n&quot;);
 me-&gt;rotate_dir = 0;
 rotator_error(me-&gt;rot_idx, me-&gt;error);</entry>
-     <exit>DEBUG_PRINT(&quot;Error: EXIT\r\n&quot;);
+     <exit>DEBUG_PRINT(&quot;Error: EXIT\n&quot;);
 me-&gt;rotate_dir = 0;
 me-&gt;error = ROTATOR_ERROR_OK;
 rotator_error(me-&gt;rot_idx, me-&gt;error);</exit>

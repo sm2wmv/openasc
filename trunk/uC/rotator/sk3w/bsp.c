@@ -47,6 +47,7 @@
 #include <i2c.h>
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_commands.h>
+#include <wmv_bus/bus_ascii_cmd.h>
 #include <misc/eeprom.h>
 
 
@@ -389,7 +390,7 @@ void Q_onAssert(char const Q_ROM_NOT_GNUC *const Q_ROM_VAR file, int line) {
   write_last_assertion(str);
 
     /* Broadcast an ASCII message to the bus */
-  send_ascii_dataf(0, "ASSERT[%s]\r\n", str);
+  bus_ascii_cmd_sendf(0, "ASSERT[%s]\n", str);
 
     /* Broadcast a rotator error message for each rotator */
   for (int i=0; i<ROTATOR_COUNT; ++i) {
