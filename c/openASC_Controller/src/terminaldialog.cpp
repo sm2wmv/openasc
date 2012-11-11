@@ -1,14 +1,13 @@
 #include "terminaldialog.h"
 #include "ui_terminaldialog.h"
 
-QString strTextEdit;
 int setAddress = 0;
 
 void terminalDialog::lineEditCommandReturnPressed(){
 	if (ui->lineEditCommand->text().length() > 0) {
 		if (setAddress != 0) {
 			ui->textEdit->setTextColor(Qt::darkGreen);
-			ui->textEdit->append("<< " + ui->lineEditCommand->text());
+			appendText(ui->lineEditCommand->text() + "\n");
 
 			if (serial->isOpen()) {
 				if (ui->lineEditCommand->text().length() < 15) {
@@ -17,29 +16,24 @@ void terminalDialog::lineEditCommandReturnPressed(){
 				}
 				else {
 					ui->textEdit->setTextColor(Qt::darkRed);
-					ui->textEdit->append("ERROR: Too long argument");
+					appendText(">> ERROR: Too long argument\n");
 				}
 			}
 		}
 		else {
 			ui->textEdit->setTextColor(Qt::darkRed);
-			ui->textEdit->append("ERROR: No address is set");
+			appendText(">> ERROR: No address is set\n");
 		}
 	}
 }
 
 void terminalDialog::addNewMessage(struct_message message) {
+	QString strTextEdit;
 	for (unsigned char i=0;i<message.length;i++) {
-		if (message.data[i] != 13) {
-			if (message.data[i] != '\n')
-				strTextEdit.append(message.data[i]);
-		}
-		else {
-			ui->textEdit->setTextColor(Qt::black);
-			ui->textEdit->append(">> " + strTextEdit);
-			strTextEdit.clear();
-		}
+		strTextEdit.append(message.data[i]);
 	}
+	ui->textEdit->setTextColor(Qt::black);
+	appendText(strTextEdit);
 }
 
 void terminalDialog::changeEvent(QEvent *e)
@@ -59,12 +53,14 @@ void terminalDialog::pushButtonSetAddressClicked() {
 		serial->addTXMessage(INT_COMM_PC_CONNECT_TO_ADDR,ui->spinBoxAddress->value());
 
 		ui->textEdit->setTextColor(Qt::darkCyan);
-		ui->textEdit->append(">> Connecting to address: " + ui->spinBoxAddress->text());
+		appendText(">> Connecting to address: " + ui->spinBoxAddress->text() + "\n");
 		setAddress = ui->spinBoxAddress->value();
+                  // Send empty command to force the remote to send a prompt
+		serial->addTXMessage(INT_COMM_PC_SEND_TO_ADDR, 0, "");
 	}
 	else {
 		ui->textEdit->setTextColor(Qt::darkRed);
-		ui->textEdit->append("ERROR: Serial device is not open");
+		appendText(">> ERROR: Serial device is not open\n");
 		setAddress = 0;
 	}
 }
@@ -88,9 +84,14 @@ terminalDialog::terminalDialog(QWidget *parent) :
 {
 		ui->setupUi(this);
 
-		strTextEdit.clear();
-
 		connect(ui->lineEditCommand, SIGNAL(returnPressed()), this, SLOT(lineEditCommandReturnPressed()));
 		connect(ui->pushButtonSetAddress, SIGNAL(clicked()), this, SLOT(pushButtonSetAddressClicked()));
 		connect(ui->pushButtonClear, SIGNAL(clicked()), this, SLOT(pushButtonClearClicked()));
 }
+
+void terminalDialog::appendText(const QString &text)
+{
+	ui->textEdit->insertPlainText(text);
+	ui->textEdit->ensureCursorVisible();
+}
+

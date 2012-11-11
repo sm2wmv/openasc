@@ -64,7 +64,7 @@ class CommClass : public QThread {
 		int closePort();
 		void receiveMsg();
     void sendMessage(struct_message message);
-		void addTXMessage(unsigned char cmd, unsigned char length, char *data);
+		void addTXMessage(unsigned char cmd, unsigned char length, const char *data);
 		void addTXMessage(unsigned char cmd, char data);
 		void addTXMessage(unsigned char cmd, unsigned char length, QString data);
 		void addTXMessage(unsigned char cmd, unsigned char length, QByteArray *data);
