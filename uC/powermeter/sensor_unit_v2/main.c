@@ -85,7 +85,7 @@ void __inline__ read_ref_val(void) {
 /*! Read the external configuration jumper settings 
  *  \return The value of the three pins */
 unsigned char read_ext_configuration(void) {
-	return(~(PIND >> 3) & 0x07);
+	return(~(PINB >> 5) & 0x07);
 }
 
 void init_calib_values(void) {
