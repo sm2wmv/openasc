@@ -34,6 +34,7 @@
 #include <stdlib.h>
 
 #include <avr/io.h>
+#include <avr/pgmspace.h> 
 
 
 /******************************************************************************
@@ -68,19 +69,16 @@
  *
  *****************************************************************************/
 
-#define MAX_ASCII_CMD_ARGS      5
+#ifndef ASCII_CMD_MAX_LEN
+#define ASCII_CMD_MAX_LEN 8
+#endif
 
-
-/******************************************************************************
- *
- * Global variable declarations
- *
- *****************************************************************************/
-
-//! Counter to keep track of the time elapsed since the last sync message was sent
-static uint16_t counter_sync = 0;
-//! Counter to keep track of when to send a ping out on the bus
-static uint16_t counter_ping_interval = 0;
+typedef struct {
+  const char    name[ASCII_CMD_MAX_LEN];
+  const uint8_t min_args;
+  const uint8_t max_args;
+  int8_t        (*handler)(uint8_t from_addr, uint8_t argc, char **argv);
+} AsciiCommand;
 
 
 /******************************************************************************
@@ -93,7 +91,52 @@ static int16_t range_adjust_heading(int16_t heading);
 static void parse_ascii_cmd(BUS_MESSAGE *bus_message);
 static void bus_parse_message(BUS_MESSAGE *bus_message);
 static unsigned char read_ext_addr(void);
-static void send_help(uint8_t addr);
+static int8_t handle_help_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_ver_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_calon_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_caloff_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_ccwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_cwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_dir_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_default_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_reset_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+
+
+/******************************************************************************
+ *
+ * Global variable declarations
+ *
+ *****************************************************************************/
+
+//! Counter to keep track of the time elapsed since the last sync message was sent
+static uint16_t counter_sync = 0;
+//! Counter to keep track of when to send a ping out on the bus
+static uint16_t counter_ping_interval = 0;
+//! Help text for ASCII commands
+static const char ascii_cmd_help[] PROGMEM = 
+  "defaults -- Load default setup\r\n"
+  "reset -- Hardware reset\r\n"
+  "ver -- Print version\r\n"
+  "calon <idx> -- Enter calibration mode\r\n"
+  "caloff <idx> -- Exit calibration mode\r\n"
+  "ccwlim <idx> <deg> -- Set CCW limit\r\n"
+  "cwlim <idx> <deg> -- Set CW limit\r\n"
+  "dir <idx> -- Print direction\r\n"
+  "status [clear] -- Print or clear rotator status\r\n";
+//! Command specification for ASCII commands
+static AsciiCommand ascii_cmds[] PROGMEM = {
+  { "help",    0, 0, handle_help_cmd },
+  { "ver",     0, 0, handle_ver_cmd },
+  { "calon",   1, 1, handle_calon_cmd },
+  { "caloff",  1, 1, handle_caloff_cmd },
+  { "ccwlim",  2, 2, handle_ccwlim_cmd },
+  { "cwlim",   2, 2, handle_cwlim_cmd },
+  { "dir",     1, 1, handle_dir_cmd },
+  { "default", 0, 0, handle_default_cmd },
+  { "reset",   0, 0, handle_reset_cmd },
+  { "status",  0, 1, handle_status_cmd }
+};
 
 
 /******************************************************************************
@@ -176,8 +219,56 @@ void bus_handler_poll() {
 }
 
 
-void send_ascii_data(unsigned char to_addr, const char *fmt, ...) {
-  char str[46];
+void send_ascii_data(unsigned char to_addr, const char *str) {
+  unsigned char flags = 0;
+  if (to_addr != BUS_BROADCAST_ADDR) {
+    flags = (1 << BUS_MESSAGE_FLAGS_NEED_ACK);
+  }
+
+  unsigned char len = strlen(str);
+  while (len > 0) {
+    unsigned char len_to_send = len < 15 ? len : 15;
+    bus_add_tx_message(bus_get_address(),
+                       to_addr,
+                       flags,
+                       BUS_CMD_ASCII_DATA,
+                       len_to_send, (unsigned char *)str);
+    len -= len_to_send;
+    str += len_to_send;
+  }
+}
+
+
+void send_ascii_data_P(unsigned char to_addr, PGM_P str) {
+  unsigned char flags = 0;
+  if (to_addr != BUS_BROADCAST_ADDR) {
+    flags = (1 << BUS_MESSAGE_FLAGS_NEED_ACK);
+  }
+
+  uint8_t buf[BUS_MESSAGE_DATA_SIZE];
+  uint8_t len = 0;
+  char ch = 255;
+  while (ch != 0) {
+    ch = pgm_read_byte(str++);
+    buf[len++] = ch;
+    if ((len == 15) || (ch == 0)) {
+      if (ch == 0) {
+        --len;
+      }
+      bus_add_tx_message(bus_get_address(),
+                         to_addr,
+                         flags,
+                         BUS_CMD_ASCII_DATA,
+                         len,
+                         buf);
+      len = 0;
+    }
+  }
+}
+
+
+void send_ascii_dataf(unsigned char to_addr, const char *fmt, ...) {
+  char str[BUS_MESSAGE_DATA_SIZE * 3 + 1];
 
   va_list ap;
   va_start(ap, fmt);
@@ -186,25 +277,9 @@ void send_ascii_data(unsigned char to_addr, const char *fmt, ...) {
 
   if (len >= sizeof(str) - 1) {
     strcpy(str + sizeof(str) - 6, "...\r\n");
-    len = sizeof(str) - 1;
   }
 
-  unsigned char flags = 0;
-  if (to_addr != BUS_BROADCAST_ADDR) {
-    flags = (1 << BUS_MESSAGE_FLAGS_NEED_ACK);
-  }
-
-  char *ptr = str;
-  while (len > 0) {
-    unsigned char len_to_send = len < 15 ? len : 15;
-    bus_add_tx_message(bus_get_address(),
-                       to_addr,
-                       flags,
-                       BUS_CMD_ASCII_DATA,
-                       len_to_send, (unsigned char *)ptr);
-    len -= len_to_send;
-    ptr += len_to_send;
-  }
+  send_ascii_data(to_addr, str);
 }
 
 
@@ -256,12 +331,12 @@ extern void rotator_error(uint8_t rot_idx, RotatorError error) {
     data[2] = error;
     if (error != ROTATOR_ERROR_OK) {
       data[1] = 1;
-      send_ascii_data(0, "ROTATOR #%d ERROR: %s\r\n",
-                      rot_idx, rotator_strerror(error));
+      send_ascii_dataf(0, "ROTATOR #%d ERROR: %s\r\n",
+                       rot_idx, rotator_strerror(error));
     }
     else {
       data[1] = 0;
-      send_ascii_data(0, "ROTATOR #%d ERROR CLEARED\r\n", rot_idx);
+      send_ascii_dataf(0, "ROTATOR #%d ERROR CLEARED\r\n", rot_idx);
     }
     bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
                         BUS_CMD_ROTATOR_ERROR, sizeof(data), data);
@@ -292,6 +367,87 @@ static int16_t range_adjust_heading(int16_t heading) {
 }
 
 
+static int8_t handle_help_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  send_ascii_data_P(from_addr, ascii_cmd_help);
+  return 0;
+}
+
+
+static int8_t handle_ver_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  send_ascii_data(from_addr, "Ver: " VERSION "\r\n");
+  return 0;
+}
+
+
+static int8_t handle_calon_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  return rotator_cal_on(argv[1][0]-'0');
+}
+
+
+static int8_t handle_caloff_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  return rotator_cal_off(argv[1][0]-'0');
+}
+
+
+static int8_t handle_ccwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  return rotator_set_ccw_limit(argv[1][0]-'0', atoi(argv[2]));
+}
+
+
+static int8_t handle_cwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  return rotator_set_cw_limit(argv[1][0]-'0', atoi(argv[2]));
+}
+
+
+static int8_t handle_dir_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  uint8_t rot_idx = argv[1][0]-'0';
+  int16_t dir = rotator_current_heading_raw(rot_idx);
+  int16_t dir_deg = rotator_current_heading(rot_idx);
+  if ((dir == -1) || (dir_deg == -1)) {
+    return -1;
+  }
+  send_ascii_dataf(from_addr, "%d (%d, %.1fV)\r\n",
+                   dir_deg, dir, 5.0f * ((float)dir + 0x4000) / 0x7fe0);
+  return 0;
+}
+
+static int8_t handle_default_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  rotator_set_default_config();
+  return 0;
+}
+
+
+static int8_t handle_reset_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  bsp_failsafe_setup();
+  bsp_reset();
+  send_ascii_data_P(from_addr, PSTR("RESETTING\r\n"));
+  return 0;
+}
+
+
+static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  if (argc > 1) {
+    if (strcmp(argv[1], "clear") == 0) {
+      bsp_last_assertion_clear();
+    }
+    else {
+      return -1;
+    }
+  }
+  for (int8_t i = 0; i < ROTATOR_COUNT; ++i) {
+    send_ascii_dataf(from_addr, "%d: %s\r\n",
+                     i, rotator_strerror(rotator_current_error(i)));
+  }
+  
+  char last_assertion_str[LAST_ASSERTION_SIZE];
+  bsp_last_assertion(last_assertion_str);
+  if (last_assertion_str[0] != 0) {
+    send_ascii_dataf(from_addr, "\r\nASSERT[%s]\r\n", last_assertion_str);
+  }
+  return 0;
+}
+
+
 /**
  * \brief Parse a received ASCII message
  * \param bus_message The received message
@@ -302,145 +458,53 @@ static int16_t range_adjust_heading(int16_t heading) {
  * 15 characters since that is the maximum length for a bus message.
  */
 static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
-  char data[16];
+  char data[BUS_MESSAGE_DATA_SIZE + 1];
   memcpy(data, bus_message->data, bus_message->length);
   data[bus_message->length] = '\0';
 
     /* Get the command and its arguments */
   unsigned char argc = 0;
-  char *argv[MAX_ASCII_CMD_ARGS];
-  argv[0] = NULL;
-  unsigned char pos = 0;
-  for (pos = 0; pos < bus_message->length; ++pos) {
-    if (argv[argc] == NULL) {
-      if (data[pos] != ' ') {
-        argv[argc] = (char *) (data + pos);
+  char *argv[(BUS_MESSAGE_DATA_SIZE + 1) / 2 + 1];
+  memset(argv, 0, sizeof(argv));
+  for (char *ptr = data; *ptr != '\0'; ++ptr) {
+    if (argv[argc] == 0) {
+      if (*ptr != ' ') {
+        argv[argc] = ptr;
       }
     }
     else {
-      if (data[pos] == ' ') {
-        data[pos] = '\0';
-        if (argc >= MAX_ASCII_CMD_ARGS - 1) {
-          break;
-        }
+      if (*ptr == ' ') {
+        *ptr = '\0';
         ++argc;
-        argv[argc] = NULL;
       }
     }
   }
-  if (argv[argc] != NULL) {
+  if (argv[argc] != 0) {
     ++argc;
   }
 
     /* The argc variable now contain the number of parts in the command.
      * The command name is also included in the count. The argv variable
      * contain the command and the arguments. argv[0] is the command name and
-     * argv[1] is the first argument etc.
-     */
-  if (argc > 0) {
-    if (strcmp(argv[0], "help") == 0) {
-      send_help(bus_message->from_addr);
-    }
-    else if (strcmp(argv[0], "ver") == 0) {
-      send_ascii_data(bus_message->from_addr, "Ver: " VERSION "\r\n");
-    }
-    else if (strcmp(argv[0], "calon") == 0) {
-      if (argc != 2) {
-        send_help(bus_message->from_addr);
-        return;
+     * argv[1] is the first argument etc. */
+  if (argc == 0) {
+    return;
+  }
+
+  for (uint8_t cmdno = 0; cmdno < sizeof(ascii_cmds) / sizeof(AsciiCommand);
+       ++cmdno) {
+    if (strncmp_P(argv[0], ascii_cmds[cmdno].name,
+                  sizeof(ascii_cmds[cmdno].name)) == 0) {
+      AsciiCommand cmd;
+      memcpy_P(&cmd, &ascii_cmds[cmdno], sizeof(AsciiCommand));
+      if ((argc < cmd.min_args+1) || (argc > cmd.max_args+1)
+          || (cmd.handler(bus_message->from_addr, argc, argv) == -1)) {
+        send_ascii_data_P(bus_message->from_addr, ascii_cmd_help);
       }
-      if (rotator_cal_on(argv[1][0]-'0') == -1) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-    }
-    else if (strcmp(argv[0], "caloff") == 0) {
-      if (argc != 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      if (rotator_cal_off(argv[1][0]-'0') == -1) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-    }
-    else if (strcmp(argv[0], "ccwlim") == 0) {
-      if (argc != 3) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      if (rotator_set_ccw_limit(argv[1][0]-'0', atoi(argv[2])) == -1) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-    }
-    else if (strcmp(argv[0], "cwlim") == 0) {
-      if (argc != 3) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      if (rotator_set_cw_limit(argv[1][0]-'0', atoi(argv[2])) == -1) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-    }
-    else if (strcmp(argv[0], "dir") == 0) {
-      if (argc != 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      uint8_t rot_idx = argv[1][0]-'0';
-      int16_t dir = rotator_current_heading_raw(rot_idx);
-      int16_t dir_deg = rotator_current_heading(rot_idx);
-      if ((dir == -1) || (dir_deg == -1)) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      send_ascii_data(bus_message->from_addr, "%d (%d, %.1fV)\r\n",
-                      dir_deg, dir, 5.0f * ((float)dir + 0x4000) / 0x7fe0);
-    }
-    else if (strcmp(argv[0], "defaults") == 0) {
-      rotator_set_default_config();
-#if 0
-      send_ascii_data(bus_message->from_addr, "warmup=%d\r\n",
-                      pa_warmup_timeout());
-      send_ascii_data(bus_message->from_addr, "unused=%d\r\n",
-                      pa_unused_timeout());
-      send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
-                      pa_cooldown_timeout());
-#endif
-    }
-    else if (strcmp(argv[0], "reset") == 0) {
-      bsp_failsafe_setup();
-      bsp_reset();
-      send_ascii_data(bus_message->from_addr, "RESETTING\r\n");
-    }
-    else if (strcmp(argv[0], "status") == 0) {
-      if (argc > 1) {
-        if (strcmp(argv[1], "clear") == 0) {
-          bsp_last_assertion_clear();
-        }
-        else {
-          send_help(bus_message->from_addr);
-          return;
-        }
-      }
-      for (int i=0; i<ROTATOR_COUNT; ++i) {
-        send_ascii_data(bus_message->from_addr, "%d: %s\r\n",
-                        i, rotator_strerror(rotator_current_error(i)));
-      }
-      
-      char last_assertion_str[LAST_ASSERTION_SIZE];
-      bsp_last_assertion(last_assertion_str);
-      if (last_assertion_str[0] != 0) {
-        send_ascii_data(bus_message->from_addr, "\r\nASSERT[%s]\r\n",
-                        last_assertion_str);
-      }
-    }
-    else {
-      send_help(bus_message->from_addr);
+      return;
     }
   }
+  send_ascii_data_P(bus_message->from_addr, ascii_cmd_help);
 }
 
 
@@ -520,21 +584,5 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
  */
 static unsigned char read_ext_addr(void) {
   return (~(PINE >> 2) & 0x0F);
-}
-
-
-/**
- * \brief Send a ASCII command help text to the given address
- */
-static void send_help(uint8_t addr) {
-  send_ascii_data(addr, "defaults\r\n"
-                        "reset\r\n"
-                        "ver\r\n"
-                        "calon <idx>\r\n");
-  send_ascii_data(addr, "caloff <idx>\r\n"
-                        "ccwlim <idx> <deg>\r\n");
-  send_ascii_data(addr, "cwlim <idx> <deg>\r\n"
-                        "dir <idx>\r\n");
-  send_ascii_data(addr, "status [clear]\r\n");
 }
 

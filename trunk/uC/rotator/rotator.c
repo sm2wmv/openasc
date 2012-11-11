@@ -67,7 +67,7 @@
 //! The length of each state machines event queue
 #define SM_QUEUE_LEN            3
 //! Macro used to print text debugging messages using the bus.
-#define DEBUG_PRINT(str...)     send_ascii_data(0, str);
+#define DEBUG_PRINT(str)     send_ascii_data_P(0, PSTR(str));
 //#define DEBUG_PRINT(str...)
 
 #define HEADING_UPDATES_PER_SEC (1000 / HEADING_UPDATE_INTERVAL)
