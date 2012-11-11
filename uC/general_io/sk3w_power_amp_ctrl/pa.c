@@ -29,7 +29,7 @@
 
 #include <global.h>
 #include <wmv_bus/bus_commands.h>
-#include <general_io/eeprom.h>
+#include <misc/eeprom.h>
 
 #include "qpn_port.h"
 #include "bsp.h"

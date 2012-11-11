@@ -76,10 +76,10 @@ WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c queue.c bus_ascii_cmd.c
 QPN_SRC = qepn.c qfn.c qfn_init.c
 
 # Global sources
-GLOBAL_SRC =  i2c.c delay.c
+GLOBAL_SRC =  i2c.c delay.c eeprom.c
 
 # Board related sources
-BOARD_SRC = eeprom.c
+BOARD_SRC = 
 
 # Local sources
 LOCAL_SRC = $(TARGET).c controller.c pa.c bus_handler.c bsp.c
@@ -109,7 +109,7 @@ AVRDUDE_HFUSE = 0xd1
 AVRDUDE_LFUSE = 0x3f
 
 # Additional paths where to look for C sources
-vpath %.c $(ROOT)/general_io
+vpath %.c $(ROOT)/misc
 
 
 # Include main makefile
