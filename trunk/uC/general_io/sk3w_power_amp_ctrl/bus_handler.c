@@ -35,6 +35,7 @@
 #include <wmv_bus/bus.h>
 #include <wmv_bus/bus_ping.h>
 #include <wmv_bus/bus_commands.h>
+#include <wmv_bus/bus_ascii_cmd.h>
 #include <queue.h>
 #include <global.h>
 
@@ -45,7 +46,6 @@
 #include "version.h"
 
 
-#define MAX_ASCII_CMD_ARGS      5
 #define AMP_STATUS_INTERVAL     5000/6  /* ~6 bands per five second */
 
 
@@ -64,13 +64,57 @@ static const uint8_t amp_status_band[] = {
 };
 
 static uint8_t decode_ctrlr(char ctrlr);
-static void parse_ascii_cmd(BUS_MESSAGE *bus_message);
 static void bus_parse_message(BUS_MESSAGE *bus_message);
 static unsigned char read_ext_addr(void);
 static void send_pa_status(uint8_t band);
-static void send_help(uint8_t addr);
 static int8_t wl2band(uint8_t wl);
 
+static int8_t help_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t ver_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t reset_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t defaults_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t cooldown_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t unused_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t warmup_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t mainson_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t mainsoff_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t mainstgl_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t pttoff_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t ptton_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
+
+//! Command specification for ASCII commands. Points to flash memory.
+AsciiCommand bus_ascii_cmd_list[] PROGMEM =  {
+  { "help",     0, 0, help_cmd_handler },
+  { "ver",      0, 0, ver_cmd_handler },
+  { "reset",    0, 0, reset_cmd_handler },
+  { "defaults", 0, 0, defaults_cmd_handler },
+  { "cooldown", 0, 1, cooldown_cmd_handler },
+  { "unused",   0, 1, unused_cmd_handler },
+  { "warmup",   0, 1, warmup_cmd_handler },
+  { "mainson",  0, 1, mainson_cmd_handler },
+  { "mainsoff", 0, 1, mainsoff_cmd_handler },
+  { "mainstgl", 1, 1, mainstgl_cmd_handler },
+  { "pttoff",   1, 1, pttoff_cmd_handler },
+  { "ptton",    1, 1, ptton_cmd_handler }
+};
+//! The number of defined commands
+const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(bus_ascii_cmd_list)
+                                          / sizeof(AsciiCommand);
+//! Command prompt. Points to RAM.
+char bus_ascii_cmd_prompt[] = "> ";
+//! Help text for ASCII commands. Points to flash memory.
+const char bus_ascii_cmd_help[] PROGMEM = 
+  "ptton <ctrlr>\t"          "Turn PTT on\n"
+  "pttoff <ctrlr>\t"         "Turn PTT off\n"
+  "mainson [band]\t"         "Turn main power on\n"
+  "mainsoff [band]\t"        "Turn main power off\n"
+  "mainstgl <ctrlr>\t"       "Toggle main power\n"
+  "warmup [tmo sec]\t"       "Get or set warmup timeout\n"
+  "unused [tmo sec]\t"       "Get or set unused timeout\n"
+  "cooldown [tmo sec]\t"     "Get or set cooldown timeout\n"
+  "defaults\t\t"             "Load factory defaults\n"
+  "reset\t\t"                "Hardware reset\n"
+  "ver\t\t"                  "Print firmware version\n";
 
 void bus_handler_init() {
     /* Read the external address of the device */
@@ -177,38 +221,6 @@ void bus_handler_poll() {
 }
 
 
-void send_ascii_data(unsigned char to_addr, const char *fmt, ...) {
-  char str[46];
-
-  va_list ap;
-  va_start(ap, fmt);
-  int len = vsnprintf(str, sizeof(str), fmt, ap);
-  va_end(ap);
-
-  if (len >= sizeof(str) - 1) {
-    strcpy(str + sizeof(str) - 6, "...\r\n");
-    len = sizeof(str) - 1;
-  }
-
-  unsigned char flags = 0;
-  if (to_addr != BUS_BROADCAST_ADDR) {
-    flags = (1 << BUS_MESSAGE_FLAGS_NEED_ACK);
-  }
-
-  char *ptr = str;
-  while (len > 0) {
-    unsigned char len_to_send = len < 15 ? len : 15;
-    bus_add_tx_message(bus_get_address(),
-                       to_addr,
-                       (1 << BUS_MESSAGE_FLAGS_NEED_ACK),
-                       BUS_CMD_ASCII_DATA,
-                       len_to_send, (unsigned char *)ptr);
-    len -= len_to_send;
-    ptr += len_to_send;
-  }
-}
-
-
 static uint8_t decode_ctrlr(char ctrlr) {
   if ((ctrlr >= '0') && (ctrlr <= '5')) {
     ctrlr -= '0';
@@ -226,183 +238,137 @@ static uint8_t decode_ctrlr(char ctrlr) {
 }
 
 
-static void parse_ascii_cmd(BUS_MESSAGE *bus_message) {
-  char data[16];
-  memcpy(data, bus_message->data, bus_message->length);
-  data[bus_message->length] = '\0';
+static int8_t help_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  bus_ascii_cmd_send_P(from_addr, bus_ascii_cmd_help);
+  return 0;
+}
 
-    /* Get the command and its arguments */
-  unsigned char argc = 0;
-  char *argv[MAX_ASCII_CMD_ARGS];
-  argv[0] = NULL;
-  unsigned char pos = 0;
-  for (pos = 0; pos < bus_message->length; ++pos) {
-    if (argv[argc] == NULL) {
-      if (data[pos] != ' ') {
-        argv[argc] = (char *) (data + pos);
-      }
-    }
-    else {
-      if (data[pos] == ' ') {
-        data[pos] = '\0';
-        if (argc >= MAX_ASCII_CMD_ARGS - 1) {
-          break;
-        }
-        ++argc;
-        argv[argc] = NULL;
-      }
-    }
-  }
-  if (argv[argc] != NULL) {
-    ++argc;
-  }
 
-  if (argc > 0) {
-    if (strcmp(argv[0], "help") == 0) {
-      send_help(bus_message->from_addr);
-    }
-    else if (strcmp(argv[0], "ver") == 0) {
-      send_ascii_data(bus_message->from_addr, "Ver: " VERSION "\r\n");
-    }
-    else if (strcmp(argv[0], "ptton") == 0) {
-      if (argc != 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      uint8_t ctrlr = decode_ctrlr(argv[1][0]);
-      if (ctrlr == 0xff) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      controller_set_tx_active(ctrlr, 1);
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
-    }
-    else if (strcmp(argv[0], "pttoff") == 0) {
-      if (argc != 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      uint8_t ctrlr = decode_ctrlr(argv[1][0]);
-      if (ctrlr == 0xff) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      controller_set_tx_active(ctrlr, 0);
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
-    }
-    else if (strcmp(argv[0], "togglemains") == 0) {
-      if (argc != 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      uint8_t ctrlr = decode_ctrlr(argv[1][0]);
-      if (ctrlr == 0xff) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      controller_toggle_mains(ctrlr);
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
-    }
-    else if (strcmp(argv[0], "mainsoff") == 0) {
-      int8_t ret = 0;
-      if (argc == 2) {
-        int8_t band = wl2band(atoi(argv[1]));
-        if (band == -1) {
-          send_ascii_data(bus_message->from_addr, "*** Invalid band\r\n");
-          send_help(bus_message->from_addr);
-          return;
-        }
-        ret = pa_mains_off(band);
-      }
-      else if (argc == 1) {
-        ret = pa_mains_all_off();
-      }
-      else {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      if (ret == -1) {
-        send_ascii_data(bus_message->from_addr, "*** Error\r\n");
-        return;
-      }
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
-    }
-    else if (strcmp(argv[0], "mainson") == 0) {
-      int8_t ret = 0;
-      if (argc == 2) {
-        int8_t band = wl2band(atoi(argv[1]));
-        if (band == -1) {
-          send_ascii_data(bus_message->from_addr, "*** Invalid band\r\n");
-          send_help(bus_message->from_addr);
-          return;
-        }
-        ret = pa_mains_on(band);
-      }
-      else if (argc == 1) {
-        ret = pa_mains_all_on();
-      }
-      else {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      if (ret == -1) {
-        send_ascii_data(bus_message->from_addr, "*** Error\r\n");
-        return;
-      }
-      send_ascii_data(bus_message->from_addr, "OK\r\n");
-    }
-    else if (strcmp(argv[0], "warmup") == 0) {
-      if (argc == 2) {
-        pa_set_warmup_timeout(atoi(argv[1]));
-      }
-      else if (argc > 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      send_ascii_data(bus_message->from_addr, "warmup=%d\r\n",
-                      pa_warmup_timeout());
-    }
-    else if (strcmp(argv[0], "unused") == 0) {
-      if (argc == 2) {
-        pa_set_unused_timeout(atoi(argv[1]));
-      }
-      else if (argc > 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      send_ascii_data(bus_message->from_addr, "unused=%d\r\n",
-                      pa_unused_timeout());
-    }
-    else if (strcmp(argv[0], "cooldown") == 0) {
-      if (argc == 2) {
-        pa_set_cooldown_timeout(atoi(argv[1]));
-      }
-      else if (argc > 2) {
-        send_help(bus_message->from_addr);
-        return;
-      }
-      send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
-                      pa_cooldown_timeout());
-    }
-    else if (strcmp(argv[0], "defaults") == 0) {
-      pa_set_default_config();
-      send_ascii_data(bus_message->from_addr, "warmup=%d\r\n",
-                      pa_warmup_timeout());
-      send_ascii_data(bus_message->from_addr, "unused=%d\r\n",
-                      pa_unused_timeout());
-      send_ascii_data(bus_message->from_addr, "cooldown=%d\r\n",
-                      pa_cooldown_timeout());
-    }
-    else if (strcmp(argv[0], "reset") == 0) {
-        /* Enable the watchdog timer and wait for it to reset
-         * in about one second */
-      wdt_enable(WDTO_1S);
-      send_ascii_data(bus_message->from_addr, "RESETTING\r\n");
-    }
-    else {
-      send_help(bus_message->from_addr);
-    }
+static int8_t ver_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  bus_ascii_cmd_send_P(from_addr, PSTR("Ver: " VERSION "\n"));
+  return 0;
+}
+
+
+static int8_t ptton_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  uint8_t ctrlr = decode_ctrlr(argv[1][0]);
+  if (ctrlr == 0xff) {
+    return -1;
   }
+  controller_set_tx_active(ctrlr, 1);
+  bus_ascii_cmd_send_P(from_addr, PSTR("OK\n"));
+  return 0;
+}
+
+
+static int8_t pttoff_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  uint8_t ctrlr = decode_ctrlr(argv[1][0]);
+  if (ctrlr == 0xff) {
+    return -1;
+  }
+  controller_set_tx_active(ctrlr, 0);
+  bus_ascii_cmd_send_P(from_addr, PSTR("OK\n"));
+  return 0;
+}
+
+
+static int8_t mainstgl_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  uint8_t ctrlr = decode_ctrlr(argv[1][0]);
+  if (ctrlr == 0xff) {
+    return -1;
+  }
+  controller_toggle_mains(ctrlr);
+  bus_ascii_cmd_send_P(from_addr, PSTR("OK\n"));
+  return 0;
+}
+
+
+static int8_t mainsoff_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  int8_t ret = 0;
+  if (argc == 2) {
+    int8_t band = wl2band(atoi(argv[1]));
+    if (band == -1) {
+      bus_ascii_cmd_send_P(from_addr, PSTR("*** Invalid band\n"));
+      return -1;
+    }
+    ret = pa_mains_off(band);
+  }
+  else {
+    ret = pa_mains_all_off();
+  }
+  if (ret == -1) {
+    bus_ascii_cmd_send_P(from_addr, PSTR("*** Error\n"));
+    return -1;
+  }
+  bus_ascii_cmd_send_P(from_addr, PSTR("OK\n"));
+  return 0;
+}
+
+
+static int8_t mainson_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  int8_t ret = 0;
+  if (argc == 2) {
+    int8_t band = wl2band(atoi(argv[1]));
+    if (band == -1) {
+      bus_ascii_cmd_send_P(from_addr, PSTR("*** Invalid band\n"));
+      return -1;
+    }
+    ret = pa_mains_on(band);
+  }
+  else {
+    ret = pa_mains_all_on();
+  }
+  if (ret == -1) {
+    bus_ascii_cmd_send_P(from_addr, PSTR("*** Error\n"));
+    return -1;
+  }
+  bus_ascii_cmd_send_P(from_addr, PSTR("OK\n"));
+  return 0;
+}
+
+
+static int8_t warmup_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  if (argc == 2) {
+    pa_set_warmup_timeout(atoi(argv[1]));
+  }
+  bus_ascii_cmd_sendf(from_addr, "warmup=%d\n", pa_warmup_timeout());
+  return 0;
+}
+
+
+static int8_t unused_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  if (argc == 2) {
+    pa_set_unused_timeout(atoi(argv[1]));
+  }
+  bus_ascii_cmd_sendf(from_addr, "unused=%d\n", pa_unused_timeout());
+  return 0;
+}
+
+
+static int8_t cooldown_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  if (argc == 2) {
+    pa_set_cooldown_timeout(atoi(argv[1]));
+  }
+  bus_ascii_cmd_sendf(from_addr, "cooldown=%d\n", pa_cooldown_timeout());
+  return 0;
+}
+
+
+static int8_t defaults_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+  pa_set_default_config();
+  bus_ascii_cmd_sendf(from_addr, "warmup=%d\n", pa_warmup_timeout());
+  bus_ascii_cmd_sendf(from_addr, "unused=%d\n", pa_unused_timeout());
+  bus_ascii_cmd_sendf(from_addr, "cooldown=%d\n", pa_cooldown_timeout());
+  return 0;
+}
+
+
+static int8_t reset_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv) {
+    /* Enable the watchdog timer and wait for it to reset
+     * in about one second */
+  wdt_enable(WDTO_1S);
+  bus_ascii_cmd_send_P(from_addr, PSTR("RESETTING\n"));
+  return 0;
 }
 
 
@@ -439,7 +405,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
       break;
     }
     case BUS_CMD_ASCII_DATA:{
-      parse_ascii_cmd(bus_message);
+      bus_ascii_cmd_parse(bus_message);
       break;
     }
     case BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS:{
@@ -510,21 +476,6 @@ static void send_pa_status(uint8_t band) {
   msg[4] = 0;
   bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
                      BUS_CMD_AMPLIFIER_GET_STATUS, 5, msg);
-}
-
-
-static void send_help(uint8_t addr) {
-  send_ascii_data(addr, "ptton <ctrlr>\r\n"
-                        "pttoff <ctrlr>\r\n");
-  send_ascii_data(addr, "mainson [band]\r\n"
-                        "mainsoff [band]\r\n");
-  send_ascii_data(addr, "togglemains <ctrlr>\r\n"
-                        "warmup [tmo sec]\r\n");
-  send_ascii_data(addr, "unused [tmo sec]\r\n"
-                        "cooldown [tmo sec]\r\n");
-  send_ascii_data(addr, "defaults\r\n"
-                        "reset\r\n"
-                        "ver\r\n");
 }
 
 
