@@ -62,20 +62,13 @@
  *****************************************************************************/
 
 
+
 /******************************************************************************
  *
  * Global variable declarations
  *
  *****************************************************************************/
 
-//! The number of defined commands
-static uint8_t ascii_cmd_cnt = 0;
-//! Command specification for ASCII commands. Points to flash memory.
-static AsciiCommand *ascii_cmds = NULL;
-//! Help text for ASCII commands. Points to flash memory.
-static const char *ascii_cmd_help = NULL;
-//! Command prompt. Points to RAM.
-static const char *ascii_cmd_prompt = NULL;
 
 
 /******************************************************************************
@@ -83,15 +76,6 @@ static const char *ascii_cmd_prompt = NULL;
  * Public functions
  *
  *****************************************************************************/
-
-void bus_ascii_cmd_init(uint8_t cmd_cnt, AsciiCommand *cmds,
-                        const char *cmd_help, const char *prompt) {
-  ascii_cmd_cnt = cmd_cnt;
-  ascii_cmds = cmds;
-  ascii_cmd_help = cmd_help;
-  ascii_cmd_prompt = prompt;
-}
-
 
 void bus_ascii_cmd_send(unsigned char to_addr, const char *str) {
   unsigned char flags = 0;
@@ -189,22 +173,34 @@ void bus_ascii_cmd_parse(BUS_MESSAGE *bus_message) {
      * argv[1] is the first argument etc. */
   if (argc > 0) {
     uint8_t cmdno;
-    for (cmdno = 0; cmdno < ascii_cmd_cnt; ++cmdno) {
-      if (strncmp_P(argv[0], ascii_cmds[cmdno].name,
-                    sizeof(ascii_cmds[cmdno].name)) == 0) {
+    uint8_t cmd_cnt = pgm_read_byte(&bus_ascii_cmd_cnt);
+    for (cmdno = 0; cmdno < cmd_cnt; ++cmdno) {
+      if (strncmp_P(argv[0], bus_ascii_cmd_list[cmdno].name,
+                    sizeof(bus_ascii_cmd_list[cmdno].name)) == 0) {
         AsciiCommand cmd;
-        memcpy_P(&cmd, &ascii_cmds[cmdno], sizeof(AsciiCommand));
-        if ((argc < cmd.min_args+1) || (argc > cmd.max_args+1)
-            || (cmd.handler(bus_message->from_addr, argc, argv) == -1)) {
-          bus_ascii_cmd_send_P(bus_message->from_addr, ascii_cmd_help);
+        memcpy_P(&cmd, &bus_ascii_cmd_list[cmdno], sizeof(AsciiCommand));
+        if (argc < cmd.min_args+1) {
+          bus_ascii_cmd_send_P(bus_message->from_addr,
+                               PSTR("*** Too few arguments\n"));
+          bus_ascii_cmd_send_P(bus_message->from_addr, bus_ascii_cmd_help);
+        }
+        else if (argc > cmd.max_args+1) {
+          bus_ascii_cmd_send_P(bus_message->from_addr,
+                               PSTR("*** Too many arguments\n"));
+          bus_ascii_cmd_send_P(bus_message->from_addr, bus_ascii_cmd_help);
+        }
+        else if (cmd.handler(bus_message->from_addr, argc, argv) == -1) {
+          bus_ascii_cmd_send_P(bus_message->from_addr, bus_ascii_cmd_help);
         }
         break;
       }
     }
-    if (cmdno == ascii_cmd_cnt) {
-      bus_ascii_cmd_send_P(bus_message->from_addr, ascii_cmd_help);
+    if (cmdno == cmd_cnt) {
+      bus_ascii_cmd_send_P(bus_message->from_addr,
+                           PSTR("*** Command not found\n"));
+      bus_ascii_cmd_send_P(bus_message->from_addr, bus_ascii_cmd_help);
     }
   }
-  bus_ascii_cmd_send(bus_message->from_addr, ascii_cmd_prompt);
+  bus_ascii_cmd_send(bus_message->from_addr, bus_ascii_cmd_prompt);
 }
 

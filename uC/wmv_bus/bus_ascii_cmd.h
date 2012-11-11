@@ -5,6 +5,33 @@
  *  \date     2012-11-11
  *
  * Contains functions for sending and receiving ASCII commands on the bus.
+ * To use it, include bus_ascii_cmd.h and define the four variables
+ * bus_ascii_cmd_list, bus_ascii_cmd_cnt, bus_ascii_cmd_prompt and
+ * bus_ascii_cmd_help. Example:
+ *
+ * AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
+ *   { "help",     0, 0, handle_help_cmd },
+ *   { "ver",      0, 0, handle_ver_cmd },
+ *   { "reset",    0, 1, handle_reset_cmd },
+ *   { "status",   1, 1, handle_status_cmd }
+ * };
+ * const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(ascii_cmd_list)
+ *                                           / sizeof(AsciiCommand);
+ * char bus_ascii_cmd_prompt[] = "#> ";
+ * const char bus_ascii_cmd_help[] PROGMEM = 
+ *   "help\t\t"                 "Load default setup\n"
+ *   "ver\t\t"                  "Load default setup\n"
+ *   "reset\t\t"                "Hardware reset\n"
+ *   "status\t\t"               "Hardware reset\n"
+ *
+ * This will define four commands: help, ver, reset and status. The help and
+ * ver commands do not take an argument. The reset command have one optional
+ * argument and the status command need exactly one argument. The given
+ * callback functions will be called when the corresponding command
+ * is received.
+ * Note that all variables except the prompt must be stored in flash using the
+ * PROGMEM attribute. The prompt may be changed runtime so that variable must
+ * reside in RAM.
  */
 
 //    Copyright (C) 2012  Mikael Larsmark, SM2WMV
@@ -29,9 +56,11 @@
 #include <avr/pgmspace.h>
 #include <wmv_bus/bus.h>
 
+
 #ifndef ASCII_CMD_MAX_LEN
 #define ASCII_CMD_MAX_LEN 8
 #endif
+
 
 typedef struct {
   const char    name[ASCII_CMD_MAX_LEN];
@@ -41,11 +70,15 @@ typedef struct {
 } AsciiCommand;
 
 
-/**
- * \brief Initialize the ASCII parser
- */
-void bus_ascii_cmd_init(uint8_t cmd_cnt, AsciiCommand *cmds,
-                        const char *cmd_help, const char *prompt);
+//! Command specification for ASCII commands. Points to flash memory.
+extern AsciiCommand bus_ascii_cmd_list[] PROGMEM;
+//! The number of defined commands
+extern const uint8_t bus_ascii_cmd_cnt PROGMEM;
+//! Help text for ASCII commands. Points to flash memory.
+extern const char bus_ascii_cmd_help[] PROGMEM;
+//! Command prompt. Points to RAM.
+extern char bus_ascii_cmd_prompt[];
+
 
 /**
  * \brief Send an ASCII message on the bus
