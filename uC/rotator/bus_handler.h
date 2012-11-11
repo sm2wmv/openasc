@@ -25,6 +25,8 @@
 #ifndef _BUS_HANDLER_H_
 #define _BUS_HANDLER_H_
 
+#include <avr/pgmspace.h>
+
 
 /**
  * \brief Initialize the bus handler
@@ -57,8 +59,36 @@ void bus_handler_poll(void);
 /**
  * \brief Send an ASCII message on the bus
  * \param to_addr The address to send the message to
- * \param fmt     A formatted string with arguments, if any. Just like printf.
+ * \param str     The string to send
+ *
+ * This function will send an ASCII message on the bus. The string to send
+ * must be stored in RAM.
  */
-void send_ascii_data(unsigned char to_addr, const char *fmt, ...);
+void send_ascii_data(unsigned char to_addr, const char *str);
+
+/**
+ * \brief Send an ASCII message from flash on the bus
+ * \param to_addr The address to send the message to
+ * \param str     The string, in flash memory, to send
+ *
+ * This function will send an ASCII message on the bus. The string to send must
+ * be stored in flash memory. The easiest way to achieve that is to use the
+ * PSTR macro. Example:
+ *
+ *   send_ascii_data_P(to_addr, PSTR("OK\r\n"));
+ */
+void send_ascii_data_P(unsigned char to_addr, PGM_P str);
+
+/**
+ * \brief Send a formatted ASCII message on the bus
+ * \param to_addr The address to send the message to
+ * \param fmt     A formatted string with arguments, if any. Just like printf.
+ *
+ * This function will send a formatted ASCII message on the bus. Use it like
+ * you use printf to format the string to send. There is a maximum length of
+ * 45 characters for the message to send. If it is longer than that, the
+ * string will be truncated and "..." will be added to the end of the string.
+ */
+void send_ascii_dataf(unsigned char to_addr, const char *fmt, ...);
 
 #endif

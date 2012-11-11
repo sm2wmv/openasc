@@ -389,7 +389,7 @@ void Q_onAssert(char const Q_ROM_NOT_GNUC *const Q_ROM_VAR file, int line) {
   write_last_assertion(str);
 
     /* Broadcast an ASCII message to the bus */
-  send_ascii_data(0, "ASSERT[%s]\r\n", str);
+  send_ascii_dataf(0, "ASSERT[%s]\r\n", str);
 
     /* Broadcast a rotator error message for each rotator */
   for (int i=0; i<ROTATOR_COUNT; ++i) {
