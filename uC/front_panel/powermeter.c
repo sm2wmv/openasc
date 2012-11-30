@@ -40,12 +40,6 @@ powermeter_struct powermeter_status;
 //! Various flags used in the powermeter, defines can be found in powermeter.h
 unsigned char powermeter_flags;
 
-//! The counter which keeps track of when we should update the power meter text
-unsigned int counter_powermeter_update_text=0;
-
-//! The counter which keeps track of when we should update the power meter bargraph
-unsigned int counter_powermeter_update_bargraph=0;
-
 unsigned char pickup_type = 99;
 
 double fwd_scale_value = 0;
@@ -132,12 +126,6 @@ void powermeter_update_values(unsigned int fwd_pwr, unsigned int ref_pwr, unsign
 	}
 	
 	pickup_type = type;
-}
-
-/*! \brief This function should be called at 1 ms intervals. It is to keep track of update rates etc for the display */
-void powermeter_1ms_tick(void) {
-	counter_powermeter_update_text++;
-	counter_powermeter_update_bargraph++;
 }
 
 /*! \brief Get the update rate of the text

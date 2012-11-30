@@ -80,9 +80,9 @@
   <widget class="QGroupBox" name="groupBoxAnt1">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>665</x>
      <y>10</y>
-     <width>181</width>
+     <width>130</width>
      <height>96</height>
     </rect>
    </property>
@@ -104,7 +104,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>86</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -116,7 +116,7 @@
      </font>
     </property>
     <property name="text">
-     <string>305°</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="labelAnt1Title">
@@ -124,7 +124,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>161</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -136,7 +136,7 @@
      </font>
     </property>
     <property name="text">
-     <string>6/6/6el</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="labelAnt1Status">
@@ -144,7 +144,7 @@
      <rect>
       <x>10</x>
       <y>65</y>
-      <width>156</width>
+      <width>110</width>
       <height>21</height>
      </rect>
     </property>
@@ -154,16 +154,16 @@
      </font>
     </property>
     <property name="text">
-     <string>Stopped</string>
+     <string/>
     </property>
    </widget>
   </widget>
   <widget class="QGroupBox" name="groupBoxAnt2">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>665</x>
      <y>110</y>
-     <width>181</width>
+     <width>130</width>
      <height>96</height>
     </rect>
    </property>
@@ -185,7 +185,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>86</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -197,7 +197,7 @@
      </font>
     </property>
     <property name="text">
-     <string>230°</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="labelAnt2Title">
@@ -205,7 +205,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>161</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -217,7 +217,7 @@
      </font>
     </property>
     <property name="text">
-     <string>5/5el</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="labelAnt2Status">
@@ -225,7 +225,7 @@
      <rect>
       <x>10</x>
       <y>65</y>
-      <width>156</width>
+      <width>110</width>
       <height>21</height>
      </rect>
     </property>
@@ -235,16 +235,20 @@
      </font>
     </property>
     <property name="text">
-     <string>Stopped</string>
+     <string/>
     </property>
    </widget>
+   <zorder>labelAnt2Dir</zorder>
+   <zorder>labelAnt2Title</zorder>
+   <zorder>labelAnt2Status</zorder>
+   <zorder>pushButton</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBoxAnt3">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>665</x>
      <y>210</y>
-     <width>181</width>
+     <width>130</width>
      <height>96</height>
     </rect>
    </property>
@@ -266,7 +270,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>86</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -278,7 +282,7 @@
      </font>
     </property>
     <property name="text">
-     <string>180°</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="labelAnt3Title">
@@ -286,7 +290,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>156</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -298,7 +302,7 @@
      </font>
     </property>
     <property name="text">
-     <string>4el mono</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="labelAnt3Status">
@@ -306,7 +310,7 @@
      <rect>
       <x>10</x>
       <y>65</y>
-      <width>156</width>
+      <width>110</width>
       <height>21</height>
      </rect>
     </property>
@@ -316,16 +320,16 @@
      </font>
     </property>
     <property name="text">
-     <string>Stopped</string>
+     <string/>
     </property>
    </widget>
   </widget>
   <widget class="QGroupBox" name="groupBoxAnt4">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>665</x>
      <y>310</y>
-     <width>181</width>
+     <width>130</width>
      <height>96</height>
     </rect>
    </property>
@@ -347,7 +351,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>86</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -367,7 +371,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>160</width>
+      <width>110</width>
       <height>16</height>
      </rect>
     </property>
@@ -387,7 +391,7 @@
      <rect>
       <x>10</x>
       <y>65</y>
-      <width>156</width>
+      <width>110</width>
       <height>21</height>
      </rect>
     </property>
@@ -400,6 +404,273 @@
      <string/>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButtonAnt1">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>9</y>
+     <width>55</width>
+     <height>96</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>#1</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonAnt2">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>110</y>
+     <width>55</width>
+     <height>96</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>#2</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonAnt3">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>210</y>
+     <width>55</width>
+     <height>96</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>#3</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonAnt4">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>310</y>
+     <width>55</width>
+     <height>96</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>#4</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonPreset1">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>415</y>
+     <width>90</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>50</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonPreset2">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>480</y>
+     <width>90</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>80</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonPreset3">
+   <property name="geometry">
+    <rect>
+     <x>605</x>
+     <y>545</y>
+     <width>90</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>180</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonPreset4">
+   <property name="geometry">
+    <rect>
+     <x>705</x>
+     <y>415</y>
+     <width>90</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>270</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonPreset5">
+   <property name="geometry">
+    <rect>
+     <x>705</x>
+     <y>480</y>
+     <width>90</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>300</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonSTOP">
+   <property name="geometry">
+    <rect>
+     <x>705</x>
+     <y>545</y>
+     <width>90</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>255</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="ButtonText">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>137</red>
+         <green>135</green>
+         <blue>133</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>STOP</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
   </widget>
  </widget>
  <resources/>
