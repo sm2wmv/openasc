@@ -160,6 +160,11 @@ void bsp_reset(void) {
 }
 
 
+unsigned char bsp_bus_address(void) {
+  return (~(PINE >> 2) & 0x0F);
+}
+
+
 void bsp_last_assertion(char *str) {
   eeprom_read_data(&last_assertion_ctx,
                    str, LAST_ASSERTION_SIZE,

@@ -80,7 +80,6 @@
 
 static int16_t range_adjust_heading(int16_t heading);
 static void bus_parse_message(BUS_MESSAGE *bus_message);
-static unsigned char read_ext_addr(void);
 static int8_t handle_help_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_ver_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_calon_cmd(uint8_t from_addr, uint8_t argc, char **argv);
@@ -150,7 +149,7 @@ const char bus_ascii_cmd_help[] PROGMEM =
 
 void bus_handler_init() {
     /* Read the external address of the device */
-  bus_set_address(BUS_BASE_ADDR + read_ext_addr());
+  bus_set_address(BUS_BASE_ADDR + bsp_bus_address());
 
     /* This delay is simply so that if you have the devices connected to the
      * same power supply all units should not send their status messages at the
@@ -164,7 +163,7 @@ void bus_handler_init() {
   bus_init();
   bus_ping_init();
 
-  if ((BUS_BASE_ADDR + read_ext_addr()) == 0x01) {
+  if ((BUS_BASE_ADDR + bsp_bus_address()) == 0x01) {
     bus_set_is_master(1, DEF_NR_DEVICES);
   }
   else {
@@ -454,15 +453,4 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
   }
 }
 
-
-/*!
- * \brief   Read the external DIP-switch.
- * \return  The address of the external DIP-switch
- * 
- * This function is used to read the external offset address on the
- * General I/O card
- */
-static unsigned char read_ext_addr(void) {
-  return (~(PINE >> 2) & 0x0F);
-}
 
