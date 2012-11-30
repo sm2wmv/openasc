@@ -64,6 +64,16 @@ void bsp_init_timer_2(void);
  */
 void bsp_reset(void);
 
+/*!
+ * \brief   Read the bus address
+ * \return  Returns the bus address
+ * 
+ * This function is used to read the bus address setting for the specific
+ * board being used.
+ * For the General I/O board, the address is read from a DIP switch.
+ */
+unsigned char bsp_bus_address(void);
+
 /**
  * \brief Fetch the last assertion stored in EEPROM
  * \param str The string buffer to store the assertion text into
