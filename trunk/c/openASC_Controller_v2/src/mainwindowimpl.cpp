@@ -28,13 +28,13 @@
 #define BAND_10M				9
 #define BAND_MAX				BAND_10M
 
-#define PIXMAP_BLANK "../src/leds/led_blank_15x15.png"
-#define PIXMAP_RED_ON "../src/leds/led_red_on_15x15.png"
-#define PIXMAP_GREEN_ON "../src/leds/led_green_on_15x15.png"
-#define PIXMAP_RED_OFF "../src/leds/led_red_off_15x15.png"
-#define PIXMAP_GREEN_OFF "../src/leds/led_green_off_15x15.png"
-#define PIXMAP_YELLOW_ON "../src/leds/led_yellow_on_15x15.png"
-#define PIXMAP_YELLOW_OFF "../src/leds/led_yellow_off_15x15.png"
+#define PIXMAP_BLANK "leds/led_blank_15x15.png"
+#define PIXMAP_RED_ON "leds/led_red_on_15x15.png"
+#define PIXMAP_GREEN_ON "leds/led_green_on_15x15.png"
+#define PIXMAP_RED_OFF "leds/led_red_off_15x15.png"
+#define PIXMAP_GREEN_OFF "leds/led_green_off_15x15.png"
+#define PIXMAP_YELLOW_ON "leds/led_yellow_on_15x15.png"
+#define PIXMAP_YELLOW_OFF "leds/led_yellow_off_15x15.png"
 
 QPalette antSelPal(QColor(Qt::darkGreen));
 QPalette antNotSelPal(QColor(Qt::white));
@@ -400,46 +400,57 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 							case BAND_UNDEFINED:
 								labelBand->setText("Band: None");
 								comboBoxBand->setCurrentIndex(0);
+								rotatorWindow->loadBand(BAND_UNDEFINED);
 								break;
 							case BAND_160M:
 								labelBand->setText("Band: 160m");
 								comboBoxBand->setCurrentIndex(1);
+								rotatorWindow->loadBand(BAND_160M);
 								break;
 							case BAND_80M:
 								labelBand->setText("Band: 80m");
 								comboBoxBand->setCurrentIndex(2);
+								rotatorWindow->loadBand(BAND_80M);
 								break;
 							case BAND_40M:
 								labelBand->setText("Band: 40m");
 								comboBoxBand->setCurrentIndex(3);
+								rotatorWindow->loadBand(BAND_40M);
 								break;
 							case BAND_30M:
 								labelBand->setText("Band: 30m");
 								comboBoxBand->setCurrentIndex(4);
+								rotatorWindow->loadBand(BAND_30M);
 								break;
 							case BAND_20M:
 								labelBand->setText("Band: 20m");
 								comboBoxBand->setCurrentIndex(5);
+								rotatorWindow->loadBand(BAND_20M);
 								break;
 							case BAND_17M:
 								labelBand->setText("Band: 17m");
 								comboBoxBand->setCurrentIndex(6);
+								rotatorWindow->loadBand(BAND_17M);
 								break;
 							case BAND_15M:
 								labelBand->setText("Band: 15m");
 								comboBoxBand->setCurrentIndex(7);
+								rotatorWindow->loadBand(BAND_15M);
 								break;
 							case BAND_12M:
 								labelBand->setText("Band: 12m");
 								comboBoxBand->setCurrentIndex(8);
+								rotatorWindow->loadBand(BAND_12M);
 								break;
 							case BAND_10M:
 								labelBand->setText("Band: 10m");
 								comboBoxBand->setCurrentIndex(9);
+								rotatorWindow->loadBand(BAND_10M);
 								break;
 						default:
 								labelBand->setText("Band: None");
 								comboBoxBand->setCurrentIndex(0);
+								rotatorWindow->loadBand(BAND_UNDEFINED);
 								break;
 						}
 

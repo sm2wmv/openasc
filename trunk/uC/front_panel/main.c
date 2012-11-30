@@ -1008,9 +1008,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	
 	internal_comm_1ms_timer();
 	
-	if (settings.powermeter_address != 0x00)
-		powermeter_1ms_tick();
-	
 	bus_ping_tick();
 }
 

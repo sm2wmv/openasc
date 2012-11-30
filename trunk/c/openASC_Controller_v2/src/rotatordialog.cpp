@@ -6,8 +6,6 @@
 void RotatorDialog::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
 
-    //painter.setBrush(Qt::Dense7Pattern);
-
     image = QImage(imagePath);
     image.convertToFormat(QImage::Format_ARGB32_Premultiplied ,Qt::ColorOnly);
 
@@ -37,6 +35,9 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
             }
 
 						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+						if (antBiDirectional[i])
+							painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
         }
     }
 }
@@ -54,11 +55,13 @@ void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {
 }
 
 void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
-	targetAzimuthAngle[antIndex] = targetAngle;
+	if (antIndex >= 0) {
+		targetAzimuthAngle[antIndex] = targetAngle;
 
-	qDebug("TARGET_DIR: %d",targetAngle);
+		qDebug("TARGET_DIR[%i]: %d",antIndex,targetAngle);
 
-	rotationEventStatus = 1;
+		rotationEventStatus = 1;
+	}
 }
 
 char RotatorDialog::getRotationEventStatus(void) {
@@ -114,6 +117,7 @@ void RotatorDialog::setAntName(int antIndex, QString name) {
 }
 
 void RotatorDialog::loadBand(int bandIndex) {
+	qDebug("LOAD BAND: %i",bandIndex);
 	switch(bandIndex) {
 		case 0: bandName="None";
 			break;
@@ -143,7 +147,18 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antExist[i] = false;
 			antBeamWidth[i] = 0;
 			antVerticalArray[i] = false;
+
 		}
+
+		groupBoxAnt1->setVisible(false);
+		groupBoxAnt2->setVisible(false);
+		groupBoxAnt3->setVisible(false);
+		groupBoxAnt4->setVisible(false);
+
+		pushButtonAnt1->setVisible(false);
+		pushButtonAnt2->setVisible(false);
+		pushButtonAnt3->setVisible(false);
+		pushButtonAnt4->setVisible(false);
 	}
 	else {
 		QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
@@ -160,9 +175,32 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antHasRotor[i] = settings.value("HasRotor").toBool();
 			antBeamWidth[i] = settings.value("BeamWidth").toInt();
 			antVerticalArray[i] = settings.value("VerticalArray").toBool();
+			antFixedAngle[i] = settings.value("AntennaFixedAngle").toInt();
+			antFixed[i] = settings.value("AntennaFixed").toBool();
+			antBiDirectional[i] = settings.value("AntennaBiDirectional").toBool();
+
+			if (antFixed[i]) {
+				setRotatorAngle(i,antFixedAngle[i]);
+			}
 		}
 
 		settings.endArray();
+
+		settings.endGroup();
+
+		settings.beginGroup("PresetButtons");
+
+		pushButtonPreset1->setText(settings.value("Preset1Text").toString());
+		pushButtonPreset2->setText(settings.value("Preset2Text").toString());
+		pushButtonPreset3->setText(settings.value("Preset3Text").toString());
+		pushButtonPreset4->setText(settings.value("Preset4Text").toString());
+		pushButtonPreset5->setText(settings.value("Preset5Text").toString());
+
+		presetButtonValue[0] = settings.value("Preset1Angle").toInt();
+		presetButtonValue[1] = settings.value("Preset2Angle").toInt();
+		presetButtonValue[2] = settings.value("Preset3Angle").toInt();
+		presetButtonValue[3] = settings.value("Preset4Angle").toInt();
+		presetButtonValue[4] = settings.value("Preset5Angle").toInt();
 
 		settings.endGroup();
 
@@ -171,22 +209,85 @@ void RotatorDialog::loadBand(int bandIndex) {
 		groupBoxAnt3->setVisible(false);
 		groupBoxAnt4->setVisible(false);
 
-		if (antExist[0])
+		pushButtonAnt1->setVisible(false);
+		pushButtonAnt2->setVisible(false);
+		pushButtonAnt3->setVisible(false);
+		pushButtonAnt4->setVisible(false);
+
+		if (antExist[0]) {
 			groupBoxAnt1->setVisible(true);
-		if (antExist[1])
+			pushButtonAnt1->setVisible(true);
+
+			if (antHasRotor[0])
+				pushButtonAnt1->setEnabled(true);
+			else {
+				pushButtonAnt1->setEnabled(false);
+				currAntIndex = -1;
+				pushButtonAnt1->setChecked(false);
+			}
+		}
+
+		if (antExist[1]) {
 			groupBoxAnt2->setVisible(true);
-		if (antExist[2])
+			pushButtonAnt2->setVisible(true);
+
+			if (antHasRotor[1]) {
+				pushButtonAnt2->setEnabled(true);
+
+				if (currAntIndex == -1) {
+					currAntIndex = 1;
+					pushButtonAnt2->setChecked(true);
+				}
+			}
+			else {
+				pushButtonAnt2->setEnabled(false);
+			}
+		}
+
+		if (antExist[2]) {
 			groupBoxAnt3->setVisible(true);
-		if (antExist[3])
+			pushButtonAnt3->setVisible(true);
+
+			if (antHasRotor[2]) {
+				pushButtonAnt3->setEnabled(true);
+
+				if (currAntIndex == -1) {
+					currAntIndex = 2;
+					pushButtonAnt3->setChecked(true);
+				}
+			}
+			else
+				pushButtonAnt3->setEnabled(false);
+		}
+
+		if (antExist[3]) {
 			groupBoxAnt4->setVisible(true);
+			pushButtonAnt4->setVisible(true);
+
+			if (antHasRotor[3]) {
+				pushButtonAnt4->setEnabled(true);
+
+				if (currAntIndex == -1) {
+					currAntIndex = 3;
+					pushButtonAnt4->setChecked(true);
+				}
+			}
+			else
+				pushButtonAnt4->setEnabled(false);
+		}
 
 		labelAnt1Title->setText(antName[0]);
 		labelAnt2Title->setText(antName[1]);
 		labelAnt3Title->setText(antName[2]);
 		labelAnt4Title->setText(antName[3]);
 
-
+		labelAnt1Status->setText("Stopped");
+		labelAnt2Status->setText("Stopped");
+		labelAnt3Status->setText("Stopped");
+		labelAnt4Status->setText("Stopped");
 	}
+
+	repaint();
 }
 
 void RotatorDialog::setRotatorAngle(int antIndex, int angle) {
@@ -206,26 +307,86 @@ void RotatorDialog::setRotatorAngle(int antIndex, int angle) {
 	}
 }
 
+void RotatorDialog::pushButtonAnt1Clicked() {
+	pushButtonAnt1->setChecked(true);
+	pushButtonAnt2->setChecked(false);
+	pushButtonAnt3->setChecked(false);
+	pushButtonAnt4->setChecked(false);
+
+	currAntIndex = 0;
+}
+
+void RotatorDialog::pushButtonAnt2Clicked() {
+	pushButtonAnt1->setChecked(false);
+	pushButtonAnt2->setChecked(true);
+	pushButtonAnt3->setChecked(false);
+	pushButtonAnt4->setChecked(false);
+
+	currAntIndex = 1;
+}
+
+void RotatorDialog::pushButtonAnt3Clicked() {
+	pushButtonAnt1->setChecked(false);
+	pushButtonAnt2->setChecked(false);
+	pushButtonAnt3->setChecked(true);
+	pushButtonAnt4->setChecked(false);
+
+	currAntIndex = 2;
+}
+
+void RotatorDialog::pushButtonAnt4Clicked() {
+	pushButtonAnt1->setChecked(false);
+	pushButtonAnt2->setChecked(false);
+	pushButtonAnt3->setChecked(false);
+	pushButtonAnt4->setChecked(true);
+
+	currAntIndex = 3;
+}
+
+void RotatorDialog::pushButtonPreset1Clicked() {
+	setTargetDir(currAntIndex,presetButtonValue[0]);
+}
+
+void RotatorDialog::pushButtonPreset2Clicked() {
+	setTargetDir(currAntIndex,presetButtonValue[1]);
+}
+
+void RotatorDialog::pushButtonPreset3Clicked() {
+	setTargetDir(currAntIndex,presetButtonValue[2]);
+}
+
+void RotatorDialog::pushButtonPreset4Clicked() {
+	setTargetDir(currAntIndex,presetButtonValue[3]);
+}
+
+void RotatorDialog::pushButtonPreset5Clicked() {
+	setTargetDir(currAntIndex,presetButtonValue[4]);
+}
+
+void RotatorDialog::pushButtonSTOPClicked() {
+	qDebug("STOP");
+}
+
 RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
     setupUi(this);
 
     this->resize(800,600);
-    imagePath = "../src/maps/map.jpg";
+		imagePath = "maps/map.jpg";
 
     sizeWidth = 600;
     sizeHeight = 600;
 
-    currAzimuthAngle[0] = 305;
+		setRotatorAngle(0,305);
     targetAzimuthAngle[0] = 305;
 
-    currAzimuthAngle[1] = 50;
+		setRotatorAngle(1,60);
     targetAzimuthAngle[1] = 60;
 
-    currAzimuthAngle[2] = 180;
+		setRotatorAngle(2,185);
     targetAzimuthAngle[2] = 185;
 
-    currAzimuthAngle[3] = 0;
-    targetAzimuthAngle[3] = 0;
+		setRotatorAngle(3,230);
+		targetAzimuthAngle[3] = 185;
 
 		rotationEventStatus = 0;
 
@@ -233,12 +394,40 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, 
 
     QPalette plt;
     plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
     groupBoxAnt1->setPalette(plt);
+		pushButtonAnt1->setPalette(plt);
 
     plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
     groupBoxAnt2->setPalette(plt);
+		pushButtonAnt2->setPalette(plt);
 
     plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
     groupBoxAnt3->setPalette(plt);
+		pushButtonAnt3->setPalette(plt);
+
+		plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+		groupBoxAnt4->setPalette(plt);
+		pushButtonAnt4->setPalette(plt);
+
+		connect(pushButtonAnt1, SIGNAL(clicked()), this, SLOT(pushButtonAnt1Clicked()));
+		connect(pushButtonAnt2, SIGNAL(clicked()), this, SLOT(pushButtonAnt2Clicked()));
+		connect(pushButtonAnt3, SIGNAL(clicked()), this, SLOT(pushButtonAnt3Clicked()));
+		connect(pushButtonAnt4, SIGNAL(clicked()), this, SLOT(pushButtonAnt4Clicked()));
+
+		connect(pushButtonPreset1, SIGNAL(clicked()), this, SLOT(pushButtonPreset1Clicked()));
+		connect(pushButtonPreset2, SIGNAL(clicked()), this, SLOT(pushButtonPreset2Clicked()));
+		connect(pushButtonPreset3, SIGNAL(clicked()), this, SLOT(pushButtonPreset3Clicked()));
+		connect(pushButtonPreset4, SIGNAL(clicked()), this, SLOT(pushButtonPreset4Clicked()));
+		connect(pushButtonPreset5, SIGNAL(clicked()), this, SLOT(pushButtonPreset5Clicked()));
+		connect(pushButtonSTOP, SIGNAL(clicked()), this, SLOT(pushButtonSTOPClicked()));
+
+		pushButtonAnt1->setChecked(true);
+		pushButtonAnt2->setChecked(false);
+		pushButtonAnt3->setChecked(false);
+		pushButtonAnt4->setChecked(false);
 }
 //

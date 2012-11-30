@@ -59,9 +59,25 @@ private:
 	QString antName[4];
 	bool antExist[4];
 	bool antHasRotor[4];
+	bool antBiDirectional[4];
+	bool antFixed[4];
 	int antBeamWidth[4];
+	int antFixedAngle[4];
 	bool antVerticalArray[4];
+	int presetButtonValue[5];
 private slots:
+
+public slots:
+	void pushButtonAnt1Clicked();
+	void pushButtonAnt2Clicked();
+	void pushButtonAnt3Clicked();
+	void pushButtonAnt4Clicked();
+	void pushButtonPreset1Clicked();
+	void pushButtonPreset2Clicked();
+	void pushButtonPreset3Clicked();
+	void pushButtonPreset4Clicked();
+	void pushButtonPreset5Clicked();
+	void pushButtonSTOPClicked();
 };
 #endif
 
