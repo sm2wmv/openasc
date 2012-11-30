@@ -109,12 +109,20 @@ static Rotator rotator_sm[ROTATOR_COUNT];
 
 //! QF_active[] array defines all active object control blocks
 QActiveCB const Q_ROM Q_ROM_VAR QF_active[ROTATOR_COUNT + 1] = {
-  {(QActive *)0,              (QEvent *)0,      0                      },
-  {(QActive *)&rotator_sm[0], rotator_queue[0], Q_DIM(rotator_queue[0])},
-  {(QActive *)&rotator_sm[1], rotator_queue[1], Q_DIM(rotator_queue[1])},
-  {(QActive *)&rotator_sm[2], rotator_queue[2], Q_DIM(rotator_queue[2])},
-  {(QActive *)&rotator_sm[3], rotator_queue[3], Q_DIM(rotator_queue[3])},
-  {(QActive *)&rotator_sm[4], rotator_queue[4], Q_DIM(rotator_queue[4])}
+   {(QActive *)0,              (QEvent *)0,      0                      }
+  ,{(QActive *)&rotator_sm[0], rotator_queue[0], Q_DIM(rotator_queue[0])}
+#if ROTATOR_COUNT > 1
+  ,{(QActive *)&rotator_sm[1], rotator_queue[1], Q_DIM(rotator_queue[1])}
+#endif
+#if ROTATOR_COUNT > 2
+  ,{(QActive *)&rotator_sm[2], rotator_queue[2], Q_DIM(rotator_queue[2])}
+#endif
+#if ROTATOR_COUNT > 3
+  ,{(QActive *)&rotator_sm[3], rotator_queue[3], Q_DIM(rotator_queue[3])}
+#endif
+#if ROTATOR_COUNT > 4
+  ,{(QActive *)&rotator_sm[4], rotator_queue[4], Q_DIM(rotator_queue[4])}
+#endif
 };
 
 /* make sure that the QF_active[] array matches QF_MAX_ACTIVE in qpn_port.h */
