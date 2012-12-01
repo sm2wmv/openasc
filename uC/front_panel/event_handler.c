@@ -53,7 +53,8 @@
 #include "display_handler.h"
 #include "sequencer.h"
 #include "../remote_commands.h"
-#include "../comm_interface.h"
+#include"../comm_interface.h"
+#include "ethernet.h"
 
 //#define DEBUG_WMV_BUS 1
 
@@ -1383,7 +1384,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 		for (unsigned char i=0;i<bus_message.length;i++)
 			printf("DEBUG-> Data #%02i:  0x%02X\n",i,bus_message.data[i]);
 	#endif
-	
+
 	if (bus_message.cmd == BUS_CMD_ACK)
 		bus_message_acked(bus_message.from_addr);
 	else if (bus_message.cmd == BUS_CMD_NACK)
@@ -1419,6 +1420,11 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
           //If the remote mode is active, we send the new heading to the motherboard, of this antenna
           if (remote_control_get_remote_mode()) {
             remote_control_send_antenna_dir_info(i);
+          }
+          
+          if (ethernet_is_active()) {
+            char temp[3] = {i,curr_heading >> 8, curr_heading & 0xFF};
+            ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,3,(char *)temp);
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))
@@ -1459,7 +1465,10 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 			powermeter_update_values((bus_message.data[1] << 8)+bus_message.data[2], (bus_message.data[3] << 8) + bus_message.data[4], (bus_message.data[5] << 8)+bus_message.data[6],bus_message.data[0]);
   }
   else if (bus_message.cmd == BUS_CMD_ASCII_DATA) {
-    internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
+    if (ethernet_is_active())
+      ethernet_send_data(0,REMOTE_COMMAND_TERMINAL_DATA,bus_message.length,bus_message.data);
+    else
+      internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, bus_message.length, (char *)bus_message.data);
   }
   else if (bus_message.cmd == BUS_CMD_AMPLIFIER_GET_STATUS) {
     if ((main_get_amp_addr() == bus_message.from_addr) && (main_get_amp_sub_addr() == bus_message.data[0])) {

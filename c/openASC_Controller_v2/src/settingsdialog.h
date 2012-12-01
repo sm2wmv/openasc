@@ -20,17 +20,54 @@ public:
 	virtual ~SettingsDialog();
 	QString getNetworkIPAddress(void);
 	int getNetworkPort(void);
-protected:
-    virtual void changeEvent(QEvent *e);
+	int getPosMainWindowX();
+	int getPosMainWindowY();
+	int getPosKeypadWindowX();
+	int getPosKeypadWindowY();
+	int getPosRotatorWindowX();
+	int getPosRotatorWindowY();
+	int getPosTerminalWindowX();
+	int getPosTerminalWindowY();
 
+	void setPosMainWindowX(int pos);
+	void setPosMainWindowY(int pos);
+	void setPosKeypadWindowX(int pos);
+	void setPosKeypadWindowY(int pos);
+	void setPosRotatorWindowX(int pos);
+	void setPosRotatorWindowY(int pos);
+	void setPosTerminalWindowX(int pos);
+	void setPosTerminalWindowY(int pos);
+
+	void setKeypadWindowOpen(bool state);
+	void setRotatorWindowOpen(bool state);
+	void setTerminalWindowOpen(bool state);
+	bool getTerminalWindowOpen();
+	bool getRotatorWindowOpen();
+	bool getKeypadWindowOpen();
+
+	void saveSettings();
+protected:
+	virtual void changeEvent(QEvent *e);
 private:
-    Ui::SettingsDialog *m_ui;
-		QString strNetworkIPAddress;
-		int iNetworkPort;
+	Ui::SettingsDialog *m_ui;
+	QString strNetworkIPAddress;
+	int iNetworkPort;
+	int mainWindowPosX;
+	int mainWindowPosY;
+	int keypadWindowPosX;
+	int keypadWindowPosY;
+	int rotatorWindowPosX;
+	int rotatorWindowPosY;
+	int terminalWindowPosX;
+	int terminalWindowPosY;
+
+	bool keypadWindowOpen;
+	bool rotatorWindowOpen;
+	bool terminalWindowOpen;
 public slots:
-		void groupboxNetworkClicked(bool state);
-		void btnOKClicked();
-		void btnCancelClicked();
+	void groupboxNetworkClicked(bool state);
+	void btnOKClicked();
+	void btnCancelClicked();
 };
 
 #endif // SETTINGSDIALOG_H

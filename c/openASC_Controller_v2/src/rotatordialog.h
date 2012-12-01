@@ -13,6 +13,10 @@
 #include <QBrush>
 #include <QSettings>
 
+#include "tcpclass.h"
+
+#include "../../../uC/remote_commands.h"
+
 #define TARGET_DIR_BEAMWIDTH	1
 #define TARGET_DIR_BEAMWIDTH_A1_COLOR	red
 #define CURRENT_DIR_BEAMWIDTH_A1_COLOR	black
@@ -35,16 +39,16 @@ public:
 	void setTargetDir(int antIndex, int targetAngle);
 	void setAntName(int antIndex, QString name);
 	void loadBand(int bandIndex);
-	void setRotatorAngle(int antIndex, int angle);
-	char getRotationEventStatus(void);
+	void setRotatorAngle(int antIndex, unsigned int angle);
 	int getTargetDir(unsigned char antIndex);
-	int getActiveAntenna();
 	void setRotatorFlag(unsigned char antIndex, unsigned char flags);
+	void setCOMMPtr(TCPClass *ptr);
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent ( QMouseEvent * event );
 	QSettings settings;
 private:
+	TCPClass *TCPComm;
 	void loadMap(QString path);
 	QString imagePath;
 	int currAzimuthAngle[4];
@@ -54,7 +58,6 @@ private:
 	int sizeHeight;
 	QImage image;
 	unsigned char rotationEventStatus;
-
 	QString bandName;
 	QString antName[4];
 	bool antExist[4];
@@ -78,6 +81,10 @@ public slots:
 	void pushButtonPreset4Clicked();
 	void pushButtonPreset5Clicked();
 	void pushButtonSTOPClicked();
+	void pushButtonRotateCWPressed();
+	void pushButtonRotateCCWPressed();
+	void pushButtonRotateCWReleased();
+	void pushButtonRotateCCWReleased();
 };
 #endif
 

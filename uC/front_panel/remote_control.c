@@ -58,6 +58,8 @@ static unsigned char remote_update_sub_menu_info_ant2 = 0;
 static unsigned char remote_update_sub_menu_info_ant3 = 0;
 static unsigned char remote_update_sub_menu_info_ant4 = 0;
 
+static unsigned char ascii_comm_dev_addr = 0;
+
 //static char linefeed[3] = {"\r\n\0"};
 //static char huh[7] = {"Huh?\r\n\0"};
 
@@ -76,6 +78,43 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
       break;
     case REMOTE_COMMAND_FORCE_RESET:
       forceHardReset();
+      break;
+    case REMOTE_COMMAND_TERMINAL_CONNECT:
+      ascii_comm_dev_addr = data[0]; 
+      break;
+    case REMOTE_COMMAND_TERMINAL_DATA:
+      if (ascii_comm_dev_addr != 0) {
+        bus_add_tx_message(bus_get_address(), ascii_comm_dev_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,length,data);
+      }
+      break;
+    case REMOTE_COMMAND_ROTATOR_SET_HEADING:
+      #ifdef DEBUG_COMPUTER_USART_ENABLED
+        printf("NEW HEADING[%i]: %i\r\n",data[0],(data[1]<<8)+data[2]);
+      #endif
+
+      if (length > 2)
+        antenna_ctrl_rotate(data[0],(data[1]<<8) + data[2]);
+      break;
+    case REMOTE_COMMAND_ROTATOR_STOP:
+      #ifdef DEBUG_COMPUTER_USART_ENABLED
+        printf("STOP ROTATOR[%i]\r\n",data[0]);
+      #endif
+      antenna_ctrl_rotate_set_ant_index(data[0]);
+      antenna_ctrl_rotate_stop();
+      break;
+    case REMOTE_COMMAND_ROTATOR_TURN_CW:
+      #ifdef DEBUG_COMPUTER_USART_ENABLED
+        printf("TURN ROTATOR CW[%i]\r\n",data[0]);
+      #endif
+      antenna_ctrl_rotate_set_ant_index(data[0]);
+      antenna_ctrl_rotate_cw();
+      break;
+    case REMOTE_COMMAND_ROTATOR_TURN_CCW:
+      #ifdef DEBUG_COMPUTER_USART_ENABLED
+        printf("TURN ROTATOR CCW[%i]\r\n",data[0]);
+      #endif
+      antenna_ctrl_rotate_set_ant_index(data[0]);
+      antenna_ctrl_rotate_ccw();
       break;
     default:
       break;

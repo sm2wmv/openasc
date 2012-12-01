@@ -45,5 +45,16 @@
 #define REMOTE_COMMAND_STATUS                     0xB4
 #define REMOTE_COMMAND_SET_NEW_BAND               0xB5
 #define REMOTE_COMMAND_FORCE_RESET                0xB6
+#define REMOTE_COMMAND_TERMINAL_CONNECT           0xB7
+#define REMOTE_COMMAND_TERMINAL_DATA              0xB8
+#define REMOTE_COMMAND_CONNECTED                  0xB9
+//! Set the heading of a rotator
+#define REMOTE_COMMAND_ROTATOR_SET_HEADING        0xBA
+//! Stop the rotation
+#define REMOTE_COMMAND_ROTATOR_STOP               0xBB
+//! Turn the rotator CW
+#define REMOTE_COMMAND_ROTATOR_TURN_CW            0xBC
+//! Turn the rotator CCW
+#define REMOTE_COMMAND_ROTATOR_TURN_CCW           0xBD
 
 #endif

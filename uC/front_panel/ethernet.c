@@ -555,6 +555,8 @@ void ethernet_process(void) {
           printf("ETH >> Sending RX antenna info\r\n");
         #endif
 
+        ethernet_send_data(0,REMOTE_COMMAND_CONNECTED,0,0);
+          
         remote_control_send_status();
         remote_control_send_rx_antennas();
         glcd_ethernet_send_disp();

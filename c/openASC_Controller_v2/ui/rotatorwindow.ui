@@ -238,10 +238,6 @@
      <string/>
     </property>
    </widget>
-   <zorder>labelAnt2Dir</zorder>
-   <zorder>labelAnt2Title</zorder>
-   <zorder>labelAnt2Status</zorder>
-   <zorder>pushButton</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBoxAnt3">
    <property name="geometry">
@@ -416,7 +412,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>26</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -439,7 +435,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>26</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -462,7 +458,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>26</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -485,7 +481,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>26</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -508,7 +504,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -531,7 +527,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -554,7 +550,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -577,7 +573,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -600,7 +596,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -660,7 +656,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -670,6 +666,46 @@
    </property>
    <property name="checkable">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonRotateCCW">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>540</y>
+     <width>55</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>CCW</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonRotateCW">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>540</y>
+     <width>55</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>CW</string>
    </property>
   </widget>
  </widget>
