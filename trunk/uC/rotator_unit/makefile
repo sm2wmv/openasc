@@ -62,6 +62,8 @@ TARGET = main
 DEVICE_TYPE = DEVICE_TYPE_ROTATOR_UNIT
 BASE_ADDRESS = 0x00
 
+EVENT_LIST_SIZE=7
+
 #The size of the RX queue in buffers
 BUS_RX_QUEUE_SIZE = 8
 #The size of the TX queue in buffers
@@ -127,7 +129,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE)
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE) -DEVENT_LIST_SIZE=$(EVENT_LIST_SIZE)
 
 
 

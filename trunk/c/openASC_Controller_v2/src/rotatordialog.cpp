@@ -60,23 +60,21 @@ void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
 
 		qDebug("TARGET_DIR[%i]: %d",antIndex,targetAngle);
 
+		if (TCPComm->isConnected()) {
+			QByteArray temp;
+			temp.append(antIndex);
+			temp.append(targetAngle >> 8);
+			temp.append(targetAngle & 0xFF);
+
+			TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_SET_HEADING,temp.length(),temp);
+		}
+
 		rotationEventStatus = 1;
 	}
 }
 
-char RotatorDialog::getRotationEventStatus(void) {
-	unsigned char temp = rotationEventStatus;
-	rotationEventStatus = 0;
-
-	return(temp);
-}
-
 int RotatorDialog::getTargetDir(unsigned char antIndex) {
 	return(targetAzimuthAngle[antIndex]);
-}
-
-int RotatorDialog::getActiveAntenna(){
-	return(currAntIndex);
 }
 
 void RotatorDialog::setRotatorFlag(unsigned char antIndex, unsigned char flags) {
@@ -139,6 +137,9 @@ void RotatorDialog::loadBand(int bandIndex) {
 			break;
 		case 9: bandName = "10m";
 			break;
+		default:
+			bandName = "None";
+			break;
 	}
 
 	if (bandIndex == 0) {
@@ -147,7 +148,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antExist[i] = false;
 			antBeamWidth[i] = 0;
 			antVerticalArray[i] = false;
-
 		}
 
 		groupBoxAnt1->setVisible(false);
@@ -159,8 +159,28 @@ void RotatorDialog::loadBand(int bandIndex) {
 		pushButtonAnt2->setVisible(false);
 		pushButtonAnt3->setVisible(false);
 		pushButtonAnt4->setVisible(false);
+
+		pushButtonRotateCCW->setEnabled(false);
+		pushButtonRotateCW->setEnabled(false);
+
+		pushButtonPreset1->setEnabled(false);
+		pushButtonPreset2->setEnabled(false);
+		pushButtonPreset3->setEnabled(false);
+		pushButtonPreset4->setEnabled(false);
+		pushButtonPreset5->setEnabled(false);
+		pushButtonSTOP->setEnabled(false);
 	}
 	else {
+		pushButtonPreset1->setEnabled(true);
+		pushButtonPreset2->setEnabled(true);
+		pushButtonPreset3->setEnabled(true);
+		pushButtonPreset4->setEnabled(true);
+		pushButtonPreset5->setEnabled(true);
+		pushButtonSTOP->setEnabled(true);
+
+		pushButtonRotateCCW->setEnabled(true);
+		pushButtonRotateCW->setEnabled(true);
+
 		QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
 
 		settings.beginGroup(bandName);
@@ -290,7 +310,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 	repaint();
 }
 
-void RotatorDialog::setRotatorAngle(int antIndex, int angle) {
+void RotatorDialog::setRotatorAngle(int antIndex, unsigned int angle) {
 	if (antIndex < 4) {
 		currAzimuthAngle[antIndex] = angle;
 
@@ -304,6 +324,30 @@ void RotatorDialog::setRotatorAngle(int antIndex, int angle) {
 			labelAnt4Dir->setText(QString::number(angle)+'°');
 
 		repaint();
+	}
+}
+
+void RotatorDialog::pushButtonRotateCWPressed() {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_TURN_CW,currAntIndex);
+	}
+}
+
+void RotatorDialog::pushButtonRotateCCWPressed() {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_TURN_CCW,currAntIndex);
+	}
+}
+
+void RotatorDialog::pushButtonRotateCWReleased() {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
+	}
+}
+
+void RotatorDialog::pushButtonRotateCCWReleased() {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
 	}
 }
 
@@ -343,6 +387,10 @@ void RotatorDialog::pushButtonAnt4Clicked() {
 	currAntIndex = 3;
 }
 
+void RotatorDialog::setCOMMPtr(TCPClass *ptr) {
+	TCPComm = ptr;
+}
+
 void RotatorDialog::pushButtonPreset1Clicked() {
 	setTargetDir(currAntIndex,presetButtonValue[0]);
 }
@@ -364,6 +412,10 @@ void RotatorDialog::pushButtonPreset5Clicked() {
 }
 
 void RotatorDialog::pushButtonSTOPClicked() {
+	if (TCPComm->isConnected()) {
+		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
+	}
+
 	qDebug("STOP");
 }
 
@@ -425,9 +477,16 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, 
 		connect(pushButtonPreset5, SIGNAL(clicked()), this, SLOT(pushButtonPreset5Clicked()));
 		connect(pushButtonSTOP, SIGNAL(clicked()), this, SLOT(pushButtonSTOPClicked()));
 
+		connect(pushButtonRotateCCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCCWPressed()));
+		connect(pushButtonRotateCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCWPressed()));
+		connect(pushButtonRotateCCW, SIGNAL(released()), this, SLOT(pushButtonRotateCCWReleased()));
+		connect(pushButtonRotateCW, SIGNAL(released()), this, SLOT(pushButtonRotateCWReleased()));
+
 		pushButtonAnt1->setChecked(true);
 		pushButtonAnt2->setChecked(false);
 		pushButtonAnt3->setChecked(false);
 		pushButtonAnt4->setChecked(false);
+
+		loadBand(0);
 }
 //

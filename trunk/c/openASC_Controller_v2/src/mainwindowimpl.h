@@ -54,6 +54,7 @@ private:
 		QTimer *timerPollRXQueue;
 		QTimer *timerPollStatus;
 		status_struct status;
+		int currBand;
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
