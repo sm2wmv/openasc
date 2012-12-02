@@ -671,7 +671,7 @@
   <widget class="QPushButton" name="pushButtonRotateCCW">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>480</x>
      <y>540</y>
      <width>55</width>
      <height>55</height>
@@ -691,7 +691,7 @@
   <widget class="QPushButton" name="pushButtonRotateCW">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>540</x>
      <y>540</y>
      <width>55</width>
      <height>55</height>

@@ -12,19 +12,34 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
 		strNetworkIPAddress = settings.value("networkIPAddress").toString();
 		iNetworkPort = settings.value("networkPort").toInt();
 
-		mainWindowPosX = settings.value("mainWindowPosX").toInt();
-		mainWindowPosY = settings.value("mainWindowPosY").toInt();
-		keypadWindowPosX = settings.value("keypadWindowPosX").toInt();
-		keypadWindowPosY = settings.value("keypadWindowPosY").toInt();
-		rotatorWindowPosX = settings.value("rotatorWindowPosX").toInt();
-		rotatorWindowPosY = settings.value("rotatorWindowPosY").toInt();
-		terminalWindowPosX = settings.value("terminalWindowPosX").toInt();
-		terminalWindowPosY = settings.value("terminalWindowPosY").toInt();
+		if (settings.contains("mainWindowPosX")) {
+			mainWindowPosX = settings.value("mainWindowPosX").toInt();
+			mainWindowPosY = settings.value("mainWindowPosY").toInt();
+			keypadWindowPosX = settings.value("keypadWindowPosX").toInt();
+			keypadWindowPosY = settings.value("keypadWindowPosY").toInt();
+			rotatorWindowPosX = settings.value("rotatorWindowPosX").toInt();
+			rotatorWindowPosY = settings.value("rotatorWindowPosY").toInt();
+			terminalWindowPosX = settings.value("terminalWindowPosX").toInt();
+			terminalWindowPosY = settings.value("terminalWindowPosY").toInt();
 
-		terminalWindowOpen = settings.value("terminalWindowOpen").toBool();
-		rotatorWindowOpen = settings.value("rotatorWindowOpen").toBool();
-		keypadWindowOpen = settings.value("keypadWindowOpen").toBool();
+			terminalWindowOpen = settings.value("terminalWindowOpen").toBool();
+			rotatorWindowOpen = settings.value("rotatorWindowOpen").toBool();
+			keypadWindowOpen = settings.value("keypadWindowOpen").toBool();
+		}
+		else {
+			mainWindowPosX = 100;
+			mainWindowPosY = 100;
+			keypadWindowPosX = 100;
+			keypadWindowPosY = 100;
+			rotatorWindowPosX = 100;
+			rotatorWindowPosY = 100;
+			terminalWindowPosX = 100;
+			terminalWindowPosY = 100;
 
+			terminalWindowOpen = false;
+			rotatorWindowOpen = false;
+			keypadWindowOpen = false;
+		}
 
 		settings.endGroup();
 
