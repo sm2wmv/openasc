@@ -156,6 +156,8 @@
 /*! The amplifier is standby */
 #define AMP_OP_STATUS_STDBY         6
 
+/*--------------------------------------------------------------------------*/
+
 /*! Set the target rotation direction and start rotation */
 #define BUS_CMD_ROTATOR_SET_ANGLE		0x60
 /*! Get the current direction */
@@ -175,6 +177,19 @@
  * Byte 1 - Status (1=error set, 0=error cleared)
  * Byte 2 - Error code (only valid when status == 1) */
 #define BUS_CMD_ROTATOR_ERROR				0x67
+
+//! The rotator is currently standing still
+#define FLAG_ROTATOR_NO_ROTATION					1
+//! The rotator is allowed to be rotated
+#define FLAG_ROTATOR_ROTATION_ALLOWED			2
+//! The rotator is being rotated CW
+#define FLAG_ROTATOR_ROTATION_CW					3
+//! The rotator is being rotated CCW
+#define FLAG_ROTATOR_ROTATION_CCW					4
+//! The rotator rotates over south
+#define FLAG_ROTATOR_ROTATES_OVER_SOUTH   5
+
+/*--------------------------------------------------------------------------*/
 
 /*! PowerMeter information */
 #define BUS_CMD_POWERMETER_STATUS 		0x70

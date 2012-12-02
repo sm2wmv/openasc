@@ -32,14 +32,6 @@
 #include "../internal_comm.h"
 #include "../internal_comm_commands.h"
 
-#define FLAG_NO_ROTATION          1
-//! The rotator is allowed to be rotated
-#define FLAG_ROTATION_ALLOWED     2
-//! The rotator is being rotated CW
-#define FLAG_ROTATION_CW          3
-//! The rotator is being rotated CCW
-#define FLAG_ROTATION_CCW         4
-
 //! External keyboard keycode for Button 1
 #define KEYPAD_BTN_1 			0x69
 //! External keyboard keycode for Button 2

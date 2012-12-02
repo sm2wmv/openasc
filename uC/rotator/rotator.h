@@ -146,6 +146,14 @@ int8_t rotator_rotate_ccw(uint8_t rot_idx);
 int8_t rotator_stop(uint8_t rot_idx);
 
 /**
+ * \brief   Get rotation direction
+ * \param   rot_idx The rotator index
+ * \returns Return 0 if the rotator is stopped, > 0 if the rotator is rotating
+ *          CW and < 0 if the rotator is rotating CCW.
+ */
+int8_t rotator_rotate_dir(uint8_t rot_idx);
+
+/**
  * \brief   Return the current rotator heading in degrees
  * \param   rot_idx The rotator index
  * \returns Returns the current heading in degrees

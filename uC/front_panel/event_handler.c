@@ -1427,7 +1427,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
             ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,3,(char *)temp);
           }
 
-          if (((bus_message.data[6] & (1<<FLAG_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATION_CW)) != 0))
+          if (((bus_message.data[6] & (1<<FLAG_ROTATOR_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATOR_ROTATION_CW)) != 0))
             ant_rotating_indicator |= (1<<i);
           else 
             ant_rotating_indicator &= ~(1<<i);
