@@ -468,6 +468,9 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 					temp[0] = rxMessage.at(4);
 					temp[1] = rxMessage.at(5);
 					rotatorWindow->setRotatorAngle(rxMessage.at(3),(temp[0] << 8) + temp[1]);
+					rotatorWindow->setRotatorStatusText(rxMessage.at(3),rxMessage.at(6));
+
+					qDebug("[6]: 0x%02X",rxMessage.at(6));
 				}
       }
     }

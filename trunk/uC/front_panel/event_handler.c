@@ -1423,8 +1423,8 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
           }
           
           if (ethernet_is_active()) {
-            char temp[3] = {i,curr_heading >> 8, curr_heading & 0xFF};
-            ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,3,(char *)temp);
+            char temp[4] = {i,curr_heading >> 8, curr_heading & 0xFF,bus_message.data[6]};
+            ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,4,(char *)temp);
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATOR_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATOR_ROTATION_CW)) != 0))
