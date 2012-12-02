@@ -343,12 +343,12 @@ static int8_t handle_caloff_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
 
 
 static int8_t handle_ccwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  return rotator_set_ccw_limit(current_rot_idx, atoi(argv[2]));
+  return rotator_set_ccw_limit(current_rot_idx, atoi(argv[1]));
 }
 
 
 static int8_t handle_cwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  return rotator_set_cw_limit(current_rot_idx, atoi(argv[2]));
+  return rotator_set_cw_limit(current_rot_idx, atoi(argv[1]));
 }
 
 
