@@ -90,6 +90,7 @@ static int8_t handle_dir_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_defaults_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_reset_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_select_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 
 
 /******************************************************************************
@@ -102,6 +103,8 @@ static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static uint16_t counter_sync = 0;
 //! Counter to keep track of when to send a ping out on the bus
 static uint16_t counter_ping_interval = 0;
+//! Currently selected rotator index for the ASCII command parser
+static uint8_t current_rot_idx = 0;
 
 
 /******************************************************************************
@@ -114,31 +117,33 @@ static uint16_t counter_ping_interval = 0;
 AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
   { "help",     0, 0, handle_help_cmd },
   { "ver",      0, 0, handle_ver_cmd },
-  { "calon",    1, 1, handle_calon_cmd },
-  { "caloff",   1, 1, handle_caloff_cmd },
-  { "ccwlim",   2, 2, handle_ccwlim_cmd },
-  { "cwlim",    2, 2, handle_cwlim_cmd },
-  { "dir",      1, 1, handle_dir_cmd },
+  { "calon",    0, 0, handle_calon_cmd },
+  { "caloff",   0, 0, handle_caloff_cmd },
+  { "ccwlim",   1, 1, handle_ccwlim_cmd },
+  { "cwlim",    1, 1, handle_cwlim_cmd },
+  { "dir",      0, 0, handle_dir_cmd },
   { "defaults", 0, 0, handle_defaults_cmd },
   { "reset",    0, 0, handle_reset_cmd },
-  { "status",   0, 1, handle_status_cmd }
+  { "status",   0, 1, handle_status_cmd },
+  { "select",   1, 1, handle_select_cmd }
 };
 //! The number of defined commands
 const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(bus_ascii_cmd_list)
                                           / sizeof(AsciiCommand);
 //! ASCII command prompt
-char bus_ascii_cmd_prompt[] = "> ";
+char bus_ascii_cmd_prompt[] = "0> ";
 //! Help text for ASCII commands
 const char bus_ascii_cmd_help[] PROGMEM = 
   "defaults\t\t"             "Load default setup\n"
   "reset\t\t"                "Hardware reset\n"
   "ver\t\t"                  "Print version\n"
-  "calon <idx>\t"            "Enter calibration mode\n"
-  "caloff <idx>\t"           "Exit calibration mode\n"
-  "ccwlim <idx> <deg>\t"     "Set CCW limit\n"
-  "cwlim <idx> <deg>\t"      "Set CW limit\n"
-  "dir <idx>\t\t"            "Print direction\n"
-  "status [clear]\t"         "Print or clear rotator status\n";
+  "calon\t\t"                "Enter calibration mode\n"
+  "caloff\t\t"               "Exit calibration mode\n"
+  "ccwlim <deg>\t"           "Set CCW limit\n"
+  "cwlim <deg>\t"            "Set CW limit\n"
+  "dir\t\t"                  "Print direction\n"
+  "status [clear]\t"         "Print or clear rotator status\n"
+  "select <idx>\t"           "Select rotator\n";
 
 
 /******************************************************************************
@@ -328,29 +333,28 @@ static int8_t handle_ver_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
 
 
 static int8_t handle_calon_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  return rotator_cal_on(argv[1][0]-'0');
+  return rotator_cal_on(current_rot_idx);
 }
 
 
 static int8_t handle_caloff_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  return rotator_cal_off(argv[1][0]-'0');
+  return rotator_cal_off(current_rot_idx);
 }
 
 
 static int8_t handle_ccwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  return rotator_set_ccw_limit(argv[1][0]-'0', atoi(argv[2]));
+  return rotator_set_ccw_limit(current_rot_idx, atoi(argv[2]));
 }
 
 
 static int8_t handle_cwlim_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  return rotator_set_cw_limit(argv[1][0]-'0', atoi(argv[2]));
+  return rotator_set_cw_limit(current_rot_idx, atoi(argv[2]));
 }
 
 
 static int8_t handle_dir_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
-  uint8_t rot_idx = argv[1][0]-'0';
-  int16_t dir = rotator_current_heading_raw(rot_idx);
-  int16_t dir_deg = rotator_current_heading(rot_idx);
+  int16_t dir = rotator_current_heading_raw(current_rot_idx);
+  int16_t dir_deg = rotator_current_heading(current_rot_idx);
   if ((dir == -1) || (dir_deg == -1)) {
     return -1;
   }
@@ -392,6 +396,18 @@ static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
   if (last_assertion_str[0] != 0) {
     bus_ascii_cmd_sendf(from_addr, "\nASSERT[%s]\n", last_assertion_str);
   }
+  return 0;
+}
+
+
+static int8_t handle_select_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  uint8_t rot_idx = argv[1][0]-'0';
+  if (rot_idx >= ROTATOR_COUNT) {
+    bus_ascii_cmd_send_P(from_addr, PSTR("*** Rotator index out of range\n"));
+    return -1;
+  }
+  current_rot_idx = rot_idx;
+  bus_ascii_cmd_prompt[0] = (char)(rot_idx + '0');
   return 0;
 }
 
