@@ -15,6 +15,7 @@
    <attribute name="stuck_cnt" type="uint8_t" visibility="0x02" properties="0x00"/>
    <attribute name="median_buf[3]" type="uint16_t" visibility="0x02" properties="0x00"/>
    <attribute name="median_head" type="uint8_t" visibility="0x02" properties="0x00"/>
+   <attribute name="is_running" type="int8_t" visibility="0x02" properties="0x00"/>
    <statechart>
     <initial target="../1">
      <initial_glyph conn="22,4,4,0,4">
@@ -220,9 +221,13 @@ QActive_arm((QActive *)me, 30);</entry>
      </state>
      <state name="Running">
       <entry>DEBUG_PRINT(&quot;Running: ENTER\n&quot;);
-Q_REQUIRE(me-&gt;rotate_dir != 0);</entry>
+Q_REQUIRE(me-&gt;rotate_dir != 0);
+me-&gt;is_running = 1;
+rotator_direction_updated(me-&gt;rot_idx, Rotator_adc2deg(me, me-&gt;current_heading));</entry>
       <exit>DEBUG_PRINT(&quot;Running: EXIT\n&quot;);
-bsp_rotator_stop(me-&gt;rot_idx);</exit>
+bsp_rotator_stop(me-&gt;rot_idx);
+me-&gt;is_running = 0;
+rotator_direction_updated(me-&gt;rot_idx, Rotator_adc2deg(me, me-&gt;current_heading));</exit>
       <tran trig="Q_INIT">
        <choice guard="else" target="../../3">
         <choice_glyph conn="117,40,5,0,-13,2">

@@ -238,7 +238,7 @@ void bus_handler_poll() {
  */
 extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
   if (bus_allowed_to_send()) {
-    unsigned char data[6];
+    uint8_t data[7];
     data[0] = DEVICE_ID_ROTATOR_UNIT;
     uint16_t current_heading = range_adjust_heading(dir);
     int16_t target_heading =
@@ -246,12 +246,21 @@ extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir) {
     if (target_heading == INT16_MAX) {
       target_heading = current_heading;
     }
+    int8_t rotate_dir = rotator_rotate_dir(rot_idx);
+    uint8_t flags = 0;
+    flags |= (rotate_dir == 0) << FLAG_ROTATOR_NO_ROTATION;
+    flags |= (rotate_dir > 0) << FLAG_ROTATOR_ROTATION_CW;
+    flags |= (rotate_dir < 0) << FLAG_ROTATOR_ROTATION_CCW;
+    RotatorError rot_err = rotator_current_error(rot_idx);
+    flags |= (rot_err == ROTATOR_ERROR_OK) << FLAG_ROTATOR_ROTATION_ALLOWED;
+    /* FIXME: How to use FLAG_ROTATOR_ROTATES_OVER_SOUTH? */
 
     data[1] = rot_idx;                   /* Sub address */
     data[2] = (current_heading >> 8);    /* Hi current heading */
     data[3] = (current_heading & 0xff);  /* Lo current heading */
     data[4] = (target_heading >> 8);     /* Hi target heading */
     data[5] = (target_heading & 0xff);   /* Lo target heading */
+    data[6] = flags;                     /* Status flags */
     bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0,
                        BUS_CMD_ROTATOR_STATUS_UPDATE, sizeof(data), data);
   }

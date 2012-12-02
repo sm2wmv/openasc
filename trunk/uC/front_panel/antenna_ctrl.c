@@ -150,7 +150,7 @@ unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
 }
 
 char antenna_ctrl_get_rotates_char(unsigned char index) {
-  if (current_antennas.rotator_flags[index] & (1<<FLAG_ROTATES_OVER_SOUTH))
+  if (current_antennas.rotator_flags[index] & (1<<FLAG_ROTATOR_ROTATES_OVER_SOUTH))
     return('S');
 
   return('N');

@@ -27,17 +27,6 @@
 
 #include "../global.h"
 
-//! The rotator is currently standing still
-#define FLAG_NO_ROTATION                    1
-//! The rotator is allowed to be rotated
-#define FLAG_ROTATION_ALLOWED               2
-//! The rotator is being rotated CW
-#define FLAG_ROTATION_CW                    3
-//! The rotator is being rotated CCW
-#define FLAG_ROTATION_CCW                   4
-//! The rotator rotates over south
-#define FLAG_ROTATES_OVER_SOUTH             5
-
 //! Struct which contains information of the rx antennas
 typedef struct {
 	//! The size of this structure

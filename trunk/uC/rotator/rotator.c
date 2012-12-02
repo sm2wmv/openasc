@@ -228,6 +228,18 @@ int8_t rotator_stop(uint8_t rot_idx) {
 }
 
 
+int8_t rotator_rotate_dir(uint8_t rot_idx) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return 0;
+  }
+  Rotator *me = &rotator_sm[rot_idx];
+  if (!me->is_running) {
+    return 0;
+  }
+  return me->rotate_dir;
+}
+
+
 int16_t rotator_current_heading(uint8_t rot_idx) {
   if (rot_idx >= ROTATOR_COUNT) {
     return 0;
@@ -589,6 +601,7 @@ static void Rotator_ctor(Rotator *me, uint8_t rot_idx) {
   me->stuck_cnt = 0;
   memset(me->median_buf, 0, sizeof(me->median_buf));
   me->median_head = 0;
+  me->is_running = 0;
   QActive_ctor((QActive *)me, (QStateHandler)&Rotator_initial);
 }
 
