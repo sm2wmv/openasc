@@ -41,6 +41,8 @@ display_handler_status_struct display_handler_status;
 
 static char power_temp_str[7];
 
+static char status_field_text[25];
+
 //! Memory area used for printing variables to the display
 static char temp_time_ptr[9];
 
@@ -460,8 +462,6 @@ void display_handler_update_antennas(unsigned char band, unsigned char antenna) 
 
   display_handler_rotator_directions(band);
     
-//  display_handler_update_radio_freq();
-    
   glcd_line(0,128,55);
     
   if (antenna & (1<<0))
@@ -475,11 +475,10 @@ void display_handler_update_antennas(unsigned char band, unsigned char antenna) 
 
   if (antenna & (1<<3))
     display_handler_invert_antenna(ANTENNA_4);
+
+  display_handler_status_field_text(strlen(status_field_text),status_field_text);
   
   glcd_update_all();
-  //else if (status.current_display_level == DISPLAY_LEVEL_SUBMENU) {
-//    display_show_sub_menu(antenna-1,sub_menu_get_type(antenna-1));
-//  }
 }
 
 /*! \brief Will show the sub menu of a certain antenna 
@@ -566,13 +565,14 @@ void display_handler_show_set_heading(unsigned int rotator_heading) {
 }
 
 /**
- * \brief Displays the radios frequency
- * Will display the radios frequency in the bottom right corner of the display
- * \param freq the frequency you want to display */
-/*void display_radio_freq(unsigned char length, char *freq) {
-  CLEAR_RADIO_FREQ_AREA();
-  display_text_right_adjust(DISPLAY_RADIO_FREQ_X_POS,DISPLAY_RADIO_FREQ_Y_POS,freq,length,FONT_FIVE_DOT);
-}*/
+ * \brief Displays the status field
+ * Will display the text on the status field
+ * \param length The length of the text we wish to shown
+ * \param text The text which we wish to display */
+void display_handler_status_field_text(unsigned char length, char *text) {
+  CLEAR_RADIO_STATUS_AREA();
+  display_handler_text_right_adjust(DISPLAY_RADIO_FREQ_X_POS,DISPLAY_RADIO_FREQ_Y_POS,text,length,FONT_SIX_DOT);
+}
 
 /*! \brief Update the radio frequency area of the display */
 /*void display_update_radio_freq(void) {
@@ -768,4 +768,20 @@ void display_handler_prev_view(void) {
 
 unsigned int display_handler_get_view(void) {
   return(display_handler_status.active_display);
+}
+
+void display_handler_set_status_field_text_P(unsigned char length, const char *data) {
+  if (length <= 24) {
+    strncpy_P(status_field_text,data,length);
+    
+    status_field_text[length] = 0;
+  }
+}
+
+void display_handler_set_status_field_text(unsigned char length, char *data) {
+  if (length <= 24) {
+    strncpy(status_field_text,data,length);
+
+    status_field_text[length] = 0;
+  }
 }

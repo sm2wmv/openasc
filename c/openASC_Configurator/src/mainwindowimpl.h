@@ -221,6 +221,8 @@ private slots:
 	void checkBoxAmplifierTuneClicked(bool state);
 	void checkBoxAmplifierBandControlClicked(bool state);
 	void checkBoxAmplifierResetClicked(bool state);
+
+	void comboBoxStatusFieldIndexChanged(int);
 public slots:
  
 };

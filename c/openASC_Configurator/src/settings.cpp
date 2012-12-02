@@ -30,6 +30,8 @@ SettingsClass::SettingsClass() {
   ethernetIPAddr = "192.168.1.130";
 	ethernetSubmask = "255.255.255.0";
   ethernetEnabled = false;
+
+	statusFieldIndex = 0;
 }
 
 void SettingsClass::writeSettings(QSettings& settings) {
@@ -90,6 +92,8 @@ void SettingsClass::writeSettings(QSettings& settings) {
   settings.setValue("EthernetIPAddr",ethernetIPAddr);
 	settings.setValue("EthernetSubmask",ethernetSubmask);
   settings.setValue("EthernetPort",ethernetPort);
+
+	settings.setValue("StatusFieldIndex",statusFieldIndex);
 
 	settings.endGroup();
 }
@@ -152,6 +156,8 @@ void SettingsClass::loadSettings(QSettings& settings) {
   ethernetIPAddr = settings.value("EthernetIPAddr").toString();
 	ethernetSubmask = settings.value("EthernetSubmask").toString();
   ethernetPort = settings.value("EthernetPort").toInt();
+
+	statusFieldIndex = settings.value("StatusFieldIndex").toInt();
 
 	settings.endGroup();
 }
@@ -239,8 +245,9 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	tx_buff[5] = ampFuncStatus & 0x00FF; // Amp functions lower bits
 	tx_buff[6] = (ampFuncStatus & 0xFF00) >> 8; // Amp functions higher bits
 	tx_buff[7] = ampBandSegmentCount; // The number of band segments the amplifier has got
+	tx_buff[8] = statusFieldIndex & 0x00FF;
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 8, tx_buff);
+	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 9, tx_buff);
 
 
   QStringList listIP = ethernetIPAddr.split(QRegExp("[.]"));
@@ -448,4 +455,12 @@ bool SettingsClass::getEthernetEnabled(void) {
 
 void SettingsClass::setEthernetEnabled(bool state) {
   ethernetEnabled = state;
+}
+
+void SettingsClass::setStatusFieldIndex(int index) {
+	statusFieldIndex = index;
+}
+
+int SettingsClass::getStatusFieldIndex() {
+	return(statusFieldIndex);
 }
