@@ -16,6 +16,7 @@
 #include "tcpclass.h"
 
 #include "../../../uC/remote_commands.h"
+#include "../../../uC/wmv_bus/bus_commands.h"
 
 #define TARGET_DIR_BEAMWIDTH	1
 #define TARGET_DIR_BEAMWIDTH_A1_COLOR	red
@@ -43,6 +44,7 @@ public:
 	int getTargetDir(unsigned char antIndex);
 	void setRotatorFlag(unsigned char antIndex, unsigned char flags);
 	void setCOMMPtr(TCPClass *ptr);
+	void setRotatorStatusText(unsigned char index, unsigned char status);
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent ( QMouseEvent * event );

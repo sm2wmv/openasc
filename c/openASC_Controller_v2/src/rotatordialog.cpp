@@ -42,6 +42,41 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
     }
 }
 
+void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char status) {
+	if (index == 0) {
+		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
+			labelAnt1Status->setText("Rotating CCW");
+		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
+			labelAnt1Status->setText("Rotating CW");
+		else
+			labelAnt1Status->setText("Stopped");
+	}
+	else if (index == 1) {
+		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
+			labelAnt2Status->setText("Rotating CCW");
+		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
+			labelAnt2Status->setText("Rotating CW");
+		else
+			labelAnt2Status->setText("Stopped");
+	}
+	else if (index == 2) {
+		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
+			labelAnt3Status->setText("Rotating CCW");
+		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
+			labelAnt3Status->setText("Rotating CW");
+		else
+			labelAnt3Status->setText("Stopped");
+	}
+	else if (index == 3) {
+		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
+			labelAnt4Status->setText("Rotating CCW");
+		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
+			labelAnt4Status->setText("Rotating CW");
+		else
+			labelAnt4Status->setText("Stopped");
+	}
+}
+
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
     if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (600)) && (event->y() <= 600)) {
 				double mapX = abs(300 - event->x());
