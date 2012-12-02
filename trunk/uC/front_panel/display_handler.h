@@ -31,8 +31,8 @@
 #define CLEAR_ANT_AREA()	glcd_clear_area(0,90,0,56)
 //! Macro that clears the rotator area of the LCD
 #define CLEAR_ROTATOR_AREA()	glcd_clear_area(90,128,0,56)
-//! Macro that clears the radio frequency area of the LCD
-#define CLEAR_RADIO_FREQ_AREA()	glcd_clear_area(78,128,58,64)
+//! Macro that clears the status area of the LCD
+#define CLEAR_RADIO_STATUS_AREA()	glcd_clear_area(78,128,58,64)
 //! Macro that clears the RX antenna area
 #define CLEAR_RX_ANTENNA_AREA() glcd_clear_area(0,70,58,64)
 //! Macro that clears the rotator area
@@ -176,5 +176,10 @@ void display_handler_enable_screensaver(void);
 void display_handler_update_screensaver(void);
 
 void display_handler_set_backlight(unsigned char value);
+
+void display_handler_set_status_field_text_P(unsigned char length, const char *data);
+void display_handler_set_status_field_text(unsigned char length, char *data);
+
+void display_handler_status_field_text(unsigned char length, char *text);
 
 #endif

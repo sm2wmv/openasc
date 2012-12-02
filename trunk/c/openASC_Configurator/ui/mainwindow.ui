@@ -48,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -2805,7 +2805,7 @@
           <x>5</x>
           <y>5</y>
           <width>242</width>
-          <height>496</height>
+          <height>486</height>
          </rect>
         </property>
         <property name="title">
@@ -3616,11 +3616,87 @@ a function to it</string>
          </item>
         </layout>
        </widget>
-       <widget class="QGroupBox" name="groupBoxAUX">
+       <widget class="QGroupBox" name="groupBoxEthernet">
         <property name="geometry">
          <rect>
           <x>255</x>
-          <y>285</y>
+          <y>290</y>
+          <width>256</width>
+          <height>130</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Ethernet</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_13">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_18">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelButtonEthernetIP">
+             <property name="text">
+              <string>IP addr:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEditEthernetIP"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelButtonEthernetGatewayAddr">
+             <property name="text">
+              <string>Sub mask:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineEditEthernetSubmask"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelButtonEthernetPort">
+             <property name="text">
+              <string>Port:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="spinBoxEthernetPort">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>65535</number>
+             </property>
+             <property name="value">
+              <number>4750</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Misc</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBoxAUX">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>5</y>
           <width>246</width>
           <height>136</height>
          </rect>
@@ -3641,7 +3717,7 @@ a function to it</string>
           <string>Buttons</string>
          </property>
         </widget>
-        <widget class="QWidget" name="layoutWidget">
+        <widget class="QWidget" name="layoutWidget_2">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -3739,74 +3815,34 @@ a function to it</string>
          </layout>
         </widget>
        </widget>
-       <widget class="QGroupBox" name="groupBoxEthernet">
+       <widget class="QGroupBox" name="groupBoxStatusField">
         <property name="geometry">
          <rect>
-          <x>255</x>
-          <y>430</y>
-          <width>256</width>
-          <height>130</height>
+          <x>5</x>
+          <y>150</y>
+          <width>202</width>
+          <height>60</height>
          </rect>
         </property>
         <property name="title">
-         <string>Ethernet</string>
+         <string>Status field</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_15">
          <item>
-          <layout class="QGridLayout" name="gridLayout_18">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelButtonEthernetIP">
-             <property name="text">
-              <string>IP addr:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEditEthernetIP"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelButtonEthernetGatewayAddr">
-             <property name="text">
-              <string>Sub mask:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditEthernetSubmask"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelButtonEthernetPort">
-             <property name="text">
-              <string>Port:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="spinBoxEthernetPort">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>65535</number>
-             </property>
-             <property name="value">
-              <number>4750</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QComboBox" name="comboBoxStatusField">
+           <property name="minimumSize">
+            <size>
+             <width>180</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

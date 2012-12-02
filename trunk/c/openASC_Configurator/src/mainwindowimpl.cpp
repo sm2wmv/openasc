@@ -212,6 +212,8 @@ void MainWindowImpl::loadInitialGUIValues() {
 		lineEditEthernetIP->setText(settingsClass.getEthernetIPAddr());
 		lineEditEthernetSubmask->setText(settingsClass.getEthernetSubmask());
 		spinBoxEthernetPort->setValue(settingsClass.getEthernetPort());
+
+		comboBoxStatusField->setCurrentIndex(settingsClass.getStatusFieldIndex());
 }
 
 void MainWindowImpl::pushButtonDefaultBandLimitsPressed() {
@@ -1463,6 +1465,10 @@ void MainWindowImpl::checkBoxAmplifierTuneClicked(bool state) {
 	settingsClass.setAmpFuncStatus(4,state);
 }
 
+void MainWindowImpl::comboBoxStatusFieldIndexChanged(int index) {
+	settingsClass.setStatusFieldIndex(index);
+}
+
 void MainWindowImpl::setupConnections() {
 	/* RADIO INTERFACE START */
 	connect(comboBoxRadioType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioTypeCurrentIndexChanged(int)));
@@ -1650,6 +1656,8 @@ void MainWindowImpl::setupConnections() {
 	connect(checkBoxAmplifierTune, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierTuneClicked(bool)));
 	connect(checkBoxAmplifierBandControl, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierBandControlClicked(bool)));
 	connect(checkBoxAmplifierReset, SIGNAL(clicked(bool)), this, SLOT(checkBoxAmplifierResetClicked(bool)));
+
+	connect(comboBoxStatusField, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxStatusFieldIndexChanged(int)));
 }
 
 void MainWindowImpl::showInformationDialog(QString caption, QString text) {
@@ -1670,16 +1678,16 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(pa
 	
 	setupConnections();
 
-        QRegExpValidator *v = new QRegExpValidator(this);
-        QRegExp rx("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})");
-        v->setRegExp(rx);
-        lineEditEthernetIP->setValidator(v);
-				lineEditEthernetSubmask->setValidator(v);
+	QRegExpValidator *v = new QRegExpValidator(this);
+	QRegExp rx("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})");
+	v->setRegExp(rx);
+	lineEditEthernetIP->setValidator(v);
+	lineEditEthernetSubmask->setValidator(v);
 
-        lineEditEthernetIP->setText("192.168.1.130");
-				lineEditEthernetSubmask->setText("255.255.255.0");
+	lineEditEthernetIP->setText("192.168.1.130");
+	lineEditEthernetSubmask->setText("255.255.255.0");
 
-        groupBoxEthernet->setChecked(false);
+	groupBoxEthernet->setChecked(false);
 
 	//Set the index of the class	
 	for (int i=0;i<9;i++) {
@@ -1688,4 +1696,14 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(pa
 	}
 
 	loadInitialGUIValues();
+
+	comboBoxStatusField->clear();
+	comboBoxStatusField->addItem("None");
+	comboBoxStatusField->addItem("Amplifier On/Off");
+	comboBoxStatusField->addItem("Amplifier Opr/Stby");
+	comboBoxStatusField->addItem("Amplifier status");
+	comboBoxStatusField->addItem("Amplifier band+segment");
+	comboBoxStatusField->addItem("Antenna rotator focus"); //Shows the name of the antenna which has got rotator focus
+	comboBoxStatusField->addItem("Radio PTT ON/OFF");
+	comboBoxStatusField->addItem("Amplifier PTT ON/OFF");
 }

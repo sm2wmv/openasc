@@ -153,8 +153,6 @@ void antenna_ctrl_rotate_cw(void);
 void antenna_ctrl_rotate_ccw(void);
 void antenna_ctrl_rotate_stop(void);
 
-void antenna_ctrl_rotate_set_ant_index(char ant_index);
-
 unsigned char antenna_ctrl_antenna_selected(void);
 unsigned char antenna_ctrl_rx_antenna_selected(void);
 
@@ -172,6 +170,7 @@ void antenna_ctrl_select_default_ant(void);
 unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index);
 
 void antenna_ctrl_set_antenna_to_rotate(unsigned char index);
+char antenna_ctrl_get_antenna_to_rotate(void);
 
 char antenna_ctrl_get_rotates_char(unsigned char index);
 

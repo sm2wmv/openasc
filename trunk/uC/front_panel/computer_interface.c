@@ -329,7 +329,7 @@ void computer_interface_parse_data(void) {
 			while(0);
 		}
 		else if (computer_comm.command == CTRL_GET_FIRMWARE_REV) {
-			computer_interface_send(CTRL_GET_FIRMWARE_REV, strlen(FIRMWARE_REV), FIRMWARE_REV);
+			computer_interface_send(CTRL_GET_FIRMWARE_REV, strlen(VERSION), VERSION);
 		}
 		else if (computer_comm.command == CTRL_DONE) {
 			computer_interface_send(CTRL_DONE, 0, 0);
@@ -644,6 +644,8 @@ void computer_interface_parse_data(void) {
           settings_ptr->amp_func_conf |= (computer_comm.rx_buffer_start[6] << 8); //Higher 8 bits
           settings_ptr->amp_band_seg_count = computer_comm.rx_buffer_start[7];
 					
+          settings_ptr->status_field_index = computer_comm.rx_buffer_start[8];
+          
 					computer_interface_send_ack();
 					break;					
 				case CTRL_SET_POWERMETER_SETTINGS:

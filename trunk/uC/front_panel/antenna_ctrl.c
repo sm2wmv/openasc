@@ -339,6 +339,12 @@ void antenna_ctrl_rotate(unsigned char ant_index, unsigned int heading) {
  *  \param index The index of the antenna to be rotated */
 void antenna_ctrl_set_antenna_to_rotate(unsigned char index) {
   last_rotated_antenna = index;
+  
+  main_update_status_field();  
+}
+
+char antenna_ctrl_get_antenna_to_rotate(void) {
+  return(last_rotated_antenna);
 }
 
 /*! \brief Rotate the last rotatable antenna clockwise */
@@ -360,10 +366,6 @@ void antenna_ctrl_rotate_stop(void) {
   if ((last_rotated_antenna != -1) && (last_rotated_antenna < 4) && (current_antennas.rotator_addr[(unsigned char)last_rotated_antenna] != 0)) {
       bus_add_tx_message(bus_get_address(), current_antennas.rotator_addr[(unsigned char)last_rotated_antenna], (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_ROTATOR_STOP, 1, &current_antennas.rotator_sub_addr[(unsigned char)last_rotated_antenna]);
   }
-}
-
-void antenna_ctrl_rotate_set_ant_index(char ant_index) {
-  last_rotated_antenna = ant_index;
 }
 
 /*! \brief Function used to change an rx antenna 
@@ -590,6 +592,8 @@ void antenna_ctrl_ant_read_eeprom(unsigned char band_index) {
       break;
     }
   }
+  
+  main_update_status_field();
 }
 
 /*! \brief Read the eeprom for the rx antenna settings  */

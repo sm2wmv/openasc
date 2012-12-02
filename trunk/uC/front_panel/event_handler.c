@@ -1479,6 +1479,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
         status.amp_segment = bus_message.data[4];
         
         main_update_ptt_status();
+        main_update_status_field();
         display_handler_repaint();
       }
     }

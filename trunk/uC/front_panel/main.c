@@ -160,6 +160,10 @@ unsigned char main_get_current_band(void) {
 	return(status.selected_band);
 }
 
+unsigned char __inline__ main_get_status_field_index(void) {
+  return(settings.status_field_index);
+}
+
 void main_set_new_band(unsigned char band) {
   status.new_band = band;
   
@@ -469,6 +473,103 @@ void send_ping(void) {
 	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
 }
 
+void main_update_status_field(void ) {
+  if (main_get_status_field_index() == STATUS_FIELD_AMP_ON_OFF_STATUS) {
+    if (status.amp_flags & (1<<AMP_STATUS_MAINS))
+      display_handler_set_status_field_text_P(13,PSTR("AMP: MAINS ON"));
+    else
+      display_handler_set_status_field_text_P(14,PSTR("AMP: MAINS OFF"));
+  }
+    
+  if (main_get_status_field_index() == STATUS_FIELD_AMP_OP_STBY_STATUS) {
+    if (status.amp_flags & (1<<AMP_STATUS_OPR_STBY))
+      display_handler_set_status_field_text_P(12,PSTR("AMP: Operate"));
+    else
+      display_handler_set_status_field_text_P(12,PSTR("AMP: Standby"));    
+  }
+
+  if (main_get_status_field_index() == STATUS_FIELD_AMP_STATUS) {
+    /*! Amp status */
+    if (status.amp_op_status == AMP_OP_STATUS_READY) {
+      display_handler_set_status_field_text_P(10,PSTR("AMP: Ready"));
+    }
+    else if (status.amp_op_status == AMP_OP_STATUS_ERROR) {
+      display_handler_set_status_field_text_P(10,PSTR("AMP: ERROR"));
+    }
+    else if (status.amp_op_status == AMP_OP_STATUS_TUNING) {
+      display_handler_set_status_field_text_P(11,PSTR("AMP: Tuning"));      
+    }
+    else if (status.amp_op_status == AMP_OP_STATUS_OFF) {
+      display_handler_set_status_field_text_P(8,PSTR("AMP: Off"));      
+    }
+    else if (status.amp_op_status == AMP_OP_STATUS_WARMUP) {
+      display_handler_set_status_field_text_P(12,PSTR("AMP: Warmup"));
+    }
+    else if (status.amp_op_status == AMP_OP_STATUS_COOLDOWN) {
+      display_handler_set_status_field_text_P(13,PSTR("AMP: Cooldown"));      
+    }
+    else {
+      display_handler_set_status_field_text_P(12,PSTR("AMP: Standby"));      
+    }    
+  }
+
+  if (main_get_status_field_index() == STATUS_FIELD_AMP_BAND_SEGMENT_STATUS) {
+    char temp[15];
+
+    if (status.amp_band == BAND_UNDEFINED)
+      sprintf_P(temp,PSTR("Band: None"));
+    else if (status.amp_band == BAND_160M)
+      sprintf_P(temp,PSTR("Band: 160m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_80M)
+      sprintf_P(temp,PSTR("Band: 80m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_40M)
+      sprintf_P(temp,PSTR("Band: 40m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_30M)
+      sprintf_P(temp,PSTR("Band: 30m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_20M)
+      sprintf_P(temp,PSTR("Band: 20m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_17M)
+      sprintf_P(temp,PSTR("Band: 17m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_15M)
+      sprintf_P(temp,PSTR("Band: 15m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_12M)
+      sprintf_P(temp,PSTR("Band: 12m S%i"),status.amp_segment);
+    else if (status.amp_band == BAND_10M)
+      sprintf_P(temp,PSTR("Band: 10m S%i"),status.amp_segment);
+    
+    display_handler_set_status_field_text(strlen(temp),temp);
+  }
+  
+  if (main_get_status_field_index() == STATUS_FIELD_SHOW_RADIO_PTT_ON_OFF_STATUS) {
+    if (runtime_settings.radio_ptt_output)
+      display_handler_set_status_field_text_P(13,PSTR("Radio PTT: ON"));
+    else
+      display_handler_set_status_field_text_P(14,PSTR("Radio PTT: OFF"));
+  }
+  
+  if (main_get_status_field_index() == STATUS_FIELD_SHOW_AMP_PTT_ON_OFF_STATUS) {
+    if (runtime_settings.amplifier_ptt_output)
+      display_handler_set_status_field_text_P(11,PSTR("Amp PTT: ON"));
+    else
+      display_handler_set_status_field_text_P(12,PSTR("Amp PTT: OFF"));
+  }
+  
+  if (main_get_status_field_index() == STATUS_FIELD_SHOW_ROTATOR_FOCUS) {
+    char index = antenna_ctrl_get_antenna_to_rotate();
+    char temp[ANTENNA_TEXT_SIZE+9];
+    
+        
+    if ((index > -1) && (index < 4)) {
+      sprintf_P(temp,PSTR("Rotate: %s"),antenna_ctrl_get_antenna_text(index));
+      temp[8+antenna_ctrl_get_antenna_text_length(index)] = 0;
+
+      display_handler_set_status_field_text(strlen(temp),temp);
+    }
+    else
+      display_handler_set_status_field_text_P(12,PSTR("Rotate: None"));
+  }
+}
+
 /*! Main function of the front panel */
 int main(void){
 	cli();
@@ -501,7 +602,7 @@ int main(void){
   //Check if this is the first time we start the device, if so we need to initiate some
 	//data structures. To force this at startup just change the value that should be read and
 	//written to the EEPROM
-	if (eeprom_read_startup_byte() != 0x03) {
+	if (eeprom_read_startup_byte() != 0x04) {
 		eeprom_create_table();
 		
 		eeprom_read_table();
@@ -519,7 +620,7 @@ int main(void){
 		//Write the settings to the EEPROM
 		eeprom_save_runtime_settings(&runtime_settings);
 		
-		eeprom_write_startup_byte(0x03);
+		eeprom_write_startup_byte(0x04);
 
 		//The first time the box is started, we need to setup the settings
 		computer_interface_activate_setup();
@@ -681,6 +782,8 @@ int main(void){
 	//TEMPORARY
 	DDRB |= (1<<1);
 	
+  main_update_status_field();
+  
 	ping_message[0] = DEVICE_ID_MAINBOX;
 	ping_message[1] = settings.ptt_interlock_input;
   

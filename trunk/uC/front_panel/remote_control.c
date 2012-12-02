@@ -99,21 +99,21 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
       #ifdef DEBUG_COMPUTER_USART_ENABLED
         printf("STOP ROTATOR[%i]\r\n",data[0]);
       #endif
-      antenna_ctrl_rotate_set_ant_index(data[0]);
+      antenna_ctrl_set_antenna_to_rotate(data[0]);
       antenna_ctrl_rotate_stop();
       break;
     case REMOTE_COMMAND_ROTATOR_TURN_CW:
       #ifdef DEBUG_COMPUTER_USART_ENABLED
         printf("TURN ROTATOR CW[%i]\r\n",data[0]);
       #endif
-      antenna_ctrl_rotate_set_ant_index(data[0]);
+      antenna_ctrl_set_antenna_to_rotate(data[0]);
       antenna_ctrl_rotate_cw();
       break;
     case REMOTE_COMMAND_ROTATOR_TURN_CCW:
       #ifdef DEBUG_COMPUTER_USART_ENABLED
         printf("TURN ROTATOR CCW[%i]\r\n",data[0]);
       #endif
-      antenna_ctrl_rotate_set_ant_index(data[0]);
+      antenna_ctrl_set_antenna_to_rotate(data[0]);
       antenna_ctrl_rotate_ccw();
       break;
     default:

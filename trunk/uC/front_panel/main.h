@@ -23,8 +23,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-//! The current firmware revision nr
-#define FIRMWARE_REV "392\0"
+#include "version.h"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -191,7 +190,22 @@
 //! The amplifier need to have a TUNE button pushed before changing band
 #define AMP_TUNE_ENABLED            4
 
-
+//! Status field is disabled
+#define STATUS_FIELD_NONE                           0
+//! Status field shows Amplifier on/off status
+#define STATUS_FIELD_AMP_ON_OFF_STATUS              1
+//! Status field shows Amplifier opr/stby status
+#define STATUS_FIELD_AMP_OP_STBY_STATUS             2
+//! Status field shows Amplifier status
+#define STATUS_FIELD_AMP_STATUS                     3
+//! Status field shows the amplifiers selected band + segment
+#define STATUS_FIELD_AMP_BAND_SEGMENT_STATUS        4
+//! Status field shows the antenna which has rotator focus
+#define STATUS_FIELD_SHOW_ROTATOR_FOCUS             5
+//! Status field shows the Radio PTT ON/OFF status
+#define STATUS_FIELD_SHOW_RADIO_PTT_ON_OFF_STATUS   6
+//! Status field shows the Amp PTT ON/OFF status
+#define STATUS_FIELD_SHOW_AMP_PTT_ON_OFF_STATUS     7
 /****************************************************************/
 
 //! Different inhibit states
@@ -254,6 +268,8 @@ typedef struct {
   unsigned char ethernet_submask[4];
   //! The ethernet port
   unsigned int ethernet_port;
+  //! Status field index
+  unsigned char status_field_index;
 } struct_setting;
 
 //! This struct only contains information that is temporary
@@ -388,5 +404,9 @@ unsigned char main_get_amp_ctrl_enabled(void);
 unsigned char main_get_amp_func_flags(void);
 
 void forceHardReset(void);
+
+void main_update_status_field(void);
+
+unsigned char __inline__ main_get_status_field_index(void);
 
 #endif

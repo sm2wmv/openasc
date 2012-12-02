@@ -119,10 +119,10 @@ void menu_show_text(struct_menu_text menu_text) {
 		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
 		
     char temp[30];
-    sprintf(temp,"Firmware: %s",FIRMWARE_REV);
+    sprintf_P(temp,PSTR("Version: %s"),VERSION);
     glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
     
-    sprintf(temp,"Address: %i",bus_get_address());
+    sprintf_P(temp,PSTR("Address: %i"),bus_get_address());
     glcd_text(MENU_OPTION_LEFT_POS,18+10,FONT_SEVEN_DOT,temp,strlen(temp));
 	}
 	else if (menu_text.pos == MENU_POS_AMP_STATUS) {
@@ -221,7 +221,7 @@ void menu_show_text(struct_menu_text menu_text) {
 		else if (menu_text.option_type == MENU_OPTION_TYPE_SCROLL_NUMBERS) {
 			if (menu_text.pos == MENU_POS_BACKLIGHT_LEVEL) {
 				char temp[11];
-				sprintf(temp,"Level %3i",runtime_settings.lcd_backlight_value);
+				sprintf_P(temp,PSTR("Level %3i"),runtime_settings.lcd_backlight_value);
 	
 				glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
 				
@@ -231,9 +231,9 @@ void menu_show_text(struct_menu_text menu_text) {
 			else if (menu_text.pos == MENU_POS_SHOW_POWERMETER_ADDR) {
 				char temp[14];
 				if (runtime_settings.powermeter_address == 0x00)
-					sprintf(temp,"Address: AUTO");
+					sprintf_P(temp,PSTR("Address: AUTO"));
 				else
-					sprintf(temp,"Address: %3i",runtime_settings.powermeter_address);
+					sprintf_P(temp,PSTR("Address: %3i"),runtime_settings.powermeter_address);
 	
 				glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
 				
@@ -243,7 +243,7 @@ void menu_show_text(struct_menu_text menu_text) {
 			else if (menu_text.pos == MENU_POS_ANT_STATUS) {
         char temp[20];
         
-        sprintf(temp,"Comb value: %3i",runtime_settings.antenna_disabled[status.selected_band-1]);
+        sprintf_P(temp,PSTR("Comb value: %3i"),runtime_settings.antenna_disabled[status.selected_band-1]);
   
         glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
         
@@ -251,30 +251,30 @@ void menu_show_text(struct_menu_text menu_text) {
           glcd_invert_area(MENU_OPTION_LEFT_POS,display_handler_calculate_width(temp,FONT_SEVEN_DOT,strlen(temp))+MENU_OPTION_LEFT_POS,18-1,18+7);
         
         if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0))
-          sprintf(temp,"A1: Disabled");
+          sprintf_P(temp,PSTR("A1: Disabled"));
         else
-          sprintf(temp,"A1: Enabled");
+          sprintf_P(temp,PSTR("A1: Enabled"));
         
         glcd_text(MENU_OPTION_LEFT_POS,18+12,FONT_SEVEN_DOT,temp,strlen(temp));
 
         if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<1))
-          sprintf(temp,"A2: Disabled");
+          sprintf_P(temp,PSTR("A2: Disabled"));
         else
-          sprintf(temp,"A2: Enabled");
+          sprintf_P(temp,PSTR("A2: Enabled"));
        
         glcd_text(MENU_OPTION_LEFT_POS,18+12+9,FONT_SEVEN_DOT,temp,strlen(temp));
 
         if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<2))
-          sprintf(temp,"A3: Disabled");
+          sprintf_P(temp,PSTR("A3: Disabled"));
         else
-          sprintf(temp,"A3: Enabled");
+          sprintf_P(temp,PSTR("A3: Enabled"));
         
         glcd_text(MENU_OPTION_LEFT_POS,18+12+18,FONT_SEVEN_DOT,temp,strlen(temp));
 
         if (runtime_settings.antenna_disabled[status.selected_band-1] & (1<<3))
-          sprintf(temp,"A4: Disabled");
+          sprintf_P(temp,PSTR("A4: Disabled"));
         else
-          sprintf(temp,"A4: Enabled");
+          sprintf_P(temp,PSTR("A4: Enabled"));
         
         glcd_text(MENU_OPTION_LEFT_POS,18+12+27,FONT_SEVEN_DOT,temp,strlen(temp));
       }
@@ -411,12 +411,16 @@ void menu_action(unsigned char menu_action_type) {
 					runtime_settings.amplifier_ptt_output = 1;
 				else
 					runtime_settings.amplifier_ptt_output = 0;
+        
+        main_update_status_field();
 			}
 			else if (current_menu_pos == MENU_POS_RADIO_PTT) {
 				if (current_menu_option_selected[current_menu_pos] == 0)
 					runtime_settings.radio_ptt_output = 1;
 				else
 					runtime_settings.radio_ptt_output = 0;
+
+        main_update_status_field();
 			}
 			else if (current_menu_pos == MENU_POS_MISC) {
 				if (current_menu_option_selected[current_menu_pos] == 0)

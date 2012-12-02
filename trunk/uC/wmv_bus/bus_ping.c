@@ -172,7 +172,7 @@ bus_struct_ping_status* bus_ping_get_ping_data(unsigned char index) {
 /*! \brief Returns a pointer to the array which contains information of what the DEVICE_ID_MAINBOX unit addresses are 
  *  \return A pointer to the char array which contains the units addresses */
 unsigned char* bus_ping_get_mainbox_adresses(void) {
-  return(&mainbox_band_info);
+  return((unsigned char*)mainbox_band_info);
 }
 
 /*! \brief Returns the device type of a certain ping data structure
