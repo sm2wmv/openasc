@@ -4,76 +4,102 @@
 #define PI 3.1415
 
 void RotatorDialog::paintEvent(QPaintEvent *event) {
-    QPainter painter(this);
+	QPainter painter(this);
 
-    image = QImage(imagePath);
-    image.convertToFormat(QImage::Format_ARGB32_Premultiplied ,Qt::ColorOnly);
+	image = QImage(imagePath);
+	image.convertToFormat(QImage::Format_ARGB32_Premultiplied ,Qt::ColorOnly);
 
-    painter.drawImage(0 , 0 , image);
+	painter.drawImage(0 , 0 , image);
 
-		float rectWidth = sizeWidth - (sizeWidth * 0.06);
-		float rectHeight = sizeHeight - (sizeHeight * 0.06);
-		QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth-2, rectHeight-2);
+	float rectWidth = sizeWidth - (sizeWidth * 0.06);
+	float rectHeight = sizeHeight - (sizeHeight * 0.06);
+	QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth-2, rectHeight-2);
 
-    for (int i=0;i<4;i++) {
-				if(antBeamWidth[i] > 0) {
-            if (i==0) {
-                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
-                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
-            }
-            else if (i==1) {
-                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
-                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
-            }
-            else if (i==2) {
-                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
-                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
-            }
-            else if (i==3) {
-                painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
-                painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
-            }
+	for (int i=0;i<4;i++) {
+		if(antBeamWidth[i] > 0) {
+			if (i==0) {
+					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
 
-						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
-						if (antBiDirectional[i])
-							painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-        }
-    }
+					if (antBiDirectional[i])
+						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+					if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+						painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::SolidPattern));
+						painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
+					}
+			}
+			else if (i==1) {
+					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
+
+					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+					if (antBiDirectional[i])
+						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+			}
+			else if (i==2) {
+					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
+
+					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+					if (antBiDirectional[i])
+						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+			}
+			else if (i==3) {
+					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
+
+					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+					if (antBiDirectional[i])
+						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+			}
+		}
+	}
 }
 
 void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char status) {
+	rotatorStatus[index] = status;
+
 	if (index == 0) {
 		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
 			labelAnt1Status->setText("Rotating CCW");
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt1Status->setText("Rotating CW");
-		else
+		else {
 			labelAnt1Status->setText("Stopped");
+		}
 	}
 	else if (index == 1) {
 		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
 			labelAnt2Status->setText("Rotating CCW");
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt2Status->setText("Rotating CW");
-		else
+		else {
 			labelAnt2Status->setText("Stopped");
+		}
 	}
 	else if (index == 2) {
 		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
 			labelAnt3Status->setText("Rotating CCW");
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt3Status->setText("Rotating CW");
-		else
+		else {
 			labelAnt3Status->setText("Stopped");
+		}
 	}
 	else if (index == 3) {
 		if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
 			labelAnt4Status->setText("Rotating CCW");
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt4Status->setText("Rotating CW");
-		else
+		else {
 			labelAnt4Status->setText("Stopped");
+		}
 	}
 }
 
@@ -104,6 +130,7 @@ void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
 			TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_SET_HEADING,temp.length(),temp);
 		}
 
+		repaint();
 		rotationEventStatus = 1;
 	}
 }
@@ -523,5 +550,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, 
 		pushButtonAnt4->setChecked(false);
 
 		loadBand(0);
+
+		rotatorStatus = {0,0,0,0};
 }
 //

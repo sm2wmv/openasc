@@ -70,6 +70,7 @@ private:
 	int antFixedAngle[4];
 	bool antVerticalArray[4];
 	int presetButtonValue[5];
+	char rotatorStatus[4];
 private slots:
 
 public slots:
