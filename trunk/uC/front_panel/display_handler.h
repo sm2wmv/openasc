@@ -182,4 +182,7 @@ void display_handler_set_status_field_text(unsigned char length, char *data);
 
 void display_handler_status_field_text(unsigned char length, char *text);
 
+void display_handler_powermeter_bargraph_tick(void);
+void display_handler_powermeter_text_tick(void);
+
 #endif
