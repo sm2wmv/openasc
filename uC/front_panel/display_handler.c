@@ -36,6 +36,7 @@
 #include "sub_menu.h"
 #include "powermeter.h"
 #include "menu.h"
+#include "board.h"
 
 display_handler_status_struct display_handler_status;
 
@@ -202,8 +203,10 @@ void display_handler_show_bargraph_ref(unsigned char percent) {
  *  \param fwd_power The forward power in percent
  *  \param ref_power The reflected power in percent */
 void display_handler_show_powermeter_bargraph(unsigned int fwd_power, unsigned int ref_power) {
-  display_handler_show_bargraph_fwd(fwd_power);
-  display_handler_show_bargraph_ref(ref_power);
+  display_handler_show_bargraph_fwd(fwd_power*display_handler_status.powermeter_fwd_scale_val);
+  display_handler_show_bargraph_ref(ref_power*display_handler_status.powermeter_ref_scale_val);
+  
+  glcd_update_all();
 }
 
 /*! \brief This function will print out the power meter text which shows FWD, REF power and VSWR
@@ -222,6 +225,8 @@ void display_handler_show_powermeter_text(unsigned int fwd_power, unsigned int r
   }
   else //If we have VSWR as 0 we just clear that area instead of writing out 0.0:1
     display_handler_text_right_adjust(125,45,"      ",6,FONT_NINE_DOT);
+  
+  glcd_update_all();  
 }
 
 /*! \brief This function will show the power meter display */
@@ -636,10 +641,16 @@ void display_handler_tick(void) {
     
     display_handler_status.force_repaint = 0;
     
+    if ((display_handler_status.new_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU))
+      return;
+    
+    if ((display_handler_status.new_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR))
+      return;
+      
     if (display_handler_status.active_display != display_handler_status.new_display)
       display_handler_status.prev_display = display_handler_status.active_display;
-    
-    display_handler_status.active_display = display_handler_status.new_display;    
+
+    display_handler_status.active_display = display_handler_status.new_display;
 
     if (status.function_status & (1<<FUNC_STATUS_SHUTDOWN_IN_PROGRESS)) {
       display_handler_shutdown_view();
@@ -684,28 +695,6 @@ void display_handler_tick(void) {
       }
     }
   }
-    
-  //If the power meter is active, then we should see if the view should be updated
-  if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_POWERMETER) {
-    display_handler_status.counter_powermeter_update_text += DISPLAY_HANDLER_TICK_INTERVAL;
-    display_handler_status.counter_powermeter_update_bargraph += DISPLAY_HANDLER_TICK_INTERVAL;
-    
-    if (display_handler_status.counter_powermeter_update_text >= powermeter_get_text_update_rate()) {
-      display_handler_show_powermeter_text(powermeter_get_fwd_power(),powermeter_get_ref_power(),powermeter_get_vswr());
-      
-			glcd_update_all();
-      
-			display_handler_status.counter_powermeter_update_text = 0;
-    }
-    
-    if (display_handler_status.counter_powermeter_update_bargraph >= powermeter_get_bargraph_update_rate()) {
-      display_handler_show_powermeter_bargraph(powermeter_get_fwd_power()*display_handler_status.powermeter_fwd_scale_val, powermeter_get_ref_power()*display_handler_status.powermeter_ref_scale_val);
-
-      glcd_update_all();
-      
-      display_handler_status.counter_powermeter_update_bargraph = 0;
-    }
-  }
 }
 
 /*! \brief Set a new display screen */
@@ -738,30 +727,92 @@ void display_handler_prev_view(void) {
   #ifdef DEBUG_COMPUTER_USART_ENABLED
     printf("Active disp: %i\n\r",display_handler_status.active_display);
     printf("Prev disp: %i\n\r",display_handler_status.prev_display);
+    printf("New disp: %i\n\r",display_handler_status.new_display);
   #endif
-  
-  //TODO: Maybe this can be done nicer?
-  if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR))
+    
+  if ((display_handler_status.new_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU)) {
+    display_handler_status.new_display = display_handler_status.active_display;
+  }
+  else if ((display_handler_status.new_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {
+    display_handler_status.new_display = display_handler_status.active_display;
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER)) {
     display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
-  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER))
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
-  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER)) {
-    if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE))
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SUBMENU)) {
+    if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
-  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER))    
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
-  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER))    
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
-  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_MENU))    
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
-  else if (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SCREENSAVER)
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;  
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_MENU)) {
+    if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_ANTENNAS)) {
+    if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+  }  
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SUBMENU)) {
+    if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {
+    if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {
+    if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;   
+    
+    printf("POOP\r\n");
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_MENU)) {
+    if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+  }
   else
     display_handler_status.new_display = display_handler_status.prev_display;
-    
   
   display_handler_status.force_repaint = 1;
 }
@@ -783,5 +834,17 @@ void display_handler_set_status_field_text(unsigned char length, char *data) {
     strncpy(status_field_text,data,length);
 
     status_field_text[length] = 0;
+  }
+}
+
+void display_handler_powermeter_bargraph_tick(void) {
+  if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_POWERMETER) {
+    display_handler_show_powermeter_bargraph(powermeter_get_fwd_power(), powermeter_get_ref_power());
+  }
+}
+
+void display_handler_powermeter_text_tick(void) {
+  if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_POWERMETER) {
+    display_handler_show_powermeter_text(powermeter_get_fwd_power(),powermeter_get_ref_power(),powermeter_get_vswr());  
   }
 }

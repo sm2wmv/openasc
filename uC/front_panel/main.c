@@ -91,6 +91,8 @@ static unsigned char counter_poll_rotary_encoder = 0;
 static unsigned int counter_poll_radio = 0;
 //! Counter which keeps track of when the last pulse event did occur. This is used to sense if we should change rx antennas 
 static unsigned int counter_last_pulse_event=0;
+static unsigned int counter_powermeter_update_bargraph = 0;
+static unsigned int counter_powermeter_update_text = 0;
 
 //!After the counter reaches half of it's limit we remove that number from it by calling the function event_queue_wrap()
 static unsigned int counter_event_timer = 0;
@@ -967,6 +969,17 @@ int main(void){
       display_handler_tick();
     }
 
+    
+    if (counter_powermeter_update_text >= powermeter_get_text_update_rate()) {
+      counter_powermeter_update_text = 0;
+      display_handler_powermeter_text_tick();
+    }
+
+    if (counter_powermeter_update_bargraph >= powermeter_get_bargraph_update_rate()) {
+      counter_powermeter_update_bargraph = 0;
+      display_handler_powermeter_bargraph_tick();
+    }
+    
     //Check every 10 ms if we are allowed to PTT or not
     if ((counter_critical_cmd_check % 10) == 0) {
       main_update_critical_list();
@@ -983,6 +996,8 @@ int main(void){
 		event_check_pings();
 	}
 }
+
+unsigned char te=0;
 
 /*!Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0A) {
@@ -1032,6 +1047,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	counter_poll_buttons++;
 	counter_poll_ext_devices++;	
   counter_critical_cmd_check++;
+  counter_powermeter_update_bargraph++;  
+  counter_powermeter_update_text++;
 	
 	if ((counter_ms % 1000) == 0)
 		counter_screensaver_timeout++;
@@ -1110,7 +1127,6 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	internal_comm_1ms_timer();
-	
 	bus_ping_tick();
 }
 

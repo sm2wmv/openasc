@@ -143,8 +143,8 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
           remote_control_set_update_band_info();
         
         status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
-        display_handler_prev_view();
         led_set_menu(LED_STATE_OFF);
+        display_handler_prev_view();
         break;
       case COMPUTER_COMM_SET_SUBMENU_OPTION:
         // Bit 0 -> Antenna index
@@ -762,14 +762,14 @@ void event_pulse_button_pressed(void) {
 void event_menu_button_pressed(void) {
   if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
     status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
-    display_handler_prev_view();
     led_set_menu(LED_STATE_OFF);
+    display_handler_prev_view();
   }
   else {
     menu_reset();
     status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
-    display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
     led_set_menu(LED_STATE_ON);
+    display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
   }
 }
 
