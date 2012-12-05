@@ -222,7 +222,7 @@ void ethernet_init(void) {
       printf("ETH >> No ethernet chip found\n");
     #endif
     
-    return(0);
+    return;
   }
   else {
     #ifdef ETHERNET_DEBUG_ENABLED

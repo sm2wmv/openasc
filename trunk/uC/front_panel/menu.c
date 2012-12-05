@@ -44,8 +44,6 @@
 //! Number of options in the menu system
 #define MENU_OPTIONS	10
 
-static void (*bootloader_start)(void) = (void *)0x1FE00;
-
 //! Menu options - Errors
 const struct_menu_option menu_errors[NR_OF_ERRORS] = {
   {"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, 

@@ -60,8 +60,6 @@
 
 //#define ERROR_DEBUG
 
-CREATE_CRITICAL_LIST();
-
 static void (*bootloader_start)(void) = (void *)0x1FE00;
 
 unsigned char parse_uc_cmd = 0;
@@ -224,7 +222,7 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
         break;
       case INT_COMM_PC_SEND_TO_ADDR:
         if (ascii_comm_device_addr != 0x00) {
-          bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,message.data);
+          bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,(unsigned char*)message.data);
         }
         break;
       default:
@@ -726,6 +724,8 @@ void event_pulse_sensor_down(void) {
 }
 
 void event_pulse_button_pressed(void) {
+  clear_screensaver_timer();
+  
   if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE))
     menu_action(MENU_BUTTON_PRESSED);
   else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
@@ -760,6 +760,8 @@ void event_pulse_button_pressed(void) {
 }
 
 void event_menu_button_pressed(void) {
+  clear_screensaver_timer();  
+  
   if (status.function_status & (1<<FUNC_STATUS_MENU_ACTIVE)) {
     status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
     led_set_menu(LED_STATE_OFF);
@@ -767,6 +769,11 @@ void event_menu_button_pressed(void) {
   }
   else {
     menu_reset();
+
+    //If the ERROR led is lit and we push the menu button we automatically end up at the ERROR menu view
+    if (PORTH & (1<<LED_ERROR_BIT))
+      menu_set_pos(MENU_POS_SHOW_ERRORS);
+
     status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
     led_set_menu(LED_STATE_ON);
     display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
@@ -819,6 +826,7 @@ void event_poll_buttons(void) {
         
     if (btn_status & (1<<FLAG_BUTTON_ROTATE_BIT)) {
 			//event_rotate_button_pressed();
+      clear_screensaver_timer();
       unsigned char rotator_count=0, rotator_index=0;
       
       for (unsigned char i=0;i<4;i++)
@@ -1267,11 +1275,13 @@ void event_tx_button4_pressed(void) {
 
 /*! \brief Perform the actions that should be done when AUX 1 button is pressed */
 void event_aux1_button_pressed(void) {
+  clear_screensaver_timer();
   event_process_task(main_get_aux_button(1));
 }
 
 /*! \brief Perform the actions that should be done when AUX 2 button is pressed */
 void event_aux2_button_pressed(void) {
+  clear_screensaver_timer();
 	event_process_task(main_get_aux_button(2));
 }
 
@@ -1370,7 +1380,7 @@ void event_rxant_button_pressed(void) {
 
 /*! \brief Perform the action of Rotate button if it was pressed */
 void event_rotate_button_pressed(void) {
-
+  clear_screensaver_timer();
 }
 
 /*! \brief Parse a message from the communication bus */
@@ -1424,7 +1434,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
           
           if (ethernet_is_active()) {
             char temp[4] = {i,curr_heading >> 8, curr_heading & 0xFF,bus_message.data[6]};
-            ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,4,(char *)temp);
+            ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,4,(unsigned char *)temp);
           }
 
           if (((bus_message.data[6] & (1<<FLAG_ROTATOR_ROTATION_CCW)) != 0) || ((bus_message.data[6] & (1<<FLAG_ROTATOR_ROTATION_CW)) != 0))
