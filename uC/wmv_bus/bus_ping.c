@@ -146,6 +146,10 @@ bus_struct_ping_status bus_ping_get_failed_ping(void) {
 		
 	if (temp != 255)
 		return(ping_list[temp]);
+  
+  bus_struct_ping_status empty;
+  empty.addr = 0;
+  return(empty);
 }
 
 /*! \brief Goes through the ping list and checks how many has timed out

@@ -70,7 +70,7 @@ void glcd_update(unsigned int top, unsigned int bottom)
     
     
   if (ethernet_is_active()) {
-    ethernet_send_display_data(0,&glcd_buffer,1024);
+    ethernet_send_display_data(0,(unsigned char *)glcd_buffer,1024);
     
     #ifdef ETHERNET_DEBUG_ENABLED
       printf("Send DISP data\r\n");
@@ -80,7 +80,7 @@ void glcd_update(unsigned int top, unsigned int bottom)
 
 void glcd_ethernet_send_disp(void) {
   if (ethernet_is_active()) {
-    ethernet_send_display_data(0,&glcd_buffer,1024);
+    ethernet_send_display_data(0,(unsigned char *)glcd_buffer,1024);
     
     #ifdef ETHERNET_DEBUG_ENABLED
       printf("Send DISP data\r\n");

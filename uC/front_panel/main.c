@@ -71,7 +71,7 @@ struct_setting settings;
 unsigned char device_online = 0;
 
 //! Ping list, so we dont need to make space in the memory for it each time
-static bus_struct_ping_status main_ping_list;
+//static bus_struct_ping_status main_ping_list;
 
 //! Counter which is used to keep track of when we last received a sync message from the bus
 static unsigned int counter_sync = 32000;
@@ -951,7 +951,7 @@ int main(void){
       
       //TODO: FIX BAND IN USE???
       //Check that we aren't on the same band as another box every 250 ms
-      /*if ((counter_compare0 % 250) == 0) {
+      /*if ((counter_ms % 250) == 0) {
         if (main_band_change_ok(status.selected_band) == 0) {
             if (error_handler_get_state(ERROR_TYPE_BAND_IN_USE) == 0) {
               error_handler_set(ERROR_TYPE_BAND_IN_USE,1,0);

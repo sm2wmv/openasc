@@ -44,7 +44,7 @@
 //! Flag that shows if an antenna is occupied, used for multiband antennas primary - Not implemented
 #define ANTENNA_IN_USE_FLAG		3
 
-//! Screensaver timeout (in seconds)
+//! Screensaver timeout (in seconds) 300 default
 #define DISPLAY_SCREENSAVER_TIMEOUT 300
 
 //! Indicate that radio is enabled or disabled

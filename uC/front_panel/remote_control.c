@@ -84,7 +84,7 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
       break;
     case REMOTE_COMMAND_TERMINAL_DATA:
       if (ascii_comm_dev_addr != 0) {
-        bus_add_tx_message(bus_get_address(), ascii_comm_dev_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,length,data);
+        bus_add_tx_message(bus_get_address(), ascii_comm_dev_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,length,(unsigned char *)data);
       }
       break;
     case REMOTE_COMMAND_ROTATOR_SET_HEADING:
@@ -384,7 +384,7 @@ void remote_control_send_rx_ant_info(unsigned char ant_index) {
 
     strcpy((char *)(temp_str+2),antenna_ctrl_get_rx_antenna_name(ant_index));
       
-    internal_comm_add_tx_message(INT_COMM_REMOTE_RXANT_TEXT,sizeof(temp_str),temp_str);
+    internal_comm_add_tx_message(INT_COMM_REMOTE_RXANT_TEXT,sizeof(temp_str),(char *)temp_str);
   }
 }
 
@@ -409,7 +409,7 @@ void remote_control_send_band_info(unsigned char band) {
     temp_data[9] = (errors >> 8);
     temp_data[10] = (errors & 0x00FF);
 
-    internal_comm_add_tx_message(INT_COMM_REMOTE_BAND_INFO,sizeof(temp_data),temp_data);
+    internal_comm_add_tx_message(INT_COMM_REMOTE_BAND_INFO,sizeof(temp_data),(char *)temp_data);
     
     //TODO: Continue to send more info to the motherboard of the new selected band
   }
@@ -428,7 +428,7 @@ void remote_control_send_ant_text(unsigned char ant_index) {
       
       memcpy(temp_data+2,antenna_ctrl_get_antenna_text(ant_index),antenna_ctrl_get_antenna_text_length(ant_index));
       
-      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_ANT_TEXT,sizeof(temp_data),temp_data);
+      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_ANT_TEXT,sizeof(temp_data),(char *)temp_data);
     }
   }
 }
@@ -436,7 +436,7 @@ void remote_control_send_ant_text(unsigned char ant_index) {
 void remote_control_send_antenna_dir_info(unsigned char index) {
   if (remote_control_get_remote_mode()) {
     if (remote_current_band != BAND_UNDEFINED) {
-      unsigned char temp_data[4] = {0,0,0,0,0};
+      unsigned char temp_data[4] = {0,0,0,0};
       
       if (index < 4) {
         if (antenna_ctrl_get_flags(index) & (1<<ANTENNA_ROTATOR_FLAG)) {
