@@ -804,10 +804,14 @@ int main(void){
       printf("Band[%i] refp: %i\n\r",i,settings.powermeter_ref_power_limit[i]);
     }*/
   #endif
-  
+
+  wdt_enable(WDTO_2S);
+
   BUS_MESSAGE mess;
   
 	while(1) {
+    wdt_reset();
+    
     if (bus_check_rx_status(&mess)) {
       event_bus_parse_message(mess);
     }
