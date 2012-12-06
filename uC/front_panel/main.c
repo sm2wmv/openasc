@@ -703,6 +703,10 @@ int main(void){
     #ifdef DEBUG_COMPUTER_USART_ENABLED
 		  init_usart_computer();
     #endif
+      
+    #ifdef ETHERNET_DEBUG_ENABLED
+      init_usart_computer();
+    #endif
 	}
 	else {
 		//Init the computer communication
@@ -793,6 +797,10 @@ int main(void){
   //so that we know which band they are on, before we enter a band ourself.
   event_add_message((void *)main_enable_device,3000,0);
 	
+  #ifdef ETHERNET_DEBUG_ENABLED
+    printf("openASC started in ethernet debug mode\r\n");
+  #endif
+  
   #ifdef DEBUG_COMPUTER_USART_ENABLED
     printf("openASC started in USART debug mode\n");
     

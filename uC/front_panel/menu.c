@@ -44,12 +44,30 @@
 //! Number of options in the menu system
 #define MENU_OPTIONS	10
 
-//! Menu options - Errors
+prog_char error_0[] PROGMEM = "Bus resend";
+prog_char error_1[] PROGMEM = "No bus sync";
+prog_char error_2[] PROGMEM = "Bus TX queue full";
+prog_char error_3[] PROGMEM = "Bus RX queue full";
+prog_char error_4[] PROGMEM = "Int. comm resend";
+prog_char error_5[] PROGMEM = "Ant drv timeout";
+prog_char error_6[] PROGMEM = "Band drv timeout";
+prog_char error_7[] PROGMEM = "High VSWR";
+prog_char error_8[] PROGMEM = "Band in use";
+prog_char error_9[] PROGMEM = "Int comm. TX full";
+prog_char error_10[] PROGMEM = "Int comm. RX full";
+prog_char error_11[] PROGMEM = "Event queue full";
+prog_char error_12[] PROGMEM = "High ref power";
+prog_char error_13[] PROGMEM = "PA Error";
+prog_char error_14[] PROGMEM = "Rotator Error";
+
+/*//! Menu options - Errors
 const struct_menu_option menu_errors[NR_OF_ERRORS] = {
   {"Bus resend"},{"No bus sync"}, {"Bus TX queue full"}, {"Bus RX queue full"}, {"Int. comm resend"}, 
   {"Ant drv timeout"},{"Band drv timeout"},{"High VSWR"},{"Band in use"}, {"Int comm. TX full"},
   {"Int comm. RX full"},{"Event queue full"},{"High ref power"},{"PA Error"},{"Rotator Error"}
-};
+};*/
+
+PROGMEM const char *menu_errors[] =  {error_0,error_1,error_2,error_3,error_4,error_5,error_6,error_7,error_8,error_9,error_10,error_11,error_12,error_13,error_14};
 
 
 const struct_menu_option menu_misc[] = {{"Reboot"}};
@@ -72,49 +90,64 @@ const struct_menu_option menu_option_radio_ptt_output[] = {{"ON"},{"OFF"}};
 const struct_menu_option menu_option_amp_status[] = {{"ON"},{"OFF"}};
 
 /********* SETUP MENUS *********/
+prog_char header_1[] PROGMEM = "Band change";
+prog_char header_2[] PROGMEM = "Radio PTT";
+prog_char header_3[] PROGMEM = "Amplifier PTT";
+prog_char header_4[] PROGMEM = "Backlight";
+prog_char header_5[] PROGMEM = "Information";
+prog_char header_6[] PROGMEM = "Miscellaneous";
+prog_char header_7[] PROGMEM = "Powermeter";
+prog_char header_8[] PROGMEM = "Antenna status";
+prog_char header_9[] PROGMEM = "Power amplifier";
+prog_char header_10[] PROGMEM = "Errors";
+
 //! Menu system
 const struct_menu_text menu_system_text[] = {
-{MENU_POS_BAND_MODE, "Band change", (struct_menu_option *)menu_option_band_selection_mode, 2,MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_RADIO_PTT, "Radio PTT", (struct_menu_option *)menu_option_radio_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_AMP_PTT, "Amplifier PTT", (struct_menu_option *)menu_option_amp_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_BACKLIGHT_LEVEL, "Backlight", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
-{MENU_POS_SHOW_INFO, "Information", NULL, 0,MENU_OPTION_TYPE_NONE},
-{MENU_POS_MISC, "Miscellaneous", (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_SHOW_POWERMETER_ADDR, "Powermeter", NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
-{MENU_POS_ANT_STATUS, "Antenna status", NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS},
-{MENU_POS_AMP_STATUS, "Power amplifier", (struct_menu_option *)menu_option_amp_status, 0, MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_SHOW_ERRORS, "Errors", (struct_menu_option *)menu_errors, 0,MENU_OPTION_TYPE_NORMAL}
+{MENU_POS_BAND_MODE, header_1, (struct_menu_option *)menu_option_band_selection_mode, 2,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_RADIO_PTT, header_2, (struct_menu_option *)menu_option_radio_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_AMP_PTT, header_3, (struct_menu_option *)menu_option_amp_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_BACKLIGHT_LEVEL, header_4, NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
+{MENU_POS_SHOW_INFO, header_5, NULL, 0,MENU_OPTION_TYPE_NONE},
+{MENU_POS_MISC, header_6, (struct_menu_option *)menu_misc, 1,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_SHOW_POWERMETER_ADDR, header_7, NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
+{MENU_POS_ANT_STATUS, header_8, NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS},
+{MENU_POS_AMP_STATUS, header_9, (struct_menu_option *)menu_option_amp_status, 0, MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_SHOW_ERRORS, header_10, NULL, 0,MENU_OPTION_TYPE_NORMAL}
 };
 
 /*! \brief Show the text of a menu on the display 
  *  \param menu_text The menu which we wish to show */
 void menu_show_text(struct_menu_text menu_text) {
-	//Clear the display
+  char temp_str[20];
+  
+  //Clear the display
 	glcd_clear();
 	
 	if (menu_text.pos == MENU_POS_SHOW_ERRORS) {
-		//Show the "Menu" text
-		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
+		strcpy_P(temp_str,menu_text.header);
+		glcd_text(0,0,FONT_NINE_DOT,temp_str,strlen(temp_str));
 	
 		//Draw a seperation line between the options and the header
-		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+		glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),12);
+		glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),14);
 		
 		unsigned char count = 0;
 		
 		for (int i=0;i<NR_OF_ERRORS;i++) {
 			if (error_handler_get_state(i)) {
-				glcd_text(MENU_OPTION_LEFT_POS,18+count*10,FONT_SEVEN_DOT,menu_errors[i].text,strlen(menu_errors[i].text));
+        strcpy_P(temp_str, (char*)pgm_read_word(&(menu_errors[i])));
+				glcd_text(MENU_OPTION_LEFT_POS,18+count*10,FONT_SEVEN_DOT,temp_str,strlen(temp_str));
 				count++;
 			}
 		}
 	}
 	else if (menu_text.pos == MENU_POS_SHOW_INFO) {
-		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
-		
-		//Draw a seperation line between the options and the header
-		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+    strcpy_P(temp_str,menu_text.header);
+    glcd_text(0,0,FONT_NINE_DOT,temp_str,strlen(temp_str));
+  
+    //Draw a seperation line between the options and the header
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),12);
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),14);
 		
     char temp[30];
     sprintf_P(temp,PSTR("Version: %s"),VERSION);
@@ -124,11 +157,12 @@ void menu_show_text(struct_menu_text menu_text) {
     glcd_text(MENU_OPTION_LEFT_POS,18+10,FONT_SEVEN_DOT,temp,strlen(temp));
 	}
 	else if (menu_text.pos == MENU_POS_AMP_STATUS) {
-    glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
-    
+    strcpy_P(temp_str,menu_text.header);
+    glcd_text(0,0,FONT_NINE_DOT,temp_str,strlen(temp_str));
+  
     //Draw a seperation line between the options and the header
-    glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-    glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),12);
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),14);
     
     char temp[30];
     
@@ -195,12 +229,12 @@ void menu_show_text(struct_menu_text menu_text) {
     glcd_text(MENU_OPTION_LEFT_POS,18+10+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
   }
 	else {
-		//Show the "Menu" text
-		glcd_text(0,0,FONT_NINE_DOT,menu_text.header,strlen(menu_text.header));
-		
-		//Draw a seperation line between the options and the header
-		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),12);
-		glcd_line(0,display_handler_calculate_width(menu_text.header,FONT_NINE_DOT,strlen(menu_text.header)),14);
+    strcpy_P(temp_str,menu_text.header);
+    glcd_text(0,0,FONT_NINE_DOT,temp_str,strlen(temp_str));
+  
+    //Draw a seperation line between the options and the header
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),12);
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),14);
 	
 		if (menu_text.option_type == MENU_OPTION_TYPE_NORMAL) {
 			//Print the different options, mark the current selected with an inverted background
