@@ -82,6 +82,7 @@ void error_handler_set(unsigned char error_type, unsigned char state, unsigned i
     led_set_error(LED_STATE_ON);
     
     if (error_list[error_type].flags & (1<<ERROR_FLAG_SHOW_ERROR_MENU)) {
+      led_set_menu(LED_STATE_ON);
       clear_screensaver_timer();
 
       menu_reset();
@@ -89,8 +90,6 @@ void error_handler_set(unsigned char error_type, unsigned char state, unsigned i
       status.function_status |= (1<<FUNC_STATUS_MENU_ACTIVE);
       
       display_handler_new_view(DISPLAY_HANDLER_VIEW_MENU);
-      
-      led_set_menu(LED_STATE_ON);
     }
     
     if (remote_control_get_remote_mode())

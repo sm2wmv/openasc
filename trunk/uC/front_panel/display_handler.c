@@ -826,7 +826,9 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) {
-    if (PORTC & (1<<LED_ROTATE_BIT))
+    if (PORTH & (1<<LED_ERROR_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -838,7 +840,9 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SCREENSAVER) {
-    if (PORTC & (1<<LED_ROTATE_BIT))
+    if (PORTH & (1<<LED_ERROR_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -850,10 +854,15 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_OPENASC_LOGO)) {
-    display_handler_status.new_display = DISPLAY_HANDLER_VIEW_OPENASC_LOGO;
+    if (PORTH & (1<<LED_ERROR_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_OPENASC_LOGO;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SCREENSAVER)) {
-    if (PORTC & (1<<LED_ROTATE_BIT))
+    if (PORTH & (1<<LED_ERROR_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -865,7 +874,9 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SCREENSAVER)) {  
-    if (PORTC & (1<<LED_ROTATE_BIT))
+    if (PORTH & (1<<LED_ERROR_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -879,7 +890,7 @@ void display_handler_prev_view(void) {
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_ANTENNAS) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {  
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
-    if (PORTC & (1<<LED_ROTATE_BIT))
+    else if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -890,9 +901,32 @@ void display_handler_prev_view(void) {
     else
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;   
   }
-  else
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_ANTENNAS)) {  
+    if (PORTH & (1<<LED_ERROR_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else if (PORTC & (1<<LED_ROTATE_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
+    else if (PORTD & (1<<LED_SUBMENU_BIT))
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
+    else if (PORTK & (1<<7)) //Menu LED bit 
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
+    else if (status.selected_band == BAND_UNDEFINED)
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_OPENASC_LOGO;
+    else
+      display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+  }
+  else {
+    #ifdef DEBUG_COMPUTER_USART_ENABLED
+      printf("PREV_DISP_ELSE\r\n");
+    #endif
+      
     display_handler_status.new_display = display_handler_status.prev_display;
+  }
   
+  #ifdef DEBUG_COMPUTER_USART_ENABLED
+    printf("EXIT NEW DISP: %i\r\n",display_handler_status.new_display);
+  #endif
+
   display_handler_status.force_repaint = 1;
 }
 
