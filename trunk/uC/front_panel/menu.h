@@ -31,12 +31,13 @@ typedef struct {
 	char *text;
 } struct_menu_option;
 
+
 //! Menu text structs
 typedef struct {
 	//! Position nr in the menu system
 	unsigned char pos;
 	//! Header text
-	char *header;
+	const char *header;
 	//! Pointer to the options
 	struct_menu_option *options;
 	//! Number of options

@@ -79,7 +79,7 @@ void display_handler_update_screensaver(void) {
   if (display_handler_status.screensaver_mode == 1) {
     ds1307_read();
   
-    sprintf((char *)temp_time_ptr,"%02i:%02i:%02i",ds1307_get_hours(),ds1307_get_minutes(),ds1307_get_seconds());
+    sprintf_P((char *)temp_time_ptr,PSTR("%02i:%02i:%02i"),ds1307_get_hours(),ds1307_get_minutes(),ds1307_get_seconds());
   
     glcd_clear();
     glcd_text(8, 23, FONT_EIGHTEEN_DOT,temp_time_ptr,strlen(temp_time_ptr));
@@ -214,13 +214,13 @@ void display_handler_show_powermeter_bargraph(unsigned int fwd_power, unsigned i
  *  \param ref_power Reflected power in watts
  *  \param vswr The current VSWR, for example 151 means 1.51:1 */
 void display_handler_show_powermeter_text(unsigned int fwd_power, unsigned int ref_power, unsigned int vswr) {
-  sprintf(power_temp_str,"%5iW",fwd_power);
+  sprintf_P(power_temp_str,PSTR("%5iW"),fwd_power);
   display_handler_text_right_adjust(125,3,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
-  sprintf(power_temp_str,"%3iW",ref_power);
+  sprintf_P(power_temp_str,PSTR("%3iW"),ref_power);
   display_handler_text_right_adjust(80,34,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
   
   if (vswr != 0) {
-    sprintf(power_temp_str,"%i.%02i:1",(vswr/100),(vswr%100));
+    sprintf_P(power_temp_str,PSTR("%i.%02i:1"),(vswr/100),(vswr%100));
     display_handler_text_right_adjust(125,45,power_temp_str,strlen(power_temp_str),FONT_NINE_DOT);
   }
   else //If we have VSWR as 0 we just clear that area instead of writing out 0.0:1
@@ -356,7 +356,7 @@ void display_handler_show_rx_ant(unsigned char ant_index) {
   if ((antenna_ctrl_get_rx_antenna_count() >= ant_index) && (ant_index != 0)) {
     char temp[strlen(antenna_ctrl_get_rx_antenna_name(ant_index-1))+5];
     
-    sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(ant_index-1));
+    sprintf_P((char *)temp, PSTR("RX: %s"),antenna_ctrl_get_rx_antenna_name(ant_index-1));
     
     glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_SIX_DOT, temp, strlen(temp));
   }
@@ -417,43 +417,43 @@ void display_handler_rotator_directions(unsigned char band) {
   char temp_dir[9];
   
   if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf((char *)temp_dir,"%3i (%c)",antenna_ctrl_get_direction(0),antenna_ctrl_get_rotates_char(0));
+    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(0));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
   if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf((char *)temp_dir,"%3i (%c)",antenna_ctrl_get_direction(1),antenna_ctrl_get_rotates_char(1));
+    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(1),antenna_ctrl_get_rotates_char(1));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
 
   if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf((char *)temp_dir,"%3i (%c)",antenna_ctrl_get_direction(2),antenna_ctrl_get_rotates_char(2));
+    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(2));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
 
   if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf((char *)temp_dir,"%3i (%c)",antenna_ctrl_get_direction(3),antenna_ctrl_get_rotates_char(3));
+    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(3));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
   if (antenna_ctrl_get_sub_menu_type(0) == SUBMENU_VERT_ARRAY) {
     //sub_menu_get_text(0, sub_menu_get_current_pos(0))
-    sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(0, sub_menu_get_current_pos(0)));
+    sprintf_P((char *)temp_dir,PSTR("Dir %s"),sub_menu_get_text(0, sub_menu_get_current_pos(0)));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
   if (antenna_ctrl_get_sub_menu_type(1) == SUBMENU_VERT_ARRAY) {
-    sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(1, sub_menu_get_current_pos(1)));
+    sprintf_P((char *)temp_dir,PSTR("Dir %s"),sub_menu_get_text(1, sub_menu_get_current_pos(1)));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
   if (antenna_ctrl_get_sub_menu_type(2) == SUBMENU_VERT_ARRAY) {
-    sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(2, sub_menu_get_current_pos(2)));
+    sprintf_P((char *)temp_dir,PSTR("Dir %s"),sub_menu_get_text(2, sub_menu_get_current_pos(2)));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
   if (antenna_ctrl_get_sub_menu_type(3) == SUBMENU_VERT_ARRAY) {
-    sprintf((char *)temp_dir,"Dir %s",sub_menu_get_text(3, sub_menu_get_current_pos(3)));
+    sprintf_P((char *)temp_dir,PSTR("Dir %s"),sub_menu_get_text(3, sub_menu_get_current_pos(3)));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   } 
 }
@@ -510,7 +510,7 @@ void display_handler_show_sub_menu(unsigned char ant_index, unsigned char sub_me
       if ((antenna_ctrl_get_rx_antenna_count() >= status.selected_rx_antenna) && (status.selected_rx_antenna != 0)) {
         char temp[strlen(antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1))+5];
     
-        sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1));
+        sprintf_P((char *)temp, PSTR("RX: %s"),antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1));
     
         glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_SIX_DOT, temp, strlen(temp));
       }
@@ -536,7 +536,7 @@ void display_handler_show_sub_menu(unsigned char ant_index, unsigned char sub_me
       if ((antenna_ctrl_get_rx_antenna_count() >= status.selected_rx_antenna) && (status.selected_rx_antenna != 0)) {
         char temp[strlen(antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1))+5];
     
-        sprintf((char *)temp, "RX: %s",antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1));
+        sprintf_P((char *)temp, PSTR("RX: %s"),antenna_ctrl_get_rx_antenna_name(status.selected_rx_antenna-1));
     
         glcd_text(DISPLAY_TEXT_RX_ANT_X_POS, DISPLAY_TEXT_RX_ANT_Y_POS, FONT_SIX_DOT, temp, strlen(temp));
       }

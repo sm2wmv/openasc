@@ -369,16 +369,17 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
   txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
   timeout=0;
+  
   while (txsize < (buflen+5)) {
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
-    // Timeout for approx 1000 ms
-/*    if (timeout++ > 1000) {
-      // Disconnect the connection
-      ethernet_disconnect(sock);
+    
+    if (timeout++ > 1000) {
+      // Close the socket
+      ethernet_close(sock);
       return 0;
-    }*/
-  }  
+    }
+  }
 
   // Read the Tx Write Pointer
   ptr = ethernet_spi_read(S0_TX_WR);
@@ -454,12 +455,12 @@ unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned
   while (txsize < buflen) {
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
-    // Timeout for approx 1000 ms
-/*    if (timeout++ > 1000) {
-      // Disconnect the connection
-      ethernet_disconnect(sock);
+
+    if (timeout++ > 1000) {
+      //Close the socket
+      ethernet_close(sock);
       return 0;
-    }*/
+    }
   }  
 
   // Read the Tx Write Pointer
@@ -654,3 +655,4 @@ unsigned char ethernet_is_active(void) {
 unsigned char ethernet_get_chip_enabled(void) {
   return(ethernet_chip_enabled);
 }
+
