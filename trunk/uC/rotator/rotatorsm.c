@@ -85,7 +85,6 @@ QState Rotator_Calibrate(Rotator *me) {
             bsp_rotator_stop(me->rot_idx);
             //bsp_rotator_apply_break(me->rot_idx);
             me->error = 0;
-            Rotator_calc_heading_coeffs(me);
             eeprom_write_config();
             return Q_HANDLED();
         }
@@ -170,7 +169,13 @@ QState Rotator_StartWait(Rotator *me) {
         /* @(/1/0/14/3/5) */
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("StartWait: ENTER\n");
-            QActive_arm((QActive *)me, 10);
+            uint8_t start_wait = cfg.rot[me->rot_idx].start_wait;
+            if (start_wait > 0) {
+              QActive_arm((QActive *)me, start_wait);
+            }
+            else {
+              QActive_post((QActive *)me, Q_TIMEOUT_SIG, 0);
+            }
             return Q_HANDLED();
         }
         /* @(/1/0/14/3/5) */
@@ -195,7 +200,13 @@ QState Rotator_StopWait(Rotator *me) {
         /* @(/1/0/14/3/6) */
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("StopWait: ENTER\n");
-            QActive_arm((QActive *)me, 30);
+            uint8_t stop_wait = cfg.rot[me->rot_idx].stop_wait;
+            if (stop_wait > 0) {
+              QActive_arm((QActive *)me, stop_wait);
+            }
+            else {
+              QActive_post((QActive *)me, Q_TIMEOUT_SIG, 0);
+            }
             return Q_HANDLED();
         }
         /* @(/1/0/14/3/6) */

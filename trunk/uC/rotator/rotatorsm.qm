@@ -89,7 +89,6 @@ me-&gt;rotate_dir = 0;</entry>
 bsp_rotator_stop(me-&gt;rot_idx);
 //bsp_rotator_apply_break(me-&gt;rot_idx);
 me-&gt;error = 0;
-Rotator_calc_heading_coeffs(me);
 eeprom_write_config();</exit>
      <tran trig="CAL_DISABLE" target="../../1">
       <tran_glyph conn="22,55,0,2,-12">
@@ -168,7 +167,13 @@ bsp_rotator_apply_break(me-&gt;rot_idx);</exit>
      </tran>
      <state name="StartWait">
       <entry>DEBUG_PRINT(&quot;StartWait: ENTER\n&quot;);
-QActive_arm((QActive *)me, 10);</entry>
+uint8_t start_wait = cfg.rot[me-&gt;rot_idx].start_wait;
+if (start_wait &gt; 0) {
+  QActive_arm((QActive *)me, start_wait);
+}
+else {
+  QActive_post((QActive *)me, Q_TIMEOUT_SIG, 0);
+}</entry>
       <exit>DEBUG_PRINT(&quot;StartWait: EXIT\n&quot;);</exit>
       <tran trig="Q_TIMEOUT" target="../../7">
        <tran_glyph conn="114,26,2,0,5">
@@ -187,7 +192,13 @@ QActive_arm((QActive *)me, 10);</entry>
      </state>
      <state name="StopWait">
       <entry>DEBUG_PRINT(&quot;StopWait: ENTER\n&quot;);
-QActive_arm((QActive *)me, 30);</entry>
+uint8_t stop_wait = cfg.rot[me-&gt;rot_idx].stop_wait;
+if (stop_wait &gt; 0) {
+  QActive_arm((QActive *)me, stop_wait);
+}
+else {
+  QActive_post((QActive *)me, Q_TIMEOUT_SIG, 0);
+}</entry>
       <exit>DEBUG_PRINT(&quot;StopWait: EXIT\n&quot;);</exit>
       <tran trig="Q_TIMEOUT">
        <choice guard="me-&gt;error != ROTATOR_ERROR_OK" target="../../../../4">

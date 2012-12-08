@@ -341,6 +341,7 @@ RotatorError rotator_current_error(uint8_t rot_idx) {
   return me->error;
 }
 
+
 const char *rotator_strerror(RotatorError error) {
   switch (error) {
     case ROTATOR_ERROR_OK:
@@ -357,6 +358,29 @@ const char *rotator_strerror(RotatorError error) {
   return "?";
 }
 
+
+int8_t rotator_set_start_wait(uint8_t rot_idx, uint16_t time_ms) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+
+  RotatorConfig *conf = &cfg.rot[rot_idx];
+  conf->start_wait = time_ms / QF_TICK_INTERVAL;
+  eeprom_write_config();
+  return 0;
+}
+
+
+int8_t rotator_set_stop_wait(uint8_t rot_idx, uint16_t time_ms) {
+  if (rot_idx >= ROTATOR_COUNT) {
+    return -1;
+  }
+
+  RotatorConfig *conf = &cfg.rot[rot_idx];
+  conf->stop_wait = time_ms / QF_TICK_INTERVAL;
+  eeprom_write_config();
+  return 0;
+}
 
 
 /******************************************************************************
@@ -622,6 +646,9 @@ static void Rotator_set_ccw_limit(Rotator *me, int16_t limit_deg) {
       || (conf->cw_limit_deg < conf->ccw_limit_deg)) {
     Rotator_set_cw_limit(me, limit_deg);
   }
+  else {
+    Rotator_calc_heading_coeffs(me);
+  }
 }
 
 /**
@@ -640,6 +667,9 @@ static void Rotator_set_cw_limit(Rotator *me, int16_t limit_deg) {
   if ((conf->cw_limit < conf->ccw_limit)
       || (conf->cw_limit_deg < conf->ccw_limit_deg)) {
     Rotator_set_ccw_limit(me, limit_deg);
+  }
+  else {
+    Rotator_calc_heading_coeffs(me);
   }
 }
 

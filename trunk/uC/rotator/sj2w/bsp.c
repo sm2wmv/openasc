@@ -72,8 +72,6 @@
 
 //! Used for timer compare to match 1 ms
 #define OCR0_1MS 7
-//! The tick interval for the QP framework
-#define QF_TICK_INTERVAL    100
 //! The TX interval for the assertion bus messages
 #define ASSERT_TX_INTERVAL  5000
 //! The interval between each ADC measurement

@@ -26,45 +26,9 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+#include <stdint.h>
 
-/**
- * Default config that is loaded on command or when the CRC checksum mismatch
- * for the configuration data stored in the EEPROM.
- */
-#define DEFAULT_CONFIG { \
-  rot: { \
-    { \
-      ccw_limit: 0, \
-      ccw_limit_deg: 0, \
-      cw_limit: 0, \
-      cw_limit_deg: 0 \
-    }, \
-    { \
-      ccw_limit: 0, \
-      ccw_limit_deg: 0, \
-      cw_limit: 0, \
-      cw_limit_deg: 0 \
-    }, \
-    { \
-      ccw_limit: 0, \
-      ccw_limit_deg: 0, \
-      cw_limit: 0, \
-      cw_limit_deg: 0 \
-    }, \
-    { \
-      ccw_limit: 0, \
-      ccw_limit_deg: 0, \
-      cw_limit: 0, \
-      cw_limit_deg: 0 \
-    }, \
-    { \
-      ccw_limit: 0, \
-      ccw_limit_deg: 0, \
-      cw_limit: 0, \
-      cw_limit_deg: 0 \
-    } \
-  } \
-}
+#include <bsp.h>
 
 
 /**
@@ -75,6 +39,8 @@ typedef struct {
   int16_t ccw_limit_deg;        /*!< CCW limit in degrees */
   int16_t cw_limit;             /*!< CW limit as a raw heading value */
   int16_t cw_limit_deg;         /*!< CW limit in degrees */
+  uint16_t start_wait;          /*!< Break release to start rotate delay */
+  uint16_t stop_wait;           /*!< Stop rotate to break apply delay */
 } RotatorConfig;
 
 
@@ -82,7 +48,7 @@ typedef struct {
  * Configuration variables that are persisted in the EEPROM
  */
 typedef struct {
-  RotatorConfig rot[5];         /*!< Config for each rotator */
+  RotatorConfig rot[ROTATOR_COUNT];         /*!< Config for each rotator */
 } Config;
 
 

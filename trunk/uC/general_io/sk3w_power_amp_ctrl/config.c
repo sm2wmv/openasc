@@ -1,12 +1,11 @@
-/*! \file     general_io/sk3w_power_amp_ctrl/bsp.h
+/*! \file     general_io/sk3w_power_amp_ctrl/config.c
  *  \ingroup  general_io_group
- *  \brief    Board support package for the SK3W PA controller
+ *  \brief    Definition of configuration data to store in the EEPROM
  *  \author   Tobias Blomberg, SM0SVX
- *  \date     2012-05-23
- * 
- * The board support package is used to isolate hardware access from other
- * parts of the application. This will make it easier to port software to
- * other hardware if necessary.
+ *  \date     2012-12-08
+ *
+ * This file contains definitions used by the eeprom routines to read and
+ * store data.
  */
 //    Copyright (C) 2012  Mikael Larsmark, SM2WMV
 //
@@ -23,10 +22,19 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _VERSION_H_
-#define _VERSION_H_
+#include <avr/pgmspace.h>
 
-#define VERSION "1.1.3"
+#include "config.h"
 
-#endif
+
+/**
+ * Default config that is loaded on command or when the CRC checksum mismatch
+ * for the configuration data stored in the EEPROM. This variable is external
+ * declared in eeprom.c and used by the eeprom routines.
+ */
+const Config PROGMEM eeprom_default_cfg = {
+  unused_timeout: DEFAULT_UNUSED_TIMEOUT,
+  warmup_timeout: DEFAULT_WARMUP_TIMEOUT,
+  cooldown_timeout: DEFAULT_COOLDOWN_TIMEOUT
+};
 
