@@ -32,12 +32,6 @@
 #define DEFAULT_COOLDOWN_TIMEOUT  2*60          /* 2 minutes */
 
 
-#define DEFAULT_CONFIG { \
-  unused_timeout: DEFAULT_UNUSED_TIMEOUT, \
-  warmup_timeout: DEFAULT_WARMUP_TIMEOUT, \
-  cooldown_timeout: DEFAULT_COOLDOWN_TIMEOUT \
-}
-
 //! Configuration variables that are persisted in the EEPROM
 typedef struct {
   uint16_t unused_timeout;      //! The "unused" timeout in seconds

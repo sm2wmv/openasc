@@ -91,6 +91,8 @@ static int8_t handle_defaults_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_reset_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_status_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t handle_select_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_strtwait_cmd(uint8_t from_addr, uint8_t argc, char **argv);
+static int8_t handle_stopwait_cmd(uint8_t from_addr, uint8_t argc, char **argv);
 
 
 /******************************************************************************
@@ -125,7 +127,9 @@ AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
   { "defaults", 0, 0, handle_defaults_cmd },
   { "reset",    0, 0, handle_reset_cmd },
   { "status",   0, 1, handle_status_cmd },
-  { "select",   1, 1, handle_select_cmd }
+  { "select",   1, 1, handle_select_cmd },
+  { "strtwait", 1, 1, handle_strtwait_cmd },
+  { "stopwait", 1, 1, handle_stopwait_cmd }
 };
 //! The number of defined commands
 const uint8_t bus_ascii_cmd_cnt PROGMEM = sizeof(bus_ascii_cmd_list)
@@ -143,7 +147,9 @@ const char bus_ascii_cmd_help[] PROGMEM =
   "cwlim <deg>\t"            "Set CW limit\n"
   "dir\t\t"                  "Print direction\n"
   "status [clear]\t"         "Print or clear rotator status\n"
-  "select <idx>\t"           "Select rotator\n";
+  "select <idx>\t"           "Select rotator\n"
+  "strtwait <time ms>\t"     "Set start wait time\n"
+  "stopwait <time ms>\t"     "Set stop wait time\n";
 
 
 /******************************************************************************
@@ -409,6 +415,16 @@ static int8_t handle_select_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
   current_rot_idx = rot_idx;
   bus_ascii_cmd_prompt[0] = (char)(rot_idx + '0');
   return 0;
+}
+
+
+static int8_t handle_strtwait_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  return rotator_set_start_wait(current_rot_idx, atoi(argv[1]));
+}
+
+
+static int8_t handle_stopwait_cmd(uint8_t from_addr, uint8_t argc, char **argv) {
+  return rotator_set_stop_wait(current_rot_idx, atoi(argv[1]));
 }
 
 

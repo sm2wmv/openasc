@@ -7,11 +7,27 @@
  * This file contains functions to handle reading and writing configuration data
  * to/from the AVR internal EEPROM. You should define the file "config.h"
  * locally in your project. This file should contain a typedef for the Config
- * type and a DEFAULT_CONFIG macro that declares default initialization data
- * for the Config type.
+ * type. For example:
+ *
+ *   typedef struct {
+ *     uint16_t   var1;
+ *     int16_t    var2;
+ *     const char var3[16];
+ *   } Config;
+ *
+ * The extern variable eeprom_default_cfg must also be defined. The suggested
+ * place to do that is in a config.c file. It should look something like this:
+ *
+ *   const Config PROGMEM eeprom_default_cfg = {
+ *     var1: 10,
+ *     var2: 20,
+ *     var3: "Hello"
+ *   } 
+ *
  * There is also support for reading and writing arbirary data structures by
  * creating an own context and using the *_data functions.
  */
+
 //    Copyright (C) 2012  Mikael Larsmark, SM2WMV
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -30,6 +46,8 @@
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
 
+#include <avr/pgmspace.h>
+
 #include "config.h"
 
 
@@ -46,6 +64,8 @@ typedef struct eeprom_context {
 
 //! Config variable container
 extern Config cfg;
+//! Default config values stored in flash memory
+extern const Config PROGMEM eeprom_default_cfg;
 
 
 /**

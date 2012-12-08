@@ -80,8 +80,6 @@ static Config EEMEM eep_cfg;
 static uint16_t EEMEM eep_cfg_crc;
 //! Config variable container
 Config cfg;
-//! Default config values stored in flash memory
-static const Config PROGMEM default_cfg = DEFAULT_CONFIG;
 //! EEPROM context for the config reader/writer
 static EepromContext cfg_ctx;
 
@@ -105,7 +103,7 @@ void eeprom_read_config(void) {
   eeprom_read_data(&cfg_ctx,
                    &cfg, sizeof(cfg),
                    &eep_cfg, &eep_cfg_crc,
-                   &default_cfg);
+                   &eeprom_default_cfg);
 }
 
 
@@ -195,7 +193,7 @@ void eeprom_write_data(EepromContext *ctx,
 
 
 void eeprom_set_default_config(void) {
-  eeprom_set_default_data(&cfg, &default_cfg, sizeof(cfg));
+  eeprom_set_default_data(&cfg, &eeprom_default_cfg, sizeof(cfg));
 }
 
 

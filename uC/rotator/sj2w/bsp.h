@@ -38,6 +38,9 @@
 //! The interval, in milliseconds, between heading updates
 #define HEADING_UPDATE_INTERVAL   100
 
+//! The tick interval for the QP framework
+#define QF_TICK_INTERVAL    100
+
 
 /**
  * \brief Initialize the board support package

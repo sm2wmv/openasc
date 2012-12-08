@@ -207,6 +207,22 @@ RotatorError rotator_current_error(uint8_t rot_idx);
  */
 const char *rotator_strerror(RotatorError error);
 
+/**
+ * \brief   Set the rotator stop to break apply wait time
+ * \param   rot_idx The rotator index
+ * \param   time_ms The time in milliseconds
+ * \returns Return 0 on success or -1 on failure
+ */
+int8_t rotator_set_stop_wait(uint8_t rot_idx, uint16_t time_ms);
+
+/**
+ * \brief   Set the break release to rotator start wait time
+ * \param   rot_idx The rotator index
+ * \param   time_ms The time in milliseconds
+ * \returns Return 0 on success or -1 on failure
+ */
+int8_t rotator_set_start_wait(uint8_t rot_idx, uint16_t time_ms);
+
 
 /**
  * \brief   Called by the rotator code when the heading display is to be updated
@@ -229,6 +245,5 @@ extern void rotator_direction_updated(uint8_t rot_idx, int16_t dir);
  * function when an error condition occurrs.
  */
 extern void rotator_error(uint8_t rot_idx, RotatorError error);
-
 
 #endif /* _ROTATOR_H_ */

@@ -82,7 +82,7 @@ GLOBAL_SRC =  i2c.c delay.c
 BOARD_SRC = eeprom.c
 
 # Local sources
-LOCAL_SRC = $(TARGET).c bus_handler.c bsp.c rotator.c
+LOCAL_SRC = $(TARGET).c bus_handler.c bsp.c rotator.c config.c
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = $(LOCAL_SRC) $(BOARD_SRC) $(GLOBAL_SRC) $(WMV_BUS_SRC) $(QPN_SRC) ext_control.c
