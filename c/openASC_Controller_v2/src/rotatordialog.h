@@ -71,6 +71,9 @@ private:
 	bool antVerticalArray[4];
 	int presetButtonValue[5];
 	char rotatorStatus[4];
+	int verticalArrayNrDirs[4];
+	int verticalArrayDirAngle[4][4];
+	QString verticalArrayDirName[4][4];
 private slots:
 
 public slots:

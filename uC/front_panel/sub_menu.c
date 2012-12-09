@@ -31,10 +31,14 @@
 #include "eeprom.h"
 #include "band_ctrl.h"
 #include "led_control.h"
+#include "remote_control.h"
+#include "ethernet.h"
 
 #include "../global.h"
 #include "../internal_comm.h"
 #include "../event_queue.h"
+
+#include "../remote_commands.h"
 
 /* Include the bus headers */
 #include "../wmv_bus/bus.h"
@@ -113,6 +117,12 @@ unsigned char sub_menu_get_current_pos(unsigned char ant_index) {
  *  \param new_pos The position we wish to chose */
 void sub_menu_set_current_pos(unsigned char ant_index, unsigned char new_pos) {
 	curr_option_selected[ant_index] = new_pos;
+  
+  if (sub_menu_get_type(ant_index) == SUBMENU_VERT_ARRAY)
+    if (ethernet_is_active()) {
+      unsigned char temp[4] = {ant_index,0,new_pos,0};
+      ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,4,(unsigned char *)temp);
+    }
 }
 
 /*! \brief Get the number of antennas which has got a sub menu configured 
