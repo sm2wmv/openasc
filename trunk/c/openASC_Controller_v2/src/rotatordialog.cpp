@@ -21,7 +21,10 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
 
-					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					if (antVerticalArray[i])
+						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					else
+						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -35,7 +38,10 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
 
-					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					if (antVerticalArray[i])
+						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					else
+						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -44,7 +50,10 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
 
-					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					if (antVerticalArray[i])
+						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					else
+						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -53,7 +62,10 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
 
-					painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					if (antVerticalArray[i])
+						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+					else
+						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -204,6 +216,11 @@ void RotatorDialog::loadBand(int bandIndex) {
 			break;
 	}
 
+	currAzimuthAngle[0] = 0;
+	currAzimuthAngle[1] = 0;
+	currAzimuthAngle[2] = 0;
+	currAzimuthAngle[3] = 0;
+
 	if (bandIndex == 0) {
 		for (int i=0;i<4;i++) {
 			antName[i] = "";
@@ -260,6 +277,21 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antFixedAngle[i] = settings.value("AntennaFixedAngle").toInt();
 			antFixed[i] = settings.value("AntennaFixed").toBool();
 			antBiDirectional[i] = settings.value("AntennaBiDirectional").toBool();
+
+
+			if (antVerticalArray[i]) {
+				verticalArrayNrDirs[i] = settings.value("VerticalArrayNrDirs").toInt();
+
+				verticalArrayDirAngle[i][0] = settings.value("VerticalArrayDir1Angle").toInt();
+				verticalArrayDirAngle[i][1] = settings.value("VerticalArrayDir2Angle").toInt();
+				verticalArrayDirAngle[i][2] = settings.value("VerticalArrayDir3Angle").toInt();
+				verticalArrayDirAngle[i][3] = settings.value("VerticalArrayDir4Angle").toInt();
+
+				verticalArrayDirName[i][0] = settings.value("VerticalArrayDir1Name").toString();
+				verticalArrayDirName[i][1] = settings.value("VerticalArrayDir2Name").toString();
+				verticalArrayDirName[i][2] = settings.value("VerticalArrayDir3Name").toString();
+				verticalArrayDirName[i][3] = settings.value("VerticalArrayDir4Name").toString();
+			}
 
 			if (antFixed[i]) {
 				setRotatorAngle(i,antFixedAngle[i]);
@@ -363,10 +395,46 @@ void RotatorDialog::loadBand(int bandIndex) {
 		labelAnt3Title->setText(antName[2]);
 		labelAnt4Title->setText(antName[3]);
 
-		labelAnt1Status->setText("Stopped");
-		labelAnt2Status->setText("Stopped");
-		labelAnt3Status->setText("Stopped");
-		labelAnt4Status->setText("Stopped");
+		if (antFixed[0])
+			labelAnt1Status->setText("Fixed");
+		else
+			labelAnt1Status->setText("Stopped");
+
+		if (antFixed[1])
+			labelAnt2Status->setText("Fixed");
+		else
+			labelAnt2Status->setText("Stopped");
+
+		if (antFixed[2])
+			labelAnt3Status->setText("Fixed");
+		else
+			labelAnt3Status->setText("Stopped");
+
+		if (antFixed[3])
+			labelAnt4Status->setText("Fixed");
+		else
+			labelAnt4Status->setText("Stopped");
+	}
+
+	for (unsigned char antIndex=0;antIndex<4;antIndex++) {
+		if (antVerticalArray[antIndex]) {
+			if (antIndex == 0) {
+				labelAnt1Dir->setText(verticalArrayDirName[antIndex][0]);
+				labelAnt1Status->setText("");
+			}
+			else if (antIndex == 1) {
+				labelAnt2Dir->setText(verticalArrayDirName[antIndex][0]);
+				labelAnt2Status->setText("");
+			}
+			else if (antIndex == 2) {
+				labelAnt3Dir->setText(verticalArrayDirName[antIndex][0]);
+				labelAnt3Status->setText("");
+			}
+			else if (antIndex == 3) {
+				labelAnt4Dir->setText(verticalArrayDirName[antIndex][0]);
+				labelAnt4Status->setText("");
+			}
+		}
 	}
 
 	repaint();
@@ -374,16 +442,43 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 void RotatorDialog::setRotatorAngle(int antIndex, unsigned int angle) {
 	if (antIndex < 4) {
-		currAzimuthAngle[antIndex] = angle;
+		if (antVerticalArray[antIndex]) {
+			if (angle < 4)
+				currAzimuthAngle[antIndex] = angle;
+			else
+				currAzimuthAngle[antIndex] = 0;
+		}
+		else
+			currAzimuthAngle[antIndex] = angle;
 
-		if (antIndex == 0)
-			labelAnt1Dir->setText(QString::number(angle)+'°');
-		else if (antIndex == 1)
-			labelAnt2Dir->setText(QString::number(angle)+'°');
-		else if (antIndex == 2)
-			labelAnt3Dir->setText(QString::number(angle)+'°');
-		else if (antIndex == 3)
-			labelAnt4Dir->setText(QString::number(angle)+'°');
+		if (antIndex == 0) {
+			if (antVerticalArray[antIndex]) {
+				labelAnt1Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
+			}
+			else
+				labelAnt1Dir->setText(QString::number(angle) + '°');
+		}
+		else if (antIndex == 1) {
+			if (antVerticalArray[antIndex]) {
+				labelAnt2Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
+			}
+			else
+				labelAnt2Dir->setText(QString::number(angle) + '°');
+		}
+		else if (antIndex == 2) {
+			if (antVerticalArray[antIndex]) {
+				labelAnt3Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
+			}
+			else
+				labelAnt3Dir->setText(QString::number(angle) + '°');
+		}
+		else if (antIndex == 3) {
+			if (antVerticalArray[antIndex]) {
+				labelAnt4Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
+			}
+			else
+				labelAnt4Dir->setText(QString::number(angle) + '°');
+		}
 
 		repaint();
 	}
@@ -551,6 +646,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, 
 
 		loadBand(0);
 
-		rotatorStatus = {0,0,0,0};
+		for (unsigned char i=0;i<4;i++)
+			rotatorStatus[i] = 0;
 }
 //
