@@ -915,6 +915,13 @@ void display_handler_prev_view(void) {
     else
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_ANTENNAS) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_OPENASC_LOGO)) {  
+
+    
+  }
+  else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_ANTENNAS) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SUBMENU)) {  
+    
+  }  
   else {
     #ifdef DEBUG_COMPUTER_USART_ENABLED
       printf("PREV_DISP_ELSE\r\n");

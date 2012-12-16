@@ -3,12 +3,14 @@
 
 /*! PowerMeter message structure
  *  ------------------------------------------------------FWD_PWR-----REF_PWR------VSWR---------
- *  |0xFE|0xFE|fm_addr|to_addr|chksum|flags|0xA0|7|TYPE|byte0|byte1|byte0|byte1|byte0|byte1|0xFD
+ *  |0xFE|0xFE|fm_addr|to_addr|chksum|flags|0xA0|7|TYPE|byte1|byte0|byte1|byte0|byte1|byte0|0xFD
  *  --------------------------------------------------------------------------------------------
  *  TYPE is a specification what type of pickup it is, what the power limits etc is.
  *
  *  VSWR is represented by an int, for example 311 means 3.11:1, 121 means 1.21:1 etc.
  *
+ *  Val = byte1<<8 + byte 0
+ * 
  *  FWD_PWR and REF_PWR is represented by an int as well. So for example 1245 would mean 1245 watts.
  *
  *  The PowerMeter does broadcast these messages at a certain interval which is configured in the pickup. That way
