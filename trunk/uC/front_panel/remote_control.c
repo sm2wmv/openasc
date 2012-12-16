@@ -30,6 +30,7 @@
 #include "../global.h"
 #include "event_handler.h"
 #include "remote_control.h"
+#include "display_handler.h"
 #include "antenna_ctrl.h"
 #include "band_ctrl.h"
 #include "sub_menu.h"
@@ -115,6 +116,13 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
       #endif
       antenna_ctrl_set_antenna_to_rotate(data[0]);
       antenna_ctrl_rotate_ccw();
+      break;
+    case REMOTE_COMMAND_SET_ARRAY_DIR:
+      if (sub_menu_get_type(data[0]) == SUBMENU_VERT_ARRAY) {
+        sub_menu_set_array_dir(data[1]);
+        
+        display_handler_repaint();
+      }
       break;
     default:
       break;

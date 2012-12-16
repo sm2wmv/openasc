@@ -74,6 +74,7 @@ private:
 	int verticalArrayNrDirs[4];
 	int verticalArrayDirAngle[4][4];
 	QString verticalArrayDirName[4][4];
+	void setStatusPresetButtons();
 private slots:
 
 public slots:

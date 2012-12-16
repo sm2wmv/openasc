@@ -56,5 +56,7 @@
 #define REMOTE_COMMAND_ROTATOR_TURN_CW            0xBC
 //! Turn the rotator CCW
 #define REMOTE_COMMAND_ROTATOR_TURN_CCW           0xBD
+//! Set array direction
+#define REMOTE_COMMAND_SET_ARRAY_DIR              0xBE
 
 #endif

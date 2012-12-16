@@ -16,7 +16,7 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 	QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth-2, rectHeight-2);
 
 	for (int i=0;i<4;i++) {
-		if(antBeamWidth[i] > 0) {
+		if ((antExist[i] == true) && (antBeamWidth[i] > 0)) {
 			if (i==0) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
@@ -83,7 +83,10 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt1Status->setText("Rotating CW");
 		else {
-			labelAnt1Status->setText("Stopped");
+			if (antVerticalArray[0])
+				labelAnt1Status->setText("");
+			else
+				labelAnt1Status->setText("Stopped");
 		}
 	}
 	else if (index == 1) {
@@ -92,7 +95,10 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt2Status->setText("Rotating CW");
 		else {
-			labelAnt2Status->setText("Stopped");
+			if (antVerticalArray[1])
+				labelAnt2Status->setText("");
+			else
+				labelAnt2Status->setText("Stopped");
 		}
 	}
 	else if (index == 2) {
@@ -101,7 +107,11 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt3Status->setText("Rotating CW");
 		else {
-			labelAnt3Status->setText("Stopped");
+			if (antVerticalArray[2])
+				labelAnt3Status->setText("");
+			else
+				labelAnt3Status->setText("Stopped");
+
 		}
 	}
 	else if (index == 3) {
@@ -110,21 +120,25 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 		else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
 			labelAnt4Status->setText("Rotating CW");
 		else {
-			labelAnt4Status->setText("Stopped");
+			if (antVerticalArray[3])
+				labelAnt4Status->setText("");
+			else
+				labelAnt4Status->setText("Stopped");
+
 		}
 	}
 }
 
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
-    if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (600)) && (event->y() <= 600)) {
-				double mapX = abs(300 - event->x());
-				double mapY = 300 - event->y();
+	if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (600)) && (event->y() <= 600)) {
+			double mapX = abs(300 - event->x());
+			double mapY = 300 - event->y();
 
-				if ((300 - event->x()) < 0)
-            setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
-        else
-            setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
-    }
+			if ((300 - event->x()) < 0)
+					setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
+			else
+					setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
+	}
 }
 
 void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
@@ -134,12 +148,25 @@ void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
 		qDebug("TARGET_DIR[%i]: %d",antIndex,targetAngle);
 
 		if (TCPComm->isConnected()) {
-			QByteArray temp;
-			temp.append(antIndex);
-			temp.append(targetAngle >> 8);
-			temp.append(targetAngle & 0xFF);
+			if (antHasRotor[antIndex]) {
+				QByteArray temp;
+				temp.append(antIndex);
+				temp.append(targetAngle >> 8);
+				temp.append(targetAngle & 0xFF);
 
-			TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_SET_HEADING,temp.length(),temp);
+				TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_SET_HEADING,temp.length(),temp);
+			}
+			else if (antVerticalArray[antIndex]) {
+				for (unsigned char i=0;i<verticalArrayNrDirs[antIndex];i++) {
+					if ((abs(verticalArrayDirAngle[antIndex][i]-targetAngle) < antBeamWidth[antIndex]/2)) {
+						QByteArray temp;
+						temp.append(antIndex);
+						temp.append(i);
+						TCPComm->addTXMessage(REMOTE_COMMAND_SET_ARRAY_DIR,temp.length(),temp);
+						break;
+					}
+				}
+			}
 		}
 
 		repaint();
@@ -173,14 +200,30 @@ void RotatorDialog::setRotatorFlag(unsigned char antIndex, unsigned char flags) 
 			labelAnt4Status->setText("Rotating CCW");
 	}
 	else {
-		if (antIndex == 0)
-			labelAnt1Status->setText("Stopped");
-		else if (antIndex == 1)
-			labelAnt2Status->setText("Stopped");
-		else if (antIndex == 1)
-			labelAnt3Status->setText("Stopped");
-		else if (antIndex == 1)
-			labelAnt4Status->setText("Stopped");
+		if (antIndex == 0) {
+			if (antVerticalArray[0])
+				labelAnt1Status->setText("");
+			else
+				labelAnt1Status->setText("Stopped");
+		}
+		else if (antIndex == 1) {
+			if (antVerticalArray[1])
+				labelAnt2Status->setText("");
+			else
+				labelAnt2Status->setText("Stopped");
+		}
+		else if (antIndex == 2) {
+			if (antVerticalArray[2])
+				labelAnt3Status->setText("");
+			else
+				labelAnt3Status->setText("Stopped");
+		}
+		else if (antIndex == 3) {
+			if (antVerticalArray[3])
+				labelAnt4Status->setText("");
+			else
+				labelAnt4Status->setText("Stopped");
+		}
 	}
 }
 
@@ -188,8 +231,30 @@ void RotatorDialog::setAntName(int antIndex, QString name) {
     antName[antIndex] = name;
 }
 
+void RotatorDialog::setStatusPresetButtons() {
+	bool temp_val = false;
+
+	if (currAntIndex != -1) {
+		if (antHasRotor[currAntIndex])
+			temp_val = true;
+	}
+	else
+		temp_val = false;
+
+	pushButtonPreset1->setEnabled(temp_val);
+	pushButtonPreset2->setEnabled(temp_val);
+	pushButtonPreset3->setEnabled(temp_val);
+	pushButtonPreset4->setEnabled(temp_val);
+	pushButtonPreset5->setEnabled(temp_val);
+	pushButtonSTOP->setEnabled(temp_val);
+
+	pushButtonRotateCCW->setEnabled(temp_val);
+	pushButtonRotateCW->setEnabled(temp_val);
+}
+
 void RotatorDialog::loadBand(int bandIndex) {
-	qDebug("LOAD BAND: %i",bandIndex);
+	currAntIndex = -1;
+
 	switch(bandIndex) {
 		case 0: bandName="None";
 			break;
@@ -250,16 +315,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 		pushButtonSTOP->setEnabled(false);
 	}
 	else {
-		pushButtonPreset1->setEnabled(true);
-		pushButtonPreset2->setEnabled(true);
-		pushButtonPreset3->setEnabled(true);
-		pushButtonPreset4->setEnabled(true);
-		pushButtonPreset5->setEnabled(true);
-		pushButtonSTOP->setEnabled(true);
-
-		pushButtonRotateCCW->setEnabled(true);
-		pushButtonRotateCW->setEnabled(true);
-
 		QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
 
 		settings.beginGroup(bandName);
@@ -318,6 +373,8 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 		settings.endGroup();
 
+		setStatusPresetButtons();
+
 		groupBoxAnt1->setVisible(false);
 		groupBoxAnt2->setVisible(false);
 		groupBoxAnt3->setVisible(false);
@@ -332,11 +389,13 @@ void RotatorDialog::loadBand(int bandIndex) {
 			groupBoxAnt1->setVisible(true);
 			pushButtonAnt1->setVisible(true);
 
-			if (antHasRotor[0])
+			if ((antHasRotor[0]) || (antVerticalArray[0])) {
 				pushButtonAnt1->setEnabled(true);
+				currAntIndex = 0;
+				pushButtonAnt1->setChecked(true);
+			}
 			else {
 				pushButtonAnt1->setEnabled(false);
-				currAntIndex = -1;
 				pushButtonAnt1->setChecked(false);
 			}
 		}
@@ -345,7 +404,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 			groupBoxAnt2->setVisible(true);
 			pushButtonAnt2->setVisible(true);
 
-			if (antHasRotor[1]) {
+			if ((antHasRotor[1]) || (antVerticalArray[1])) {
 				pushButtonAnt2->setEnabled(true);
 
 				if (currAntIndex == -1) {
@@ -362,7 +421,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 			groupBoxAnt3->setVisible(true);
 			pushButtonAnt3->setVisible(true);
 
-			if (antHasRotor[2]) {
+			if ((antHasRotor[2]) || (antVerticalArray[2])) {
 				pushButtonAnt3->setEnabled(true);
 
 				if (currAntIndex == -1) {
@@ -378,7 +437,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 			groupBoxAnt4->setVisible(true);
 			pushButtonAnt4->setVisible(true);
 
-			if (antHasRotor[3]) {
+			if ((antHasRotor[3]) || (antVerticalArray[3])) {
 				pushButtonAnt4->setEnabled(true);
 
 				if (currAntIndex == -1) {
@@ -395,23 +454,39 @@ void RotatorDialog::loadBand(int bandIndex) {
 		labelAnt3Title->setText(antName[2]);
 		labelAnt4Title->setText(antName[3]);
 
-		if (antFixed[0])
+		if (antFixed[0]) {
 			labelAnt1Status->setText("Fixed");
+			pushButtonAnt1->setVisible(false);
+		}
+		else if (antVerticalArray[0])
+			labelAnt1Status->setText("");
 		else
 			labelAnt1Status->setText("Stopped");
 
-		if (antFixed[1])
+		if (antFixed[1]) {
 			labelAnt2Status->setText("Fixed");
+			pushButtonAnt2->setVisible(false);
+		}
+		else if (antVerticalArray[1])
+			labelAnt2Status->setText("");
 		else
 			labelAnt2Status->setText("Stopped");
 
-		if (antFixed[2])
+		if (antFixed[2]) {
 			labelAnt3Status->setText("Fixed");
+			pushButtonAnt3->setVisible(false);
+		}
+		else if (antVerticalArray[2])
+			labelAnt3Status->setText("");
 		else
 			labelAnt3Status->setText("Stopped");
 
-		if (antFixed[3])
+		if (antFixed[3]) {
 			labelAnt4Status->setText("Fixed");
+			pushButtonAnt4->setVisible(false);
+		}
+		else if (antVerticalArray[3])
+			labelAnt4Status->setText("");
 		else
 			labelAnt4Status->setText("Stopped");
 	}
@@ -515,6 +590,8 @@ void RotatorDialog::pushButtonAnt1Clicked() {
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 0;
+
+	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt2Clicked() {
@@ -524,6 +601,8 @@ void RotatorDialog::pushButtonAnt2Clicked() {
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 1;
+
+	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt3Clicked() {
@@ -533,6 +612,8 @@ void RotatorDialog::pushButtonAnt3Clicked() {
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 2;
+
+	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt4Clicked() {
@@ -542,6 +623,8 @@ void RotatorDialog::pushButtonAnt4Clicked() {
 	pushButtonAnt4->setChecked(true);
 
 	currAntIndex = 3;
+
+	setStatusPresetButtons();
 }
 
 void RotatorDialog::setCOMMPtr(TCPClass *ptr) {
@@ -585,17 +668,17 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, 
     sizeWidth = 600;
     sizeHeight = 600;
 
-		setRotatorAngle(0,305);
-    targetAzimuthAngle[0] = 305;
+		setRotatorAngle(0,0);
+		targetAzimuthAngle[0] = 0;
 
-		setRotatorAngle(1,60);
-    targetAzimuthAngle[1] = 60;
+		setRotatorAngle(1,0);
+		targetAzimuthAngle[1] = 0;
 
-		setRotatorAngle(2,185);
-    targetAzimuthAngle[2] = 185;
+		setRotatorAngle(2,0);
+		targetAzimuthAngle[2] = 0;
 
-		setRotatorAngle(3,230);
-		targetAzimuthAngle[3] = 185;
+		setRotatorAngle(3,0);
+		targetAzimuthAngle[3] = 0;
 
 		rotationEventStatus = 0;
 
