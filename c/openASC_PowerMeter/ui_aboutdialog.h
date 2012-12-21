@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading ui file 'aboutdialog.ui'
+** Form generated from reading UI file 'aboutdialog.ui'
 **
-** Created: Sun Nov 14 23:13:29 2010
-**      by: Qt User Interface Compiler version 4.5.0
+** Created: Fri 30. Dec 02:55:48 2011
+**      by: Qt User Interface Compiler version 4.8.0
 **
-** WARNING! All changes made in this file will be lost when recompiling ui file!
+** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
 #ifndef UI_ABOUTDIALOG_H
@@ -84,7 +84,6 @@ public:
         labelPowerMeter->setText(QApplication::translate("AboutDialog", "PowerMeter ", 0, QApplication::UnicodeUTF8));
         labelBy->setText(QApplication::translate("AboutDialog", "By SM2WMV (SJ2W)", 0, QApplication::UnicodeUTF8));
         labelVersion->setText(QApplication::translate("AboutDialog", "Version 0.1b", 0, QApplication::UnicodeUTF8));
-        Q_UNUSED(AboutDialog);
     } // retranslateUi
 
 };

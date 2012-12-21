@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading ui file 'setupdialog.ui'
+** Form generated from reading UI file 'setupdialog.ui'
 **
-** Created: Sun Nov 14 23:13:29 2010
-**      by: Qt User Interface Compiler version 4.5.0
+** Created: Fri 30. Dec 02:55:47 2011
+**      by: Qt User Interface Compiler version 4.8.0
 **
-** WARNING! All changes made in this file will be lost when recompiling ui file!
+** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
 #ifndef UI_SETUPDIALOG_H
@@ -298,7 +298,6 @@ public:
         label_5->setText(QApplication::translate("SetupDialog", "Relected power", 0, QApplication::UnicodeUTF8));
         spinBoxAlarmRefPower->setSuffix(QApplication::translate("SetupDialog", "W", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tabMisc), QApplication::translate("SetupDialog", "Misc", 0, QApplication::UnicodeUTF8));
-        Q_UNUSED(SetupDialog);
     } // retranslateUi
 
 };

@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading ui file 'mainwindow.ui'
+** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun Nov 14 23:13:29 2010
-**      by: Qt User Interface Compiler version 4.5.0
+** Created: Fri 30. Dec 02:55:47 2011
+**      by: Qt User Interface Compiler version 4.8.0
 **
-** WARNING! All changes made in this file will be lost when recompiling ui file!
+** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
 #ifndef UI_MAINWINDOW_H
@@ -82,7 +82,7 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
         verticalLayout->setSpacing(6);
-        verticalLayout->setMargin(11);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         frameForward = new QFrame(centralWidget);
         frameForward->setObjectName(QString::fromUtf8("frameForward"));
@@ -90,7 +90,7 @@ public:
         frameForward->setFrameShadow(QFrame::Raised);
         horizontalLayout = new QHBoxLayout(frameForward);
         horizontalLayout->setSpacing(6);
-        horizontalLayout->setMargin(11);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
@@ -144,7 +144,7 @@ public:
         frameReflected->setFrameShadow(QFrame::Raised);
         horizontalLayout_2 = new QHBoxLayout(frameReflected);
         horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setMargin(11);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setSpacing(6);

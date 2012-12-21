@@ -58,7 +58,7 @@ typedef struct {
 	//! Antenna flags
 	unsigned char antenna_flag[4];
 	//! The direction of the antennas
-	int antenna_direction[4];
+	unsigned int antenna_direction[4];
 	/*! This is used to show what antenna combinations that are allowed
 	 *  Bit0  = ANT 1
 	 *  Bit1  = ANT 2

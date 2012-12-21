@@ -109,6 +109,19 @@ void bus_usart_init(unsigned int baudrate) {
 		/* Enable receiver and transmitter */
 		UCSR1B = (1<<RXEN1) | (1<<TXEN1) | (1<<RXCIE1) | (1<<TXCIE1);
 	#endif
+	
+	#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+		/* Set baud rate */
+		UBRR1H = (unsigned char) (baudrate>>8);
+		UBRR1L = (unsigned char) baudrate;
+
+		UCSR1A = 0;
+
+		/* Set frame format: 8data, no parity & 1 stop bits */
+		UCSR1C = (1<<UCSZ11) | (1<<UCSZ10) | (0<<UCSZ12);
+		/* Enable receiver and transmitter */
+		UCSR1B = (1<<RXEN1) | (1<<TXEN1) | (1<<RXCIE1) | (1<<TXCIE1);
+	#endif
 		
 	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 		/* Set baud rate */
@@ -185,6 +198,13 @@ unsigned char bus_usart_transmit(unsigned char  data) {
 
 
 	#ifdef DEVICE_TYPE_ROTATOR_UNIT
+		/* Wait for empty transmit buffer */
+		while (!( UCSR1A & (1<<UDRE1)));
+		/* Put data into buffer, sends the data */
+		UDR1 = data;
+	#endif
+	
+	#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
 		/* Wait for empty transmit buffer */
 		while (!( UCSR1A & (1<<UDRE1)));
 		/* Put data into buffer, sends the data */
@@ -275,6 +295,14 @@ unsigned char bus_usart_receive(void ) {
 		/* Get and return received data from buffer */
 		return UDR1;
 	#endif		
+	
+	#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+		/* Wait for data to be received */
+		while (!(UCSR1A & (1<<RXC1)));
+		/* Get and return received data from buffer */
+		return UDR1;
+	#endif		
+	
 
 	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 		/* Wait for data to be received */
@@ -365,6 +393,16 @@ unsigned char bus_usart_receive_loopback(void ) {
 		bus_usart_transmit(rbuff);
 		return rbuff;
 	#endif
+	
+	#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+		uint8_t rbuff;
+		/* Wait for data to be received */
+		while (!(UCSR1A & (1<<RXC1)));
+		/* Get and return received data from buffer */
+		rbuff = UDR1;
+		bus_usart_transmit(rbuff);
+		return rbuff;
+	#endif
 		
 	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
 		uint8_t rbuff;
@@ -431,6 +469,11 @@ unsigned char bus_poll_usart_receive(void ) {
 	#endif
 
 	#ifdef DEVICE_TYPE_ROTATOR_UNIT
+		/* Check if data is received */
+		return ((UCSR1A & (1<<RXC1)));
+	#endif		
+	
+	#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
 		/* Check if data is received */
 		return ((UCSR1A & (1<<RXC1)));
 	#endif		

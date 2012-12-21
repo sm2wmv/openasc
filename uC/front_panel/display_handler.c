@@ -417,22 +417,22 @@ void display_handler_rotator_directions(unsigned char band) {
   char temp_dir[9];
   
   if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(0));
+    sprintf_P((char *)temp_dir,PSTR("%3u deg"),antenna_ctrl_get_direction(0));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT1_X_POS,DISPLAY_TEXT_ROTATOR_ANT1_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
   if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(1),antenna_ctrl_get_rotates_char(1));
+    sprintf_P((char *)temp_dir,PSTR("%3u deg"),antenna_ctrl_get_direction(1),antenna_ctrl_get_rotates_char(1));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
 
   if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(2));
+    sprintf_P((char *)temp_dir,PSTR("%3u deg"),antenna_ctrl_get_direction(2));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT3_X_POS,DISPLAY_TEXT_ROTATOR_ANT3_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
 
   if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf_P((char *)temp_dir,PSTR("%3i deg"),antenna_ctrl_get_direction(3));
+    sprintf_P((char *)temp_dir,PSTR("%3u deg"),antenna_ctrl_get_direction(3));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT4_X_POS,DISPLAY_TEXT_ROTATOR_ANT4_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
   
