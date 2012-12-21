@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/wdt.h>
 
 #include "main.h"
 #include "init.h"
@@ -199,13 +200,18 @@ int main(void)
 	
   usart0_init(382); //Init the USART at 1200 baud
   
+	wdt_enable(WDTO_1S);
+	
 	sei();
 
 	unsigned char device_count = bus_get_device_count();
-  device_id = DEVICE_TYPE_ROTATOR_UNIT_RS232;
+  device_id = DEVICE_TYPE_ROTATOR_UNIT;
 
   BUS_MESSAGE mess;
   
+	curr_angle = 210;
+	
+	
   while(1) {
     if (bus_check_rx_status(&mess)) {
       rotator_rs232_bus_parse_message(&mess);
@@ -225,17 +231,18 @@ int main(void)
 		if (bus_allowed_to_send()) {
 			//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				//Check if the device is a POS or NEG driver module
 				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
 
 				counter_ping_interval = 0;
 			}
 		}
 		
-		if ((counter_compare0 % 500) == 0) {
-      rotator_rs232_get_status();
+		if ((counter_compare0 % 1000) == 0) {
+			rotator_rs232_get_status();
       rotator_rs232_send_status();
     }
+		
+		wdt_reset();
 	}
 
 	return (0);
@@ -260,8 +267,9 @@ ISR(SIG_USART0_RECV) {
   
   if (char_count == 5) {
     if (rx_buffer[0] == 0x57) {
-      curr_angle = rx_buffer[1] * 100 + rx_buffer[2] * 10 + rx_buffer[3] - 360;
-      if (curr_angle >= 360)
+      curr_angle = rx_buffer[1] * 100 + rx_buffer[2] * 10 + rx_buffer[3];
+      
+			while (curr_angle >= 360)
         curr_angle -= 360;
     }
     

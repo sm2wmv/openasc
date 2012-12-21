@@ -17,8 +17,4 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#include "../wmv_bus/bus.h"
-
-void rotator_rs232_bus_parse_message(BUS_MESSAGE *bus_message);
-
 #endif

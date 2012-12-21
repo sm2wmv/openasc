@@ -179,6 +179,7 @@ void bsp_rotator_release_break(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
 
   ext_ctrl_relay3_activate();
+	ext_ctrl_fet3_deactivate();
 }
 
 
@@ -186,6 +187,7 @@ void bsp_rotator_apply_break(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
 
   ext_ctrl_relay3_deactivate();
+	ext_ctrl_fet3_deactivate();
 }
 
 
@@ -194,7 +196,10 @@ void bsp_rotator_run_ccw(uint8_t rot_idx) {
 
   if (rot_idx < 1) {
     ext_ctrl_relay1_deactivate();
-    ext_ctrl_relay2_activate();
+		ext_ctrl_fet1_deactivate();
+    
+		ext_ctrl_relay2_activate();
+		ext_ctrl_fet2_activate();
   }
 }
 
@@ -203,7 +208,9 @@ void bsp_rotator_run_cw(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
 
   ext_ctrl_relay1_activate();
+	ext_ctrl_fet1_activate();
   ext_ctrl_relay2_deactivate();
+	ext_ctrl_fet2_deactivate();
 }
 
 
@@ -220,7 +227,9 @@ void bsp_rotator_stop(uint8_t rot_idx) {
   Q_REQUIRE(rot_idx < ROTATOR_COUNT);
 
   ext_ctrl_relay1_deactivate();
+	ext_ctrl_fet1_deactivate();
   ext_ctrl_relay2_deactivate();
+	ext_ctrl_fet2_deactivate();
 }
 
 
