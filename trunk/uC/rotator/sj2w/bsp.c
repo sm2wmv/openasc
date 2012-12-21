@@ -61,7 +61,7 @@
 #include "bus_handler.h"
 #include "rotator.h"
 #include "bsp.h"
-#include "../../rotator_unit/ext_control.h"
+#include "ext_control.h"
 
 
 /******************************************************************************

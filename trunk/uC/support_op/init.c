@@ -26,4 +26,7 @@ void init_ports(void) {
 	DDRE = 0xFC;
 	DDRF = 0x63;
 	DDRG = 0x0B;
+  
+  //Set pull up on MUTE ON TX
+  PORTB |= (1<<2);
 }

@@ -3,36 +3,55 @@
 
 #include "main.h"
 
-void ext_control_set_led_yellow(enum led_state state);
-void ext_control_set_led_red(enum led_state state);
+void ext_control_led_yellow_set(void);
+void ext_control_led_yellow_clr(void);
+void ext_control_led_red_set(void);
+void ext_control_led_red_clr(void);
 
-void ext_control_set_relay_k4(enum relay_state state);
-void ext_control_set_relay_k5k6(enum relay_state state);
-void ext_control_set_relay_k8(enum relay_state state);
-void ext_control_set_relay_k9(enum relay_state state);
-void ext_control_set_relay_k10(enum relay_state state);
-void ext_control_set_relay_k11(enum relay_state state);
-void ext_control_set_relay_k13(enum relay_state state);
+void ext_control_relay_k4_set(void);
+void ext_control_relay_k4_clr(void);
+void ext_control_relay_k5k6_set(void);
+void ext_control_relay_k5k6_clr(void);
+void ext_control_relay_k8_set(void);
+void ext_control_relay_k8_clr(void);
+void ext_control_relay_k9_set(void);
+void ext_control_relay_k9_clr(void);
+void ext_control_relay_k10_set(void);
+void ext_control_relay_k10_clr(void);
+void ext_control_relay_k11_set(void);
+void ext_control_relay_k11_clr(void);
+void ext_control_relay_k13_set(void);
+void ext_control_relay_k13_clr(void);
+void ext_control_relay_transfer_set(void);
+void ext_control_relay_transfer_clr(void);
 
-void ext_control_r1_ptt_radio(enum ptt_state state);
-void ext_control_r2_ptt_radio(enum ptt_state state);
+void ext_control_r1_ptt_radio_set(void);
+void ext_control_r1_ptt_radio_clr(void);
+void ext_control_r2_ptt_radio_set(void);
+void ext_control_r2_ptt_radio_clr(void);
 
-void ext_control_r1_ptt_amp(enum ptt_state state);
-void ext_control_r2_ptt_amp(enum ptt_state state);
+void ext_control_r1_ptt_amp_set(void);
+void ext_control_r1_ptt_amp_clr(void);
+void ext_control_r2_ptt_amp_set(void);
+void ext_control_r2_ptt_amp_clr(void);
 
-enum ptt_state ext_control_get_r1_footswitch_input(void);
-enum ptt_state ext_control_get_r2_footswitch_input(void);
+unsigned char ext_control_get_r1_footswitch_input(void);
+unsigned char ext_control_get_r2_footswitch_input(void);
 
 /*! \brief Read the VIP switches on the board 
  *  \return Four bits which represent the configuration of the switches, defines in board.h */
 unsigned char ext_control_get_int_vip_state(void);
 
-enum rx_tx_ant_state ext_control_get_r1_rx_tx_ant_state(void);
-enum rx_tx_ant_state ext_control_get_r2_rx_tx_ant_state(void);
+unsigned char ext_control_get_r1_rx_tx_ant_state(void);
+unsigned char ext_control_get_r2_rx_tx_ant_state(void);
 
-enum mult_support_state ext_control_get_mult_support_state(void);
+unsigned char ext_control_get_mult_support_state(void);
 
-enum priority_state ext_control_get_priority_state(void);
+unsigned char ext_control_get_priority_state(void);
+
+unsigned char ext_control_get_mute_on_tx_state(void);
+
+void ext_control_read_inputs(unsigned char *curr_state);
 
 #endif
 

@@ -5,159 +5,189 @@
 
 #include "ext_control.h"
 
-void ext_control_set_led_yellow(enum led_state state) {
-  if (state == LED_ON)
-    PORTA |= (1<<0);
-  else if (state == LED_OFF)
-    PORTA &= ~(1<<0);
+void ext_control_led_yellow_set(void) {
+  PORTA |= (1<<0);
 }
 
-void ext_control_set_led_red(enum led_state state) {
-  if (state == LED_ON)
-    PORTA |= (1<<1);
-  else if (state == LED_OFF)
-    PORTA &= ~(1<<1);  
+void ext_control_led_yellow_clr(void) {
+  PORTA &= ~(1<<0);
 }
 
-void ext_control_set_relay_k4(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTB |= (1<<0);
-  else if (state == RELAY_OFF)
-    PORTB &= ~(1<<0);
+void ext_control_led_red_set(void) {
+  PORTA |= (1<<1);
 }
 
-void ext_control_set_relay_k5k6(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTE |= (1<<7);
-  else if (state == RELAY_OFF)
-    PORTE &= ~(1<<7);
+void ext_control_led_red_clr(void) {
+  PORTA &= ~(1<<1);
 }
 
-void ext_control_set_relay_k8(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTE |= (1<<6);
-  else if (state == RELAY_OFF)
-    PORTE &= ~(1<<6);
+void ext_control_relay_k4_set(void) {
+  PORTB |= (1<<0);
 }
 
-void ext_control_set_relay_k9(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTE |= (1<<5);
-  else if (state == RELAY_OFF)
-    PORTE &= ~(1<<5);
+void ext_control_relay_k4_clr(void) {
+  PORTB &= ~(1<<0);
 }
 
-void ext_control_set_relay_k11(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTE |= (1<<4);
-  else if (state == RELAY_OFF)
-    PORTE &= ~(1<<4);
+void ext_control_relay_k5k6_set(void) {
+  PORTE |= (1<<7);
 }
 
-void ext_control_set_relay_k10(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTE |= (1<<3);
-  else if (state == RELAY_OFF)
-    PORTE &= ~(1<<3);
+void ext_control_relay_k5k6_clr(void) {
+  PORTE &= ~(1<<7);
 }
 
-void ext_control_set_relay_k13(enum relay_state state) {
-  if (state == RELAY_ON)
-    PORTE |= (1<<2);
-  else if (state == RELAY_OFF)
-    PORTE &= ~(1<<2);
+void ext_control_relay_k8_set(void) {
+  PORTE |= (1<<6);
 }
 
-void ext_control_r1_ptt_radio(enum ptt_state state) {
-  if (state == PTT_ACTIVE) {
-    PORTG |= (1<<0);
-    PORTG |= (1<<3);
-    PORTF |= (1<<6);
-  }
-  else if (state == PTT_DEACTIVE) {
-    PORTG &= ~(1<<0);
-    PORTG &= ~(1<<3);
-    PORTF &= ~(1<<6);
-  }
+void ext_control_relay_k8_clr(void) {
+  PORTE &= ~(1<<6);
 }
 
-void ext_control_r2_ptt_radio(enum ptt_state state) {
-  if (state == PTT_ACTIVE) {
-    PORTG |= (1<<1);
-    PORTF |= (1<<1);
-    PORTF |= (1<<5);
-  }
-  else if (state == PTT_DEACTIVE) {
-    PORTG &= ~(1<<1);
-    PORTF &= ~(1<<1);
-    PORTF &= ~(1<<5);
-  }
+void ext_control_relay_k9_set(void) {
+  PORTE |= (1<<5);
 }
 
-void ext_control_r1_ptt_amp(enum ptt_state state) {
-  if (state == PTT_ACTIVE) {
-    PORTB |= (1<<7);
-  }
-  else if (state == PTT_DEACTIVE) {
-    PORTB &= ~(1<<7);
-  }
+void ext_control_relay_k9_clr(void) {
+  PORTE &= ~(1<<5);
 }
 
-void ext_control_r2_ptt_amp(enum ptt_state state) {
-  if (state == PTT_ACTIVE) {
-    PORTF |= (1<<0);
-  }
-  else if (state == PTT_DEACTIVE) {
-    PORTF &= ~(1<<0);
-  }
+void ext_control_relay_k10_set(void) {
+  PORTE |= (1<<3);
 }
 
-enum ptt_state ext_control_get_r1_footswitch_input(void) {
+void ext_control_relay_k10_clr(void) {
+  PORTE &= ~(1<<3);
+}
+
+void ext_control_relay_k11_set(void) {
+  PORTE |= (1<<4);
+}
+
+void ext_control_relay_k11_clr(void) {
+  PORTE &= ~(1<<4);
+}
+
+void ext_control_relay_k13_set(void) {
+  PORTE |= (1<<2);
+}
+
+void ext_control_relay_k13_clr(void) {
+  PORTE &= ~(1<<2);
+}
+
+void ext_control_relay_transfer_set(void) {
+  
+}
+
+void ext_control_relay_transfer_clr(void) {
+  
+}
+
+void ext_control_r1_ptt_radio_set(void) {
+  PORTG |= (1<<0);
+  PORTG |= (1<<3);
+  PORTF |= (1<<6);
+}
+
+void ext_control_r1_ptt_radio_clr(void) {
+  PORTG &= ~(1<<0);
+  PORTG &= ~(1<<3);
+  PORTF &= ~(1<<6);
+}
+
+void ext_control_r2_ptt_radio_set(void) {
+  PORTG |= (1<<1);
+  PORTF |= (1<<1);
+  PORTF |= (1<<5);
+}
+
+void ext_control_r2_ptt_radio_clr(void) {
+  PORTG &= ~(1<<1);
+  PORTF &= ~(1<<1);
+  PORTF &= ~(1<<5);
+}
+
+void ext_control_r1_ptt_amp_set(void) {
+  PORTB |= (1<<7);
+}
+
+void ext_control_r1_ptt_amp_clr(void) {
+  PORTB &= ~(1<<7);
+}
+
+void ext_control_r2_ptt_amp_set(void) {
+  PORTF |= (1<<0);
+}
+
+void ext_control_r2_ptt_amp_clr(void) {
+  PORTF &= ~(1<<0);
+}
+
+unsigned char ext_control_get_r1_footswitch_input(void) {
   if ((PIND & (1<<7)) == 0)
-    return(PTT_ACTIVE);
+    return(1);
   
-  return(PTT_DEACTIVE);
+  return(0);
 }
 
-enum ptt_state ext_control_get_r2_footswitch_input(void) {
+unsigned char ext_control_get_r2_footswitch_input(void) {
   if ((PINF & (1<<4)) == 0)
-    return(PTT_ACTIVE);
+    return(1);
   
-  return(PTT_DEACTIVE);
+  return(0);
 }
 
 unsigned char ext_control_get_int_vip_state(void) {
   return((PINB >> 2) & 0x0F);
 }
 
-enum rx_tx_ant_state ext_control_get_r1_rx_tx_ant_state(void) {
+unsigned char ext_control_get_r1_rx_tx_ant_state(void) {
   if (PIND & (1<<4))
-    return(TX_ANT);
+    return(0);
   
-  return(RX_ANT);
+  return(1);
 }
 
-enum rx_tx_ant_state ext_control_get_r2_rx_tx_ant_state(void) {
+unsigned char ext_control_get_r2_rx_tx_ant_state(void) {
   if (PINF & (1<<2))
-    return(TX_ANT);
+    return(0);
   
-  return(RX_ANT);
+  return(1);
 }
 
-enum mult_support_state ext_control_get_mult_support_state(void) {
+unsigned char ext_control_get_mult_support_state(void) {
   if (PINF & (1<<3))
-    return(SUPPORT_STATE);
+    return(1);
   
-  return(MULT_STATE);
+  return(0);
 }
 
-enum priority_state ext_control_get_priority_state(void) {
-    unsigned char state = (PIND >> 5) & 0x03;
+unsigned char ext_control_get_priority_state(void) {
+  unsigned char state = (PIND >> 5) & 0x03;
+  
+  if (state == 1)
+    return(1);  //R1 WIN
+  else if (state == 2)
+    return(2); //R2 WIN
     
-    if (state == 0)
-      return(FIRST_WINS);
-    else if (state == 1)
-      return(RUN_WINS);
-    
-  return(MULT_WINS);
+  return(0); //FIRST WIN
+}
+
+unsigned char ext_control_get_mute_on_tx_state(void) {
+  if (PINB & (1<<2))
+    return(1);
+  
+  return(0);
+}
+
+void ext_control_read_inputs(unsigned char *curr_state) {
+  curr_state[EVENT_FOOTSWICH_R1_STATE] = ext_control_get_r1_footswitch_input();
+  curr_state[EVENT_FOOTSWICH_R2_STATE] = ext_control_get_r2_footswitch_input();
+  curr_state[EVENT_R2_SUPPORT_OP_STATE] = ext_control_get_mult_support_state();
+  curr_state[EVENT_PRIORITY_STATE] = ext_control_get_priority_state();
+  curr_state[EVENT_R1_TXRX_ANT_SEL] = ext_control_get_r1_rx_tx_ant_state();
+  curr_state[EVENT_R2_TXRX_ANT_SEL] = ext_control_get_r2_rx_tx_ant_state();
+  curr_state[EVENT_MUTE_ON_TX] = ext_control_get_mute_on_tx_state();
 }

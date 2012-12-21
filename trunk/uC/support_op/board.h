@@ -42,7 +42,7 @@
  * =====================================================================================
  * PB0	-	Output - Relay K4
  * PB1	-	Input  - SCK
- * PB2	-	Input  - VIP S3 (Mounted)
+ * PB2	-	Input  - VIP S3 (Mounted) (MUTE ON TX)
  * PB3	-	Input  - VIP S2 (Mounted)
  * PB4	-	Input  - VIP S1 (Not mounted)
  * PB5	-	Input  - VIP S4 (Not mounted)
