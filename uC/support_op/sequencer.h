@@ -25,8 +25,8 @@
 #define SEQUENCER_EVENT_TYPE_PTT_R2_AMP_OFF   7
 #define SEQUENCER_EVENT_TYPE_PTT_R2_OFF       8
 
-enum ptt_state sequencer_get_ptt_state_r1(void);
-enum ptt_state sequencer_get_ptt_state_r2(void);
+unsigned char sequencer_get_ptt_state_r1(void);
+unsigned char sequencer_get_ptt_state_r2(void);
 
 void sequencer_enter_r1_sequence(void);
 void sequencer_exit_r1_sequence(void);

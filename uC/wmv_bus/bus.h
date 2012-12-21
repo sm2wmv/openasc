@@ -34,30 +34,6 @@
  * BUS_BROADCAST_ADDR (0x00). The checksum is calculated by adding flags+cmd+length+data[...]
 */
  
-#ifdef DEVICE_TYPE_DRIVER_UNIT
-	#include "../driver_unit/main.h"
-#endif
-
-#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
-	#include "../driver_unit_v2/main.h"
-#endif
- 
-#ifdef DEVICE_TYPE_ROTATOR_UNIT
-	#include "../rotator_unit/main.h"
-#endif
-
-#ifdef DEVICE_TYPE_POWERMETER_PICKUP
-	#include "../powermeter/sensor_unit/main.h"
-#endif
-
-#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
-  #include "../powermeter/sensor_unit_v2/main.h"
-#endif
-
-#ifdef DEVICE_TYPE_GENERAL_IO
-	#include "../general_io/main.h"
-#endif
- 
  #ifdef DEVICE_TYPE_DRIVER_UNIT
 	#define BUS_DISABLE_INTERRUPTS()	TIMSK &= ~(1<<OCIE2);
 	#define BUS_ENABLE_INTERRUPTS()		TIMSK |= (1<<OCIE2);
@@ -107,6 +83,15 @@
 		
 	#define ISR_BUS_TIMER_COMPARE		SIG_OUTPUT_COMPARE2
 	#define ISR_BUS_TIMER_OVERFLOW	SIG_OVERFLOW2
+#endif
+
+#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+  #define ISR_BUS_USART_DATA  SIG_USART1_DATA
+  #define ISR_BUS_USART_RECV  SIG_USART1_RECV
+  #define ISR_BUS_USART_TRANS SIG_USART1_TRANS
+      
+  #define ISR_BUS_TIMER_COMPARE   SIG_OUTPUT_COMPARE2
+  #define ISR_BUS_TIMER_OVERFLOW  SIG_OVERFLOW2
 #endif
 
 #ifdef DEVICE_TYPE_ROTATOR_UNIT
@@ -373,4 +358,32 @@ unsigned char bus_check_critical_cmd_state(void);
 
 void bus_check_ack_list(void);
 
+#ifdef DEVICE_TYPE_DRIVER_UNIT
+  #include "../driver_unit/main.h"
+#endif
+
+#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
+  #include "../driver_unit_v2/main.h"
+#endif
+ 
+#ifdef DEVICE_TYPE_ROTATOR_UNIT
+  #include "../rotator/sj2w/bsp.h"
+#endif
+
+#ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+  #include "../rotator_rs232/main.h"
+#endif
+
+#ifdef DEVICE_TYPE_POWERMETER_PICKUP
+  #include "../powermeter/sensor_unit/main.h"
+#endif
+
+#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+  #include "../powermeter/sensor_unit_v2/main.h"
+#endif
+
+#ifdef DEVICE_TYPE_GENERAL_IO
+  #include "../general_io/main.h"
+#endif
+ 
 #endif

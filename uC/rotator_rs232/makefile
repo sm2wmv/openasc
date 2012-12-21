@@ -59,8 +59,8 @@ FORMAT = ihex
 TARGET = main
 
 #The name of this device
-DEVICE_TYPE = DEVICE_TYPE_ROTATOR_UNIT
-BASE_ADDRESS = 0x00
+DEVICE_TYPE = DEVICE_TYPE_ROTATOR_UNIT_RS232
+BASE_ADDRESS = 0x0A
 
 #The size of the RX queue in buffers
 BUS_RX_QUEUE_SIZE = 10

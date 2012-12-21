@@ -202,7 +202,7 @@ int main(void)
 	sei();
 
 	unsigned char device_count = bus_get_device_count();
-  device_id = DEVICE_TYPE_ROTATOR_UNIT;
+  device_id = DEVICE_TYPE_ROTATOR_UNIT_RS232;
 
   BUS_MESSAGE mess;
   

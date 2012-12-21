@@ -118,6 +118,11 @@ void bus_init(void) {
 		//57.600kpbs
 		bus_usart_init(15);
 	#endif
+
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+      //57.600kpbs
+    bus_usart_init(7);
+  #endif
 	
 	#ifdef DEVICE_TYPE_ROTATOR_UNIT
 			//57.600kpbs
@@ -597,6 +602,10 @@ void __inline__ disable_bus_interrupt(void) {
       UCSR1B &= ~(1<<RXCIE1);
   #endif
 
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+    UCSR1B &= ~(1<<RXCIE1);  
+  #endif
+  
   #ifdef DEVICE_TYPE_ROTATOR_UNIT
     UCSR1B &= ~(1<<RXCIE1);
   #endif
@@ -643,6 +652,10 @@ void __inline__ enable_bus_interrupt(void) {
       UCSR1B |= (1<<RXCIE1);
   #endif
 
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232      
+    UCSR1B |= (1<<RXCIE1);
+  #endif
+      
   #ifdef DEVICE_TYPE_ROTATOR_UNIT
     UCSR1B |= (1<<RXCIE1);
   #endif
@@ -699,9 +712,13 @@ ISR(ISR_BUS_USART_RECV) {
 		unsigned char data = UDR1;
 	#endif
 
-#ifdef DEVICE_TYPE_ROTATOR_UNIT
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
+    unsigned char data = UDR1;
+  #endif
+    
+  #ifdef DEVICE_TYPE_ROTATOR_UNIT
 		unsigned char data = UDR1;
-#endif
+  #endif
 		
 	#ifdef DEVICE_TYPE_DRIVER_UNIT
 		unsigned char data = UDR;

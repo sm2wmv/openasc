@@ -7,10 +7,15 @@
 #include "board.h"
 #include "init.h"
 #include "ext_control.h"
+#include "usart.h"
 #include "../delay.h"
 #include "../event_queue.h"
+#include "statemachine.h"
 
 #define FLAG_RUN_EVENT_QUEUE 0
+
+static unsigned char curr_state[NR_OF_EVENTS] = {0};
+static unsigned char prev_state[NR_OF_EVENTS] = {0};
 
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned long counter_compare0 = 0;
@@ -50,33 +55,105 @@ void event_run(void) {
   }
 }
 
+#ifdef DEBUG
+void print_state_debug_info(void) {
+  PRINTF("CURR_STATE != PREV_STATE\r\n");
+
+  if (curr_state[EVENT_FOOTSWICH_R1_STATE])
+    PRINTF("STATE >> FSW_R1 -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> FSW_R1 -> NOT ACTIVE\r\n");
+
+  if (curr_state[EVENT_FOOTSWICH_R2_STATE])
+    PRINTF("STATE >> FSW_R2 -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> FSW_R2 -> NOT ACTIVE\r\n");
+  
+  if (curr_state[EVENT_R2_SUPPORT_OP_STATE])
+    PRINTF("STATE >> SUPPORT MODE -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> SUPPORT MODE -> NOT ACTIVE\r\n");
+
+  if (curr_state[EVENT_PRIORITY_STATE] == 0)
+    PRINTF("STATE >> PRIORITY STATE -> FIRST WINS\r\n");
+  else if (curr_state[EVENT_PRIORITY_STATE] == 1)
+    PRINTF("STATE >> PRIORITY STATE -> R1 WINS\r\n");
+  else if (curr_state[EVENT_PRIORITY_STATE] == 2)
+    PRINTF("STATE >> PRIORITY STATE -> R2 WINS\r\n");
+  
+  if (curr_state[EVENT_R1_TXRX_ANT_SEL])
+    PRINTF("STATE >> RX ANT R1 -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> RX ANT R1 -> NOT ACTIVE\r\n");
+  
+  if (curr_state[EVENT_R2_TXRX_ANT_SEL])
+    PRINTF("STATE >> RX ANT R2 -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> RX ANT R2 -> NOT ACTIVE\r\n");  
+  
+  if (curr_state[EVENT_MUTE_ON_TX])
+    PRINTF("STATE >> MUTE ON TX -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> MUTE ON TX -> NOT ACTIVE\r\n");
+  
+  PRINTF("\r\n");
+}
+#endif
+
 int main(void) {
   cli();
   
   init_ports();
   init_timer_0();
   
+  usart1_init(7);
+  fdevopen((void*)usart1_transmit, (void*)usart1_receive_loopback);
+  
   event_queue_init();
+  
+  statemachine_init();
   
   sei();
  
+  PRINTF("\r\n\r\nSupport op board started\r\n");
+  PRINTF("------------------------\r\n");
+  PRINTF("Version: 0.1b\r\n");
+  PRINTF("By: Mikael Larsmark, SM2WMV/SJ2W\r\n");
+  PRINTF("Debug mode\r\n\r\n");
+  
   while(1) {
     if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
       //Run the event in the queue
       event_run();
       main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
     }
+    
+    ext_control_read_inputs(curr_state);
+    
+    if (memcmp(curr_state,prev_state,sizeof(curr_state)) != 0) {
+      #ifdef DEBUG
+        print_state_debug_info();
+      #endif
+      
+      //Check which event has changed and update the statemachine
+      for (unsigned char i=0;i<NR_OF_EVENTS;i++)
+        if (prev_state[i] != curr_state[i])
+          statemachine_new_event(i,curr_state[i]);
+      
+      memcpy(prev_state,curr_state,sizeof(curr_state));
+    }
   }
 }
+
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
 	counter_compare0++;
   
   if ((counter_compare0 % 250) == 0) {
     if (PINA & (1<<0))
-      ext_control_set_led_yellow(LED_OFF);
+      ext_control_led_yellow_clr();
     else
-      ext_control_set_led_yellow(LED_ON);
+      ext_control_led_yellow_set();
   }
   
   if (event_in_queue()) {
