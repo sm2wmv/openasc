@@ -56,7 +56,7 @@ void init_timer_1(void) {
   TCCR1A = 0;
   TCCR1A = (0<<WGM11) | (0<<WGM10);
   TCCR1B = (1<<CS12) | (0<<CS11) | (0<<CS10);  //Prescaler 256
-  OCR1AL = 70;
+  OCR1AL = 90;
   OCR1AH = 0;
   TIMSK1 |= (1<<OCIE1A);  //enable the interrupt
 }

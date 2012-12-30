@@ -374,11 +374,11 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
     
-    if (timeout++ > 1000) {
+    /*if (timeout++ > 100000) {
       // Close the socket
       ethernet_close(sock);
       return 0;
-    }
+    }*/
   }
 
   // Read the Tx Write Pointer
@@ -456,11 +456,11 @@ unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
-    if (timeout++ > 1000) {
+    /*if (timeout++ > 1000) {
       //Close the socket
       ethernet_close(sock);
       return 0;
-    }
+    }*/
   }  
 
   // Read the Tx Write Pointer

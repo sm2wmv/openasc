@@ -23,7 +23,7 @@
 #ifndef _PICTURES_H_
 #define _PICTURES_H_
 
-static unsigned char __attribute__ ((progmem)) openASC_logo[] = {
+const static unsigned char __attribute__ ((progmem)) openASC_logo[] = {
 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,

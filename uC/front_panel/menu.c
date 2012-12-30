@@ -44,21 +44,21 @@
 //! Number of options in the menu system
 #define MENU_OPTIONS	10
 
-prog_char error_0[] PROGMEM = "Bus resend";
-prog_char error_1[] PROGMEM = "No bus sync";
-prog_char error_2[] PROGMEM = "Bus TX queue full";
-prog_char error_3[] PROGMEM = "Bus RX queue full";
-prog_char error_4[] PROGMEM = "Int. comm resend";
-prog_char error_5[] PROGMEM = "Ant drv timeout";
-prog_char error_6[] PROGMEM = "Band drv timeout";
-prog_char error_7[] PROGMEM = "High VSWR";
-prog_char error_8[] PROGMEM = "Band in use";
-prog_char error_9[] PROGMEM = "Int comm. TX full";
-prog_char error_10[] PROGMEM = "Int comm. RX full";
-prog_char error_11[] PROGMEM = "Event queue full";
-prog_char error_12[] PROGMEM = "High ref power";
-prog_char error_13[] PROGMEM = "PA Error";
-prog_char error_14[] PROGMEM = "Rotator Error";
+const char error_0[] PROGMEM = "Bus resend";
+const char error_1[] PROGMEM = "No bus sync";
+const char error_2[] PROGMEM = "Bus TX queue full";
+const char error_3[] PROGMEM = "Bus RX queue full";
+const char error_4[] PROGMEM = "Int. comm resend";
+const char error_5[] PROGMEM = "Ant drv timeout";
+const char error_6[] PROGMEM = "Band drv timeout";
+const char error_7[] PROGMEM = "High VSWR";
+const char error_8[] PROGMEM = "Band in use";
+const char error_9[] PROGMEM = "Int comm. TX full";
+const char error_10[] PROGMEM = "Int comm. RX full";
+const char error_11[] PROGMEM = "Event queue full";
+const char error_12[] PROGMEM = "High ref power";
+const char error_13[] PROGMEM = "PA Error";
+const char error_14[] PROGMEM = "Rotator Error";
 
 /*//! Menu options - Errors
 const struct_menu_option menu_errors[NR_OF_ERRORS] = {
@@ -67,8 +67,7 @@ const struct_menu_option menu_errors[NR_OF_ERRORS] = {
   {"Int comm. RX full"},{"Event queue full"},{"High ref power"},{"PA Error"},{"Rotator Error"}
 };*/
 
-PROGMEM const char *menu_errors[] =  {error_0,error_1,error_2,error_3,error_4,error_5,error_6,error_7,error_8,error_9,error_10,error_11,error_12,error_13,error_14};
-
+//const char *menu_errors[] PROGMEM =  {error_0,error_1,error_2,error_3,error_4,error_5,error_6,error_7,error_8,error_9,error_10,error_11,error_12,error_13,error_14};
 
 const struct_menu_option menu_misc[] = {{"Reboot"}};
 //! The current selected menu option
@@ -90,16 +89,16 @@ const struct_menu_option menu_option_radio_ptt_output[] = {{"ON"},{"OFF"}};
 const struct_menu_option menu_option_amp_status[] = {{"ON"},{"OFF"}};
 
 /********* SETUP MENUS *********/
-prog_char header_1[] PROGMEM = "Band change";
-prog_char header_2[] PROGMEM = "Radio PTT";
-prog_char header_3[] PROGMEM = "Amplifier PTT";
-prog_char header_4[] PROGMEM = "Backlight";
-prog_char header_5[] PROGMEM = "Information";
-prog_char header_6[] PROGMEM = "Miscellaneous";
-prog_char header_7[] PROGMEM = "Powermeter";
-prog_char header_8[] PROGMEM = "Antenna status";
-prog_char header_9[] PROGMEM = "Power amplifier";
-prog_char header_10[] PROGMEM = "Errors";
+const prog_char header_1[] PROGMEM = "Band change";
+const prog_char header_2[] PROGMEM = "Radio PTT";
+const prog_char header_3[] PROGMEM = "Amplifier PTT";
+const prog_char header_4[] PROGMEM = "Backlight";
+const prog_char header_5[] PROGMEM = "Information";
+const prog_char header_6[] PROGMEM = "Miscellaneous";
+const prog_char header_7[] PROGMEM = "Powermeter";
+const prog_char header_8[] PROGMEM = "Antenna status";
+const prog_char header_9[] PROGMEM = "Power amplifier";
+const prog_char header_10[] PROGMEM = "Errors";
 
 //! Menu system
 const struct_menu_text menu_system_text[] = {
@@ -135,7 +134,39 @@ void menu_show_text(struct_menu_text menu_text) {
 		
 		for (int i=0;i<NR_OF_ERRORS;i++) {
 			if (error_handler_get_state(i)) {
-        strcpy_P(temp_str, (char*)pgm_read_word(&(menu_errors[i])));
+        //TODO: Fix this a better way
+        if (i==0)
+          strcpy_P(temp_str,error_0);
+        else if (i==1)
+          strcpy_P(temp_str,error_1);
+        else if (i==2)
+          strcpy_P(temp_str,error_2);
+        else if (i==3)
+          strcpy_P(temp_str,error_3);
+        else if (i==4)
+          strcpy_P(temp_str,error_4);
+        else if (i==5)
+          strcpy_P(temp_str,error_5);
+        else if (i==6)
+          strcpy_P(temp_str,error_6);
+        else if (i==7)
+          strcpy_P(temp_str,error_7);
+        else if (i==8)
+          strcpy_P(temp_str,error_8);
+        else if (i==9)
+          strcpy_P(temp_str,error_9);
+        else if (i==10)
+          strcpy_P(temp_str,error_10);
+        else if (i==11)
+          strcpy_P(temp_str,error_11);
+        else if (i==12)
+          strcpy_P(temp_str,error_12);
+        else if (i==13)
+          strcpy_P(temp_str,error_13);
+        else if (i==14)
+          strcpy_P(temp_str,error_14);
+        //strcpy_P(temp_str, (char*)pgm_read_word(&(menu_errors[i])));
+        
 				glcd_text(MENU_OPTION_LEFT_POS,18+count*10,FONT_SEVEN_DOT,temp_str,strlen(temp_str));
 				count++;
 			}
