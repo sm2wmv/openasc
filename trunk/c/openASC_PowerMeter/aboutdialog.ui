@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>227</height>
+    <height>196</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   <widget class="QPushButton" name="pushButtonClose">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>175</y>
+     <x>130</x>
+     <y>160</y>
      <width>80</width>
      <height>29</height>
     </rect>
@@ -29,11 +29,11 @@
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>60</y>
+     <y>30</y>
      <width>237</width>
      <height>92</height>
     </rect>
@@ -49,7 +49,7 @@
        </font>
       </property>
       <property name="text">
-       <string>PowerMeter </string>
+       <string>Power Meter </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

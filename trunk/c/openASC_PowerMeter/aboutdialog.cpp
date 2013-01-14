@@ -5,12 +5,9 @@ void AboutDialog::pushButtonClosePressed() {
 		this->hide();
 }
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    m_ui(new Ui::AboutDialog)
-{
-    m_ui->setupUi(this);
-
+AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent),m_ui(new Ui::AboutDialog) {
+  m_ui->setupUi(this);
+  m_ui->labelVersion->setText(VER_STR);
 	connect(m_ui->pushButtonClose, SIGNAL(pressed()), this, SLOT(pushButtonClosePressed()));
 }
 

@@ -7,6 +7,7 @@
 #include <QString>
 
 #include "qextserialport.h"
+#include "../../uC/wmv_bus/bus_commands.h"
 
 /******* BUS specifics ********/
 
@@ -142,12 +143,12 @@ class WMVBusClient : public QThread
 {
 public:
     WMVBusClient();
-		void initClient(unsigned char addr, QString dev, BusMessageListener *);
+    int initClient(unsigned char addr, QString dev, BusMessageListener *);
 		unsigned char getBusAddress();
 		void addTxMessage(unsigned char fromAddr, unsigned char toAddr, unsigned char flags, unsigned char cmd, unsigned char length, unsigned char data[]);
 		void stopProcess();
 		void run();
-		void receiveMsg();	//TODO: Move to private
+    void receiveMsg();	//TODO: Move to private
 private:
 		 QQueue<BUS_MESSAGE> txQueue;
 		 QQueue<BUS_MESSAGE> rxQueue;
@@ -158,9 +159,9 @@ private:
 		/*! \brief The address of the client on the bus */
 		unsigned char busAddr;		
 		QString deviceName;
-		int openPort(QString deviceName);
-		int closePort();
-		void sendMessage(BUS_MESSAGE message);
+    int openPort(QString deviceName);
+    int closePort();
+    void sendMessage(BUS_MESSAGE message);
 		BusMessageListener *msgListener;
 		int messageInRXQueue();
 		BUS_MESSAGE getMessageInRXQueue();
