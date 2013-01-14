@@ -3,6 +3,8 @@
 
 #include <QtGui/QDialog>
 
+#define VER_STR "Version 0.1b"
+
 namespace Ui {
     class AboutDialog;
 }

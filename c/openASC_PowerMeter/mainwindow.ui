@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Power Meter - Radio 1</string>
+   <string>Power Meter</string>
   </property>
   <property name="styleSheet">
    <string>QWidget {
@@ -153,7 +153,7 @@ QFrame#frameReflected{
             <number>1500</number>
            </property>
            <property name="value">
-            <number>1200</number>
+            <number>0</number>
            </property>
            <property name="textVisible">
             <bool>false</bool>
@@ -173,7 +173,7 @@ QFrame#frameReflected{
             </font>
            </property>
            <property name="text">
-            <string>1235W</string>
+            <string>0W</string>
            </property>
           </widget>
          </item>
@@ -245,7 +245,7 @@ QFrame#frameReflected{
             <number>150</number>
            </property>
            <property name="value">
-            <number>15</number>
+            <number>0</number>
            </property>
            <property name="textVisible">
             <bool>false</bool>
@@ -271,7 +271,7 @@ QFrame#frameReflected{
             </font>
            </property>
            <property name="text">
-            <string>25W</string>
+            <string>0W</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -307,10 +307,10 @@ QFrame#frameReflected{
             <string/>
            </property>
            <property name="text">
-            <string>SWR: 1.23</string>
+            <string>SWR: 0.00</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -340,7 +340,7 @@ QFrame#frameReflected{
      <x>0</x>
      <y>0</y>
      <width>351</width>
-     <height>19</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -367,6 +367,9 @@ QFrame#frameReflected{
    </property>
   </action>
   <action name="actionDisconnect">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Disconnect</string>
    </property>
