@@ -29,6 +29,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       frameRotatorWindow = settings.value("frameRotatorWindow").toBool();
       frameRotatorWindowStartOnTop = settings.value("frameRotatorWindowStartOnTop").toBool();
       connectOnStart = settings.value("connectOnStart").toBool();
+      activityTimer = settings.value("activityTimer").toBool();
 		}
 		else {
 			mainWindowPosX = 100;
@@ -46,6 +47,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       frameRotatorWindow = true;
       frameRotatorWindowStartOnTop = false;
       connectOnStart = false;
+      activityTimer = true;
 		}
 
 		settings.endGroup();
@@ -57,6 +59,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
     m_ui->checkBoxRotatorWindowFrame->setChecked(frameRotatorWindow);
     m_ui->checkBoxRotatorWindowStartOnStop->setChecked(frameRotatorWindowStartOnTop);
     m_ui->checkBoxConnectOnStartup->setChecked(connectOnStart);
+    m_ui->checkBoxActivityTimer->setChecked(activityTimer);
 }
 
 SettingsDialog::~SettingsDialog() {
@@ -65,6 +68,10 @@ SettingsDialog::~SettingsDialog() {
 
 bool SettingsDialog::getFrameRotatorWindow() {
   return(frameRotatorWindow);
+}
+
+bool SettingsDialog::getActivityTimer() {
+  return(activityTimer);
 }
 
 void SettingsDialog::changeEvent(QEvent *e) {
@@ -88,6 +95,7 @@ void SettingsDialog::saveSettings() {
   frameRotatorWindow = m_ui->checkBoxRotatorWindowFrame->isChecked();
   frameRotatorWindowStartOnTop = m_ui->checkBoxRotatorWindowStartOnStop->isChecked();
   connectOnStart = m_ui->checkBoxConnectOnStartup->isChecked();
+  activityTimer = m_ui->checkBoxActivityTimer->isChecked();
 
 	settings.beginGroup("Settings");
 
@@ -109,6 +117,7 @@ void SettingsDialog::saveSettings() {
   settings.setValue("frameRotatorWindow",frameRotatorWindow);
   settings.setValue("frameRotatorWindowStartOnTop",frameRotatorWindowStartOnTop);
   settings.setValue("connectOnStart",connectOnStart);
+  settings.setValue("activityTimer",activityTimer);
 
 	settings.endGroup();
 }

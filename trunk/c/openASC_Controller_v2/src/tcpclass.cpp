@@ -114,10 +114,14 @@ QByteArray TCPClass::getMessage(void) {
 	return(rxQueue.takeFirst());
 }
 
-void TCPClass::transmitMsg() {
+bool TCPClass::transmitMsg() {
 	if (txQueue.size() > 0) {
 		client.write(txQueue.takeFirst());
+
+    return(true);
 	}
+
+  return(false);
 }
 
 void TCPClass::addTXMessage(unsigned char cmd, unsigned char length, QByteArray data) {

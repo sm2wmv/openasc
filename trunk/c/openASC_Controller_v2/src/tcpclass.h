@@ -24,7 +24,7 @@ public:
     void addTXMessage(unsigned char cmd);
     void stopConnection(void);
     void receiveMsg();
-    void transmitMsg();
+    bool transmitMsg();
 private:
 		unsigned int tcpPort;
 		QTcpSocket client;

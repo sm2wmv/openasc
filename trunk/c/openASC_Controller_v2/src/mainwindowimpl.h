@@ -17,6 +17,9 @@
 #include <QCheckBox>
 #include <QMessageBox>
 
+//! The timeout limit for the network activity (in seconds)
+#define ACTIVITY_TIMER_TIMEOUT_LIMIT 900
+
 typedef struct {
 	unsigned char currentBand;
 	unsigned char currentAntennas;
@@ -53,8 +56,11 @@ private:
 		int interfaceType;
 		QTimer *timerPollRXQueue;
 		QTimer *timerPollStatus;
+    QTimer *timerActivity;
 		status_struct status;
 		int currBand;
+    int activityTimeoutCounter;
+    void resetGUI();
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
@@ -89,6 +95,7 @@ public slots:
 
 		void timerPollRXQueueUpdate();
 		void timerPollStatusUpdate();
+    void timerActivityUpdate();
 
 		void pushButtonMenuClicked();
 		void pushButtonMenuEnterClicked();
