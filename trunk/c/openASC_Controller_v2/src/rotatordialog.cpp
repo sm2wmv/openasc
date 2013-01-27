@@ -677,7 +677,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, 
   setupUi(this);
 
   this->resize(800,600);
-  imagePath = "maps/map.jpg";
+  imagePath = "maps/map.png";
 
   sizeWidth = 600;
   sizeHeight = 600;
