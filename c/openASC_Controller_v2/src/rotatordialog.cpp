@@ -666,77 +666,88 @@ void RotatorDialog::pushButtonSTOPClicked() {
 	qDebug("STOP");
 }
 
+void RotatorDialog::keyPressEvent(QKeyEvent *e) {
+  if (e->type() == QEvent::KeyPress) {
+    Qt::Key keyPressed = (Qt::Key)e->key();
+
+    if(keyPressed == Qt::Key_Q) //Hide the window
+      this->hide();
+    else if (keyPressed == Qt::Key_S) //Set the position to the left upper corner of the monitor
+      this->setGeometry(QRect(0,0,this->width(),this->height()));
+  }
+}
+
 RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
-    setupUi(this);
+  setupUi(this);
 
-    this->resize(800,600);
-		imagePath = "maps/map.jpg";
+  this->resize(800,600);
+  imagePath = "maps/map.jpg";
 
-    sizeWidth = 600;
-    sizeHeight = 600;
+  sizeWidth = 600;
+  sizeHeight = 600;
 
-		setRotatorAngle(0,0);
-		targetAzimuthAngle[0] = 0;
+  setRotatorAngle(0,0);
+  targetAzimuthAngle[0] = 0;
 
-		setRotatorAngle(1,0);
-		targetAzimuthAngle[1] = 0;
+  setRotatorAngle(1,0);
+  targetAzimuthAngle[1] = 0;
 
-		setRotatorAngle(2,0);
-		targetAzimuthAngle[2] = 0;
+  setRotatorAngle(2,0);
+  targetAzimuthAngle[2] = 0;
 
-		setRotatorAngle(3,0);
-		targetAzimuthAngle[3] = 0;
+  setRotatorAngle(3,0);
+  targetAzimuthAngle[3] = 0;
 
-		rotationEventStatus = 0;
+  rotationEventStatus = 0;
 
-    currAntIndex = 0;
+  currAntIndex = 0;
 
-    QPalette plt;
-    plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
-		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
-    groupBoxAnt1->setPalette(plt);
-		pushButtonAnt1->setPalette(plt);
+  QPalette plt;
+  plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+  plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+  groupBoxAnt1->setPalette(plt);
+  pushButtonAnt1->setPalette(plt);
 
-    plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
-		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
-    groupBoxAnt2->setPalette(plt);
-		pushButtonAnt2->setPalette(plt);
+  plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+  plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+  groupBoxAnt2->setPalette(plt);
+  pushButtonAnt2->setPalette(plt);
 
-    plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
-		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
-    groupBoxAnt3->setPalette(plt);
-		pushButtonAnt3->setPalette(plt);
+  plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+  plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+  groupBoxAnt3->setPalette(plt);
+  pushButtonAnt3->setPalette(plt);
 
-		plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
-		plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
-		groupBoxAnt4->setPalette(plt);
-		pushButtonAnt4->setPalette(plt);
+  plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+  plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+  groupBoxAnt4->setPalette(plt);
+  pushButtonAnt4->setPalette(plt);
 
-		connect(pushButtonAnt1, SIGNAL(clicked()), this, SLOT(pushButtonAnt1Clicked()));
-		connect(pushButtonAnt2, SIGNAL(clicked()), this, SLOT(pushButtonAnt2Clicked()));
-		connect(pushButtonAnt3, SIGNAL(clicked()), this, SLOT(pushButtonAnt3Clicked()));
-		connect(pushButtonAnt4, SIGNAL(clicked()), this, SLOT(pushButtonAnt4Clicked()));
+  connect(pushButtonAnt1, SIGNAL(clicked()), this, SLOT(pushButtonAnt1Clicked()));
+  connect(pushButtonAnt2, SIGNAL(clicked()), this, SLOT(pushButtonAnt2Clicked()));
+  connect(pushButtonAnt3, SIGNAL(clicked()), this, SLOT(pushButtonAnt3Clicked()));
+  connect(pushButtonAnt4, SIGNAL(clicked()), this, SLOT(pushButtonAnt4Clicked()));
 
-		connect(pushButtonPreset1, SIGNAL(clicked()), this, SLOT(pushButtonPreset1Clicked()));
-		connect(pushButtonPreset2, SIGNAL(clicked()), this, SLOT(pushButtonPreset2Clicked()));
-		connect(pushButtonPreset3, SIGNAL(clicked()), this, SLOT(pushButtonPreset3Clicked()));
-		connect(pushButtonPreset4, SIGNAL(clicked()), this, SLOT(pushButtonPreset4Clicked()));
-		connect(pushButtonPreset5, SIGNAL(clicked()), this, SLOT(pushButtonPreset5Clicked()));
-		connect(pushButtonSTOP, SIGNAL(clicked()), this, SLOT(pushButtonSTOPClicked()));
+  connect(pushButtonPreset1, SIGNAL(clicked()), this, SLOT(pushButtonPreset1Clicked()));
+  connect(pushButtonPreset2, SIGNAL(clicked()), this, SLOT(pushButtonPreset2Clicked()));
+  connect(pushButtonPreset3, SIGNAL(clicked()), this, SLOT(pushButtonPreset3Clicked()));
+  connect(pushButtonPreset4, SIGNAL(clicked()), this, SLOT(pushButtonPreset4Clicked()));
+  connect(pushButtonPreset5, SIGNAL(clicked()), this, SLOT(pushButtonPreset5Clicked()));
+  connect(pushButtonSTOP, SIGNAL(clicked()), this, SLOT(pushButtonSTOPClicked()));
 
-		connect(pushButtonRotateCCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCCWPressed()));
-		connect(pushButtonRotateCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCWPressed()));
-		connect(pushButtonRotateCCW, SIGNAL(released()), this, SLOT(pushButtonRotateCCWReleased()));
-		connect(pushButtonRotateCW, SIGNAL(released()), this, SLOT(pushButtonRotateCWReleased()));
+  connect(pushButtonRotateCCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCCWPressed()));
+  connect(pushButtonRotateCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCWPressed()));
+  connect(pushButtonRotateCCW, SIGNAL(released()), this, SLOT(pushButtonRotateCCWReleased()));
+  connect(pushButtonRotateCW, SIGNAL(released()), this, SLOT(pushButtonRotateCWReleased()));
 
-		pushButtonAnt1->setChecked(true);
-		pushButtonAnt2->setChecked(false);
-		pushButtonAnt3->setChecked(false);
-		pushButtonAnt4->setChecked(false);
+  pushButtonAnt1->setChecked(true);
+  pushButtonAnt2->setChecked(false);
+  pushButtonAnt3->setChecked(false);
+  pushButtonAnt4->setChecked(false);
 
-		loadBand(0);
+  loadBand(0);
 
-		for (unsigned char i=0;i<4;i++)
-			rotatorStatus[i] = 0;
+  for (unsigned char i=0;i<4;i++)
+    rotatorStatus[i] = 0;
 }
 //

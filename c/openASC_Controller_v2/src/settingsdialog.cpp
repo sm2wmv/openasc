@@ -25,6 +25,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
 			terminalWindowOpen = settings.value("terminalWindowOpen").toBool();
 			rotatorWindowOpen = settings.value("rotatorWindowOpen").toBool();
 			keypadWindowOpen = settings.value("keypadWindowOpen").toBool();
+
+      frameRotatorWindow = settings.value("frameRotatorWindow").toBool();
+      frameRotatorWindowStartOnTop = settings.value("frameRotatorWindowStartOnTop").toBool();
+      connectOnStart = settings.value("connectOnStart").toBool();
 		}
 		else {
 			mainWindowPosX = 100;
@@ -39,6 +43,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
 			terminalWindowOpen = false;
 			rotatorWindowOpen = false;
 			keypadWindowOpen = false;
+      frameRotatorWindow = true;
+      frameRotatorWindowStartOnTop = false;
+      connectOnStart = false;
 		}
 
 		settings.endGroup();
@@ -47,10 +54,17 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
 
 		m_ui->lineEditIP->setText(strNetworkIPAddress);
 		m_ui->spinBoxPort->setValue(iNetworkPort);
+    m_ui->checkBoxRotatorWindowFrame->setChecked(frameRotatorWindow);
+    m_ui->checkBoxRotatorWindowStartOnStop->setChecked(frameRotatorWindowStartOnTop);
+    m_ui->checkBoxConnectOnStartup->setChecked(connectOnStart);
 }
 
 SettingsDialog::~SettingsDialog() {
     delete m_ui;
+}
+
+bool SettingsDialog::getFrameRotatorWindow() {
+  return(frameRotatorWindow);
 }
 
 void SettingsDialog::changeEvent(QEvent *e) {
@@ -71,6 +85,9 @@ void SettingsDialog::saveSettings() {
 
 	strNetworkIPAddress = m_ui->lineEditIP->text();
 	iNetworkPort = m_ui->spinBoxPort->value();
+  frameRotatorWindow = m_ui->checkBoxRotatorWindowFrame->isChecked();
+  frameRotatorWindowStartOnTop = m_ui->checkBoxRotatorWindowStartOnStop->isChecked();
+  connectOnStart = m_ui->checkBoxConnectOnStartup->isChecked();
 
 	settings.beginGroup("Settings");
 
@@ -89,7 +106,19 @@ void SettingsDialog::saveSettings() {
 	settings.setValue("rotatorWindowOpen",rotatorWindowOpen);
 	settings.setValue("terminalWindowOpen",terminalWindowOpen);
 
+  settings.setValue("frameRotatorWindow",frameRotatorWindow);
+  settings.setValue("frameRotatorWindowStartOnTop",frameRotatorWindowStartOnTop);
+  settings.setValue("connectOnStart",connectOnStart);
+
 	settings.endGroup();
+}
+
+bool SettingsDialog::getConnectOnStart() {
+  return(connectOnStart);
+}
+
+bool SettingsDialog::getFrameRotatorWindowStartOnTop() {
+  return(frameRotatorWindowStartOnTop);
 }
 
 void SettingsDialog::btnOKClicked() {

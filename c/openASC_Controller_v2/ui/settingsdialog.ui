@@ -127,6 +127,45 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QCheckBox" name="checkBoxRotatorWindowFrame">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>100</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Rotator window frame visible (reboot)</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBoxConnectOnStartup">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>120</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Connect on startup</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBoxRotatorWindowStartOnStop">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>140</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Rotator window start on top</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
