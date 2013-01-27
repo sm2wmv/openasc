@@ -60,8 +60,6 @@
 
 //#define ERROR_DEBUG
 
-static void (*bootloader_start)(void) = (void *)0x1FE00;
-
 unsigned char parse_uc_cmd = 0;
 
 extern unsigned int main_flags;
@@ -113,121 +111,65 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
 		printf("0x%02X\n",message.cmd);
 	#endif
 
-  if ((message.cmd >= 0xA0) && (message.cmd <= 0xAF)) {
-    switch(message.cmd) {
-      case INT_COMM_REMOTE_SET_STATUS:
-        if (message.data[0] == 0)
-          remote_control_deactivate_remote_mode();
-        else if (message.data[0] == 1)
-          remote_control_activate_remote_mode();
-        break;
-      case COMPUTER_COMM_REMOTE_BUTTON_EVENT:
-        if (message.length > 0)
-          event_process_task(message.data[0]);
-        break;
-      case COMPUTER_COMM_REMOTE_CHANGE_BAND:
-        if (message.length > 0)
-          main_set_new_band(message.data[0]);
-        break;
-      case COMPUTER_COMM_REMOTE_ROTATE_ANTENNA:
-        if (message.length > 2) {
-          antenna_ctrl_rotate(message.data[0],(message.data[1]<<8) + message.data[2]);
-        }
-      case COMPUTER_COMM_REMOTE_CLEAR_ERRORS:
-        error_handler_clear_all();
-        led_set_error(LED_STATE_OFF);
-        
-        if (remote_control_get_remote_mode())
-          remote_control_set_update_band_info();
-        
-        status.function_status &= ~(1<<FUNC_STATUS_MENU_ACTIVE);
-        led_set_menu(LED_STATE_OFF);
-        display_handler_prev_view();
-        break;
-      case COMPUTER_COMM_SET_SUBMENU_OPTION:
-        // Bit 0 -> Antenna index
-        // Bit 1 -> Dir/comb
-        
-        if (sub_menu_get_type(message.data[0]) == SUBMENU_VERT_ARRAY)
-          sub_menu_set_array_dir(message.data[1]);
-        else if (sub_menu_get_type(message.data[0]) == SUBMENU_STACK)
-          sub_menu_set_stack_comb(message.data[1]);
-        
-        //TEMPORARY
-        if (remote_control_get_remote_mode())
-          remote_control_set_update_band_info();
-        
-        display_handler_repaint();
-        break;
-      case COMPUTER_COMM_REBOOT:
+  switch(message.cmd) {
+    //Init the sequence of saving all data and disable all outputs activated by this unit
+    case INT_COMM_TURN_DEVICE_OFF:
+      //TODO: Problem with delay here, need to wait until everything is shut off
+      //This solution is pretty uggly...do it some other way?
+
+      status.function_status |= (1<<FUNC_STATUS_SHUTDOWN_IN_PROGRESS);
+
+      display_handler_new_view(DISPLAY_HANDLER_VIEW_SHUTDOWN);
+      display_handler_repaint();
+      display_handler_tick();
+
+      main_save_settings();
+      
+      band_ctrl_change_band(BAND_UNDEFINED);
+      
+      send_ping();
+      
+      //TODO: Send global shutdown message
+      bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0 ,BUS_CMD_SHUTTING_DOWN,0,0);
+      
+      main_set_device_online(0);
+      
+      if (computer_interface_is_active()) {
+        delay_s(3);
         led_set_error(LED_STATE_ON);
-        bootloader_start();
-        break;
-      default:
-        break;
-    }
-  }
-  else {
-    switch(message.cmd) {
-      //Init the sequence of saving all data and disable all outputs activated by this unit
-      case INT_COMM_TURN_DEVICE_OFF:
-        //TODO: Problem with delay here, need to wait until everything is shut off
-        //This solution is pretty uggly...do it some other way?
-
-        status.function_status |= (1<<FUNC_STATUS_SHUTDOWN_IN_PROGRESS);
-
-        display_handler_new_view(DISPLAY_HANDLER_VIEW_SHUTDOWN);
-        display_handler_repaint();
-        display_handler_tick();
-
-        main_save_settings();
-        
-        band_ctrl_change_band(BAND_UNDEFINED);
-        
-        send_ping();
-        
-        //TODO: Send global shutdown message
-        bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0 ,BUS_CMD_SHUTTING_DOWN,0,0);
-        
-        main_set_device_online(0);
-        
-        if (computer_interface_is_active()) {
-          delay_s(3);
-          led_set_error(LED_STATE_ON);
-          internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
-        }
-        else
-          event_add_message((void *)shutdown_device,3000,0);
-        
-        break;
-      case INT_COMM_PS2_KEYPRESSED:
-        #ifdef DEBUG_COMPUTER_USART_ENABLED
-          printf("PS2_KEYCODE: 0x%02X\n\r",message.data[0]);
-        #endif
-        
-        event_handler_process_ps2(message.data[0]);
-        break;
-      case INT_COMM_GET_BAND_BCD_STATUS:
-        if (message.data[0] != radio_get_current_band()) {
-          if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
-            radio_set_current_band(message.data[0]);
-        }
-        
-        #ifdef INT_COMM_DEBUG
-          printf("RX BCD STATUS\n");
-        #endif
-        break;
-      case INT_COMM_PC_CONNECT_TO_ADDR:
-        ascii_comm_device_addr = message.data[0];
-        break;
-      case INT_COMM_PC_SEND_TO_ADDR:
-        if (ascii_comm_device_addr != 0x00) {
-          bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,(unsigned char*)message.data);
-        }
-        break;
-      default:
-        break;
-    }
+        internal_comm_add_tx_message(INT_COMM_PULL_THE_PLUG,0,0);
+      }
+      else
+        event_add_message((void *)shutdown_device,3000,0);
+      
+      break;
+    case INT_COMM_PS2_KEYPRESSED:
+      #ifdef DEBUG_COMPUTER_USART_ENABLED
+        printf("PS2_KEYCODE: 0x%02X\n\r",message.data[0]);
+      #endif
+      
+      event_handler_process_ps2(message.data[0]);
+      break;
+    case INT_COMM_GET_BAND_BCD_STATUS:
+      if (message.data[0] != radio_get_current_band()) {
+        if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
+          radio_set_current_band(message.data[0]);
+      }
+      
+      #ifdef INT_COMM_DEBUG
+        printf("RX BCD STATUS\n");
+      #endif
+      break;
+    case INT_COMM_PC_CONNECT_TO_ADDR:
+      ascii_comm_device_addr = message.data[0];
+      break;
+    case INT_COMM_PC_SEND_TO_ADDR:
+      if (ascii_comm_device_addr != 0x00) {
+        bus_add_tx_message(bus_get_address(), ascii_comm_device_addr,(1<<BUS_MESSAGE_FLAGS_NEED_ACK),BUS_CMD_ASCII_DATA,message.length,(unsigned char*)message.data);
+      }
+      break;
+    default:
+      break;
   }
 }
 
@@ -241,8 +183,6 @@ void __inline__ event_set_rx_antenna(unsigned char ant_index) {
 		  
 	  antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
 	  main_flags |= (1<<FLAG_UPDATE_DISPLAY);
-    
-    remote_control_set_update_band_info();
   }
 }
 
@@ -1025,9 +965,6 @@ void event_tx_button1_pressed(void) {
 		}
 		
 		main_update_ptt_status();
-    
-    if (remote_control_get_remote_mode())
-      remote_control_set_update_band_info();
 	}
 }
 
@@ -1105,9 +1042,6 @@ void event_tx_button2_pressed(void) {
     }
     
     main_update_ptt_status();
-
-    if (remote_control_get_remote_mode())
-      remote_control_set_update_band_info();
   }
 }
 
@@ -1186,9 +1120,6 @@ void event_tx_button3_pressed(void) {
 		}
 		
 		main_update_ptt_status();
-    
-    if (remote_control_get_remote_mode())
-      remote_control_set_update_band_info();
 	}
 }
 
@@ -1267,9 +1198,6 @@ void event_tx_button4_pressed(void) {
   	}
   	
   	main_update_ptt_status();
-    
-    if (remote_control_get_remote_mode())
-      remote_control_set_update_band_info();
 	}
 }
 
@@ -1371,8 +1299,6 @@ void event_rxant_button_pressed(void) {
 			display_handler_repaint();
 		}
 		
-		if (remote_control_get_remote_mode())
-      remote_control_set_update_band_info();
 	}
 	else	//If we don't have any antennas to choose we always have the LED off
 		led_set_rxant(LED_STATE_OFF);
@@ -1427,11 +1353,6 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
             display_handler_repaint();
           }
 
-          //If the remote mode is active, we send the new heading to the motherboard, of this antenna
-          if (remote_control_get_remote_mode()) {
-            remote_control_send_antenna_dir_info(i);
-          }
-          
           if (ethernet_is_active()) {
             char temp[4] = {i,curr_heading >> 8, curr_heading & 0xFF,bus_message.data[6]};
             ethernet_send_data(0,REMOTE_COMMAND_ROTATOR_SET_HEADING,4,(unsigned char *)temp);

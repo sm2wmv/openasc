@@ -230,10 +230,6 @@ void band_ctrl_change_band(unsigned char band) {
       
 			//Update the display
 			event_add_message((void*)display_handler_repaint,200,0);
-      
-      if (remote_control_get_remote_mode()) {
-        event_add_message((void*)remote_control_changed_band,500,0);
-      }
 		}
 		else {
       //Lets change to band undefined, as long as we are not allowed in on the band we want

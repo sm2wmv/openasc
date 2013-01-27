@@ -23,43 +23,12 @@
 #ifndef _REMOTE_CONTROL_H_
 #define _REMOTE_CONTROL_H_
 
-/*! Remote control description 
- *  REMOTE_CONTROL_RX_ANT_TEXT -> ant1 text REMOTE_CONTROL_TEXT_SEPERATOR ant2 text REMOTE_CONTROL_TEXT_SEPERATOR ant3 text
- *  REMOTE_CONTROL_ANT_TEXT -> ant1 text REMOTE_CONTROL_ANT_TEXT ant2 text REMOTE_CONTROL_ANT_TEXT ant3 text REMOTE_CONTROL_ANT_TEXT ant4 text
-
-*/
-
 #include <avr/pgmspace.h>
 
-#include "../internal_comm.h"
-
-void remote_control_activate_remote_mode(void);
-void remote_control_deactivate_remote_mode(void);
-unsigned char remote_control_get_remote_mode(void);
 void remote_control_parse_command(unsigned char command, unsigned char length, char *data);
 
 void remote_control_send_status(void);
 void remote_control_send_rx_antennas(void);
-void remote_control_parse_button(unsigned char button);
 
-void remote_control_send_band_info(unsigned char band);
-void remote_control_send_rx_ant_info(unsigned char ant_index);
-void remote_control_send_antenna_dir_info(unsigned char index);
-void remote_control_send_ant_info(void);
-void remote_control_send_ant_text(unsigned char ant_index);
-
-void remote_control_process(void);
-
-void remote_control_set_update_band_info(void);
-void remote_control_set_update_tx_ant_info(void);
-
-void remote_control_changed_band(void);
-
-void remote_control_send_sub_menu(unsigned char ant_index, unsigned char sub_pos);
-
-//! Command to activate the remote control mode
-#define REMOTE_CONTROL_ACTIVATE_MODE		0x01
-//! Command to deactivate the remote control mode
-#define REMOTE_CONTROL_DEACTIVATE_MODE	0x02
 
 #endif
