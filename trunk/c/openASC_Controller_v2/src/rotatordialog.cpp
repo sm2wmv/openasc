@@ -255,6 +255,11 @@ void RotatorDialog::setStatusPresetButtons() {
 void RotatorDialog::loadBand(int bandIndex) {
 	currAntIndex = -1;
 
+        pushButtonAnt1->setChecked(false);
+        pushButtonAnt2->setChecked(false);
+        pushButtonAnt3->setChecked(false);
+        pushButtonAnt4->setChecked(false);
+
 	switch(bandIndex) {
 		case 0: bandName="None";
 			break;
@@ -448,6 +453,8 @@ void RotatorDialog::loadBand(int bandIndex) {
 			else
 				pushButtonAnt4->setEnabled(false);
 		}
+
+                setStatusPresetButtons();
 
 		labelAnt1Title->setText(antName[0]);
 		labelAnt2Title->setText(antName[1]);

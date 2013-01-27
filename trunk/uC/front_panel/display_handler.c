@@ -575,62 +575,10 @@ void display_handler_show_set_heading(unsigned int rotator_heading) {
  * \param length The length of the text we wish to shown
  * \param text The text which we wish to display */
 void display_handler_status_field_text(unsigned char length, char *text) {
-  CLEAR_RADIO_STATUS_AREA();
+  CLEAR_STATUS_AREA();
   display_handler_text_right_adjust(DISPLAY_RADIO_FREQ_X_POS,DISPLAY_RADIO_FREQ_Y_POS,text,length,FONT_SIX_DOT);
 }
 
-/*! \brief Update the radio frequency area of the display */
-/*void display_update_radio_freq(void) {
-  if (status.current_display == CURRENT_DISPLAY_ANTENNA_INFO) {
-    if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() != RADIO_INTERFACE_BCD)) {
-      if ((radio_interface_get_interface() == RADIO_INTERFACE_CAT_POLL) | (radio_interface_get_interface() == RADIO_INTERFACE_CAT_MON)) {
-        char temp_str[15];
-        char temp_bandport = '?';
-        
-        unsigned char temp_port = radio_get_band_portion();
-        
-        if (temp_port == BAND_HIGH)
-          temp_bandport = 'H';
-        else if (temp_port == BAND_LOW)
-          temp_bandport = 'L';
-          
-        sprintf((char *)temp_str, "%0i kHz (%c)",radio_get_current_freq(), temp_bandport);
-              
-        display_radio_freq(strlen(temp_str),(char *)temp_str);
-        
-        display_view(VIEW_ANTENNAS);
-      }
-      else
-        CLEAR_RADIO_FREQ_AREA();
-    }
-    else if ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_MANUAL) || ((runtime_settings.band_change_mode == BAND_CHANGE_MODE_AUTO) && (radio_interface_get_interface() == RADIO_INTERFACE_BCD))) {
-      char temp_str[4];
-      unsigned char temp_nr_to_view = 0;
-      
-      if (status.current_band_portion == BAND_HIGH) {
-        temp_str[0] = 'H';
-        temp_str[1] = 'I';
-        temp_str[2] = 'G';
-        temp_str[3] = 'H';
-        
-        temp_nr_to_view = 4;
-      }
-      else if (status.current_band_portion == BAND_LOW) {
-        temp_str[0] = 'L';
-        temp_str[1] = 'O';
-        temp_str[2] = 'W';
-        
-        temp_nr_to_view = 3;
-      }
-      
-      display_radio_freq(temp_nr_to_view,(char *)temp_str);
-      display_view(VIEW_ANTENNAS);
-    }
-    
-    glcd_update_all();
-  }
-}
-*/
 /*! \brief Gets called at DISPLAY_HANDLER_TICK_INTERVAL ms intervals, which is defined in main.h */
 void display_handler_tick(void) {
   //Check if there is a new display to be viewed or we force a repaint of the current view
@@ -952,7 +900,7 @@ void display_handler_set_status_field_text_P(unsigned char length, const char *d
 void display_handler_set_status_field_text(unsigned char length, char *data) {
   if (length <= 24) {
     strncpy(status_field_text,data,length);
-
+    
     status_field_text[length] = 0;
   }
 }

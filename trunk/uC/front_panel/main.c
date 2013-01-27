@@ -478,40 +478,40 @@ void send_ping(void) {
 void main_update_status_field(void ) {
   if (main_get_status_field_index() == STATUS_FIELD_AMP_ON_OFF_STATUS) {
     if (status.amp_flags & (1<<AMP_STATUS_MAINS))
-      display_handler_set_status_field_text_P(13,PSTR("AMP: MAINS ON"));
+      display_handler_set_status_field_text_P(13,PSTR("Amp: Mains On"));
     else
-      display_handler_set_status_field_text_P(14,PSTR("AMP: MAINS OFF"));
+      display_handler_set_status_field_text_P(14,PSTR("Amp: Mains Off"));
   }
     
   if (main_get_status_field_index() == STATUS_FIELD_AMP_OP_STBY_STATUS) {
     if (status.amp_flags & (1<<AMP_STATUS_OPR_STBY))
-      display_handler_set_status_field_text_P(12,PSTR("AMP: Operate"));
+      display_handler_set_status_field_text_P(12,PSTR("Amp: Operate"));
     else
-      display_handler_set_status_field_text_P(12,PSTR("AMP: Standby"));    
+      display_handler_set_status_field_text_P(12,PSTR("Amp: Standby"));    
   }
 
   if (main_get_status_field_index() == STATUS_FIELD_AMP_STATUS) {
     /*! Amp status */
     if (status.amp_op_status == AMP_OP_STATUS_READY) {
-      display_handler_set_status_field_text_P(10,PSTR("AMP: Ready"));
+      display_handler_set_status_field_text_P(10,PSTR("Amp: Ready"));
     }
     else if (status.amp_op_status == AMP_OP_STATUS_ERROR) {
-      display_handler_set_status_field_text_P(10,PSTR("AMP: ERROR"));
+      display_handler_set_status_field_text_P(10,PSTR("Amp: ERROR"));
     }
     else if (status.amp_op_status == AMP_OP_STATUS_TUNING) {
-      display_handler_set_status_field_text_P(11,PSTR("AMP: Tuning"));      
+      display_handler_set_status_field_text_P(11,PSTR("Amp: Tuning"));      
     }
     else if (status.amp_op_status == AMP_OP_STATUS_OFF) {
-      display_handler_set_status_field_text_P(8,PSTR("AMP: Off"));      
+      display_handler_set_status_field_text_P(8,PSTR("Amp: Off"));      
     }
     else if (status.amp_op_status == AMP_OP_STATUS_WARMUP) {
-      display_handler_set_status_field_text_P(12,PSTR("AMP: Warmup"));
+      display_handler_set_status_field_text_P(12,PSTR("Amp: Warmup"));
     }
     else if (status.amp_op_status == AMP_OP_STATUS_COOLDOWN) {
-      display_handler_set_status_field_text_P(13,PSTR("AMP: Cooldown"));      
+      display_handler_set_status_field_text_P(13,PSTR("Amp: Cooldown"));      
     }
     else {
-      display_handler_set_status_field_text_P(12,PSTR("AMP: Standby"));      
+      display_handler_set_status_field_text_P(12,PSTR("Amp: Standby"));      
     }    
   }
 
@@ -544,16 +544,16 @@ void main_update_status_field(void ) {
   
   if (main_get_status_field_index() == STATUS_FIELD_SHOW_RADIO_PTT_ON_OFF_STATUS) {
     if (runtime_settings.radio_ptt_output)
-      display_handler_set_status_field_text_P(13,PSTR("Radio PTT: ON"));
+      display_handler_set_status_field_text_P(13,PSTR("Radio PTT: On"));
     else
-      display_handler_set_status_field_text_P(14,PSTR("Radio PTT: OFF"));
+      display_handler_set_status_field_text_P(14,PSTR("Radio PTT: Off"));
   }
   
   if (main_get_status_field_index() == STATUS_FIELD_SHOW_AMP_PTT_ON_OFF_STATUS) {
     if (runtime_settings.amplifier_ptt_output)
-      display_handler_set_status_field_text_P(11,PSTR("Amp PTT: ON"));
+      display_handler_set_status_field_text_P(11,PSTR("Amp PTT: On"));
     else
-      display_handler_set_status_field_text_P(12,PSTR("Amp PTT: OFF"));
+      display_handler_set_status_field_text_P(12,PSTR("Amp PTT: Off"));
   }
   
   if (main_get_status_field_index() == STATUS_FIELD_SHOW_ROTATOR_FOCUS) {
@@ -771,6 +771,8 @@ int main(void){
 	delay_ms(250);
 	led_set_all(LED_STATE_OFF);
 
+  wdt_enable(WDTO_2S);
+
   ethernet_init();
   
 	//Initialize the menu system
@@ -781,8 +783,6 @@ int main(void){
 	
 	set_knob_function(KNOB_FUNCTION_AUTO);
 	
-	//init_usart_computer();
-
 	sei();
 	
 	//TEMPORARY
@@ -812,8 +812,6 @@ int main(void){
       printf("Band[%i] refp: %i\n\r",i,settings.powermeter_ref_power_limit[i]);
     }*/
   #endif
-
-  wdt_enable(WDTO_2S);
 
   BUS_MESSAGE mess;
   
@@ -908,8 +906,6 @@ int main(void){
 				main_flags &= ~(1<<FLAG_BLINK_BAND_LED);
 			}
 		
-      remote_control_process();
-		
 			if (main_flags & (1<<FLAG_POLL_RADIO)) {
 				radio_poll_status();
 			
@@ -918,8 +914,6 @@ int main(void){
 		
 			if (main_flags & (1<<FLAG_PROCESS_RX_ANT_CHANGE)) {
 				antenna_ctrl_change_rx_ant(status.selected_rx_antenna);
-			
-        remote_control_set_update_band_info();
         
 				main_flags &= ~(1<<FLAG_CHANGE_RX_ANT);
 				main_flags &= ~(1<<FLAG_PROCESS_RX_ANT_CHANGE);

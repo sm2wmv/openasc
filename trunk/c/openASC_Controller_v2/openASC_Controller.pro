@@ -31,4 +31,5 @@ SOURCES = src/mainwindowimpl.cpp \
     src/settingsdialog.cpp \
     src/terminaldialog.cpp \
     src/tcpclass.cpp \
-    src/keypad.cpp
+    src/keypad.cpp 
+
