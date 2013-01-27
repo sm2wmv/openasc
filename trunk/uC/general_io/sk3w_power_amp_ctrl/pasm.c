@@ -116,7 +116,7 @@ QState Pa_operational(Pa *me) {
         }
         /* @(/1/0/3/2/4/0) */
         case TOGGLE_MAINS_SIG: {
-            DEBUG_PRINT("Pa_powerOn/TOGGLE_MAINS\r\n");
+            DEBUG_PRINT("Pa_operational/TOGGLE_MAINS\r\n");
             return Q_TRAN(&Pa_cooldown);
         }
         /* @(/1/0/3/2/4/1) */
