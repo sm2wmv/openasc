@@ -582,7 +582,7 @@ void MainWindowImpl::resetGUI() {
 void MainWindowImpl::timerActivityUpdate() {
   activityTimeoutCounter++;
 
-  if (activityTimeoutCounter > ACTIVITY_TIMER_TIMEOUT_LIMIT) {
+  if (activityTimeoutCounter > settingsDialog->getActivityTimerTimeoutLimit()) {
     actionDisconnectTriggered();
     activityTimeoutCounter = 0;
 

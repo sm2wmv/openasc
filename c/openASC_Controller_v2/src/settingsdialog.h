@@ -50,6 +50,7 @@ public:
   bool getFrameRotatorWindowStartOnTop();
 
   bool getActivityTimer();
+  int  getActivityTimerTimeoutLimit();
 
 	void saveSettings();
 protected:
@@ -76,6 +77,7 @@ private:
   bool connectOnStart;
 
   bool activityTimer;
+  int activityTimerTimeoutLimit;
 public slots:
 	void groupboxNetworkClicked(bool state);
 	void btnOKClicked();
