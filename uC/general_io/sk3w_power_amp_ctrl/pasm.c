@@ -131,36 +131,41 @@ QState Pa_operational(Pa *me) {
                 return Q_TRAN(&Pa_unused);
             }
         }
+        /* @(/1/0/3/2/4/2) */
+        case Q_TIMEOUT_SIG: {
+            DEBUG_PRINT("Pa_operational/TIMEOUT\r\n");
+            return Q_TRAN(&Pa_powerOff);
+        }
     }
     return Q_SUPER(&Pa_powerOn);
 }
-/* @(/1/0/3/2/4/2) .........................................................*/
+/* @(/1/0/3/2/4/3) .........................................................*/
 QState Pa_transmitting(Pa *me) {
     switch (Q_SIG(me)) {
-        /* @(/1/0/3/2/4/2) */
+        /* @(/1/0/3/2/4/3) */
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_transmitting/ENTRY\r\n");
             bsp_set_pa_ptt(me->band, 1);
 
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/2) */
+        /* @(/1/0/3/2/4/3) */
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Pa_transmitting/EXIT\r\n");
             bsp_set_pa_ptt(me->band, 0);
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/2/0) */
+        /* @(/1/0/3/2/4/3/0) */
         case TX_ACTIVE_OFF_SIG: {
             DEBUG_PRINT("Pa_transmitting/TX_ACTIVE_OFF\r\n");
             return Q_TRAN(&Pa_ready);
         }
-        /* @(/1/0/3/2/4/2/1) */
+        /* @(/1/0/3/2/4/3/1) */
         case TOGGLE_MAINS_SIG: {
             DEBUG_PRINT("Pa_transmitting/TOGGLE_MAINS\r\n");
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/2/2) */
+        /* @(/1/0/3/2/4/3/2) */
         case BAND_UNSELECTED_SIG: {
             DEBUG_PRINT("Pa_transmitting/BAND_UNSELECTED\r\n");
             return Q_TRAN(&Pa_unused);
@@ -168,10 +173,10 @@ QState Pa_transmitting(Pa *me) {
     }
     return Q_SUPER(&Pa_operational);
 }
-/* @(/1/0/3/2/4/3) .........................................................*/
+/* @(/1/0/3/2/4/4) .........................................................*/
 QState Pa_unused(Pa *me) {
     switch (Q_SIG(me)) {
-        /* @(/1/0/3/2/4/3) */
+        /* @(/1/0/3/2/4/4) */
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_unused/ENTRY\r\n");
             Pa_setCtrlr(me, PA_CTRLR_UNUSED);
@@ -180,44 +185,42 @@ QState Pa_unused(Pa *me) {
             }
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/3) */
+        /* @(/1/0/3/2/4/4) */
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Pa_unused/EXIT\r\n");
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/3/0) */
+        /* @(/1/0/3/2/4/4/0) */
         case BAND_SELECTED_SIG: {
             DEBUG_PRINT("Pa_unused/BAND_SELECTED\r\n");
             Pa_setCtrlr(me, Q_PAR(me));
             return Q_TRAN(&Pa_ready);
         }
-        /* @(/1/0/3/2/4/3/1) */
-        case Q_TIMEOUT_SIG: {
-            DEBUG_PRINT("Pa_unused/TIMEOUT\r\n");
-            return Q_TRAN(&Pa_powerOff);
-        }
     }
     return Q_SUPER(&Pa_operational);
 }
-/* @(/1/0/3/2/4/4) .........................................................*/
+/* @(/1/0/3/2/4/5) .........................................................*/
 QState Pa_ready(Pa *me) {
     switch (Q_SIG(me)) {
-        /* @(/1/0/3/2/4/4) */
+        /* @(/1/0/3/2/4/5) */
         case Q_ENTRY_SIG: {
             DEBUG_PRINT("Pa_ready/ENTRY\r\n");
+            if (cfg.unused_timeout > 0) {
+              QActive_arm((QActive *)me, cfg.unused_timeout);
+            }
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/4) */
+        /* @(/1/0/3/2/4/5) */
         case Q_EXIT_SIG: {
             DEBUG_PRINT("Pa_ready/EXIT\r\n");
             return Q_HANDLED();
         }
-        /* @(/1/0/3/2/4/4/0) */
+        /* @(/1/0/3/2/4/5/0) */
         case BAND_UNSELECTED_SIG: {
             DEBUG_PRINT("Pa_ready/BAND_UNSELECTED\r\n");
             return Q_TRAN(&Pa_unused);
         }
-        /* @(/1/0/3/2/4/4/1) */
+        /* @(/1/0/3/2/4/5/1) */
         case TX_ACTIVE_ON_SIG: {
             DEBUG_PRINT("Pa_ready/TX_ACTIVE_ON\r\n");
             return Q_TRAN(&Pa_transmitting);
