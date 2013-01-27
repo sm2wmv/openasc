@@ -20,12 +20,12 @@ typedef struct PaTag {
 
 /* protected: */
 QState Pa_initial(Pa *me);
-QState Pa_powerOff(Pa *me);
-QState Pa_powerOn(Pa *me);
-QState Pa_warmup(Pa *me);
-QState Pa_operational(Pa *me);
-QState Pa_transmitting(Pa *me);
-QState Pa_unused(Pa *me);
-QState Pa_ready(Pa *me);
-QState Pa_cooldown(Pa *me);
+QState Pa_PowerOff(Pa *me);
+QState Pa_PowerOn(Pa *me);
+QState Pa_Warmup(Pa *me);
+QState Pa_Operational(Pa *me);
+QState Pa_Transmitting(Pa *me);
+QState Pa_Unused(Pa *me);
+QState Pa_Ready(Pa *me);
+QState Pa_Cooldown(Pa *me);
 
