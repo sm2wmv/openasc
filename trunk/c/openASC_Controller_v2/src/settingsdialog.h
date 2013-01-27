@@ -45,6 +45,10 @@ public:
 	bool getRotatorWindowOpen();
 	bool getKeypadWindowOpen();
 
+  bool getFrameRotatorWindow();
+  bool getConnectOnStart();
+  bool getFrameRotatorWindowStartOnTop();
+
 	void saveSettings();
 protected:
 	virtual void changeEvent(QEvent *e);
@@ -64,6 +68,10 @@ private:
 	bool keypadWindowOpen;
 	bool rotatorWindowOpen;
 	bool terminalWindowOpen;
+
+  bool frameRotatorWindow;
+  bool frameRotatorWindowStartOnTop;
+  bool connectOnStart;
 public slots:
 	void groupboxNetworkClicked(bool state);
 	void btnOKClicked();

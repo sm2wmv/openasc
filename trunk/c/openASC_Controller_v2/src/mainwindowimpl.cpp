@@ -204,10 +204,10 @@ void MainWindowImpl::actionDisconnectTriggered() {
 void MainWindowImpl::actionConnectTriggered() {
 	TCPComm->connect(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
 
-	timerPollRXQueue->setInterval(1);
-	timerPollRXQueue->start();
+  timerPollRXQueue->setInterval(10);
+  timerPollRXQueue->start();
 
-  timerPollStatus->setInterval(1);
+  timerPollStatus->setInterval(10);
   timerPollStatus->start();
 }
 
@@ -469,8 +469,6 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 					temp[1] = rxMessage.at(5);
 					rotatorWindow->setRotatorAngle(rxMessage.at(3),(temp[0] << 8) + temp[1]);
 					rotatorWindow->setRotatorStatusText(rxMessage.at(3),rxMessage.at(6));
-
-					qDebug("[6]: 0x%02X",rxMessage.at(6));
 				}
       }
     }
@@ -543,7 +541,11 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	terminalWindow = new terminalDialog(this);
 	terminalWindow->hide();
 
-	rotatorWindow = new RotatorDialog(this);
+  if (settingsDialog->getFrameRotatorWindow())
+    rotatorWindow = new RotatorDialog(this);
+  else
+    rotatorWindow = new RotatorDialog(this,Qt::FramelessWindowHint);
+
 	rotatorWindow->hide();
 
   keypadWindow = new Keypad(this);
@@ -641,5 +643,12 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 		keypadWindow->show();
 	else
 		keypadWindow->hide();
+
+  if (settingsDialog->getConnectOnStart())
+    actionConnectTriggered();
+
+  if (settingsDialog->getFrameRotatorWindowStartOnTop()) {
+    rotatorWindow->show();
+  }
 }
 //
