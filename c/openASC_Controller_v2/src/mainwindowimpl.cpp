@@ -192,6 +192,8 @@ void MainWindowImpl::actionSettingsEditTriggered() {
 
 void MainWindowImpl::actionDisconnectTriggered() {
 	timerPollStatus->stop();
+  timerPollRXQueue->stop();
+  timerActivity->stop();
 
 	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
 
@@ -199,6 +201,8 @@ void MainWindowImpl::actionDisconnectTriggered() {
 
 	actionConnect->setEnabled(true);
 	actionDisconnect->setEnabled(false);
+
+  resetGUI();
 }
 
 void MainWindowImpl::actionConnectTriggered() {
@@ -209,6 +213,16 @@ void MainWindowImpl::actionConnectTriggered() {
 
   timerPollStatus->setInterval(10);
   timerPollStatus->start();
+
+  if (settingsDialog->getActivityTimer()) {
+    activityTimeoutCounter = 0;
+
+    timerActivity->setInterval(1000);
+    timerActivity->start();
+  }
+
+  if (comboBoxBand->currentIndex() != 0)
+    rotatorWindow->loadBand(comboBoxBand->currentIndex());
 }
 
 void MainWindowImpl::comboBoxBandIndexChanged(int index) {
@@ -221,7 +235,12 @@ void MainWindowImpl::comboBoxBandIndexChanged(int index) {
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
   TCPComm->receiveMsg();
-  TCPComm->transmitMsg();
+
+  if (TCPComm->transmitMsg()) {
+    if (settingsDialog->getActivityTimer()) {
+      activityTimeoutCounter = 0;
+    }
+  }
 }
 
 void MainWindowImpl::pushButtonRXAntClicked() {
@@ -387,8 +406,8 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 
 						comboBoxBand->blockSignals(true);
 
-						if (rxMessage.at(7) == BAND_CHANGE_MODE_AUTO)
-							comboBoxBand->setCurrentIndex(10);
+            //if (rxMessage.at(7) == BAND_CHANGE_MODE_AUTO)
+              //comboBoxBand->setCurrentIndex(10);
 
 						if (currBand != rxMessage.at(6)) {
 							switch(rxMessage.at(6)) {
@@ -532,6 +551,49 @@ void MainWindowImpl::paintEvent(QPaintEvent *event) {
 	}
 }
 
+void MainWindowImpl::resetGUI() {
+  labelLEDPTT->setPixmap(QPixmap(PIXMAP_BLANK));
+  labelLEDError->setPixmap(QPixmap(PIXMAP_RED_OFF));
+  labelLEDTX1->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDTX2->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDTX3->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDTX4->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDRX1->setPixmap(QPixmap(PIXMAP_RED_OFF));
+  labelLEDRX2->setPixmap(QPixmap(PIXMAP_RED_OFF));
+  labelLEDRX3->setPixmap(QPixmap(PIXMAP_RED_OFF));
+  labelLEDRX4->setPixmap(QPixmap(PIXMAP_RED_OFF));
+  labelLEDAUX->setPixmap(QPixmap(PIXMAP_YELLOW_OFF));
+  labelLEDRotating->setPixmap(QPixmap(PIXMAP_YELLOW_OFF));
+  labelLEDRotate->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDTXRX->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+  for (unsigned int y=0;y<8;y++)
+    for (unsigned int x=0;x<128;x++)
+      glcd_buffer[y][x] = 255;
+
+  repaint();
+
+  rotatorWindow->loadBand(0);
+}
+
+void MainWindowImpl::timerActivityUpdate() {
+  activityTimeoutCounter++;
+
+  if (activityTimeoutCounter > ACTIVITY_TIMER_TIMEOUT_LIMIT) {
+    actionDisconnectTriggered();
+    activityTimeoutCounter = 0;
+
+    QMessageBox::warning(
+      this,
+      tr("Disconnected"),
+      tr("You were disconnected because of inactivity")
+    );
+  }
+}
+
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
 	setupUi(this);
 
@@ -557,6 +619,10 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 
 	terminalWindow->setCOMMPtr(TCPComm);
 	rotatorWindow->setCOMMPtr(TCPComm);
+
+  timerActivity = new QTimer(this);
+  connect(timerActivity, SIGNAL(timeout()), this, SLOT(timerActivityUpdate()));
+
 
 	timerPollRXQueue = new QTimer(this);
 	connect(timerPollRXQueue, SIGNAL(timeout()), this, SLOT(timerPollRXQueueUpdate()));
@@ -599,28 +665,8 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 
 	connect(pushButtonSub, SIGNAL(clicked()),this,SLOT(pushButtonSubClicked()));
 
-	for (unsigned int y=0;y<8;y++)
-		for (unsigned int x=0;x<128;x++)
-			glcd_buffer[y][x] = 255;
-
 	//Set the default pixmaps
-	labelLEDPTT->setPixmap(QPixmap(PIXMAP_BLANK));
-	labelLEDError->setPixmap(QPixmap(PIXMAP_RED_OFF));
-	labelLEDTX1->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDTX2->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDTX3->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDTX4->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDRX1->setPixmap(QPixmap(PIXMAP_RED_OFF));
-	labelLEDRX2->setPixmap(QPixmap(PIXMAP_RED_OFF));
-	labelLEDRX3->setPixmap(QPixmap(PIXMAP_RED_OFF));
-	labelLEDRX4->setPixmap(QPixmap(PIXMAP_RED_OFF));
-	labelLEDAUX->setPixmap(QPixmap(PIXMAP_YELLOW_OFF));
-	labelLEDRotating->setPixmap(QPixmap(PIXMAP_YELLOW_OFF));
-	labelLEDRotate->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDTXRX->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
-	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+  resetGUI();
 
 	currBand = BAND_UNDEFINED;
 

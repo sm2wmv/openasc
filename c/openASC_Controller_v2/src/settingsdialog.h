@@ -49,6 +49,8 @@ public:
   bool getConnectOnStart();
   bool getFrameRotatorWindowStartOnTop();
 
+  bool getActivityTimer();
+
 	void saveSettings();
 protected:
 	virtual void changeEvent(QEvent *e);
@@ -72,6 +74,8 @@ private:
   bool frameRotatorWindow;
   bool frameRotatorWindowStartOnTop;
   bool connectOnStart;
+
+  bool activityTimer;
 public slots:
 	void groupboxNetworkClicked(bool state);
 	void btnOKClicked();

@@ -145,8 +145,6 @@ void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
 	if (antIndex >= 0) {
 		targetAzimuthAngle[antIndex] = targetAngle;
 
-		qDebug("TARGET_DIR[%i]: %d",antIndex,targetAngle);
-
 		if (TCPComm->isConnected()) {
 			if (antHasRotor[antIndex]) {
 				QByteArray temp;
@@ -255,10 +253,10 @@ void RotatorDialog::setStatusPresetButtons() {
 void RotatorDialog::loadBand(int bandIndex) {
 	currAntIndex = -1;
 
-        pushButtonAnt1->setChecked(false);
-        pushButtonAnt2->setChecked(false);
-        pushButtonAnt3->setChecked(false);
-        pushButtonAnt4->setChecked(false);
+  pushButtonAnt1->setChecked(false);
+  pushButtonAnt2->setChecked(false);
+  pushButtonAnt3->setChecked(false);
+  pushButtonAnt4->setChecked(false);
 
 	switch(bandIndex) {
 		case 0: bandName="None";
@@ -662,8 +660,6 @@ void RotatorDialog::pushButtonSTOPClicked() {
 	if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
 	}
-
-	qDebug("STOP");
 }
 
 void RotatorDialog::keyPressEvent(QKeyEvent *e) {
