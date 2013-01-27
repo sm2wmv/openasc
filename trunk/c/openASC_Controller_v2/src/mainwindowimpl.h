@@ -17,9 +17,6 @@
 #include <QCheckBox>
 #include <QMessageBox>
 
-//! The timeout limit for the network activity (in seconds)
-#define ACTIVITY_TIMER_TIMEOUT_LIMIT 900
-
 typedef struct {
 	unsigned char currentBand;
 	unsigned char currentAntennas;

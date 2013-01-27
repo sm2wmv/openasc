@@ -5,6 +5,8 @@
 SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::SettingsDialog) {
 		m_ui->setupUi(this);
 
+    bool bSaveSettings = false;
+
 		QSettings settings("settings.ini",QSettings::IniFormat,0);
 
 		settings.beginGroup("Settings");
@@ -30,8 +32,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       frameRotatorWindowStartOnTop = settings.value("frameRotatorWindowStartOnTop").toBool();
       connectOnStart = settings.value("connectOnStart").toBool();
       activityTimer = settings.value("activityTimer").toBool();
+      activityTimerTimeoutLimit = settings.value("activityTimerTimeoutLimit").toInt();
 		}
 		else {
+      strNetworkIPAddress = "127.0.0.1";
+      iNetworkPort = 34554;
 			mainWindowPosX = 100;
 			mainWindowPosY = 100;
 			keypadWindowPosX = 100;
@@ -48,9 +53,16 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       frameRotatorWindowStartOnTop = false;
       connectOnStart = false;
       activityTimer = true;
+
+      activityTimerTimeoutLimit = 1800;
+
+      bSaveSettings = true;
 		}
 
 		settings.endGroup();
+
+    if (activityTimerTimeoutLimit == 0)
+      activityTimerTimeoutLimit = 1800;
 
 		m_ui->groupBoxNetwork->setChecked(true);
 
@@ -60,6 +72,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
     m_ui->checkBoxRotatorWindowStartOnStop->setChecked(frameRotatorWindowStartOnTop);
     m_ui->checkBoxConnectOnStartup->setChecked(connectOnStart);
     m_ui->checkBoxActivityTimer->setChecked(activityTimer);
+
+    if (bSaveSettings)
+      saveSettings();
+}
+
+int SettingsDialog::getActivityTimerTimeoutLimit() {
+  return(activityTimerTimeoutLimit);
 }
 
 SettingsDialog::~SettingsDialog() {
@@ -118,6 +137,7 @@ void SettingsDialog::saveSettings() {
   settings.setValue("frameRotatorWindowStartOnTop",frameRotatorWindowStartOnTop);
   settings.setValue("connectOnStart",connectOnStart);
   settings.setValue("activityTimer",activityTimer);
+  settings.setValue("activityTimerTimeoutLimit",activityTimerTimeoutLimit);
 
 	settings.endGroup();
 }
