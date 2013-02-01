@@ -9,6 +9,11 @@ QT       += core gui network
 TARGET = RotorController
 TEMPLATE = app
 
+DESTDIR  = bin
+
+OBJECTS_DIR = build
+MOC_DIR = build
+UI_DIR = build
 
 SOURCES += main.cpp\
         mainwindow.cpp
