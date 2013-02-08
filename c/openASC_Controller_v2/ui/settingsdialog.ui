@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>230</width>
-    <height>218</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>303</width>
-    <height>218</height>
+    <height>240</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -117,6 +117,13 @@
       <widget class="QCheckBox" name="checkBoxRotatorWindowStartOnStop">
        <property name="text">
         <string>Rotator window start on top</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxRotatorShowMousePointer">
+       <property name="text">
+        <string>Show mouse pointer (Rotator window)</string>
        </property>
       </widget>
      </item>
