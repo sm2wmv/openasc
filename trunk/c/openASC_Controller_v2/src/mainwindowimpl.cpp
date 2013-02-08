@@ -620,6 +620,10 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 	terminalWindow->setCOMMPtr(TCPComm);
 	rotatorWindow->setCOMMPtr(TCPComm);
 
+  if (settingsDialog->getShowMousePointer() == false) {
+    rotatorWindow->setCursor(QCursor( Qt::BlankCursor ));
+  }
+
   timerActivity = new QTimer(this);
   connect(timerActivity, SIGNAL(timeout()), this, SLOT(timerActivityUpdate()));
 

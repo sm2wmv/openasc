@@ -52,6 +52,8 @@ public:
   bool getActivityTimer();
   int  getActivityTimerTimeoutLimit();
 
+  bool getShowMousePointer();
+
 	void saveSettings();
 protected:
 	virtual void changeEvent(QEvent *e);
@@ -78,6 +80,7 @@ private:
 
   bool activityTimer;
   int activityTimerTimeoutLimit;
+  bool showMousePointer;
 public slots:
 	void groupboxNetworkClicked(bool state);
 	void btnOKClicked();

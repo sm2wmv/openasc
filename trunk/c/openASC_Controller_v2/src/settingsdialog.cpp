@@ -33,6 +33,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       connectOnStart = settings.value("connectOnStart").toBool();
       activityTimer = settings.value("activityTimer").toBool();
       activityTimerTimeoutLimit = settings.value("activityTimerTimeoutLimit").toInt();
+      showMousePointer = settings.value("showMousePointer").toBool();
 		}
 		else {
       strNetworkIPAddress = "127.0.0.1";
@@ -55,6 +56,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       activityTimer = true;
 
       activityTimerTimeoutLimit = 1800;
+      showMousePointer = true;
 
       bSaveSettings = true;
 		}
@@ -72,6 +74,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
     m_ui->checkBoxRotatorWindowStartOnStop->setChecked(frameRotatorWindowStartOnTop);
     m_ui->checkBoxConnectOnStartup->setChecked(connectOnStart);
     m_ui->checkBoxActivityTimer->setChecked(activityTimer);
+    m_ui->checkBoxRotatorShowMousePointer->setChecked(showMousePointer);
 
     if (bSaveSettings)
       saveSettings();
@@ -115,6 +118,7 @@ void SettingsDialog::saveSettings() {
   frameRotatorWindowStartOnTop = m_ui->checkBoxRotatorWindowStartOnStop->isChecked();
   connectOnStart = m_ui->checkBoxConnectOnStartup->isChecked();
   activityTimer = m_ui->checkBoxActivityTimer->isChecked();
+  showMousePointer = m_ui->checkBoxRotatorShowMousePointer->isChecked();
 
 	settings.beginGroup("Settings");
 
@@ -138,6 +142,7 @@ void SettingsDialog::saveSettings() {
   settings.setValue("connectOnStart",connectOnStart);
   settings.setValue("activityTimer",activityTimer);
   settings.setValue("activityTimerTimeoutLimit",activityTimerTimeoutLimit);
+  settings.setValue("showMousePointer",showMousePointer);
 
 	settings.endGroup();
 }
@@ -255,4 +260,9 @@ bool SettingsDialog::getRotatorWindowOpen() {
 bool SettingsDialog::getKeypadWindowOpen() {
 	return(keypadWindowOpen);
 }
+
+bool SettingsDialog::getShowMousePointer()  {
+  return(showMousePointer);
+}
+
 //
