@@ -427,6 +427,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
       /* unsigned char current_segment = bus_message->data[2]; */
       if (controller_set_band(subaddr, bus_message->from_addr,
                               current_band) == -1) {
+        /*
         uint8_t msg[] = {
           subaddr,
           controller_band(subaddr)
@@ -434,6 +435,7 @@ static void bus_parse_message(BUS_MESSAGE *bus_message) {
         bus_add_tx_message(bus_get_address(),
                            BUS_BROADCAST_ADDR,
                            0, BUS_CMD_AMPLIFIER_ERROR, sizeof(msg), msg);
+        */
       }
       break;
     }

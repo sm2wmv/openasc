@@ -51,15 +51,16 @@ int8_t controller_set_band(uint8_t ctrlr, uint8_t fm_addr, uint8_t band) {
   if (ctrlrs[ctrlr].band == band) {
     return 0;
   }
+  if (ctrlrs[ctrlr].band != BAND_UNDEFINED) {
+    pa_clear_controller(ctrlrs[ctrlr].band);
+    ctrlrs[ctrlr].band = BAND_UNDEFINED;
+  }
   if (band != BAND_UNDEFINED) {
     for (int i = 0; i < MAX_CONTROLLERS; ++i) {
       if (ctrlrs[i].band == band) {
         return -1;
       }
     }
-  }
-  if (ctrlrs[ctrlr].band != BAND_UNDEFINED) {
-    pa_clear_controller(ctrlrs[ctrlr].band);
   }
   ctrlrs[ctrlr].band = band;
   if (band != BAND_UNDEFINED) {
