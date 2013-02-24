@@ -88,7 +88,7 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
       
       //This will automatically break the loop if we already found a place where
       //our address is located
-      if (mainbox_band_info[i] == data[1])
+      if (mainbox_band_info[i] == from_addr)
         break;
     }
   }
