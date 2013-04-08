@@ -35,8 +35,6 @@
 #include "../comm_interface.h"
 #include "../remote_commands.h"
 
-#include "remote_ctrl.h"
-
 //! Macro to put PS2 CLK output LOW
 #define PS2_CLK_LOW		PORTE &= ~(1<<6)
 //! Macro to put PS2 CLK output HIGH
@@ -185,187 +183,181 @@ void parse_internal_comm_message(struct_comm_interface_msg message) {
 			printf("[%i]: %i\n",i,message.data[i]);
 	#endif
 		
-  //0xA0 <-> 0xAF are reseverd for remote control commands
-  if ((message.cmd >= 0xA0) && (message.cmd <= 0xAF)) {
-    remote_ctrl_parse_message(message);
-  }
-  else {
-    switch(message.cmd) {
-      case INT_COMM_REDIRECT_DATA:
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_GET_STATUS:
-    
-        break;	
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_owner[i-1] == from_addr)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT:
-        for (unsigned char i=0;i<message.length;i++)
-          deactivate_output(from_addr,message.data[i]);
-        break;
-      case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS:
-        for (unsigned char i=1;i<=20;i++)
-          if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT)
-            deactivate_output(from_addr,i);
-        break;
-      case INT_COMM_AUX_CHANGE_OUTPUT_PIN:
-        switch(message.data[0]) {
-          case AUX_X11_PIN3: 
-            if (message.data[1] == 1)
-              PORTA |= (1<<0);
-            else
-              PORTA &= ~(1<<0);
-            
-            break;
-          case AUX_X11_PIN8: 
-            if (message.data[1] == 1)
-              PORTA |= (1<<1);
-            else
-              PORTA &= ~(1<<1);
-            
-            break;
-          case AUX_X11_PIN4:
-            if (message.data[1] == 1)
-              PORTA |= (1<<2);
-            else
-              PORTA &= ~(1<<2);
-            
-            break;
-          case AUX_X11_PIN5:
-            if (message.data[1] == 1)
-              PORTF |= (1<<5);
-            else
-              PORTF &= ~(1<<5);
-            
-            break;
-          case AUX_X11_PIN9:
-            if (message.data[1] == 1)
-              PORTF |= (1<<4);
-            else
-              PORTF &= ~(1<<4);
-            break;
-        }
-        
-        break;
-      case INT_COMM_GET_BAND_BCD_STATUS:
-        //Read the status of the BCD input on the top floor and return it
-        /* PF0 - Input  - BCD input Bit 2
-        * PF1 - Input  - BCD input Bit 3
-        * PF2 - Input  - BCD input Bit 0
-        * PF3 - Input  - BCD input Bit 1 */
-        
-        temp = (PINF & (1<<2)) >> 2;
-        temp |= (PINF & (1<<3)) >> 2;
-        temp |= (PINF & (1<<0)) << 2;
-        temp |= (PINF & (1<<1)) << 2;
-        
-        internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
-        break;
-      case INT_COMM_PULL_THE_PLUG:
-        //Will drop the voltage to the input relay
-        PORTB &= ~(1<<7);
-        break;
-      case INT_COMM_PC_SEND_TO_ADDR:
-        //if (remote_ctrl_get_active_status() == 0)
-        //  computer_interface_tx_message(message.length,message.data);
-          comm_interface_add_tx_message(message.cmd, message.length, message.data);
-        break;
-      default:
-        break;
-    }
+  switch(message.cmd) {
+    case INT_COMM_REDIRECT_DATA:
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ANT_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_GET_STATUS:
+  
+      break;	
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_owner[i-1] == from_addr)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_ANT_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_ANT_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_BAND_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_RX_BAND_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_RX_BAND_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_BAND_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        activate_output(from_addr,message.data[i], BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT:
+      for (unsigned char i=0;i<message.length;i++)
+        deactivate_output(from_addr,message.data[i]);
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS:
+      for (unsigned char i=1;i<=20;i++)
+        if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT)
+          deactivate_output(from_addr,i);
+      break;
+    case INT_COMM_AUX_CHANGE_OUTPUT_PIN:
+      switch(message.data[0]) {
+        case AUX_X11_PIN3: 
+          if (message.data[1] == 1)
+            PORTA |= (1<<0);
+          else
+            PORTA &= ~(1<<0);
+          
+          break;
+        case AUX_X11_PIN8: 
+          if (message.data[1] == 1)
+            PORTA |= (1<<1);
+          else
+            PORTA &= ~(1<<1);
+          
+          break;
+        case AUX_X11_PIN4:
+          if (message.data[1] == 1)
+            PORTA |= (1<<2);
+          else
+            PORTA &= ~(1<<2);
+          
+          break;
+        case AUX_X11_PIN5:
+          if (message.data[1] == 1)
+            PORTF |= (1<<5);
+          else
+            PORTF &= ~(1<<5);
+          
+          break;
+        case AUX_X11_PIN9:
+          if (message.data[1] == 1)
+            PORTF |= (1<<4);
+          else
+            PORTF &= ~(1<<4);
+          break;
+      }
+      
+      break;
+    case INT_COMM_GET_BAND_BCD_STATUS:
+      //Read the status of the BCD input on the top floor and return it
+      /* PF0 - Input  - BCD input Bit 2
+      * PF1 - Input  - BCD input Bit 3
+      * PF2 - Input  - BCD input Bit 0
+      * PF3 - Input  - BCD input Bit 1 */
+      
+      temp = (PINF & (1<<2)) >> 2;
+      temp |= (PINF & (1<<3)) >> 2;
+      temp |= (PINF & (1<<0)) << 2;
+      temp |= (PINF & (1<<1)) << 2;
+      
+      internal_comm_add_tx_message(INT_COMM_GET_BAND_BCD_STATUS, 1, &temp);
+      break;
+    case INT_COMM_PULL_THE_PLUG:
+      //Will drop the voltage to the input relay
+      PORTB &= ~(1<<7);
+      break;
+    case INT_COMM_PC_SEND_TO_ADDR:
+      //if (remote_ctrl_get_active_status() == 0)
+      //  computer_interface_tx_message(message.length,message.data);
+        comm_interface_add_tx_message(message.cmd, message.length, message.data);
+      break;
+    default:
+      break;
   }
 }
 
@@ -399,53 +391,10 @@ void __inline__ ps2_process_key(unsigned char key_code) {
 }
 
 void parse_computer_comm_message(struct_comm_interface_msg message) {
-  if (message.cmd == COMPUTER_COMM_REMOTE_SET_STATUS) {
-    if (message.length > 0) {
-      if (message.data[0] == 0)
-        remote_ctrl_set_deactive();
-      else if (message.data[0] == 1)
-        remote_ctrl_set_active();
-    }
-  }
-  else if (message.cmd == COMPUTER_COMM_REMOTE_BUTTON_EVENT) {
-    if (message.length > 0)
-      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_BUTTON_EVENT,1,message.data);
-  }
-  else if (message.cmd == COMPUTER_COMM_REMOTE_CHANGE_BAND) {
-    if (message.length > 0)
-      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_CHANGE_BAND,1,message.data);
-  }
-  else if (message.cmd == COMPUTER_COMM_REMOTE_ROTATE_ANTENNA) {
-    if (message.length > 2)
-      internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_ROTATE_ANTENNA,3,message.data);
-  }
-  else if (message.cmd == INT_COMM_PC_SEND_TO_ADDR) {
-    if (message.length > 0)
-      internal_comm_add_tx_message(INT_COMM_PC_SEND_TO_ADDR, message.length,message.data);
-  }
-  else if (message.cmd == INT_COMM_PC_CONNECT_TO_ADDR) {
-    if (message.length > 0)
-      internal_comm_add_tx_message(INT_COMM_PC_CONNECT_TO_ADDR, 1, message.data);
-  }
-  else if (message.cmd == COMPUTER_COMM_REMOTE_CLEAR_ERRORS) {
-    internal_comm_add_tx_message(COMPUTER_COMM_REMOTE_CLEAR_ERRORS,0,0);
-  }
-  else if (message.cmd == COMPUTER_COMM_SET_SUBMENU_OPTION) {
-    if (message.length > 0)
-      internal_comm_add_tx_message(COMPUTER_COMM_SET_SUBMENU_OPTION,2,message.data);
-  }
-  else if (message.cmd == COMPUTER_COMM_REBOOT) {
-    internal_comm_add_tx_message(COMPUTER_COMM_REBOOT,0,0);
-  }
+
 }
 
 void main_resend_timeout(void) {
-  resend_count++;
-  
-  if (resend_count > 3) {
-    remote_ctrl_set_deactive();
-    resend_count = 0;
-  }
 }
 
 //! Main function of the motherboard
@@ -502,10 +451,6 @@ int main(void) {
   unsigned char temp_var = 1;
   
   while(1) {
-    //Is remote ctrl mode active? Then check if anything should be updated
-    if (remote_ctrl_get_active_status())
-      remote_ctrl_update_info();
-		
 		//Poll the RX queue in the internal comm to see if we have any new messages to be PARSED
 		internal_comm_poll_rx_queue();
 		

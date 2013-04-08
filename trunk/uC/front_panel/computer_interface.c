@@ -559,7 +559,7 @@ void computer_interface_parse_data(void) {
 					ptt_sequencer_ptr->footswitch.inhibit_post_delay = computer_comm.rx_buffer_start[6];
 					ptt_sequencer_ptr->footswitch.antennas_post_delay = computer_comm.rx_buffer_start[7];
 					ptt_sequencer_ptr->footswitch.active = computer_comm.rx_buffer_start[8];
-					ptt_sequencer_ptr->ptt_input |= computer_comm.rx_buffer_start[9];
+					ptt_sequencer_ptr->ptt_input = computer_comm.rx_buffer_start[9];
 					
 					computer_interface_send_ack();
 					break;
