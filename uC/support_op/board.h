@@ -31,10 +31,11 @@
  * PA1	-	Output - LED Red
  * PA2	-	Input  - 
  * PA3	-	Input  -
- * PA4	-	Input  -
- * PA5	-	Input  -
- * PA6	-	Input  -
- * PA7	-	Input  -
+ * PA4	-	Input  - TRANSFER RELAY, R2A1
+ * PA5	-	Input  - TRANSFER RELAY, R1A1
+ * PA6	-	Input  - Relay K12
+ * PA7	-	Input  - Relay K14
+ * 
  * =====================================================================================
  *
  *
@@ -105,8 +106,8 @@
  *
  * PORTG
  * =====================================================================================
- * PG0	- Output - R1 PTT LED R1
- * PG1	- Output - R1 PTT LED R2
+ * PG0	- Output - R1 PTT LED R2
+ * PG1	- Output - R1 PTT LED R1
  * PG2	- Input  -
  * PG3	-	Output - R1 PTT RADIO
  * PG4	-	Input  -

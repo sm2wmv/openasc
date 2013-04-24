@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <string.h>
 
 #include "main.h"
 #include "board.h"
@@ -17,9 +18,13 @@
 static unsigned char curr_state[NR_OF_EVENTS] = {0};
 static unsigned char prev_state[NR_OF_EVENTS] = {0};
 
+unsigned char flag_poll_inputs = 1;
+
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned long counter_compare0 = 0;
 unsigned char st = 0;
+
+unsigned char counter_poll_inputs = 0;
 
 unsigned char main_flags = 0;
 
@@ -100,6 +105,24 @@ void print_state_debug_info(void) {
 }
 #endif
 
+void main_execute_statemachine(void) {
+  ext_control_read_inputs(curr_state);
+  
+  #ifdef DEBUG
+    print_state_debug_info();
+  #endif
+  
+  //Check which event has changed and update the statemachine
+  for (unsigned char i=0;i<NR_OF_EVENTS;i++)
+    if (prev_state[i] != curr_state[i])
+      statemachine_new_event(i,curr_state[i]);
+  
+  memcpy(prev_state,curr_state,sizeof(curr_state));
+  
+  flag_poll_inputs = 1;
+  counter_poll_inputs = 0;
+}
+
 int main(void) {
   cli();
   
@@ -115,32 +138,34 @@ int main(void) {
   
   sei();
  
+  flag_poll_inputs = 1;
+  
   PRINTF("\r\n\r\nSupport op board started\r\n");
   PRINTF("------------------------\r\n");
   PRINTF("Version: 0.1b\r\n");
   PRINTF("By: Mikael Larsmark, SM2WMV/SJ2W\r\n");
   PRINTF("Debug mode\r\n\r\n");
-  
+
   while(1) {
     if (main_flags & (1<<FLAG_RUN_EVENT_QUEUE)) {
       //Run the event in the queue
       event_run();
       main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
+      PRINTF("EVENT >> RUNNING (M) - %i\r\n",event_queue_get().id);
     }
-    
-    ext_control_read_inputs(curr_state);
-    
-    if (memcmp(curr_state,prev_state,sizeof(curr_state)) != 0) {
-      #ifdef DEBUG
-        print_state_debug_info();
-      #endif
-      
-      //Check which event has changed and update the statemachine
-      for (unsigned char i=0;i<NR_OF_EVENTS;i++)
-        if (prev_state[i] != curr_state[i])
-          statemachine_new_event(i,curr_state[i]);
-      
-      memcpy(prev_state,curr_state,sizeof(curr_state));
+        
+    if (flag_poll_inputs == 1) {
+      if (counter_poll_inputs >= COUNTER_POLL_INPUT_LIMIT) {
+        ext_control_read_inputs(curr_state);
+        
+        if (memcmp(curr_state,prev_state,sizeof(curr_state)) != 0) {
+          event_add_message(main_execute_statemachine,KEYBOUNCE_TIME,EVENT_CHECK_INPUTS);
+          
+          flag_poll_inputs = 0;
+        }
+
+        counter_poll_inputs = 0;    
+      }
     }
   }
 }
@@ -157,9 +182,18 @@ ISR(SIG_OUTPUT_COMPARE0) {
   }
   
   if (event_in_queue()) {
-    if (counter_event_timer >= (event_queue_get()).time_target)
-      main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+    if (counter_event_timer >= (event_queue_get()).time_target) {
+      if (event_queue_get().id >= EVENT_HIGH_PRIORITY_LIMIT) {
+        //Run the event in the queue
+        event_run();
+        PRINTF("EVENT >> RUNNING (I) - %i\r\n",event_queue_get().id);
+      }
+      else
+        main_flags |= (1<<FLAG_RUN_EVENT_QUEUE);
+    }
   }
+  
+  counter_poll_inputs++;
   
   counter_event_timer++;  
 }

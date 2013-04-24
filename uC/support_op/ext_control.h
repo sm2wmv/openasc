@@ -20,8 +20,12 @@ void ext_control_relay_k10_set(void);
 void ext_control_relay_k10_clr(void);
 void ext_control_relay_k11_set(void);
 void ext_control_relay_k11_clr(void);
+void ext_control_relay_k12_set(void);
+void ext_control_relay_k12_clr(void);
 void ext_control_relay_k13_set(void);
 void ext_control_relay_k13_clr(void);
+void ext_control_relay_k14_set(void);
+void ext_control_relay_k14_clr(void);
 void ext_control_relay_transfer_set(void);
 void ext_control_relay_transfer_clr(void);
 
