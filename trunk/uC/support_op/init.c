@@ -19,7 +19,7 @@ void init_timer_0(void) {
 /*!Set the direction of the ports
 */
 void init_ports(void) {
-	DDRA = 0x03;
+	DDRA = 0xF3;
 	DDRB = 0x81;
 	DDRC = 0x00;
 	DDRD = 0x08;

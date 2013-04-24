@@ -26,6 +26,8 @@ void sequencer_enter_r1_sequence(void) {
   event_add_message((void *)ext_control_r1_ptt_radio_set, R1_RADIO_PRE_DELAY, SEQUENCER_EVENT_TYPE_PTT_R1_ON);
   
   ptt_state_r1 = PTT_ACTIVE;
+  
+  PRINTF("SEQUENCER >> R1 ENTERED\r\n");
 }
 
 void sequencer_exit_r1_sequence(void) {
@@ -38,6 +40,8 @@ void sequencer_exit_r1_sequence(void) {
   }
   
   ptt_state_r1 = PTT_DEACTIVE;
+  
+  PRINTF("SEQUENCER >> R1 EXITED\r\n");  
 }
 
 void sequencer_enter_r2_sequence(void) {
@@ -45,6 +49,8 @@ void sequencer_enter_r2_sequence(void) {
   event_add_message((void *)ext_control_r2_ptt_radio_set, R2_RADIO_PRE_DELAY, SEQUENCER_EVENT_TYPE_PTT_R2_ON);
   
   ptt_state_r2 = PTT_ACTIVE;
+  
+  PRINTF("SEQUENCER >> R2 ENTERED\r\n");
 }
 
 void sequencer_exit_r2_sequence(void) {
@@ -57,4 +63,6 @@ void sequencer_exit_r2_sequence(void) {
   }
   
   ptt_state_r2 = PTT_DEACTIVE;
+  
+  PRINTF("SEQUENCER >> R2 EXITED\r\n");
 }

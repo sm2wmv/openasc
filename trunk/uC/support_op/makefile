@@ -70,7 +70,7 @@ SRC = $(TARGET).c init.c ../delay.c ext_control.c ../event_queue.c sequencer.c s
 # care about how the name is spelled on its command-line.
 ASRC = 
 
-EVENT_LIST_SIZE = 10
+EVENT_LIST_SIZE = 20
 
 
 # Optimization level, can be [0, 1, 2, 3, s]. 

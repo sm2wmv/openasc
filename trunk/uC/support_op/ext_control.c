@@ -4,6 +4,7 @@
 #include <avr/interrupt.h>
 
 #include "ext_control.h"
+#include "main.h"
 
 void ext_control_led_yellow_set(void) {
   PORTA |= (1<<0);
@@ -15,114 +16,199 @@ void ext_control_led_yellow_clr(void) {
 
 void ext_control_led_red_set(void) {
   PORTA |= (1<<1);
+  
+  PRINTF("EXT_CTRL >> RED LED SET\r\n");
 }
 
 void ext_control_led_red_clr(void) {
   PORTA &= ~(1<<1);
+  
+  PRINTF("EXT_CTRL >> RED LED CLR\r\n");
 }
 
 void ext_control_relay_k4_set(void) {
   PORTB |= (1<<0);
+  
+  PRINTF("EXT_CTRL >> K4 SET\r\n");
 }
 
 void ext_control_relay_k4_clr(void) {
   PORTB &= ~(1<<0);
+  
+  PRINTF("EXT_CTRL >> K4 CLR\r\n");
 }
 
 void ext_control_relay_k5k6_set(void) {
   PORTE |= (1<<7);
+  
+  PRINTF("EXT_CTRL >> K5K6 SET\r\n");
 }
 
 void ext_control_relay_k5k6_clr(void) {
   PORTE &= ~(1<<7);
+  
+  PRINTF("EXT_CTRL >> K5K6 CLR\r\n");
 }
 
 void ext_control_relay_k8_set(void) {
   PORTE |= (1<<6);
+  
+  PRINTF("EXT_CTRL >> K8 SET\r\n");
 }
 
 void ext_control_relay_k8_clr(void) {
   PORTE &= ~(1<<6);
+  
+  PRINTF("EXT_CTRL >> K8 CLR\r\n");
 }
 
 void ext_control_relay_k9_set(void) {
   PORTE |= (1<<5);
+  
+  PRINTF("EXT_CTRL >> K9 SET\r\n");
 }
 
 void ext_control_relay_k9_clr(void) {
   PORTE &= ~(1<<5);
+  
+  PRINTF("EXT_CTRL >> K9 CLR\r\n");
 }
 
 void ext_control_relay_k10_set(void) {
   PORTE |= (1<<3);
+  
+  PRINTF("EXT_CTRL >> K10 SET\r\n");
 }
 
 void ext_control_relay_k10_clr(void) {
   PORTE &= ~(1<<3);
+  
+  PRINTF("EXT_CTRL >> K10 CLR\r\n");
 }
 
 void ext_control_relay_k11_set(void) {
   PORTE |= (1<<4);
+  
+  PRINTF("EXT_CTRL >> K11 SET\r\n");
 }
 
 void ext_control_relay_k11_clr(void) {
   PORTE &= ~(1<<4);
+  
+  PRINTF("EXT_CTRL >> K11 CLR\r\n");
 }
 
 void ext_control_relay_k13_set(void) {
   PORTE |= (1<<2);
+  
+  PRINTF("EXT_CTRL >> K13 SET\r\n");
 }
 
 void ext_control_relay_k13_clr(void) {
   PORTE &= ~(1<<2);
+  
+  PRINTF("EXT_CTRL >> K13 CLR\r\n");
+}
+
+void ext_control_relay_k12_set(void) {
+  PORTA |= (1<<7);
+  
+  PRINTF("EXT_CTRL >> K12 SET\r\n");
+}
+
+void ext_control_relay_k12_clr(void) {
+  PORTA &= ~(1<<7);
+  
+  PRINTF("EXT_CTRL >> K12 CLR\r\n");
+}
+
+void ext_control_relay_k14_set(void) {
+  PORTA |= (1<<6);
+  
+  PRINTF("EXT_CTRL >> K14 SET\r\n");
+}
+
+void ext_control_relay_k14_clr(void) {
+  PORTA &= ~(1<<6);
+  
+  PRINTF("EXT_CTRL >> K14 CLR\r\n");
+}
+
+void ext_control_relay_transfer_clear_all(void) {
+  PORTA &= ~(1<<4);
+  PORTA &= ~(1<<5);
+  
+  PRINTF("EXT_CTRL >> TRANSFER CLEAR ALL\r\n");
 }
 
 void ext_control_relay_transfer_set(void) {
+  PORTA |= (1<<4);
+  event_add_message(ext_control_relay_transfer_clear_all,TRANSFER_RELAY_PULSE_TIME,EVENT_QUEUE_ID_TRANSFER_RELAY);
   
+  PRINTF("EXT_CTRL >> TRANSFER SET\r\n");
 }
 
 void ext_control_relay_transfer_clr(void) {
+  PORTA |= (1<<5);
+  event_add_message(ext_control_relay_transfer_clear_all,TRANSFER_RELAY_PULSE_TIME,EVENT_QUEUE_ID_TRANSFER_RELAY);
   
+  PRINTF("EXT_CTRL >> TRANSFER CLR\r\n");
 }
 
 void ext_control_r1_ptt_radio_set(void) {
-  PORTG |= (1<<0);
+  PORTG |= (1<<1);
   PORTG |= (1<<3);
   PORTF |= (1<<6);
+  
+  PRINTF("EXT_CTRL >> PTT R1 SET\r\n");
 }
 
 void ext_control_r1_ptt_radio_clr(void) {
-  PORTG &= ~(1<<0);
+  PORTG &= ~(1<<1);
   PORTG &= ~(1<<3);
   PORTF &= ~(1<<6);
+  
+  PRINTF("EXT_CTRL >> PTT R1 CLR\r\n");
 }
 
 void ext_control_r2_ptt_radio_set(void) {
-  PORTG |= (1<<1);
+  PORTG |= (1<<0);
   PORTF |= (1<<1);
   PORTF |= (1<<5);
+  
+  PRINTF("EXT_CTRL >> PTT R2 SET\r\n");
 }
 
 void ext_control_r2_ptt_radio_clr(void) {
-  PORTG &= ~(1<<1);
+  PORTG &= ~(1<<0);
   PORTF &= ~(1<<1);
   PORTF &= ~(1<<5);
+  
+  PRINTF("EXT_CTRL >> PTT R2 CLR\r\n");
 }
 
 void ext_control_r1_ptt_amp_set(void) {
   PORTB |= (1<<7);
+  
+  PRINTF("EXT_CTRL >> PTT R1 AMP SET\r\n");
 }
 
 void ext_control_r1_ptt_amp_clr(void) {
   PORTB &= ~(1<<7);
+  
+  PRINTF("EXT_CTRL >> PTT R1 AMP CLR\r\n");
 }
 
 void ext_control_r2_ptt_amp_set(void) {
   PORTF |= (1<<0);
+  
+  PRINTF("EXT_CTRL >> PTT R2 AMP SET\r\n");
 }
 
 void ext_control_r2_ptt_amp_clr(void) {
   PORTF &= ~(1<<0);
+  
+  PRINTF("EXT_CTRL >> PTT R2 AMP CLR\r\n");
 }
 
 unsigned char ext_control_get_r1_footswitch_input(void) {
