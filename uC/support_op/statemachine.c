@@ -117,7 +117,8 @@ void statemachine_execute(void) {
           sequencer_enter_r2_sequence();      
       }
     }
-    else if ((R1_RXANT == 0) && (R2_RXANT == 0)) { //STATE #1
+    
+    if ((R1_RXANT == 0) && (R2_RXANT == 0)) { //STATE #1
       K5K6_CLR;
       K9_CLR;
       K11_CLR;
@@ -125,10 +126,10 @@ void statemachine_execute(void) {
       
       PRINTF("STATE #1\r\n");
       
-      if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+      if ((sequencer_get_ptt_state_r1() == PTT_ACTIVE) && (R1_FSW == 0))
         sequencer_exit_r1_sequence();
       
-      if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+      if ((sequencer_get_ptt_state_r2() == PTT_ACTIVE) && (R2_FSW == 0))
         sequencer_exit_r2_sequence();          
     }
     else if ((R1_RXANT == 1) && (R2_RXANT == 0)) { //STATE #2
@@ -138,10 +139,10 @@ void statemachine_execute(void) {
       K13_CLR;
       K14_CLR;
       
-      if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+      if ((sequencer_get_ptt_state_r1() == PTT_ACTIVE) && (R1_FSW == 0))
         sequencer_exit_r1_sequence();
-
-      if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+      
+      if ((sequencer_get_ptt_state_r2() == PTT_ACTIVE) && (R2_FSW == 0))
         sequencer_exit_r2_sequence();          
       
       PRINTF("STATE #2\r\n");
@@ -155,11 +156,11 @@ void statemachine_execute(void) {
       
       PRINTF("STATE #3\r\n");
       
-      if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+      if ((sequencer_get_ptt_state_r1() == PTT_ACTIVE) && (R1_FSW == 0))
         sequencer_exit_r1_sequence();
       
-      if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
-        sequencer_exit_r2_sequence();                
+      if ((sequencer_get_ptt_state_r2() == PTT_ACTIVE) && (R2_FSW == 0))
+        sequencer_exit_r2_sequence();          
     }
     else if ((R1_RXANT == 1) && (R2_RXANT == 1)) { //STATE #4
       K5K6_SET;
@@ -171,10 +172,10 @@ void statemachine_execute(void) {
       
       PRINTF("STATE #4\r\n");
       
-      if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+      if ((sequencer_get_ptt_state_r1() == PTT_ACTIVE) && (R1_FSW == 0))
         sequencer_exit_r1_sequence();
       
-      if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+      if ((sequencer_get_ptt_state_r2() == PTT_ACTIVE) && (R2_FSW == 0))
         sequencer_exit_r2_sequence();          
     }
   }
@@ -263,6 +264,9 @@ void statemachine_execute(void) {
           K14_CLR;
           TRANS_CLR;
           PRINTF("STATE #12+#16\r\n");
+
+          if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+            sequencer_exit_r2_sequence();          
           
           sequencer_enter_r1_sequence();
         }
@@ -274,6 +278,9 @@ void statemachine_execute(void) {
           K14_CLR;
           TRANS_CLR;
           PRINTF("STATE #13+#17\r\n");
+          
+          if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+            sequencer_exit_r2_sequence();          
           
           sequencer_enter_r1_sequence();
         }
@@ -288,6 +295,9 @@ void statemachine_execute(void) {
           TRANS_SET;
           PRINTF("STATE #14\r\n");
           
+          if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+            sequencer_exit_r1_sequence();          
+          
           sequencer_enter_r2_sequence();
         }
         else if ((R2_FSW == 1) && (MUTE_ON_TX == 1)) { //STATE #15
@@ -300,6 +310,9 @@ void statemachine_execute(void) {
           TRANS_SET;
           
           PRINTF("STATE #15\r\n");
+          
+          if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+            sequencer_exit_r1_sequence();
           
           sequencer_enter_r2_sequence();
         }
@@ -315,7 +328,10 @@ void statemachine_execute(void) {
           K14_SET;
           TRANS_SET;
           PRINTF("STATE #20\r\n");
-
+          
+          if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+            sequencer_exit_r1_sequence();
+          
           sequencer_enter_r2_sequence();
         }
         else if ((R2_FSW == 1) && (MUTE_ON_TX == 1)) { //STATE #21 + 23
@@ -327,6 +343,9 @@ void statemachine_execute(void) {
           K13_SET;
           TRANS_SET;
           PRINTF("STATE #21\r\n");
+
+          if (sequencer_get_ptt_state_r1() == PTT_ACTIVE)
+            sequencer_exit_r1_sequence();
           
           sequencer_enter_r2_sequence();
         }
@@ -340,6 +359,9 @@ void statemachine_execute(void) {
           TRANS_CLR;
           PRINTF("STATE #18\r\n");
           
+          if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+            sequencer_exit_r2_sequence();
+          
           sequencer_enter_r1_sequence();          
         }
         else if ((R1_FSW == 1) && (MUTE_ON_TX == 1)) { //STATE #19
@@ -351,7 +373,10 @@ void statemachine_execute(void) {
           TRANS_CLR;
           PRINTF("STATE #19\r\n");
           
-          sequencer_enter_r1_sequence();          
+          if (sequencer_get_ptt_state_r2() == PTT_ACTIVE)
+            sequencer_exit_r2_sequence();
+
+          sequencer_enter_r1_sequence();
         }        
       }
       else if (PRIORITY == 0) { //First wins
