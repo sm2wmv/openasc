@@ -1,7 +1,6 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <qfiledialog.h>
-#include <QCleanlooksStyle>
 
 #include "mainwindowimpl.h"
 #include "tcpclass.h"
@@ -594,7 +593,7 @@ void MainWindowImpl::timerActivityUpdate() {
   }
 }
 
-MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow ( parent, f ) {
+MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWindow ( parent, f ) {
 	setupUi(this);
 
   settingsDialog = new SettingsDialog(this);
@@ -633,6 +632,8 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WFlags f ) : QMainWindow 
 
 	timerPollStatus = new QTimer(this);
 	connect(timerPollStatus, SIGNAL(timeout()), this, SLOT(timerPollStatusUpdate()));
+
+
 
 	connect(actionReboot, SIGNAL(triggered()), this, SLOT(actionRebootTriggered()));
 	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));

@@ -1,10 +1,10 @@
 TEMPLATE = app
 QT = gui \
     core \
-    network
+    network \
+    widgets
 CONFIG += qt \
     warn_on \
-    console \
     debug
 DESTDIR = bin
 OBJECTS_DIR = build

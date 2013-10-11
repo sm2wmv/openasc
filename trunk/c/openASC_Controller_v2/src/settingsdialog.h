@@ -1,7 +1,7 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include <QMainWindow>
 #include <qsettings.h>
