@@ -208,16 +208,16 @@ void MainWindowImpl::loadInitialGUIValues() {
 	checkBoxAmplifierReset->setChecked(settingsClass.getAmpFuncStatus(3));
 	checkBoxAmplifierTune->setChecked(settingsClass.getAmpFuncStatus(4));
 
-		groupBoxEthernet->setChecked(settingsClass.getEthernetEnabled());
-		lineEditEthernetIP->setText(settingsClass.getEthernetIPAddr());
-		lineEditEthernetSubmask->setText(settingsClass.getEthernetSubmask());
-		spinBoxEthernetPort->setValue(settingsClass.getEthernetPort());
+    groupBoxEthernet->setChecked(settingsClass.getEthernetEnabled());
+    lineEditEthernetIP->setText(settingsClass.getEthernetIPAddr());
+    lineEditEthernetSubmask->setText(settingsClass.getEthernetSubmask());
+    spinBoxEthernetPort->setValue(settingsClass.getEthernetPort());
 
-		comboBoxStatusField->setCurrentIndex(settingsClass.getStatusFieldIndex());
+    comboBoxStatusField->setCurrentIndex(settingsClass.getStatusFieldIndex());
 }
 
 void MainWindowImpl::pushButtonDefaultBandLimitsPressed() {
-	for (int i=0;i<9;i++)
+    for (int i=0;i<9;i++)
 		bandData[i].setDefaultBandLimits();
 	
 	lineEditBandLimitHighSegHighLimit->setText(QString::number(bandData[comboBoxBandLimitBand->currentIndex()].getBandLimitHighSegHighLimit()));
@@ -314,7 +314,54 @@ void MainWindowImpl::comboBoxBandCurrentIndexChanged(int index) {
 	checkBoxMultiband3->setChecked(bandData[comboBoxBand->currentIndex()].getAntennaMultiband(2));
 	checkBoxMultiband4->setChecked(bandData[comboBoxBand->currentIndex()].getAntennaMultiband(3));
 	
-	int defaultAntennaIndex = bandData[comboBoxBand->currentIndex()].getDefaultAntenna();
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf() & (1<<0)))
+        checkBoxBandLock160m->setChecked(true);
+    else
+        checkBoxBandLock160m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<1))
+        checkBoxBandLock80m->setChecked(true);
+    else
+        checkBoxBandLock80m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<2))
+        checkBoxBandLock40m->setChecked(true);
+    else
+        checkBoxBandLock40m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<3))
+        checkBoxBandLock30m->setChecked(true);
+    else
+        checkBoxBandLock30m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<4))
+        checkBoxBandLock20m->setChecked(true);
+    else
+        checkBoxBandLock20m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<5))
+        checkBoxBandLock17m->setChecked(true);
+    else
+        checkBoxBandLock17m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<6))
+        checkBoxBandLock15m->setChecked(true);
+    else
+        checkBoxBandLock15m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<7))
+        checkBoxBandLock12m->setChecked(true);
+    else
+        checkBoxBandLock12m->setChecked(false);
+
+    if ((bandData[comboBoxBand->currentIndex()].getBandLockConf()) & (1<<8))
+        checkBoxBandLock10m->setChecked(true);
+    else
+        checkBoxBandLock10m->setChecked(false);
+
+
+
+    int defaultAntennaIndex = bandData[comboBoxBand->currentIndex()].getDefaultAntenna();
 	
 	if (defaultAntennaIndex == 0)
 		radioButtonAntennaDefault1->setChecked(true);
@@ -494,22 +541,17 @@ void MainWindowImpl::actionOpenTriggered() {
 }
 
 void MainWindowImpl::actionQuitTriggered() {
-	printf("Bye bye de SM2WMV (SJ2W)\n");
-	printf("http://www.sj2w.se/\n");
 	exit(0);
 }
 
 void MainWindowImpl::actionExitConfModeTriggered() {
-	QByteArray res = strConvertToOutputStr(lineEditBandOutputStrHigh->text());
-	
-	for (int i=0;i<res.size();i++)
-		qDebug("0x%02X",(unsigned char)res.at(i));
-		if (serialPort.isOpen()) {
-		serialPort.addTXMessage(CTRL_REBOOT,0,0);
-		statusbar->showMessage("Exit configuration mode",STATUSBAR_MESSAGE_TIME);
+    if (serialPort.isOpen()) {
+        serialPort.addTXMessage(CTRL_REBOOT,0,0);
+        statusbar->showMessage("Exit configuration mode",STATUSBAR_MESSAGE_TIME);
+        QMessageBox::information(this, tr("Information"),"Exit configuration mode",QMessageBox::Ok);
 
-		serialPort.closePort();
-	}
+        serialPort.closePort();
+    }
 }
 
 void MainWindowImpl::actionConnectTriggered() {
@@ -847,6 +889,11 @@ void MainWindowImpl::lineEditRXAntennaOutputs(QString str, int index) {
 			lineEditRXAntennaOutputs9->setText(rxAntennas.getAntennaOutputStr(index-1));
 		else if (index == 10)
 			lineEditRXAntennaOutputs10->setText(rxAntennas.getAntennaOutputStr(index-1));
+        else if (index == 11)
+            lineEditRXAntennaOutputs11->setText(rxAntennas.getAntennaOutputStr(index-1));
+        else if (index == 12)
+            lineEditRXAntennaOutputs12->setText(rxAntennas.getAntennaOutputStr(index-1));
+
 	}
 }
 
@@ -890,6 +937,14 @@ void MainWindowImpl::lineEditRXAntennaOutputs10Changed(QString str) {
 	lineEditRXAntennaOutputs(str,10);
 }
 
+void MainWindowImpl::lineEditRXAntennaOutputs11Changed(QString str) {
+    lineEditRXAntennaOutputs(str,11);
+}
+
+void MainWindowImpl::lineEditRXAntennaOutputs12Changed(QString str) {
+    lineEditRXAntennaOutputs(str,12);
+}
+
 void MainWindowImpl::lineEditRXAntennaName1Changed(QString str) {
 	rxAntennas.setAntennaName(0,str);
 }
@@ -928,6 +983,14 @@ void MainWindowImpl::lineEditRXAntennaName9Changed(QString str) {
 
 void MainWindowImpl::lineEditRXAntennaName10Changed(QString str) {
 	rxAntennas.setAntennaName(9,str);
+}
+
+void MainWindowImpl::lineEditRXAntennaName11Changed(QString str) {
+    rxAntennas.setAntennaName(10,str);
+}
+
+void MainWindowImpl::lineEditRXAntennaName12Changed(QString str) {
+    rxAntennas.setAntennaName(11,str);
 }
 
 void MainWindowImpl::lineEditRXAntennaOutputStr160MChanged(QString str) {
@@ -1469,6 +1532,57 @@ void MainWindowImpl::comboBoxStatusFieldIndexChanged(int index) {
 	settingsClass.setStatusFieldIndex(index);
 }
 
+void MainWindowImpl::checkBoxBandLockClicked() {
+    int currConf = 0;
+
+    if (checkBoxBandLock160m->isChecked())
+        currConf |= (1<<0);
+    else
+        currConf &= ~(1<<0);
+
+    if (checkBoxBandLock80m->isChecked())
+        currConf |= (1<<1);
+    else
+        currConf &= ~(1<<1);
+
+    if (checkBoxBandLock40m->isChecked())
+        currConf |= (1<<2);
+    else
+        currConf &= ~(1<<2);
+
+    if (checkBoxBandLock30m->isChecked())
+        currConf |= (1<<3);
+    else
+        currConf &= ~(1<<3);
+
+    if (checkBoxBandLock20m->isChecked())
+        currConf |= (1<<4);
+    else
+        currConf &= ~(1<<4);
+
+    if (checkBoxBandLock17m->isChecked())
+        currConf |= (1<<5);
+    else
+        currConf &= ~(1<<5);
+
+    if (checkBoxBandLock15m->isChecked())
+        currConf |= (1<<6);
+    else
+        currConf &= ~(1<<6);
+
+    if (checkBoxBandLock12m->isChecked())
+        currConf |= (1<<7);
+    else
+        currConf &= ~(1<<7);
+
+    if (checkBoxBandLock10m->isChecked())
+        currConf |= (1<<8);
+    else
+        currConf &= ~(1<<8);
+
+    bandData[comboBoxBand->currentIndex()].setBandLockConf(currConf);
+}
+
 void MainWindowImpl::setupConnections() {
 	/* RADIO INTERFACE START */
 	connect(comboBoxRadioType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxRadioTypeCurrentIndexChanged(int)));
@@ -1517,7 +1631,10 @@ void MainWindowImpl::setupConnections() {
 	connect(lineEditRXAntennaName8, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaName8Changed(QString)));
 	connect(lineEditRXAntennaName9, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaName9Changed(QString)));
 	connect(lineEditRXAntennaName10, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaName10Changed(QString)));
-	
+    connect(lineEditRXAntennaName11, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaName11Changed(QString)));
+    connect(lineEditRXAntennaName12, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaName12Changed(QString)));
+
+
 	connect(lineEditRXAntennaOutputs1, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs1Changed(QString)));
 	connect(lineEditRXAntennaOutputs2, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs2Changed(QString)));
 	connect(lineEditRXAntennaOutputs3, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs3Changed(QString)));
@@ -1528,7 +1645,9 @@ void MainWindowImpl::setupConnections() {
 	connect(lineEditRXAntennaOutputs8, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs8Changed(QString)));
 	connect(lineEditRXAntennaOutputs9, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs9Changed(QString)));
 	connect(lineEditRXAntennaOutputs10, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs10Changed(QString)));
-	
+    connect(lineEditRXAntennaOutputs11, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs11Changed(QString)));
+    connect(lineEditRXAntennaOutputs12, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs120Changed(QString)));
+
 	connect(lineEditRXAntennaOutputStr160M, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputStr160MChanged(QString)));
 	connect(lineEditRXAntennaOutputStr80M, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputStr80MChanged(QString)));
 	connect(lineEditRXAntennaOutputStr40M, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputStr40MChanged(QString)));
@@ -1539,6 +1658,16 @@ void MainWindowImpl::setupConnections() {
 	connect(radioButtonAntennaDefault3, SIGNAL(clicked(bool)), this, SLOT(radioButtonAntennaDefault3Clicked(bool)));
 	connect(radioButtonAntennaDefault4, SIGNAL(clicked(bool)), this, SLOT(radioButtonAntennaDefault4Clicked(bool)));
 	
+    connect(checkBoxBandLock160m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock80m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock40m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock30m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock20m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock17m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock15m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock12m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+    connect(checkBoxBandLock10m, SIGNAL(clicked()), this, SLOT(checkBoxBandLockClicked()));
+
 	/* TX ANTENNAS END */
 	
 	/* MENU START */
@@ -1660,23 +1789,38 @@ void MainWindowImpl::setupConnections() {
 	connect(comboBoxStatusField, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxStatusFieldIndexChanged(int)));
 }
 
-void MainWindowImpl::showInformationDialog(QString caption, QString text) {
-	qDebug("poop");
+void MainWindowImpl::serialPortEventReceieved(char id, QString str) {
+    if (id == EVENT_TYPE_TRANSMISSION_DONE) {
+        QMessageBox::information(this, tr("Information"),"Data has successfully been sent\nto the openASC device",QMessageBox::Ok);
+    }
+    else if (id == EVENT_TYPE_REV_INFO) {
+        QMessageBox::information(this, tr("Information"),str,QMessageBox::Ok);
+    }
 }
 
-MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(parent, f), configFile(QDir::currentPath() + "/openasc.ini") {
+MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WindowFlags f) : QMainWindow(parent, f), configFile(QDir::currentPath() + "/openasc.ini") {
 	setupUi(this);
 
 	tabWidgetSettings->setCurrentIndex(0);
 
 	listExtButtonFunctionsLoad();
 
+    actionNew_2->setIcon(QIcon(QDir::currentPath()+"/new.ico"));
+    actionOpen->setIcon(QIcon(QDir::currentPath()+"/open.ico"));
+    actionSave->setIcon(QIcon(QDir::currentPath()+"/save.ico"));
+    actionQuit->setIcon(QIcon(QDir::currentPath()+"/quit.ico"));
+    actionConnect->setIcon(QIcon(QDir::currentPath()+"/connect.ico"));
+    actionDisconnect->setIcon(QIcon(QDir::currentPath()+"/disconnect.ico"));
+    actionSendSettings->setIcon(QIcon(QDir::currentPath()+"/send.ico"));
+    actionGetFirmwareRev->setIcon(QIcon(QDir::currentPath()+"/get_rev.ico"));
+    actionExitConfMode->setIcon(QIcon(QDir::currentPath()+"/quit.ico"));
+
 	//! Set the sequencer names, used for saving settings etc */
 	sequencerComputer.setName("SequencerComputer");
 	sequencerRadioSense.setName("SequencerRadioSense");
 	sequencerFootswitch.setName("SequencerFootswitch");
 	
-	setupConnections();
+    setupConnections();
 
 	QRegExpValidator *v = new QRegExpValidator(this);
 	QRegExp rx("((1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})\\.){3,3}(1{0,1}[0-9]{0,2}|2[0-4]{1,1}[0-9]{1,1}|25[0-5]{1,1})");
@@ -1706,4 +1850,8 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WFlags f) : QMainWindow(pa
 	comboBoxStatusField->addItem("Antenna rotator focus"); //Shows the name of the antenna which has got rotator focus
 	comboBoxStatusField->addItem("Radio PTT ON/OFF");
 	comboBoxStatusField->addItem("Amplifier PTT ON/OFF");
+
+
+    connect(&serialPort,SIGNAL(eventReceieved(char,QString)),this,SLOT(serialPortEventReceieved(char,QString)));
+    //connect(serialPort->, SIGNAL(eventReceieved(QString)), this, SLOT(serialPortEventReceieved(QString)));
 }

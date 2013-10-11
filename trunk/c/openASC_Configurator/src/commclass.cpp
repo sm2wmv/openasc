@@ -25,8 +25,8 @@ CommClass::CommClass() {
 }
 
 int CommClass::openPort(QString deviceName) {
-        serialPort = new QextSerialPort(deviceName);
-        serialPort->setBaudRate(BAUD115200);
+    serialPort = new QextSerialPort(deviceName);
+    serialPort->setBaudRate(BAUD115200);
 	serialPort->setDataBits(DATA_8);
 	serialPort->setFlowControl(FLOW_OFF);
 	serialPort->setParity(PAR_NONE);
@@ -43,7 +43,6 @@ int CommClass::openPort(QString deviceName) {
 	} else {
 		return(1);
 	}
-
 }
 
 void CommClass::parseRXQueue() {
@@ -59,37 +58,35 @@ void CommClass::parseRXQueue() {
 
 	data[length] = 0;
 	
+    QString str;
+
 	switch(cmd) {
 		case CTRL_GET_FIRMWARE_REV:
-			qDebug("Firmware rev: %s\n\r",data);
-			
-			if (txQueue.size() > 0)
+            str.append("Firmware rev: ");
+            for (int i=0;i<length;i++)
+                str.append(data[i]);
+
+            emit eventReceieved(EVENT_TYPE_REV_INFO,str);
+
+            if (txQueue.size() > 0)
 				txQueue.removeFirst();
 	
 			lastMessageAcked = true;
 			break;
 		case COMPUTER_COMM_ACK:
-			#ifdef DEBUG
-				qDebug("ACKED");
-			#endif
 				if (txQueue.size() > 0)
 					txQueue.removeFirst();
 	
 				lastMessageAcked = true;
 			break;
 		case COMPUTER_COMM_NACK:
-			#ifdef DEBUG
-				qDebug("NACK!!");
-				exit(0);
-			#endif
 			break;
 		case CTRL_DONE:
 			if (txQueue.size() > 0)
 				txQueue.removeFirst();
 			
 			lastMessageAcked = true;
-			qDebug("DONE - Data sent successfully");
-
+            emit eventReceieved(EVENT_TYPE_TRANSMISSION_DONE,"");
 			break;
 	}
 }
@@ -140,14 +137,8 @@ void CommClass::receiveMsg() {
 				for (int x=i;x<receivedMessage.size();x++) {
 					if (((unsigned char)receivedMessage.at(x) == 0xFD) && ((unsigned char)receivedMessage.at(i+2) == (x-i-3))) {
 						rxQueue.append(receivedMessage.mid(i+1,(unsigned char)receivedMessage.at(i+2)+2));
-/*						for (int x=0;x<receivedMessage.size();x++)
-							qDebug("%i - 0x%02X ",x,(unsigned char)receivedMessage.at(x));*/
 						
 						receivedMessage.remove(i-1,(unsigned char)receivedMessage.at(i+2)+5);
-						
-						/*for (int x=0;x<receivedMessage.size();x++)
-							qDebug("%i - 0x%02X ",x,(unsigned char)receivedMessage.at(x));
-						*/
 						return;
 					}
 				}
@@ -164,11 +155,6 @@ void CommClass::sendMessage(char *data, int length) {
 }
 
 void CommClass::sendMessage(QByteArray& data) {
-	#ifdef DEBUG
-		for (int i=0;i<data.count();i++)
-			qDebug("0x%02X ",data.at(i));
-	#endif
-
 	serialPort->write(data);
 }
 
@@ -212,4 +198,9 @@ void CommClass::checkTXQueue() {
 		lastMessageAcked = false;
 		sendMessage(txQueue.first());
 	}
+}
+
+void CommClass::testEvent(char type) {
+    if (type == EVENT_TYPE_REV_INFO)
+        emit eventReceieved(type,"REV INFO");
 }

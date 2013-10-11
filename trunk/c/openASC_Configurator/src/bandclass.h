@@ -99,6 +99,9 @@ class BandClass
 		void setSubMenuStackCombinationOutputStr(int ant_index, int index, QString str);
 		QString getSubMenuStackCombinationOutputStr(int ant_index, int index);
 		
+        int getBandLockConf();
+        void setBandLockConf(int conf);
+
 		void writeSettings ( QSettings& settings );
 		void loadSettings ( QSettings& settings );
 		void sendSettings(CommClass& serialPort);
@@ -116,6 +119,7 @@ class BandClass
 		int rotatorStartHeading[4];
 		unsigned int rotatorDegrees[4];
 		unsigned char rotatorDelay[4];
+        int bandLockConf;
 	protected:
 		int bandIndex;
 		struct_band band_data;

@@ -26,11 +26,10 @@ class MainWindowImpl : public QMainWindow, public Ui::MainWindow
 Q_OBJECT
 public:
 	void loadInitialGUIValues();
-	MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
-	void addDebugLine(QString str);
-	void showInformationDialog(QString caption, QString text);
+    MainWindowImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+    void addDebugLine(QString str);
 private:
-	void setupConnections();
+    void setupConnections();
 	void lineEditRXAntennaOutputs(QString str, int index);
 	void comboBoxRotatorsReload();
 	void reloadCurrentRotatorProperties();
@@ -82,6 +81,8 @@ private slots:
 	void radioButtonAntennaDefault3Clicked(bool state);
 	void radioButtonAntennaDefault4Clicked(bool state);
 	
+    void checkBoxBandLockClicked();
+
 	void lineEditRXAntennaName1Changed(QString str);
 	void lineEditRXAntennaName2Changed(QString str);
 	void lineEditRXAntennaName3Changed(QString str);
@@ -92,7 +93,9 @@ private slots:
 	void lineEditRXAntennaName8Changed(QString str);
 	void lineEditRXAntennaName9Changed(QString str);
 	void lineEditRXAntennaName10Changed(QString str);
-	
+    void lineEditRXAntennaName11Changed(QString str);
+    void lineEditRXAntennaName12Changed(QString str);
+
 	void lineEditRXAntennaOutputs1Changed(QString str);
 	void lineEditRXAntennaOutputs2Changed(QString str);
 	void lineEditRXAntennaOutputs3Changed(QString str);
@@ -103,7 +106,9 @@ private slots:
 	void lineEditRXAntennaOutputs8Changed(QString str);
 	void lineEditRXAntennaOutputs9Changed(QString str);
 	void lineEditRXAntennaOutputs10Changed(QString str);
-	
+    void lineEditRXAntennaOutputs11Changed(QString str);
+    void lineEditRXAntennaOutputs12Changed(QString str);
+
 	void lineEditRXAntennaOutputStr160MChanged(QString str);
 	void lineEditRXAntennaOutputStr80MChanged(QString str);
 	void lineEditRXAntennaOutputStr40MChanged(QString str);
@@ -151,7 +156,7 @@ private slots:
 	void checkBoxSubMenuEnabledAnt2Clicked(bool state);
 	void checkBoxSubMenuEnabledAnt3Clicked(bool state);
 	void checkBoxSubMenuEnabledAnt4Clicked(bool state);
-	
+
 	/* EXTERNAL KEYPAD */	
 	void pushButtonExt0Pressed();
 	void pushButtonExt1Pressed();
@@ -223,6 +228,8 @@ private slots:
 	void checkBoxAmplifierResetClicked(bool state);
 
 	void comboBoxStatusFieldIndexChanged(int);
+
+    void serialPortEventReceieved(char id,QString str);
 public slots:
  
 };
