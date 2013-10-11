@@ -537,7 +537,7 @@ void antenna_ctrl_set_rx_antenna_data(struct_rx_antennas *data) {
 unsigned char antenna_ctrl_get_rx_antenna_count(void) {
 	unsigned char count = 0;
 	
-	for (unsigned char i=0;i<10;i++)
+	for (unsigned char i=0;i<RX_ANT_MAX_COUNT;i++)
 		if (rx_antennas.name[i][0] != '\0')
 			count++;
 	

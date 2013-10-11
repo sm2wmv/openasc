@@ -10,8 +10,8 @@
 #ifndef _BUS_PING_H_
 #define _BUS_PING_H_
 
-//! The timeout for the bus ping. After this time has passed a device is considered "dead"
-#define BUS_PING_TIMEOUT_LIMIT	30000
+//! The timeout for the bus ping. After this time has passed a device is considered "dead", this time is counted in 100 ms, so 300 means 30 000ms (30 seconds)
+#define BUS_PING_TIMEOUT_LIMIT	300
 
 //! Bit is set if the ping timeout has been processed
 #define PING_FLAG_PROCESSED   0

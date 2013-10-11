@@ -108,6 +108,7 @@ static uint16_t counter_ping_interval = 0;
 //! Currently selected rotator index for the ASCII command parser
 static uint8_t current_rot_idx = 0;
 
+static unsigned int counter_ms = 0;
 
 /******************************************************************************
  *
@@ -116,7 +117,7 @@ static uint8_t current_rot_idx = 0;
  *****************************************************************************/
 
 //! Command specification for ASCII commands
-AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
+const AsciiCommand bus_ascii_cmd_list[] PROGMEM = {
   { "help",     0, 0, handle_help_cmd },
   { "ver",      0, 0, handle_ver_cmd },
   { "calon",    0, 0, handle_calon_cmd },
@@ -190,7 +191,8 @@ void bus_handler_tick(void) {
   ++counter_sync;
   ++counter_ping_interval;
 
-  bus_ping_tick();
+  if ((counter_ms % 100) == 0)
+    bus_ping_tick();
 }
 
 

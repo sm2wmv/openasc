@@ -373,4 +373,7 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
+  
+  if ((counter_compare0 % 100) == 0)
+    bus_ping_tick();
 }

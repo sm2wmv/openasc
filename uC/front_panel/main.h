@@ -59,6 +59,8 @@
 //! Band changes are done automatically
 #define BAND_CHANGE_MODE_AUTO			1
 
+#define RX_ANT_MAX_COUNT 12
+
 /*! This is the delay that is inserted after a critical command has happened, for example
     the time after an antenna change until the PTT is unlocked. This is so that we are sure
     that relays etc has had enough time to actually switch */

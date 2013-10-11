@@ -75,7 +75,7 @@ typedef struct {
 
 
 //! Command specification for ASCII commands. Points to flash memory.
-extern AsciiCommand bus_ascii_cmd_list[] PROGMEM;
+extern const AsciiCommand bus_ascii_cmd_list[] PROGMEM;
 //! The number of defined commands
 extern const uint8_t bus_ascii_cmd_cnt PROGMEM;
 //! Help text for ASCII commands. Points to flash memory.

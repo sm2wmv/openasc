@@ -140,6 +140,8 @@
 #define CTRL_SET_BAND_DATA_LOW_OUT_STR		0x02
 //! CTRL command: Set the band high portion output str
 #define CTRL_SET_BAND_DATA_HIGH_OUT_STR		0x03
+//! CTRL command: Set the band lock configuration
+#define CTRL_SET_BAND_LOCK_CONF   0x04
 //! CTRL command: Save the band data settings
 #define CTRL_SET_BAND_DATA_SAVE						0x07
 
@@ -317,17 +319,8 @@ void computer_interface_parse_data(void) {
 			bootloader_start();
 		}
 		else if (computer_comm.command == CTRL_REBOOT) {
-			computer_interface_send_ack();
-			computer_interface_deactivate_setup();
-			
-			bootloader_start();
-			
-			do {
-				wdt_enable(WDTO_15MS);
-				for(;;){}
-			} 
-			while(0);
-		}
+      forceHardReset();      
+    }
 		else if (computer_comm.command == CTRL_GET_FIRMWARE_REV) {
 			computer_interface_send(CTRL_GET_FIRMWARE_REV, strlen(VERSION), VERSION);
 		}
@@ -717,6 +710,12 @@ void computer_interface_parse_data(void) {
 
 					computer_interface_send_ack();
 					break;
+        case CTRL_SET_BAND_LOCK_CONF:
+          band_ptr->band_lock_conf = computer_comm.rx_buffer_start[2]<<8;
+          band_ptr->band_lock_conf += computer_comm.rx_buffer_start[3];
+          
+          computer_interface_send_ack();
+          break;          
 				case CTRL_SET_BAND_DATA_SAVE:
 					eeprom_save_band_data(computer_comm.rx_buffer_start[1]+1,band_ptr);
 					

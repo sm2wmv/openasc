@@ -62,6 +62,8 @@ unsigned char ptt_status_prev = 0;
 unsigned char ptt_status_current = 0;
 unsigned char ptt_polarity = 0;
 
+unsigned int counter_ms = 0;
+
 /*! \brief Activate a driver output
 * This function is used to activate an output on the driver unit. It will remember
 * which device that sent the request for an activation so that the driver_unit will
@@ -539,12 +541,15 @@ int main(void)
 
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
-	counter_sync++;
+	counter_ms++;
+  counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
 	
 	check_ptt_status = 1;
 
   bus_check_ack_list();
-	bus_ping_tick();
+  
+  if ((counter_ms % 100) == 0)
+    bus_ping_tick();
 }

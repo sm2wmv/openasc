@@ -59,6 +59,8 @@ static uint16_t counter_send_amp_status_interval = 0;
 static uint8_t cur_tx_active = 0;
 static uint8_t next_amp_status_band = 0;
 
+unsigned int counter_ms = 0;
+
 static const uint8_t amp_status_band[] = {
   BAND_160M, BAND_80M, BAND_40M, BAND_20M, BAND_15M, BAND_10M
 };
@@ -83,7 +85,7 @@ static int8_t pttoff_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
 static int8_t ptton_cmd_handler(uint8_t from_addr, uint8_t argc, char **argv);
 
 //! Command specification for ASCII commands. Points to flash memory.
-AsciiCommand bus_ascii_cmd_list[] PROGMEM =  {
+const AsciiCommand bus_ascii_cmd_list[] PROGMEM =  {
   { "help",     0, 0, help_cmd_handler },
   { "ver",      0, 0, ver_cmd_handler },
   { "reset",    0, 0, reset_cmd_handler },
@@ -147,8 +149,10 @@ void bus_handler_tick(void) {
   ++counter_sync;
   ++counter_ping_interval;
   ++counter_send_amp_status_interval;
+  counter_ms++;
 
-  bus_ping_tick();
+  if ((counter_ms % 100) == 0)
+    bus_ping_tick();
 }
 
 

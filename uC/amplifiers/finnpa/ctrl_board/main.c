@@ -728,7 +728,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 		counter_event_timer = 0;
 	}
 	
-	bus_ping_tick();
+  if ((counter_ms % 100) == 0)
+    bus_ping_tick();
 	
 	motor_control_check_out_of_bounds();
 }

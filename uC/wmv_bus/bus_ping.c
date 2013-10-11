@@ -45,7 +45,7 @@ void bus_ping_init(void) {
  *  \param data_len The number of bytes the data is
  *  \param data Additional data which might be used for status, for example current band information */
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data) {
-/*	#ifdef DEBUG_COMPUTER_USART_ENABLED
+	#ifdef DEBUG_BUS_PING_ENABLED
 		if (ping_list[from_addr-1].addr != from_addr) {
 			printf("BUS_PING->ADDR CHANGED\n\r");
 			
@@ -60,21 +60,22 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 			printf("BUS_PING->NEW[%i]: %i\n\r",from_addr,device_type);
 		}
 		
-		if (data_len > 0)
-			if (ping_list[from_addr-1].data[0] != data[0]) {
+		if (data_len > 0) {
+			//if (ping_list[from_addr-1].data[0] != data[0]) {
 				printf("BUS_PING->DATA CHANGED\n\r");
 				printf("BUS_PING->OLD[%i][0]: %i\n\r",from_addr,ping_list[from_addr-1].data[0]);
 				printf("BUS_PING->NEW[%i][0]: %i\n\r",from_addr,data[0]);
-			}
+    }
 			
-		if (data_len > 1)
-			if (ping_list[from_addr-1].data[1] != data[1]) {
+			
+		if (data_len > 1) {
+			//if (ping_list[from_addr-1].data[1] != data[1]) {
 				printf("BUS_PING->DATA CHANGED\n\r");
 				printf("BUS_PING->OLD[%i][1]: %i\n\r",from_addr,ping_list[from_addr-1].data[1]);
 				printf("BUS_PING->NEW[%i][1]: %i\n\r",from_addr,data[1]);
 			}
 	#endif
-	*/
+
 	ping_list[from_addr-1].addr = from_addr;
   ping_list[from_addr-1].device_type = device_type;
   ping_list[from_addr-1].flags |= (1<<PING_FLAG_DEV_PRESENT);
@@ -86,6 +87,10 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
       if (mainbox_band_info[i] == 0)
         mainbox_band_info[i] = from_addr;
       
+        #ifdef DEBUG_BUS_PING_ENABLED
+          printf("BUS_PING->MAINBOX FOUND: [0x%02X]\r\n",from_addr);
+        #endif
+      
       //This will automatically break the loop if we already found a place where
       //our address is located
       if (mainbox_band_info[i] == from_addr)
@@ -95,8 +100,13 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
   
 	if (data_len > 0) {
 		for (unsigned char i=0;i<data_len;i++)
-      if (data_len <= sizeof(ping_list[from_addr-1].data))
+      if (data_len <= sizeof(ping_list[from_addr-1].data)) {
         ping_list[from_addr-1].data[i] = data[i];
+      
+        #ifdef DEBUG_BUS_PING_ENABLED
+          printf("BUS_PING->MAINBOX [0x%02X]->BAND\r\n",from_addr,data[i]);
+        #endif
+      }
       else
         break;
 	}
@@ -107,16 +117,22 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 	ping_list[from_addr-1].flags &= ~(1<<PING_FLAG_PROCESSED);
 }
 
-/*! \brief This function will update the time counter which keeps track of the time stamps of the ping message. Should be called every ms */
+/*! \brief This function will update the time counter which keeps track of the time stamps of the ping message. Should be called every 100 ms */
 void bus_ping_tick(void) {
-	//Goes through the ping list and increase their last ping_time with 1ms
+	//Goes through the ping list and increase their last ping_time with 100ms
 	for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
     bus_struct_ping_status *ps = &ping_list[i];
+    
     if (ps->addr != 0) {
       if (ps->flags & (1<<PING_FLAG_DEV_PRESENT)) {
         ps->time_last_ping++;
+        
         if (ps->time_last_ping > BUS_PING_TIMEOUT_LIMIT) {
           ps->flags &= ~(1<<PING_FLAG_DEV_PRESENT);
+          
+          #ifdef DEBUG_BUS_PING_ENABLED
+            printf("BUS_PING->PING TIMEOUT, ADDR: [0x%02X]\n\r",ps->addr);
+          #endif
         }
       }
     }
@@ -197,7 +213,7 @@ void bus_ping_clear_device(unsigned char addr) {
 	ping_list[addr-1].flags = 0;  
 }
 
-#ifdef DEBUG_COMPUTER_USART_ENABLED
+#ifdef DEBUG_BUS_PING_ENABLED
 	void bus_ping_print_list(void) {
 		for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
 			printf("======= %i =======\n\r",i);
