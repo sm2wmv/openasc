@@ -33,8 +33,10 @@ void BandClass::setIndex(int new_index) {
 		case 7: bandName = "12M";
 				break;
 		case 8: bandName = "10M";
-				break;				
+                break;
 	}
+
+    bandLockConf = (1<<bandIndex);
 }
 
 QString BandClass::getBandName() {
@@ -395,6 +397,8 @@ void BandClass::writeSettings(QSettings& settings) {
 		settings.setValue("BandOutputStrHigh",bandOutputStrHigh);
 		settings.setValue("BandOutputStrLow",bandOutputStrLow);
 		
+        settings.setValue("BandLockConf",bandLockConf);
+
 	settings.endGroup();
 }
 
@@ -506,6 +510,13 @@ void BandClass::loadSettings(QSettings& settings) {
 	rotatorDelay[2] = settings.value("RotatorDelay3").toInt();
 	rotatorDelay[3] = settings.value("RotatorDelay4").toInt();
 	
+    if (settings.contains("BandLockConf")) {
+        bandLockConf = settings.value("BandLockConf").toInt();
+    }
+    else {
+        bandLockConf = (1<<bandIndex);
+    }
+
 	for (int i=0;i<4;i++) {
 		if (antennaFlags[i] & (1<<2))
 			multiband[i] = true;
@@ -547,7 +558,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 		tx_buff[3] = antennaName[i].length();
 	
 		for (int x=0;x<antennaName[i].length();x++)
-			tx_buff[4+x] = antennaName[i].at(x).toAscii();
+            tx_buff[4+x] = antennaName[i].at(x).toLatin1();
 		
 		serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
 	}
@@ -644,7 +655,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 						tx_buff[3] = subMenu4SQ[i].directionName[dirIndex].length();
 
 						for (int x=0;x<subMenu4SQ[i].directionName[dirIndex].length();x++) {
-								tx_buff[4+x] = subMenu4SQ[i].directionName[dirIndex].at(x).toAscii();
+                                tx_buff[4+x] = subMenu4SQ[i].directionName[dirIndex].at(x).toLatin1();
 						}
 
 						//qDebug() << subMenu4SQ[i].directionName[dirIndex];
@@ -675,7 +686,7 @@ void BandClass::sendSettings(CommClass& serialPort) {
 						tx_buff[3] = subMenuStack[i].combinationName[combIndex].length();
 
 						for (int x=0;x<subMenuStack[i].combinationName[combIndex].length();x++) {
-								tx_buff[4+x] = subMenuStack[i].combinationName[combIndex].at(x).toAscii();
+                                tx_buff[4+x] = subMenuStack[i].combinationName[combIndex].at(x).toLatin1();
 						}
 
 						serialPort.addTXMessage(CTRL_SET_ANT_DATA,tx_buff[3]+4,tx_buff);
@@ -738,6 +749,13 @@ void BandClass::sendSettings(CommClass& serialPort) {
 
 	serialPort.addTXMessage(CTRL_SET_BAND_DATA,3+tx_buff[2],tx_buff);	
 	
+    tx_buff[0] = CTRL_SET_BAND_LOCK_CONF;
+    tx_buff[1] = bandIndex;
+    tx_buff[2] = (bandLockConf >> 8) & 0x00FF;
+    tx_buff[3] = bandLockConf & 0x00FF;
+
+    serialPort.addTXMessage(CTRL_SET_BAND_DATA,4,tx_buff);
+
 	//Save the settings to the EEPROM
 	tx_buff[0] = CTRL_SET_BAND_DATA_SAVE;
 	tx_buff[1] = bandIndex;
@@ -754,4 +772,12 @@ void BandClass::setRotatorProperties(unsigned char antIndex, int index, unsigned
 
 int BandClass::getRotatorIndex(unsigned char antIndex) {
 	return(rotatorIndex[antIndex]);
+}
+
+int BandClass::getBandLockConf() {
+    return(bandLockConf);
+}
+
+void BandClass::setBandLockConf(int conf) {
+    bandLockConf = conf;
 }

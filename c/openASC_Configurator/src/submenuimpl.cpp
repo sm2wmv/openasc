@@ -271,7 +271,7 @@ void SubMenuImpl::setupConnections() {
 	connect(pushButtonCancel, SIGNAL(pressed()), this, SLOT(pushButtonCancelPressed()));
 }
 
-SubMenuImpl::SubMenuImpl( QWidget * parent, Qt::WFlags f) 
+SubMenuImpl::SubMenuImpl( QWidget * parent, Qt::WindowFlags f)
 	: QDialog(parent, f)
 {
 	setupUi(this);

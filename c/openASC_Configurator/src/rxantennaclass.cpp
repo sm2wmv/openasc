@@ -42,6 +42,8 @@ void RXAntennaClass::writeSettings(QSettings& settings) {
 	settings.setValue("AntennaName8",antennaName[7]);
 	settings.setValue("AntennaName9",antennaName[8]);
 	settings.setValue("AntennaName10",antennaName[9]);
+    settings.setValue("AntennaName11",antennaName[10]);
+    settings.setValue("AntennaName12",antennaName[11]);
 	
 	settings.setValue("AntennaOutputStr1",antennaOutputStr[0]);
 	settings.setValue("AntennaOutputStr2",antennaOutputStr[1]);
@@ -53,6 +55,8 @@ void RXAntennaClass::writeSettings(QSettings& settings) {
 	settings.setValue("AntennaOutputStr8",antennaOutputStr[7]);
 	settings.setValue("AntennaOutputStr9",antennaOutputStr[8]);
 	settings.setValue("AntennaOutputStr10",antennaOutputStr[9]);
+    settings.setValue("AntennaOutputStr11",antennaOutputStr[10]);
+    settings.setValue("AntennaOutputStr12",antennaOutputStr[11]);
 	
 	settings.setValue("BandOutputStr1",bandOutputStr[0]);
 	settings.setValue("BandOutputStr2",bandOutputStr[1]);
@@ -75,6 +79,8 @@ void RXAntennaClass::loadSettings(QSettings& settings) {
 	antennaName[7] = settings.value("AntennaName8").toString();
 	antennaName[8] = settings.value("AntennaName9").toString();
 	antennaName[9] = settings.value("AntennaName10").toString();
+    antennaName[10] = settings.value("AntennaName11").toString();
+    antennaName[11] = settings.value("AntennaName12").toString();
 
 	antennaOutputStr[0] = settings.value("AntennaOutputStr1").toString();
 	antennaOutputStr[1] = settings.value("AntennaOutputStr2").toString();
@@ -86,6 +92,8 @@ void RXAntennaClass::loadSettings(QSettings& settings) {
 	antennaOutputStr[7] = settings.value("AntennaOutputStr8").toString();
 	antennaOutputStr[8] = settings.value("AntennaOutputStr9").toString();
 	antennaOutputStr[9] = settings.value("AntennaOutputStr10").toString();
+    antennaOutputStr[10] = settings.value("AntennaOutputStr11").toString();
+    antennaOutputStr[11] = settings.value("AntennaOutputStr12").toString();
 	
 	bandOutputStr[0] = settings.value("BandOutputStr1").toString();
 	bandOutputStr[1] = settings.value("BandOutputStr2").toString();
@@ -96,21 +104,21 @@ void RXAntennaClass::loadSettings(QSettings& settings) {
 }
 
 void RXAntennaClass::sendSettings(CommClass& serialPort) {
-	unsigned char tx_buff[20];
+    unsigned char tx_buff[30];
 	
-	for (int i=0;i<10;i++) {
+    for (int i=0;i<12;i++) {
 		tx_buff[0] = CTRL_SET_RX_ANT_DATA_TEXT;
 		tx_buff[1] = 0;
 		tx_buff[2] = i;
 		tx_buff[3] = antennaName[i].length();
 	
 		for (int x=0;x<antennaName[i].length();x++)
-			tx_buff[4+x] = antennaName[i].at(x).toAscii();
+            tx_buff[4+x] = antennaName[i].at(x).unicode();
 		
 		serialPort.addTXMessage(CTRL_SET_RX_ANT_DATA,tx_buff[3]+4,tx_buff);
 	}
 	
-	for (int i=0;i<10;i++) {
+    for (int i=0;i<12;i++) {
 		QByteArray temp = strConvertToOutputStr(antennaOutputStr[i]);
 		int len = temp.count();
 		temp.insert(0,CTRL_SET_RX_ANT_DATA_ANT_OUT_STR);

@@ -24,8 +24,8 @@ class RXAntennaClass
 	private:
 
 	protected:
-		QString antennaOutputStr[10];
-		QString antennaName[10];
+        QString antennaOutputStr[12];
+        QString antennaName[12];
 		QString bandOutputStr[4];
 };
 

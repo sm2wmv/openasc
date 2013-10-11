@@ -9,7 +9,7 @@ class SubMenuImpl : public QDialog, public Ui::SubMenu
 {
 Q_OBJECT
 public:
-	SubMenuImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+    SubMenuImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
 	void setAntenna(BandClass& bandClass, int antIndex);
 private:
 	void setupConnections();

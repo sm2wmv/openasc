@@ -24,6 +24,7 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QLinkedList>
+#include "ui_mainwindow.h"
 
 #include "qextserialport.h"
 
@@ -68,10 +69,11 @@
 
 
 /* Defines for the band data */
-#define CTRL_SET_BAND_DATA_LIMITS					0x01
+#define CTRL_SET_BAND_DATA_LIMITS			0x01
 #define CTRL_SET_BAND_DATA_LOW_OUT_STR		0x02
 #define CTRL_SET_BAND_DATA_HIGH_OUT_STR		0x03
-#define CTRL_SET_BAND_DATA_SAVE						0x07
+#define CTRL_SET_BAND_LOCK_CONF             0x04
+#define CTRL_SET_BAND_DATA_SAVE				0x07
 
 /* Defines for the rx antenna data */
 #define CTRL_SET_RX_ANT_DATA_TEXT						0x01
@@ -95,10 +97,13 @@
 
 #define OUTPUT_ADDR_DELIMITER			0xFF
 
-class CommClass : public QThread
-{
-	public:
-		CommClass();
+#define EVENT_TYPE_REV_INFO             0
+#define EVENT_TYPE_TRANSMISSION_DONE    1
+
+class CommClass : public QThread {
+    Q_OBJECT
+    public:
+        CommClass();
 		int openPort(QString deviceName);
 		int closePort();
 		void receiveMsg();
@@ -109,8 +114,9 @@ class CommClass : public QThread
 		void checkTXQueue();
 		void stopProcess();
 		void parseRXQueue();
-		bool isOpen();
-	private:
+        bool isOpen();
+        void testEvent(char);
+    private:
 	
 	protected:
 		bool threadActive;
@@ -121,6 +127,9 @@ class CommClass : public QThread
 		bool lastMessageAcked;
 		int sent_count;
 		void run();
+
+    signals:
+        void eventReceieved(char,QString);
 };
 
 #endif

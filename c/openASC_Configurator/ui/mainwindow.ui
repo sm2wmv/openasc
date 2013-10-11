@@ -33,7 +33,16 @@
     <property name="sizeConstraint">
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>2</number>
+    </property>
+    <property name="topMargin">
+     <number>2</number>
+    </property>
+    <property name="rightMargin">
+     <number>2</number>
+    </property>
+    <property name="bottomMargin">
      <number>2</number>
     </property>
     <item row="0" column="0">
@@ -48,1133 +57,1179 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
         <string>openASC</string>
        </attribute>
-       <widget class="QFrame" name="frameRadioInterface">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>5</y>
-          <width>201</width>
-          <height>351</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QLabel" name="labelRadioInterface">
-         <property name="geometry">
-          <rect>
-           <x>11</x>
-           <y>11</y>
-           <width>85</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Radio interface</string>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBoxRadioType">
-         <property name="geometry">
-          <rect>
-           <x>11</x>
-           <y>30</y>
-           <width>101</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <item>
-          <property name="text">
-           <string>KENWOOD</string>
+       <layout class="QGridLayout" name="gridLayout_21">
+        <item row="0" column="0" rowspan="2">
+         <widget class="QFrame" name="frameRadioInterface">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ICOM</string>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>FT-1000D</string>
+          <property name="lineWidth">
+           <number>1</number>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>FT-1000MP</string>
+          <property name="midLineWidth">
+           <number>0</number>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>FT-1000MKV</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>FT-2000</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="Line" name="line">
-         <property name="geometry">
-          <rect>
-           <x>11</x>
-           <y>50</y>
-           <width>179</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="lineWidth">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBoxRadioMode">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>75</y>
-           <width>91</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <item>
-          <property name="text">
-           <string>Manual</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>CAT-poll</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>CAT-mon</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>BCD</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QLabel" name="labelBandDecoding">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>60</y>
-           <width>106</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Band decoding</string>
-         </property>
-        </widget>
-        <widget class="QGroupBox" name="groupBoxCAT">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>105</y>
-           <width>181</width>
-           <height>115</height>
-          </rect>
-         </property>
-         <property name="title">
-          <string>CAT interface</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="layoutWidget_3">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>20</y>
-            <width>151</width>
-            <height>89</height>
-           </rect>
-          </property>
-          <layout class="QFormLayout" name="formLayout">
-           <property name="fieldGrowthPolicy">
-            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-           </property>
+          <layout class="QFormLayout" name="formLayout_2">
            <item row="0" column="0">
-            <widget class="QLabel" name="labelRadioInterfaceBaudrate">
+            <widget class="QLabel" name="labelRadioInterface">
              <property name="text">
-              <string>Baudrate:</string>
+              <string>Radio interface</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="comboBoxRadioBaudRate">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="currentIndex">
-              <number>2</number>
-             </property>
-             <item>
-              <property name="text">
-               <string>1200</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>2400</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>4800</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>9600</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>14400</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>19200</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>28800</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>38400</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>57600</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>76800</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>115200</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="labelRadioInterfaceStopbits">
-             <property name="text">
-              <string>Stopbits:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="comboBoxRadioStopbits">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
+            <widget class="QComboBox" name="comboBoxRadioType">
              <item>
               <property name="text">
-               <string>1</string>
+               <string>KENWOOD</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>2</string>
+               <string>ICOM</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FT-1000D</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FT-1000MP</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FT-1000MKV</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FT-2000</string>
               </property>
              </item>
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="labelRadioInterfaceCIV">
-             <property name="enabled">
-              <bool>true</bool>
+            <spacer name="verticalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>13</width>
+               <height>13</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelBandDecoding">
              <property name="text">
-              <string>ICOM CI-V:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              <string>Band decoding</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="spinBoxCIVAddress">
-             <property name="enabled">
+           <item row="4" column="0">
+            <widget class="QComboBox" name="comboBoxRadioMode">
+             <item>
+              <property name="text">
+               <string>Manual</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CAT-poll</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CAT-mon</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BCD</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <spacer name="verticalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>13</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="6" column="0">
+            <widget class="QGroupBox" name="groupBoxCAT">
+             <property name="title">
+              <string>CAT interface</string>
+             </property>
+             <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="minimum">
-              <number>1</number>
+             <layout class="QVBoxLayout" name="verticalLayout_16">
+              <item>
+               <layout class="QFormLayout" name="formLayout">
+                <property name="fieldGrowthPolicy">
+                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="labelRadioInterfaceBaudrate">
+                  <property name="text">
+                   <string>Baudrate:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="comboBoxRadioBaudRate">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="currentIndex">
+                   <number>2</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>1200</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>2400</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>4800</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>9600</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>14400</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>19200</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>28800</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>38400</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>57600</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>76800</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>115200</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="labelRadioInterfaceStopbits">
+                  <property name="text">
+                   <string>Stopbits:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QComboBox" name="comboBoxRadioStopbits">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>2</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="labelRadioInterfaceCIV">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>ICOM CI-V:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QSpinBox" name="spinBoxCIVAddress">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                  <property name="value">
+                   <number>80</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <spacer name="verticalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="maximum">
-              <number>255</number>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
              </property>
-             <property name="value">
-              <number>80</number>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>13</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="8" column="0">
+            <layout class="QVBoxLayout" name="verticalLayoutPollInterval">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayoutPoll">
+               <item>
+                <widget class="QLabel" name="labelRadioInterfacePollInterval">
+                 <property name="text">
+                  <string>Poll interval:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelRadioInterfacePoll">
+                 <property name="text">
+                  <string>1000ms</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QSlider" name="sliderPollInterval">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="minimum">
+                <number>10</number>
+               </property>
+               <property name="maximum">
+                <number>255</number>
+               </property>
+               <property name="singleStep">
+                <number>10</number>
+               </property>
+               <property name="pageStep">
+                <number>10</number>
+               </property>
+               <property name="value">
+                <number>100</number>
+               </property>
+               <property name="sliderPosition">
+                <number>100</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="9" column="0">
+            <spacer name="verticalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>13</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="10" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Radio sense input</string>
              </property>
             </widget>
+           </item>
+           <item row="11" column="0">
+            <widget class="QComboBox" name="comboBoxRadioSenseInput">
+             <item>
+              <property name="text">
+               <string>None</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Radio connector</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Sense RCA</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="12" column="0">
+            <spacer name="verticalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>11</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
-        </widget>
-        <widget class="QLabel" name="label_2">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>280</y>
-           <width>111</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Radio sense input</string>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBoxRadioSenseInput">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>295</y>
-           <width>131</width>
-           <height>24</height>
-          </rect>
-         </property>
-         <item>
-          <property name="text">
-           <string>None</string>
+        </item>
+        <item row="1" column="2">
+         <widget class="QFrame" name="frameNetworkConfiguration">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Radio connector</string>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Sense RCA</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QWidget" name="layoutWidget_5">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>225</y>
-           <width>139</width>
-           <height>46</height>
-          </rect>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayoutPollInterval">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayoutPoll">
-            <item>
-             <widget class="QLabel" name="labelRadioInterfacePollInterval">
-              <property name="text">
-               <string>Poll interval:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelRadioInterfacePoll">
-              <property name="text">
-               <string>1000ms</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QSlider" name="sliderPollInterval">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="minimum">
-             <number>10</number>
-            </property>
-            <property name="maximum">
-             <number>255</number>
-            </property>
-            <property name="singleStep">
-             <number>10</number>
-            </property>
-            <property name="pageStep">
-             <number>10</number>
-            </property>
-            <property name="value">
-             <number>100</number>
-            </property>
-            <property name="sliderPosition">
-             <number>100</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-       <widget class="QFrame" name="frameNetworkConfiguration">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>365</y>
-          <width>201</width>
-          <height>139</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <widget class="QLabel" name="labelNetworkConfiguration">
-           <property name="text">
-            <string>Network configuration</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_2">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayoutNetwork2">
+            <widget class="QLabel" name="labelNetworkConfiguration">
+             <property name="text">
+              <string>Network configuration</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_2">
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>5</number>
+             </property>
              <item>
-              <widget class="QLabel" name="labelNetworkAddress">
+              <layout class="QHBoxLayout" name="horizontalLayoutNetwork2">
+               <item>
+                <widget class="QLabel" name="labelNetworkAddress">
+                 <property name="text">
+                  <string>Address:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinBoxNetworkAddress">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelNetworkAddressDec">
+                 <property name="text">
+                  <string>(dec)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBoxNetworkIsMaster">
+               <property name="text">
+                <string>Device is master</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayoutNetwork">
+               <item>
+                <widget class="QLabel" name="labelNetworkNrOfDevices">
+                 <property name="text">
+                  <string>Nr of devices:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinBoxNetworkNrOfDevices">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>10</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="1" rowspan="2">
+         <widget class="QFrame" name="framePowerMeter">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="labelPowerMeter">
+             <property name="text">
+              <string>PowerMeter</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_8">
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_12">
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinBoxPowerMeterAddress">
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>255</number>
+               </property>
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QCheckBox" name="checkBoxPowerMeterAllBands">
+               <property name="text">
+                <string>All bands</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelPowerMeterAddress">
                <property name="text">
                 <string>Address:</string>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
               </widget>
              </item>
-             <item>
-              <widget class="QSpinBox" name="spinBoxNetworkAddress">
+             <item row="3" column="0">
+              <widget class="QLabel" name="labelPowerMeterRefPower">
+               <property name="text">
+                <string>Ref power:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="labelPowerMeterSWRLimit">
+               <property name="text">
+                <string>(0.0:1 = disabled)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="labelPowerMeterAddressDec">
+               <property name="text">
+                <string>(dec, 0 = disabled)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="labelPowerMeterRefPowerWatts">
+               <property name="text">
+                <string>(W, 0 = disabled)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QSpinBox" name="spinBoxPowerMeterRefPower">
                <property name="minimum">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="maximum">
-                <number>255</number>
+                <number>32000</number>
                </property>
-               <property name="value">
-                <number>1</number>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="labelNetworkAddressDec">
-               <property name="text">
-                <string>(dec)</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBoxNetworkIsMaster">
-             <property name="text">
-              <string>Device is master</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayoutNetwork">
-             <item>
-              <widget class="QLabel" name="labelNetworkNrOfDevices">
-               <property name="text">
-                <string>Nr of devices:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="spinBoxNetworkNrOfDevices">
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>255</number>
-               </property>
-               <property name="value">
+               <property name="singleStep">
                 <number>10</number>
                </property>
+               <property name="value">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QDoubleSpinBox" name="doubleSpinBoxPowerMeterSWR">
+               <property name="suffix">
+                <string>:1</string>
+               </property>
+               <property name="minimum">
+                <double>0.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>10.000000000000000</double>
+               </property>
+               <property name="value">
+                <double>2.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelPowerMeterSWR">
+               <property name="text">
+                <string>SWR limit:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelPowerMeterBand">
+               <property name="text">
+                <string>Band:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboBoxPowerMeterBand">
+               <item>
+                <property name="text">
+                 <string>160m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>80m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>40m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>30m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>20m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>17m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>15m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>12m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>10m</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
            </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="frameDeviceConfiguration">
-        <property name="geometry">
-         <rect>
-          <x>440</x>
-          <y>5</y>
-          <width>201</width>
-          <height>80</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_9">
-         <item>
-          <widget class="QLabel" name="labelDeviceConfiguration">
-           <property name="text">
-            <string>Device settings</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_3">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <widget class="QLabel" name="labelSerialPort">
+            <spacer name="verticalSpacer_18">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelPowerMeterAddress_2">
              <property name="text">
-              <string>Serial device:</string>
+              <string>Update rate:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEditDevicePort">
-             <property name="text">
-              <string>/dev/ttyUSB0</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="frameBandLimits">
-        <property name="geometry">
-         <rect>
-          <x>215</x>
-          <y>5</y>
-          <width>216</width>
-          <height>285</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
-         <item>
-          <widget class="QLabel" name="labelBandLimits">
-           <property name="text">
-            <string>Band limits</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QComboBox" name="comboBoxBandLimitBand">
-             <item>
-              <property name="text">
-               <string>160m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>80m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>40m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>30m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>20m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>17m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>15m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>12m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>10m</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButtonDefaultBandLimits">
-             <property name="text">
-              <string>Default</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="Line" name="line_4">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelBandLimitLowSegment">
-           <property name="text">
-            <string>Low segment</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_6">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelBandLimitLowSegLowLimit">
-             <property name="text">
-              <string>Low limit:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEditBandLimitLowSegLowLimit"/>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="labelBandLimitLowSegLowLimitkHz">
-             <property name="text">
-              <string>(kHz)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelBandLimitLowSegHighLimit">
-             <property name="text">
-              <string>High limit:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditBandLimitLowSegHighLimit"/>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="labelBandLimitLowSegHighLimitkHz">
-             <property name="text">
-              <string>(kHz)</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelBandLimitHighSegment">
-           <property name="text">
-            <string>High segment</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_5">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelBandLimitHighSegLowLimit">
-             <property name="text">
-              <string>Low limit:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEditBandLimitHighSegLowLimit"/>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="labelBandLimitHighSegLowLimitkHz">
-             <property name="text">
-              <string>(kHz)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelBandLimitHighSegHighLimit">
-             <property name="text">
-              <string>High limit:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditBandLimitHighSegHighLimit"/>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="labelBandLimitHighSegHighLimitkHz">
-             <property name="text">
-              <string>(kHz)</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="framePowerMeter">
-        <property name="geometry">
-         <rect>
-          <x>215</x>
-          <y>295</y>
-          <width>301</width>
-          <height>258</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="labelPowerMeter">
-           <property name="text">
-            <string>PowerMeter</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_8">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_12">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelPowerMeterBand">
-             <property name="text">
-              <string>Band:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="comboBoxPowerMeterBand">
-             <item>
-              <property name="text">
-               <string>160m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>80m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>40m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>30m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>20m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>17m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>15m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>12m</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>10m</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QCheckBox" name="checkBoxPowerMeterAllBands">
-             <property name="text">
-              <string>All bands</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelPowerMeterAddress">
-             <property name="text">
-              <string>Address:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="spinBoxPowerMeterAddress">
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>255</number>
-             </property>
-             <property name="value">
+            <widget class="Line" name="line_10">
+             <property name="lineWidth">
               <number>1</number>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="labelPowerMeterAddressDec">
-             <property name="text">
-              <string>(dec, 0 = disabled)</string>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelPowerMeterSWR">
-             <property name="text">
-              <string>SWR limit:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_14">
+             <item row="0" column="1">
+              <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRateText">
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>5000</number>
+               </property>
+               <property name="singleStep">
+                <number>100</number>
+               </property>
+               <property name="value">
+                <number>500</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="labelPowerMeterUpdateRateBargraphDec">
+               <property name="text">
+                <string>(ms)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRateBargraph">
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>5000</number>
+               </property>
+               <property name="singleStep">
+                <number>100</number>
+               </property>
+               <property name="value">
+                <number>200</number>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="labelPowerMeterUpdateRateTextDec">
+               <property name="text">
+                <string>(ms)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelPowerMeterUpdateRateText">
+               <property name="text">
+                <string>Text:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelPowerMeterUpdateRateBargraph">
+               <property name="text">
+                <string>Bargraph:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item row="2" column="1">
-            <widget class="QDoubleSpinBox" name="doubleSpinBoxPowerMeterSWR">
-             <property name="suffix">
-              <string>:1</string>
+           <item>
+            <spacer name="verticalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="minimum">
-              <double>0.000000000000000</double>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
              </property>
-             <property name="maximum">
-              <double>10.000000000000000</double>
-             </property>
-             <property name="value">
-              <double>2.500000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QLabel" name="labelPowerMeterSWRLimit">
-             <property name="text">
-              <string>(0.0:1 = disabled)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="labelPowerMeterRefPower">
-             <property name="text">
-              <string>Ref power:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QSpinBox" name="spinBoxPowerMeterRefPower">
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>32000</number>
-             </property>
-             <property name="singleStep">
-              <number>10</number>
-             </property>
-             <property name="value">
-              <number>100</number>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLabel" name="labelPowerMeterRefPowerWatts">
-             <property name="text">
-              <string>(W, 0 = disabled)</string>
-             </property>
-            </widget>
+            </spacer>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelPowerMeterAddress_2">
-           <property name="text">
-            <string>Update rate:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_10">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_14">
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QFrame" name="frameBandLimits">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <layout class="QFormLayout" name="formLayout_3">
            <item row="0" column="0">
-            <widget class="QLabel" name="labelPowerMeterUpdateRateText">
+            <widget class="QLabel" name="labelBandLimits">
              <property name="text">
-              <string>Text:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRateText">
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>5000</number>
-             </property>
-             <property name="singleStep">
-              <number>100</number>
-             </property>
-             <property name="value">
-              <number>500</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="labelPowerMeterUpdateRateTextDec">
-             <property name="text">
-              <string>(ms)</string>
+              <string>Band limits</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="labelPowerMeterUpdateRateBargraph">
-             <property name="text">
-              <string>Bargraph:</string>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QComboBox" name="comboBoxBandLimitBand">
+               <item>
+                <property name="text">
+                 <string>160m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>80m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>40m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>30m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>20m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>17m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>15m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>12m</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>10m</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonDefaultBandLimits">
+               <property name="text">
+                <string>Default</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="2" column="0">
+            <spacer name="verticalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelBandLimitLowSegment">
+             <property name="text">
+              <string>Low segment</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="spinBoxPowerMeterUpdateRateBargraph">
-             <property name="minimum">
-              <number>0</number>
+           <item row="4" column="0">
+            <widget class="Line" name="line_6">
+             <property name="lineWidth">
+              <number>1</number>
              </property>
-             <property name="maximum">
-              <number>5000</number>
-             </property>
-             <property name="singleStep">
-              <number>100</number>
-             </property>
-             <property name="value">
-              <number>200</number>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="labelPowerMeterUpdateRateBargraphDec">
+           <item row="5" column="0">
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelBandLimitLowSegLowLimit">
+               <property name="text">
+                <string>Low limit:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEditBandLimitLowSegLowLimit"/>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="labelBandLimitLowSegLowLimitkHz">
+               <property name="text">
+                <string>(kHz)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelBandLimitLowSegHighLimit">
+               <property name="text">
+                <string>High limit:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEditBandLimitLowSegHighLimit"/>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="labelBandLimitLowSegHighLimitkHz">
+               <property name="text">
+                <string>(kHz)</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="6" column="0">
+            <spacer name="verticalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="labelBandLimitHighSegment">
              <property name="text">
-              <string>(ms)</string>
+              <string>High segment</string>
              </property>
             </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="Line" name="line_5">
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0">
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelBandLimitHighSegLowLimit">
+               <property name="text">
+                <string>Low limit:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEditBandLimitHighSegLowLimit"/>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="labelBandLimitHighSegLowLimitkHz">
+               <property name="text">
+                <string>(kHz)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelBandLimitHighSegHighLimit">
+               <property name="text">
+                <string>High limit:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEditBandLimitHighSegHighLimit"/>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="labelBandLimitHighSegHighLimitkHz">
+               <property name="text">
+                <string>(kHz)</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="10" column="0">
+            <spacer name="verticalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QFrame" name="frameDeviceConfiguration">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QLabel" name="labelDeviceConfiguration">
+             <property name="text">
+              <string>Device settings</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_3">
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="labelSerialPort">
+               <property name="text">
+                <string>Serial device:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditDevicePort">
+               <property name="text">
+                <string>com5</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <spacer name="verticalSpacer_17">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="1">
+         <spacer name="verticalSpacer_16">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tabTXAntennas">
        <attribute name="title">
         <string>TX Antennas</string>
        </attribute>
-       <widget class="QComboBox" name="comboBoxBand">
+       <widget class="QFrame" name="frame_2">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>10</y>
-          <width>76</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <item>
-         <property name="text">
-          <string>160m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>80m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>40m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>30m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>20m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>17m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>15m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>12m</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>10m</string>
-         </property>
-        </item>
-       </widget>
-       <widget class="QFrame" name="frameTXAntennas">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>636</width>
-          <height>322</height>
+          <y>5</y>
+          <width>586</width>
+          <height>496</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1184,6 +1239,72 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_20">
+           <item row="0" column="0">
+            <widget class="QComboBox" name="comboBoxBand">
+             <item>
+              <property name="text">
+               <string>160m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>80m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>40m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>30m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>20m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>17m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>15m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>12m</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>10m</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
          <item>
           <layout class="QGridLayout" name="gridLayoutAntennaName">
            <property name="spacing">
@@ -1537,6 +1658,19 @@
           </layout>
          </item>
          <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <layout class="QGridLayout" name="gridLayoutCombinationOutputs">
            <property name="horizontalSpacing">
             <number>4</number>
@@ -1544,19 +1678,8 @@
            <property name="verticalSpacing">
             <number>2</number>
            </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelAntennaOutputs">
-             <property name="text">
-              <string>Outputs:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="checkBoxCombinationAllowed">
-             <property name="text">
-              <string>Combination allowed</string>
-             </property>
-            </widget>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineEditAntennaOutputStr"/>
            </item>
            <item row="1" column="0">
             <widget class="QComboBox" name="comboBoxAntennaCombination">
@@ -1642,24 +1765,70 @@
              </item>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditAntennaOutputStr"/>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="checkBoxCombinationAllowed">
+             <property name="text">
+              <string>Combination allowed</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelAntennaOutputs">
+             <property name="text">
+              <string>Outputs:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
          <item>
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <layout class="QGridLayout" name="gridLayoutBandOutputs">
+           <item row="1" column="2">
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="lineEditBandOutputStrLow"/>
+           </item>
            <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="labelBandOutputs">
              <property name="text">
               <string>Band outputs</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelBandOutputHigh">
-             <property name="text">
-              <string>High:</string>
              </property>
             </widget>
            </item>
@@ -1677,10 +1846,129 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEditBandOutputStrLow"/>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelBandOutputHigh">
+             <property name="text">
+              <string>High:</string>
+             </property>
+            </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QGroupBox" name="groupBoxBandLock">
+             <property name="title">
+              <string>Active band locks</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock160m">
+                <property name="text">
+                 <string>160m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock80m">
+                <property name="text">
+                 <string>80m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock40m">
+                <property name="text">
+                 <string>40m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock30m">
+                <property name="text">
+                 <string>30m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock20m">
+                <property name="text">
+                 <string>20m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock17m">
+                <property name="text">
+                 <string>17m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock15m">
+                <property name="text">
+                 <string>15m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock12m">
+                <property name="text">
+                 <string>12m</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxBandLock10m">
+                <property name="text">
+                 <string>10m</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>30</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -1689,316 +1977,479 @@
        <attribute name="title">
         <string>RX Antennas</string>
        </attribute>
-       <widget class="QFrame" name="frameRXAntennaConfiguration">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>5</y>
-          <width>521</width>
-          <height>346</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QLabel" name="labelRXAntennaConfiguration">
-           <property name="text">
-            <string>Configuration</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_7">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="spacing">
-            <number>4</number>
-           </property>
-           <item row="0" column="1">
-            <widget class="QLabel" name="labelRXAntennaName">
+       <layout class="QGridLayout" name="gridLayout_19">
+        <item row="0" column="2" rowspan="2">
+         <widget class="QFrame" name="frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QFrame" name="frameRXAntennaConfiguration">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLabel" name="labelRXAntennaConfiguration">
              <property name="text">
-              <string>Name:</string>
+              <string>Configuration</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="labelRXAntennaOutputs">
-             <property name="text">
-              <string>Outputs:</string>
+           <item>
+            <widget class="Line" name="line_7">
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelRXAntenna1">
-             <property name="text">
-              <string>Antenna #1:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName1"/>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs1"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelRXAntenna2">
-             <property name="text">
-              <string>Antenna #2:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName2"/>
-           </item>
-           <item row="2" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs2"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="labelRXAntenna3">
-             <property name="text">
-              <string>Antenna #3:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName3"/>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs3"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="labelRXAntenna4">
-             <property name="text">
-              <string>Antenna #4:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName4"/>
-           </item>
-           <item row="4" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs4"/>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="labelRXAntenna5">
-             <property name="text">
-              <string>Antenna #5:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName5"/>
-           </item>
-           <item row="5" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs5"/>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="labelRXAntenna6">
-             <property name="text">
-              <string>Antenna #6:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName6"/>
-           </item>
-           <item row="6" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs6"/>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="labelRXAntenna7">
-             <property name="text">
-              <string>Antenna #7:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName7"/>
-           </item>
-           <item row="7" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs7"/>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="labelRXAntenna8">
-             <property name="text">
-              <string>Antenna #8:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName8"/>
-           </item>
-           <item row="8" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs8"/>
-           </item>
-           <item row="9" column="0">
-            <widget class="QLabel" name="labelRXAntenna9">
-             <property name="text">
-              <string>Antenna #9:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName9"/>
-           </item>
-           <item row="9" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs9"/>
-           </item>
-           <item row="10" column="0">
-            <widget class="QLabel" name="labelRXAntenna10">
-             <property name="text">
-              <string>Antenna #10:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaName10"/>
-           </item>
-           <item row="10" column="2">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputs10"/>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="3" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs3">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QLabel" name="labelRXAntenna8">
+               <property name="text">
+                <string>Antenna #8:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName8">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName11">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs10">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="0">
+              <widget class="QLabel" name="labelRXAntenna10">
+               <property name="text">
+                <string>Antenna #10:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs9">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs12">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs7">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName9">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs2">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="0">
+              <widget class="QLabel" name="labelRXAntenna9">
+               <property name="text">
+                <string>Antenna #9:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="0">
+              <widget class="QLabel" name="labelRXAntenna10_2">
+               <property name="text">
+                <string>Antenna #11:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="labelRXAntenna3">
+               <property name="text">
+                <string>Antenna #3:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="0">
+              <widget class="QLabel" name="labelRXAntenna10_3">
+               <property name="text">
+                <string>Antenna #12:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName7">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName12">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs11">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName10">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs8">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName2">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="labelRXAntennaName">
+               <property name="text">
+                <string>Name:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="labelRXAntennaOutputs">
+               <property name="text">
+                <string>Outputs:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs1">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName1">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelRXAntenna1">
+               <property name="text">
+                <string>Antenna #1:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="labelRXAntenna6">
+               <property name="text">
+                <string>Antenna #6:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs6">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs5">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName5">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="labelRXAntenna5">
+               <property name="text">
+                <string>Antenna #5:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputs4">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="labelRXAntenna4">
+               <property name="text">
+                <string>Antenna #4:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName4">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="labelRXAntenna7">
+               <property name="text">
+                <string>Antenna #7:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName6">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaName3">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelRXAntenna2">
+               <property name="text">
+                <string>Antenna #2:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="frameRXAntennaBandOutputs">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>360</y>
-          <width>250</width>
-          <height>161</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLabel" name="labelRXAntennaBandOutputs">
-           <property name="text">
-            <string>Band outputs</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_9">
-           <property name="lineWidth">
-            <number>1</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayoutRXAntennaBandOutputs">
-           <property name="spacing">
-            <number>4</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelRXAntennaOutput160M">
-             <property name="text">
-              <string>160m:</string>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QFrame" name="frameRXAntennaBandOutputs">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="labelRXAntennaBandOutputs">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <property name="text">
+              <string>Band outputs</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputStr160M"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelRXAntennaOutput80M">
-             <property name="text">
-              <string>80m:</string>
+           <item>
+            <layout class="QGridLayout" name="gridLayoutRXAntennaBandOutputs">
+             <property name="spacing">
+              <number>4</number>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputStr80M"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelRXAntennaOutput40M">
-             <property name="text">
-              <string>40m:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputStr40M"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="labelRXAntennaOutput30M">
-             <property name="text">
-              <string>30m:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineEditRXAntennaOutputStr30M"/>
+             <item row="3" column="0">
+              <widget class="QLabel" name="labelRXAntennaOutput30M">
+               <property name="text">
+                <string>30m:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelRXAntennaOutput80M">
+               <property name="text">
+                <string>80m:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelRXAntennaOutput160M">
+               <property name="text">
+                <string>160m:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputStr160M"/>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputStr30M"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelRXAntennaOutput40M">
+               <property name="text">
+                <string>40m:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputStr80M"/>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEditRXAntennaOutputStr40M"/>
+             </item>
+             <item row="1" column="2">
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
           </layout>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>150</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tabSequencer">
        <attribute name="title">
@@ -3889,7 +4340,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>656</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">
@@ -3900,7 +4351,6 @@ a function to it</string>
     <addaction name="actionDisconnect"/>
     <addaction name="separator"/>
     <addaction name="actionSendSettings"/>
-    <addaction name="actionReadSettings"/>
     <addaction name="actionExitConfMode"/>
     <addaction name="separator"/>
     <addaction name="actionGetFirmwareRev"/>
@@ -3956,6 +4406,9 @@ a function to it</string>
    </property>
   </action>
   <action name="actionReadSettings">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Read settings</string>
    </property>
@@ -3982,6 +4435,178 @@ a function to it</string>
   </action>
  </widget>
  <layoutdefault spacing="3" margin="4"/>
+ <tabstops>
+  <tabstop>comboBoxStatusField</tabstop>
+  <tabstop>listWidgetDebug</tabstop>
+  <tabstop>pushButtonDebug</tabstop>
+  <tabstop>lineEditRXAntennaOutputs2</tabstop>
+  <tabstop>lineEditRXAntennaName3</tabstop>
+  <tabstop>lineEditRXAntennaOutputs3</tabstop>
+  <tabstop>lineEditRXAntennaName4</tabstop>
+  <tabstop>lineEditRXAntennaOutputs4</tabstop>
+  <tabstop>lineEditRXAntennaName5</tabstop>
+  <tabstop>lineEditRXAntennaOutputs5</tabstop>
+  <tabstop>lineEditRXAntennaName6</tabstop>
+  <tabstop>lineEditRXAntennaOutputs6</tabstop>
+  <tabstop>lineEditRXAntennaName7</tabstop>
+  <tabstop>lineEditRXAntennaOutputs7</tabstop>
+  <tabstop>lineEditRXAntennaName8</tabstop>
+  <tabstop>lineEditRXAntennaOutputs8</tabstop>
+  <tabstop>lineEditRXAntennaName9</tabstop>
+  <tabstop>lineEditRXAntennaOutputs9</tabstop>
+  <tabstop>lineEditRXAntennaName10</tabstop>
+  <tabstop>lineEditRXAntennaOutputs10</tabstop>
+  <tabstop>lineEditRXAntennaName11</tabstop>
+  <tabstop>lineEditRXAntennaOutputs11</tabstop>
+  <tabstop>lineEditRXAntennaName12</tabstop>
+  <tabstop>lineEditRXAntennaOutputs12</tabstop>
+  <tabstop>lineEditRXAntennaOutputStr160M</tabstop>
+  <tabstop>lineEditRXAntennaOutputStr80M</tabstop>
+  <tabstop>lineEditRXAntennaOutputStr40M</tabstop>
+  <tabstop>lineEditRXAntennaOutputStr30M</tabstop>
+  <tabstop>lineEditRXAntennaName2</tabstop>
+  <tabstop>tabWidgetSettings</tabstop>
+  <tabstop>comboBoxRadioType</tabstop>
+  <tabstop>comboBoxRadioMode</tabstop>
+  <tabstop>groupBoxCAT</tabstop>
+  <tabstop>comboBoxRadioBaudRate</tabstop>
+  <tabstop>comboBoxRadioStopbits</tabstop>
+  <tabstop>spinBoxCIVAddress</tabstop>
+  <tabstop>sliderPollInterval</tabstop>
+  <tabstop>comboBoxRadioSenseInput</tabstop>
+  <tabstop>comboBoxBandLimitBand</tabstop>
+  <tabstop>pushButtonDefaultBandLimits</tabstop>
+  <tabstop>lineEditBandLimitLowSegLowLimit</tabstop>
+  <tabstop>lineEditBandLimitLowSegHighLimit</tabstop>
+  <tabstop>lineEditBandLimitHighSegLowLimit</tabstop>
+  <tabstop>lineEditBandLimitHighSegHighLimit</tabstop>
+  <tabstop>comboBoxPowerMeterBand</tabstop>
+  <tabstop>checkBoxPowerMeterAllBands</tabstop>
+  <tabstop>spinBoxPowerMeterAddress</tabstop>
+  <tabstop>doubleSpinBoxPowerMeterSWR</tabstop>
+  <tabstop>spinBoxPowerMeterRefPower</tabstop>
+  <tabstop>spinBoxPowerMeterUpdateRateText</tabstop>
+  <tabstop>spinBoxPowerMeterUpdateRateBargraph</tabstop>
+  <tabstop>lineEditDevicePort</tabstop>
+  <tabstop>spinBoxNetworkAddress</tabstop>
+  <tabstop>checkBoxNetworkIsMaster</tabstop>
+  <tabstop>spinBoxNetworkNrOfDevices</tabstop>
+  <tabstop>comboBoxBand</tabstop>
+  <tabstop>lineEditAntennaName1</tabstop>
+  <tabstop>lineEditAntennaName2</tabstop>
+  <tabstop>lineEditAntennaName3</tabstop>
+  <tabstop>lineEditAntennaName4</tabstop>
+  <tabstop>comboBoxAntennaCombination</tabstop>
+  <tabstop>checkBoxCombinationAllowed</tabstop>
+  <tabstop>lineEditAntennaOutputStr</tabstop>
+  <tabstop>lineEditBandOutputStrHigh</tabstop>
+  <tabstop>lineEditBandOutputStrLow</tabstop>
+  <tabstop>checkBoxBandLock160m</tabstop>
+  <tabstop>checkBoxBandLock80m</tabstop>
+  <tabstop>checkBoxBandLock40m</tabstop>
+  <tabstop>checkBoxBandLock30m</tabstop>
+  <tabstop>checkBoxBandLock20m</tabstop>
+  <tabstop>checkBoxBandLock17m</tabstop>
+  <tabstop>checkBoxBandLock15m</tabstop>
+  <tabstop>checkBoxBandLock12m</tabstop>
+  <tabstop>checkBoxBandLock10m</tabstop>
+  <tabstop>radioButtonAntennaDefault1</tabstop>
+  <tabstop>radioButtonAntennaDefault2</tabstop>
+  <tabstop>radioButtonAntennaDefault3</tabstop>
+  <tabstop>radioButtonAntennaDefault4</tabstop>
+  <tabstop>checkBoxMultiband1</tabstop>
+  <tabstop>checkBoxMultiband2</tabstop>
+  <tabstop>checkBoxMultiband3</tabstop>
+  <tabstop>checkBoxMultiband4</tabstop>
+  <tabstop>checkBoxSubMenuEnabledAnt1</tabstop>
+  <tabstop>checkBoxSubMenuEnabledAnt2</tabstop>
+  <tabstop>checkBoxSubMenuEnabledAnt3</tabstop>
+  <tabstop>checkBoxSubMenuEnabledAnt4</tabstop>
+  <tabstop>pushButtonSubMenuAnt1</tabstop>
+  <tabstop>pushButtonSubMenuAnt2</tabstop>
+  <tabstop>pushButtonSubMenuAnt3</tabstop>
+  <tabstop>pushButtonSubMenuAnt4</tabstop>
+  <tabstop>comboBoxAntennaRotator1</tabstop>
+  <tabstop>comboBoxAntennaRotator2</tabstop>
+  <tabstop>comboBoxAntennaRotator3</tabstop>
+  <tabstop>comboBoxAntennaRotator4</tabstop>
+  <tabstop>comboBoxSequencerSelect</tabstop>
+  <tabstop>groupBoxSequencerPTTRadio</tabstop>
+  <tabstop>spinBoxSequencerPTTRadioPreDelay</tabstop>
+  <tabstop>spinBoxSequencerPTTRadioPostDelay</tabstop>
+  <tabstop>groupBoxSequencerPTTAmp</tabstop>
+  <tabstop>spinBoxSequencerPTTAmpPreDelay</tabstop>
+  <tabstop>spinBoxSequencerPTTAmpPostDelay</tabstop>
+  <tabstop>groupBoxSequencerInhibitEnabled</tabstop>
+  <tabstop>spinBoxSequencerInhibitPredelay</tabstop>
+  <tabstop>spinBoxSequencerInhibitPostdelay</tabstop>
+  <tabstop>spinBoxSequencerAntennaPostDelay</tabstop>
+  <tabstop>checkBoxPTTInputFootswitch</tabstop>
+  <tabstop>checkBoxPTTInputRadioSense</tabstop>
+  <tabstop>checkBoxPTTInputComputerRTS</tabstop>
+  <tabstop>checkBoxPTTInputRadioSenseInverted</tabstop>
+  <tabstop>checkBoxPTTInputComputerRTSInverted</tabstop>
+  <tabstop>radioButtonInhibitPolarityActiveLow</tabstop>
+  <tabstop>radioButtonInhibitPolarityActiveHigh</tabstop>
+  <tabstop>radioButtonPTTInterlockNone</tabstop>
+  <tabstop>radioButtonPTTInterlockInput1</tabstop>
+  <tabstop>radioButtonPTTInterlockInput2</tabstop>
+  <tabstop>lineEditRXAntennaOutputs1</tabstop>
+  <tabstop>lineEditRXAntennaName1</tabstop>
+  <tabstop>radioButtonPTTInterlockInput4</tabstop>
+  <tabstop>radioButtonPTTInterlockInput5</tabstop>
+  <tabstop>radioButtonPTTInterlockInput6</tabstop>
+  <tabstop>radioButtonPTTInterlockInput7</tabstop>
+  <tabstop>radioButtonPTTInterlockInput3</tabstop>
+  <tabstop>comboBoxRotators</tabstop>
+  <tabstop>lineEditRotatorName</tabstop>
+  <tabstop>spinBoxRotatorAddress</tabstop>
+  <tabstop>spinBoxRotatorSubAddress</tabstop>
+  <tabstop>spinBoxRotatorStartAzimuth</tabstop>
+  <tabstop>spinBoxRotatorDegreesAzimuth</tabstop>
+  <tabstop>pushButtonRotatorAdd</tabstop>
+  <tabstop>pushButtonRotatorSave</tabstop>
+  <tabstop>pushButtonRotatorDelete</tabstop>
+  <tabstop>pushButtonExtE1</tabstop>
+  <tabstop>pushButtonExtE2</tabstop>
+  <tabstop>pushButtonExtE3</tabstop>
+  <tabstop>pushButtonExtE4</tabstop>
+  <tabstop>pushButtonExtA</tabstop>
+  <tabstop>pushButtonExtB</tabstop>
+  <tabstop>pushButtonExtC</tabstop>
+  <tabstop>pushButtonExtD</tabstop>
+  <tabstop>pushButtonExt7</tabstop>
+  <tabstop>pushButtonExt8</tabstop>
+  <tabstop>pushButtonExt9</tabstop>
+  <tabstop>pushButtonExtE</tabstop>
+  <tabstop>pushButtonExt4</tabstop>
+  <tabstop>pushButtonExt5</tabstop>
+  <tabstop>pushButtonExt6</tabstop>
+  <tabstop>pushButtonExt1</tabstop>
+  <tabstop>pushButtonExt2</tabstop>
+  <tabstop>pushButtonExt3</tabstop>
+  <tabstop>pushButtonExtF</tabstop>
+  <tabstop>pushButtonExt0</tabstop>
+  <tabstop>pushButtonExtG</tabstop>
+  <tabstop>comboBoxExtKeypadFunc</tabstop>
+  <tabstop>checkBoxExtLEDPTT</tabstop>
+  <tabstop>groupBoxAmplifierControl</tabstop>
+  <tabstop>spinBoxAmplifierAddress</tabstop>
+  <tabstop>spinBoxAmplifierSubAddress</tabstop>
+  <tabstop>spinBoxAmplifierSegCount</tabstop>
+  <tabstop>checkBoxAmplifierPowerControl</tabstop>
+  <tabstop>checkBoxAmplifierStandbyControl</tabstop>
+  <tabstop>checkBoxAmplifierBandControl</tabstop>
+  <tabstop>checkBoxAmplifierReset</tabstop>
+  <tabstop>checkBoxAmplifierTune</tabstop>
+  <tabstop>groupBoxEthernet</tabstop>
+  <tabstop>lineEditEthernetIP</tabstop>
+  <tabstop>lineEditEthernetSubmask</tabstop>
+  <tabstop>spinBoxEthernetPort</tabstop>
+  <tabstop>comboBoxButtonAUX1</tabstop>
+  <tabstop>comboBoxButtonAUX2</tabstop>
+  <tabstop>comboBoxLEDAUX</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
  <designerdata>
