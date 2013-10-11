@@ -35,7 +35,7 @@ class RotatorDialog : public QDialog, public Ui::Dialog
 {
 Q_OBJECT
 public:
-	RotatorDialog( QWidget * parent = 0, Qt::WFlags f = 0 );
+    RotatorDialog( QWidget * parent = 0, Qt::WindowFlags f = 0 );
 	QPainter painter;
 	void setTargetDir(int antIndex, int targetAngle);
 	void setAntName(int antIndex, QString name);

@@ -673,7 +673,7 @@ void RotatorDialog::keyPressEvent(QKeyEvent *e) {
   }
 }
 
-RotatorDialog::RotatorDialog( QWidget * parent, Qt::WFlags f) : QDialog(parent, f) {
+RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f) {
   setupUi(this);
 
   this->resize(800,600);

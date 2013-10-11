@@ -36,7 +36,7 @@ typedef struct {
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
 public:
-		MainWindowImpl( QWidget * parent = 0, Qt::WFlags f = 0 );
+        MainWindowImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
 		QMessageBox *msgBox;
 		RotatorDialog *rotatorWindow;
 		SettingsDialog *settingsDialog;
