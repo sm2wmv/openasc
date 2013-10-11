@@ -118,6 +118,15 @@ CDEFS += -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
 #CDEFS += -DETHERNET_DEBUG_ENABLED
 #CDEFS += -DDEBUG_COMPUTER_USART_ENABLED
 
+CDEFS += -DDEBUG_COMPUTER_USART_ENABLED
+CDEFS += -DDEBUG_BUS_PING_ENABLED
+
+#Turn on debugging for the display handler
+#CDEFS += -DDEBUG_DISPLAY_HANDLER
+
+#Turn on debugging of the band in use bug
+CDEFS += -DDEBUG_BAND_IN_USE
+
 # Additional paths where to look for C sources
 #vpath %.c $(ROOT)/misc
 

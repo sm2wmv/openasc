@@ -205,7 +205,7 @@ int main(void)
 	sei();
 
 	unsigned char device_count = bus_get_device_count();
-  device_id = DEVICE_TYPE_ROTATOR_UNIT;
+  device_id = DEVICE_ID_ROTATOR_UNIT;
 
   BUS_MESSAGE mess;
   
@@ -255,7 +255,9 @@ ISR(SIG_OUTPUT_COMPARE0) {
 	counter_compare0++;
 	
   bus_check_ack_list();
-	bus_ping_tick();
+	
+  if ((counter_compare0 % 100) == 0)
+    bus_ping_tick();
 }
 
 ISR(SIG_USART0_DATA) {

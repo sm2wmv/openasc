@@ -1326,12 +1326,19 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 	else if (bus_message.cmd == BUS_CMD_NACK)
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_PING) {
-		if (bus_message.length > 1)
+    #ifdef DEBUG_BUS_PING_ENABLED
+      printf("BUS_PING-> ADDR: [0x%02X]\r\n",bus_message.from_addr);
+      printf("BUS_PING-> LEN: %i\r\n",bus_message.length-1);
+      
+      if (bus_message.length > 0)
+        for (unsigned char i=0;i<bus_message.length-1;i++)
+          printf("BUS_PING->  DATA[%i]: %i\r\n",i,bus_message.data[i+1]);
+    #endif
+    
+    if (bus_message.length > 1)
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
 		else
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
-    
-//    printf("NEW PING\n\r");
 	}
 	else if (bus_message.cmd == BUS_CMD_SHUTTING_DOWN) {
 		bus_ping_clear_device(bus_message.from_addr);

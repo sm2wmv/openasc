@@ -583,7 +583,7 @@ void display_handler_status_field_text(unsigned char length, char *text) {
 void display_handler_tick(void) {
   //Check if there is a new display to be viewed or we force a repaint of the current view
   if ((display_handler_status.new_display != display_handler_status.active_display) || (display_handler_status.force_repaint == 1)) {
-    #ifdef DEBUG_COMPUTER_USART_ENABLED
+    #ifdef DEBUG_DISPLAY_HANDLER
       printf("FORCE_STATUS: %i\r\n",display_handler_status.force_repaint);
     #endif
     
@@ -674,7 +674,7 @@ void display_handler_prev_view(void) {
 
   //This might be very ugly way of doing it, but I have not figured out another way
   
-  #ifdef DEBUG_COMPUTER_USART_ENABLED
+  #ifdef DEBUG_DISPLAY_HANDLER
     printf("Active disp: %i\n\r",display_handler_status.active_display);
     printf("Prev disp: %i\n\r",display_handler_status.prev_display);
     printf("New disp: %i\n\r",display_handler_status.new_display);
@@ -871,14 +871,14 @@ void display_handler_prev_view(void) {
     
   }  
   else {
-    #ifdef DEBUG_COMPUTER_USART_ENABLED
+    #ifdef DEBUG_DISPLAY_HANDLER
       printf("PREV_DISP_ELSE\r\n");
     #endif
       
     display_handler_status.new_display = display_handler_status.prev_display;
   }
   
-  #ifdef DEBUG_COMPUTER_USART_ENABLED
+  #ifdef DEBUG_DISPLAY_HANDLER
     printf("EXIT NEW DISP: %i\r\n",display_handler_status.new_display);
   #endif
 

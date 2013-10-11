@@ -46,6 +46,8 @@ typedef struct {
 	unsigned char band_high_output_str[BAND_OUTPUT_STR_SIZE];
 	//! These outputs are activated when you enter the low area of a band
 	unsigned char band_low_output_str[BAND_OUTPUT_STR_SIZE];
+  //! Band lock configuration
+  unsigned int band_lock_conf;
 } struct_band;
 
 //! Struct of the band limits

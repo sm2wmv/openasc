@@ -32,13 +32,13 @@ typedef struct {
 	//! The size of this structure
 	unsigned int struct_size;
 	//! The length of the antenna names
-	unsigned char name_length[10];
+	unsigned char name_length[RX_ANT_MAX_COUNT];
 	//! RX antenna name
-  char name[10][RX_ANTENNA_NAME_LENGTH];
+  char name[RX_ANT_MAX_COUNT][RX_ANTENNA_NAME_LENGTH];
 	//! RX antenna output str length
-	unsigned char output_length[10];
+	unsigned char output_length[RX_ANT_MAX_COUNT];
 	//! RX antenna output str
-  char output_str[10][RX_ANTENNA_OUTPUT_STR_LENGTH];
+  char output_str[RX_ANT_MAX_COUNT][RX_ANTENNA_OUTPUT_STR_LENGTH];
 	//! The length of the band output data
 	unsigned char band_output_length[4];
 	//! Band output str

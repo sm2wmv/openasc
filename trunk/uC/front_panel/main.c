@@ -172,7 +172,6 @@ void main_set_new_band(unsigned char band) {
   status.current_band_portion = BAND_LOW;
 	band_ctrl_change_band(band);
 					
-	//display_handler_update_radio_freq();
 	send_ping();
 }
 
@@ -213,6 +212,21 @@ unsigned char main_band_change_ok(unsigned char new_band) {
   unsigned char* band_info_ptr = bus_ping_get_mainbox_adresses();
   bus_struct_ping_status* ping_status_ptr;
   
+  #ifdef DEBUG_BAND_IN_USE
+    printf("DEBUG -> BAND IN USE\r\n");
+    printf("--------------------\r\n");
+  
+    for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
+      //We have reached the end of the list
+      if (band_info_ptr[i] == 0)
+        break;
+      
+      ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
+            
+      printf("Box %i [0x%02X]: Band -> %i\r\n",i+1,ping_status_ptr->addr,ping_status_ptr->data[1]);
+    }  
+  #endif
+  
   for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
     //We have reached the end of the list
     if (band_info_ptr[i] == 0)
@@ -220,7 +234,7 @@ unsigned char main_band_change_ok(unsigned char new_band) {
     
     ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
     
-    if ((new_band != 0) && (ping_status_ptr->data[1] == new_band)) {
+    if ((new_band != 0) && (ping_status_ptr->data[1] == new_band) && (ping_status_ptr->addr != bus_get_address())) {
       return(0);
     }
   }
@@ -1133,7 +1147,9 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	}
 	
 	internal_comm_1ms_timer();
-	bus_ping_tick();
+	
+  if ((counter_ms % 100) == 0)
+    bus_ping_tick();
 }
 
 /*!Output overflow 0 interrupt */

@@ -101,9 +101,9 @@ ASRC =
 EXTRAINCDIRS = $(ROOT) $(ROOT)/qpn/include $(ROOT)/rotator $(ROOT)/misc
 
 # Place -D or -U options here
-CDEFS =
+CDEFS += -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__
 
-# Additional paths where to look for C sources
+#Additional paths where to look for C sources
 vpath %.c $(ROOT)/misc
 vpath %.c $(ROOT)/rotator
 
