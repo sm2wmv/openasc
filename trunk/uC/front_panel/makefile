@@ -115,17 +115,21 @@ CDEFS += -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
 #Use this to compile with the latest version of avr-libc
 #CDEFS += -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__
 
-#CDEFS += -DETHERNET_DEBUG_ENABLED
+#Turn on debugging, this need to be used for any of the debug options below
 #CDEFS += -DDEBUG_COMPUTER_USART_ENABLED
 
-CDEFS += -DDEBUG_COMPUTER_USART_ENABLED
-CDEFS += -DDEBUG_BUS_PING_ENABLED
+#Turn on debug of the ethernet module
+#CDEFS += -DETHERNET_DEBUG_ENABLED
+
+#Turn on the debugging of the BUS PING
+#CDEFS += -DDEBUG_BUS_PING_ENABLED
+
+#Turn on debugging of the band in use bug
+#CDEFS += -DDEBUG_BAND_IN_USE
 
 #Turn on debugging for the display handler
 #CDEFS += -DDEBUG_DISPLAY_HANDLER
 
-#Turn on debugging of the band in use bug
-CDEFS += -DDEBUG_BAND_IN_USE
 
 # Additional paths where to look for C sources
 #vpath %.c $(ROOT)/misc

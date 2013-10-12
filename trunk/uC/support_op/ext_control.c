@@ -111,25 +111,25 @@ void ext_control_relay_k13_clr(void) {
 }
 
 void ext_control_relay_k12_set(void) {
-  PORTA |= (1<<7);
+  PORTA |= (1<<6);
   
   PRINTF("EXT_CTRL >> K12 SET\r\n");
 }
 
 void ext_control_relay_k12_clr(void) {
-  PORTA &= ~(1<<7);
+  PORTA &= ~(1<<6);
   
   PRINTF("EXT_CTRL >> K12 CLR\r\n");
 }
 
 void ext_control_relay_k14_set(void) {
-  PORTA |= (1<<6);
+  PORTA |= (1<<7);
   
   PRINTF("EXT_CTRL >> K14 SET\r\n");
 }
 
 void ext_control_relay_k14_clr(void) {
-  PORTA &= ~(1<<6);
+  PORTA &= ~(1<<7);
   
   PRINTF("EXT_CTRL >> K14 CLR\r\n");
 }

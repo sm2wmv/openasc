@@ -32,7 +32,7 @@
 
 static unsigned char rx_buffer[5];
 
-unsigned char device_id;
+unsigned char ping_msg[2];
 
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned int counter_compare0 = 0;
@@ -205,7 +205,7 @@ int main(void)
 	sei();
 
 	unsigned char device_count = bus_get_device_count();
-  device_id = DEVICE_ID_ROTATOR_UNIT;
+  ping_msg[0] = DEVICE_ID_ROTATOR_UNIT;
 
   BUS_MESSAGE mess;
   
@@ -231,7 +231,7 @@ int main(void)
 		if (bus_allowed_to_send()) {
 			//Check if a ping message should be sent out on the bus
 			if (counter_ping_interval >= BUS_DEVICE_STATUS_MESSAGE_INTERVAL) {
-				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, &device_id);
+				bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 1, ping_msg);
 
 				counter_ping_interval = 0;
 			}

@@ -14,7 +14,7 @@
 #define EVENT_R2_TXRX_ANT_SEL             5
 #define EVENT_MUTE_ON_TX                  6
 
-#define KEYBOUNCE_TIME 20
+#define KEYBOUNCE_TIME 5
 
 /*! START EVENT QUEUE IDs */
 #define EVENT_QUEUE_ID_TRANSFER_RELAY     125
@@ -39,7 +39,7 @@
 #define COUNTER_POLL_INPUT_LIMIT 5
 
 //! The pulse time of the transfer relay in ms
-#define TRANSFER_RELAY_PULSE_TIME 100
+#define TRANSFER_RELAY_PULSE_TIME 25
 
 #ifdef DEBUG
 #define PRINTF printf
