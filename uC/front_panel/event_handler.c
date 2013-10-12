@@ -25,6 +25,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #include "event_handler.h"
 #include "main.h"
@@ -157,7 +158,7 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
       }
       
       #ifdef INT_COMM_DEBUG
-        printf("RX BCD STATUS\n");
+        printf_P(PSTR("RX BCD STATUS\n"));
       #endif
       break;
     case INT_COMM_PC_CONNECT_TO_ADDR:
@@ -1327,12 +1328,12 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
 		bus_message_nacked(bus_message.from_addr, bus_message.data[0]);
 	else if (bus_message.cmd == BUS_CMD_PING) {
     #ifdef DEBUG_BUS_PING_ENABLED
-      printf("BUS_PING-> ADDR: [0x%02X]\r\n",bus_message.from_addr);
-      printf("BUS_PING-> LEN: %i\r\n",bus_message.length-1);
+      //printf("BUS_PING-> ADDR: [0x%02X]\r\n",bus_message.from_addr);
+      //printf("BUS_PING-> LEN: %i\r\n",bus_message.length-1);
       
-      if (bus_message.length > 0)
-        for (unsigned char i=0;i<bus_message.length-1;i++)
-          printf("BUS_PING->  DATA[%i]: %i\r\n",i,bus_message.data[i+1]);
+      //if (bus_message.length > 0)
+        //for (unsigned char i=0;i<bus_message.length-1;i++)
+          //printf("BUS_PING->  DATA[%i]: %i\r\n",i,bus_message.data[i+1]);
     #endif
     
     if (bus_message.length > 1)

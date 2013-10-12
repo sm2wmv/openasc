@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #ifndef DEVICE_TYPE_COMPUTER
 	#include <avr/io.h>
@@ -47,33 +48,35 @@ void bus_ping_init(void) {
 void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsigned char data_len, unsigned char *data) {
 	#ifdef DEBUG_BUS_PING_ENABLED
 		if (ping_list[from_addr-1].addr != from_addr) {
-			printf("BUS_PING->ADDR CHANGED\n\r");
+			printf_P(PSTR("BUS_PING->ADDR CHANGED\n\r"));
 			
 			printf("BUS_PING->OLD[%i]: %i\n\r",from_addr,ping_list[from_addr-1].addr);
 			printf("BUS_PING->NEW[%i]: %i\n\r",from_addr,from_addr);
 		}
 		
 		if (ping_list[from_addr-1].device_type != device_type) {
-			printf("BUS_PING->DEVICE_TYPE CHANGED\n\r");
+			printf_P(PSTR("BUS_PING->DEVICE_TYPE CHANGED\n\r"));
 			
 			printf("BUS_PING->OLD[%i]: %i\n\r",from_addr,ping_list[from_addr-1].device_type);
 			printf("BUS_PING->NEW[%i]: %i\n\r",from_addr,device_type);
 		}
 		
 		if (data_len > 0) {
-			//if (ping_list[from_addr-1].data[0] != data[0]) {
-				printf("BUS_PING->DATA CHANGED\n\r");
+			if (ping_list[from_addr-1].data[0] != data[0]) {
+				printf_P(PSTR("BUS_PING->DATA CHANGED\n\r"));
 				printf("BUS_PING->OLD[%i][0]: %i\n\r",from_addr,ping_list[from_addr-1].data[0]);
 				printf("BUS_PING->NEW[%i][0]: %i\n\r",from_addr,data[0]);
+			}
     }
 			
 			
 		if (data_len > 1) {
-			//if (ping_list[from_addr-1].data[1] != data[1]) {
-				printf("BUS_PING->DATA CHANGED\n\r");
+			if (ping_list[from_addr-1].data[1] != data[1]) {
+				printf_P(PSTR("BUS_PING->DATA CHANGED\n\r"));
 				printf("BUS_PING->OLD[%i][1]: %i\n\r",from_addr,ping_list[from_addr-1].data[1]);
 				printf("BUS_PING->NEW[%i][1]: %i\n\r",from_addr,data[1]);
 			}
+		}
 	#endif
 
 	ping_list[from_addr-1].addr = from_addr;
@@ -87,25 +90,21 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
       if (mainbox_band_info[i] == 0)
         mainbox_band_info[i] = from_addr;
       
-        #ifdef DEBUG_BUS_PING_ENABLED
-          printf("BUS_PING->MAINBOX FOUND: [0x%02X]\r\n",from_addr);
-        #endif
-      
       //This will automatically break the loop if we already found a place where
       //our address is located
       if (mainbox_band_info[i] == from_addr)
         break;
     }
+		
+		#ifdef DEBUG_BUS_PING_ENABLED
+			printf("BUS_PING->MAINBOX [0x%02X]->BAND: %i\r\n",from_addr,data[1]);
+		#endif
   }
   
 	if (data_len > 0) {
 		for (unsigned char i=0;i<data_len;i++)
       if (data_len <= sizeof(ping_list[from_addr-1].data)) {
         ping_list[from_addr-1].data[i] = data[i];
-      
-        #ifdef DEBUG_BUS_PING_ENABLED
-          printf("BUS_PING->MAINBOX [0x%02X]->BAND\r\n",from_addr,data[i]);
-        #endif
       }
       else
         break;
@@ -213,7 +212,7 @@ void bus_ping_clear_device(unsigned char addr) {
 	ping_list[addr-1].flags = 0;  
 }
 
-#ifdef DEBUG_BUS_PING_ENABLED
+/*#ifdef DEBUG_BUS_PING_ENABLED
 	void bus_ping_print_list(void) {
 		for (unsigned char i=0;i<DEF_NR_DEVICES;i++) {
 			printf("======= %i =======\n\r",i);
@@ -226,4 +225,4 @@ void bus_ping_clear_device(unsigned char addr) {
 			printf("----------------------\n\r");
 		}
 	}
-#endif
+#endif*/

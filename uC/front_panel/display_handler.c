@@ -681,15 +681,30 @@ void display_handler_prev_view(void) {
   #endif
     
   if ((display_handler_status.new_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#1\r\n"));
+		#endif
     display_handler_status.new_display = display_handler_status.active_display;
   }
   else if ((display_handler_status.new_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#2\r\n"));
+		#endif
+
     display_handler_status.new_display = display_handler_status.active_display;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#3\r\n"));
+		#endif
+
     display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SUBMENU)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#4\r\n"));
+		#endif
+
     if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
@@ -702,6 +717,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_MENU)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#5\r\n"));
+		#endif
+
     if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
@@ -714,7 +733,11 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_ANTENNAS)) {
-    if (PORTC & (1<<LED_ROTATE_BIT))
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#6\r\n"));
+		#endif
+		
+		if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -726,7 +749,11 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }  
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SUBMENU)) {
-    if (PORTC & (1<<LED_ROTATE_BIT))
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#7\r\n"));
+		#endif
+    
+		if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -738,6 +765,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#8\r\n"));
+		#endif
+
     if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
@@ -750,6 +781,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#9\r\n"));
+		#endif
+
     if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -762,7 +797,11 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;   
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_MENU)) {
-    if (PORTC & (1<<LED_ROTATE_BIT))
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#10\r\n"));
+		#endif
+
+		if (PORTC & (1<<LED_ROTATE_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR;
     else if (PORTD & (1<<LED_SUBMENU_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_SUBMENU;
@@ -774,6 +813,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#11\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -788,6 +831,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if (display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SCREENSAVER) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#12\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -802,12 +849,20 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_OPENASC_LOGO)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#13\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else 
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_OPENASC_LOGO;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_MENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SCREENSAVER)) {
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#14\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -822,6 +877,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SCREENSAVER)) {  
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#15\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -836,6 +895,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;   
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_ANTENNAS) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SET_ROTATOR_DIR)) {  
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#16\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -850,6 +913,10 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;   
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_SUBMENU) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_ANTENNAS)) {  
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#17\r\n"));
+		#endif
+
     if (PORTH & (1<<LED_ERROR_BIT))
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_MENU;
     else if (PORTC & (1<<LED_ROTATE_BIT))
@@ -864,18 +931,25 @@ void display_handler_prev_view(void) {
       display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_ANTENNAS) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_OPENASC_LOGO)) {  
-
-    
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#18\r\n"));
+		#endif
   }
   else if ((display_handler_status.active_display == DISPLAY_HANDLER_VIEW_ANTENNAS) && (display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_SUBMENU)) {  
-    
+		#ifdef DEBUG_DISPLAY_HANDLER
+			printf_P(PSTR("DISPLAY->#19\r\n"));
+		#endif
   }  
   else {
     #ifdef DEBUG_DISPLAY_HANDLER
-      printf("PREV_DISP_ELSE\r\n");
+      printf_P(PSTR("PREV_DISP_ELSE\r\n"));
     #endif
-      
-    display_handler_status.new_display = display_handler_status.prev_display;
+
+		//Temporary fix which makes the antenna display being viewed after the powermeter has been disabled, ugly...
+		if ((display_handler_status.prev_display == DISPLAY_HANDLER_VIEW_POWERMETER) && (powermeter_is_active() == 0))
+			display_handler_status.new_display = DISPLAY_HANDLER_VIEW_ANTENNAS;
+		else
+			display_handler_status.new_display = display_handler_status.prev_display;
   }
   
   #ifdef DEBUG_DISPLAY_HANDLER

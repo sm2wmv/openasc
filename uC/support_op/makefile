@@ -117,7 +117,7 @@ CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD) -DEVENT_LIST_SIZE=$(EVENT_LIST_SIZE)
-CFLAGS += -DDEBUG
+#CFLAGS += -DDEBUG
 
 
 
