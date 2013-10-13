@@ -50,14 +50,17 @@ public:
 		void closeEvent ( QCloseEvent * event );
 		void setLEDStatus(unsigned int led_status, unsigned char led_ptt_status);
 private:
-		int interfaceType;
-		QTimer *timerPollRXQueue;
-		QTimer *timerPollStatus;
+    int interfaceType;
+    QTimer *timerPollRXQueue;
+    QTimer *timerPollStatus;
     QTimer *timerActivity;
-		status_struct status;
-		int currBand;
+    status_struct status;
+    int currBand;
     int activityTimeoutCounter;
     void resetGUI();
+    int currBandInfoAddr[6];
+    int currBandInfoBand[6];
+    void updateBandInfo();
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
@@ -92,7 +95,7 @@ public slots:
 
 		void timerPollRXQueueUpdate();
 		void timerPollStatusUpdate();
-    void timerActivityUpdate();
+        void timerActivityUpdate();
 
 		void pushButtonMenuClicked();
 		void pushButtonMenuEnterClicked();

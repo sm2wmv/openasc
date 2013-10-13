@@ -41,5 +41,7 @@
 #define REMOTE_COMMAND_ROTATOR_TURN_CCW           0xBD
 //! Set array direction
 #define REMOTE_COMMAND_SET_ARRAY_DIR              0xBE
+//! Get the current band information on the bus
+#define REMOTE_COMMAND_BAND_INFO                  0xBF
 
 #endif
