@@ -45,16 +45,19 @@ public:
 	bool getRotatorWindowOpen();
 	bool getKeypadWindowOpen();
 
-  bool getFrameRotatorWindow();
-  bool getConnectOnStart();
-  bool getFrameRotatorWindowStartOnTop();
+    bool getFrameRotatorWindow();
+    bool getConnectOnStart();
+    bool getFrameRotatorWindowStartOnTop();
 
-  bool getActivityTimer();
-  int  getActivityTimerTimeoutLimit();
+    bool getActivityTimer();
+    int  getActivityTimerTimeoutLimit();
 
-  bool getShowMousePointer();
+    bool getShowMousePointer();
 
-	void saveSettings();
+    QString getBandInfoBoxName(int boxIndex);
+    int getBandInfoBoxAddr(int boxIndex);
+
+    void saveSettings();
 protected:
 	virtual void changeEvent(QEvent *e);
 private:
@@ -74,13 +77,16 @@ private:
 	bool rotatorWindowOpen;
 	bool terminalWindowOpen;
 
-  bool frameRotatorWindow;
-  bool frameRotatorWindowStartOnTop;
-  bool connectOnStart;
+    bool frameRotatorWindow;
+    bool frameRotatorWindowStartOnTop;
+    bool connectOnStart;
 
-  bool activityTimer;
-  int activityTimerTimeoutLimit;
-  bool showMousePointer;
+    bool activityTimer;
+    int activityTimerTimeoutLimit;
+    bool showMousePointer;
+
+    QString bandInfoBoxName[6];
+    int bandInfoBoxAddr[6];
 public slots:
 	void groupboxNetworkClicked(bool state);
 	void btnOKClicked();
