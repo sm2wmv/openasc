@@ -23,7 +23,8 @@ using namespace std;
 
 void MainWindowImpl::listExtButtonFunctionsLoad() {
 		listExtButtonFunctions << "None" << "Select RX Antenna 1" << "Select RX Antenna 2" << "Select RX Antenna 3" << "Select RX Antenna 4" << "Select RX Antenna 5"
-						<< "Select RX Antenna 6" << "Select RX Antenna 7" << "Select RX Antenna 8" << "Select RX Antenna 9" << "Select RX Antenna 10";
+                        << "Select RX Antenna 6" << "Select RX Antenna 7" << "Select RX Antenna 8" << "Select RX Antenna 9" << "Select RX Antenna 10"
+                        << "Select RX Antenna 11" << "Select RX Antenna 12";
 
 		listExtButtonFunctions << "Toggle TX antenna 1" << "Toggle TX antenna 2" << "Toggle TX antenna 3" << "Toggle TX antenna 4" << "Toggle RX antenna 1"
 						<< "Toggle RX antenna 2" << "Toggle RX antenna 3" << "Toggle RX antenna 4";
@@ -144,6 +145,8 @@ void MainWindowImpl::loadInitialGUIValues() {
 	lineEditRXAntennaName8->setText(rxAntennas.getAntennaName(7));
 	lineEditRXAntennaName9->setText(rxAntennas.getAntennaName(8));
 	lineEditRXAntennaName10->setText(rxAntennas.getAntennaName(9));
+    lineEditRXAntennaName11->setText(rxAntennas.getAntennaName(10));
+    lineEditRXAntennaName12->setText(rxAntennas.getAntennaName(11));
 	
 	lineEditRXAntennaOutputs1->setText(rxAntennas.getAntennaName(0));
 	lineEditRXAntennaOutputs2->setText(rxAntennas.getAntennaName(1));
@@ -155,6 +158,8 @@ void MainWindowImpl::loadInitialGUIValues() {
 	lineEditRXAntennaOutputs8->setText(rxAntennas.getAntennaName(7));
 	lineEditRXAntennaOutputs9->setText(rxAntennas.getAntennaName(8));
 	lineEditRXAntennaOutputs10->setText(rxAntennas.getAntennaName(9));
+    lineEditRXAntennaOutputs11->setText(rxAntennas.getAntennaName(10));
+    lineEditRXAntennaOutputs12->setText(rxAntennas.getAntennaName(11));
 	
 	lineEditRXAntennaOutputStr160M->setText(rxAntennas.getBandOutputString(0));
 	lineEditRXAntennaOutputStr80M->setText(rxAntennas.getBandOutputString(1));
@@ -212,6 +217,7 @@ void MainWindowImpl::loadInitialGUIValues() {
     lineEditEthernetIP->setText(settingsClass.getEthernetIPAddr());
     lineEditEthernetSubmask->setText(settingsClass.getEthernetSubmask());
     spinBoxEthernetPort->setValue(settingsClass.getEthernetPort());
+    checkBoxEthernetLocalMode->setChecked(settingsClass.getEthernetLocalMode());
 
     comboBoxStatusField->setCurrentIndex(settingsClass.getStatusFieldIndex());
 }
@@ -503,8 +509,9 @@ void MainWindowImpl::actionSaveTriggered() {
 	settingsClass.setEthernetIPAddr(lineEditEthernetIP->text());
 	settingsClass.setEthernetSubmask(lineEditEthernetSubmask->text());
 	settingsClass.setEthernetPort(spinBoxEthernetPort->value());
+  settingsClass.setEthernetLocalMode(checkBoxEthernetLocalMode->isChecked());
 
-	settingsClass.writeSettings(settings);
+  SettingsClass.writeSettings(settings);
 	
 	rotators.writeSettings(settings);
 	
@@ -1851,7 +1858,5 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WindowFlags f) : QMainWind
 	comboBoxStatusField->addItem("Radio PTT ON/OFF");
 	comboBoxStatusField->addItem("Amplifier PTT ON/OFF");
 
-
     connect(&serialPort,SIGNAL(eventReceieved(char,QString)),this,SLOT(serialPortEventReceieved(char,QString)));
-    //connect(serialPort->, SIGNAL(eventReceieved(QString)), this, SLOT(serialPortEventReceieved(QString)));
 }
