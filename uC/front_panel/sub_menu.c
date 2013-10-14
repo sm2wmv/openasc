@@ -187,7 +187,7 @@ void sub_menu_pos_up(unsigned char ant_index) {
  *  \param ant_index The index of the antenna you wish to send the string of 
  *  \param pos The sub menu position we wish to send the output str of */
 void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
-	unsigned char activate_cmd=0, deactivate_cmd=0, deactivate_all_cmd=0;
+	unsigned char activate_cmd=0, deactivate_all_cmd=0;
 	unsigned char length = 0;
 	
 	unsigned char out_str[SUB_MENU_ARRAY_STR_SIZE];
@@ -195,7 +195,6 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 	switch (ant_index) {
 		case 0:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT1_OUTPUT;
-			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT1_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT1_OUTPUTS;
 			
 			if (sub_menu_get_type(0) == SUBMENU_VERT_ARRAY) {
@@ -209,7 +208,6 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 			break;
 		case 1:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT2_OUTPUT;
-			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT2_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT2_OUTPUTS;
 			
 			if (sub_menu_get_type(1) == SUBMENU_VERT_ARRAY) {
@@ -223,7 +221,6 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 			break;
 		case 2:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT3_OUTPUT;
-			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT3_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT3_OUTPUTS;
 			
 			if (sub_menu_get_type(2) == SUBMENU_VERT_ARRAY) {
@@ -237,7 +234,6 @@ void sub_menu_send_data_to_bus(unsigned char ant_index, unsigned char pos) {
 			break;
 		case 3:
 			activate_cmd = BUS_CMD_DRIVER_ACTIVATE_SUBMENU_ANT4_OUTPUT;
-			deactivate_cmd = BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT;
 			deactivate_all_cmd = BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS;
 			
 			if (sub_menu_get_type(3) == SUBMENU_VERT_ARRAY) {

@@ -172,6 +172,4 @@ unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index);
 void antenna_ctrl_set_antenna_to_rotate(unsigned char index);
 char antenna_ctrl_get_antenna_to_rotate(void);
 
-char antenna_ctrl_get_rotates_char(unsigned char index);
-
 #endif

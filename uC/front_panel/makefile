@@ -130,7 +130,6 @@ CDEFS += -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
 #Turn on debugging for the display handler
 #CDEFS += -DDEBUG_DISPLAY_HANDLER
 
-
 # Additional paths where to look for C sources
 #vpath %.c $(ROOT)/misc
 

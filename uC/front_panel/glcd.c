@@ -35,6 +35,7 @@
 // include fonts
 #include "pictures.h"
 #include "ethernet.h"
+#include "main.h"
 #include <string.h> 
 #include <stdio.h>
 
@@ -69,7 +70,7 @@ void glcd_update(unsigned int top, unsigned int bottom)
 			glcd_data_write(glcd_buffer[y][x]);
     
     
-  if (ethernet_is_active()) {
+  if (ethernet_is_active() && (main_get_ethernet_local_mode() == 0)) {
     ethernet_send_display_data(0,(unsigned char *)glcd_buffer,1024);
     
     #ifdef ETHERNET_DEBUG_ENABLED
@@ -79,7 +80,7 @@ void glcd_update(unsigned int top, unsigned int bottom)
 }
 
 void glcd_ethernet_send_disp(void) {
-  if (ethernet_is_active()) {
+  if (ethernet_is_active() && (main_get_ethernet_local_mode() == 0)) {
     ethernet_send_display_data(0,(unsigned char *)glcd_buffer,1024);
     
     #ifdef ETHERNET_DEBUG_ENABLED

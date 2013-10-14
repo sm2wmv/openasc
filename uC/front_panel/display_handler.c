@@ -422,7 +422,7 @@ void display_handler_rotator_directions(unsigned char band) {
   }
   
   if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_ROTATOR_FLAG)) {
-    sprintf_P((char *)temp_dir,PSTR("%3u deg"),antenna_ctrl_get_direction(1),antenna_ctrl_get_rotates_char(1));
+    sprintf_P((char *)temp_dir,PSTR("%3u deg"),antenna_ctrl_get_direction(1));
     display_handler_text_right_adjust(DISPLAY_TEXT_ROTATOR_ANT2_X_POS,DISPLAY_TEXT_ROTATOR_ANT2_Y_POS,temp_dir,strlen(temp_dir),FONT_SEVEN_DOT);
   }
 

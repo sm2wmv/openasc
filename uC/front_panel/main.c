@@ -124,8 +124,44 @@ void clear_screensaver_timer(void) {
   }
 }
 
+unsigned char main_get_ethernet_local_mode(void) {
+  return(settings.ethernet_local_mode);
+}
+
 struct_setting* main_get_settings_ptr(void) {
   return((struct_setting *)&settings);
+}
+
+void main_update_mainbox_list(unsigned char from_addr) {
+  unsigned char* band_info_ptr = bus_ping_get_mainbox_adresses();
+  bus_struct_ping_status* ping_status_ptr;
+  
+  for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
+    if (band_info_ptr[i] == 0) {
+      //If we reach the end of the ping list we know that our own box is not 
+      //in the ping list, so we insert this information so it gets sent to the ethernet unit
+      status.mainbox_status[i][0] = bus_get_address();
+      status.mainbox_status[i][1] = status.selected_band;
+      break;
+    }
+    else if (band_info_ptr[i] == from_addr) {
+      ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
+      
+      status.mainbox_status[i][0] = from_addr;
+      status.mainbox_status[i][1] = ping_status_ptr->data[1];
+    }
+  }
+  
+  if (ethernet_is_active() && (main_get_ethernet_local_mode() == 0)) {
+    unsigned char data[MAINBOX_DEVICE_COUNT*2];
+    
+    for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
+      data[i] = status.mainbox_status[i][0];
+      data[i+MAINBOX_DEVICE_COUNT] = status.mainbox_status[i][1];
+    }
+    
+    ethernet_send_data(0, REMOTE_COMMAND_BAND_INFO, MAINBOX_DEVICE_COUNT*2, data);
+  }
 }
 
 void forceHardReset(void) { 
@@ -618,7 +654,7 @@ int main(void){
   //Check if this is the first time we start the device, if so we need to initiate some
 	//data structures. To force this at startup just change the value that should be read and
 	//written to the EEPROM
-	if (eeprom_read_startup_byte() != 0x04) {
+	if (eeprom_read_startup_byte() != 0x05) {
 		eeprom_create_table();
 		
 		eeprom_read_table();
@@ -636,7 +672,7 @@ int main(void){
 		//Write the settings to the EEPROM
 		eeprom_save_runtime_settings(&runtime_settings);
 		
-		eeprom_write_startup_byte(0x04);
+		eeprom_write_startup_byte(0x05);
 
 		//The first time the box is started, we need to setup the settings
 		computer_interface_activate_setup();
@@ -1013,7 +1049,7 @@ int main(void){
 			main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
 		}
 		
-		event_check_pings();
+    event_check_pings();
 	}
 }
 
@@ -1086,18 +1122,8 @@ ISR(SIG_OUTPUT_COMPARE0A) {
 	
 	//Update every 500 ms
 	if ((counter_ms % 500) == 0) {
-		unsigned char flags = 0;
-		
-		for (int i=0;i<4;i++) {
-			flags |= antenna_ctrl_get_rotator_flags(i);
-		}
-		
-/*		if (flags & (1<<FLAG_NO_ROTATION))
-			led_set_rotation_active(LED_STATE_OFF);
-		else
-			led_set_rotation_active(LED_STATE_ON);
-	*/	
-		if (status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) {
+
+    if (status.function_status & (1<<FUNC_STATUS_SELECT_ANT_ROTATE)) {
 			if (main_flags & (1<<FLAG_LAST_ANTENNA_BLINK)) {
 				main_flags &= ~(1<<FLAG_LAST_ANTENNA_BLINK);
 				

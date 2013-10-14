@@ -24,6 +24,7 @@
 #define _MAIN_H_
 
 #include "version.h"
+#include "../global.h"
 
 //! Macro to enable timer 0 interrupt
 #define ENABLE_TIMER0_INT() 	TIMSK0 |= (1<<OCIE0A);
@@ -270,6 +271,8 @@ typedef struct {
   unsigned char ethernet_submask[4];
   //! The ethernet port
   unsigned int ethernet_port;
+  //! Ethernet local mode
+  unsigned char ethernet_local_mode;
   //! Status field index
   unsigned char status_field_index;
 } struct_setting;
@@ -335,6 +338,8 @@ typedef struct {
   unsigned char amp_band;
   /*! The amplifier operational status */
   unsigned char amp_op_status;
+  /*! Mainboxes band info byte 0 = addr, byte 1 = current band */
+  unsigned char mainbox_status[MAINBOX_DEVICE_COUNT][2];
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM
@@ -367,6 +372,8 @@ struct_runtime_settings runtime_settings;
 
 void main_update_ptt_status(void);
 
+void main_update_mainbox_list(unsigned char from_addr);
+
 void main_save_settings(void);
 
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
@@ -398,6 +405,7 @@ unsigned char main_get_current_band(void);
 
 void main_process_lock(unsigned char lock_status);
 
+unsigned char main_get_ethernet_local_mode(void);
 struct_setting* main_get_settings_ptr(void);
 
 unsigned char main_get_amp_addr(void);
