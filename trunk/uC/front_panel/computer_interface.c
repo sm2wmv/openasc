@@ -625,6 +625,8 @@ void computer_interface_parse_data(void) {
           settings_ptr->ethernet_port = computer_comm.rx_buffer_start[9] << 8;
           settings_ptr->ethernet_port |= computer_comm.rx_buffer_start[10];
           
+          settings_ptr->ethernet_local_mode = computer_comm.rx_buffer_start[11];
+          
           computer_interface_send_ack();
           break;
 				case CTRL_SET_DEVICE_SETTINGS_OTHER:

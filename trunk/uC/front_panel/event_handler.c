@@ -244,7 +244,7 @@ void event_process_task(unsigned char task_index) {
 	clear_screensaver_timer();
 	
 	/* Requires that we dont change the order of the functions */
-	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT10)) {
+	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT12)) {
     event_set_rx_antenna(task_index);
 		display_handler_repaint();
 
@@ -1336,8 +1336,12 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
           //printf("BUS_PING->  DATA[%i]: %i\r\n",i,bus_message.data[i+1]);
     #endif
     
-    if (bus_message.length > 1)
+    if (bus_message.length > 1) {
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], bus_message.length-1, (unsigned char *)(bus_message.data+1));
+    
+      //We might have recieved a ping from a mainbox, so we need to update the band information
+      main_update_mainbox_list(bus_message.from_addr);
+    }
 		else
 			bus_ping_new_stamp(bus_message.from_addr, bus_message.data[0], 0, 0);
 	}

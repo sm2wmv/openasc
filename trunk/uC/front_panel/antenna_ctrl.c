@@ -149,13 +149,6 @@ unsigned char antenna_ctrl_comb_allowed(unsigned char antenna_comb) {
 	return(0);
 }
 
-char antenna_ctrl_get_rotates_char(unsigned char index) {
-  if (current_antennas.rotator_flags[index] & (1<<FLAG_ROTATOR_ROTATES_OVER_SOUTH))
-    return('S');
-
-  return('N');
-}
-
 /*! \brief This function will go through a parameter with addresses and send a command to it
  *  \param addresses The list of addresses to send CMD to
  *  \param length The length of the address list

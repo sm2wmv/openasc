@@ -557,10 +557,13 @@ void ethernet_process(void) {
         #endif
 
         ethernet_send_data(0,REMOTE_COMMAND_CONNECTED,0,0);
-          
+
         remote_control_send_status();
-        remote_control_send_rx_antennas();
-        glcd_ethernet_send_disp();
+
+        if (main_get_ethernet_local_mode() == 0) {
+          remote_control_send_rx_antennas();
+          glcd_ethernet_send_disp();
+        }
       }
           
       rx_msg_size = ethernet_recv_size();
