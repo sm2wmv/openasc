@@ -33,16 +33,7 @@
     <property name="sizeConstraint">
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
-    <property name="leftMargin">
-     <number>2</number>
-    </property>
-    <property name="topMargin">
-     <number>2</number>
-    </property>
-    <property name="rightMargin">
-     <number>2</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>2</number>
     </property>
     <item row="0" column="0">
@@ -57,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -4072,8 +4063,8 @@ a function to it</string>
          <rect>
           <x>255</x>
           <y>290</y>
-          <width>256</width>
-          <height>130</height>
+          <width>208</width>
+          <height>128</height>
          </rect>
         </property>
         <property name="title">
@@ -4082,59 +4073,62 @@ a function to it</string>
         <property name="checkable">
          <bool>true</bool>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_13">
-         <item>
-          <layout class="QGridLayout" name="gridLayout_18">
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelButtonEthernetIP">
-             <property name="text">
-              <string>IP addr:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEditEthernetIP"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="labelButtonEthernetGatewayAddr">
-             <property name="text">
-              <string>Sub mask:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditEthernetSubmask"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="labelButtonEthernetPort">
-             <property name="text">
-              <string>Port:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="spinBoxEthernetPort">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>65535</number>
-             </property>
-             <property name="value">
-              <number>4750</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
+        <layout class="QFormLayout" name="formLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelButtonEthernetIP">
+           <property name="text">
+            <string>IP addr:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEditEthernetIP"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelButtonEthernetGatewayAddr">
+           <property name="text">
+            <string>Sub mask:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEditEthernetSubmask"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelButtonEthernetPort">
+           <property name="text">
+            <string>Port:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="spinBoxEthernetPort">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>65535</number>
+           </property>
+           <property name="value">
+            <number>4750</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkBoxEthernetLocalMode">
+           <property name="text">
+            <string>Local mode</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

@@ -53,6 +53,8 @@ class SettingsClass {
 		void setEthernetEnabled(bool state);
 		void setStatusFieldIndex(int index);
 		int getStatusFieldIndex();
+        bool getEthernetLocalMode();
+        void setEthernetLocalMode(bool state);
 	private:
 		int networkAddress;
 		bool deviceIsMaster;
@@ -71,6 +73,7 @@ class SettingsClass {
 		bool ethernetEnabled;
 		QString ethernetIPAddr;
 		QString ethernetSubmask;
+        bool ethernetLocalMode;
 		unsigned int ethernetPort;
 		int statusFieldIndex;
 	protected:

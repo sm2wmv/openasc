@@ -58,8 +58,8 @@ private:
     int currBand;
     int activityTimeoutCounter;
     void resetGUI();
-    int currBandInfoAddr[6];
-    int currBandInfoBand[6];
+    unsigned char currBandInfoAddr[6];
+    unsigned char currBandInfoBand[6];
     void updateBandInfo();
 protected:
 		void paintEvent(QPaintEvent *event);
@@ -90,6 +90,8 @@ public slots:
 		void pushButtonRXAnt8Clicked();
 		void pushButtonRXAnt9Clicked();
 		void pushButtonRXAnt10Clicked();
+        void pushButtonRXAnt11Clicked();
+        void pushButtonRXAnt12Clicked();
 
 		void pushButtonRXAntClicked();
 

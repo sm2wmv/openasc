@@ -54,7 +54,7 @@
          <x>10</x>
          <y>10</y>
          <width>145</width>
-         <height>421</height>
+         <height>461</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -63,42 +63,36 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLabel" name="labelRXAntennas">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>5</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>RX Antennas</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>30</y>
-          <width>127</width>
-          <height>381</height>
+          <y>5</y>
+          <width>126</width>
+          <height>416</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QLabel" name="labelRXAntennas">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>RX Antennas</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt1">
            <property name="minimumSize">
             <size>
@@ -125,7 +119,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt2">
            <property name="minimumSize">
             <size>
@@ -141,7 +135,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt3">
            <property name="minimumSize">
             <size>
@@ -157,7 +151,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt4">
            <property name="minimumSize">
             <size>
@@ -173,7 +167,7 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt5">
            <property name="minimumSize">
             <size>
@@ -189,7 +183,7 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt6">
            <property name="minimumSize">
             <size>
@@ -205,7 +199,7 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt7">
            <property name="minimumSize">
             <size>
@@ -221,7 +215,23 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item>
+          <widget class="QPushButton" name="pushButtonRXAnt8">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt9">
            <property name="minimumSize">
             <size>
@@ -237,7 +247,7 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
+         <item>
           <widget class="QPushButton" name="pushButtonRXAnt10">
            <property name="minimumSize">
             <size>
@@ -253,8 +263,24 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
-          <widget class="QPushButton" name="pushButtonRXAnt8">
+         <item>
+          <widget class="QPushButton" name="pushButtonRXAnt11">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonRXAnt12">
            <property name="minimumSize">
             <size>
              <width>0</width>

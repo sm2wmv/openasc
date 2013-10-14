@@ -25,11 +25,12 @@ SettingsClass::SettingsClass() {
 	ampFuncStatus = 0;
 	ampBandSegmentCount = 1;
 
-  /*! Ethernet */
-  ethernetPort = 4750;
-  ethernetIPAddr = "192.168.1.130";
-	ethernetSubmask = "255.255.255.0";
-  ethernetEnabled = false;
+    /*! Ethernet */
+    ethernetPort = 4750;
+    ethernetIPAddr = "192.168.1.130";
+    ethernetSubmask = "255.255.255.0";
+    ethernetEnabled = false;
+    ethernetLocalMode = false;
 
 	statusFieldIndex = 0;
 }
@@ -88,10 +89,11 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("AmpFuncStatus",ampFuncStatus);
 	settings.setValue("AmpBandSegmentCount",ampBandSegmentCount);
 
-  settings.setValue("EthernetEnabled",ethernetEnabled);
-  settings.setValue("EthernetIPAddr",ethernetIPAddr);
-	settings.setValue("EthernetSubmask",ethernetSubmask);
-  settings.setValue("EthernetPort",ethernetPort);
+    settings.setValue("EthernetEnabled",ethernetEnabled);
+    settings.setValue("EthernetIPAddr",ethernetIPAddr);
+    settings.setValue("EthernetSubmask",ethernetSubmask);
+    settings.setValue("EthernetPort",ethernetPort);
+    settings.setValue("EthernetLocalMode",ethernetLocalMode);
 
 	settings.setValue("StatusFieldIndex",statusFieldIndex);
 
@@ -152,10 +154,11 @@ void SettingsClass::loadSettings(QSettings& settings) {
 	ampFuncStatus = settings.value("AmpFuncStatus").toInt();
 	ampBandSegmentCount = settings.value("AmpBandSegmentCount").toInt();
 
-  ethernetEnabled = settings.value("EthernetEnabled").toBool();
-  ethernetIPAddr = settings.value("EthernetIPAddr").toString();
-	ethernetSubmask = settings.value("EthernetSubmask").toString();
-  ethernetPort = settings.value("EthernetPort").toInt();
+    ethernetEnabled = settings.value("EthernetEnabled").toBool();
+    ethernetIPAddr = settings.value("EthernetIPAddr").toString();
+    ethernetSubmask = settings.value("EthernetSubmask").toString();
+    ethernetPort = settings.value("EthernetPort").toInt();
+    ethernetLocalMode = settings.value("EthernetLocalMode").toBool();
 
 	statusFieldIndex = settings.value("StatusFieldIndex").toInt();
 
@@ -250,46 +253,58 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 9, tx_buff);
 
 
-  QStringList listIP = ethernetIPAddr.split(QRegExp("[.]"));
-	QStringList listSubmask = ethernetSubmask.split(QRegExp("[.]"));
+    QStringList listIP = ethernetIPAddr.split(QRegExp("[.]"));
+    QStringList listSubmask = ethernetSubmask.split(QRegExp("[.]"));
 
-  tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_ETHERNET;
+    tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_ETHERNET;
 
-  if (listIP.size() == 4) {
+    if (listIP.size() == 4) {
     tx_buff[1] = listIP.takeFirst().toInt();
     tx_buff[2] = listIP.takeFirst().toInt();
     tx_buff[3] = listIP.takeFirst().toInt();
     tx_buff[4] = listIP.takeFirst().toInt();
-  }
-  else
-  {
+    }
+    else
+    {
     tx_buff[1] = 0;
     tx_buff[2] = 0;
     tx_buff[3] = 0;
     tx_buff[4] = 0;
-  }
+    }
 
-	if (listSubmask.size() == 4) {
-		tx_buff[5] = listSubmask.takeFirst().toInt();
-		tx_buff[6] = listSubmask.takeFirst().toInt();
-		tx_buff[7] = listSubmask.takeFirst().toInt();
-		tx_buff[8] = listSubmask.takeFirst().toInt();
-  }
-  else
-  {
+    if (listSubmask.size() == 4) {
+        tx_buff[5] = listSubmask.takeFirst().toInt();
+        tx_buff[6] = listSubmask.takeFirst().toInt();
+        tx_buff[7] = listSubmask.takeFirst().toInt();
+        tx_buff[8] = listSubmask.takeFirst().toInt();
+    }
+    else
+    {
     tx_buff[5] = 0;
     tx_buff[6] = 0;
     tx_buff[7] = 0;
     tx_buff[8] = 0;
-  }
+    }
 
-  tx_buff[9] = (ethernetPort >> 8) & 0xFF; //Upper byte
-  tx_buff[10] = ethernetPort & 0xFF;       //Lower byte
+    tx_buff[9] = (ethernetPort >> 8) & 0xFF; //Upper byte
+    tx_buff[10] = ethernetPort & 0xFF;       //Lower byte
+    if (ethernetLocalMode)
+        tx_buff[11] = 1;
+    else
+        tx_buff[11] = 0;
 
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 11, tx_buff);
+    serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 12, tx_buff);
 
 	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
 	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
+}
+
+bool SettingsClass::getEthernetLocalMode(){
+    return(ethernetLocalMode);
+}
+
+void SettingsClass::setEthernetLocalMode(bool state){
+    ethernetLocalMode = state;
 }
 
 void SettingsClass::setPTTInterlockInput(unsigned char value) {

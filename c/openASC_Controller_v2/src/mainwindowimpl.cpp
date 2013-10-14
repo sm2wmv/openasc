@@ -158,15 +158,27 @@ void MainWindowImpl::pushButtonRXAnt10Clicked() {
 	}
 }
 
+void MainWindowImpl::pushButtonRXAnt11Clicked() {
+    if (TCPComm->isConnected()) {
+        TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT11);
+    }
+}
+
+void MainWindowImpl::pushButtonRXAnt12Clicked() {
+    if (TCPComm->isConnected()) {
+        TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT12);
+    }
+}
+
 void MainWindowImpl::pushButtonMenuClicked() {
-//  if (TCPComm->isConnected()) {
-  TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_MENU_BUTTON);
-//  }
+  if (TCPComm->isConnected()) {
+      TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_MENU_BUTTON);
+  }
 }
 
 void MainWindowImpl::pushButtonMenuEnterClicked() {
 	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_KNOB_BUTTON);
+    TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_KNOB_BUTTON);
 	}
 }
 
@@ -343,185 +355,193 @@ void MainWindowImpl::setLEDStatus(unsigned int led_status, unsigned char led_ptt
 }
 
 void MainWindowImpl::timerPollRXQueueUpdate(void) {
-	if (TCPComm->isConnected()) {
-		if (TCPComm->rxQueueSize() > 0) {
-			QByteArray rxMessage = TCPComm->getMessage();
-				if (rxMessage.size() >= 3) {
-				unsigned int len = (rxMessage.at(1) << 8) + rxMessage.at(2);
-				unsigned char cmd = rxMessage.at(0);
-        if (cmd == REMOTE_COMMAND_DISPLAY_DATA) {
-            if ((len == 1024) && (rxMessage.size() == 1027)) {
-                unsigned int i=3;
+    if (TCPComm->isConnected()) {
+        if (TCPComm->rxQueueSize() > 0) {
+            QByteArray rxMessage = TCPComm->getMessage();
+            if (rxMessage.size() >= 3) {
+            unsigned int len = (rxMessage.at(1) << 8) + rxMessage.at(2);
+            unsigned char cmd = rxMessage.at(0);
 
-                for (unsigned int y=0;y<8;y++)
-                    for (unsigned int x=0;x<128;x++)
-                        glcd_buffer[y][x] = ~rxMessage.at(i++);
+            if (cmd == REMOTE_COMMAND_DISPLAY_DATA) {
+                if ((len == 1024) && (rxMessage.size() == 1027)) {
+                    unsigned int i=3;
 
-                repaint();
-            }
-        }
-        else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
-            switch(rxMessage.at(3)) {
-                case 0:
-                    pushButtonRXAnt1->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 1:
-                    pushButtonRXAnt2->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 2:
-                    pushButtonRXAnt3->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 3:
-                    pushButtonRXAnt4->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 4:
-                    pushButtonRXAnt5->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 5:
-                    pushButtonRXAnt6->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 6:
-                    pushButtonRXAnt7->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 7:
-                    pushButtonRXAnt8->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 8:
-                    pushButtonRXAnt9->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                case 9:
-                    pushButtonRXAnt10->setText(QString(rxMessage.mid(4,len-1)));
-                    break;
-                default:
-                    break;
+                    for (unsigned int y=0;y<8;y++)
+                        for (unsigned int x=0;x<128;x++)
+                            glcd_buffer[y][x] = ~rxMessage.at(i++);
+
+                    repaint();
                 }
             }
-            else if (cmd == REMOTE_COMMAND_STATUS) {
-                if (rxMessage.size() > 7) {
-                    setLEDStatus((rxMessage.at(4) << 8) | rxMessage.at(5),rxMessage.at(3));
+            else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
+                switch(rxMessage.at(3)) {
+                    case 0:
+                        pushButtonRXAnt1->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 1:
+                        pushButtonRXAnt2->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 2:
+                        pushButtonRXAnt3->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 3:
+                        pushButtonRXAnt4->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 4:
+                        pushButtonRXAnt5->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 5:
+                        pushButtonRXAnt6->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 6:
+                        pushButtonRXAnt7->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 7:
+                        pushButtonRXAnt8->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 8:
+                        pushButtonRXAnt9->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 9:
+                        pushButtonRXAnt10->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 10:
+                        pushButtonRXAnt11->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    case 11:
+                        pushButtonRXAnt12->setText(QString(rxMessage.mid(4,len-1)));
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                else if (cmd == REMOTE_COMMAND_STATUS) {
+                    if (rxMessage.size() > 7) {
+                        setLEDStatus((rxMessage.at(4) << 8) | rxMessage.at(5),rxMessage.at(3));
 
-                    comboBoxBand->blockSignals(true);
+                        comboBoxBand->blockSignals(true);
 
-                    if (currBand != rxMessage.at(6)) {
-                        switch(rxMessage.at(6)) {
-                            case BAND_UNDEFINED:
-                                labelBand->setText("Band: None");
-                                comboBoxBand->setCurrentIndex(0);
-                                rotatorWindow->loadBand(BAND_UNDEFINED);
-                                break;
-                            case BAND_160M:
-                                labelBand->setText("Band: 160m");
-                                comboBoxBand->setCurrentIndex(1);
-                                rotatorWindow->loadBand(BAND_160M);
-                                break;
-                            case BAND_80M:
-                                labelBand->setText("Band: 80m");
-                                comboBoxBand->setCurrentIndex(2);
-                                rotatorWindow->loadBand(BAND_80M);
-                                break;
-                            case BAND_40M:
-                                labelBand->setText("Band: 40m");
-                                comboBoxBand->setCurrentIndex(3);
-                                rotatorWindow->loadBand(BAND_40M);
-                                break;
-                            case BAND_30M:
-                                labelBand->setText("Band: 30m");
-                                comboBoxBand->setCurrentIndex(4);
-                                rotatorWindow->loadBand(BAND_30M);
-                                break;
-                            case BAND_20M:
-                                labelBand->setText("Band: 20m");
-                                comboBoxBand->setCurrentIndex(5);
-                                rotatorWindow->loadBand(BAND_20M);
-                                break;
-                            case BAND_17M:
-                                labelBand->setText("Band: 17m");
-                                comboBoxBand->setCurrentIndex(6);
-                                rotatorWindow->loadBand(BAND_17M);
-                                break;
-                            case BAND_15M:
-                                labelBand->setText("Band: 15m");
-                                comboBoxBand->setCurrentIndex(7);
-                                rotatorWindow->loadBand(BAND_15M);
-                                break;
-                            case BAND_12M:
-                                labelBand->setText("Band: 12m");
-                                comboBoxBand->setCurrentIndex(8);
-                                rotatorWindow->loadBand(BAND_12M);
-                                break;
-                            case BAND_10M:
-                                labelBand->setText("Band: 10m");
-                                comboBoxBand->setCurrentIndex(9);
-                                rotatorWindow->loadBand(BAND_10M);
-                                break;
-                        default:
-                                labelBand->setText("Band: None");
-                                comboBoxBand->setCurrentIndex(0);
-                                rotatorWindow->loadBand(BAND_UNDEFINED);
-                                break;
+                        if (currBand != rxMessage.at(6)) {
+                            switch(rxMessage.at(6)) {
+                                case BAND_UNDEFINED:
+                                    labelBand->setText("Band: None");
+                                    comboBoxBand->setCurrentIndex(0);
+                                    rotatorWindow->loadBand(BAND_UNDEFINED);
+                                    break;
+                                case BAND_160M:
+                                    labelBand->setText("Band: 160m");
+                                    comboBoxBand->setCurrentIndex(1);
+                                    rotatorWindow->loadBand(BAND_160M);
+                                    break;
+                                case BAND_80M:
+                                    labelBand->setText("Band: 80m");
+                                    comboBoxBand->setCurrentIndex(2);
+                                    rotatorWindow->loadBand(BAND_80M);
+                                    break;
+                                case BAND_40M:
+                                    labelBand->setText("Band: 40m");
+                                    comboBoxBand->setCurrentIndex(3);
+                                    rotatorWindow->loadBand(BAND_40M);
+                                    break;
+                                case BAND_30M:
+                                    labelBand->setText("Band: 30m");
+                                    comboBoxBand->setCurrentIndex(4);
+                                    rotatorWindow->loadBand(BAND_30M);
+                                    break;
+                                case BAND_20M:
+                                    labelBand->setText("Band: 20m");
+                                    comboBoxBand->setCurrentIndex(5);
+                                    rotatorWindow->loadBand(BAND_20M);
+                                    break;
+                                case BAND_17M:
+                                    labelBand->setText("Band: 17m");
+                                    comboBoxBand->setCurrentIndex(6);
+                                    rotatorWindow->loadBand(BAND_17M);
+                                    break;
+                                case BAND_15M:
+                                    labelBand->setText("Band: 15m");
+                                    comboBoxBand->setCurrentIndex(7);
+                                    rotatorWindow->loadBand(BAND_15M);
+                                    break;
+                                case BAND_12M:
+                                    labelBand->setText("Band: 12m");
+                                    comboBoxBand->setCurrentIndex(8);
+                                    rotatorWindow->loadBand(BAND_12M);
+                                    break;
+                                case BAND_10M:
+                                    labelBand->setText("Band: 10m");
+                                    comboBoxBand->setCurrentIndex(9);
+                                    rotatorWindow->loadBand(BAND_10M);
+                                    break;
+                            default:
+                                    labelBand->setText("Band: None");
+                                    comboBoxBand->setCurrentIndex(0);
+                                    rotatorWindow->loadBand(BAND_UNDEFINED);
+                                    break;
+                            }
+
+                            currBand = rxMessage.at(6);
                         }
 
-                        currBand = rxMessage.at(6);
+                        comboBoxBand->blockSignals(false);
+                    }
+                }
+                else if (cmd == REMOTE_COMMAND_TERMINAL_DATA) {
+                    terminalWindow->addNewMessage(rxMessage);
+                }
+                else if (cmd == REMOTE_COMMAND_CONNECTED) {
+                    labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+                    actionConnect->setEnabled(false);
+                    actionDisconnect->setEnabled(true);
+                }
+                else if (cmd == REMOTE_COMMAND_ROTATOR_SET_HEADING) {
+                    unsigned char temp[2];
+                    temp[0] = rxMessage.at(4);
+                    temp[1] = rxMessage.at(5);
+                    rotatorWindow->setRotatorAngle(rxMessage.at(3),(temp[0] << 8) + temp[1]);
+                    rotatorWindow->setRotatorStatusText(rxMessage.at(3),rxMessage.at(6));
+                }
+                else if (cmd == REMOTE_COMMAND_BAND_INFO) {
+                    bool bUpdateBandInfo = false;
+
+                    for (unsigned char i=0;i<6;i++) {
+                        unsigned char temp = currBandInfoAddr[i];
+                        currBandInfoAddr[i] = rxMessage.at(3+i);
+
+                        if (temp != currBandInfoAddr[i])
+                            bUpdateBandInfo = true;
                     }
 
-                    comboBoxBand->blockSignals(false);
+                    for (unsigned char i=0;i<6;i++) {
+                        unsigned char temp = currBandInfoBand[i];
+
+                        currBandInfoBand[i] = rxMessage.at(9+i);
+
+                        if (temp != currBandInfoBand[i])
+                            bUpdateBandInfo = true;
+                    }
+
+                    if (bUpdateBandInfo)
+                        updateBandInfo();
                 }
             }
-            else if (cmd == REMOTE_COMMAND_TERMINAL_DATA) {
-                terminalWindow->addNewMessage(rxMessage);
-            }
-            else if (cmd == REMOTE_COMMAND_CONNECTED) {
-                labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_ON));
-                actionConnect->setEnabled(false);
-                actionDisconnect->setEnabled(true);
-            }
-            else if (cmd == REMOTE_COMMAND_ROTATOR_SET_HEADING) {
-                unsigned char temp[2];
-                temp[0] = rxMessage.at(4);
-                temp[1] = rxMessage.at(5);
-                rotatorWindow->setRotatorAngle(rxMessage.at(3),(temp[0] << 8) + temp[1]);
-                rotatorWindow->setRotatorStatusText(rxMessage.at(3),rxMessage.at(6));
-            }
-            else if (cmd == REMOTE_COMMAND_BAND_INFO) {
-                bool bUpdateBandInfo = false;
-
-                for (unsigned char i=0;i<6;i++) {
-                    unsigned char temp = currBandInfoAddr[i];
-                    currBandInfoAddr[i] = rxMessage.at(3+i);
-
-                    if (temp != currBandInfoAddr[i])
-                        bUpdateBandInfo = true;
-                }
-
-                for (unsigned char i=0;i<6;i++) {
-                    unsigned char temp = currBandInfoBand[i];
-                    currBandInfoBand[i] = rxMessage.at(9+i);
-
-                    if (temp != currBandInfoBand[i])
-                        bUpdateBandInfo = true;
-                }
-
-                if (bUpdateBandInfo)
-                    updateBandInfo();
-            }
-        }
         }
     }
 }
 
 void MainWindowImpl::updateBandInfo() {
     for (unsigned char i=0;i<6;i++) {
-        if (settingsDialog->getBandInfoBoxAddr(0) == currBandInfoAddr[i])
+        if ((settingsDialog->getBandInfoBoxAddr(0) != 0) && (settingsDialog->getBandInfoBoxAddr(0) == currBandInfoAddr[i]))
             labelBoxABand->setText(getBandName(currBandInfoBand[i]));
-        else if (settingsDialog->getBandInfoBoxAddr(1) == currBandInfoAddr[i])
+        else if ((settingsDialog->getBandInfoBoxAddr(1) != 0) && (settingsDialog->getBandInfoBoxAddr(1) == currBandInfoAddr[i]))
             labelBoxBBand->setText(getBandName(currBandInfoBand[i]));
-        else if (settingsDialog->getBandInfoBoxAddr(2) == currBandInfoAddr[i])
+        else if ((settingsDialog->getBandInfoBoxAddr(2) != 0) && (settingsDialog->getBandInfoBoxAddr(2) == currBandInfoAddr[i]))
             labelBoxCBand->setText(getBandName(currBandInfoBand[i]));
-        else if (settingsDialog->getBandInfoBoxAddr(3) == currBandInfoAddr[i])
+        else if ((settingsDialog->getBandInfoBoxAddr(3) != 0) && (settingsDialog->getBandInfoBoxAddr(3) == currBandInfoAddr[i]))
             labelBoxDBand->setText(getBandName(currBandInfoBand[i]));
-        else if (settingsDialog->getBandInfoBoxAddr(4) == currBandInfoAddr[i])
+        else if ((settingsDialog->getBandInfoBoxAddr(4) != 0) && (settingsDialog->getBandInfoBoxAddr(4) == currBandInfoAddr[i]))
             labelBoxEBand->setText(getBandName(currBandInfoBand[i]));
-        else if (settingsDialog->getBandInfoBoxAddr(5) == currBandInfoAddr[i])
+        else if ((settingsDialog->getBandInfoBoxAddr(5) != 0) && (settingsDialog->getBandInfoBoxAddr(5) == currBandInfoAddr[i]))
             labelBoxFBand->setText(getBandName(currBandInfoBand[i]));
     }
 }
@@ -691,6 +711,8 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(pushButtonRXAnt8, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt8Clicked()));
 	connect(pushButtonRXAnt9, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt9Clicked()));
 	connect(pushButtonRXAnt10, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt10Clicked()));
+    connect(pushButtonRXAnt11, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt11Clicked()));
+    connect(pushButtonRXAnt12, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt12Clicked()));
 
 	connect(pushButtonRXAnt, SIGNAL(clicked()), this, SLOT(pushButtonRXAntClicked()));
 
