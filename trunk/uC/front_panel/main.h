@@ -275,6 +275,8 @@ typedef struct {
   unsigned char ethernet_local_mode;
   //! Status field index
   unsigned char status_field_index;
+  //! Band lock configuration
+  unsigned int band_lock_conf[9];
 } struct_setting;
 
 //! This struct only contains information that is temporary

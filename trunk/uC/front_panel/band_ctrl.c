@@ -67,6 +67,10 @@ unsigned char band_ctrl_check_address_in_use(unsigned char addr) {
 	return(ret_val);
 }
 
+unsigned int band_ctrl_get_lock_conf(void) {
+  return(current_band.band_lock_conf);
+}
+
 struct_band* band_ctrl_get_band_ptr(void) {
   return((struct_band *)&current_band);
 }

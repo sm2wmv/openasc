@@ -69,6 +69,8 @@ unsigned char band_ctrl_check_address_in_use(unsigned char addr);
 
 void band_ctrl_load_band_limits(void);
 
+void band_ctrl_load_band(unsigned char band);
+
 unsigned int band_ctrl_get_low_portion_low(unsigned char band);
 unsigned int band_ctrl_get_low_portion_high(unsigned char band);
 unsigned int band_ctrl_get_high_portion_low(unsigned char band);
@@ -77,6 +79,8 @@ unsigned char *band_ctrl_get_high_output_str(void);
 unsigned char *band_ctrl_get_low_output_str(void);
 
 void band_ctrl_deactivate_all(void);
+
+unsigned int band_ctrl_get_lock_conf(void);
 
 void band_ctrl_change_band_portion(unsigned char band_portion);
 void band_ctrl_change_band(unsigned char band);

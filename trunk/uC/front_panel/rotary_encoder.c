@@ -35,14 +35,6 @@ static unsigned char encoder_last_state = 0;
 //! The current state of the encoder
 static unsigned char encoder_current_state = 0;
 
-#ifdef DEBUG_COMPUTER_USART_ENABLED
-  static int temp_val = 127;
-  static int old_temp_val = 127;
-  
-  static char old_state = 0;
-  static char new_state = 0;
-#endif
-
 /*! \brief Poll the rotary encoder pin states 
  *  \return The state of the rotary encoder pins */
  __inline__ unsigned char poll_encoder_state(void) {
@@ -56,10 +48,6 @@ int rotary_encoder_poll(void) {
   
 	encoder_current_state = poll_encoder_state();
   
-  #ifdef DEBUG_COMPUTER_USART_ENABLED
-    new_state = encoder_current_state;
-  #endif
-
 	if (encoder_current_state != encoder_last_state) {
 		if (((encoder_current_state == 3) && (encoder_last_state == 2)) || ((encoder_current_state == 0) && (encoder_last_state == 1)))
 			retval = 1;
@@ -68,22 +56,6 @@ int rotary_encoder_poll(void) {
 
 		encoder_last_state = encoder_current_state;
 	}
-
-  #ifdef DEBUG_COMPUTER_USART_ENABLED
-    temp_val += retval;
-    
-    if (old_temp_val != temp_val) {
-      printf("VAL: %i\n\r",temp_val);
-      old_temp_val = temp_val;
-    }
-    
-    if (new_state != old_state) {
-      printf("NEW_STATE: 0x%02X\n\r",new_state);
-      printf("OLD_STATE: 0x%02X\n\r",old_state);
-      
-      old_state = new_state;
-    }
-  #endif
 
 	return(retval);
 }
