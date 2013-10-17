@@ -263,18 +263,26 @@ unsigned char main_band_change_ok(unsigned char new_band) {
     }  
   #endif
   
-  for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
-    //We have reached the end of the list
-    if (band_info_ptr[i] == 0)
-      break;
-    
-    ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
-    
-    if ((new_band != 0) && (ping_status_ptr->data[1] == new_band) && (ping_status_ptr->addr != bus_get_address())) {
-      return(0);
+    if (new_band != 0) {
+      //Load the new band, so we can read out data from the settings
+      band_ctrl_load_band(new_band);
+      
+      for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
+        //We have reached the end of the list
+        if (band_info_ptr[i] == 0)
+          break;
+        
+        ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
+        
+        if (ping_status_ptr->addr != bus_get_address()) {
+          //Compare against the band_lock conf to see if we are allowed onto this band, or if some other
+          //openASC box is using any of the bands in the band lock variable
+          if (((unsigned int)(1<<(ping_status_ptr->data[1]-1)) & band_ctrl_get_lock_conf()) != 0)
+            return(0);
+        }
+      }
     }
-  }
-  
+
   //The band isn't in use, OK to change
   return(1);
 }
