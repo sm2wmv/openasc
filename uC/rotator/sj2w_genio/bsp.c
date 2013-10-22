@@ -319,9 +319,9 @@ static void bsp_init_ports(void) {
  * \brief Initialize the AD converter
  */
 static void bsp_init_adc(void) {
-    /* AREF as reference voltage */
+    /* Internal 2.56V reference */
     /* ADC left adjust result.   */
-  ADMUX = _BV(ADLAR);
+  ADMUX = _BV(ADLAR) | (1<<REFS1) | (1<<REFS0);
 
     /* ADC interrupt enable */
     /* ADC prescaler division factor 128 */
