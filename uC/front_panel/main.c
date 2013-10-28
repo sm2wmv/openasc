@@ -271,14 +271,23 @@ unsigned char main_band_change_ok(unsigned char new_band) {
         //We have reached the end of the list
         if (band_info_ptr[i] == 0)
           break;
-        
+        				
         ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
         
-        if (ping_status_ptr->addr != bus_get_address()) {
+        if ((ping_status_ptr->addr != bus_get_address()) && (ping_status_ptr->data[1] != 0)) {
+					#ifdef DEBUG_BAND_IN_USE
+						printf("\r\n");
+						printf("COMP BANDLOCK\r\n");
+						printf("BANDLOCK: %i\r\n",band_ctrl_get_lock_conf());
+						printf("PING_STATUS1: %i\r\n",(unsigned int)(1<<(ping_status_ptr->data[1]-1)));
+						printf("ADDR: 0x%02X\r\n",ping_status_ptr->addr);
+					#endif
+
+				
           //Compare against the band_lock conf to see if we are allowed onto this band, or if some other
           //openASC box is using any of the bands in the band lock variable
-          if (((unsigned int)(1<<(ping_status_ptr->data[1]-1)) & band_ctrl_get_lock_conf()) != 0)
-            return(0);
+					if (((unsigned int)(1<<(ping_status_ptr->data[1]-1)) & band_ctrl_get_lock_conf()) != 0)
+						return(0);
         }
       }
     }
