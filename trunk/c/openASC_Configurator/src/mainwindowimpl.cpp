@@ -511,7 +511,7 @@ void MainWindowImpl::actionSaveTriggered() {
 	settingsClass.setEthernetPort(spinBoxEthernetPort->value());
   settingsClass.setEthernetLocalMode(checkBoxEthernetLocalMode->isChecked());
 
-  SettingsClass.writeSettings(settings);
+  settingsClass.writeSettings(settings);
 	
 	rotators.writeSettings(settings);
 	
