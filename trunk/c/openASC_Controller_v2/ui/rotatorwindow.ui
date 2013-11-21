@@ -708,6 +708,26 @@
     <string>CW</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButtonReconnect">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>540</y>
+     <width>121</width>
+     <height>55</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Reconnect</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

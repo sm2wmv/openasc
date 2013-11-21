@@ -1,6 +1,8 @@
 #include "rotatordialog.h"
 #include <math.h>
 
+#include "mainwindowimpl.h"
+
 #define PI 3.1415
 
 void RotatorDialog::paintEvent(QPaintEvent *event) {
@@ -735,6 +737,8 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   connect(pushButtonRotateCW, SIGNAL(pressed()), this, SLOT(pushButtonRotateCWPressed()));
   connect(pushButtonRotateCCW, SIGNAL(released()), this, SLOT(pushButtonRotateCCWReleased()));
   connect(pushButtonRotateCW, SIGNAL(released()), this, SLOT(pushButtonRotateCWReleased()));
+
+  connect(pushButtonReconnect, SIGNAL(clicked()), parent, SLOT(actionReconnect()));
 
   pushButtonAnt1->setChecked(true);
   pushButtonAnt2->setChecked(false);
