@@ -569,6 +569,11 @@ void MainWindowImpl::closeEvent ( QCloseEvent * event ) {
 	event->accept();
 };
 
+void MainWindowImpl::actionReconnect() {
+    QTimer::singleShot(0, this, SLOT(actionDisconnectTriggered()));
+    QTimer::singleShot(1000, this, SLOT(actionConnectTriggered()));
+}
+
 void MainWindowImpl::actionRebootTriggered() {
 	if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_FORCE_RESET);
@@ -721,7 +726,7 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(pushButtonMenuLeft, SIGNAL(clicked()), this, SLOT(pushButtonMenuLeftClicked()));
 	connect(pushButtonMenuRight, SIGNAL(clicked()), this, SLOT(pushButtonMenuRightClicked()));
 
-	connect(pushButtonSub, SIGNAL(clicked()),this,SLOT(pushButtonSubClicked()));
+    connect(pushButtonSub, SIGNAL(clicked()), this, SLOT(pushButtonSubClicked()));
 
     //Set the default pixmaps
     resetGUI();

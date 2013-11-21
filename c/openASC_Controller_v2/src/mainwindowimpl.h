@@ -36,19 +36,19 @@ typedef struct {
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
 public:
-        MainWindowImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
-		QMessageBox *msgBox;
-		RotatorDialog *rotatorWindow;
-		SettingsDialog *settingsDialog;
-		terminalDialog *terminalWindow;
-		void pushButtonPressed(unsigned char button);
-		QString getBandName(int bandIndex);
-		unsigned char glcd_buffer[8][128];
-		TCPClass *TCPComm;
+    MainWindowImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+    QMessageBox *msgBox;
+    RotatorDialog *rotatorWindow;
+    SettingsDialog *settingsDialog;
+    terminalDialog *terminalWindow;
+    void pushButtonPressed(unsigned char button);
+    QString getBandName(int bandIndex);
+    unsigned char glcd_buffer[8][128];
+    TCPClass *TCPComm;
     Keypad *keypadWindow;
-		void updateDisplay();
-		void closeEvent ( QCloseEvent * event );
-		void setLEDStatus(unsigned int led_status, unsigned char led_ptt_status);
+    void updateDisplay();
+    void closeEvent ( QCloseEvent * event );
+    void setLEDStatus(unsigned int led_status, unsigned char led_ptt_status);
 private:
     int interfaceType;
     QTimer *timerPollRXQueue;
@@ -65,13 +65,14 @@ protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
 public slots:
+        void actionReconnect();
 		void actionRebootTriggered();
 		void WindowRotatorsTriggered();
 		void actionConnectTriggered();
 		void actionDisconnectTriggered();
 		void actionSettingsEditTriggered();
 		void actionTerminalTriggered();
-    void actionKeypadTriggered();
+        void actionKeypadTriggered();
 
 		void pushButtonTX1Clicked();
 		void pushButtonTX2Clicked();
