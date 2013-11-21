@@ -19,16 +19,16 @@
 #include "../../../uC/wmv_bus/bus_commands.h"
 
 #define TARGET_DIR_BEAMWIDTH	1
-#define TARGET_DIR_BEAMWIDTH_A1_COLOR	red
+#define TARGET_DIR_BEAMWIDTH_A1_COLOR	black
 #define CURRENT_DIR_BEAMWIDTH_A1_COLOR	black
 
-#define TARGET_DIR_BEAMWIDTH_A2_COLOR	red
+#define TARGET_DIR_BEAMWIDTH_A2_COLOR	blue
 #define CURRENT_DIR_BEAMWIDTH_A2_COLOR	blue
 
-#define TARGET_DIR_BEAMWIDTH_A3_COLOR	red
+#define TARGET_DIR_BEAMWIDTH_A3_COLOR	darkGreen
 #define CURRENT_DIR_BEAMWIDTH_A3_COLOR	darkGreen
 
-#define TARGET_DIR_BEAMWIDTH_A4_COLOR	red
+#define TARGET_DIR_BEAMWIDTH_A4_COLOR	darkYellow
 #define CURRENT_DIR_BEAMWIDTH_A4_COLOR	darkYellow
 
 class RotatorDialog : public QDialog, public Ui::Dialog
