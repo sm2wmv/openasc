@@ -81,7 +81,7 @@ void sequencer_exit_r2_amp1_sequence(void) {
     event_add_message((void *)ext_control_r2_ptt_radio_clr, R2_RADIO_POST_DELAY, SEQUENCER_EVENT_TYPE_PTT_R2_OFF);
   }
         
-  if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_R2_AMP_ON) == 0) {
+  if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_R1_AMP_ON) == 0) {
     event_add_message((void *)ext_control_r1_ptt_amp_clr, R1_AMP_POST_DELAY, SEQUENCER_EVENT_TYPE_PTT_R1_AMP_OFF);
   }
   

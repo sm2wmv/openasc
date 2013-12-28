@@ -171,7 +171,7 @@ int main(void) {
 }
 
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
-ISR(SIG_OUTPUT_COMPARE0) {
+ISR(TIMER0_COMP_vect) {
 	counter_compare0++;
   
   if ((counter_compare0 % 250) == 0) {
