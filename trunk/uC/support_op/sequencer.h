@@ -3,16 +3,16 @@
 
 #include "main.h"
 
-#define R1_AMP_PRE_DELAY    10
-#define R1_RADIO_PRE_DELAY  70
+#define R1_AMP_PRE_DELAY    20
+#define R1_RADIO_PRE_DELAY  100
 
-#define R2_AMP_PRE_DELAY    10
-#define R2_RADIO_PRE_DELAY  70
+#define R2_AMP_PRE_DELAY    20
+#define R2_RADIO_PRE_DELAY  100
 
-#define R1_AMP_POST_DELAY    20
+#define R1_AMP_POST_DELAY    10
 #define R1_RADIO_POST_DELAY  0
 
-#define R2_AMP_POST_DELAY    20
+#define R2_AMP_POST_DELAY    10
 #define R2_RADIO_POST_DELAY  0
 
 

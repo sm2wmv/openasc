@@ -155,6 +155,8 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
       if (message.data[0] != radio_get_current_band()) {
         if ((message.data[0] >= BAND_UNDEFINED) && (message.data[0] <= BAND_10M))
           radio_set_current_band(message.data[0]);
+        else
+          radio_set_current_band(BAND_UNDEFINED);
       }
       
       #ifdef INT_COMM_DEBUG

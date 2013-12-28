@@ -99,7 +99,7 @@ static uint8_t adc_ch = 0;
 //! The last read ADC value
 static uint16_t adc_value = 0;
 //! Map the rotator indexes to their corresponding ADC channels
-static const int adc_mapping[ROTATOR_COUNT] = {0, 1};
+static const int adc_mapping[ROTATOR_COUNT] = {1, 0};
 
 //! EEPROM variable for storing information about the last assertion.
 static char EEMEM last_assertion_str[LAST_ASSERTION_SIZE] = "";

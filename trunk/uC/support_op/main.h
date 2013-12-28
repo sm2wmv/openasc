@@ -36,7 +36,7 @@
 /*! END EVENT QUEUE IDs */
 
 //! Time between each poll of the inputs (in ms)
-#define COUNTER_POLL_INPUT_LIMIT 5
+#define COUNTER_POLL_INPUT_LIMIT 2
 
 //! The pulse time of the transfer relay in ms
 #define TRANSFER_RELAY_PULSE_TIME 25
