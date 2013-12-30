@@ -18,8 +18,12 @@ class SettingsDialog : public QDialog {
 public:
 	explicit SettingsDialog(QWidget *parent = 0);
 	virtual ~SettingsDialog();
-	QString getNetworkIPAddress(void);
-	int getNetworkPort(void);
+
+  QString getNetworkIPAddress(void);
+  QString getPowerMeterNetworkIPAddress(void);
+  unsigned int getNetworkPort(void);
+  unsigned int getPowerMeterNetworkPort(void);
+
 	int getPosMainWindowX();
 	int getPosMainWindowY();
 	int getPosKeypadWindowX();
@@ -28,6 +32,8 @@ public:
 	int getPosRotatorWindowY();
 	int getPosTerminalWindowX();
 	int getPosTerminalWindowY();
+  int getPosPowerMeterWindowX();
+  int getPosPowerMeterWindowY();
 
 	void setPosMainWindowX(int pos);
 	void setPosMainWindowY(int pos);
@@ -37,34 +43,53 @@ public:
 	void setPosRotatorWindowY(int pos);
 	void setPosTerminalWindowX(int pos);
 	void setPosTerminalWindowY(int pos);
+  void setPosPowerMeterWindowX(int pos);
+  void setPosPowerMeterWindowY(int pos);
 
 	void setKeypadWindowOpen(bool state);
 	void setRotatorWindowOpen(bool state);
 	void setTerminalWindowOpen(bool state);
+  void setPowerMeterWindowOpen(bool state);
 	bool getTerminalWindowOpen();
 	bool getRotatorWindowOpen();
 	bool getKeypadWindowOpen();
+  bool getPowerMeterWindowOpen();
 
-    bool getFrameRotatorWindow();
-    bool getConnectOnStart();
-    bool getFrameRotatorWindowStartOnTop();
+  bool getPowerMeterEnabled();
 
-    bool getActivityTimer();
-    int  getActivityTimerTimeoutLimit();
+  bool getFrameRotatorWindow();
+  bool getConnectOnStart();
+  bool getFrameRotatorWindowStartOnTop();
 
-    bool getShowMousePointer();
+  bool getActivityTimer();
+  int  getActivityTimerTimeoutLimit();
 
-    QString getBandInfoBoxName(int boxIndex);
-    int getBandInfoBoxAddr(int boxIndex);
+  bool getShowMousePointer();
+  unsigned char getPowerMeterPickupAddr(unsigned char band);
 
-    void saveSettings();
+  QString getBandInfoBoxName(int boxIndex);
+  int getBandInfoBoxAddr(int boxIndex);
+
+  unsigned int getPowerMeterBargraphsUpdateRate();
+  unsigned int getPowerMeterTextUpdateRate();
+
+  unsigned char getPowerMeterPickupType(unsigned char band);
+
+  void saveSettings();
 protected:
 	virtual void changeEvent(QEvent *e);
 private:
 	Ui::SettingsDialog *m_ui;
 	QString strNetworkIPAddress;
-	int iNetworkPort;
-	int mainWindowPosX;
+  QString strPowerMeterNetworkIPAddress;
+  unsigned int iNetworkPort;
+  unsigned int iPowerMeterNetworkPort;
+  bool bPowerMeterEnabled;
+
+  unsigned int iBargraphsUpdateRate;
+  unsigned int iTextUpdateRate;
+
+  int mainWindowPosX;
 	int mainWindowPosY;
 	int keypadWindowPosX;
 	int keypadWindowPosY;
@@ -72,25 +97,38 @@ private:
 	int rotatorWindowPosY;
 	int terminalWindowPosX;
 	int terminalWindowPosY;
+  int powerMeterWindowPosX;
+  int powerMeterWindowPosY;
 
 	bool keypadWindowOpen;
 	bool rotatorWindowOpen;
 	bool terminalWindowOpen;
+  bool powerMeterWindowOpen;
 
-    bool frameRotatorWindow;
-    bool frameRotatorWindowStartOnTop;
-    bool connectOnStart;
+  bool frameRotatorWindow;
+  bool frameRotatorWindowStartOnTop;
+  bool connectOnStart;
 
-    bool activityTimer;
-    int activityTimerTimeoutLimit;
-    bool showMousePointer;
+  bool activityTimer;
+  int activityTimerTimeoutLimit;
+  bool showMousePointer;
 
-    QString bandInfoBoxName[6];
-    int bandInfoBoxAddr[6];
+  unsigned char cPickupAddr[9];
+  unsigned char cPickupType[9];
+
+  QString bandInfoBoxName[6];
+  int bandInfoBoxAddr[6];
 public slots:
 	void groupboxNetworkClicked(bool state);
 	void btnOKClicked();
 	void btnCancelClicked();
+private slots:
+  void on_pushButtonOK_clicked();
+  void on_pushButtonCancel_clicked();
+  void on_comboBoxPowerMeterBand_currentIndexChanged(int index);
+  void on_spinBoxPowerMeterAddress_valueChanged(int arg1);
+  void on_comboBoxPowerMeterScaling_currentIndexChanged(int index);
+  void on_checkBoxPowerMeterAllBands_clicked(bool checked);
 };
 
 #endif // SETTINGSDIALOG_H
