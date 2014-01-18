@@ -1,0 +1,6 @@
+#summary One-sentence summary of this page.
+
+The openasc box has two serial ports via USB.
+
+First port is for
+Second port is for 
