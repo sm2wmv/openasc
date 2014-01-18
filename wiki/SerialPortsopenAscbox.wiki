@@ -2,5 +2,5 @@
 
 The openasc box has two serial ports via USB.
 
-First port is for
-Second port is for 
+  First port is for
+  Second port is for 
