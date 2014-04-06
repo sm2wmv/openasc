@@ -2010,7 +2010,7 @@
              <item row="3" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs3">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2027,21 +2027,21 @@
              <item row="8" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName8">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="11" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName11">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="10" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs10">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2058,35 +2058,35 @@
              <item row="9" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs9">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="12" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs12">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="7" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs7">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="9" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName9">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="2" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs2">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2133,42 +2133,42 @@
              <item row="7" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName7">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="12" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName12">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="11" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs11">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="10" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName10">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="8" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs8">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="2" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName2">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2189,14 +2189,14 @@
              <item row="1" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs1">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="1" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName1">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2223,21 +2223,21 @@
              <item row="6" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs6">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="5" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs5">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="5" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName5">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2254,7 +2254,7 @@
              <item row="4" column="2">
               <widget class="QLineEdit" name="lineEditRXAntennaOutputs4">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2271,7 +2271,7 @@
              <item row="4" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName4">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -2288,14 +2288,14 @@
              <item row="6" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName6">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
              <item row="3" column="1">
               <widget class="QLineEdit" name="lineEditRXAntennaName3">
                <property name="focusPolicy">
-                <enum>Qt::TabFocus</enum>
+                <enum>Qt::StrongFocus</enum>
                </property>
               </widget>
              </item>
@@ -4430,9 +4430,9 @@ a function to it</string>
  </widget>
  <layoutdefault spacing="3" margin="4"/>
  <tabstops>
-  <tabstop>comboBoxStatusField</tabstop>
-  <tabstop>listWidgetDebug</tabstop>
-  <tabstop>pushButtonDebug</tabstop>
+  <tabstop>lineEditRXAntennaName1</tabstop>
+  <tabstop>lineEditRXAntennaOutputs1</tabstop>
+  <tabstop>lineEditRXAntennaName2</tabstop>
   <tabstop>lineEditRXAntennaOutputs2</tabstop>
   <tabstop>lineEditRXAntennaName3</tabstop>
   <tabstop>lineEditRXAntennaOutputs3</tabstop>
@@ -4458,7 +4458,7 @@ a function to it</string>
   <tabstop>lineEditRXAntennaOutputStr80M</tabstop>
   <tabstop>lineEditRXAntennaOutputStr40M</tabstop>
   <tabstop>lineEditRXAntennaOutputStr30M</tabstop>
-  <tabstop>lineEditRXAntennaName2</tabstop>
+  <tabstop>comboBoxStatusField</tabstop>
   <tabstop>tabWidgetSettings</tabstop>
   <tabstop>comboBoxRadioType</tabstop>
   <tabstop>comboBoxRadioMode</tabstop>
@@ -4545,8 +4545,8 @@ a function to it</string>
   <tabstop>radioButtonPTTInterlockNone</tabstop>
   <tabstop>radioButtonPTTInterlockInput1</tabstop>
   <tabstop>radioButtonPTTInterlockInput2</tabstop>
-  <tabstop>lineEditRXAntennaOutputs1</tabstop>
-  <tabstop>lineEditRXAntennaName1</tabstop>
+  <tabstop>listWidgetDebug</tabstop>
+  <tabstop>pushButtonDebug</tabstop>
   <tabstop>radioButtonPTTInterlockInput4</tabstop>
   <tabstop>radioButtonPTTInterlockInput5</tabstop>
   <tabstop>radioButtonPTTInterlockInput6</tabstop>
@@ -4600,6 +4600,7 @@ a function to it</string>
   <tabstop>comboBoxButtonAUX1</tabstop>
   <tabstop>comboBoxButtonAUX2</tabstop>
   <tabstop>comboBoxLEDAUX</tabstop>
+  <tabstop>checkBoxEthernetLocalMode</tabstop>
  </tabstops>
  <resources/>
  <connections/>
