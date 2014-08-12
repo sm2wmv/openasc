@@ -34,7 +34,6 @@ typedef struct {
 class MainWindowImpl : public QMainWindow, public Ui::MainWindowImpl {
 Q_OBJECT
 public:
-<<<<<<< .mine
   MainWindowImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
   QMessageBox *msgBox;
   RotatorDialog *rotatorWindow;
@@ -50,21 +49,6 @@ public:
   void updateDisplay();
   void closeEvent ( QCloseEvent * event );
   void setLEDStatus(unsigned int led_status, unsigned char led_ptt_status);
-=======
-    MainWindowImpl( QWidget * parent = 0, Qt::WindowFlags f = 0 );
-    QMessageBox *msgBox;
-    RotatorDialog *rotatorWindow;
-    SettingsDialog *settingsDialog;
-    terminalDialog *terminalWindow;
-    void pushButtonPressed(unsigned char button);
-    QString getBandName(int bandIndex);
-    unsigned char glcd_buffer[8][128];
-    TCPClass *TCPComm;
-    Keypad *keypadWindow;
-    void updateDisplay();
-    void closeEvent ( QCloseEvent * event );
-    void setLEDStatus(unsigned int led_status, unsigned char led_ptt_status);
->>>>>>> .r472
 private:
   int interfaceType;
   QTimer *timerPollRXQueue;
@@ -82,7 +66,6 @@ protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
 public slots:
-<<<<<<< .mine
   void actionRebootTriggered();
   void WindowRotatorsTriggered();
   void actionConnectTriggered();
@@ -91,16 +74,7 @@ public slots:
   void actionTerminalTriggered();
   void actionKeypadTriggered();
   void actionPowerMeterTriggered();
-=======
-        void actionReconnect();
-		void actionRebootTriggered();
-		void WindowRotatorsTriggered();
-		void actionConnectTriggered();
-		void actionDisconnectTriggered();
-		void actionSettingsEditTriggered();
-		void actionTerminalTriggered();
-        void actionKeypadTriggered();
->>>>>>> .r472
+  void actionReconnect();
 
   void pushButtonTX1Clicked();
   void pushButtonTX2Clicked();
