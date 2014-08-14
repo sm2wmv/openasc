@@ -2,7 +2,7 @@
  *  \brief Event handler of various things
  *  \ingroup front_panel_group
  *  \author Mikael Larsmark, SM2WMV
- *  \date 2010-09-04
+ *  \date 2014-08-14
  *  \code #include "front_panel/event_handler.c" \endcode
  */
 //    Copyright (C) 2008  Mikael Larsmark, SM2WMV
@@ -252,9 +252,7 @@ void event_process_task(unsigned char task_index) {
 
     return;
 	}	
-	
-	//TODO: Continue with implementation of ext keypad functions
-	
+
 	switch(task_index) {
 		case EXT_CTRL_SEL_NONE:
 			//Do nothing
@@ -574,16 +572,18 @@ void event_pulse_sensor_up(void) {
 		//If the knob function is RX ANT SELECT then go up the list of 
 		//RX antennas
 		if (status.knob_function == KNOB_FUNCTION_RX_ANT) {
-			if (status.selected_rx_antenna < (antenna_ctrl_get_rx_antenna_count()))
-				status.selected_rx_antenna++;
-			else
-				status.selected_rx_antenna = 1;
-			
-			status.last_rx_antenna = status.selected_rx_antenna;
-		
-			//Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
-			main_flags |= (1<<FLAG_CHANGE_RX_ANT);
-			display_handler_repaint();
+      if (led_get_status() & (1<<LED_STATUS_RXANT)) {
+        if (status.selected_rx_antenna < (antenna_ctrl_get_rx_antenna_count()))
+          status.selected_rx_antenna++;
+        else
+          status.selected_rx_antenna = 1;
+        
+        status.last_rx_antenna = status.selected_rx_antenna;
+      
+        //Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
+        main_flags |= (1<<FLAG_CHANGE_RX_ANT);
+        display_handler_repaint();
+      }
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 			if (status.new_band > BAND_UNDEFINED)
@@ -602,12 +602,14 @@ void event_pulse_sensor_up(void) {
 			display_handler_repaint();
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
-			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
-				sub_menu_pos_up(status.sub_menu_antenna_index);
-				
-				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
+      if (led_get_status() & (1<<LED_STATUS_SUB)) {
+        if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
+          sub_menu_pos_up(status.sub_menu_antenna_index);
+          
+          main_flags |= (1<<FLAG_CHANGE_SUBMENU);
 
-        display_handler_repaint();
+          display_handler_repaint();
+        }
       }
 		}
 	}
@@ -626,16 +628,18 @@ void event_pulse_sensor_down(void) {
 		//If the knob function is RX ANT SELECT then go down the list of 
 		//RX antennas
 		if (status.knob_function == KNOB_FUNCTION_RX_ANT) {
-			if (status.selected_rx_antenna > 1)
-				status.selected_rx_antenna--;
-			else
-				status.selected_rx_antenna = antenna_ctrl_get_rx_antenna_count();
-		
-			status.last_rx_antenna = status.selected_rx_antenna;
-			
-			//Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
-			main_flags |= (1<<FLAG_CHANGE_RX_ANT);
-      display_handler_repaint();
+      if (status.knob_function == KNOB_FUNCTION_RX_ANT) {
+        if (status.selected_rx_antenna > 1)
+          status.selected_rx_antenna--;
+        else
+          status.selected_rx_antenna = antenna_ctrl_get_rx_antenna_count();
+      
+        status.last_rx_antenna = status.selected_rx_antenna;
+        
+        //Set a flag that we wish to update the RX antenna, if the PULSE_SENSOR_RX_ANT_CHANGE_LIMIT time has passed
+        main_flags |= (1<<FLAG_CHANGE_RX_ANT);
+        display_handler_repaint();
+      }
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SELECT_BAND) {
 			if (status.new_band < BAND_10M)
@@ -654,14 +658,16 @@ void event_pulse_sensor_down(void) {
 			display_handler_repaint();
 		}
 		else if (status.knob_function == KNOB_FUNCTION_SET_SUBMENU) {
-			if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
-        
-				sub_menu_pos_down(status.sub_menu_antenna_index);
+			if (led_get_status() & (1<<LED_STATUS_SUB)) {
+        if (main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) {
           
-				main_flags |= (1<<FLAG_CHANGE_SUBMENU);
-        
-        display_handler_repaint();
-			}
+          sub_menu_pos_down(status.sub_menu_antenna_index);
+            
+          main_flags |= (1<<FLAG_CHANGE_SUBMENU);
+          
+          display_handler_repaint();
+        }
+      }
 		}
 	}
 }

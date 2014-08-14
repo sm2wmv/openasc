@@ -63,7 +63,7 @@ DEVICE_TYPE = DEVICE_TYPE_GENERAL_IO
 BASE_ADDRESS = 10
 
 #Root directories
-WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_tx_queue.c ../wmv_bus/bus_rx_queue.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c ../event_queue.c
+WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c ../event_queue.c
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC = $(TARGET).c ../i2c.c init.c ../delay.c $(WMV_BUS_SRC)
@@ -123,7 +123,7 @@ CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS)
-
+CFLAGS += -D__AVR_LIBC_DEPRECATED_ENABLE__
 
 
 # Assembler flags.
