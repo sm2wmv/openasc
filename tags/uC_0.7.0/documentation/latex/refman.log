@@ -1,0 +1,5997 @@
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2009.4.26)  19 MAY 2010 20:58
+entering extended mode
+ %&-line parsing enabled.
+**refman.tex
+(./refman.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, ukrainian, russian, bulgarian, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/book.cls
+Document Class: book 2005/09/16 v1.4f Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/bk10.clo
+File: bk10.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/a4wide.sty
+Package: a4wide 1994/08/30
+
+(/usr/share/texmf-texlive/tex/latex/ntgclass/a4.sty
+Package: a4 2004/04/15 v1.2g A4 based page layout
+))
+(/usr/share/texmf-texlive/tex/latex/base/makeidx.sty
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+(/usr/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip43
+\f@ncyO@elh=\skip44
+\f@ncyO@erh=\skip45
+\f@ncyO@olh=\skip46
+\f@ncyO@orh=\skip47
+\f@ncyO@elf=\skip48
+\f@ncyO@erf=\skip49
+\f@ncyO@olf=\skip50
+\f@ncyO@orf=\skip51
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2007/01/08 v0.04d Graphics/color for pdfTeX
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/share/texmf-texlive/tex/latex/tools/multicol.sty
+Package: multicol 2006/05/18 v1.6g multicolumn formatting (FMi)
+\c@tracingmulticols=\count89
+\mult@box=\box26
+\multicol@leftmargin=\dimen105
+\c@unbalance=\count90
+\c@collectmore=\count91
+\doublecol@number=\count92
+\multicoltolerance=\count93
+\multicolpretolerance=\count94
+\full@width=\dimen106
+\page@free=\dimen107
+\premulticols=\dimen108
+\postmulticols=\dimen109
+\multicolsep=\skip52
+\multicolbaselineskip=\skip53
+\partial@page=\box27
+\last@line=\box28
+\mult@rightbox=\box29
+\mult@grightbox=\box30
+\mult@gfirstbox=\box31
+\mult@firstbox=\box32
+\@tempa=\box33
+\@tempa=\box34
+\@tempa=\box35
+\@tempa=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\c@columnbadness=\count95
+\c@finalcolumnbadness=\count96
+\last@try=\dimen110
+\multicolovershoot=\dimen111
+\multicolundershoot=\dimen112
+\mult@nat@firstbox=\box50
+\colbreak@box=\box51
+)
+(/usr/share/texmf-texlive/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count97
+\float@exts=\toks15
+\float@box=\box52
+\@float@everytoks=\toks16
+\@floatcapt=\box53
+)
+(/usr/share/texmf-texlive/tex/latex/base/textcomp.sty
+Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 71.
+
+(/usr/share/texmf-texlive/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 266.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 281.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 282.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 283.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 284.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 285.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 286.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 287.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 288.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 289.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 290.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 291.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 292.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 293.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 294.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 295.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 296.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 297.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 298.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 299.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 300.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 301.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 302.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 303.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 304.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 305.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 306.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 307.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 308.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 309.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 310.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 311.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 312.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 313.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 314.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 315.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 316.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 317.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 318.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 319.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 320.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 321.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 322.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 323.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 324.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 325.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 326.
+)
+(/usr/share/texmf-texlive/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2006/02/20 v1.4 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode detected.
+)
+(/usr/share/texmf-texlive/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2007/02/07 v6.75r Hypertext links for LaTeX
+\@linkdim=\dimen113
+\Hy@linkcounter=\count98
+\Hy@pagecounter=\count99
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2007/02/07 v6.75r Hyperref: PDFDocEncoding definition (HO)
+)
+(/etc/texmf/tex/latex/config/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2006/08/22 v2.4 Connects package keyval with LaTeX options (
+HO)
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 2238.
+Package hyperref Info: Option `unicode' set `true' on input line 2238.
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/puenc.def
+File: puenc.def 2007/02/07 v6.75r Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 2288.
+Package hyperref Info: Link nesting OFF on input line 2293.
+Package hyperref Info: Hyper index ON on input line 2296.
+Package hyperref Info: Plain pages OFF on input line 2303.
+Package hyperref Info: Backreferencing ON on input line 2306.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 2444.
+(/usr/share/texmf-texlive/tex/latex/hyperref/backref.sty
+Package: backref 2006/10/06 v1.27 Bibliographical back referencing
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2005/06/27  ver 3.2  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 2599.
+\Fld@menulength=\count100
+\Field@Width=\dimen114
+\Fld@charsize=\dimen115
+\Choice@toks=\toks17
+\Field@toks=\toks18
+Package hyperref Info: Hyper figures OFF on input line 3102.
+Package hyperref Info: Link nesting OFF on input line 3107.
+Package hyperref Info: Hyper index ON on input line 3110.
+Package hyperref Info: backreferencing ON on input line 3115.
+Package hyperref Info: Link coloring ON on input line 3120.
+\Hy@abspage=\count101
+\c@Item=\count102
+\c@Hfootnote=\count103
+)
+*hyperref using driver hpdftex*
+(/usr/share/texmf-texlive/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2007/02/07 v6.75r Hyperref driver for pdfTeX
+\Fld@listcount=\count104
+)
+(/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
+Package: inputenc 2006/05/05 v1.1b Input encoding file
+\inpenc@prehook=\toks19
+\inpenc@posthook=\toks20
+
+(/usr/share/texmf-texlive/tex/latex/base/utf8.def
+File: utf8.def 2006/03/30 v1.1i UTF-8 support for inputenc
+Now handling font encoding OML ...
+... no UTF-8 mapping file for font encoding OML
+Now handling font encoding T1 ...
+... processing UTF-8 mapping file for font encodingT1
+
+(/usr/share/texmf-texlive/tex/latex/base/t1enc.dfu
+File: t1enc.dfu 2006/03/30 v1.1i UTF-8 support for inputenc
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00AB (decimal 171)
+   defining Unicode char U+00BB (decimal 187)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C0 (decimal 192)
+   defining Unicode char U+00C1 (decimal 193)
+   defining Unicode char U+00C2 (decimal 194)
+   defining Unicode char U+00C3 (decimal 195)
+   defining Unicode char U+00C4 (decimal 196)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00C7 (decimal 199)
+   defining Unicode char U+00C8 (decimal 200)
+   defining Unicode char U+00C9 (decimal 201)
+   defining Unicode char U+00CA (decimal 202)
+   defining Unicode char U+00CB (decimal 203)
+   defining Unicode char U+00CC (decimal 204)
+   defining Unicode char U+00CD (decimal 205)
+   defining Unicode char U+00CE (decimal 206)
+   defining Unicode char U+00CF (decimal 207)
+   defining Unicode char U+00D0 (decimal 208)
+   defining Unicode char U+00D1 (decimal 209)
+   defining Unicode char U+00D2 (decimal 210)
+   defining Unicode char U+00D3 (decimal 211)
+   defining Unicode char U+00D4 (decimal 212)
+   defining Unicode char U+00D5 (decimal 213)
+   defining Unicode char U+00D6 (decimal 214)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00D9 (decimal 217)
+   defining Unicode char U+00DA (decimal 218)
+   defining Unicode char U+00DB (decimal 219)
+   defining Unicode char U+00DC (decimal 220)
+   defining Unicode char U+00DD (decimal 221)
+   defining Unicode char U+00DE (decimal 222)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E0 (decimal 224)
+   defining Unicode char U+00E1 (decimal 225)
+   defining Unicode char U+00E2 (decimal 226)
+   defining Unicode char U+00E3 (decimal 227)
+   defining Unicode char U+00E4 (decimal 228)
+   defining Unicode char U+00E5 (decimal 229)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00E7 (decimal 231)
+   defining Unicode char U+00E8 (decimal 232)
+   defining Unicode char U+00E9 (decimal 233)
+   defining Unicode char U+00EA (decimal 234)
+   defining Unicode char U+00EB (decimal 235)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F0 (decimal 240)
+   defining Unicode char U+00F1 (decimal 241)
+   defining Unicode char U+00F2 (decimal 242)
+   defining Unicode char U+00F3 (decimal 243)
+   defining Unicode char U+00F4 (decimal 244)
+   defining Unicode char U+00F5 (decimal 245)
+   defining Unicode char U+00F6 (decimal 246)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+00F9 (decimal 249)
+   defining Unicode char U+00FA (decimal 250)
+   defining Unicode char U+00FB (decimal 251)
+   defining Unicode char U+00FC (decimal 252)
+   defining Unicode char U+00FD (decimal 253)
+   defining Unicode char U+00FE (decimal 254)
+   defining Unicode char U+00FF (decimal 255)
+   defining Unicode char U+0102 (decimal 258)
+   defining Unicode char U+0103 (decimal 259)
+   defining Unicode char U+0104 (decimal 260)
+   defining Unicode char U+0105 (decimal 261)
+   defining Unicode char U+0106 (decimal 262)
+   defining Unicode char U+0107 (decimal 263)
+   defining Unicode char U+010C (decimal 268)
+   defining Unicode char U+010D (decimal 269)
+   defining Unicode char U+010E (decimal 270)
+   defining Unicode char U+010F (decimal 271)
+   defining Unicode char U+0110 (decimal 272)
+   defining Unicode char U+0111 (decimal 273)
+   defining Unicode char U+0118 (decimal 280)
+   defining Unicode char U+0119 (decimal 281)
+   defining Unicode char U+011A (decimal 282)
+   defining Unicode char U+011B (decimal 283)
+   defining Unicode char U+011E (decimal 286)
+   defining Unicode char U+011F (decimal 287)
+   defining Unicode char U+0130 (decimal 304)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0132 (decimal 306)
+   defining Unicode char U+0133 (decimal 307)
+   defining Unicode char U+0139 (decimal 313)
+   defining Unicode char U+013A (decimal 314)
+   defining Unicode char U+013D (decimal 317)
+   defining Unicode char U+013E (decimal 318)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0143 (decimal 323)
+   defining Unicode char U+0144 (decimal 324)
+   defining Unicode char U+0147 (decimal 327)
+   defining Unicode char U+0148 (decimal 328)
+   defining Unicode char U+014A (decimal 330)
+   defining Unicode char U+014B (decimal 331)
+   defining Unicode char U+0150 (decimal 336)
+   defining Unicode char U+0151 (decimal 337)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+0154 (decimal 340)
+   defining Unicode char U+0155 (decimal 341)
+   defining Unicode char U+0158 (decimal 344)
+   defining Unicode char U+0159 (decimal 345)
+   defining Unicode char U+015A (decimal 346)
+   defining Unicode char U+015B (decimal 347)
+   defining Unicode char U+015E (decimal 350)
+   defining Unicode char U+015F (decimal 351)
+   defining Unicode char U+0160 (decimal 352)
+   defining Unicode char U+0161 (decimal 353)
+   defining Unicode char U+0162 (decimal 354)
+   defining Unicode char U+0163 (decimal 355)
+   defining Unicode char U+0164 (decimal 356)
+   defining Unicode char U+0165 (decimal 357)
+   defining Unicode char U+016E (decimal 366)
+   defining Unicode char U+016F (decimal 367)
+   defining Unicode char U+0170 (decimal 368)
+   defining Unicode char U+0171 (decimal 369)
+   defining Unicode char U+0178 (decimal 376)
+   defining Unicode char U+0179 (decimal 377)
+   defining Unicode char U+017A (decimal 378)
+   defining Unicode char U+017B (decimal 379)
+   defining Unicode char U+017C (decimal 380)
+   defining Unicode char U+017D (decimal 381)
+   defining Unicode char U+017E (decimal 382)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201A (decimal 8218)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+   defining Unicode char U+201E (decimal 8222)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2031 (decimal 8241)
+   defining Unicode char U+2039 (decimal 8249)
+   defining Unicode char U+203A (decimal 8250)
+   defining Unicode char U+2423 (decimal 9251)
+)
+Now handling font encoding OT1 ...
+... processing UTF-8 mapping file for font encodingOT1
+
+(/usr/share/texmf-texlive/tex/latex/base/ot1enc.dfu
+File: ot1enc.dfu 2006/03/30 v1.1i UTF-8 support for inputenc
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00B8 (decimal 184)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+)
+Now handling font encoding OMS ...
+... processing UTF-8 mapping file for font encodingOMS
+
+(/usr/share/texmf-texlive/tex/latex/base/omsenc.dfu
+File: omsenc.dfu 2006/03/30 v1.1i UTF-8 support for inputenc
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00B6 (decimal 182)
+   defining Unicode char U+00B7 (decimal 183)
+   defining Unicode char U+2020 (decimal 8224)
+   defining Unicode char U+2021 (decimal 8225)
+   defining Unicode char U+2022 (decimal 8226)
+)
+Now handling font encoding OMX ...
+... no UTF-8 mapping file for font encoding OMX
+Now handling font encoding U ...
+... no UTF-8 mapping file for font encoding U
+Now handling font encoding TS1 ...
+... processing UTF-8 mapping file for font encodingTS1
+
+(/usr/share/texmf-texlive/tex/latex/base/ts1enc.dfu
+File: ts1enc.dfu 2006/03/30 v1.1i UTF-8 support for inputenc
+   defining Unicode char U+00A2 (decimal 162)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00A4 (decimal 164)
+   defining Unicode char U+00A5 (decimal 165)
+   defining Unicode char U+00A6 (decimal 166)
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00A8 (decimal 168)
+   defining Unicode char U+00A9 (decimal 169)
+   defining Unicode char U+00AA (decimal 170)
+   defining Unicode char U+00AC (decimal 172)
+   defining Unicode char U+00AE (decimal 174)
+   defining Unicode char U+00AF (decimal 175)
+   defining Unicode char U+00B0 (decimal 176)
+   defining Unicode char U+00B1 (decimal 177)
+   defining Unicode char U+00B2 (decimal 178)
+   defining Unicode char U+00B3 (decimal 179)
+   defining Unicode char U+00B4 (decimal 180)
+   defining Unicode char U+00B5 (decimal 181)
+   defining Unicode char U+00B6 (decimal 182)
+   defining Unicode char U+00B7 (decimal 183)
+   defining Unicode char U+00B9 (decimal 185)
+   defining Unicode char U+00BA (decimal 186)
+   defining Unicode char U+00BC (decimal 188)
+   defining Unicode char U+00BD (decimal 189)
+   defining Unicode char U+00BE (decimal 190)
+   defining Unicode char U+00D7 (decimal 215)
+   defining Unicode char U+00F7 (decimal 247)
+   defining Unicode char U+0192 (decimal 402)
+   defining Unicode char U+02C7 (decimal 711)
+   defining Unicode char U+02D8 (decimal 728)
+   defining Unicode char U+02DD (decimal 733)
+   defining Unicode char U+0E3F (decimal 3647)
+   defining Unicode char U+2016 (decimal 8214)
+   defining Unicode char U+2020 (decimal 8224)
+   defining Unicode char U+2021 (decimal 8225)
+   defining Unicode char U+2022 (decimal 8226)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2031 (decimal 8241)
+   defining Unicode char U+203B (decimal 8251)
+   defining Unicode char U+203D (decimal 8253)
+   defining Unicode char U+2044 (decimal 8260)
+   defining Unicode char U+204E (decimal 8270)
+   defining Unicode char U+2052 (decimal 8274)
+   defining Unicode char U+20A1 (decimal 8353)
+   defining Unicode char U+20A4 (decimal 8356)
+   defining Unicode char U+20A6 (decimal 8358)
+   defining Unicode char U+20A9 (decimal 8361)
+   defining Unicode char U+20AB (decimal 8363)
+   defining Unicode char U+20AC (decimal 8364)
+   defining Unicode char U+20B1 (decimal 8369)
+   defining Unicode char U+2103 (decimal 8451)
+   defining Unicode char U+2116 (decimal 8470)
+   defining Unicode char U+2117 (decimal 8471)
+   defining Unicode char U+211E (decimal 8478)
+   defining Unicode char U+2120 (decimal 8480)
+   defining Unicode char U+2122 (decimal 8482)
+   defining Unicode char U+2126 (decimal 8486)
+   defining Unicode char U+2127 (decimal 8487)
+   defining Unicode char U+212E (decimal 8494)
+   defining Unicode char U+2190 (decimal 8592)
+   defining Unicode char U+2191 (decimal 8593)
+   defining Unicode char U+2192 (decimal 8594)
+   defining Unicode char U+2193 (decimal 8595)
+   defining Unicode char U+2329 (decimal 9001)
+   defining Unicode char U+232A (decimal 9002)
+   defining Unicode char U+2422 (decimal 9250)
+   defining Unicode char U+25E6 (decimal 9702)
+   defining Unicode char U+25EF (decimal 9711)
+   defining Unicode char U+266A (decimal 9834)
+)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+   defining Unicode char U+00A9 (decimal 169)
+   defining Unicode char U+00AA (decimal 170)
+   defining Unicode char U+00AE (decimal 174)
+   defining Unicode char U+00BA (decimal 186)
+   defining Unicode char U+02C6 (decimal 710)
+   defining Unicode char U+02DC (decimal 732)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2026 (decimal 8230)
+   defining Unicode char U+2122 (decimal 8482)
+   defining Unicode char U+2423 (decimal 9251)
+)) (./doxygen.sty
+Package: doxygen 
+
+(/usr/share/texmf-texlive/tex/latex/tools/calc.sty
+Package: calc 2005/08/06 v4.2 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count105
+\calc@Bcount=\count106
+\calc@Adimen=\dimen116
+\calc@Bdimen=\dimen117
+\calc@Askip=\skip54
+\calc@Bskip=\skip55
+LaTeX Info: Redefining \setlength on input line 75.
+LaTeX Info: Redefining \addtolength on input line 76.
+\calc@Ccount=\count107
+\calc@Cskip=\skip56
+)
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2005/08/23 v2.4b Tabular extension package (FMi)
+\col@sep=\dimen118
+\extrarowheight=\dimen119
+\NC@list=\toks21
+\extratabsurround=\skip57
+\backup@length=\skip58
+)
+\tmplength=\skip59
+
+(/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+
+(/usr/share/texmf-texlive/tex/latex/base/t1enc.def
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+)))
+\@indexfile=\write3
+\openout3 = `refman.idx'.
+
+
+Writing index file refman.idx
+No file refman.aux.
+\openout1 = `refman.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 32.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 32.
+(/usr/share/texmf-texlive/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+
+(/usr/share/texmf/tex/context/base/supp-pdf.tex
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count108
+\scratchdimen=\dimen120
+\scratchbox=\box54
+\nofMPsegments=\count109
+\nofMParguments=\count110
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count111
+\MPscratchDim=\dimen121
+\MPnumerator=\count112
+\everyMPtoPDFconversion=\toks23
+) (/usr/share/texmf-texlive/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+Package hyperref Info: Link coloring ON on input line 32.
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
+Package: nameref 2006/12/27 v2.28 Cross-referencing by name of section
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/refcount.sty
+Package: refcount 2006/02/20 v3.0 Data extraction from references (HO)
+)
+\c@section@level=\count113
+)
+LaTeX Info: Redefining \ref on input line 32.
+LaTeX Info: Redefining \pageref on input line 32.
+\@outlinefile=\write4
+\openout4 = `refman.out'.
+
+ [1
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+
+]
+\tf@toc=\write5
+\openout5 = `refman.toc'.
+
+ [1
+
+] [2
+
+]
+Chapter 1.
+(./modules.tex
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 3.
+
+
+LaTeX Warning: Reference `group__driver__unit__group' on page 1 undefined on in
+put line 3.
+
+
+LaTeX Warning: Reference `group__driver__unit__v2__group' on page 1 undefined o
+n input line 4.
+
+
+LaTeX Warning: Reference `group__event__queue__group' on page 1 undefined on in
+put line 5.
+
+
+LaTeX Warning: Reference `group__front__panel__group' on page 1 undefined on in
+put line 6.
+
+
+LaTeX Warning: Reference `group__general__io__group' on page 1 undefined on inp
+ut line 7.
+
+
+LaTeX Warning: Reference `group__i2c' on page 1 undefined on input line 8.
+
+
+LaTeX Warning: Reference `group__internal__comm__group' on page 1 undefined on 
+input line 9.
+
+
+LaTeX Warning: Reference `group__motherboard__group' on page 1 undefined on inp
+ut line 10.
+
+
+LaTeX Warning: Reference `group__a2d' on page 1 undefined on input line 11.
+
+
+LaTeX Warning: Reference `group__lcd' on page 1 undefined on input line 12.
+
+
+LaTeX Warning: Reference `group__bus__group' on page 1 undefined on input line 
+13.
+
+)pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.50 \chapter
+             {Class Index} [1
+
+]pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.50 \chapter
+             {Class Index} [2
+
+]
+Chapter 2.
+(./annotated.tex
+
+LaTeX Warning: Reference `structBUS__MESSAGE' on page 3 undefined on input line
+ 3.
+
+
+LaTeX Warning: Reference `structbus__status__struct' on page 3 undefined on inp
+ut line 4.
+
+
+LaTeX Warning: Reference `structbus__struct__ping__status' on page 3 undefined 
+on input line 5.
+
+
+LaTeX Warning: Reference `structcomputer__comm__struct' on page 3 undefined on 
+input line 6.
+
+
+LaTeX Warning: Reference `structdriver__status__struct' on page 3 undefined on 
+input line 7.
+
+
+LaTeX Warning: Reference `structEVENT__MESSAGE' on page 3 undefined on input li
+ne 8.
+
+
+LaTeX Warning: Reference `structpowermeter__struct' on page 3 undefined on inpu
+t line 9.
+
+
+LaTeX Warning: Reference `structPS2__STRUCT' on page 3 undefined on input line 
+10.
+
+
+LaTeX Warning: Reference `structrx__linked__list' on page 3 undefined on input 
+line 11.
+
+
+LaTeX Warning: Reference `structstruct__antenna' on page 3 undefined on input l
+ine 12.
+
+
+LaTeX Warning: Reference `structstruct__band' on page 3 undefined on input line
+ 13.
+
+
+LaTeX Warning: Reference `structstruct__band__limits' on page 3 undefined on in
+put line 14.
+
+
+LaTeX Warning: Reference `structstruct__coupler__settings' on page 3 undefined 
+on input line 15.
+
+
+LaTeX Warning: Reference `structstruct__eeprom__table' on page 3 undefined on i
+nput line 16.
+
+
+LaTeX Warning: Reference `structstruct__menu__option' on page 3 undefined on in
+put line 17.
+
+
+LaTeX Warning: Reference `structstruct__menu__text' on page 3 undefined on inpu
+t line 18.
+
+
+LaTeX Warning: Reference `structstruct__ptt' on page 3 undefined on input line 
+19.
+
+
+LaTeX Warning: Reference `structstruct__ptt__sequencer' on page 3 undefined on 
+input line 20.
+
+
+LaTeX Warning: Reference `structstruct__radio__settings' on page 3 undefined on
+ input line 21.
+
+
+LaTeX Warning: Reference `structstruct__radio__status' on page 3 undefined on i
+nput line 22.
+
+
+LaTeX Warning: Reference `structstruct__runtime__settings' on page 3 undefined 
+on input line 23.
+
+
+LaTeX Warning: Reference `structstruct__rx__antennas' on page 3 undefined on in
+put line 24.
+
+
+LaTeX Warning: Reference `structstruct__setting' on page 3 undefined on input l
+ine 25.
+
+
+LaTeX Warning: Reference `structstruct__status' on page 3 undefined on input li
+ne 26.
+
+
+LaTeX Warning: Reference `structstruct__sub__menu__array' on page 3 undefined o
+n input line 27.
+
+
+LaTeX Warning: Reference `structstruct__uc__com' on page 3 undefined on input l
+ine 28.
+
+
+LaTeX Warning: Reference `structtx__linked__list' on page 3 undefined on input 
+line 29.
+
+
+LaTeX Warning: Reference `structUC__MESSAGE' on page 3 undefined on input line 
+30.
+
+) [3] [4
+
+]
+Chapter 3.
+(./files.tex
+
+LaTeX Warning: Reference `avrlibdefs_8h' on page 5 undefined on input line 3.
+
+
+LaTeX Warning: Reference `avrlibtypes_8h' on page 5 undefined on input line 4.
+
+
+LaTeX Warning: Reference `delay_8c' on page 5 undefined on input line 5.
+
+
+LaTeX Warning: Reference `delay_8h' on page 5 undefined on input line 6.
+
+
+LaTeX Warning: Reference `event__queue_8c' on page 5 undefined on input line 7.
+
+
+
+LaTeX Warning: Reference `event__queue_8h' on page 5 undefined on input line 8.
+
+
+
+LaTeX Warning: Reference `global_8h' on page 5 undefined on input line 9.
+
+
+LaTeX Warning: Reference `i2c_8c' on page 5 undefined on input line 10.
+
+
+LaTeX Warning: Reference `i2c_8h' on page 5 undefined on input line 11.
+
+
+LaTeX Warning: Reference `i2cconf_8h' on page 5 undefined on input line 12.
+
+
+LaTeX Warning: Reference `internal__comm_8c' on page 5 undefined on input line 
+13.
+
+
+LaTeX Warning: Reference `internal__comm_8h' on page 5 undefined on input line 
+14.
+
+
+LaTeX Warning: Reference `internal__comm__commands_8h' on page 5 undefined on i
+nput line 15.
+
+
+LaTeX Warning: Reference `internal__comm__rx__queue_8c' on page 5 undefined on 
+input line 16.
+
+
+LaTeX Warning: Reference `internal__comm__rx__queue_8h' on page 5 undefined on 
+input line 17.
+
+
+LaTeX Warning: Reference `internal__comm__tx__queue_8c' on page 5 undefined on 
+input line 18.
+
+
+LaTeX Warning: Reference `internal__comm__tx__queue_8h' on page 5 undefined on 
+input line 19.
+
+
+LaTeX Warning: Reference `driver__unit_2board_8h' on page 5 undefined on input 
+line 20.
+
+
+LaTeX Warning: Reference `driver__unit_2global_8h' on page 5 undefined on input
+ line 21.
+
+
+LaTeX Warning: Reference `driver__unit_2init_8c' on page 5 undefined on input l
+ine 22.
+
+
+LaTeX Warning: Reference `driver__unit_2init_8h' on page 5 undefined on input l
+ine 23.
+
+
+LaTeX Warning: Reference `driver__unit_2main_8c' on page 5 undefined on input l
+ine 24.
+
+
+LaTeX Warning: Reference `driver__unit_2main_8h' on page 5 undefined on input l
+ine 25.
+
+
+LaTeX Warning: Reference `driver__unit__v2_2board_8h' on page 5 undefined on in
+put line 26.
+
+
+LaTeX Warning: Reference `driver__unit__v2_2global_8h' on page 5 undefined on i
+nput line 27.
+
+
+LaTeX Warning: Reference `driver__unit__v2_2init_8c' on page 5 undefined on inp
+ut line 28.
+
+
+LaTeX Warning: Reference `driver__unit__v2_2init_8h' on page 5 undefined on inp
+ut line 29.
+
+
+LaTeX Warning: Reference `driver__unit__v2_2main_8c' on page 5 undefined on inp
+ut line 30.
+
+
+LaTeX Warning: Reference `driver__unit__v2_2main_8h' on page 5 undefined on inp
+ut line 31.
+
+
+LaTeX Warning: Reference `antenna__ctrl_8c' on page 5 undefined on input line 3
+2.
+
+
+LaTeX Warning: Reference `antenna__ctrl_8h' on page 5 undefined on input line 3
+3.
+
+
+LaTeX Warning: Reference `band__ctrl_8c' on page 5 undefined on input line 34.
+
+
+LaTeX Warning: Reference `band__ctrl_8h' on page 5 undefined on input line 35.
+
+
+LaTeX Warning: Reference `front__panel_2board_8h' on page 5 undefined on input 
+line 36.
+
+[5]
+
+LaTeX Warning: Reference `front__panel_2computer__interface_8c' on page 6 undef
+ined on input line 37.
+
+
+LaTeX Warning: Reference `front__panel_2computer__interface_8h' on page 6 undef
+ined on input line 38.
+
+
+LaTeX Warning: Reference `display_8c' on page 6 undefined on input line 39.
+
+
+LaTeX Warning: Reference `display_8h' on page 6 undefined on input line 40.
+
+
+LaTeX Warning: Reference `ds1307_8c' on page 6 undefined on input line 41.
+
+
+LaTeX Warning: Reference `ds1307_8h' on page 6 undefined on input line 42.
+
+
+LaTeX Warning: Reference `eeprom_8c' on page 6 undefined on input line 43.
+
+
+LaTeX Warning: Reference `eeprom_8h' on page 6 undefined on input line 44.
+
+
+LaTeX Warning: Reference `eeprom__m24_8c' on page 6 undefined on input line 45.
+
+
+
+LaTeX Warning: Reference `eeprom__m24_8h' on page 6 undefined on input line 46.
+
+
+
+LaTeX Warning: Reference `errors_8h' on page 6 undefined on input line 47.
+
+
+LaTeX Warning: Reference `event__handler_8c' on page 6 undefined on input line 
+48.
+
+
+LaTeX Warning: Reference `event__handler_8h' on page 6 undefined on input line 
+49.
+
+
+LaTeX Warning: Reference `fonts_8c' on page 6 undefined on input line 50.
+
+
+LaTeX Warning: Reference `fonts_8h' on page 6 undefined on input line 51.
+
+
+LaTeX Warning: Reference `glcd_8c' on page 6 undefined on input line 52.
+
+
+LaTeX Warning: Reference `glcd_8h' on page 6 undefined on input line 53.
+
+
+LaTeX Warning: Reference `front__panel_2init_8c' on page 6 undefined on input l
+ine 54.
+
+
+LaTeX Warning: Reference `front__panel_2init_8h' on page 6 undefined on input l
+ine 55.
+
+
+LaTeX Warning: Reference `interrupt__handler_8c' on page 6 undefined on input l
+ine 56.
+
+
+LaTeX Warning: Reference `interrupt__handler_8h' on page 6 undefined on input l
+ine 57.
+
+
+LaTeX Warning: Reference `ks0108_8c' on page 6 undefined on input line 58.
+
+
+LaTeX Warning: Reference `ks0108_8h' on page 6 undefined on input line 59.
+
+
+LaTeX Warning: Reference `ks0108conf_8h' on page 6 undefined on input line 60.
+
+
+LaTeX Warning: Reference `front__panel_2led__control_8c' on page 6 undefined on
+ input line 61.
+
+
+LaTeX Warning: Reference `front__panel_2led__control_8h' on page 6 undefined on
+ input line 62.
+
+
+LaTeX Warning: Reference `front__panel_2main_8c' on page 6 undefined on input l
+ine 63.
+
+
+LaTeX Warning: Reference `front__panel_2main_8h' on page 6 undefined on input l
+ine 64.
+
+
+LaTeX Warning: Reference `menu_8c' on page 6 undefined on input line 65.
+
+
+LaTeX Warning: Reference `menu_8h' on page 6 undefined on input line 66.
+
+
+LaTeX Warning: Reference `pictures_8h' on page 6 undefined on input line 67.
+
+
+LaTeX Warning: Reference `powermeter_8c' on page 6 undefined on input line 68.
+
+
+LaTeX Warning: Reference `powermeter_8h' on page 6 undefined on input line 69.
+
+
+LaTeX Warning: Reference `radio__interface_8c' on page 6 undefined on input lin
+e 70.
+
+
+LaTeX Warning: Reference `radio__interface_8h' on page 6 undefined on input lin
+e 71.
+
+
+LaTeX Warning: Reference `remote__control_8c' on page 6 undefined on input line
+ 72.
+
+
+LaTeX Warning: Reference `remote__control_8h' on page 6 undefined on input line
+ 73.
+
+
+LaTeX Warning: Reference `rotary__encoder_8c' on page 6 undefined on input line
+ 74.
+
+
+LaTeX Warning: Reference `rotary__encoder_8h' on page 6 undefined on input line
+ 75.
+
+
+LaTeX Warning: Reference `sequencer_8c' on page 6 undefined on input line 76.
+
+
+LaTeX Warning: Reference `sequencer_8h' on page 6 undefined on input line 77.
+
+
+LaTeX Warning: Reference `sub__menu_8c' on page 6 undefined on input line 78.
+
+
+LaTeX Warning: Reference `sub__menu_8h' on page 6 undefined on input line 79.
+
+
+LaTeX Warning: Reference `front__panel_2usart_8c' on page 6 undefined on input 
+line 80.
+
+
+LaTeX Warning: Reference `front__panel_2usart_8h' on page 6 undefined on input 
+line 81.
+
+
+LaTeX Warning: Reference `general__io_2board_8h' on page 6 undefined on input l
+ine 82.
+
+
+LaTeX Warning: Reference `general__io_2global_8h' on page 6 undefined on input 
+line 83.
+
+
+LaTeX Warning: Reference `general__io_2init_8c' on page 6 undefined on input li
+ne 84.
+
+
+LaTeX Warning: Reference `general__io_2init_8h' on page 6 undefined on input li
+ne 85.
+
+
+LaTeX Warning: Reference `general__io_2main_8c' on page 6 undefined on input li
+ne 86.
+
+
+LaTeX Warning: Reference `general__io_2main_8h' on page 6 undefined on input li
+ne 87.
+
+
+LaTeX Warning: Reference `motherboard_2board_8h' on page 6 undefined on input l
+ine 88.
+
+
+LaTeX Warning: Reference `motherboard_2computer__interface_8c' on page 6 undefi
+ned on input line 89.
+
+[6]
+
+LaTeX Warning: Reference `motherboard_2computer__interface_8h' on page 7 undefi
+ned on input line 90.
+
+
+LaTeX Warning: Reference `motherboard_2init_8c' on page 7 undefined on input li
+ne 91.
+
+
+LaTeX Warning: Reference `motherboard_2init_8h' on page 7 undefined on input li
+ne 92.
+
+
+LaTeX Warning: Reference `motherboard_2main_8c' on page 7 undefined on input li
+ne 93.
+
+
+LaTeX Warning: Reference `motherboard_2main_8h' on page 7 undefined on input li
+ne 94.
+
+
+LaTeX Warning: Reference `motherboard_2usart_8c' on page 7 undefined on input l
+ine 95.
+
+
+LaTeX Warning: Reference `motherboard_2usart_8h' on page 7 undefined on input l
+ine 96.
+
+
+LaTeX Warning: Reference `display__unit_2a2d_8c' on page 7 undefined on input l
+ine 97.
+
+
+LaTeX Warning: Reference `display__unit_2a2d_8h' on page 7 undefined on input l
+ine 98.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2avrlibdefs_8h' on page 7 u
+ndefined on input line 99.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2avrlibtypes_8h' on page 7 
+undefined on input line 100.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2board_8h' on page 7 undefi
+ned on input line 101.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2delay_8c' on page 7 undefi
+ned on input line 102.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2delay_8h' on page 7 undefi
+ned on input line 103.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2global_8h' on page 7 undef
+ined on input line 104.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2init_8c' on page 7 undefin
+ed on input line 105.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2init_8h' on page 7 undefin
+ed on input line 106.
+
+
+LaTeX Warning: Reference `display__unit_2input_8c' on page 7 undefined on input
+ line 107.
+
+
+LaTeX Warning: Reference `display__unit_2input_8h' on page 7 undefined on input
+ line 108.
+
+
+LaTeX Warning: Reference `lcd_8c' on page 7 undefined on input line 109.
+
+
+LaTeX Warning: Reference `lcd_8h' on page 7 undefined on input line 110.
+
+
+LaTeX Warning: Reference `lcdconf_8h' on page 7 undefined on input line 111.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2led__control_8c' on page 7
+ undefined on input line 112.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2led__control_8h' on page 7
+ undefined on input line 113.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2main_8c' on page 7 undefin
+ed on input line 114.
+
+
+LaTeX Warning: Reference `powermeter_2display__unit_2main_8h' on page 7 undefin
+ed on input line 115.
+
+
+LaTeX Warning: Reference `output_8c' on page 7 undefined on input line 116.
+
+
+LaTeX Warning: Reference `output_8h' on page 7 undefined on input line 117.
+
+
+LaTeX Warning: Reference `sensor__unit_2a2d_8c' on page 7 undefined on input li
+ne 118.
+
+
+LaTeX Warning: Reference `sensor__unit_2a2d_8h' on page 7 undefined on input li
+ne 119.
+
+
+LaTeX Warning: Reference `powermeter_2sensor__unit_2board_8h' on page 7 undefin
+ed on input line 120.
+
+
+LaTeX Warning: Reference `powermeter_2sensor__unit_2global_8h' on page 7 undefi
+ned on input line 121.
+
+
+LaTeX Warning: Reference `powermeter_2sensor__unit_2init_8c' on page 7 undefine
+d on input line 122.
+
+
+LaTeX Warning: Reference `powermeter_2sensor__unit_2init_8h' on page 7 undefine
+d on input line 123.
+
+
+LaTeX Warning: Reference `sensor__unit_2input_8c' on page 7 undefined on input 
+line 124.
+
+
+LaTeX Warning: Reference `sensor__unit_2input_8h' on page 7 undefined on input 
+line 125.
+
+
+LaTeX Warning: Reference `powermeter_2sensor__unit_2main_8c' on page 7 undefine
+d on input line 126.
+
+
+LaTeX Warning: Reference `powermeter_2sensor__unit_2main_8h' on page 7 undefine
+d on input line 127.
+
+
+LaTeX Warning: Reference `bus_8c' on page 7 undefined on input line 128.
+
+
+LaTeX Warning: Reference `bus_8h' on page 7 undefined on input line 129.
+
+
+LaTeX Warning: Reference `bus__commands_8h' on page 7 undefined on input line 1
+30.
+
+
+LaTeX Warning: Reference `bus__ping_8c' on page 7 undefined on input line 131.
+
+
+LaTeX Warning: Reference `bus__ping_8h' on page 7 undefined on input line 132.
+
+
+LaTeX Warning: Reference `bus__rx__queue_8c' on page 7 undefined on input line 
+133.
+
+
+LaTeX Warning: Reference `bus__rx__queue_8h' on page 7 undefined on input line 
+134.
+
+
+LaTeX Warning: Reference `bus__tx__queue_8c' on page 7 undefined on input line 
+135.
+
+
+LaTeX Warning: Reference `bus__tx__queue_8h' on page 7 undefined on input line 
+136.
+
+
+LaTeX Warning: Reference `bus__usart_8c' on page 7 undefined on input line 137.
+
+
+
+LaTeX Warning: Reference `bus__usart_8h' on page 7 undefined on input line 138.
+
+
+
+LaTeX Warning: Reference `wmv__bus_2global_8h' on page 7 undefined on input lin
+e 139.
+
+) [7] [8
+
+]
+Chapter 4.
+(./group__driver__unit__group.tex
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 37.
+
+(/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)) [9]
+\openout2 = `group__driver__unit__v2__group.aux'.
+
+
+(./group__driver__unit__v2__group.tex) [10
+
+]
+\openout2 = `group__event__queue__group.aux'.
+
+ (./group__event__queue__group.tex)
+[11
+
+
+]
+\openout2 = `group__front__panel__group.aux'.
+
+ (./group__front__panel__group.tex [12
+
+
+] [13]
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.213 ... text on most monochrome graphic LCDs.�
+                                                   An easily expandable font...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.213 ...cters (0x20-0x7F hex, 32-127 decimal).�
+                                                   An expandable graphic fon...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.213 ... specialty characters or custom icons.�
+                                                   Because this library is d...
+
+? 
+[14]
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...the KS0108 or HD61202 controller chip.�
+                                                   For more advanced functio...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...ion with \hyperlink{glcd_8c}{glcd.c}. �
+                                                  KS0108/HD61202 displays ty...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...8 pixels and up to 3\char`\"{} square.�
+                                                   To determine whether a di...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...C board attached to the display glass.�
+                                                   The controller chips are ...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...ps with the numbers KS0107 or HD61203.�
+                                                   The display will likely h...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...likely have an 18 or 20-pin interface.�
+                                                   The interface from the LC...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...s not require any additional hardware.�
+                                                   If you can locate a datas...
+
+? 
+) [15]
+\openout2 = `group__general__io__group.aux'.
+
+ (./group__general__io__group.tex) [16
+
+
+]
+\openout2 = `group__i2c.aux'.
+
+ (./group__i2c.tex
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 ...vely tested yet and is still expanding.�
+                                                   Thanks to the standardiza...
+
+? 
+) [17
+
+
+]
+\openout2 = `group__internal__comm__group.aux'.
+
+ (./group__internal__comm__group.tex) [18
+
+
+]
+\openout2 = `group__motherboard__group.aux'.
+
+
+(./group__motherboard__group.tex) [19
+
+
+]
+\openout2 = `group__a2d.aux'.
+
+ (./group__a2d.tex
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 12.
+ [20
+
+
+]pdfTeX warning (ext4): destination with the same identifier (name{group__a2d_g
+94b219194cddc9869031a936b94bf536}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.249 ...6b94bf536}{ADC\_\-PRESCALE\_\-DIV2}~0x00}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g03ae0e14f20d17c74a4a539b752232
+8a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.254 ...b7522328a}{ADC\_\-PRESCALE\_\-DIV4}~0x02}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gfc060b8cc9bc407394efc98930dd9b
+06}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.259 ...930dd9b06}{ADC\_\-PRESCALE\_\-DIV8}~0x03}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g588a7712025228700d3331fbb60b4a
+ea}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.264 ...b60b4aea}{ADC\_\-PRESCALE\_\-DIV16}~0x04}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gb3fd1406c04d98209cc1c17c77b861
+9a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.269 ...77b8619a}{ADC\_\-PRESCALE\_\-DIV32}~0x05}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g5ad4cc849977e40d0a2a98c304a4be
+7b}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.274 ...04a4be7b}{ADC\_\-PRESCALE\_\-DIV64}~0x06}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g56e8398ed5a4236f10dadb6d7d5e1a
+3b}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.279 ...d5e1a3b}{ADC\_\-PRESCALE\_\-DIV128}~0x07}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g624110d24f42aac3b062f18495e04b
+51}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.284 ...DC\_\-PRESCALE}~ADC\_\-PRESCALE\_\-DIV64}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g97010ca07f7fab62f9fb4b4c404e6a
+90}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.289 ...ne \textbf{ADC\_\-PRESCALE\_\-MASK}~0x07}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g69a5e4e3dcfeec25908050a0d32878
+8f}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.294 ...d328788f}{ADC\_\-REFERENCE\_\-AREF}~0x00}
+                                                   [21]pdfTeX warning (ext4): d
+estination with the same identifier (name{group__a2d_g9697b28b449eee80f6f6bd31c
+29eaa48}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.299 ...c29eaa48}{ADC\_\-REFERENCE\_\-AVCC}~0x01}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gac3a75f24755af19f114e475a4d6a0
+74}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.304 ...a4d6a074}{ADC\_\-REFERENCE\_\-RSVD}~0x02}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g51f3cc56fa25dc1a0ccf5b35a6b242
+bf}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.309 ...a6b242bf}{ADC\_\-REFERENCE\_\-256V}~0x03}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g317868c528ebe27fbca094a8bc2d91
+0c}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.314 ...C\_\-REFERENCE}~ADC\_\-REFERENCE\_\-AVCC}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g53d0721356cf990529435064b39810
+ac}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.319 ...e \textbf{ADC\_\-REFERENCE\_\-MASK}~0xC0}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g7dc684a9d3f21b2a52dc74aea546d7
+24}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.324 \#define \textbf{ADC\_\-MUX\_\-MASK}~0x1F}
+                                                pdfTeX warning (ext4): destinat
+ion with the same identifier (name{group__a2d_g2d71a76ac15bb23ced9d330f6d288189
+}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.329 \#define \textbf{ADC\_\-CH\_\-ADC0}~0x00}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_gdc9061197abf445aa2fdabfe6ab70d6f}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.334 \#define \textbf{ADC\_\-CH\_\-ADC1}~0x01}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_g2983118526a60d8131ea24b076734dc9}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.339 \#define \textbf{ADC\_\-CH\_\-ADC2}~0x02}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_g0a668a769065eb671e703949ef772aa5}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.344 \#define \textbf{ADC\_\-CH\_\-ADC3}~0x03}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_g76e4beb0d4488c7a2854257ce6ee5efb}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.349 \#define \textbf{ADC\_\-CH\_\-ADC4}~0x04}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_gf93d51a5c2da209e27f37ac2b26b1aa9}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.354 \#define \textbf{ADC\_\-CH\_\-ADC5}~0x05}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_gb260b92f5b040618c82c09154eb2fa82}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.359 \#define \textbf{ADC\_\-CH\_\-ADC6}~0x06}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_gb9748223968807824cc3d22300f21b8f}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.364 \#define \textbf{ADC\_\-CH\_\-ADC7}~0x07}
+                                               pdfTeX warning (ext4): destinati
+on with the same identifier (name{group__a2d_g2cd1386de0c0435075581f5f14f50a4a}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.369 ...5581f5f14f50a4a}{ADC\_\-CH\_\-122V}~0x1E}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g0ed7f039502e8a1065f0b4a6157fb7
+53}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.374 ...5f0b4a6157fb753}{ADC\_\-CH\_\-AGND}~0x1F}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g1d0b3b606a92ff5d5e328e5ef1979c
+78}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.379 ...tbf{ADC\_\-CH\_\-0\_\-0\_\-DIFF10X}~0x08}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g8b2a5dcae180cd218d02f7a623790e
+f1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.384 ...tbf{ADC\_\-CH\_\-1\_\-0\_\-DIFF10X}~0x09}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gb9f0b92dd2b67505c26233ada7205e
+3b}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.389 ...bf{ADC\_\-CH\_\-0\_\-0\_\-DIFF200X}~0x0A}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gb31f08e45996680fef63c8e4c9125f
+5d}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.394 ...bf{ADC\_\-CH\_\-1\_\-0\_\-DIFF200X}~0x0B}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g03b2bd74b75fd0a659a927aad76002
+de}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.399 ...tbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF10X}~0x0C}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gf70e34012606f8a3d0e8afd3507c6f
+cb}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.404 ...tbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF10X}~0x0D}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_ga2678f0cab37f1a9c5266793634609
+62}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.409 ...bf{ADC\_\-CH\_\-2\_\-2\_\-DIFF200X}~0x0E}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g8c54c7176365604c459ab8a06231d9
+09}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.414 ...bf{ADC\_\-CH\_\-3\_\-2\_\-DIFF200X}~0x0F}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g1f7378bc96b9faff43a7b2c5639405
+c1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.419 ...xtbf{ADC\_\-CH\_\-0\_\-1\_\-DIFF1X}~0x10}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gb08fb3b8335d0134639b7cd37def4b
+48}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.424 ...xtbf{ADC\_\-CH\_\-1\_\-1\_\-DIFF1X}~0x11}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g9e466f0a78d4a76e060254fc2a9dae
+77}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.429 ...xtbf{ADC\_\-CH\_\-2\_\-1\_\-DIFF1X}~0x12}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g5ca820abd164971170288e59fa41e2
+d9}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.434 ...xtbf{ADC\_\-CH\_\-3\_\-1\_\-DIFF1X}~0x13}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g9faea1861eb2bc2d916eb9fbfddeef
+38}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.439 ...xtbf{ADC\_\-CH\_\-4\_\-1\_\-DIFF1X}~0x14}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g85a30293d96db3700b4b9be90c0fbb
+33}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.444 ...xtbf{ADC\_\-CH\_\-5\_\-1\_\-DIFF1X}~0x15}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g4c657e2d57628fa1985d2ff38e1653
+14}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.449 ...xtbf{ADC\_\-CH\_\-6\_\-1\_\-DIFF1X}~0x16}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g7f35bdea141f9aa32a07f4cb1d0ccd
+86}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.454 ...xtbf{ADC\_\-CH\_\-7\_\-1\_\-DIFF1X}~0x17}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_ga7bf0c13604c130feb76935e177124
+bb}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.459 ...xtbf{ADC\_\-CH\_\-0\_\-2\_\-DIFF1X}~0x18}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_gad51db92aecbfe211871a3099d7fbd
+7e}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.464 ...xtbf{ADC\_\-CH\_\-1\_\-2\_\-DIFF1X}~0x19}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g71ceaea7dd64c28705ccdc84c09f9e
+48}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.469 ...xtbf{ADC\_\-CH\_\-2\_\-2\_\-DIFF1X}~0x1A}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g13d286d6aa04046617a96eef9804c4
+0a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.474 ...xtbf{ADC\_\-CH\_\-3\_\-2\_\-DIFF1X}~0x1B}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_ga2fd7fa7726846b7399e0a9e8ca825
+4a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.479 ...xtbf{ADC\_\-CH\_\-4\_\-2\_\-DIFF1X}~0x1C}
+                                                  pdfTeX warning (ext4): destin
+ation with the same identifier (name{group__a2d_g92a15defe2e018615ed50b8e756d96
+0c}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.484 ...xtbf{ADC\_\-CH\_\-5\_\-2\_\-DIFF1X}~0x1D}
+                                                   [22] [23]) [24]
+\openout2 = `group__lcd.aux'.
+
+
+(./group__lcd.tex
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 ...character LCDs use one of these chips).�
+                                                   The display driver can in...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 ...ory bus, or directly via I/O port pins.�
+                                                   When using the direct I/O...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 ...d except for a contrast potentiometer. �
+                                                  Supported functions includ...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 ...f custom characters or icons (up to 8).�
+                                                   Although these displays a...
+
+? 
+
+! Package inputenc Error: Unicode char \u8:� not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 ...o create animations or simple graphics.�
+                                                   The \char`\"{}progress ba...
+
+? 
+) [25
+
+
+]
+\openout2 = `group__bus__group.aux'.
+
+ (./group__bus__group.tex) [26
+
+
+]
+Chapter 5.
+(./structBUS__MESSAGE.tex [27
+
+
+]) [28]
+\openout2 = `structbus__status__struct.aux'.
+
+ (./structbus__status__struct.tex [29
+
+])
+[30]
+\openout2 = `structbus__struct__ping__status.aux'.
+
+ (./structbus__struct__ping__status.tex) [31
+
+
+]
+\openout2 = `structcomputer__comm__struct.aux'.
+
+
+(./structcomputer__comm__struct.tex [32
+
+
+]) [33]
+\openout2 = `structdriver__status__struct.aux'.
+
+
+(./structdriver__status__struct.tex) [34
+
+
+]
+\openout2 = `structEVENT__MESSAGE.aux'.
+
+ (./structEVENT__MESSAGE.tex) [35
+
+
+]
+\openout2 = `structpowermeter__struct.aux'.
+
+
+(./structpowermeter__struct.tex) [36
+
+
+]
+\openout2 = `structPS2__STRUCT.aux'.
+
+ (./structPS2__STRUCT.tex) [37
+
+
+]
+\openout2 = `structrx__linked__list.aux'.
+
+
+(./structrx__linked__list.tex [38
+
+
+]) [39]
+\openout2 = `structstruct__antenna.aux'.
+
+ (./structstruct__antenna.tex [40
+
+
+]
+Underfull \hbox (badness 2197) in paragraph at lines 122--123
+[]\T1/cmr/m/n/10 Referenced by antenna_-ctrl_-get_-output_-comb(), antenna_-ctr
+l_-send_-ant_-data_-to_-bus(),
+ []
+
+) [41]
+\openout2 = `structstruct__band.aux'.
+
+ (./structstruct__band.tex) [42
+
+
+]
+\openout2 = `structstruct__band__limits.aux'.
+
+ (./structstruct__band__limits.tex)
+[43
+
+
+]
+\openout2 = `structstruct__coupler__settings.aux'.
+
+ (./structstruct__coupler__settings.tex) [44
+
+
+]
+\openout2 = `structstruct__eeprom__table.aux'.
+
+
+(./structstruct__eeprom__table.tex [45
+
+
+]) [46]
+\openout2 = `structstruct__menu__option.aux'.
+
+ (./structstruct__menu__option.tex) [47
+
+
+]
+\openout2 = `structstruct__menu__text.aux'.
+
+ (./structstruct__menu__text.tex) [48
+
+
+]
+\openout2 = `structstruct__ptt.aux'.
+
+ (./structstruct__ptt.tex
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+[]\T1/cmr/m/n/10 Referenced by computer_-interface_-activate_-setup(), computer
+_-interface_-parse_-data(),
+ []
+
+
+Underfull \hbox (badness 7814) in paragraph at lines 61--62
+\T1/cmr/m/n/10 sequencer_-computer_-rts_-activated(), sequencer_-computer_-rts_
+-deactivated(), sequencer_-
+ []
+
+
+Underfull \hbox (badness 2435) in paragraph at lines 61--62
+\T1/cmr/m/n/10 footsw_-pressed(), sequencer_-footsw_-released(), sequencer_-get
+_-radio_-sense(), sequencer_-
+ []
+
+) [49
+
+
+]
+\openout2 = `structstruct__ptt__sequencer.aux'.
+
+ (./structstruct__ptt__sequencer.tex) [50
+
+
+]
+\openout2 = `structstruct__radio__settings.aux'.
+
+
+(./structstruct__radio__settings.tex
+Underfull \hbox (badness 1558) in paragraph at lines 76--79
+[]\T1/cmr/m/n/10 Referenced by computer_-interface_-parse_-data(), radio_-inter
+face_-get_-poll_-interval(), and
+ []
+
+[51
+
+
+]
+Underfull \hbox (badness 7238) in paragraph at lines 87--88
+[]\T1/cmr/m/n/10 Referenced by computer_-interface_-parse_-data(), radio_-inter
+face_-get_-ptt_-input(), and
+ []
+
+) [52]
+\openout2 = `structstruct__radio__status.aux'.
+
+ (./structstruct__radio__status.tex) [53
+
+
+]
+\openout2 = `structstruct__runtime__settings.aux'.
+
+
+(./structstruct__runtime__settings.tex) [54
+
+
+]
+\openout2 = `structstruct__rx__antennas.aux'.
+
+ (./structstruct__rx__antennas.tex) [55
+
+
+]
+\openout2 = `structstruct__setting.aux'.
+
+ (./structstruct__setting.tex [56
+
+
+]) [57]
+\openout2 = `structstruct__status.aux'.
+
+ (./structstruct__status.tex
+[58
+
+
+]
+Underfull \hbox (badness 2469) in paragraph at lines 139--142
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-change_-band(), display_-update_-rad
+io_-freq(), event_-internal_-
+ []
+
+
+Underfull \hbox (badness 6944) in paragraph at lines 150--153
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-change_-band(), display_-show_-rx_-a
+nt(), display_-show_-set_-
+ []
+
+[59]) [60]
+\openout2 = `structstruct__sub__menu__array.aux'.
+
+ (./structstruct__sub__menu__array.tex) [61
+
+
+]
+\openout2 = `structstruct__uc__com.aux'.
+
+
+(./structstruct__uc__com.tex) [62
+
+
+]
+\openout2 = `structtx__linked__list.aux'.
+
+ (./structtx__linked__list.tex
+Underfull \hbox (badness 1168) in paragraph at lines 48--51
+[]\T1/cmr/m/n/10 Referenced by int_-comm_-int_-comm_-tx_-queue_-init(), int_-co
+mm_-tx_-queue_-add(), int_-
+ []
+
+
+Underfull \hbox (badness 1168) in paragraph at lines 61--62
+[]\T1/cmr/m/n/10 Referenced by int_-comm_-int_-comm_-tx_-queue_-init(), int_-co
+mm_-tx_-queue_-add(), int_-
+ []
+
+[63
+
+
+]) [64]
+\openout2 = `structUC__MESSAGE.aux'.
+
+ (./structUC__MESSAGE.tex) [65
+
+
+] [66
+
+
+]
+Chapter 6.
+(./driver__unit_2board_8h.tex [67] [68]) [69]
+\openout2 = `driver__unit__v2_2board_8h.aux'.
+
+ (./driver__unit__v2_2board_8h.tex) [70
+
+]
+\openout2 = `front__panel_2board_8h.aux'.
+
+ (./front__panel_2board_8h.tex [71
+
+
+] [72] [73] [74]) [75]
+\openout2 = `general__io_2board_8h.aux'.
+
+
+(./general__io_2board_8h.tex) [76
+
+
+]
+\openout2 = `motherboard_2board_8h.aux'.
+
+ (./motherboard_2board_8h.tex [77
+
+
+]) [78]
+\openout2 = `driver__unit_2global_8h.aux'.
+
+
+(./driver__unit_2global_8h.tex) [79
+
+
+]
+\openout2 = `driver__unit__v2_2global_8h.aux'.
+
+ (./driver__unit__v2_2global_8h.tex)
+[80
+
+
+]
+\openout2 = `general__io_2global_8h.aux'.
+
+ (./general__io_2global_8h.tex) [81
+
+
+]
+\openout2 = `wmv__bus_2global_8h.aux'.
+
+ (./wmv__bus_2global_8h.tex) [82
+
+
+]
+\openout2 = `driver__unit_2init_8c.aux'.
+
+
+(./driver__unit_2init_8c.tex [83
+
+
+]) [84]
+\openout2 = `driver__unit__v2_2init_8c.aux'.
+
+ (./driver__unit__v2_2init_8c.tex
+[85
+
+
+]) [86]
+\openout2 = `front__panel_2init_8c.aux'.
+
+ (./front__panel_2init_8c.tex [87
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 78--81
+\T1/cmr/m/n/10 TX_-BIT, BUTTON_-AUX1_-BIT, BUTTON_-AUX2_-BIT, BUTTON_-MENU_-BIT
+,
+ []
+
+) [88]
+\openout2 = `general__io_2init_8c.aux'.
+
+ (./general__io_2init_8c.tex [89
+
+
+]) [90]
+\openout2 = `motherboard_2init_8c.aux'.
+
+ (./motherboard_2init_8c.tex
+[91
+
+
+]) [92]
+\openout2 = `driver__unit_2init_8h.aux'.
+
+ (./driver__unit_2init_8h.tex [93
+
+
+]) [94]
+\openout2 = `driver__unit__v2_2init_8h.aux'.
+
+
+(./driver__unit__v2_2init_8h.tex [95
+
+
+]) [96]
+\openout2 = `front__panel_2init_8h.aux'.
+
+ (./front__panel_2init_8h.tex
+[97
+
+
+]) [98]
+\openout2 = `general__io_2init_8h.aux'.
+
+ (./general__io_2init_8h.tex [99
+
+
+]) [100]
+\openout2 = `motherboard_2init_8h.aux'.
+
+ (./motherboard_2init_8h.tex
+[101
+
+
+]) [102]
+\openout2 = `driver__unit_2main_8c.aux'.
+
+ (./driver__unit_2main_8c.tex [103
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
+[]\T1/cmr/m/n/10 References DRIVER_-OUTPUT_-1, DRIVER_-OUTPUT_-10, DRIVER_-OUTP
+UT_-11,
+ []
+
+
+Underfull \hbox (badness 6691) in paragraph at lines 110--111
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-12, DRIVER_-OUTPUT_-13, DRIVER_-OUTPUT_-14, DRIV
+ER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-19, DRIVER_-OUTPUT_-2, DRIVER_-OUTPUT_-20, DRIVE
+R_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
+\T1/cmr/m/n/10 OUTPUT_-3, DRIVER_-OUTPUT_-4, DRIVER_-OUTPUT_-5, DRIVER_-OUTPUT_
+-6,
+ []
+
+
+Underfull \hbox (badness 3815) in paragraph at lines 110--111
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-7, DRIVER_-OUTPUT_-8, DRIVER_-OUTPUT_-9, driver_
+-status_-
+ []
+
+[104]
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
+[]\T1/cmr/m/n/10 References DRIVER_-OUTPUT_-1, DRIVER_-OUTPUT_-10, DRIVER_-OUTP
+UT_-11,
+ []
+
+
+Underfull \hbox (badness 6691) in paragraph at lines 130--131
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-12, DRIVER_-OUTPUT_-13, DRIVER_-OUTPUT_-14, DRIV
+ER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-19, DRIVER_-OUTPUT_-2, DRIVER_-OUTPUT_-20, DRIVE
+R_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
+\T1/cmr/m/n/10 OUTPUT_-3, DRIVER_-OUTPUT_-4, DRIVER_-OUTPUT_-5, DRIVER_-OUTPUT_
+-6,
+ []
+
+
+Underfull \hbox (badness 3815) in paragraph at lines 130--131
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-7, DRIVER_-OUTPUT_-8, DRIVER_-OUTPUT_-9, driver_
+-status_-
+ []
+
+
+Underfull \hbox (badness 2393) in paragraph at lines 143--146
+[]\T1/cmr/m/n/10 References bus_-add_-tx_-message(), bus_-allowed_-to_-send(), 
+BUS_-BROADCAST_-ADDR,
+ []
+
+
+Underfull \hbox (badness 2626) in paragraph at lines 143--146
+\T1/cmr/m/n/10 BUS_-CMD_-PING, BUS_-DEVICE_-STATUS_-MESSAGE_-INTERVAL, bus_-get
+_-address(),
+ []
+
+[105]
+Underfull \hbox (badness 2435) in paragraph at lines 171--174
+[]\T1/cmr/m/n/10 References bus_-check_-tx_-status(), bus_-get_-address(), bus_
+-init(), bus_-parse_-message(),
+ []
+
+) [106]
+\openout2 = `driver__unit__v2_2main_8c.aux'.
+
+ (./driver__unit__v2_2main_8c.tex [107
+
+
+] [108] [109]
+Underfull \hbox (badness 2393) in paragraph at lines 192--195
+[]\T1/cmr/m/n/10 References bus_-add_-tx_-message(), bus_-allowed_-to_-send(), 
+BUS_-BROADCAST_-ADDR,
+ []
+
+
+Underfull \hbox (badness 3343) in paragraph at lines 192--195
+\T1/cmr/m/n/10 MESSAGE_-INTERVAL, bus_-get_-address(), bus_-get_-device_-count(
+), bus_-init(), bus_-
+ []
+
+
+Underfull \hbox (badness 3209) in paragraph at lines 192--195
+\T1/cmr/m/n/10 output(), DEF_-NR_-DEVICES, device_-count, device_-id, DEVICE_-I
+D_-DRIVER_-NEG,
+ []
+
+
+Underfull \hbox (badness 1173) in paragraph at lines 192--195
+\T1/cmr/m/n/10 DEVICE_-ID_-DRIVER_-POS, driver_-status_-struct::driver_-output_
+-state, get_-ptt_-status(),
+ []
+
+) [110]
+\openout2 = `front__panel_2main_8c.aux'.
+
+ (./front__panel_2main_8c.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [111
+
+
+]
+[112] [113]
+Underfull \hbox (badness 10000) in paragraph at lines 233--236
+[]\T1/cmr/m/n/10 Referenced by display_-update_-screensaver(), event_-internal_
+-comm_-parse_-message(),
+ []
+
+
+Underfull \hbox (badness 7814) in paragraph at lines 233--236
+\T1/cmr/m/n/10 sequencer_-computer_-rts_-activated(), sequencer_-computer_-rts_
+-deactivated(), sequencer_-
+ []
+
+[114]
+Underfull \hbox (badness 2671) in paragraph at lines 289--292
+\T1/cmr/m/n/10 settings::band_-change_-mode, BAND_-CHANGE_-MODE_-AUTO, bus_-is_
+-master(), bus_-
+ []
+
+
+Underfull \hbox (badness 1953) in paragraph at lines 289--292
+\T1/cmr/m/n/10 interval, counter_-poll_-buttons, counter_-poll_-ext_-devices, c
+ounter_-poll_-radio, counter_-
+ []
+
+
+Underfull \hbox (badness 5050) in paragraph at lines 289--292
+\T1/cmr/m/n/10 CHANGE_-RX_-ANT, FLAG_-CHANGE_-SUBMENU, FLAG_-LAST_-ANTENNA_-BLI
+NK,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 FLAG_-NO_-ROTATION, FLAG_-POLL_-BUTTONS, FLAG_-POLL_-EXT_-DEVICE
+S,
+ []
+
+
+Underfull \hbox (badness 2837) in paragraph at lines 289--292
+\T1/cmr/m/n/10 FLAG_-POLL_-PULSE_-SENSOR, FLAG_-POLL_-RADIO, FLAG_-PROCESS_-RX_
+-ANT_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 CHANGE, FLAG_-PROCESS_-SUBMENU_-CHANGE, FLAG_-RUN_-EVENT_-QUEUE,
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 FUNC_-STATUS_-SELECT_-ANT_-ROTATE, struct_-status::function_-sta
+tus, internal_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 INTERVAL_-POLL_-ROTARY_-ENCODER, led_-set_-rotation_-active(), l
+ed_-set_-tx_-ant(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 LED_-STATE_-OFF, LED_-STATE_-ON, main_-flags, powermeter_-1ms_-t
+ick(), struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 setting::powermeter_-address, PULSE_-SENSOR_-RX_-ANT_-CHANGE_-LI
+MIT, PULSE_-
+ []
+
+
+Underfull \hbox (badness 3525) in paragraph at lines 289--292
+\T1/cmr/m/n/10 get_-poll_-interval(), radio_-rx_-data_-counter, RADIO_-RX_-DATA
+_-TIMEOUT, runtime_-
+ []
+
+[115]
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+[]\T1/cmr/m/n/10 References struct_-runtime_-settings::amplifier_-ptt_-output, 
+antenna_-ctrl_-change_-rx_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 ant(), struct_-runtime_-settings::band_-change_-mode, BAND_-CHAN
+GE_-MODE_-AUTO,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 BAND_-CHANGE_-MODE_-MANUAL, band_-ctrl_-change_-band(), band_-ct
+rl_-change_-
+ []
+
+
+Underfull \hbox (badness 5908) in paragraph at lines 300--303
+\T1/cmr/m/n/10 band_-portion(), band_-ctrl_-load_-band_-limits(), bus_-add_-tx_
+-message(), bus_-allowed_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 to_-send(), BUS_-BROADCAST_-ADDR, bus_-check_-tx_-status(), BUS_
+-CMD_-SYNC,
+ []
+
+
+Underfull \hbox (badness 4193) in paragraph at lines 300--303
+\T1/cmr/m/n/10 BUS_-DEVICE_-STATUS_-MESSAGE_-INTERVAL, bus_-get_-address(), bus
+_-init(), bus_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 struct_-status::buttons_-current_-state, struct_-status::buttons
+_-last_-state, computer_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 interface_-activate_-setup(), computer_-interface_-deactivate_-s
+etup(), computer_-interface_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 init(), computer_-interface_-is_-active(), computer_-interface_-
+parse_-data(), computer_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 interface_-send_-data(), counter_-last_-pulse_-event, counter_-p
+ing_-interval, counter_-sync,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 struct_-status::current_-band_-portion, device_-count, DEVICE_-I
+D_-MAINBOX, device_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 eeprom_-read_-startup_-byte(), eeprom_-read_-table(), eeprom_-sa
+ve_-runtime_-settings(),
+ []
+
+
+Underfull \hbox (badness 1168) in paragraph at lines 300--303
+\T1/cmr/m/n/10 eeprom_-write_-startup_-byte(), event_-bus_-parse_-message(), ev
+ent_-internal_-comm_-parse_-
+ []
+
+
+Underfull \hbox (badness 8151) in paragraph at lines 300--303
+\T1/cmr/m/n/10 message(), event_-poll_-buttons(), event_-poll_-ext_-device(), e
+vent_-pulse_-sensor_-down(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 CHANGE_-RX_-ANT, FLAG_-CHANGE_-SUBMENU, FLAG_-LAST_-BAND_-BLINK,
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 FLAG_-POLL_-BUTTONS, FLAG_-POLL_-EXT_-DEVICES, FLAG_-POLL_-PULSE
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 SENSOR, FLAG_-POLL_-RADIO, FLAG_-PROCESS_-RX_-ANT_-CHANGE, FLAG_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 PROCESS_-SUBMENU_-CHANGE, FLAG_-RUN_-EVENT_-QUEUE, FLAG_-UPDATE_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 DISPLAY, glcd_-init(), i2c_-init(), ih_-poll_-ext_-devices(), IN
+HIBIT_-NOT_-OK_-TO_-
+ []
+
+
+Underfull \hbox (badness 8094) in paragraph at lines 300--303
+\T1/cmr/m/n/10 init_-timer_-2(), init_-usart(), init_-usart_-computer(), intern
+al_-comm_-init(), internal_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 comm_-poll_-rx_-queue(), internal_-comm_-poll_-tx_-queue(), KNOB
+_-FUNCTION_-AUTO,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 struct_-runtime_-settings::lcd_-backlight_-value, led_-set_-all(
+), led_-set_-band(), led_-set_-
+ []
+
+
+Underfull \hbox (badness 3179) in paragraph at lines 300--303
+\T1/cmr/m/n/10 INHIBIT, load_-settings(), main_-flags, main_-set_-inhibit_-stat
+e(), menu_-init(), struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 setting::network_-address, struct_-setting::network_-device_-cou
+nt, struct_-setting::network_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 device_-is_-master, struct_-status::new_-band, struct_-status::n
+ew_-band_-portion, ping_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 message, struct_-setting::powermeter_-address, powermeter_-init(
+), powermeter_-process_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 tasks(), struct_-setting::powermeter_-update_-rate_-bargraph, st
+ruct_-setting::powermeter_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 update_-rate_-text, struct_-setting::powermeter_-vswr_-limit, ra
+dio_-get_-band_-portion(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 radio_-get_-current_-band(), RADIO_-INTERFACE_-BCD, radio_-inter
+face_-get_-interface(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 RADIO_-INTERFACE_-MANUAL, radio_-poll_-status(), radio_-process_
+-tasks(), struct_-
+ []
+
+
+Underfull \hbox (badness 8075) in paragraph at lines 300--303
+\T1/cmr/m/n/10 runtime_-settings::radio_-ptt_-output, rotary_-encoder_-poll(), 
+struct_-status::rotator_-step_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--303
+\T1/cmr/m/n/10 menu_-antenna_-index, sub_-menu_-get_-current_-pos(), sub_-menu_
+-send_-data_-to_-bus(),
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [116]
+Underfull \hbox (badness 10000) in paragraph at lines 317--320
+\T1/cmr/m/n/10 up(), event_-tx_-button1_-pressed(), event_-tx_-button2_-pressed
+(), event_-tx_-button3_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--320
+\T1/cmr/m/n/10 pressed(), event_-tx_-button4_-pressed(), radio_-poll_-status(),
+ sequencer_-computer_-rts_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--356
+[]\T1/cmr/m/n/10 References struct_-runtime_-settings::band_-change_-mode, BAND
+_-CHANGE_-MODE_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--356
+\T1/cmr/m/n/10 MANUAL, struct_-status::knob_-function, KNOB_-FUNCTION_-AUTO, KN
+OB_-
+ []
+
+
+Underfull \hbox (badness 4608) in paragraph at lines 357--358
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-change_-band(), event_-poll_-buttons
+(), event_-rotate_-button_-
+ []
+
+) [117]
+\openout2 = `general__io_2main_8c.aux'.
+
+ (./general__io_2main_8c.tex [118
+
+
+]
+Underfull \hbox (badness 2393) in paragraph at lines 93--96
+[]\T1/cmr/m/n/10 References bus_-add_-tx_-message(), bus_-allowed_-to_-send(), 
+BUS_-BROADCAST_-ADDR,
+ []
+
+
+Underfull \hbox (badness 3343) in paragraph at lines 93--96
+\T1/cmr/m/n/10 MESSAGE_-INTERVAL, bus_-get_-address(), bus_-get_-device_-count(
+), bus_-init(), bus_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--96
+\T1/cmr/m/n/10 is_-master(), BUS_-MASTER_-SYNC_-INTERVAL, bus_-parse_-message()
+, bus_-set_-
+ []
+
+
+Underfull \hbox (badness 4569) in paragraph at lines 93--96
+\T1/cmr/m/n/10 DEFAULT_-STARTUP_-DELAY, device_-count, device_-id, DEVICE_-ID_-
+GENERAL_-IO,
+ []
+
+) [119]
+\openout2 = `motherboard_2main_8c.aux'.
+
+ (./motherboard_2main_8c.tex [120
+
+
+] [121]
+Underfull \hbox (badness 10000) in paragraph at lines 152--155
+[]\T1/cmr/m/n/10 References DRIVER_-OUTPUT_-1, DRIVER_-OUTPUT_-10, DRIVER_-OUTP
+UT_-11,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--155
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-12, DRIVER_-OUTPUT_-2, DRIVER_-OUTPUT_-3, DRIVER
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--155
+\T1/cmr/m/n/10 OUTPUT_-4, DRIVER_-OUTPUT_-5, DRIVER_-OUTPUT_-6, DRIVER_-OUTPUT_
+-7,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--173
+[]\T1/cmr/m/n/10 References DRIVER_-OUTPUT_-1, DRIVER_-OUTPUT_-10, DRIVER_-OUTP
+UT_-11,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--173
+\T1/cmr/m/n/10 DRIVER_-OUTPUT_-12, DRIVER_-OUTPUT_-2, DRIVER_-OUTPUT_-3, DRIVER
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--173
+\T1/cmr/m/n/10 OUTPUT_-4, DRIVER_-OUTPUT_-5, DRIVER_-OUTPUT_-6, DRIVER_-OUTPUT_
+-7,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+\T1/cmr/m/n/10 CMD_-DRIVER_-ACTIVATE_-BAND_-OUTPUT, BUS_-CMD_-DRIVER_-ACTIVATE_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+\T1/cmr/m/n/10 RX_-ANT_-OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-ANT_-OUTPUTS
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+\T1/cmr/m/n/10 BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-BAND_-OUTPUTS, BUS_-CMD_-DRIV
+ER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+\T1/cmr/m/n/10 DEACTIVATE_-ALL_-OUTPUTS, BUS_-CMD_-DRIVER_-DEACTIVATE_-ANT_-OUT
+PUT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+\T1/cmr/m/n/10 BUS_-CMD_-DRIVER_-DEACTIVATE_-RX_-ANT_-OUTPUT, UC_-MESSAGE::cmd,
+
+ []
+
+
+Underfull \hbox (badness 6825) in paragraph at lines 188--189
+\T1/cmr/m/n/10 computer_-interface_-send(), UC_-MESSAGE::data, deactivate_-outp
+ut(), driver_-output_-
+ []
+
+[122]) [123]
+\openout2 = `driver__unit_2main_8h.aux'.
+
+ (./driver__unit_2main_8h.tex) [124
+
+
+]
+\openout2 = `driver__unit__v2_2main_8h.aux'.
+
+
+(./driver__unit__v2_2main_8h.tex) [125
+
+
+]
+\openout2 = `front__panel_2main_8h.aux'.
+
+ (./front__panel_2main_8h.tex [126
+
+
+]
+[127] [128] [129]
+Underfull \hbox (badness 1533) in paragraph at lines 355--359
+[]\T1/cmr/m/n/10 enum [][]enum_-inhibit_-state[][] { [][]INHIBIT_-OK_-TO_-SEND[
+][], [][]INHIBIT_-NOT_-OK_-TO_-
+ []
+
+[130] [131]
+Underfull \hbox (badness 10000) in paragraph at lines 497--500
+[]\T1/cmr/m/n/10 Referenced by display_-update_-screensaver(), event_-internal_
+-comm_-parse_-message(),
+ []
+
+
+Underfull \hbox (badness 7814) in paragraph at lines 497--500
+\T1/cmr/m/n/10 sequencer_-computer_-rts_-activated(), sequencer_-computer_-rts_
+-deactivated(), sequencer_-
+ []
+
+[132]
+Underfull \hbox (badness 10000) in paragraph at lines 550--553
+\T1/cmr/m/n/10 up(), event_-tx_-button1_-pressed(), event_-tx_-button2_-pressed
+(), event_-tx_-button3_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 550--553
+\T1/cmr/m/n/10 pressed(), event_-tx_-button4_-pressed(), radio_-poll_-status(),
+ sequencer_-computer_-rts_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 588--589
+[]\T1/cmr/m/n/10 References struct_-runtime_-settings::band_-change_-mode, BAND
+_-CHANGE_-MODE_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 588--589
+\T1/cmr/m/n/10 MANUAL, struct_-status::knob_-function, KNOB_-FUNCTION_-AUTO, KN
+OB_-
+ []
+
+)
+Underfull \hbox (badness 4608) in paragraph at lines 590--122
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-change_-band(), event_-poll_-buttons
+(), event_-rotate_-button_-
+ []
+
+[133]
+\openout2 = `general__io_2main_8h.aux'.
+
+ (./general__io_2main_8h.tex) [134
+
+
+]
+\openout2 = `motherboard_2main_8h.aux'.
+
+ (./motherboard_2main_8h.tex) [135
+
+
+]
+\openout2 = `event__queue_8c.aux'.
+
+
+(./event__queue_8c.tex [136
+
+
+] [137]
+Underfull \hbox (badness 10000) in paragraph at lines 153--154
+[]\T1/cmr/m/n/10 References event_-list, EVENT_-LIST_-SIZE, EVENT_-MESSAGE::fun
+c, EVENT_-
+ []
+
+) [138]
+\openout2 = `event__queue_8h.aux'.
+
+ (./event__queue_8h.tex [139
+
+
+] [140]
+Underfull \hbox (badness 10000) in paragraph at lines 160--161
+[]\T1/cmr/m/n/10 References event_-list, EVENT_-LIST_-SIZE, EVENT_-MESSAGE::fun
+c, EVENT_-
+ []
+
+[141]) [142]
+\openout2 = `antenna__ctrl_8c.aux'.
+
+ (./antenna__ctrl_8c.tex [143
+
+
+] [144] [145]
+Underfull \hbox (badness 10000) in paragraph at lines 163--165
+[]\T1/cmr/m/n/10 unsigned char [][]current_-band_-activated_-outputs_-rx[][] []
+RX_-ANTENNA_-BAND_-
+ []
+
+[146]
+Underfull \hbox (badness 10000) in paragraph at lines 245--246
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), antenna_-ctrl
+_-send_-rx_-ant_-data_-to_-
+ []
+
+
+Underfull \hbox (badness 1478) in paragraph at lines 247--250
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-change_-band(), event_-rxant_-button
+_-pressed(), event_-set_-rx_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 269--272
+[]\T1/cmr/m/n/10 Referenced by event_-tx_-button1_-pressed(), event_-tx_-button
+2_-pressed(), event_-tx_-
+ []
+
+[147]
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 deactivate_-all_-rx_-band(), antenna_-ctrl_-send_-ant_-data_-to_
+-bus(), antenna_-ctrl_-send_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 289--292
+\T1/cmr/m/n/10 rx_-ant_-band_-data_-to_-bus(), antenna_-ctrl_-send_-rx_-ant_-da
+ta_-to_-bus(), band_-ctrl_-
+ []
+
+[148]
+Underfull \hbox (badness 5217) in paragraph at lines 368--371
+[]\T1/cmr/m/n/10 Referenced by display_-rotator_-directions(), event_-rotate_-b
+utton_-pressed(), event_-tx_-
+ []
+
+
+Underfull \hbox (badness 1655) in paragraph at lines 390--393
+[]\T1/cmr/m/n/10 Referenced by display_-antennas(), display_-invert_-antenna(),
+ display_-rotator_-directions(),
+ []
+
+[149] [150] [151]
+Underfull \hbox (badness 10000) in paragraph at lines 609--612
+[]\T1/cmr/m/n/10 Referenced by display_-rotator_-directions(), event_-sub_-butt
+on_-pressed(), sub_-menu_-
+ []
+
+[152]
+Underfull \hbox (badness 10000) in paragraph at lines 627--628
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), struct_-rx_-a
+ntennas::band_-output_-length,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 627--628
+\T1/cmr/m/n/10 struct_-rx_-antennas::band_-output_-str, bus_-add_-tx_-message()
+, BUS_-CMD_-DRIVER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 627--628
+\T1/cmr/m/n/10 ACTIVATE_-RX_-BAND_-OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-R
+X_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), bus_-add_-tx_
+-message(), BUS_-CMD_-
+ []
+
+
+Underfull \hbox (badness 1622) in paragraph at lines 647--648
+\T1/cmr/m/n/10 RX_-ANTENNA_-OUTPUTS, bus_-get_-address(), BUS_-MESSAGE_-FLAGS_-
+NEED_-ACK,
+ []
+
+
+Underfull \hbox (badness 4353) in paragraph at lines 647--648
+\T1/cmr/m/n/10 current_-activated_-rx_-ant_-outputs, current_-activated_-rx_-an
+t_-outputs_-length, internal_-
+ []
+
+
+Underfull \hbox (badness 2875) in paragraph at lines 647--648
+\T1/cmr/m/n/10 comm_-add_-tx_-message(), OUTPUT_-ADDR_-DELIMITER, struct_-rx_-a
+ntennas::output_-
+ []
+
+[153] [154]) [155]
+\openout2 = `antenna__ctrl_8h.aux'.
+
+ (./antenna__ctrl_8h.tex [156
+
+
+] [157] [158]
+Underfull \hbox (badness 10000) in paragraph at lines 212--213
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), antenna_-ctrl
+_-send_-rx_-ant_-data_-to_-
+ []
+
+
+Underfull \hbox (badness 1478) in paragraph at lines 214--217
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-change_-band(), event_-rxant_-button
+_-pressed(), event_-set_-rx_-
+ []
+
+[159]
+Underfull \hbox (badness 10000) in paragraph at lines 236--239
+[]\T1/cmr/m/n/10 Referenced by event_-tx_-button1_-pressed(), event_-tx_-button
+2_-pressed(), event_-tx_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--259
+\T1/cmr/m/n/10 deactivate_-all_-rx_-band(), antenna_-ctrl_-send_-ant_-data_-to_
+-bus(), antenna_-ctrl_-send_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--259
+\T1/cmr/m/n/10 rx_-ant_-band_-data_-to_-bus(), antenna_-ctrl_-send_-rx_-ant_-da
+ta_-to_-bus(), band_-ctrl_-
+ []
+
+[160]
+Underfull \hbox (badness 5217) in paragraph at lines 335--338
+[]\T1/cmr/m/n/10 Referenced by display_-rotator_-directions(), event_-rotate_-b
+utton_-pressed(), event_-tx_-
+ []
+
+[161]
+Underfull \hbox (badness 1655) in paragraph at lines 357--360
+[]\T1/cmr/m/n/10 Referenced by display_-antennas(), display_-invert_-antenna(),
+ display_-rotator_-directions(),
+ []
+
+[162] [163] [164]
+Underfull \hbox (badness 10000) in paragraph at lines 576--579
+[]\T1/cmr/m/n/10 Referenced by display_-rotator_-directions(), event_-sub_-butt
+on_-pressed(), sub_-menu_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 594--595
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), struct_-rx_-a
+ntennas::band_-output_-length,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 594--595
+\T1/cmr/m/n/10 struct_-rx_-antennas::band_-output_-str, bus_-add_-tx_-message()
+, BUS_-CMD_-DRIVER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 594--595
+\T1/cmr/m/n/10 ACTIVATE_-RX_-BAND_-OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-R
+X_-
+ []
+
+[165]
+Underfull \hbox (badness 10000) in paragraph at lines 614--615
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), bus_-add_-tx_
+-message(), BUS_-CMD_-
+ []
+
+
+Underfull \hbox (badness 1622) in paragraph at lines 614--615
+\T1/cmr/m/n/10 RX_-ANTENNA_-OUTPUTS, bus_-get_-address(), BUS_-MESSAGE_-FLAGS_-
+NEED_-ACK,
+ []
+
+
+Underfull \hbox (badness 4353) in paragraph at lines 614--615
+\T1/cmr/m/n/10 current_-activated_-rx_-ant_-outputs, current_-activated_-rx_-an
+t_-outputs_-length, internal_-
+ []
+
+
+Underfull \hbox (badness 2875) in paragraph at lines 614--615
+\T1/cmr/m/n/10 comm_-add_-tx_-message(), OUTPUT_-ADDR_-DELIMITER, struct_-rx_-a
+ntennas::output_-
+ []
+
+[166] [167]) [168]
+\openout2 = `band__ctrl_8c.aux'.
+
+ (./band__ctrl_8c.tex [169
+
+
+] [170]
+Underfull \hbox (badness 2529) in paragraph at lines 118--119
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-change_-rx_-ant(), antenna_-ctrl_-de
+activate_-all(), antenna_-ctrl_-
+ []
+
+
+Underfull \hbox (badness 5847) in paragraph at lines 118--119
+\T1/cmr/m/n/10 band_-data_-to_-bus(), band_-ctrl_-deactivate_-all(), band_-ctrl
+_-load_-band(), band_-ctrl_-
+ []
+
+
+Underfull \hbox (badness 5077) in paragraph at lines 118--119
+\T1/cmr/m/n/10 send_-band_-data_-to_-bus(), struct_-status::current_-band_-port
+ion, struct_-status::current_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+\T1/cmr/m/n/10 display, CURRENT_-DISPLAY_-ANTENNA_-INFO, struct_-status::curren
+t_-display_-level,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+\T1/cmr/m/n/10 CURRENT_-DISPLAY_-LOGO, CURRENT_-DISPLAY_-MENU_-SYSTEM, CURRENT_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+\T1/cmr/m/n/10 DISPLAY_-SHUTDOWN_-VIEW, DISPLAY_-LEVEL_-BAND, FUNC_-STATUS_-RXA
+NT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+\T1/cmr/m/n/10 struct_-status::function_-status, INHIBIT_-NOT_-OK_-TO_-SEND_-RA
+DIO_-TX, KNOB_-
+ []
+
+[171] [172]
+Underfull \hbox (badness 10000) in paragraph at lines 253--256
+\T1/cmr/m/n/10 BAND_-CHANGE_-MODE_-MANUAL, struct_-status::current_-band_-porti
+on, radio_-get_-
+ []
+
+
+Underfull \hbox (badness 4084) in paragraph at lines 253--256
+\T1/cmr/m/n/10 band_-portion(), RADIO_-INTERFACE_-BCD, radio_-interface_-get_-i
+nterface(), runtime_-
+ []
+
+) [173]
+\openout2 = `band__ctrl_8h.aux'.
+
+ (./band__ctrl_8h.tex [174
+
+
+]
+Underfull \hbox (badness 2529) in paragraph at lines 91--92
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-change_-rx_-ant(), antenna_-ctrl_-de
+activate_-all(), antenna_-ctrl_-
+ []
+
+
+Underfull \hbox (badness 5847) in paragraph at lines 91--92
+\T1/cmr/m/n/10 band_-data_-to_-bus(), band_-ctrl_-deactivate_-all(), band_-ctrl
+_-load_-band(), band_-ctrl_-
+ []
+
+
+Underfull \hbox (badness 5077) in paragraph at lines 91--92
+\T1/cmr/m/n/10 send_-band_-data_-to_-bus(), struct_-status::current_-band_-port
+ion, struct_-status::current_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
+\T1/cmr/m/n/10 display, CURRENT_-DISPLAY_-ANTENNA_-INFO, struct_-status::curren
+t_-display_-level,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
+\T1/cmr/m/n/10 CURRENT_-DISPLAY_-LOGO, CURRENT_-DISPLAY_-MENU_-SYSTEM, CURRENT_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
+\T1/cmr/m/n/10 DISPLAY_-SHUTDOWN_-VIEW, DISPLAY_-LEVEL_-BAND, FUNC_-STATUS_-RXA
+NT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
+\T1/cmr/m/n/10 struct_-status::function_-status, INHIBIT_-NOT_-OK_-TO_-SEND_-RA
+DIO_-TX, KNOB_-
+ []
+
+[175] [176]) [177]
+\openout2 = `front__panel_2computer__interface_8c.aux'.
+
+ (./front__panel_2computer__interface_8c.tex [178
+
+
+] [179]
+[180] [181] [182] [183pdfTeX warning (ext4): destination with the same identifi
+er (name{front__panel_2computer__interface_8c_f0556fcfc3763189f75962a699298a60}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \endgroup \set@typeset@protect 
+l.446 C
+       TRL command: Save the external input settings.]pdfTeX warning (ext4): de
+stination with the same identifier (name{front__panel_2computer__interface_8c_3
+824de7fed48ab3d3bb81d2994c23389}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.451 ...-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE~0x07}}
+                                                  
+Underfull \hbox (badness 10000) in paragraph at lines 488--489
+[]\T1/cmr/m/n/10 References COMPUTER_-COMM_-FLAG_-SETUP_-MODE, and computer_-co
+mm_-
+ []
+
+[184]
+Underfull \hbox (badness 10000) in paragraph at lines 525--526
+[]\T1/cmr/m/n/10 References COMPUTER_-COMM_-POSTAMBLE, COMPUTER_-COMM_-PREAMBLE
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 525--526
+\T1/cmr/m/n/10 COMPUTER_-INTERFACE_-FIXED_-SIZE, computer_-comm_-struct::data_-
+in_-tx_-buffer,
+ []
+
+) [185]
+\openout2 = `motherboard_2computer__interface_8c.aux'.
+
+ (./motherboard_2computer__interface_8c.tex [186
+
+
+] [187]
+Underfull \hbox (badness 1648) in paragraph at lines 152--155
+\T1/cmr/m/n/10 comm_-struct::rx_-buffer_-start, computer_-comm_-struct::tx_-buf
+fer, and computer_-comm_-
+ []
+
+
+Underfull \hbox (badness 4995) in paragraph at lines 169--172
+[]\T1/cmr/m/n/10 References struct_-ptt_-sequencer::active, struct_-ptt_-sequen
+cer::amp_-post_-delay, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 ptt_-sequencer::amp_-pre_-delay, struct_-antenna::antenna_-comb_
+-allowed, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 output_-length, struct_-antenna::antenna_-text, struct_-antenna:
+:antenna_-text_-length,
+ []
+
+
+Underfull \hbox (badness 3068) in paragraph at lines 169--172
+\T1/cmr/m/n/10 struct_-ptt_-sequencer::antennas_-post_-delay, struct_-band::ban
+d_-high_-output_-str, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 band::band_-high_-output_-str_-length, struct_-band::band_-low_-
+output_-str, struct_-
+ []
+
+
+Underfull \hbox (badness 7116) in paragraph at lines 169--172
+\T1/cmr/m/n/10 settings::cat_-enabled, struct_-radio_-settings::civ_-addr, comp
+uter_-comm_-struct::command,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 struct_-ptt::computer, COMPUTER_-COMM_-ENTER_-BOOTLOADER, COMPUT
+ER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 interface_-send(), computer_-interface_-send_-ack(), computer_-i
+nterface_-send_-nack(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-CREATE_-EEPROM_-TABLE, CTRL_-DONE, CTRL_-GET_-FIRMWARE_-
+ []
+
+
+Underfull \hbox (badness 7925) in paragraph at lines 169--172
+\T1/cmr/m/n/10 REV, CTRL_-REBOOT, CTRL_-SET_-ANT_-DATA, CTRL_-SET_-ANT_-DATA_-A
+NT_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 FLAGS, CTRL_-SET_-ANT_-DATA_-ANT_-OUT_-STR, CTRL_-SET_-ANT_-DATA
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 COMB_-ALLOWED, CTRL_-SET_-ANT_-DATA_-SAVE, CTRL_-SET_-ANT_-DATA_
+-
+ []
+
+
+Underfull \hbox (badness 1540) in paragraph at lines 169--172
+\T1/cmr/m/n/10 SUB_-MENU_-TYPE, CTRL_-SET_-ANT_-DATA_-TEXT, CTRL_-SET_-ANT_-DEF
+AULT_-
+ []
+
+
+Underfull \hbox (badness 2452) in paragraph at lines 169--172
+\T1/cmr/m/n/10 INDEX, CTRL_-SET_-ANT_-ROTATOR_-DATA, CTRL_-SET_-ANT_-SUB_-MENU_
+-DATA,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-ANT_-SUB_-MENU_-OUTPUT_-STR, CTRL_-SET_-ANT_-SUB_-MEN
+U_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 TEXT, CTRL_-SET_-BAND_-DATA, CTRL_-SET_-BAND_-DATA_-HIGH_-OUT_-S
+TR,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-BAND_-DATA_-LIMITS, CTRL_-SET_-BAND_-DATA_-LOW_-OUT_-
+STR,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-BAND_-DATA_-SAVE, CTRL_-SET_-DEVICE_-SETTINGS, CTRL_-
+SET_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 DEVICE_-SETTINGS_-EXT_-INPUTS, CTRL_-SET_-DEVICE_-SETTINGS_-NETW
+ORK,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-DEVICE_-SETTINGS_-OTHER, CTRL_-SET_-DEVICE_-SETTINGS_
+-SAVE,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-POWERMETER_-SETTINGS, CTRL_-SET_-RADIO_-SETTINGS, CTR
+L_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 SET_-RADIO_-SETTINGS_-ALL, CTRL_-SET_-RADIO_-SETTINGS_-SAVE, CTR
+L_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 SET_-RX_-ANT_-DATA, CTRL_-SET_-RX_-ANT_-DATA_-ANT_-OUT_-STR, CTR
+L_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 SET_-RX_-ANT_-DATA_-BAND_-OUT_-STR, CTRL_-SET_-RX_-ANT_-DATA_-SA
+VE,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-RX_-ANT_-DATA_-TEXT, CTRL_-SET_-SEQUENCER_-COMPUTER,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-SEQUENCER_-FOOTSWITCH, CTRL_-SET_-SEQUENCER_-RADIO_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 SENSE, CTRL_-SET_-SEQUENCER_-SAVE, CTRL_-SET_-SEQUENCER_-SETTING
+S,
+ []
+
+
+Underfull \hbox (badness 2189) in paragraph at lines 169--172
+\T1/cmr/m/n/10 CTRL_-SET_-TIME, struct_-antenna::default_-antenna, struct_-sub_
+-menu_-array::direction_-
+ []
+
+
+Underfull \hbox (badness 5189) in paragraph at lines 169--172
+\T1/cmr/m/n/10 eeprom_-save_-ant_-structure(), eeprom_-save_-ant_-sub_-menu_-ar
+ray_-structure(), eeprom_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 save_-band_-data(), eeprom_-save_-ptt_-data(), eeprom_-save_-rad
+io_-settings_-structure(),
+ []
+
+
+Underfull \hbox (badness 3579) in paragraph at lines 169--172
+\T1/cmr/m/n/10 eeprom_-save_-rx_-ant_-structure(), eeprom_-save_-settings_-stru
+cture(), struct_-setting::ext_-
+ []
+
+
+Underfull \hbox (badness 1472) in paragraph at lines 169--172
+\T1/cmr/m/n/10 struct_-band::high_-portion_-high_-limit, struct_-band::high_-po
+rtion_-low_-limit, struct_-ptt_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 sequencer::inhibit_-post_-delay, struct_-ptt_-sequencer::inhibit
+_-pre_-delay, INT_-COMM_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 PC_-CTRL, INT_-COMM_-REDIRECT_-DATA, struct_-radio_-settings::in
+terface_-type,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 internal_-comm_-add_-tx_-message(), computer_-comm_-struct::leng
+th, struct_-band::low_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 portion_-high_-limit, struct_-band::low_-portion_-low_-limit, st
+ruct_-rx_-antennas::name,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 device_-count, struct_-setting::network_-device_-is_-master, str
+uct_-rx_-antennas::output_-
+ []
+
+
+Underfull \hbox (badness 1067) in paragraph at lines 169--172
+\T1/cmr/m/n/10 length, struct_-rx_-antennas::output_-str, struct_-sub_-menu_-ar
+ray::output_-str_-dir, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 sub_-menu_-array::output_-str_-dir_-length, struct_-radio_-setti
+ngs::poll_-interval, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 setting::powermeter_-address, struct_-setting::powermeter_-updat
+e_-rate_-bargraph, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 setting::powermeter_-update_-rate_-text, struct_-setting::powerm
+eter_-vswr_-limit, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 ptt::ptt_-input, struct_-radio_-settings::ptt_-input, struct_-se
+tting::ptt_-interlock_-input,
+ []
+
+
+Underfull \hbox (badness 4859) in paragraph at lines 169--172
+\T1/cmr/m/n/10 struct_-radio_-settings::radio_-model, struct_-ptt_-sequencer::r
+adio_-post_-delay, struct_-ptt_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 antenna::rotator_-delay, struct_-antenna::rotator_-max_-rotation
+, struct_-antenna::rotator_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--172
+\T1/cmr/m/n/10 min_-heading, struct_-antenna::rotator_-sub_-addr, struct_-anten
+na::rotator_-view_-360_-deg,
+ []
+
+[188]
+Underfull \hbox (badness 10000) in paragraph at lines 187--190
+[]\T1/cmr/m/n/10 References COMPUTER_-COMM_-POSTAMBLE, COMPUTER_-COMM_-PREAMBLE
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 187--190
+\T1/cmr/m/n/10 COMPUTER_-INTERFACE_-FIXED_-SIZE, computer_-comm_-struct::data_-
+in_-tx_-buffer,
+ []
+
+[189]
+Underfull \hbox (badness 2237) in paragraph at lines 200--203
+[]\T1/cmr/m/n/10 References computer_-comm_-struct::data_-in_-tx_-buffer, compu
+ter_-comm_-struct::tx_-buffer,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 200--203
+\T1/cmr/m/n/10 computer_-comm_-struct::tx_-buffer_-length, computer_-comm_-stru
+ct::tx_-buffer_-start, and
+ []
+
+)
+Underfull \hbox (badness 10000) in paragraph at lines 211--132
+[]\T1/cmr/m/n/10 References computer_-comm_-struct::command, COMPUTER_-COMM_-FL
+AG_-DATA_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--132
+\T1/cmr/m/n/10 IN_-RX_-BUF, COMPUTER_-COMM_-FLAG_-FOUND_-PREAMBLE, COMPUTER_-
+ []
+
+[190]
+\openout2 = `front__panel_2computer__interface_8h.aux'.
+
+ (./front__panel_2computer__interface_8h.tex
+Underfull \hbox (badness 10000) in paragraph at lines 70--71
+[]\T1/cmr/m/n/10 References COMPUTER_-COMM_-FLAG_-SETUP_-MODE, and computer_-co
+mm_-
+ []
+
+[191
+
+
+]) [192]
+\openout2 = `motherboard_2computer__interface_8h.aux'.
+
+ (./motherboard_2computer__interface_8h.tex
+Underfull \hbox (badness 4995) in paragraph at lines 64--65
+[]\T1/cmr/m/n/10 References struct_-ptt_-sequencer::active, struct_-ptt_-sequen
+cer::amp_-post_-delay, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 ptt_-sequencer::amp_-pre_-delay, struct_-antenna::antenna_-comb_
+-allowed, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 output_-length, struct_-antenna::antenna_-text, struct_-antenna:
+:antenna_-text_-length,
+ []
+
+
+Underfull \hbox (badness 3068) in paragraph at lines 64--65
+\T1/cmr/m/n/10 struct_-ptt_-sequencer::antennas_-post_-delay, struct_-band::ban
+d_-high_-output_-str, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 band::band_-high_-output_-str_-length, struct_-band::band_-low_-
+output_-str, struct_-
+ []
+
+
+Underfull \hbox (badness 7116) in paragraph at lines 64--65
+\T1/cmr/m/n/10 settings::cat_-enabled, struct_-radio_-settings::civ_-addr, comp
+uter_-comm_-struct::command,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 struct_-ptt::computer, COMPUTER_-COMM_-ENTER_-BOOTLOADER, COMPUT
+ER_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 interface_-send(), computer_-interface_-send_-ack(), computer_-i
+nterface_-send_-nack(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-CREATE_-EEPROM_-TABLE, CTRL_-DONE, CTRL_-GET_-FIRMWARE_-
+ []
+
+
+Underfull \hbox (badness 7925) in paragraph at lines 64--65
+\T1/cmr/m/n/10 REV, CTRL_-REBOOT, CTRL_-SET_-ANT_-DATA, CTRL_-SET_-ANT_-DATA_-A
+NT_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 FLAGS, CTRL_-SET_-ANT_-DATA_-ANT_-OUT_-STR, CTRL_-SET_-ANT_-DATA
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 COMB_-ALLOWED, CTRL_-SET_-ANT_-DATA_-SAVE, CTRL_-SET_-ANT_-DATA_
+-
+ []
+
+
+Underfull \hbox (badness 1540) in paragraph at lines 64--65
+\T1/cmr/m/n/10 SUB_-MENU_-TYPE, CTRL_-SET_-ANT_-DATA_-TEXT, CTRL_-SET_-ANT_-DEF
+AULT_-
+ []
+
+
+Underfull \hbox (badness 2452) in paragraph at lines 64--65
+\T1/cmr/m/n/10 INDEX, CTRL_-SET_-ANT_-ROTATOR_-DATA, CTRL_-SET_-ANT_-SUB_-MENU_
+-DATA,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-ANT_-SUB_-MENU_-OUTPUT_-STR, CTRL_-SET_-ANT_-SUB_-MEN
+U_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 TEXT, CTRL_-SET_-BAND_-DATA, CTRL_-SET_-BAND_-DATA_-HIGH_-OUT_-S
+TR,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-BAND_-DATA_-LIMITS, CTRL_-SET_-BAND_-DATA_-LOW_-OUT_-
+STR,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-BAND_-DATA_-SAVE, CTRL_-SET_-DEVICE_-SETTINGS, CTRL_-
+SET_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 DEVICE_-SETTINGS_-EXT_-INPUTS, CTRL_-SET_-DEVICE_-SETTINGS_-NETW
+ORK,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-DEVICE_-SETTINGS_-OTHER, CTRL_-SET_-DEVICE_-SETTINGS_
+-SAVE,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-POWERMETER_-SETTINGS, CTRL_-SET_-RADIO_-SETTINGS, CTR
+L_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 SET_-RADIO_-SETTINGS_-ALL, CTRL_-SET_-RADIO_-SETTINGS_-SAVE, CTR
+L_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 SET_-RX_-ANT_-DATA, CTRL_-SET_-RX_-ANT_-DATA_-ANT_-OUT_-STR, CTR
+L_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 SET_-RX_-ANT_-DATA_-BAND_-OUT_-STR, CTRL_-SET_-RX_-ANT_-DATA_-SA
+VE,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-RX_-ANT_-DATA_-TEXT, CTRL_-SET_-SEQUENCER_-COMPUTER,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-SEQUENCER_-FOOTSWITCH, CTRL_-SET_-SEQUENCER_-RADIO_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 SENSE, CTRL_-SET_-SEQUENCER_-SAVE, CTRL_-SET_-SEQUENCER_-SETTING
+S,
+ []
+
+
+Underfull \hbox (badness 2189) in paragraph at lines 64--65
+\T1/cmr/m/n/10 CTRL_-SET_-TIME, struct_-antenna::default_-antenna, struct_-sub_
+-menu_-array::direction_-
+ []
+
+
+Underfull \hbox (badness 5189) in paragraph at lines 64--65
+\T1/cmr/m/n/10 eeprom_-save_-ant_-structure(), eeprom_-save_-ant_-sub_-menu_-ar
+ray_-structure(), eeprom_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 save_-band_-data(), eeprom_-save_-ptt_-data(), eeprom_-save_-rad
+io_-settings_-structure(),
+ []
+
+
+Underfull \hbox (badness 3579) in paragraph at lines 64--65
+\T1/cmr/m/n/10 eeprom_-save_-rx_-ant_-structure(), eeprom_-save_-settings_-stru
+cture(), struct_-setting::ext_-
+ []
+
+
+Underfull \hbox (badness 1472) in paragraph at lines 64--65
+\T1/cmr/m/n/10 struct_-band::high_-portion_-high_-limit, struct_-band::high_-po
+rtion_-low_-limit, struct_-ptt_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 sequencer::inhibit_-post_-delay, struct_-ptt_-sequencer::inhibit
+_-pre_-delay, INT_-COMM_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 PC_-CTRL, INT_-COMM_-REDIRECT_-DATA, struct_-radio_-settings::in
+terface_-type,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 internal_-comm_-add_-tx_-message(), computer_-comm_-struct::leng
+th, struct_-band::low_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 portion_-high_-limit, struct_-band::low_-portion_-low_-limit, st
+ruct_-rx_-antennas::name,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 device_-count, struct_-setting::network_-device_-is_-master, str
+uct_-rx_-antennas::output_-
+ []
+
+
+Underfull \hbox (badness 1067) in paragraph at lines 64--65
+\T1/cmr/m/n/10 length, struct_-rx_-antennas::output_-str, struct_-sub_-menu_-ar
+ray::output_-str_-dir, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 sub_-menu_-array::output_-str_-dir_-length, struct_-radio_-setti
+ngs::poll_-interval, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 setting::powermeter_-address, struct_-setting::powermeter_-updat
+e_-rate_-bargraph, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 setting::powermeter_-update_-rate_-text, struct_-setting::powerm
+eter_-vswr_-limit, struct_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 ptt::ptt_-input, struct_-radio_-settings::ptt_-input, struct_-se
+tting::ptt_-interlock_-input,
+ []
+
+
+Underfull \hbox (badness 4859) in paragraph at lines 64--65
+\T1/cmr/m/n/10 struct_-radio_-settings::radio_-model, struct_-ptt_-sequencer::r
+adio_-post_-delay, struct_-ptt_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 antenna::rotator_-delay, struct_-antenna::rotator_-max_-rotation
+, struct_-antenna::rotator_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+\T1/cmr/m/n/10 min_-heading, struct_-antenna::rotator_-sub_-addr, struct_-anten
+na::rotator_-view_-360_-deg,
+ []
+
+[193
+
+
+]) [194]
+\openout2 = `display_8c.aux'.
+
+ (./display_8c.tex [195
+
+
+] [196]
+Underfull \hbox (badness 10000) in paragraph at lines 146--147
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-antenna_-text(), antenna_-ctrl_
+-get_-antenna_-text_-length(),
+ []
+
+
+Underfull \hbox (badness 1997) in paragraph at lines 146--147
+\T1/cmr/m/n/10 POS, DISPLAY_-TEXT_-ANT2_-Y_-POS, DISPLAY_-TEXT_-ANT3_-X_-POS, D
+ISPLAY_-
+ []
+
+[197]
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
+\T1/cmr/m/n/10 IN_-USE_-FLAG, DISPLAY_-TEXT_-ANT1_-Y_-POS, DISPLAY_-TEXT_-ANT2_
+-Y_-POS,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
+\T1/cmr/m/n/10 DISPLAY_-TEXT_-ANT3_-Y_-POS, DISPLAY_-TEXT_-ANT4_-Y_-POS, DISPLA
+Y_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
+\T1/cmr/m/n/10 TEXT_-ANT_-HEIGHT, DISPLAY_-TEXT_-ANTENNA_-IN_-USE_-ADDITION_-WI
+DTH,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 206--207
+[]\T1/cmr/m/n/10 References CLEAR_-RADIO_-FREQ_-AREA, DISPLAY_-RADIO_-FREQ_-X_-
+POS,
+ []
+
+[198]
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-direction(), antenna_-ctrl_-get
+_-flags(), antenna_-ctrl_-get_-
+ []
+
+
+Underfull \hbox (badness 6775) in paragraph at lines 226--227
+\T1/cmr/m/n/10 text_-right_-adjust(), DISPLAY_-TEXT_-ROTATOR_-ANT1_-X_-POS, DIS
+PLAY_-TEXT_-
+ []
+
+
+Underfull \hbox (badness 4713) in paragraph at lines 226--227
+\T1/cmr/m/n/10 ROTATOR_-ANT1_-Y_-POS, DISPLAY_-TEXT_-ROTATOR_-ANT2_-X_-POS, DIS
+PLAY_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 TEXT_-ROTATOR_-ANT2_-Y_-POS, DISPLAY_-TEXT_-ROTATOR_-ANT3_-X_-PO
+S,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 DISPLAY_-TEXT_-ROTATOR_-ANT3_-Y_-POS, DISPLAY_-TEXT_-ROTATOR_-AN
+T4_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 X_-POS, DISPLAY_-TEXT_-ROTATOR_-ANT4_-Y_-POS, sub_-menu_-get_-cu
+rrent_-pos(),
+ []
+
+[199]
+Underfull \hbox (badness 2941) in paragraph at lines 355--356
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-rx_-antenna_-count(), antenna_-
+ctrl_-get_-rx_-antenna_-name(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--356
+\T1/cmr/m/n/10 BAND, DISPLAY_-TEXT_-RX_-ANT_-X_-POS, DISPLAY_-TEXT_-RX_-ANT_-Y_
+-POS,
+ []
+
+[200]
+Underfull \hbox (badness 1189) in paragraph at lines 377--380
+\T1/cmr/m/n/10 pressed(), event_-tx_-button1_-pressed(), event_-tx_-button2_-pr
+essed(), event_-tx_-button3_-
+ []
+
+
+Underfull \hbox (badness 3668) in paragraph at lines 397--400
+[]\T1/cmr/m/n/10 Referenced by event_-pulse_-sensor_-down(), event_-pulse_-sens
+or_-up(), and event_-sub_-
+ []
+
+[201]
+Underfull \hbox (badness 10000) in paragraph at lines 455--456
+\T1/cmr/m/n/10 DISPLAY_-LEVEL_-BAND, display_-rotator_-directions(), display_-u
+pdate_-radio_-freq(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 457--460
+[]\T1/cmr/m/n/10 Referenced by event_-tx_-button1_-pressed(), event_-tx_-button
+2_-pressed(), event_-tx_-
+ []
+
+[202]) [203]
+\openout2 = `display_8h.aux'.
+
+ (./display_8h.tex [204
+
+
+] [205] [206]
+Underfull \hbox (badness 10000) in paragraph at lines 269--270
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-antenna_-text(), antenna_-ctrl_
+-get_-antenna_-text_-length(),
+ []
+
+
+Underfull \hbox (badness 1997) in paragraph at lines 269--270
+\T1/cmr/m/n/10 POS, DISPLAY_-TEXT_-ANT2_-Y_-POS, DISPLAY_-TEXT_-ANT3_-X_-POS, D
+ISPLAY_-
+ []
+
+[207]
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
+\T1/cmr/m/n/10 IN_-USE_-FLAG, DISPLAY_-TEXT_-ANT1_-Y_-POS, DISPLAY_-TEXT_-ANT2_
+-Y_-POS,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
+\T1/cmr/m/n/10 DISPLAY_-TEXT_-ANT3_-Y_-POS, DISPLAY_-TEXT_-ANT4_-Y_-POS, DISPLA
+Y_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
+\T1/cmr/m/n/10 TEXT_-ANT_-HEIGHT, DISPLAY_-TEXT_-ANTENNA_-IN_-USE_-ADDITION_-WI
+DTH,
+ []
+
+[208]
+Underfull \hbox (badness 10000) in paragraph at lines 329--330
+[]\T1/cmr/m/n/10 References CLEAR_-RADIO_-FREQ_-AREA, DISPLAY_-RADIO_-FREQ_-X_-
+POS,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-direction(), antenna_-ctrl_-get
+_-flags(), antenna_-ctrl_-get_-
+ []
+
+
+Underfull \hbox (badness 6775) in paragraph at lines 349--350
+\T1/cmr/m/n/10 text_-right_-adjust(), DISPLAY_-TEXT_-ROTATOR_-ANT1_-X_-POS, DIS
+PLAY_-TEXT_-
+ []
+
+
+Underfull \hbox (badness 4713) in paragraph at lines 349--350
+\T1/cmr/m/n/10 ROTATOR_-ANT1_-Y_-POS, DISPLAY_-TEXT_-ROTATOR_-ANT2_-X_-POS, DIS
+PLAY_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
+\T1/cmr/m/n/10 TEXT_-ROTATOR_-ANT2_-Y_-POS, DISPLAY_-TEXT_-ROTATOR_-ANT3_-X_-PO
+S,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
+\T1/cmr/m/n/10 DISPLAY_-TEXT_-ROTATOR_-ANT3_-Y_-POS, DISPLAY_-TEXT_-ROTATOR_-AN
+T4_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
+\T1/cmr/m/n/10 X_-POS, DISPLAY_-TEXT_-ROTATOR_-ANT4_-Y_-POS, sub_-menu_-get_-cu
+rrent_-pos(),
+ []
+
+[209]
+Underfull \hbox (badness 2941) in paragraph at lines 438--439
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-rx_-antenna_-count(), antenna_-
+ctrl_-get_-rx_-antenna_-name(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 438--439
+\T1/cmr/m/n/10 BAND, DISPLAY_-TEXT_-RX_-ANT_-X_-POS, DISPLAY_-TEXT_-RX_-ANT_-Y_
+-POS,
+ []
+
+[210]
+Underfull \hbox (badness 1189) in paragraph at lines 460--463
+\T1/cmr/m/n/10 pressed(), event_-tx_-button1_-pressed(), event_-tx_-button2_-pr
+essed(), event_-tx_-button3_-
+ []
+
+
+Underfull \hbox (badness 3668) in paragraph at lines 480--483
+[]\T1/cmr/m/n/10 Referenced by event_-pulse_-sensor_-down(), event_-pulse_-sens
+or_-up(), and event_-sub_-
+ []
+
+[211]
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
+\T1/cmr/m/n/10 DISPLAY_-LEVEL_-BAND, display_-rotator_-directions(), display_-u
+pdate_-radio_-freq(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 520--523
+[]\T1/cmr/m/n/10 Referenced by event_-tx_-button1_-pressed(), event_-tx_-button
+2_-pressed(), event_-tx_-
+ []
+
+) [212]
+\openout2 = `ds1307_8c.aux'.
+
+ (./ds1307_8c.tex [213
+
+
+] [214]) [215]
+\openout2 = `ds1307_8h.aux'.
+
+ (./ds1307_8h.tex [216
+
+
+]) [217]
+\openout2 = `eeprom_8c.aux'.
+
+
+(./eeprom_8c.tex [218
+
+
+] [219]
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
+\T1/cmr/m/n/10 menu, struct_-eeprom_-table::antenna3_-sub_-menu, struct_-eeprom
+_-table::antenna4_-sub_-
+ []
+
+[220] [221]
+Underfull \hbox (badness 10000) in paragraph at lines 315--316
+\T1/cmr/m/n/10 menu, struct_-eeprom_-table::antenna3_-sub_-menu, struct_-eeprom
+_-table::antenna4_-sub_-
+ []
+
+[222] [223]) [224]
+\openout2 = `eeprom_8h.aux'.
+
+ (./eeprom_8h.tex [225
+
+
+] [226]
+Underfull \hbox (badness 10000) in paragraph at lines 115--116
+\T1/cmr/m/n/10 menu, struct_-eeprom_-table::antenna3_-sub_-menu, struct_-eeprom
+_-table::antenna4_-sub_-
+ []
+
+[227] [228]
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
+\T1/cmr/m/n/10 menu, struct_-eeprom_-table::antenna3_-sub_-menu, struct_-eeprom
+_-table::antenna4_-sub_-
+ []
+
+[229] [230]) [231]
+\openout2 = `eeprom__m24_8c.aux'.
+
+ (./eeprom__m24_8c.tex [232
+
+
+]
+Underfull \hbox (badness 5939) in paragraph at lines 89--92
+\T1/cmr/m/n/10 eeprom_-get_-runtime_-settings(), eeprom_-get_-rx_-antenna_-data
+(), eeprom_-get_-settings_-
+ []
+
+
+Underfull \hbox (badness 3557) in paragraph at lines 107--108
+[]\T1/cmr/m/n/10 References EEPROM_-M24_-ADDR, eeprom_-tiny_-delay(), i2cSendBy
+te(), i2cSendStart(),
+ []
+
+
+Underfull \hbox (badness 2582) in paragraph at lines 109--112
+\T1/cmr/m/n/10 menu_-array_-structure(), eeprom_-save_-band_-data(), eeprom_-sa
+ve_-ptt_-data(), eeprom_-
+ []
+
+
+Underfull \hbox (badness 2285) in paragraph at lines 109--112
+\T1/cmr/m/n/10 save_-radio_-settings_-structure(), eeprom_-save_-runtime_-setti
+ngs(), eeprom_-save_-rx_-ant_-
+ []
+
+[233]
+Underfull \hbox (badness 6808) in paragraph at lines 127--130
+[]\T1/cmr/m/n/10 References EEPROM_-M24_-ADDR, i2cSendByte(), i2cSendStart(), i
+2cSendStop(), and
+ []
+
+) [234]
+\openout2 = `eeprom__m24_8h.aux'.
+
+ (./eeprom__m24_8h.tex [235
+
+
+]
+Underfull \hbox (badness 5939) in paragraph at lines 87--90
+\T1/cmr/m/n/10 eeprom_-get_-runtime_-settings(), eeprom_-get_-rx_-antenna_-data
+(), eeprom_-get_-settings_-
+ []
+
+
+Underfull \hbox (badness 3557) in paragraph at lines 105--106
+[]\T1/cmr/m/n/10 References EEPROM_-M24_-ADDR, eeprom_-tiny_-delay(), i2cSendBy
+te(), i2cSendStart(),
+ []
+
+
+Underfull \hbox (badness 2582) in paragraph at lines 107--110
+\T1/cmr/m/n/10 menu_-array_-structure(), eeprom_-save_-band_-data(), eeprom_-sa
+ve_-ptt_-data(), eeprom_-
+ []
+
+
+Underfull \hbox (badness 2285) in paragraph at lines 107--110
+\T1/cmr/m/n/10 save_-radio_-settings_-structure(), eeprom_-save_-runtime_-setti
+ngs(), eeprom_-save_-rx_-ant_-
+ []
+
+[236])
+Underfull \hbox (badness 6808) in paragraph at lines 125--142
+[]\T1/cmr/m/n/10 References EEPROM_-M24_-ADDR, i2cSendByte(), i2cSendStart(), i
+2cSendStop(), and
+ []
+
+[237]
+\openout2 = `errors_8h.aux'.
+
+ (./errors_8h.tex) [238
+
+
+]
+\openout2 = `event__handler_8c.aux'.
+
+ (./event__handler_8c.tex [239
+
+
+] [240] [241]
+Underfull \hbox (badness 4403) in paragraph at lines 195--196
+[]\T1/cmr/m/n/10 References event_-rxant_-button_-pressed(), event_-set_-rx_-an
+tenna(), event_-tx_-button1_-
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 195--196
+\T1/cmr/m/n/10 pressed(), event_-tx_-button2_-pressed(), event_-tx_-button3_-pr
+essed(), event_-tx_-button4_-
+ []
+
+
+Underfull \hbox (badness 5667) in paragraph at lines 195--196
+\T1/cmr/m/n/10 RX_-ANT10, EXT_-CTRL_-TOGGLE_-RX_-ANT_-MODE, EXT_-CTRL_-TOGGLE_-
+TX_-
+ []
+
+
+Underfull \hbox (badness 1052) in paragraph at lines 195--196
+\T1/cmr/m/n/10 ANT1, EXT_-CTRL_-TOGGLE_-TX_-ANT2, EXT_-CTRL_-TOGGLE_-TX_-ANT3, 
+EXT_-
+ []
+
+
+Underfull \hbox (badness 1521) in paragraph at lines 195--196
+\T1/cmr/m/n/10 BTN_-1, KEYPAD_-BTN_-2, KEYPAD_-BTN_-3, KEYPAD_-BTN_-4, KEYPAD_-
+BTN_-5,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+[]\T1/cmr/m/n/10 References band_-ctrl_-change_-band(), UC_-MESSAGE::cmd, compu
+ter_-interface_-is_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\T1/cmr/m/n/10 active(), struct_-status::current_-display, CURRENT_-DISPLAY_-SH
+UTDOWN_-VIEW,
+ []
+
+
+Underfull \hbox (badness 4441) in paragraph at lines 215--216
+\T1/cmr/m/n/10 UC_-MESSAGE::data, display_-shutdown_-view(), event_-add_-messag
+e(), event_-handler_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\T1/cmr/m/n/10 process_-ps2(), INT_-COMM_-GET_-BAND_-BCD_-STATUS, INT_-COMM_-PC
+_-CTRL,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\T1/cmr/m/n/10 INT_-COMM_-PS2_-KEYPRESSED, INT_-COMM_-TURN_-DEVICE_-OFF, main_-
+save_-
+ []
+
+
+Underfull \hbox (badness 1910) in paragraph at lines 215--216
+\T1/cmr/m/n/10 settings(), radio_-get_-current_-band(), radio_-set_-current_-ba
+nd(), remote_-control_-parse_-
+ []
+
+
+Underfull \hbox (badness 6412) in paragraph at lines 235--236
+[]\T1/cmr/m/n/10 References struct_-status::ext_-devices_-current_-state, seque
+ncer_-computer_-rts_-activated(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--236
+\T1/cmr/m/n/10 sequencer_-computer_-rts_-deactivated(), sequencer_-footsw_-pres
+sed(), sequencer_-footsw_-
+ []
+
+
+Underfull \hbox (badness 7468) in paragraph at lines 235--236
+\T1/cmr/m/n/10 released(), sequencer_-get_-radio_-sense(), sequencer_-get_-rts_
+-polarity(), sequencer_-get_-
+ []
+
+
+Underfull \hbox (badness 2837) in paragraph at lines 235--236
+\T1/cmr/m/n/10 sense_-polarity(), sequencer_-radio_-sense_-activated(), sequenc
+er_-radio_-sense_-deactivated(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--236
+\T1/cmr/m/n/10 sta-tus, STATUS_-FOOTSWITCH_-BIT, STATUS_-RADIO_-SENSE1_-BIT, ST
+ATUS_-
+ []
+
+[242]) [243]
+\openout2 = `event__handler_8h.aux'.
+
+ (./event__handler_8h.tex [244
+
+
+] [245] [246] [247] [248]
+Underfull \hbox (badness 4403) in paragraph at lines 445--446
+[]\T1/cmr/m/n/10 References event_-rxant_-button_-pressed(), event_-set_-rx_-an
+tenna(), event_-tx_-button1_-
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 445--446
+\T1/cmr/m/n/10 pressed(), event_-tx_-button2_-pressed(), event_-tx_-button3_-pr
+essed(), event_-tx_-button4_-
+ []
+
+
+Underfull \hbox (badness 5667) in paragraph at lines 445--446
+\T1/cmr/m/n/10 RX_-ANT10, EXT_-CTRL_-TOGGLE_-RX_-ANT_-MODE, EXT_-CTRL_-TOGGLE_-
+TX_-
+ []
+
+
+Underfull \hbox (badness 1052) in paragraph at lines 445--446
+\T1/cmr/m/n/10 ANT1, EXT_-CTRL_-TOGGLE_-TX_-ANT2, EXT_-CTRL_-TOGGLE_-TX_-ANT3, 
+EXT_-
+ []
+
+
+Underfull \hbox (badness 1521) in paragraph at lines 445--446
+\T1/cmr/m/n/10 BTN_-1, KEYPAD_-BTN_-2, KEYPAD_-BTN_-3, KEYPAD_-BTN_-4, KEYPAD_-
+BTN_-5,
+ []
+
+[249]
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
+[]\T1/cmr/m/n/10 References band_-ctrl_-change_-band(), UC_-MESSAGE::cmd, compu
+ter_-interface_-is_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
+\T1/cmr/m/n/10 active(), struct_-status::current_-display, CURRENT_-DISPLAY_-SH
+UTDOWN_-VIEW,
+ []
+
+
+Underfull \hbox (badness 4441) in paragraph at lines 465--466
+\T1/cmr/m/n/10 UC_-MESSAGE::data, display_-shutdown_-view(), event_-add_-messag
+e(), event_-handler_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
+\T1/cmr/m/n/10 process_-ps2(), INT_-COMM_-GET_-BAND_-BCD_-STATUS, INT_-COMM_-PC
+_-CTRL,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
+\T1/cmr/m/n/10 INT_-COMM_-PS2_-KEYPRESSED, INT_-COMM_-TURN_-DEVICE_-OFF, main_-
+save_-
+ []
+
+
+Underfull \hbox (badness 1910) in paragraph at lines 465--466
+\T1/cmr/m/n/10 settings(), radio_-get_-current_-band(), radio_-set_-current_-ba
+nd(), remote_-control_-parse_-
+ []
+
+
+Underfull \hbox (badness 6412) in paragraph at lines 485--486
+[]\T1/cmr/m/n/10 References struct_-status::ext_-devices_-current_-state, seque
+ncer_-computer_-rts_-activated(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 485--486
+\T1/cmr/m/n/10 sequencer_-computer_-rts_-deactivated(), sequencer_-footsw_-pres
+sed(), sequencer_-footsw_-
+ []
+
+
+Underfull \hbox (badness 7468) in paragraph at lines 485--486
+\T1/cmr/m/n/10 released(), sequencer_-get_-radio_-sense(), sequencer_-get_-rts_
+-polarity(), sequencer_-get_-
+ []
+
+
+Underfull \hbox (badness 2837) in paragraph at lines 485--486
+\T1/cmr/m/n/10 sense_-polarity(), sequencer_-radio_-sense_-activated(), sequenc
+er_-radio_-sense_-deactivated(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 485--486
+\T1/cmr/m/n/10 sta-tus, STATUS_-FOOTSWITCH_-BIT, STATUS_-RADIO_-SENSE1_-BIT, ST
+ATUS_-
+ []
+
+[250]) [251]
+\openout2 = `glcd_8c.aux'.
+
+ (./glcd_8c.tex [252
+
+
+]) [253]
+\openout2 = `glcd_8h.aux'.
+
+ (./glcd_8h.tex [254
+
+
+]) [255]
+\openout2 = `interrupt__handler_8c.aux'.
+
+
+(./interrupt__handler_8c.tex
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+\T1/cmr/m/n/10 TX_-BIT, BUTTON_-AUX1_-BIT, BUTTON_-AUX2_-BIT, BUTTON_-MENU_-BIT
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+\T1/cmr/m/n/10 SUBMENU_-BIT, BUTTON_-TXRX_-BIT, FLAG_-BUTTON1_-RX_-BIT, FLAG_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+\T1/cmr/m/n/10 BUTTON4_-TX_-BIT, FLAG_-BUTTON_-AUX1_-BIT, FLAG_-BUTTON_-AUX2_-B
+IT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+\T1/cmr/m/n/10 FLAG_-BUTTON_-MENU_-BIT, FLAG_-BUTTON_-PULSE_-BIT, FLAG_-BUTTON_
+-
+ []
+
+[256
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 75--76
+[]\T1/cmr/m/n/10 References EXT_-FOOTSWITCH_-BIT, EXT_-RADIO_-SENSE1_-BIT, EXT_
+-RADIO_-
+ []
+
+
+Underfull \hbox (badness 1817) in paragraph at lines 75--76
+\T1/cmr/m/n/10 SENSE2_-BIT, EXT_-USB1_-DTR_-BIT, EXT_-USB2_-DTR_-BIT, EXT_-USB2
+_-RTS_-BIT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--76
+\T1/cmr/m/n/10 STATUS_-FOOTSWITCH_-BIT, STATUS_-RADIO_-SENSE1_-BIT, STATUS_-RAD
+IO_-
+ []
+
+
+Underfull \hbox (badness 2310) in paragraph at lines 75--76
+\T1/cmr/m/n/10 SENSE2_-BIT, STATUS_-USB1_-DTR_-BIT, STATUS_-USB2_-DTR_-BIT, and
+ STATUS_-
+ []
+
+) [257]
+\openout2 = `interrupt__handler_8h.aux'.
+
+ (./interrupt__handler_8h.tex
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+\T1/cmr/m/n/10 TX_-BIT, BUTTON_-AUX1_-BIT, BUTTON_-AUX2_-BIT, BUTTON_-MENU_-BIT
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+\T1/cmr/m/n/10 SUBMENU_-BIT, BUTTON_-TXRX_-BIT, FLAG_-BUTTON1_-RX_-BIT, FLAG_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+\T1/cmr/m/n/10 BUTTON4_-TX_-BIT, FLAG_-BUTTON_-AUX1_-BIT, FLAG_-BUTTON_-AUX2_-B
+IT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+\T1/cmr/m/n/10 FLAG_-BUTTON_-MENU_-BIT, FLAG_-BUTTON_-PULSE_-BIT, FLAG_-BUTTON_
+-
+ []
+
+[258
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
+[]\T1/cmr/m/n/10 References EXT_-FOOTSWITCH_-BIT, EXT_-RADIO_-SENSE1_-BIT, EXT_
+-RADIO_-
+ []
+
+
+Underfull \hbox (badness 1817) in paragraph at lines 69--70
+\T1/cmr/m/n/10 SENSE2_-BIT, EXT_-USB1_-DTR_-BIT, EXT_-USB2_-DTR_-BIT, EXT_-USB2
+_-RTS_-BIT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
+\T1/cmr/m/n/10 STATUS_-FOOTSWITCH_-BIT, STATUS_-RADIO_-SENSE1_-BIT, STATUS_-RAD
+IO_-
+ []
+
+
+Underfull \hbox (badness 2310) in paragraph at lines 69--70
+\T1/cmr/m/n/10 SENSE2_-BIT, STATUS_-USB1_-DTR_-BIT, STATUS_-USB2_-DTR_-BIT, and
+ STATUS_-
+ []
+
+) [259]
+\openout2 = `ks0108_8c.aux'.
+
+ (./ks0108_8c.tex [260
+
+
+]) [261]
+\openout2 = `ks0108_8h.aux'.
+
+ (./ks0108_8h.tex [262
+
+
+]) [263]
+\openout2 = `ks0108conf_8h.aux'.
+
+
+(./ks0108conf_8h.tex) [264
+
+
+]
+\openout2 = `front__panel_2led__control_8c.aux'.
+
+ (./front__panel_2led__control_8c.tex [265
+
+
+]
+Underfull \hbox (badness 2828) in paragraph at lines 85--86
+\T1/cmr/m/n/10 led_-set_-rotate(), led_-set_-rx_-ant(), led_-set_-rxant(), led_
+-set_-tx_-ant(), led_-set_-txrx(),
+ []
+
+[266] [267] [268]
+Underfull \hbox (badness 10000) in paragraph at lines 303--304
+[]\T1/cmr/m/n/10 References LED_-STATE_-ON, LED_-TX_-BUTTON1_-BIT, LED_-TX_-BUT
+TON2_-BIT,
+ []
+
+) [269]
+\openout2 = `front__panel_2led__control_8h.aux'.
+
+ (./front__panel_2led__control_8h.tex
+Underfull \hbox (badness 3579) in paragraph at lines 11--15
+[]\T1/cmr/m/n/10 enum [][]enum_-led_-ptt_-state[][] { [][]LED_-STATE_-PTT_-ACTI
+VE[][], [][]LED_-STATE_-PTT_-
+ []
+
+[270
+
+
+] [271]
+Underfull \hbox (badness 2828) in paragraph at lines 151--152
+\T1/cmr/m/n/10 led_-set_-rotate(), led_-set_-rx_-ant(), led_-set_-rxant(), led_
+-set_-tx_-ant(), led_-set_-txrx(),
+ []
+
+[272] [273]
+Underfull \hbox (badness 10000) in paragraph at lines 369--370
+[]\T1/cmr/m/n/10 References LED_-STATE_-ON, LED_-TX_-BUTTON1_-BIT, LED_-TX_-BUT
+TON2_-BIT,
+ []
+
+[274]) [275]
+\openout2 = `menu_8c.aux'.
+
+ (./menu_8c.tex [276
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 86--88
+[]\T1/cmr/m/n/10 const [][]struct_-menu_-option[][] [][]menu_-option_-band_-sel
+ection_-mode[][] []$ $[] = {{"Man-
+ []
+
+[277]
+Underfull \hbox (badness 2478) in paragraph at lines 138--139
+[]\T1/cmr/m/n/10 References struct_-runtime_-settings::amplifier_-ptt_-output, 
+struct_-runtime_-settings::band_-
+ []
+
+
+Underfull \hbox (badness 7468) in paragraph at lines 138--139
+\T1/cmr/m/n/10 change_-mode, BAND_-CHANGE_-MODE_-AUTO, BAND_-CHANGE_-MODE_-MANU
+AL,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
+\T1/cmr/m/n/10 display_-set_-backlight(), event_-get_-errors(), event_-set_-err
+or(), KNOB_-FUNCTION_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
+\T1/cmr/m/n/10 MENU_-BUTTON_-PRESSED, MENU_-OPTION_-TYPE_-NORMAL, MENU_-OPTION_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
+\T1/cmr/m/n/10 TYPE_-SCROLL_-NUMBERS, MENU_-OPTIONS, MENU_-POS_-AMP_-PTT, MENU_
+-
+ []
+
+
+Underfull \hbox (badness 6825) in paragraph at lines 158--159
+\T1/cmr/m/n/10 calculate_-width(), event_-get_-errors(), glcd_-line(), struct_-
+menu_-text::header, struct_-
+ []
+
+
+Underfull \hbox (badness 1137) in paragraph at lines 158--159
+\T1/cmr/m/n/10 runtime_-settings::lcd_-backlight_-value, MENU_-OPTION_-LEFT_-PO
+S, MENU_-OPTION_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 158--159
+\T1/cmr/m/n/10 TYPE_-NORMAL, MENU_-OPTION_-TYPE_-SCROLL_-NUMBERS, MENU_-POS_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 158--159
+\T1/cmr/m/n/10 NR_-OF_-ERRORS, struct_-menu_-text::option_-count, struct_-menu_
+-text::option_-type,
+ []
+
+
+Underfull \hbox (badness 1895) in paragraph at lines 158--159
+\T1/cmr/m/n/10 struct_-menu_-text::options, struct_-menu_-text::pos, runtime_-s
+ettings, and struct_-menu_-
+ []
+
+
+Overfull \hbox (76.79132pt too wide) in paragraph at lines 181--181
+[]\T1/cmtt/m/n/8 {MENU_POS_BAND_MODE, "Band change", (struct_menu_option *)menu
+_option_band_selection_mode, 2,MENU_OPTION_TYPE_NORMAL},[] 
+ []
+
+
+Overfull \hbox (55.54651pt too wide) in paragraph at lines 181--181
+[]\T1/cmtt/m/n/8 {MENU_POS_RADIO_PTT, "Radio PTT", (struct_menu_option *)menu_o
+ption_radio_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},[] 
+ []
+
+
+Overfull \hbox (55.54651pt too wide) in paragraph at lines 181--181
+[]\T1/cmtt/m/n/8 {MENU_POS_AMP_PTT, "Amplifier PTT", (struct_menu_option *)menu
+_option_amp_ptt_output, 2,MENU_OPTION_TYPE_NORMAL},[] 
+ []
+
+[278]) [279]
+\openout2 = `menu_8h.aux'.
+
+ (./menu_8h.tex [280
+
+
+]
+Underfull \hbox (badness 2478) in paragraph at lines 140--141
+[]\T1/cmr/m/n/10 References struct_-runtime_-settings::amplifier_-ptt_-output, 
+struct_-runtime_-settings::band_-
+ []
+
+
+Underfull \hbox (badness 7468) in paragraph at lines 140--141
+\T1/cmr/m/n/10 change_-mode, BAND_-CHANGE_-MODE_-AUTO, BAND_-CHANGE_-MODE_-MANU
+AL,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 140--141
+\T1/cmr/m/n/10 display_-set_-backlight(), event_-get_-errors(), event_-set_-err
+or(), KNOB_-FUNCTION_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 140--141
+\T1/cmr/m/n/10 MENU_-BUTTON_-PRESSED, MENU_-OPTION_-TYPE_-NORMAL, MENU_-OPTION_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 140--141
+\T1/cmr/m/n/10 TYPE_-SCROLL_-NUMBERS, MENU_-OPTIONS, MENU_-POS_-AMP_-PTT, MENU_
+-
+ []
+
+[281]) [282]
+\openout2 = `pictures_8h.aux'.
+
+ (./pictures_8h.tex) [283
+
+
+]
+\openout2 = `powermeter_8c.aux'.
+
+ (./powermeter_8c.tex [284
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 105--106
+[]\T1/cmr/m/n/10 References powermeter_-struct::bargraph_-update_-rate, powerme
+ter_-struct::curr_-fwd_-
+ []
+
+
+Underfull \hbox (badness 5161) in paragraph at lines 105--106
+\T1/cmr/m/n/10 pwr_-value, powermeter_-struct::curr_-ref_-pwr_-value, powermete
+r_-struct::curr_-vswr_-value,
+ []
+
+
+Underfull \hbox (badness 1383) in paragraph at lines 105--106
+\T1/cmr/m/n/10 powermeter_-struct::pickup_-addr, powermeter_-struct::text_-upda
+te_-rate, and powermeter_-
+ []
+
+[285]) [286]
+\openout2 = `powermeter_8h.aux'.
+
+ (./powermeter_8h.tex [287
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
+[]\T1/cmr/m/n/10 References powermeter_-struct::bargraph_-update_-rate, powerme
+ter_-struct::curr_-fwd_-
+ []
+
+
+Underfull \hbox (badness 5161) in paragraph at lines 68--69
+\T1/cmr/m/n/10 pwr_-value, powermeter_-struct::curr_-ref_-pwr_-value, powermete
+r_-struct::curr_-vswr_-value,
+ []
+
+
+Underfull \hbox (badness 1383) in paragraph at lines 68--69
+\T1/cmr/m/n/10 powermeter_-struct::pickup_-addr, powermeter_-struct::text_-upda
+te_-rate, and powermeter_-
+ []
+
+) [288]
+\openout2 = `radio__interface_8c.aux'.
+
+ (./radio__interface_8c.tex [289
+
+
+] [290] [291] [292]
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
+[]\T1/cmr/m/n/10 References band_-ctrl_-get_-high_-portion_-high(), band_-ctrl_
+-get_-high_-portion_-low(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
+\T1/cmr/m/n/10 band_-ctrl_-get_-low_-portion_-high(), band_-ctrl_-get_-low_-por
+tion_-low(), struct_-radio_-
+ []
+
+[293] [294] [295] [296]
+Underfull \hbox (badness 10000) in paragraph at lines 585--586
+\T1/cmr/m/n/10 settings::interface_-type, internal_-comm_-add_-tx_-message(), m
+ain_-get_-inhibit_-state(),
+ []
+
+
+Underfull \hbox (badness 1389) in paragraph at lines 585--586
+\T1/cmr/m/n/10 RADIO_-INTERFACE_-BCD, RADIO_-INTERFACE_-CAT_-MON, RADIO_-INTERF
+ACE_-
+ []
+
+
+Underfull \hbox (badness 1867) in paragraph at lines 585--586
+\T1/cmr/m/n/10 CAT_-POLL, struct_-radio_-settings::radio_-model, RADIO_-MODEL_-
+ICOM, and usart3_-
+ []
+
+[297]) [298]
+\openout2 = `radio__interface_8h.aux'.
+
+ (./radio__interface_8h.tex [299
+
+
+] [300] [301] [302]
+Underfull \hbox (badness 10000) in paragraph at lines 343--344
+[]\T1/cmr/m/n/10 References band_-ctrl_-get_-high_-portion_-high(), band_-ctrl_
+-get_-high_-portion_-low(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 343--344
+\T1/cmr/m/n/10 band_-ctrl_-get_-low_-portion_-high(), band_-ctrl_-get_-low_-por
+tion_-low(), struct_-radio_-
+ []
+
+[303] [304] [305] [306] [307]
+Underfull \hbox (badness 10000) in paragraph at lines 642--643
+\T1/cmr/m/n/10 settings::interface_-type, internal_-comm_-add_-tx_-message(), m
+ain_-get_-inhibit_-state(),
+ []
+
+
+Underfull \hbox (badness 1389) in paragraph at lines 642--643
+\T1/cmr/m/n/10 RADIO_-INTERFACE_-BCD, RADIO_-INTERFACE_-CAT_-MON, RADIO_-INTERF
+ACE_-
+ []
+
+
+Underfull \hbox (badness 1867) in paragraph at lines 642--643
+\T1/cmr/m/n/10 CAT_-POLL, struct_-radio_-settings::radio_-model, RADIO_-MODEL_-
+ICOM, and usart3_-
+ []
+
+) [308]
+\openout2 = `remote__control_8c.aux'.
+
+ (./remote__control_8c.tex [309
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
+[]\T1/cmr/m/n/10 References REMOTE_-CONTROL_-ACTIVATE_-MODE, remote_-control_-a
+ctivate_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
+\T1/cmr/m/n/10 remote_-mode(), REMOTE_-CONTROL_-BUTTON_-PRESSED, REMOTE_-CONTRO
+L_-
+ []
+
+) [310]
+\openout2 = `remote__control_8h.aux'.
+
+ (./remote__control_8h.tex [311
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
+[]\T1/cmr/m/n/10 References REMOTE_-CONTROL_-ACTIVATE_-MODE, remote_-control_-a
+ctivate_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
+\T1/cmr/m/n/10 remote_-mode(), REMOTE_-CONTROL_-BUTTON_-PRESSED, REMOTE_-CONTRO
+L_-
+ []
+
+) [312]
+\openout2 = `rotary__encoder_8c.aux'.
+
+ (./rotary__encoder_8c.tex [313
+
+
+]) [314]
+\openout2 = `rotary__encoder_8h.aux'.
+
+ (./rotary__encoder_8h.tex)
+[315
+
+
+]
+\openout2 = `sequencer_8c.aux'.
+
+ (./sequencer_8c.tex [316
+
+
+] [317]) [318]
+\openout2 = `sequencer_8h.aux'.
+
+ (./sequencer_8h.tex [319
+
+
+] [320]
+[321pdfTeX warning (ext4): destination with the same identifier (name{sequencer
+_8h_765792034f6c1607059edeac24354bf2}) has been already used, duplicate ignored
+
+<to be read again> 
+                   \endgroup \set@typeset@protect 
+l.209 
+      ] [322]) [323]
+\openout2 = `sub__menu_8c.aux'.
+
+ (./sub__menu_8c.tex [324
+
+
+] [325] [326]
+Underfull \hbox (badness 1540) in paragraph at lines 198--199
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-sub_-menu_-type(), curr_-option
+_-selected, eeprom_-get_-ant_-
+ []
+
+[327]
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), bus_-add_-tx_
+-message(), BUS_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 CMD_-DRIVER_-ACTIVATE_-SUBMENU_-ANT1_-OUTPUT, BUS_-CMD_-DRIVER_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 ACTIVATE_-SUBMENU_-ANT2_-OUTPUT, BUS_-CMD_-DRIVER_-ACTIVATE_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 SUBMENU_-ANT3_-OUTPUT, BUS_-CMD_-DRIVER_-ACTIVATE_-SUBMENU_-ANT4
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT1_-OUTPUT
+S,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT2_-OUTPUTS, BUS_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT3_-OUTPUTS, BUS_-CMD_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT4_-OUTPUTS, BUS_-CMD_-DRIVE
+R_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 DEACTIVATE_-SUBMENU_-ANT1_-OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-SUBMENU_-ANT4_-OUTPUT, bus
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 get_-address(), BUS_-MESSAGE_-FLAGS_-NEED_-ACK, current_-activat
+ed_-sub_-outputs,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+\T1/cmr/m/n/10 current_-activated_-sub_-outputs_-length, internal_-comm_-add_-t
+x_-message(), OUTPUT_-
+ []
+
+
+Underfull \hbox (badness 5519) in paragraph at lines 258--259
+\T1/cmr/m/n/10 ADDR_-DELIMITER, struct_-sub_-menu_-array::output_-str_-dir, and
+ struct_-sub_-menu_-
+ []
+
+) [328]
+\openout2 = `sub__menu_8h.aux'.
+
+ (./sub__menu_8h.tex [329
+
+
+] [330]
+Underfull \hbox (badness 1540) in paragraph at lines 166--167
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-get_-sub_-menu_-type(), curr_-option
+_-selected, eeprom_-get_-ant_-
+ []
+
+[331]
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+[]\T1/cmr/m/n/10 References antenna_-ctrl_-deactivate_-outputs(), bus_-add_-tx_
+-message(), BUS_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 CMD_-DRIVER_-ACTIVATE_-SUBMENU_-ANT1_-OUTPUT, BUS_-CMD_-DRIVER_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 ACTIVATE_-SUBMENU_-ANT2_-OUTPUT, BUS_-CMD_-DRIVER_-ACTIVATE_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 SUBMENU_-ANT3_-OUTPUT, BUS_-CMD_-DRIVER_-ACTIVATE_-SUBMENU_-ANT4
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT1_-OUTPUT
+S,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT2_-OUTPUTS, BUS_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT3_-OUTPUTS, BUS_-CMD_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT4_-OUTPUTS, BUS_-CMD_-DRIVE
+R_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 DEACTIVATE_-SUBMENU_-ANT1_-OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_
+-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 OUTPUT, BUS_-CMD_-DRIVER_-DEACTIVATE_-SUBMENU_-ANT4_-OUTPUT, bus
+_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 get_-address(), BUS_-MESSAGE_-FLAGS_-NEED_-ACK, current_-activat
+ed_-sub_-outputs,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+\T1/cmr/m/n/10 current_-activated_-sub_-outputs_-length, internal_-comm_-add_-t
+x_-message(), OUTPUT_-
+ []
+
+
+Underfull \hbox (badness 5519) in paragraph at lines 226--227
+\T1/cmr/m/n/10 ADDR_-DELIMITER, struct_-sub_-menu_-array::output_-str_-dir, and
+ struct_-sub_-menu_-
+ []
+
+[332]) [333]
+\openout2 = `front__panel_2usart_8c.aux'.
+
+ (./front__panel_2usart_8c.tex [334
+
+
+] [335] [336] [337]
+Underfull \hbox (badness 4739) in paragraph at lines 272--275
+[]\T1/cmr/m/n/10 Referenced by computer_-interface_-send_-data(), init_-usart_-
+computer(), ISR(), main(),
+ []
+
+[338] [339]) [340]
+\openout2 = `motherboard_2usart_8c.aux'.
+
+ (./motherboard_2usart_8c.tex [341
+
+
+] [342] [343] [344])
+Underfull \hbox (badness 4739) in paragraph at lines 270--171
+[]\T1/cmr/m/n/10 Referenced by computer_-interface_-send_-data(), init_-usart_-
+computer(), ISR(), main(),
+ []
+
+[345]
+\openout2 = `front__panel_2usart_8h.aux'.
+
+ (./front__panel_2usart_8h.tex [346
+
+
+] [347] [348] [349] [350] [351])
+[352]
+\openout2 = `motherboard_2usart_8h.aux'.
+
+ (./motherboard_2usart_8h.tex [353
+
+
+] [354] [355] [356]) [357]
+\openout2 = `i2c_8c.aux'.
+
+ (./i2c_8c.tex [358
+
+
+]) [359]
+\openout2 = `i2c_8h.aux'.
+
+ (./i2c_8h.tex [360
+
+
+] [361]) [362]
+\openout2 = `i2cconf_8h.aux'.
+
+ (./i2cconf_8h.tex) [363
+
+
+]
+\openout2 = `internal__comm_8c.aux'.
+
+
+(./internal__comm_8c.tex
+Underfull \hbox (badness 10000) in paragraph at lines 19--20
+[]\T1/cmr/m/n/10 void [][]internal_-comm_-init[][] (void($\OMS/cmsy/m/n/10 ^^C$
+\T1/cmr/m/n/10 func_-ptr_-rx)([][]UC_-MESSAGE[][]), void($\OMS/cmsy/m/n/10 ^^C$
+\T1/cmr/m/n/10 func_-ptr_-
+ []
+
+[364
+
+
+] [365]
+Underfull \hbox (badness 2662) in paragraph at lines 150--151
+[]\T1/cmr/m/n/10 References UC_-MESSAGE::checksum, UC_-MESSAGE::cmd, UC_-MESSAG
+E::data, int_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--155
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-
+ []
+
+
+Underfull \hbox (badness 5878) in paragraph at lines 170--171
+[]\T1/cmr/m/n/10 References struct_-uc_-com::char_-count, struct_-uc_-com::chec
+ksum, f_-ptr_-rx, f_-ptr_-tx,
+ []
+
+[366]
+Underfull \hbox (badness 3612) in paragraph at lines 224--225
+[]\T1/cmr/m/n/10 References UC_-MESSAGE::checksum, UC_-MESSAGE::cmd, counter_-t
+x_-timeout, UC_-
+ []
+
+) [367]
+\openout2 = `internal__comm_8h.aux'.
+
+ (./internal__comm_8h.tex
+Underfull \hbox (badness 10000) in paragraph at lines 66--67
+[]\T1/cmr/m/n/10 void [][]internal_-comm_-init[][] (void($\OMS/cmsy/m/n/10 ^^C$
+\T1/cmr/m/n/10 func_-ptr_-rx)([][]UC_-MESSAGE[][]), void($\OMS/cmsy/m/n/10 ^^C$
+\T1/cmr/m/n/10 func_-ptr_-
+ []
+
+[368
+
+
+] [369]
+Underfull \hbox (badness 2662) in paragraph at lines 199--200
+[]\T1/cmr/m/n/10 References UC_-MESSAGE::checksum, UC_-MESSAGE::cmd, UC_-MESSAG
+E::data, int_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--204
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-
+ []
+
+[370]
+Underfull \hbox (badness 5878) in paragraph at lines 219--220
+[]\T1/cmr/m/n/10 References struct_-uc_-com::char_-count, struct_-uc_-com::chec
+ksum, f_-ptr_-rx, f_-ptr_-tx,
+ []
+
+[371]
+Underfull \hbox (badness 3612) in paragraph at lines 273--274
+[]\T1/cmr/m/n/10 References UC_-MESSAGE::checksum, UC_-MESSAGE::cmd, counter_-t
+x_-timeout, UC_-
+ []
+
+) [372]
+\openout2 = `internal__comm__commands_8h.aux'.
+
+ (./internal__comm__commands_8h.tex) [373
+
+
+]
+\openout2 = `internal__comm__rx__queue_8c.aux'.
+
+
+(./internal__comm__rx__queue_8c.tex [374
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
+[]\T1/cmr/m/n/10 References rx_-linked_-list::first, INTERNAL_-COMM_-RX_-QUEUE_
+-SIZE, rx_-linked_-
+ []
+
+[375]) [376]
+\openout2 = `internal__comm__rx__queue_8h.aux'.
+
+ (./internal__comm__rx__queue_8h.tex [377
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
+[]\T1/cmr/m/n/10 References rx_-linked_-list::first, INTERNAL_-COMM_-RX_-QUEUE_
+-SIZE, rx_-linked_-
+ []
+
+[378]) [379]
+\openout2 = `internal__comm__tx__queue_8c.aux'.
+
+ (./internal__comm__tx__queue_8c.tex [380
+
+
+] [381]) [382]
+\openout2 = `lcd_8c.aux'.
+
+
+(./lcd_8c.tex) [383
+
+
+]
+\openout2 = `lcd_8h.aux'.
+
+ (./lcd_8h.tex
+Underfull \hbox (badness 5787) in paragraph at lines 129--131
+[]\T1/cmr/m/n/10 #define \T1/cmr/bx/n/10 LCD_-MODE_-DEFAULT \T1/cmr/m/n/10 ((1$
+\OML/cmm/m/it/10 <$$<$\T1/cmr/m/n/10 LCD_-ENTRY_-MODE) $\OMS/cmsy/m/n/10 j$ \T1
+/cmr/m/n/10 (1$\OML/cmm/m/it/10 <$$<$\T1/cmr/m/n/10 LCD_-
+ []
+
+[384
+
+
+]) [385]
+\openout2 = `lcdconf_8h.aux'.
+
+ (./lcdconf_8h.tex) [386
+
+
+]
+\openout2 = `output_8h.aux'.
+
+ (./output_8h.tex) [387
+
+
+]
+\openout2 = `bus_8c.aux'.
+
+ (./bus_8c.tex
+[388
+
+
+] [389]
+Underfull \hbox (badness 1902) in paragraph at lines 170--173
+[]\T1/cmr/m/n/10 References BUS_-MESSAGE::cmd, BUS_-MESSAGE::data, BUS_-MESSAGE
+::flags, BUS_-
+ []
+
+[390]
+Underfull \hbox (badness 1629) in paragraph at lines 188--189
+\T1/cmr/m/n/10 MESSAGE::cmd, BUS_-MESSAGE::data, BUS_-MESSAGE::flags, BUS_-MESS
+AGE::from_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--193
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-
+ []
+
+
+Underfull \hbox (badness 3118) in paragraph at lines 190--193
+\T1/cmr/m/n/10 to_-bus(), band_-ctrl_-send_-band_-data_-to_-bus(), bus_-parse_-
+message(), bus_-send_-ack(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 224--227
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-
+ []
+
+
+Underfull \hbox (badness 5741) in paragraph at lines 224--227
+\T1/cmr/m/n/10 to_-bus(), band_-ctrl_-send_-band_-data_-to_-bus(), bus_-parse_-
+message(), ISR(), main(),
+ []
+
+[391]
+Underfull \hbox (badness 10000) in paragraph at lines 276--277
+[]\T1/cmr/m/n/10 References bus_-resend_-message(), BUS_-STATUS_-MESSAGE_-ACK_-
+TIMEOUT, bus_-
+ []
+
+[392]
+Underfull \hbox (badness 10000) in paragraph at lines 354--355
+[]\T1/cmr/m/n/10 References BUS_-STATUS_-ALLOWED_-TO_-SEND_-BIT, BUS_-STATUS_-D
+EVICE_-IS_-
+ []
+
+
+Underfull \hbox (badness 1264) in paragraph at lines 367--370
+[]\T1/cmr/m/n/10 References BUS_-ACK_-WRAPAROUND_-LIMIT, bus_-is_-master(), bus
+_-resend_-message(),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 367--370
+\T1/cmr/m/n/10 bus_-reset_-rx_-status(), BUS_-STATUS_-MASTER_-SENT_-SYNC_-BIT, 
+BUS_-STATUS_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 367--370
+\T1/cmr/m/n/10 MESSAGE_-ACK_-TIMEOUT, BUS_-STATUS_-TIME_-SLOT_-ACTIVE, BUS_-SYN
+C_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 367--370
+\T1/cmr/m/n/10 TIMEOUT_-LIMIT, BUS_-TIMEOUT_-LIMIT, counter_-130us, counter_-sy
+nc_-timeout,
+ []
+
+
+Underfull \hbox (badness 5954) in paragraph at lines 367--370
+\T1/cmr/m/n/10 led_-set_-error(), LED_-STATE_-ON, bus_-status_-struct::lower_-l
+imit, timer_-bus_-timeout,
+ []
+
+[393]
+Underfull \hbox (badness 4819) in paragraph at lines 378--381
+[]\T1/cmr/m/n/10 References BUS_-STATUS_-RECEIVE_-ON, BUS_-STATUS_-SEND_-ACTIVE
+, and bus_-
+ []
+
+
+Underfull \hbox (badness 5446) in paragraph at lines 389--392
+[]\T1/cmr/m/n/10 References bus_-add_-new_-message(), BUS_-BROADCAST_-ADDR, BUS
+_-CHECKSUM_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 389--392
+\T1/cmr/m/n/10 STATUS_-ALLOWED_-TO_-SEND_-BIT, BUS_-STATUS_-MASTER_-SENT_-SYNC_
+-BIT,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 389--392
+\T1/cmr/m/n/10 BUS_-MESSAGE::cmd, counter_-sync_-timeout, BUS_-MESSAGE::data, b
+us_-status_-
+ []
+
+
+Underfull \hbox (badness 4832) in paragraph at lines 389--392
+\T1/cmr/m/n/10 struct::device_-count, bus_-status_-struct::device_-count_-mult,
+ bus_-status_-struct::ext_-addr,
+ []
+
+) [394]
+\openout2 = `bus_8h.aux'.
+
+ (./bus_8h.tex [395
+
+
+] [396] [397] [398]
+Underfull \hbox (badness 10000) in paragraph at lines 280--283
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-to_-
+ []
+
+[399] [400] [401]
+Underfull \hbox (badness 1902) in paragraph at lines 526--529
+[]\T1/cmr/m/n/10 References BUS_-MESSAGE::cmd, BUS_-MESSAGE::data, BUS_-MESSAGE
+::flags, BUS_-
+ []
+
+
+Underfull \hbox (badness 1629) in paragraph at lines 544--545
+\T1/cmr/m/n/10 MESSAGE::cmd, BUS_-MESSAGE::data, BUS_-MESSAGE::flags, BUS_-MESS
+AGE::from_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 546--549
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-
+ []
+
+
+Underfull \hbox (badness 3118) in paragraph at lines 546--549
+\T1/cmr/m/n/10 to_-bus(), band_-ctrl_-send_-band_-data_-to_-bus(), bus_-parse_-
+message(), bus_-send_-ack(),
+ []
+
+[402]
+Underfull \hbox (badness 10000) in paragraph at lines 580--583
+\T1/cmr/m/n/10 antenna_-ctrl_-send_-rx_-ant_-band_-data_-to_-bus(), antenna_-ct
+rl_-send_-rx_-ant_-data_-
+ []
+
+
+Underfull \hbox (badness 5741) in paragraph at lines 580--583
+\T1/cmr/m/n/10 to_-bus(), band_-ctrl_-send_-band_-data_-to_-bus(), bus_-parse_-
+message(), ISR(), main(),
+ []
+
+[403]
+Underfull \hbox (badness 10000) in paragraph at lines 632--633
+[]\T1/cmr/m/n/10 References bus_-resend_-message(), BUS_-STATUS_-MESSAGE_-ACK_-
+TIMEOUT, bus_-
+ []
+
+[404]
+Underfull \hbox (badness 10000) in paragraph at lines 710--711
+[]\T1/cmr/m/n/10 References BUS_-STATUS_-ALLOWED_-TO_-SEND_-BIT, BUS_-STATUS_-D
+EVICE_-IS_-
+ []
+
+) [405]
+\openout2 = `bus__commands_8h.aux'.
+
+ (./bus__commands_8h.tex
+Underfull \hbox (badness 10000) in paragraph at lines 59--61
+[]\T1/cmr/m/n/10 #define [][]BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-RX_-ANTENNA_-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 67--69
+[]\T1/cmr/m/n/10 #define [][]BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT1_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 73--75
+[]\T1/cmr/m/n/10 #define [][]BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT2_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 79--81
+[]\T1/cmr/m/n/10 #define [][]BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT3_-
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--87
+[]\T1/cmr/m/n/10 #define [][]BUS_-CMD_-DRIVER_-DEACTIVATE_-ALL_-SUBMENU_-ANT4_-
+
+ []
+
+[406
+
+
+]
+Underfull \hbox (badness 1400) in paragraph at lines 158--161
+[]\T1/cmr/m/n/10 Referenced by band_-ctrl_-send_-band_-data_-to_-bus(), bus_-pa
+rse_-message(), and parse_-
+ []
+
+[407] [408] [409] [410] [411] [412] [413]) [414]
+\openout2 = `bus__ping_8c.aux'.
+
+ (./bus__ping_8c.tex [415
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 94--97
+[]\T1/cmr/m/n/10 References BUS_-PING_-TIMEOUT_-LIMIT, DEF_-NR_-DEVICES, bus_-s
+truct_-ping_-
+ []
+
+[416]) [417]
+\openout2 = `bus__ping_8h.aux'.
+
+ (./bus__ping_8h.tex [418
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 97--100
+[]\T1/cmr/m/n/10 References BUS_-PING_-TIMEOUT_-LIMIT, DEF_-NR_-DEVICES, bus_-s
+truct_-ping_-
+ []
+
+[419]) [420]
+\openout2 = `bus__rx__queue_8c.aux'.
+
+ (./bus__rx__queue_8c.tex [421
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 84--85
+[]\T1/cmr/m/n/10 References BUS_-RX_-QUEUE_-SIZE, bus_-rx_-queue_-size, ERROR_-
+TYPE_-BUS_-RX_-
+ []
+
+[422]) [423]
+\openout2 = `bus__rx__queue_8h.aux'.
+
+ (./bus__rx__queue_8h.tex [424
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 67--68
+[]\T1/cmr/m/n/10 References BUS_-RX_-QUEUE_-SIZE, bus_-rx_-queue_-size, ERROR_-
+TYPE_-BUS_-RX_-
+ []
+
+[425]) [426]
+\openout2 = `bus__tx__queue_8c.aux'.
+
+ (./bus__tx__queue_8c.tex [427
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 84--85
+[]\T1/cmr/m/n/10 References BUS_-TX_-QUEUE_-SIZE, bus_-tx_-queue_-size, ERROR_-
+TYPE_-BUS_-TX_-
+ []
+
+[428]) [429]
+\openout2 = `bus__tx__queue_8h.aux'.
+
+ (./bus__tx__queue_8h.tex [430
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 67--68
+[]\T1/cmr/m/n/10 References BUS_-TX_-QUEUE_-SIZE, bus_-tx_-queue_-size, ERROR_-
+TYPE_-BUS_-TX_-
+ []
+
+[431]) [432]
+\openout2 = `bus__usart_8c.aux'.
+
+ (./bus__usart_8c.tex [433
+
+
+] [434])
+Underfull \hbox (badness 10000) in paragraph at lines 142--196
+[]\T1/cmr/m/n/10 Referenced by bus_-send_-message(), bus_-usart_-receive_-loopb
+ack(), and bus_-usart_-
+ []
+
+[435]
+\openout2 = `bus__usart_8h.aux'.
+
+ (./bus__usart_8h.tex [436
+
+
+] [437])
+Underfull \hbox (badness 10000) in paragraph at lines 138--197
+[]\T1/cmr/m/n/10 Referenced by bus_-send_-message(), bus_-usart_-receive_-loopb
+ack(), and bus_-usart_-
+ []
+
+[438]
+No file refman.ind.
+(./refman.aux (./group__driver__unit__v2__group.aux)
+(./group__event__queue__group.aux) (./group__front__panel__group.aux)
+(./group__general__io__group.aux) (./group__i2c.aux)
+(./group__internal__comm__group.aux) (./group__motherboard__group.aux)
+(./group__a2d.aux) (./group__lcd.aux) (./group__bus__group.aux)
+(./structbus__status__struct.aux) (./structbus__struct__ping__status.aux)
+(./structcomputer__comm__struct.aux) (./structdriver__status__struct.aux)
+(./structEVENT__MESSAGE.aux) (./structpowermeter__struct.aux)
+(./structPS2__STRUCT.aux) (./structrx__linked__list.aux)
+(./structstruct__antenna.aux) (./structstruct__band.aux)
+(./structstruct__band__limits.aux) (./structstruct__coupler__settings.aux)
+(./structstruct__eeprom__table.aux) (./structstruct__menu__option.aux)
+(./structstruct__menu__text.aux) (./structstruct__ptt.aux)
+(./structstruct__ptt__sequencer.aux) (./structstruct__radio__settings.aux)
+(./structstruct__radio__status.aux) (./structstruct__runtime__settings.aux)
+(./structstruct__rx__antennas.aux) (./structstruct__setting.aux)
+(./structstruct__status.aux) (./structstruct__sub__menu__array.aux)
+(./structstruct__uc__com.aux) (./structtx__linked__list.aux)
+(./structUC__MESSAGE.aux) (./driver__unit__v2_2board_8h.aux)
+(./front__panel_2board_8h.aux) (./general__io_2board_8h.aux)
+(./motherboard_2board_8h.aux) (./driver__unit_2global_8h.aux)
+(./driver__unit__v2_2global_8h.aux) (./general__io_2global_8h.aux)
+(./wmv__bus_2global_8h.aux) (./driver__unit_2init_8c.aux)
+(./driver__unit__v2_2init_8c.aux) (./front__panel_2init_8c.aux)
+(./general__io_2init_8c.aux) (./motherboard_2init_8c.aux)
+(./driver__unit_2init_8h.aux) (./driver__unit__v2_2init_8h.aux)
+(./front__panel_2init_8h.aux) (./general__io_2init_8h.aux)
+(./motherboard_2init_8h.aux) (./driver__unit_2main_8c.aux)
+(./driver__unit__v2_2main_8c.aux) (./front__panel_2main_8c.aux)
+(./general__io_2main_8c.aux) (./motherboard_2main_8c.aux)
+(./driver__unit_2main_8h.aux) (./driver__unit__v2_2main_8h.aux)
+(./front__panel_2main_8h.aux) (./general__io_2main_8h.aux)
+(./motherboard_2main_8h.aux) (./event__queue_8c.aux) (./event__queue_8h.aux)
+(./antenna__ctrl_8c.aux) (./antenna__ctrl_8h.aux) (./band__ctrl_8c.aux)
+(./band__ctrl_8h.aux) (./front__panel_2computer__interface_8c.aux)
+(./motherboard_2computer__interface_8c.aux)
+(./front__panel_2computer__interface_8h.aux)
+(./motherboard_2computer__interface_8h.aux) (./display_8c.aux)
+(./display_8h.aux) (./ds1307_8c.aux) (./ds1307_8h.aux) (./eeprom_8c.aux)
+(./eeprom_8h.aux) (./eeprom__m24_8c.aux) (./eeprom__m24_8h.aux)
+(./errors_8h.aux) (./event__handler_8c.aux) (./event__handler_8h.aux)
+(./glcd_8c.aux) (./glcd_8h.aux) (./interrupt__handler_8c.aux)
+(./interrupt__handler_8h.aux) (./ks0108_8c.aux) (./ks0108_8h.aux)
+(./ks0108conf_8h.aux) (./front__panel_2led__control_8c.aux)
+(./front__panel_2led__control_8h.aux) (./menu_8c.aux) (./menu_8h.aux)
+(./pictures_8h.aux) (./powermeter_8c.aux) (./powermeter_8h.aux)
+(./radio__interface_8c.aux) (./radio__interface_8h.aux)
+(./remote__control_8c.aux) (./remote__control_8h.aux) (./rotary__encoder_8c.aux
+) (./rotary__encoder_8h.aux) (./sequencer_8c.aux) (./sequencer_8h.aux)
+(./sub__menu_8c.aux) (./sub__menu_8h.aux) (./front__panel_2usart_8c.aux)
+(./motherboard_2usart_8c.aux) (./front__panel_2usart_8h.aux)
+(./motherboard_2usart_8h.aux) (./i2c_8c.aux) (./i2c_8h.aux) (./i2cconf_8h.aux)
+(./internal__comm_8c.aux) (./internal__comm_8h.aux)
+(./internal__comm__commands_8h.aux) (./internal__comm__rx__queue_8c.aux)
+(./internal__comm__rx__queue_8h.aux) (./internal__comm__tx__queue_8c.aux)
+(./lcd_8c.aux) (./lcd_8h.aux) (./lcdconf_8h.aux) (./output_8h.aux)
+(./bus_8c.aux) (./bus_8h.aux) (./bus__commands_8h.aux) (./bus__ping_8c.aux)
+(./bus__ping_8h.aux) (./bus__rx__queue_8c.aux) (./bus__rx__queue_8h.aux)
+(./bus__tx__queue_8c.aux) (./bus__tx__queue_8h.aux) (./bus__usart_8c.aux)
+(./bus__usart_8h.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 11718 strings out of 94834
+ 317523 string characters out of 1179181
+ 125495 words of memory out of 1500000
+ 10286 multiletter control sequences out of 10000+50000
+ 17839 words of font info for 38 fonts, out of 1200000 for 2000
+ 212 hyphenation exceptions out of 8191
+ 30i,13n,43p,5577b,2166s stack positions out of 5000i,500n,6000p,200000b,5000s
+pdfTeX warning (dest): name{bus__usart_8h-source} has been referenced but doe
+s not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__usart_8c-source} has been referenced but does 
+not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__tx__queue_8h-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__tx__queue_8c-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__rx__queue_8h-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__rx__queue_8c-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__ping_8h-source} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__ping_8c-source} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus__commands_8h-source} has been referenced but do
+es not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus_8h-source} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{bus_8c-source} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{output_8h-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{lcdconf_8h-source} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{lcd_8h-source} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{lcd_8c-source} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{internal__comm__tx__queue_8c-source} has been refer
+enced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{internal__comm__rx__queue_8h-source} has been refer
+enced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{internal__comm__rx__queue_8c-source} has been refer
+enced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{internal__comm__commands_8h-source} has been refere
+nced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{internal__comm_8h-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{internal__comm_8c-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{i2cconf_8h-source} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{i2c_8h-source} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{i2c_8c-source} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2usart_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2usart_8h-source} has been referenced 
+but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2usart_8c-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2usart_8c-source} has been referenced 
+but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{sub__menu_8h-source} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{sub__menu_8c-source} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{sequencer_8h-source} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{sequencer_8c-source} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{rotary__encoder_8h-source} has been referenced but 
+does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{rotary__encoder_8c-source} has been referenced but 
+does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{remote__control_8h-source} has been referenced but 
+does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{remote__control_8c-source} has been referenced but 
+does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{radio__interface_8h-source} has been referenced but
+ does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{radio__interface_8c-source} has been referenced but
+ does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{powermeter_8h-source} has been referenced but does 
+not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{powermeter_8c-source} has been referenced but does 
+not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{pictures_8h-source} has been referenced but does no
+t exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{menu_8h-source} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{menu_8c-source} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2led__control_8h-source} has been refe
+renced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2led__control_8c-source} has been refe
+renced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{ks0108conf_8h-source} has been referenced but does 
+not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{ks0108_8h-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{ks0108_8c-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{interrupt__handler_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{interrupt__handler_8c-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glcd_8h-source} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{glcd_8c-source} has been referenced but does not ex
+ist, replaced by a fixed one
+
+pdfTeX warning (dest): name{event__handler_8h-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{event__handler_8c-source} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{errors_8h-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{eeprom__m24_8h-source} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{eeprom__m24_8c-source} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{eeprom_8h-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{eeprom_8c-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{ds1307_8h-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{ds1307_8c-source} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{display_8h-source} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{display_8c-source} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2computer__interface_8h-source} has bee
+n referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2computer__interface_8h-source} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2computer__interface_8c-source} has bee
+n referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2computer__interface_8c-source} has be
+en referenced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{band__ctrl_8h-source} has been referenced but does 
+not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{band__ctrl_8c-source} has been referenced but does 
+not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{antenna__ctrl_8h-source} has been referenced but do
+es not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{antenna__ctrl_8c-source} has been referenced but do
+es not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{event__queue_8h-source} has been referenced but doe
+s not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{event__queue_8c-source} has been referenced but doe
+s not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2main_8h-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{general__io_2main_8h-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2main_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit__v2_2main_8h-source} has been referenc
+ed but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit_2main_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2main_8c-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{general__io_2main_8c-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2main_8c-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit__v2_2main_8c-source} has been referenc
+ed but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit_2main_8c-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2init_8h-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{general__io_2init_8h-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2init_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit__v2_2init_8h-source} has been referenc
+ed but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit_2init_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2init_8c-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{general__io_2init_8c-source} has been referenced bu
+t does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2init_8c-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit__v2_2init_8c-source} has been referenc
+ed but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit_2init_8c-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{wmv__bus_2global_8h-source} has been referenced but
+ does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{general__io_2global_8h-source} has been referenced 
+but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit__v2_2global_8h-source} has been refere
+nced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit_2global_8h-source} has been referenced
+ but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{motherboard_2board_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{general__io_2board_8h-source} has been referenced b
+ut does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{front__panel_2board_8h-source} has been referenced 
+but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit__v2_2board_8h-source} has been referen
+ced but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{driver__unit_2board_8h-source} has been referenced 
+but does not exist, replaced by a fixed one
+
+ </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/mic
+ke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk> </home/micke/.texmf-v
+ar/fonts/pk/ljfour/jknappen/ec/ectt0800.600pk> </home/micke/.texmf-var/fonts/pk
+/ljfour/jknappen/ec/ecti0900.600pk> </home/micke/.texmf-var/fonts/pk/ljfour/jkn
+appen/ec/tcrm1000.600pk> </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ec
+bx1200.600pk> </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx0700.600p
+k> </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </home/m
+icke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/micke/.texmf
+-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/micke/.texmf-var/fonts/
+pk/ljfour/jknappen/ec/ecbx2074.600pk> </home/micke/.texmf-var/fonts/pk/ljfour/j
+knappen/ec/ecbx2488.600pk> </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/
+ecrm0900.600pk> </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.60
+0pk> </home/micke/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk></usr/s
+hare/texmf-texlive/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf-texlive/
+fonts/type1/bluesky/cm/cmmi9.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/
+cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsy9.pfb>
+Output written on refman.pdf (442 pages, 2012457 bytes).
+PDF statistics:
+ 9166 PDF objects out of 10688 (max. 8388607)
+ 3966 named destinations out of 4296 (max. 131072)
+ 17 words of extra memory for PDF output out of 10000 (max. 10000000)
+

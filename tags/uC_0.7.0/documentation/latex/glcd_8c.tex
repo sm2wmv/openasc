@@ -1,0 +1,104 @@
+\hypertarget{glcd_8c}{
+\section{front\_\-panel/glcd.c File Reference}
+\label{glcd_8c}\index{front\_\-panel/glcd.c@{front\_\-panel/glcd.c}}
+}
+Graphic LCD API functions.  
+
+
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/pgmspace.h$>$}\par
+{\tt \#include \char`\"{}glcd.h\char`\"{}}\par
+{\tt \#include \char`\"{}fonts.h\char`\"{}}\par
+{\tt \#include \char`\"{}ks0108.h\char`\"{}}\par
+{\tt \#include \char`\"{}pictures.h\char`\"{}}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$stdio.h$>$}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{glcd_8c_1d8a72ed586f42fa666c2058f1c6f96d}{
+void \textbf{glcd\_\-update\_\-area} (unsigned char x1, unsigned char x2, unsigned char y1, unsigned char y2)}
+\label{glcd_8c_1d8a72ed586f42fa666c2058f1c6f96d}
+
+\item 
+\hypertarget{glcd_8c_e733cf58264bef82a1cdc15a9b6cb4e9}{
+void \textbf{glcd\_\-update} (unsigned int top, unsigned int bottom)}
+\label{glcd_8c_e733cf58264bef82a1cdc15a9b6cb4e9}
+
+\item 
+\hypertarget{glcd_8c_21e84a0d947380f6328e956b3096982d}{
+void \textbf{glcd\_\-glyph} (unsigned char left, unsigned char top, unsigned char width, unsigned char height, const prog\_\-char $\ast$glyph, unsigned char store\_\-width)}
+\label{glcd_8c_21e84a0d947380f6328e956b3096982d}
+
+\item 
+\hypertarget{glcd_8c_b491b43aa399011dccdf549988d03e58}{
+void \textbf{glcd\_\-set\_\-byte} (unsigned char x, unsigned char y, unsigned char curr\_\-byte)}
+\label{glcd_8c_b491b43aa399011dccdf549988d03e58}
+
+\item 
+\hypertarget{glcd_8c_4b7677daf34166eb5ab55247018b9774}{
+void \textbf{glcd\_\-text} (unsigned char left, unsigned char top, unsigned char font, char $\ast$str, unsigned char length)}
+\label{glcd_8c_4b7677daf34166eb5ab55247018b9774}
+
+\item 
+\hypertarget{glcd_8c_c1e921632f63dedcf6d759b73b2669d4}{
+void \textbf{glcd\_\-clear\_\-area} (unsigned char x1, unsigned char x2, unsigned char y1, unsigned char y2)}
+\label{glcd_8c_c1e921632f63dedcf6d759b73b2669d4}
+
+\item 
+\hypertarget{glcd_8c_0ea00f3564c81588a92d688b00ab0dcd}{
+void \hyperlink{glcd_8c_0ea00f3564c81588a92d688b00ab0dcd}{glcd\_\-set\_\-dot} (unsigned char x, unsigned char y, unsigned char mode)}
+\label{glcd_8c_0ea00f3564c81588a92d688b00ab0dcd}
+
+\begin{CompactList}\small\item\em set a dot on the display (x is horiz 0:127, y is vert 0:63) \item\end{CompactList}\item 
+\hypertarget{glcd_8c_04f958a96212bf5a92eaef90255694d0}{
+void \textbf{glcd\_\-invert\_\-area} (unsigned char x1, unsigned char x2, unsigned char y1, unsigned char y2)}
+\label{glcd_8c_04f958a96212bf5a92eaef90255694d0}
+
+\item 
+\hypertarget{glcd_8c_a6580e68489230893707df479198ddb0}{
+void \hyperlink{glcd_8c_a6580e68489230893707df479198ddb0}{glcd\_\-line} (unsigned char x1, unsigned char x2, unsigned char y)}
+\label{glcd_8c_a6580e68489230893707df479198ddb0}
+
+\begin{CompactList}\small\item\em draw line \item\end{CompactList}\item 
+\hypertarget{glcd_8c_ad5ca55f1a2fce5094ce40e774510ef1}{
+void \hyperlink{glcd_8c_ad5ca55f1a2fce5094ce40e774510ef1}{glcd\_\-rectangle} (unsigned char x, unsigned char y, unsigned char a, unsigned char b)}
+\label{glcd_8c_ad5ca55f1a2fce5094ce40e774510ef1}
+
+\begin{CompactList}\small\item\em draw rectangle (coords????) \item\end{CompactList}\item 
+\hypertarget{glcd_8c_eaafa12f2b6f307b2af1b753f03276dd}{
+void \hyperlink{glcd_8c_eaafa12f2b6f307b2af1b753f03276dd}{glcd\_\-circle} (unsigned char xcenter, unsigned char ycenter, unsigned char radius)}
+\label{glcd_8c_eaafa12f2b6f307b2af1b753f03276dd}
+
+\begin{CompactList}\small\item\em draw circle of radius at xcenter,ycenter \item\end{CompactList}\item 
+\hypertarget{glcd_8c_58814fce8968e6f5aabf0a6d075a4d02}{
+void \textbf{glcd\_\-invert} ()}
+\label{glcd_8c_58814fce8968e6f5aabf0a6d075a4d02}
+
+\item 
+\hypertarget{glcd_8c_5ea60d26d86e2677589904eb81d42f64}{
+void \textbf{glcd\_\-clear} (void)}
+\label{glcd_8c_5ea60d26d86e2677589904eb81d42f64}
+
+\item 
+\hypertarget{glcd_8c_e739f1490bdae8a379c00003b78a0984}{
+void \textbf{glcd\_\-print\_\-picture} (void)}
+\label{glcd_8c_e739f1490bdae8a379c00003b78a0984}
+
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{glcd_8c_4ef9261e48e2620e9a9f67e689b00ee5}{
+unsigned char \textbf{rxed\_\-data}}
+\label{glcd_8c_4ef9261e48e2620e9a9f67e689b00ee5}
+
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Graphic LCD API functions. 
+
+
+
+Definition in file \hyperlink{glcd_8c-source}{glcd.c}.

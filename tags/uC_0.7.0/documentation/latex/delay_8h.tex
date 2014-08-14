@@ -1,0 +1,65 @@
+\section{delay.h File Reference}
+\label{delay_8h}\index{delay.h@{delay.h}}
+Delay routine.  
+
+
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define \textbf{F\_\-CPU}~14745600\label{delay_8h_43bafb28b29491ec7f871319b5a3b2f8}
+
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf delay\_\-ms} (unsigned char ms)
+\begin{CompactList}\small\item\em Millisecond delay. \item\end{CompactList}\item 
+void {\bf delay\_\-s} (unsigned char s)
+\begin{CompactList}\small\item\em Seconds delay. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Delay routine. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2008-04-06 \end{Desc}
+
+
+Definition in file {\bf delay.h}.
+
+\subsection{Function Documentation}
+\index{delay.h@{delay.h}!delay\_\-ms@{delay\_\-ms}}
+\index{delay\_\-ms@{delay\_\-ms}!delay.h@{delay.h}}
+\subsubsection[{delay\_\-ms}]{\setlength{\rightskip}{0pt plus 5cm}void delay\_\-ms (unsigned char {\em ms})}\label{delay_8h_7536158d6dfffb85a2bbb93957957a9d}
+
+
+Millisecond delay. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em ms}]the delay in milliseconds \end{description}
+\end{Desc}
+
+
+Definition at line 25 of file delay.c.
+
+Referenced by delay\_\-s(), and main().\index{delay.h@{delay.h}!delay\_\-s@{delay\_\-s}}
+\index{delay\_\-s@{delay\_\-s}!delay.h@{delay.h}}
+\subsubsection[{delay\_\-s}]{\setlength{\rightskip}{0pt plus 5cm}void delay\_\-s (unsigned char {\em s})}\label{delay_8h_277087cfe043ab9daa62dd6d42c806e8}
+
+
+Seconds delay. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em s}]delay in seconds \end{description}
+\end{Desc}
+
+
+Definition at line 55 of file delay.c.
+
+References delay\_\-ms().

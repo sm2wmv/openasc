@@ -1,0 +1,163 @@
+\hypertarget{bus__rx__queue_8c}{
+\section{wmv\_\-bus/bus\_\-rx\_\-queue.c File Reference}
+\label{bus__rx__queue_8c}\index{wmv\_\-bus/bus\_\-rx\_\-queue.c@{wmv\_\-bus/bus\_\-rx\_\-queue.c}}
+}
+FIFO queue for the RXed messages.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include \char`\"{}bus\_\-rx\_\-queue.h\char`\"{}}\par
+{\tt \#include \char`\"{}bus.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{bus__rx__queue_8c_e679637744eee567464015ea26800558}{
+void \hyperlink{bus__rx__queue_8c_e679637744eee567464015ea26800558}{rx\_\-queue\_\-init} (void)}
+\label{bus__rx__queue_8c_e679637744eee567464015ea26800558}
+
+\begin{CompactList}\small\item\em Initialize the RX queue. \item\end{CompactList}\item 
+void \hyperlink{bus__rx__queue_8c_a0caf8944b65b49d1d0c63fecc0b789e}{rx\_\-queue\_\-add} (\hyperlink{structBUS__MESSAGE}{BUS\_\-MESSAGE} message)
+\begin{CompactList}\small\item\em Insert a message into the RX queue (FIFO). \item\end{CompactList}\item 
+\hyperlink{structBUS__MESSAGE}{BUS\_\-MESSAGE} \hyperlink{bus__rx__queue_8c_9f23764eacb28aafd08a26c881d7773c}{rx\_\-queue\_\-get} ()
+\begin{CompactList}\small\item\em Retrieve the first message from the FIFO RX queue. \item\end{CompactList}\item 
+void \hyperlink{bus__rx__queue_8c_57cf6a2b37f451318be8da5716526e9b}{rx\_\-queue\_\-drop} (void)
+\item 
+void \hyperlink{bus__rx__queue_8c_09dd19bc5510319365ed437c8c1858fd}{rx\_\-queue\_\-dropall} (void)
+\begin{CompactList}\small\item\em Erase all content in the RX queue. \item\end{CompactList}\item 
+unsigned char \hyperlink{bus__rx__queue_8c_8cd0d4184090557d0eac64f369b11403}{rx\_\-queue\_\-is\_\-empty} (void)
+\begin{CompactList}\small\item\em Check if the queue is empty. \item\end{CompactList}\item 
+unsigned char \hyperlink{bus__rx__queue_8c_558663e5c5362f9cc10f1abaa0850388}{rx\_\-queue\_\-size} (void)
+\begin{CompactList}\small\item\em Get how much size of the RX queue is used at the moment. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{bus__rx__queue_8c_a31556629a84e8788cb570301d487bde}{
+unsigned char \hyperlink{bus__rx__queue_8c_a31556629a84e8788cb570301d487bde}{bus\_\-rx\_\-queue\_\-size}}
+\label{bus__rx__queue_8c_a31556629a84e8788cb570301d487bde}
+
+\begin{CompactList}\small\item\em Variable keeps track of how much of the queue that is currently used. \item\end{CompactList}\item 
+\hypertarget{bus__rx__queue_8c_cb836919bd242515d8ad43671f192fef}{
+\hyperlink{structrx__linked__list}{rx\_\-queue\_\-struct} \hyperlink{bus__rx__queue_8c_cb836919bd242515d8ad43671f192fef}{rx\_\-queue}}
+\label{bus__rx__queue_8c_cb836919bd242515d8ad43671f192fef}
+
+\begin{CompactList}\small\item\em The rx queue. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+FIFO queue for the RXed messages. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "bus_rx_queue.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{bus__rx__queue_8c-source}{bus\_\-rx\_\-queue.c}.
+
+\subsection{Function Documentation}
+\hypertarget{bus__rx__queue_8c_a0caf8944b65b49d1d0c63fecc0b789e}{
+\index{bus\_\-rx\_\-queue.c@{bus\_\-rx\_\-queue.c}!rx\_\-queue\_\-add@{rx\_\-queue\_\-add}}
+\index{rx\_\-queue\_\-add@{rx\_\-queue\_\-add}!bus_rx_queue.c@{bus\_\-rx\_\-queue.c}}
+\subsubsection[{rx\_\-queue\_\-add}]{\setlength{\rightskip}{0pt plus 5cm}void rx\_\-queue\_\-add ({\bf BUS\_\-MESSAGE} {\em message})}}
+\label{bus__rx__queue_8c_a0caf8944b65b49d1d0c63fecc0b789e}
+
+
+Insert a message into the RX queue (FIFO). 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em message}]- The message that should be inserted to the queue \end{description}
+\end{Desc}
+
+
+Definition at line 55 of file bus\_\-rx\_\-queue.c.
+
+References BUS\_\-RX\_\-QUEUE\_\-SIZE, bus\_\-rx\_\-queue\_\-size, ERROR\_\-TYPE\_\-BUS\_\-RX\_\-QUEUE\_\-FULL, event\_\-set\_\-error(), rx\_\-linked\_\-list::first, rx\_\-linked\_\-list::last, led\_\-set\_\-error(), LED\_\-STATE\_\-ON, and rx\_\-linked\_\-list::message.
+
+Referenced by bus\_\-add\_\-new\_\-message(), and bus\_\-add\_\-rx\_\-message().\hypertarget{bus__rx__queue_8c_57cf6a2b37f451318be8da5716526e9b}{
+\index{bus\_\-rx\_\-queue.c@{bus\_\-rx\_\-queue.c}!rx\_\-queue\_\-drop@{rx\_\-queue\_\-drop}}
+\index{rx\_\-queue\_\-drop@{rx\_\-queue\_\-drop}!bus_rx_queue.c@{bus\_\-rx\_\-queue.c}}
+\subsubsection[{rx\_\-queue\_\-drop}]{\setlength{\rightskip}{0pt plus 5cm}void rx\_\-queue\_\-drop (void)}}
+\label{bus__rx__queue_8c_57cf6a2b37f451318be8da5716526e9b}
+
+
+Drops the first message in the queue Frees up the memory space aswell. 
+
+Definition at line 91 of file bus\_\-rx\_\-queue.c.
+
+References BUS\_\-RX\_\-QUEUE\_\-SIZE, bus\_\-rx\_\-queue\_\-size, and rx\_\-linked\_\-list::first.
+
+Referenced by bus\_\-parse\_\-message(), and event\_\-bus\_\-parse\_\-message().\hypertarget{bus__rx__queue_8c_09dd19bc5510319365ed437c8c1858fd}{
+\index{bus\_\-rx\_\-queue.c@{bus\_\-rx\_\-queue.c}!rx\_\-queue\_\-dropall@{rx\_\-queue\_\-dropall}}
+\index{rx\_\-queue\_\-dropall@{rx\_\-queue\_\-dropall}!bus_rx_queue.c@{bus\_\-rx\_\-queue.c}}
+\subsubsection[{rx\_\-queue\_\-dropall}]{\setlength{\rightskip}{0pt plus 5cm}void rx\_\-queue\_\-dropall (void)}}
+\label{bus__rx__queue_8c_09dd19bc5510319365ed437c8c1858fd}
+
+
+Erase all content in the RX queue. 
+
+\begin{Desc}
+\item[Returns:]The number of items that were cleared \end{Desc}
+
+
+Definition at line 103 of file bus\_\-rx\_\-queue.c.
+
+References bus\_\-rx\_\-queue\_\-size, rx\_\-linked\_\-list::first, and rx\_\-linked\_\-list::last.\hypertarget{bus__rx__queue_8c_9f23764eacb28aafd08a26c881d7773c}{
+\index{bus\_\-rx\_\-queue.c@{bus\_\-rx\_\-queue.c}!rx\_\-queue\_\-get@{rx\_\-queue\_\-get}}
+\index{rx\_\-queue\_\-get@{rx\_\-queue\_\-get}!bus_rx_queue.c@{bus\_\-rx\_\-queue.c}}
+\subsubsection[{rx\_\-queue\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}{\bf BUS\_\-MESSAGE} rx\_\-queue\_\-get (void)}}
+\label{bus__rx__queue_8c_9f23764eacb28aafd08a26c881d7773c}
+
+
+Retrieve the first message from the FIFO RX queue. 
+
+\begin{Desc}
+\item[Returns:]The first message in the queue \end{Desc}
+
+
+Definition at line 84 of file bus\_\-rx\_\-queue.c.
+
+References rx\_\-linked\_\-list::first, and rx\_\-linked\_\-list::message.
+
+Referenced by bus\_\-parse\_\-message(), and event\_\-bus\_\-parse\_\-message().\hypertarget{bus__rx__queue_8c_8cd0d4184090557d0eac64f369b11403}{
+\index{bus\_\-rx\_\-queue.c@{bus\_\-rx\_\-queue.c}!rx\_\-queue\_\-is\_\-empty@{rx\_\-queue\_\-is\_\-empty}}
+\index{rx\_\-queue\_\-is\_\-empty@{rx\_\-queue\_\-is\_\-empty}!bus_rx_queue.c@{bus\_\-rx\_\-queue.c}}
+\subsubsection[{rx\_\-queue\_\-is\_\-empty}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char rx\_\-queue\_\-is\_\-empty (void)}}
+\label{bus__rx__queue_8c_8cd0d4184090557d0eac64f369b11403}
+
+
+Check if the queue is empty. 
+
+\begin{Desc}
+\item[Returns:]1 if the queue is empty and 0 otherwise \end{Desc}
+
+
+Definition at line 112 of file bus\_\-rx\_\-queue.c.
+
+References rx\_\-linked\_\-list::first, and rx\_\-linked\_\-list::last.
+
+Referenced by main().\hypertarget{bus__rx__queue_8c_558663e5c5362f9cc10f1abaa0850388}{
+\index{bus\_\-rx\_\-queue.c@{bus\_\-rx\_\-queue.c}!rx\_\-queue\_\-size@{rx\_\-queue\_\-size}}
+\index{rx\_\-queue\_\-size@{rx\_\-queue\_\-size}!bus_rx_queue.c@{bus\_\-rx\_\-queue.c}}
+\subsubsection[{rx\_\-queue\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char rx\_\-queue\_\-size (void)}}
+\label{bus__rx__queue_8c_558663e5c5362f9cc10f1abaa0850388}
+
+
+Get how much size of the RX queue is used at the moment. 
+
+\begin{Desc}
+\item[Returns:]The size of the queue that is used \end{Desc}
+
+
+Definition at line 121 of file bus\_\-rx\_\-queue.c.
+
+References bus\_\-rx\_\-queue\_\-size.

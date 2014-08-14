@@ -1,0 +1,211 @@
+\hypertarget{motherboard_2computer__interface_8c}{
+\section{motherboard/computer\_\-interface.c File Reference}
+\label{motherboard_2computer__interface_8c}\index{motherboard/computer\_\-interface.c@{motherboard/computer\_\-interface.c}}
+}
+Interface towards the computer.  
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include $<$avr/eeprom.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$avr/wdt.h$>$}\par
+{\tt \#include \char`\"{}computer\_\-interface.h\char`\"{}}\par
+{\tt \#include \char`\"{}usart.h\char`\"{}}\par
+{\tt \#include \char`\"{}main.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm.h\char`\"{}}\par
+{\tt \#include \char`\"{}../internal\_\-comm\_\-commands.h\char`\"{}}\par
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+struct \hyperlink{structcomputer__comm__struct}{computer\_\-comm\_\-struct}
+\begin{CompactList}\small\item\em Computer interface communication struct. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{motherboard_2computer__interface_8c_177e760ecbd6138e6b316b679450701d}{
+\#define \hyperlink{motherboard_2computer__interface_8c_177e760ecbd6138e6b316b679450701d}{COMPUTER\_\-RX\_\-BUFFER\_\-LENGTH}~128}
+\label{motherboard_2computer__interface_8c_177e760ecbd6138e6b316b679450701d}
+
+\begin{CompactList}\small\item\em The length of the computer RX BUFFER. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_1fa763e0afc3151e5ad7f4ae506fba54}{
+\#define \hyperlink{motherboard_2computer__interface_8c_1fa763e0afc3151e5ad7f4ae506fba54}{COMPUTER\_\-TX\_\-BUFFER\_\-LENGTH}~20}
+\label{motherboard_2computer__interface_8c_1fa763e0afc3151e5ad7f4ae506fba54}
+
+\begin{CompactList}\small\item\em The length of the computer RX BUFFER. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_c5cab13bdc854d2eda353362215304b1}{
+\#define \hyperlink{motherboard_2computer__interface_8c_c5cab13bdc854d2eda353362215304b1}{COMPUTER\_\-INTERFACE\_\-FIXED\_\-SIZE}~5}
+\label{motherboard_2computer__interface_8c_c5cab13bdc854d2eda353362215304b1}
+
+\begin{CompactList}\small\item\em The number of bytes the fixed part of the data structure takes up. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_f42b42a9982edeb88e6f535e87790200}{
+\#define \hyperlink{motherboard_2computer__interface_8c_f42b42a9982edeb88e6f535e87790200}{COMPUTER\_\-COMM\_\-PREAMBLE}~0xFE}
+\label{motherboard_2computer__interface_8c_f42b42a9982edeb88e6f535e87790200}
+
+\begin{CompactList}\small\item\em The preamble of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_79d277377da6e2a3ef7fcdfa6431e629}{
+\#define \hyperlink{motherboard_2computer__interface_8c_79d277377da6e2a3ef7fcdfa6431e629}{COMPUTER\_\-COMM\_\-POSTAMBLE}~0xFD}
+\label{motherboard_2computer__interface_8c_79d277377da6e2a3ef7fcdfa6431e629}
+
+\begin{CompactList}\small\item\em The postamble of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_78784130f5b44761a3802457eb54fd99}{
+\#define \hyperlink{motherboard_2computer__interface_8c_78784130f5b44761a3802457eb54fd99}{COMPUTER\_\-COMM\_\-ACK}~0xFA}
+\label{motherboard_2computer__interface_8c_78784130f5b44761a3802457eb54fd99}
+
+\begin{CompactList}\small\item\em The serial acknowledge of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_81138c4ab5f390454012ebc94c4272e0}{
+\#define \hyperlink{motherboard_2computer__interface_8c_81138c4ab5f390454012ebc94c4272e0}{COMPUTER\_\-COMM\_\-NACK}~0xFB}
+\label{motherboard_2computer__interface_8c_81138c4ab5f390454012ebc94c4272e0}
+
+\begin{CompactList}\small\item\em The serial NOT acknowledge of the computer communication protocol. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_da00b5920568b0c444fe9607b4e90e92}{
+\#define \hyperlink{motherboard_2computer__interface_8c_da00b5920568b0c444fe9607b4e90e92}{COMPUTER\_\-COMM\_\-REDIRECT\_\-DATA}~0x10}
+\label{motherboard_2computer__interface_8c_da00b5920568b0c444fe9607b4e90e92}
+
+\begin{CompactList}\small\item\em Command which is used just to redirect data from the USB to the front panel. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_3328b5d8fc749a88780f912d8865ca59}{
+\#define \hyperlink{motherboard_2computer__interface_8c_3328b5d8fc749a88780f912d8865ca59}{COMPUTER\_\-COMM\_\-FLAG\_\-FOUND\_\-PREAMBLE}~1}
+\label{motherboard_2computer__interface_8c_3328b5d8fc749a88780f912d8865ca59}
+
+\begin{CompactList}\small\item\em Flag to see if the preamble was found. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_b44ef2de50440f855fcef690956e56b2}{
+\#define \hyperlink{motherboard_2computer__interface_8c_b44ef2de50440f855fcef690956e56b2}{COMPUTER\_\-COMM\_\-FLAG\_\-DATA\_\-IN\_\-RX\_\-BUF}~2}
+\label{motherboard_2computer__interface_8c_b44ef2de50440f855fcef690956e56b2}
+
+\begin{CompactList}\small\item\em Flag to see that there is data in the rx buffer. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{motherboard_2computer__interface_8c_2daa9000653d78a4e7ec343234048b9e}{computer\_\-interface\_\-init} (void)
+\begin{CompactList}\small\item\em Initialize the communication interface towards the computer. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2computer__interface_8c_4df89fd1efe2e5b7ec86f054d5833370}{computer\_\-interface\_\-send\_\-data} (void)
+\begin{CompactList}\small\item\em Send data to the computer. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2computer__interface_8c_7c53e9fead9d7ca1b0101612bebe4074}{computer\_\-interface\_\-send} (unsigned char command, unsigned int length, char $\ast$data)
+\begin{CompactList}\small\item\em Send data to the computer. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_29cfab0f9c81f589bca0c8ca89eca528}{
+void \hyperlink{motherboard_2computer__interface_8c_29cfab0f9c81f589bca0c8ca89eca528}{computer\_\-interface\_\-send\_\-ack} (void)}
+\label{motherboard_2computer__interface_8c_29cfab0f9c81f589bca0c8ca89eca528}
+
+\begin{CompactList}\small\item\em Send an ACK message. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_81b35fd58a0da5fd4ccd4039f9100ba5}{
+void \hyperlink{motherboard_2computer__interface_8c_81b35fd58a0da5fd4ccd4039f9100ba5}{computer\_\-interface\_\-send\_\-nack} (void)}
+\label{motherboard_2computer__interface_8c_81b35fd58a0da5fd4ccd4039f9100ba5}
+
+\begin{CompactList}\small\item\em Send a NACK message. \item\end{CompactList}\item 
+void \hyperlink{motherboard_2computer__interface_8c_02eb4c158dd37c93a92a27804bf90e43}{computer\_\-interface\_\-parse\_\-data} (void)
+\begin{CompactList}\small\item\em Parse the data in the rx\_\-buffer and execute the proper functions. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_ead8a2d0f2fad193376380086353350a}{
+\textbf{ISR} (SIG\_\-USART1\_\-DATA)}
+\label{motherboard_2computer__interface_8c_ead8a2d0f2fad193376380086353350a}
+
+\item 
+\hyperlink{motherboard_2computer__interface_8c_4b9b2d010652d3ee8d2df8984f9e79ba}{ISR} (SIG\_\-USART1\_\-RECV)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+\hypertarget{motherboard_2computer__interface_8c_50338b5fd07f8ad1c4f279c3f01c43a3}{
+\hyperlink{structcomputer__comm__struct}{computer\_\-comm\_\-struct} \hyperlink{motherboard_2computer__interface_8c_50338b5fd07f8ad1c4f279c3f01c43a3}{computer\_\-comm}}
+\label{motherboard_2computer__interface_8c_50338b5fd07f8ad1c4f279c3f01c43a3}
+
+\begin{CompactList}\small\item\em Computer communication data. \item\end{CompactList}\item 
+\hypertarget{motherboard_2computer__interface_8c_eb7cc7d2c59a8b0f67c12945cbdd59d3}{
+void($\ast$ \hyperlink{motherboard_2computer__interface_8c_eb7cc7d2c59a8b0f67c12945cbdd59d3}{bootloader\_\-start} )(void) = (void $\ast$)0x1FE00}
+\label{motherboard_2computer__interface_8c_eb7cc7d2c59a8b0f67c12945cbdd59d3}
+
+\begin{CompactList}\small\item\em The bootloader start address. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Interface towards the computer. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "computer_interface.c" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{motherboard_2computer__interface_8c-source}{computer\_\-interface.c}.
+
+\subsection{Function Documentation}
+\hypertarget{motherboard_2computer__interface_8c_2daa9000653d78a4e7ec343234048b9e}{
+\index{motherboard/computer\_\-interface.c@{motherboard/computer\_\-interface.c}!computer\_\-interface\_\-init@{computer\_\-interface\_\-init}}
+\index{computer\_\-interface\_\-init@{computer\_\-interface\_\-init}!motherboard/computer_interface.c@{motherboard/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void computer\_\-interface\_\-init (void)}}
+\label{motherboard_2computer__interface_8c_2daa9000653d78a4e7ec343234048b9e}
+
+
+Initialize the communication interface towards the computer. 
+
+Initialize the communication interface towards the computer. Will initialize buffers etc. 
+
+Definition at line 106 of file computer\_\-interface.c.
+
+References COMPUTER\_\-RX\_\-BUFFER\_\-LENGTH, COMPUTER\_\-TX\_\-BUFFER\_\-LENGTH, computer\_\-comm\_\-struct::data\_\-in\_\-tx\_\-buffer, computer\_\-comm\_\-struct::rx\_\-buffer, computer\_\-comm\_\-struct::rx\_\-buffer\_\-start, computer\_\-comm\_\-struct::tx\_\-buffer, and computer\_\-comm\_\-struct::tx\_\-buffer\_\-start.\hypertarget{motherboard_2computer__interface_8c_02eb4c158dd37c93a92a27804bf90e43}{
+\index{motherboard/computer\_\-interface.c@{motherboard/computer\_\-interface.c}!computer\_\-interface\_\-parse\_\-data@{computer\_\-interface\_\-parse\_\-data}}
+\index{computer\_\-interface\_\-parse\_\-data@{computer\_\-interface\_\-parse\_\-data}!motherboard/computer_interface.c@{motherboard/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-parse\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}void computer\_\-interface\_\-parse\_\-data (void)}}
+\label{motherboard_2computer__interface_8c_02eb4c158dd37c93a92a27804bf90e43}
+
+
+Parse the data in the rx\_\-buffer and execute the proper functions. 
+
+Function which will parse the data in the rx\_\-buffer and process the command. 
+
+Bit 0 = Footswitch Bit 1 = Radio sense lower floor Bit 2 = Radio sense upper floor Bit 3 = Computer RTS Bit 4 = Inverted radio sense Bit 5 = Inverted Computer RTS Bit 6 = Inhibit polarity (0=active low, 1=active high)
+
+unsigned char ptt\_\-input;
+
+Definition at line 175 of file computer\_\-interface.c.
+
+References struct\_\-ptt\_\-sequencer::active, struct\_\-ptt\_\-sequencer::amp\_\-post\_\-delay, struct\_\-ptt\_\-sequencer::amp\_\-pre\_\-delay, struct\_\-antenna::antenna\_\-comb\_\-allowed, struct\_\-antenna::antenna\_\-comb\_\-output\_\-str, struct\_\-antenna::antenna\_\-flag, struct\_\-antenna::antenna\_\-output\_\-length, struct\_\-antenna::antenna\_\-text, struct\_\-antenna::antenna\_\-text\_\-length, struct\_\-ptt\_\-sequencer::antennas\_\-post\_\-delay, struct\_\-band::band\_\-high\_\-output\_\-str, struct\_\-band::band\_\-high\_\-output\_\-str\_\-length, struct\_\-band::band\_\-low\_\-output\_\-str, struct\_\-band::band\_\-low\_\-output\_\-str\_\-length, struct\_\-rx\_\-antennas::band\_\-output\_\-length, struct\_\-rx\_\-antennas::band\_\-output\_\-str, struct\_\-radio\_\-settings::baudrate, bootloader\_\-start, struct\_\-radio\_\-settings::cat\_\-enabled, struct\_\-radio\_\-settings::civ\_\-addr, computer\_\-comm\_\-struct::command, struct\_\-ptt::computer, COMPUTER\_\-COMM\_\-ENTER\_\-BOOTLOADER, COMPUTER\_\-COMM\_\-FLAG\_\-DATA\_\-IN\_\-RX\_\-BUF, computer\_\-interface\_\-deactivate\_\-setup(), computer\_\-interface\_\-send(), computer\_\-interface\_\-send\_\-ack(), computer\_\-interface\_\-send\_\-nack(), CTRL\_\-CREATE\_\-EEPROM\_\-TABLE, CTRL\_\-DONE, CTRL\_\-GET\_\-FIRMWARE\_\-REV, CTRL\_\-REBOOT, CTRL\_\-SET\_\-ANT\_\-DATA, CTRL\_\-SET\_\-ANT\_\-DATA\_\-ANT\_\-FLAGS, CTRL\_\-SET\_\-ANT\_\-DATA\_\-ANT\_\-OUT\_\-STR, CTRL\_\-SET\_\-ANT\_\-DATA\_\-COMB\_\-ALLOWED, CTRL\_\-SET\_\-ANT\_\-DATA\_\-SAVE, CTRL\_\-SET\_\-ANT\_\-DATA\_\-SUB\_\-MENU\_\-TYPE, CTRL\_\-SET\_\-ANT\_\-DATA\_\-TEXT, CTRL\_\-SET\_\-ANT\_\-DEFAULT\_\-INDEX, CTRL\_\-SET\_\-ANT\_\-ROTATOR\_\-DATA, CTRL\_\-SET\_\-ANT\_\-SUB\_\-MENU\_\-DATA, CTRL\_\-SET\_\-ANT\_\-SUB\_\-MENU\_\-OUTPUT\_\-STR, CTRL\_\-SET\_\-ANT\_\-SUB\_\-MENU\_\-TEXT, CTRL\_\-SET\_\-BAND\_\-DATA, CTRL\_\-SET\_\-BAND\_\-DATA\_\-HIGH\_\-OUT\_\-STR, CTRL\_\-SET\_\-BAND\_\-DATA\_\-LIMITS, CTRL\_\-SET\_\-BAND\_\-DATA\_\-LOW\_\-OUT\_\-STR, CTRL\_\-SET\_\-BAND\_\-DATA\_\-SAVE, CTRL\_\-SET\_\-DEVICE\_\-SETTINGS, CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-EXT\_\-INPUTS, CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-NETWORK, CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-OTHER, CTRL\_\-SET\_\-DEVICE\_\-SETTINGS\_\-SAVE, CTRL\_\-SET\_\-POWERMETER\_\-SETTINGS, CTRL\_\-SET\_\-RADIO\_\-SETTINGS, CTRL\_\-SET\_\-RADIO\_\-SETTINGS\_\-ALL, CTRL\_\-SET\_\-RADIO\_\-SETTINGS\_\-SAVE, CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA, CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-ANT\_\-OUT\_\-STR, CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-BAND\_\-OUT\_\-STR, CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-SAVE, CTRL\_\-SET\_\-RX\_\-ANT\_\-DATA\_\-TEXT, CTRL\_\-SET\_\-SEQUENCER\_\-COMPUTER, CTRL\_\-SET\_\-SEQUENCER\_\-FOOTSWITCH, CTRL\_\-SET\_\-SEQUENCER\_\-RADIO\_\-SENSE, CTRL\_\-SET\_\-SEQUENCER\_\-SAVE, CTRL\_\-SET\_\-SEQUENCER\_\-SETTINGS, CTRL\_\-SET\_\-TIME, struct\_\-antenna::default\_\-antenna, struct\_\-sub\_\-menu\_\-array::direction\_\-count, struct\_\-sub\_\-menu\_\-array::direction\_\-name, ds1307\_\-set\_\-time(), eeprom\_\-create\_\-table(), eeprom\_\-save\_\-ant\_\-structure(), eeprom\_\-save\_\-ant\_\-sub\_\-menu\_\-array\_\-structure(), eeprom\_\-save\_\-band\_\-data(), eeprom\_\-save\_\-ptt\_\-data(), eeprom\_\-save\_\-radio\_\-settings\_\-structure(), eeprom\_\-save\_\-rx\_\-ant\_\-structure(), eeprom\_\-save\_\-settings\_\-structure(), struct\_\-setting::ext\_\-key\_\-assignments, FIRMWARE\_\-REV, computer\_\-comm\_\-struct::flags, struct\_\-ptt::footswitch, struct\_\-band::high\_\-portion\_\-high\_\-limit, struct\_\-band::high\_\-portion\_\-low\_\-limit, struct\_\-ptt\_\-sequencer::inhibit\_\-post\_\-delay, struct\_\-ptt\_\-sequencer::inhibit\_\-pre\_\-delay, INT\_\-COMM\_\-PC\_\-CTRL, INT\_\-COMM\_\-REDIRECT\_\-DATA, struct\_\-radio\_\-settings::interface\_\-type, internal\_\-comm\_\-add\_\-tx\_\-message(), computer\_\-comm\_\-struct::length, struct\_\-band::low\_\-portion\_\-high\_\-limit, struct\_\-band::low\_\-portion\_\-low\_\-limit, struct\_\-rx\_\-antennas::name, struct\_\-rx\_\-antennas::name\_\-length, struct\_\-setting::network\_\-address, struct\_\-setting::network\_\-device\_\-count, struct\_\-setting::network\_\-device\_\-is\_\-master, struct\_\-rx\_\-antennas::output\_\-length, struct\_\-rx\_\-antennas::output\_\-str, struct\_\-sub\_\-menu\_\-array::output\_\-str\_\-dir, struct\_\-sub\_\-menu\_\-array::output\_\-str\_\-dir\_\-length, struct\_\-radio\_\-settings::poll\_\-interval, struct\_\-setting::powermeter\_\-address, struct\_\-setting::powermeter\_\-update\_\-rate\_\-bargraph, struct\_\-setting::powermeter\_\-update\_\-rate\_\-text, struct\_\-setting::powermeter\_\-vswr\_\-limit, struct\_\-ptt::ptt\_\-input, struct\_\-radio\_\-settings::ptt\_\-input, struct\_\-setting::ptt\_\-interlock\_\-input, struct\_\-radio\_\-settings::radio\_\-model, struct\_\-ptt\_\-sequencer::radio\_\-post\_\-delay, struct\_\-ptt\_\-sequencer::radio\_\-pre\_\-delay, struct\_\-ptt::radio\_\-sense, struct\_\-antenna::rotator\_\-addr, struct\_\-antenna::rotator\_\-delay, struct\_\-antenna::rotator\_\-max\_\-rotation, struct\_\-antenna::rotator\_\-min\_\-heading, struct\_\-antenna::rotator\_\-sub\_\-addr, struct\_\-antenna::rotator\_\-view\_\-360\_\-deg, computer\_\-comm\_\-struct::rx\_\-buffer, computer\_\-comm\_\-struct::rx\_\-buffer\_\-start, struct\_\-radio\_\-settings::stopbits, struct\_\-antenna::sub\_\-menu\_\-type, SUBMENU\_\-STACK, and SUBMENU\_\-VERT\_\-ARRAY.\hypertarget{motherboard_2computer__interface_8c_7c53e9fead9d7ca1b0101612bebe4074}{
+\index{motherboard/computer\_\-interface.c@{motherboard/computer\_\-interface.c}!computer\_\-interface\_\-send@{computer\_\-interface\_\-send}}
+\index{computer\_\-interface\_\-send@{computer\_\-interface\_\-send}!motherboard/computer_interface.c@{motherboard/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-send}]{\setlength{\rightskip}{0pt plus 5cm}void computer\_\-interface\_\-send (unsigned char {\em command}, \/  unsigned int {\em length}, \/  char $\ast$ {\em data})}}
+\label{motherboard_2computer__interface_8c_7c53e9fead9d7ca1b0101612bebe4074}
+
+
+Send data to the computer. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em command}]The command we wish to send \item[{\em length}]The length of the data \item[{\em data}]The data we wish to send \end{description}
+\end{Desc}
+
+
+Definition at line 134 of file computer\_\-interface.c.
+
+References COMPUTER\_\-COMM\_\-POSTAMBLE, COMPUTER\_\-COMM\_\-PREAMBLE, COMPUTER\_\-INTERFACE\_\-FIXED\_\-SIZE, computer\_\-comm\_\-struct::data\_\-in\_\-tx\_\-buffer, computer\_\-comm\_\-struct::tx\_\-buffer, and computer\_\-comm\_\-struct::tx\_\-buffer\_\-length.\hypertarget{motherboard_2computer__interface_8c_4df89fd1efe2e5b7ec86f054d5833370}{
+\index{motherboard/computer\_\-interface.c@{motherboard/computer\_\-interface.c}!computer\_\-interface\_\-send\_\-data@{computer\_\-interface\_\-send\_\-data}}
+\index{computer\_\-interface\_\-send\_\-data@{computer\_\-interface\_\-send\_\-data}!motherboard/computer_interface.c@{motherboard/computer\_\-interface.c}}
+\subsubsection[{computer\_\-interface\_\-send\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}void computer\_\-interface\_\-send\_\-data (void)}}
+\label{motherboard_2computer__interface_8c_4df89fd1efe2e5b7ec86f054d5833370}
+
+
+Send data to the computer. 
+
+Function which will send data from the tx\_\-buffer to the uart. 
+
+Definition at line 118 of file computer\_\-interface.c.
+
+References computer\_\-comm\_\-struct::data\_\-in\_\-tx\_\-buffer, computer\_\-comm\_\-struct::tx\_\-buffer, computer\_\-comm\_\-struct::tx\_\-buffer\_\-length, computer\_\-comm\_\-struct::tx\_\-buffer\_\-start, and usart1\_\-transmit().\hypertarget{motherboard_2computer__interface_8c_4b9b2d010652d3ee8d2df8984f9e79ba}{
+\index{motherboard/computer\_\-interface.c@{motherboard/computer\_\-interface.c}!ISR@{ISR}}
+\index{ISR@{ISR}!motherboard/computer_interface.c@{motherboard/computer\_\-interface.c}}
+\subsubsection[{ISR}]{\setlength{\rightskip}{0pt plus 5cm}ISR (SIG\_\-USART1\_\-RECV)}}
+\label{motherboard_2computer__interface_8c_4b9b2d010652d3ee8d2df8984f9e79ba}
+
+
+Interrupt which is called when a byte has been received 
+
+Definition at line 197 of file computer\_\-interface.c.
+
+References computer\_\-comm\_\-struct::command, COMPUTER\_\-COMM\_\-FLAG\_\-DATA\_\-IN\_\-RX\_\-BUF, COMPUTER\_\-COMM\_\-FLAG\_\-FOUND\_\-PREAMBLE, COMPUTER\_\-COMM\_\-POSTAMBLE, COMPUTER\_\-COMM\_\-PREAMBLE, COMPUTER\_\-RX\_\-BUFFER\_\-LENGTH, computer\_\-comm\_\-struct::count, computer\_\-comm\_\-struct::flags, computer\_\-comm\_\-struct::length, computer\_\-comm\_\-struct::rx\_\-buffer, and computer\_\-comm\_\-struct::rx\_\-buffer\_\-start.

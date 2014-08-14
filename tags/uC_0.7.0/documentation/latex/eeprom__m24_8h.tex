@@ -1,0 +1,125 @@
+\hypertarget{eeprom__m24_8h}{
+\section{front\_\-panel/eeprom\_\-m24.h File Reference}
+\label{eeprom__m24_8h}\index{front\_\-panel/eeprom\_\-m24.h@{front\_\-panel/eeprom\_\-m24.h}}
+}
+EEPROM hardware functions.  
+
+
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{eeprom__m24_8h_d3d0208c22a622b438c7a2eefe932b32}{
+\#define \hyperlink{eeprom__m24_8h_d3d0208c22a622b438c7a2eefe932b32}{EEPROM\_\-M24\_\-ADDR}~0xA0}
+\label{eeprom__m24_8h_d3d0208c22a622b438c7a2eefe932b32}
+
+\begin{CompactList}\small\item\em The address of the external EEPROM. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+unsigned char \hyperlink{eeprom__m24_8h_d286f5f959d9b49e071d91b516bea80c}{eeprom\_\-m24\_\-write\_\-byte} (unsigned int eeprom\_\-address, unsigned char value)
+\begin{CompactList}\small\item\em Write a byte of data to the EEPROM. \item\end{CompactList}\item 
+unsigned char \hyperlink{eeprom__m24_8h_29035be2bd9083df1e4e23274c7a47fe}{eeprom\_\-m24\_\-read\_\-byte} (unsigned int eeprom\_\-address)
+\begin{CompactList}\small\item\em Read a byte of data from the EEPROM. \item\end{CompactList}\item 
+unsigned char \hyperlink{eeprom__m24_8h_0fb1100de5afaa4fec8cd5337a7f1db8}{eeprom\_\-m24\_\-write\_\-block} (unsigned int start\_\-address, unsigned int length, unsigned char $\ast$data)
+\begin{CompactList}\small\item\em Write a block of data to the EEPROM. \item\end{CompactList}\item 
+unsigned char \hyperlink{eeprom__m24_8h_3933b841f4843fdad794685e518737e6}{eeprom\_\-m24\_\-read\_\-block} (unsigned int start\_\-address, unsigned int length, unsigned char $\ast$data)
+\begin{CompactList}\small\item\em Read a block of data from the EEPROM - NOT FINISHED!! \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+EEPROM hardware functions. 
+
+\begin{Desc}
+\item[Author:]Mikael Larsmark, SM2WMV \end{Desc}
+\begin{Desc}
+\item[Date:]2010-01-25 
+
+\begin{Code}\begin{verbatim} #include "front_panel/eeprom_m24.h" 
+\end{verbatim}
+\end{Code}
+
+ \end{Desc}
+
+
+Definition in file \hyperlink{eeprom__m24_8h-source}{eeprom\_\-m24.h}.
+
+\subsection{Function Documentation}
+\hypertarget{eeprom__m24_8h_3933b841f4843fdad794685e518737e6}{
+\index{eeprom\_\-m24.h@{eeprom\_\-m24.h}!eeprom\_\-m24\_\-read\_\-block@{eeprom\_\-m24\_\-read\_\-block}}
+\index{eeprom\_\-m24\_\-read\_\-block@{eeprom\_\-m24\_\-read\_\-block}!eeprom_m24.h@{eeprom\_\-m24.h}}
+\subsubsection[{eeprom\_\-m24\_\-read\_\-block}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char eeprom\_\-m24\_\-read\_\-block (unsigned int {\em start\_\-address}, \/  unsigned int {\em length}, \/  unsigned char $\ast$ {\em data})}}
+\label{eeprom__m24_8h_3933b841f4843fdad794685e518737e6}
+
+
+Read a block of data from the EEPROM - NOT FINISHED!! 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em start\_\-address}]The start address of where we wish to read the data from \item[{\em length}]The length of the data we wish read \item[{\em data}]The memory area we wish to store the data to \end{description}
+\end{Desc}
+
+
+Definition at line 215 of file eeprom\_\-m24.c.
+
+References EEPROM\_\-M24\_\-ADDR, i2cGetReceivedByte(), i2cReceiveByte(), i2cSendByte(), i2cSendStart(), i2cSendStop(), and i2cWaitForComplete().\hypertarget{eeprom__m24_8h_29035be2bd9083df1e4e23274c7a47fe}{
+\index{eeprom\_\-m24.h@{eeprom\_\-m24.h}!eeprom\_\-m24\_\-read\_\-byte@{eeprom\_\-m24\_\-read\_\-byte}}
+\index{eeprom\_\-m24\_\-read\_\-byte@{eeprom\_\-m24\_\-read\_\-byte}!eeprom_m24.h@{eeprom\_\-m24.h}}
+\subsubsection[{eeprom\_\-m24\_\-read\_\-byte}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char eeprom\_\-m24\_\-read\_\-byte (unsigned int {\em eeprom\_\-address})}}
+\label{eeprom__m24_8h_29035be2bd9083df1e4e23274c7a47fe}
+
+
+Read a byte of data from the EEPROM. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em eeprom\_\-address}]The address where we wish to read the byte from \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The value at eeprom\_\-address \end{Desc}
+
+
+Definition at line 96 of file eeprom\_\-m24.c.
+
+References EEPROM\_\-M24\_\-ADDR, i2cGetReceivedByte(), i2cReceiveByte(), i2cSendByte(), i2cSendStart(), i2cSendStop(), and i2cWaitForComplete().
+
+Referenced by eeprom\_\-get\_\-ant\_\-sub\_\-menu\_\-array\_\-structure(), eeprom\_\-get\_\-antenna\_\-data(), eeprom\_\-get\_\-band\_\-data(), eeprom\_\-get\_\-ptt\_\-data(), eeprom\_\-get\_\-radio\_\-settings\_\-structure(), eeprom\_\-get\_\-runtime\_\-settings(), eeprom\_\-get\_\-rx\_\-antenna\_\-data(), eeprom\_\-get\_\-settings\_\-structure(), and eeprom\_\-read\_\-table().\hypertarget{eeprom__m24_8h_0fb1100de5afaa4fec8cd5337a7f1db8}{
+\index{eeprom\_\-m24.h@{eeprom\_\-m24.h}!eeprom\_\-m24\_\-write\_\-block@{eeprom\_\-m24\_\-write\_\-block}}
+\index{eeprom\_\-m24\_\-write\_\-block@{eeprom\_\-m24\_\-write\_\-block}!eeprom_m24.h@{eeprom\_\-m24.h}}
+\subsubsection[{eeprom\_\-m24\_\-write\_\-block}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char eeprom\_\-m24\_\-write\_\-block (unsigned int {\em start\_\-address}, \/  unsigned int {\em length}, \/  unsigned char $\ast$ {\em data})}}
+\label{eeprom__m24_8h_0fb1100de5afaa4fec8cd5337a7f1db8}
+
+
+Write a block of data to the EEPROM. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em start\_\-address}]The start address of where we wish to store the data \item[{\em length}]The length of the data we wish to store \item[{\em data}]The content we wish to write to the EEPROM \end{description}
+\end{Desc}
+
+
+Definition at line 146 of file eeprom\_\-m24.c.
+
+References EEPROM\_\-M24\_\-ADDR, eeprom\_\-tiny\_\-delay(), i2cSendByte(), i2cSendStart(), i2cSendStop(), and i2cWaitForComplete().
+
+Referenced by eeprom\_\-create\_\-table(), eeprom\_\-save\_\-ant\_\-structure(), eeprom\_\-save\_\-ant\_\-sub\_\-menu\_\-array\_\-structure(), eeprom\_\-save\_\-band\_\-data(), eeprom\_\-save\_\-ptt\_\-data(), eeprom\_\-save\_\-radio\_\-settings\_\-structure(), eeprom\_\-save\_\-runtime\_\-settings(), eeprom\_\-save\_\-rx\_\-ant\_\-structure(), and eeprom\_\-save\_\-settings\_\-structure().\hypertarget{eeprom__m24_8h_d286f5f959d9b49e071d91b516bea80c}{
+\index{eeprom\_\-m24.h@{eeprom\_\-m24.h}!eeprom\_\-m24\_\-write\_\-byte@{eeprom\_\-m24\_\-write\_\-byte}}
+\index{eeprom\_\-m24\_\-write\_\-byte@{eeprom\_\-m24\_\-write\_\-byte}!eeprom_m24.h@{eeprom\_\-m24.h}}
+\subsubsection[{eeprom\_\-m24\_\-write\_\-byte}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char eeprom\_\-m24\_\-write\_\-byte (unsigned int {\em eeprom\_\-address}, \/  unsigned char {\em value})}}
+\label{eeprom__m24_8h_d286f5f959d9b49e071d91b516bea80c}
+
+
+Write a byte of data to the EEPROM. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em eeprom\_\-address}]The address where we wish to store the byte \item[{\em value}]The value we wish to store at eeprom\_\-address \end{description}
+\end{Desc}
+
+
+Definition at line 43 of file eeprom\_\-m24.c.
+
+References EEPROM\_\-M24\_\-ADDR, i2cSendByte(), i2cSendStart(), i2cSendStop(), and i2cWaitForComplete().
