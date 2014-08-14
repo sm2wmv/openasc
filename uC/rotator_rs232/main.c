@@ -30,7 +30,15 @@
 #include "../wmv_bus/bus_ping.h"
 #include "../wmv_bus/bus_commands.h"
 
-static unsigned char rx_buffer[5];
+#if ROTATOR == ALFASPID
+  #define RS232_RX_BUF_LEN 5
+#elif ROTATOR == PROSISTEL
+  #define RS232_RX_BUF_LEN 10
+#elif ROTATOR == GREEN_HERON
+  #define RS232_RX_BUF_LEN 4
+#endif
+
+static unsigned char rx_buffer[RS232_RX_BUF_LEN];
 
 unsigned char ping_msg[2];
 
@@ -45,19 +53,28 @@ unsigned char char_count = 0;
 unsigned int curr_angle = 0;
 
 void rotator_rs232_get_status(void) {
-  usart0_transmit(0x57);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x1F);
-  usart0_transmit(0x20);
+  #if ROTATOR == ALFASPID
+    usart0_transmit(0x57);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x1F);
+    usart0_transmit(0x20);
+  #elif ROTATOR == PROSISTEL
+    
+  #elif ROTATOR == GREEN_HERON
+    usart0_transmit('A');
+    usart0_transmit('I');
+    usart0_transmit('1');
+    usart0_transmit(';');
+  #endif
 }
 
 void rotator_rs232_send_status(void) {
@@ -75,40 +92,66 @@ void rotator_rs232_send_status(void) {
 }
 
 void rotator_rs232_send_stop(void) {
-  usart0_transmit(0x57);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x0F);
-  usart0_transmit(0x20);
+  #if ROTATOR == ALFASPID
+    usart0_transmit(0x57);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x0F);
+    usart0_transmit(0x20);
+  #elif ROTATOR == PROSISTEL
+  #elif ROTATOR == GREEN_HERON
+    usart0_transmit(';');
+  #endif
 }
 
 void rotator_rs232_set_heading(unsigned int target) {
-  char temp[5];
-  
-  //Convert the target heading into characters
-  itoa(target,temp,10);
+  #if ROTATOR == ALFASPID
+    char temp[5];
     
-  usart0_transmit(0x57);
-  usart0_transmit(temp[0]);
-  usart0_transmit(temp[1]);
-  usart0_transmit(temp[2]);
-  usart0_transmit(0x30);
-  usart0_transmit(0x01);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x00);
-  usart0_transmit(0x2F);
-  usart0_transmit(0x20);
+    //Convert the target heading into characters
+    itoa(target,temp,10);
+      
+    usart0_transmit(0x57);
+    usart0_transmit(temp[0]);
+    usart0_transmit(temp[1]);
+    usart0_transmit(temp[2]);
+    usart0_transmit(0x30);
+    usart0_transmit(0x01);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x00);
+    usart0_transmit(0x2F);
+    usart0_transmit(0x20);
+  #elif ROTATOR == PROSISTEL
+  #elif ROTATOR == GREEN_HERON
+    char temp[5];
+    
+    //Convert the target heading into characters
+    itoa(target,temp,10);
+    
+    AP1xxx;AM1;
+    usart0_transmit('A');
+    usart0_transmit('P');
+    usart0_transmit('1');
+    usart0_transmit(temp[0]);
+    usart0_transmit(temp[1]);
+    usart0_transmit(temp[2]);
+    usart0_transmit(';');
+    usart0_transmit('A');
+    usart0_transmit('M');
+    usart0_transmit('1');
+    usart0_transmit(';');
+  #endif
 }
 
 /*! \brief Parse a message and exectute the proper commands
@@ -130,17 +173,38 @@ void rotator_rs232_bus_parse_message(BUS_MESSAGE *bus_message) {
     case BUS_CMD_ROTATOR_SET_ANGLE: {
       uint16_t angle = bus_message->data[1] << 8;
       angle |= bus_message->data[2];
-      delay_ms(100);
-      rotator_rs232_set_heading(angle+360);
-      delay_ms(100);
+
+      #if ROTATOR == ALFASPID
+        delay_ms(100);
+        rotator_rs232_set_heading(angle+360);
+        delay_ms(100);
+      #elif ROTATOR == PROSISTEL
+        delay_ms(100);
+        rotator_rs232_set_heading(angle);
+        delay_ms(100);
+      #elif ROTATOR == GREEN_HERON
+        delay_ms(100);
+        rotator_rs232_set_heading(angle);
+        delay_ms(100);
+      #endif
       break;
     }
     case BUS_CMD_ROTATOR_ROTATE_CW: {
       //Does not work with the Alfa spid
+      #if ROTATOR == PROSISTEL
+        
+      #elif ROTATOR == GREEN_HERON
+      
+      #endif
       break;
     }
     case BUS_CMD_ROTATOR_ROTATE_CCW: {
       //Does not work with the alfa spid
+      #if ROTATOR == PROSISTEL
+        
+      #elif ROTATOR == GREEN_HERON
+      
+      #endif
       break;
     }
     case BUS_CMD_ROTATOR_STOP: {
@@ -198,7 +262,13 @@ int main(void)
 	//Timer with interrupts each ms
 	init_timer_0();
 	
-  usart0_init(382); //Init the USART at 1200 baud
+  #if ROTATOR == ALFASPID
+    usart0_init(382); //Init the USART at 1200 baud
+  #elif ROTATOR == PROSISTEL
+    
+  #elif ROTATOR == GREEN_HERON
+    usart0_init(95); //Init the USART at 4800 baud
+  #endif
   
 	wdt_enable(WDTO_1S);
 	
@@ -267,14 +337,32 @@ ISR(SIG_USART0_DATA) {
 ISR(SIG_USART0_RECV) {
   rx_buffer[char_count++] = UDR0;
   
-  if (char_count == 5) {
-    if (rx_buffer[0] == 0x57) {
-      curr_angle = rx_buffer[1] * 100 + rx_buffer[2] * 10 + rx_buffer[3];
+  #if ROTATOR == ALFASPID
+    if (char_count == 5) {
+      if (rx_buffer[0] == 0x57) {
+        curr_angle = rx_buffer[1] * 100 + rx_buffer[2] * 10 + rx_buffer[3];
+        
+        while (curr_angle >= 360)
+          curr_angle -= 360;
+      }
       
-			while (curr_angle >= 360)
-        curr_angle -= 360;
+      char_count = 0;
     }
-    
+  #elif ROTATOR == PROSISTEL
+  
+  #elif ROTATOR == GREEN_HERON
+    if (char_count == 4) {
+      if (rx_buffer[3] == ';') {  //End of message
+        curr_angle = rx_buffer[0] * 100 + rx_buffer[1] * 10 + rx_buffer[2];
+        
+        while (curr_angle >= 360)
+          curr_angle -= 360;
+      }
+
+      char_count = 0;
+    }
+  #endif  
+  
+  if (char_count > RS232_RX_BUF_LEN)
     char_count = 0;
-  }
 }
