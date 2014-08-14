@@ -862,30 +862,19 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 
 	//If we have not received a sync within a certain time we stop all communication
 	//until we receive a new sync again
-	if (counter_sync_timeout >= BUS_SYNC_TIMEOUT_LIMIT) {
-		if (!bus_is_master()) {
-      bus_status.flags &= ~(1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
-      
-      //Drops all current messages in the TX queue
-      queue_drop_all_bus_tx();
-      
-      bus_del_all_critical_list();
+	if (!bus_is_master() && (counter_sync_timeout >= BUS_SYNC_TIMEOUT_LIMIT)) {
+		bus_status.flags &= ~(1<<BUS_STATUS_MASTER_SENT_SYNC_BIT);
+		
+		//Drops all current messages in the TX queue
+		queue_drop_all_bus_tx();
+    
+    bus_del_all_critical_list();
 
-      counter_sync_timeout = 0;
-      
-      #ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-        error_handler_set(ERROR_TYPE_BUS_SYNC,1,0);
-      #endif
-    }
-    else {
-      //Drops all current messages in the TX queue
-      queue_drop_all_bus_tx();
-      bus_del_all_critical_list();
-      
-      counter_sync_timeout = 0;
-     
-      bus_status.flags |= (1<<BUS_STATUS_FORCE_SYNC);
-    }
+		counter_sync_timeout = 0;
+		
+		#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
+			error_handler_set(ERROR_TYPE_BUS_SYNC,1,0);
+		#endif
 	}
 
 	if (bus_status.wraparounds >= BUS_ACK_WRAPAROUND_LIMIT) {
