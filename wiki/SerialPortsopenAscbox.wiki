@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Explanation of the two USB serieal ports
 === Serial ports ===
 
 The openasc box has two serial ports via USB.
