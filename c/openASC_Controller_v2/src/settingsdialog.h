@@ -115,6 +115,7 @@ private:
 
   unsigned char cPickupAddr[9];
   unsigned char cPickupType[9];
+  bool powerMeterAllBands;
 
   QString bandInfoBoxName[6];
   int bandInfoBoxAddr[6];
