@@ -377,8 +377,9 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
           if (message.cmd == BUS_CMD_POWERMETER_STATUS) {
             mutex.lock();
 
-            if (settingsDialog->getPowerMeterPickupType(comboBoxBand->currentIndex()) != 0)
-              powerMeterWindow->setValues((int)(settingsDialog->getPowerMeterPickupType(comboBoxBand->currentIndex())-1),message.data[2] + (message.data[1]<<8),message.data[4] + (message.data[3]<<8),message.data[6] + (message.data[5]<<8));
+            if (settingsDialog->getPowerMeterPickupType(comboBoxBand->currentIndex()) != 0) {
+              powerMeterWindow->setValues((int)(settingsDialog->getPowerMeterPickupType(comboBoxBand->currentIndex()-1)-1),message.data[2] + (message.data[1]<<8),message.data[4] + (message.data[3]<<8),message.data[6] + (message.data[5]<<8));
+            }
             else
               powerMeterWindow->setValues(message.data[0],message.data[2] + (message.data[1]<<8),message.data[4] + (message.data[3]<<8),message.data[6] + (message.data[5]<<8));
 

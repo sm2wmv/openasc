@@ -79,6 +79,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
     cPickupType[7] = settings.value("PickupType7").toInt();
     cPickupType[8] = settings.value("PickupType8").toInt();
 
+    powerMeterAllBands = settings.value("PowerMeterAllBands").toBool();
+
     iBargraphsUpdateRate = settings.value("BargraphsUpdateRate").toInt();
     iTextUpdateRate = settings.value("TextUpdateRate").toInt();
   }
@@ -125,6 +127,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
       cPickupType[i] = 0;
     }
 
+    powerMeterAllBands = true;
+
     iBargraphsUpdateRate = 500;
     iTextUpdateRate = 200;
 
@@ -150,6 +154,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
 
   m_ui->spinBoxPowerMeterUpdateRateBargraph->setValue(iBargraphsUpdateRate);
   m_ui->spinBoxPowerMeterUpdateRateText->setValue(iTextUpdateRate);
+
+  m_ui->checkBoxPowerMeterAllBands->setChecked(powerMeterAllBands);
 
   //Set combobox to show 160m
   m_ui->comboBoxPowerMeterBand->setCurrentIndex(0);
@@ -212,6 +218,7 @@ void SettingsDialog::saveSettings() {
   showMousePointer = m_ui->checkBoxRotatorShowMousePointer->isChecked();
   iBargraphsUpdateRate = m_ui->spinBoxPowerMeterUpdateRateBargraph->value();
   iTextUpdateRate = m_ui->spinBoxPowerMeterUpdateRateText->value();
+  powerMeterAllBands = m_ui->checkBoxPowerMeterAllBands->isChecked();
 
 	settings.beginGroup("Settings");
 
@@ -277,6 +284,8 @@ void SettingsDialog::saveSettings() {
   settings.setValue("PickupType6",cPickupType[6]);
   settings.setValue("PickupType7",cPickupType[7]);
   settings.setValue("PickupType8",cPickupType[8]);
+
+  settings.setValue("PowerMeterAllBands",powerMeterAllBands);
 
   settings.setValue("BargraphsUpdateRate",iBargraphsUpdateRate);
   settings.setValue("TextUpdateRate",iTextUpdateRate);
