@@ -415,27 +415,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 		settings.endGroup();
 
-    settings.beginGroup("MapSettings");
-
-    if (settings.contains("ImagePath")) {
-      imagePath = settings.value("ImagePath").toString();
-      sizeWidth = settings.value("MapWidth").toInt();
-      sizeHeight = settings.value("MapHeight").toInt();
-    }
-    else {
-      imagePath = "maps/map.png";
-      sizeWidth = 600;
-      sizeHeight = 600;
-
-      settings.setValue("ImagePath",imagePath);
-      settings.setValue("MapWidth",sizeWidth);
-      settings.setValue("MapHeight",sizeHeight);
-    }
-
-    settings.endGroup();
-
-    setupLayout();
-
 		setStatusPresetButtons();
 
 		groupBoxAnt1->setVisible(false);
@@ -748,6 +727,27 @@ void RotatorDialog::keyPressEvent(QKeyEvent *e) {
 }
 
 void RotatorDialog::setupLayout() {
+  QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
+
+  settings.beginGroup("MapSettings");
+
+  if (settings.contains("ImagePath")) {
+    imagePath = settings.value("ImagePath").toString();
+    sizeWidth = settings.value("MapWidth").toInt();
+    sizeHeight = settings.value("MapHeight").toInt();
+  }
+  else {
+    imagePath = "maps/map.png";
+    sizeWidth = 600;
+    sizeHeight = 600;
+
+    settings.setValue("ImagePath",imagePath);
+    settings.setValue("MapWidth",sizeWidth);
+    settings.setValue("MapHeight",sizeHeight);
+  }
+
+  settings.endGroup();
+
   this->setMinimumWidth(sizeWidth+200);
   this->setMinimumHeight(sizeHeight);
   this->resize(sizeWidth+200,sizeHeight);
@@ -763,9 +763,13 @@ void RotatorDialog::setupLayout() {
   groupBoxAnt4->setGeometry(sizeWidth+65,310,130,96);
   pushButtonRotateCCW->setGeometry(sizeWidth-120,sizeHeight-60,55,55);
   pushButtonRotateCW->setGeometry(sizeWidth-60,sizeHeight-60,55,55);
-  pushButtonSTOP->setGeometry(sizeWidth+105,sizeHeight-55,90,50);
   pushButtonReconnect->setGeometry(5,sizeHeight-60,121,55);
-
+  pushButtonPreset1->setGeometry(sizeWidth+5,sizeHeight-185,90,55);
+  pushButtonPreset2->setGeometry(sizeWidth+5,sizeHeight-120,90,55);
+  pushButtonPreset3->setGeometry(sizeWidth+5,sizeHeight-55,90,55);
+  pushButtonPreset4->setGeometry(sizeWidth+105,sizeHeight-185,90,55);
+  pushButtonPreset5->setGeometry(sizeWidth+105,sizeHeight-120,90,55);
+  pushButtonSTOP->setGeometry(sizeWidth+105,sizeHeight-55,90,55);
 
   if ((sizeWidth < 600) || (sizeHeight < 600)) {
     pushButtonPreset1->setVisible(false);
@@ -780,7 +784,7 @@ void RotatorDialog::setupLayout() {
 
     pushButtonRotateCCW->setGeometry(sizeWidth-120,sizeHeight-60+70,55,55);
     pushButtonRotateCW->setGeometry(sizeWidth-60,sizeHeight-60+70,55,55);
-    pushButtonSTOP->setGeometry(sizeWidth+105,sizeHeight-55+70,90,50);
+    pushButtonSTOP->setGeometry(sizeWidth+105,sizeHeight-55+70,90,55);
     pushButtonReconnect->setGeometry(5,sizeHeight-60+70,121,55);
   }
 
