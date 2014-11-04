@@ -46,6 +46,7 @@ public:
 	void setCOMMPtr(TCPClass *ptr);
 	void setRotatorStatusText(unsigned char index, unsigned char status);
   void keyPressEvent(QKeyEvent *e);
+  void setupLayout();
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent ( QMouseEvent * event );
