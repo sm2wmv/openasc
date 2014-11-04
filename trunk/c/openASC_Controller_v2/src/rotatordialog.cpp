@@ -164,11 +164,11 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 }
 
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
-	if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (600)) && (event->y() <= 600)) {
-			double mapX = abs(300 - event->x());
-			double mapY = 300 - event->y();
+  if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (sizeWidth)) && (event->y() <= sizeHeight)) {
+      double mapX = abs(sizeWidth/2 - event->x());
+      double mapY = sizeHeight/2 - event->y();
 
-			if ((300 - event->x()) < 0)
+      if ((sizeWidth/2 - event->x()) < 0)
 					setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
 			else
 					setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
@@ -414,6 +414,27 @@ void RotatorDialog::loadBand(int bandIndex) {
 		presetButtonValue[4] = settings.value("Preset5Angle").toInt();
 
 		settings.endGroup();
+
+    settings.beginGroup("MapSettings");
+
+    if (settings.contains("ImagePath")) {
+      imagePath = settings.value("ImagePath").toString();
+      sizeWidth = settings.value("MapWidth").toInt();
+      sizeHeight = settings.value("MapHeight").toInt();
+    }
+    else {
+      imagePath = "maps/map.png";
+      sizeWidth = 600;
+      sizeHeight = 600;
+
+      settings.setValue("ImagePath",imagePath);
+      settings.setValue("MapWidth",sizeWidth);
+      settings.setValue("MapHeight",sizeHeight);
+    }
+
+    settings.endGroup();
+
+    setupLayout();
 
 		setStatusPresetButtons();
 
@@ -726,14 +747,42 @@ void RotatorDialog::keyPressEvent(QKeyEvent *e) {
   }
 }
 
-RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f) {
-  setupUi(this);
+void RotatorDialog::setupLayout() {
+  this->setMinimumWidth(sizeWidth+200);
+  this->setMinimumHeight(sizeHeight);
+  this->resize(sizeWidth+200,sizeHeight);
 
-  this->resize(800,600);
-  imagePath = "maps/map.png";
+  imageLabel->setGeometry(0,0,sizeWidth,sizeHeight);
+  pushButtonAnt1->setGeometry(sizeWidth+5,10,55,96);
+  pushButtonAnt2->setGeometry(sizeWidth+5,110,55,96);
+  pushButtonAnt3->setGeometry(sizeWidth+5,210,55,96);
+  pushButtonAnt4->setGeometry(sizeWidth+5,310,55,96);
+  groupBoxAnt1->setGeometry(sizeWidth+65,10,130,96);
+  groupBoxAnt2->setGeometry(sizeWidth+65,110,130,96);
+  groupBoxAnt3->setGeometry(sizeWidth+65,210,130,96);
+  groupBoxAnt4->setGeometry(sizeWidth+65,310,130,96);
+  pushButtonRotateCCW->setGeometry(sizeWidth-120,sizeHeight-60,55,55);
+  pushButtonRotateCW->setGeometry(sizeWidth-60,sizeHeight-60,55,55);
+  pushButtonSTOP->setGeometry(sizeWidth+105,sizeHeight-55,90,50);
+  pushButtonReconnect->setGeometry(5,sizeHeight-60,121,55);
 
-  sizeWidth = 600;
-  sizeHeight = 600;
+
+  if ((sizeWidth < 600) || (sizeHeight < 600)) {
+    pushButtonPreset1->setVisible(false);
+    pushButtonPreset2->setVisible(false);
+    pushButtonPreset3->setVisible(false);
+    pushButtonPreset4->setVisible(false);
+    pushButtonPreset5->setVisible(false);
+
+    this->setMinimumWidth(sizeWidth+200);
+    this->setMinimumHeight(sizeHeight+70);
+    this->resize(sizeWidth+200,sizeHeight+70);
+
+    pushButtonRotateCCW->setGeometry(sizeWidth-120,sizeHeight-60+70,55,55);
+    pushButtonRotateCW->setGeometry(sizeWidth-60,sizeHeight-60+70,55,55);
+    pushButtonSTOP->setGeometry(sizeWidth+105,sizeHeight-55+70,90,50);
+    pushButtonReconnect->setGeometry(5,sizeHeight-60+70,121,55);
+  }
 
   setRotatorAngle(0,0);
   targetAzimuthAngle[0] = 0;
@@ -746,6 +795,16 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
 
   setRotatorAngle(3,0);
   targetAzimuthAngle[3] = 0;
+}
+
+RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f) {
+  setupUi(this);
+
+  imagePath = "maps/map.png";
+  sizeWidth = 600;
+  sizeHeight = 600;
+
+  setupLayout();
 
   rotationEventStatus = 0;
 
