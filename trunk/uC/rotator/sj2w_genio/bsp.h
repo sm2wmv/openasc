@@ -33,7 +33,7 @@
 #define LAST_ASSERTION_SIZE 28
 
 //! The number of rotators that we can handle
-#define ROTATOR_COUNT 2
+#define ROTATOR_COUNT 3
 
 //! The interval, in milliseconds, between heading updates
 #define HEADING_UPDATE_INTERVAL 100
