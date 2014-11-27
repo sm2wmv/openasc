@@ -86,6 +86,8 @@ unsigned char timer_bus_timeout = 0;
     new SYNC message on the BUS */
 unsigned int counter_sync_timeout = 0;
 
+unsigned int counter_master_last_sync = 0;
+
 //! Counter which keeps track of each time the 130us timer counts up
 unsigned int counter_130us = 0;
 
@@ -229,7 +231,11 @@ void bus_send_message(void) {
   queue_get_first_bus_tx(&bus_message);
   enable_bus_interrupt();
   
-
+  if (bus_is_master()) {
+    if (bus_message.cmd == BUS_CMD_SYNC)
+      counter_master_last_sync = 0;
+  }
+    
 	#ifndef DEVICE_TYPE_COMPUTER
 		bus_usart_transmit(BUS_MSG_PREAMBLE);
 		bus_usart_transmit(BUS_MSG_PREAMBLE);
@@ -282,7 +288,6 @@ void __inline__ bus_reset_tx_status(void) {
 /*! \brief Function that resets the bus status variables */
 void __inline__ bus_reset_rx_status(void) {
 	bus_status.flags &= ~(1<<BUS_STATUS_PREAMBLE_FOUND_BIT);
-	
 	bus_status.flags |= (1<<BUS_STATUS_ALLOWED_TO_SEND_BIT);
 	
 	bus_status.char_count = 0;
@@ -915,7 +920,19 @@ ISR(ISR_BUS_TIMER_COMPARE) {
 	//Will update with 1.04 ms intervals
 	if ((counter_130us % 8) == 0) {
 		counter_sync_timeout++;
+    counter_master_last_sync++;
 	}
+	
+	if (bus_is_master()) {
+    if (counter_master_last_sync > (BUS_SYNC_TIMEOUT_LIMIT- 2*BUS_MASTER_SYNC_INTERVAL)) {
+      bus_reset_rx_status();
+      bus_reset_tx_status();
+      
+      bus_status.flags |= (1<<BUS_STATUS_FORCE_SYNC);
+      
+      counter_master_last_sync = 0;
+    }
+  }
 	
 	counter_130us++;
 	timer_bus_timeout++;
