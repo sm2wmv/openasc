@@ -450,9 +450,20 @@ void menu_action(unsigned char menu_action_type) {
 	else if (menu_action_type == MENU_BUTTON_PRESSED) {
 		if (current_menu_level == 0) {
 			if (current_menu_pos == MENU_POS_SHOW_ERRORS) {
-				error_handler_clear_all();
-				
-				led_set_error(LED_STATE_OFF);
+        led_set_error(LED_STATE_OFF);
+
+        if (error_handler_get_state(ERROR_TYPE_BUS_SYNC) != 0) { 
+          error_handler_clear_all();
+          
+          //Lets set the band to undefined, that way the openASC box 
+          //will automatically change back to the last band and thus
+          //we will re-enable the antennas
+          main_set_new_band(BAND_UNDEFINED);
+        }
+        else {
+          error_handler_clear_all();
+        }
+          
 			}	
 			else if (menu_system_text[current_menu_pos].option_type != MENU_OPTION_TYPE_NONE)
 				current_menu_level = 1;

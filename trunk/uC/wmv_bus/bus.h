@@ -179,7 +179,7 @@
 
 /*! This limit is used to detect if it was too long ago since we receieved a SYNC message
  *  from the master. If so it will stop with all outgoing communication. */
-#define BUS_SYNC_TIMEOUT_LIMIT 10000
+#define BUS_SYNC_TIMEOUT_LIMIT 6000
 
 /*! The timeout limit between a message that was sent to when it will be a resend, this is counted as 
     number of wraparounds on the bus, ie 5 would mean 5 wraparounds */

@@ -621,7 +621,7 @@ void display_handler_tick(void) {
           else
             display_handler_show_rx_ant(0);
             
-            display_handler_update_antennas(status.selected_band, status.selected_ant);
+          display_handler_update_antennas(status.selected_band, status.selected_ant);
         }
         else {
           display_handler_status.new_display = DISPLAY_HANDLER_VIEW_OPENASC_LOGO;
