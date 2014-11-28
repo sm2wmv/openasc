@@ -443,7 +443,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
       /* Check if the rotator is stuck. We require at least one
        * degree per second */
     if (abs(speed) < me->heading_scale) {
-      if (++me->stuck_cnt >= HEADING_UPDATES_PER_SEC) {
+      if (++me->stuck_cnt >= (HEADING_UPDATES_PER_SEC * 3)) {
         me->stuck_cnt = 0;
         me->error = ROTATOR_ERROR_STUCK;
         me->target_heading = INT16_MAX;
@@ -457,7 +457,7 @@ void bsp_heading_updated(uint8_t rot_idx, uint16_t adc) {
       
         /* Check if the rotator is turning in the correct direction */
       if (((me->rotate_dir ^ speed) & 0x8000) != 0) {
-        if (++me->wrong_dir_cnt >= HEADING_UPDATES_PER_SEC) {
+        if (++me->wrong_dir_cnt >= (HEADING_UPDATES_PER_SEC * 3)) {
           me->wrong_dir_cnt = 0;
           me->error = ROTATOR_ERROR_WRONG_DIR;
           me->target_heading = INT16_MAX;
