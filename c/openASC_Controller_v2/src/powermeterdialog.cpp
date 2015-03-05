@@ -1,5 +1,6 @@
 #include "powermeterdialog.h"
 #include "ui_powermeterdialog.h"
+#include "stdio.h"
 
 QMutex mutex;
 
