@@ -3,6 +3,7 @@
 #include <qfiledialog.h>
 #include <QStringList>
 #include <QDateTime>
+#include <QDebug>
 
 #include "mainwindowimpl.h"
 #include "submenuimpl.h"
@@ -111,6 +112,18 @@ void MainWindowImpl::reloadCurrentRotatorProperties() {
 	
 	if (found == 0)
 		comboBoxAntennaRotator4->setCurrentIndex(0);
+}
+
+void MainWindowImpl::reloadAllRotatorProperties() {
+    //Goes through all the rotators and compares with the band data information
+    //and saves all into the band data variables to make sure its updated
+    for (int bandIndex=0;bandIndex<9;bandIndex++) {
+        for (int antIndex=0;antIndex<4;antIndex++) {
+            for (int rotatorIndex=0;rotatorIndex < rotators.getRotatorCount(); rotatorIndex++)
+                if (rotators.getRotatorIndex(rotatorIndex) == bandData[bandIndex].getRotatorIndex(antIndex)) {
+                    bandData[bandIndex].setRotatorProperties(antIndex,rotators.getRotatorIndex(rotatorIndex), rotators.getRotatorAddress(rotatorIndex), rotators.getRotatorSubAddress(rotatorIndex), rotators.getRotatorStartHeading(rotatorIndex), rotators.getRotatorDegrees(rotatorIndex));                }
+        }
+    }
 }
 
 void MainWindowImpl::loadInitialGUIValues() {
@@ -509,9 +522,9 @@ void MainWindowImpl::actionSaveTriggered() {
 	settingsClass.setEthernetIPAddr(lineEditEthernetIP->text());
 	settingsClass.setEthernetSubmask(lineEditEthernetSubmask->text());
 	settingsClass.setEthernetPort(spinBoxEthernetPort->value());
-  settingsClass.setEthernetLocalMode(checkBoxEthernetLocalMode->isChecked());
+    settingsClass.setEthernetLocalMode(checkBoxEthernetLocalMode->isChecked());
 
-  settingsClass.writeSettings(settings);
+    settingsClass.writeSettings(settings);
 	
 	rotators.writeSettings(settings);
 	
@@ -1351,7 +1364,7 @@ void MainWindowImpl::pushButtonRotatorSavePressed() {
 	comboBoxRotatorsReload();
 	comboBoxRotators->setCurrentIndex(tempIndex);
 	
-	reloadCurrentRotatorProperties();
+    reloadAllRotatorProperties();
 }
 	
 void MainWindowImpl::pushButtonRotatorDeletePressed() {
@@ -1653,7 +1666,7 @@ void MainWindowImpl::setupConnections() {
 	connect(lineEditRXAntennaOutputs9, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs9Changed(QString)));
 	connect(lineEditRXAntennaOutputs10, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs10Changed(QString)));
     connect(lineEditRXAntennaOutputs11, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs11Changed(QString)));
-    connect(lineEditRXAntennaOutputs12, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs120Changed(QString)));
+    connect(lineEditRXAntennaOutputs12, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputs12Changed(QString)));
 
 	connect(lineEditRXAntennaOutputStr160M, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputStr160MChanged(QString)));
 	connect(lineEditRXAntennaOutputStr80M, SIGNAL(textChanged(QString)), this, SLOT(lineEditRXAntennaOutputStr80MChanged(QString)));

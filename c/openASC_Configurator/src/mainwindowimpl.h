@@ -33,6 +33,7 @@ private:
 	void lineEditRXAntennaOutputs(QString str, int index);
 	void comboBoxRotatorsReload();
 	void reloadCurrentRotatorProperties();
+    void reloadAllRotatorProperties();
 	void listExtButtonFunctionsLoad();
 	QStringList listExtButtonFunctions;
 	QString configFile;

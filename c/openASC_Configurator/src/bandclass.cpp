@@ -370,10 +370,10 @@ void BandClass::writeSettings(QSettings& settings) {
 		settings.setValue("RotatorStartHeading3",rotatorStartHeading[2]);
 		settings.setValue("RotatorStartHeading4",rotatorStartHeading[3]);
 	
-		settings.setValue("rotatorDegrees1",rotatorDegrees[0]);
-		settings.setValue("rotatorDegrees2",rotatorDegrees[1]);
-		settings.setValue("rotatorDegrees3",rotatorDegrees[2]);
-		settings.setValue("rotatorDegrees4",rotatorDegrees[3]);
+        settings.setValue("rotatorDegrees1",rotatorDegrees[0]);
+        settings.setValue("rotatorDegrees2",rotatorDegrees[1]);
+        settings.setValue("rotatorDegrees3",rotatorDegrees[2]);
+        settings.setValue("rotatorDegrees4",rotatorDegrees[3]);
 	
 		settings.setValue("RotatorDelay1",rotatorDelay[0]);
 		settings.setValue("RotatorDelay2",rotatorDelay[1]);
@@ -500,10 +500,10 @@ void BandClass::loadSettings(QSettings& settings) {
 	rotatorStartHeading[2] = settings.value("RotatorStartHeading3").toInt();
 	rotatorStartHeading[3] = settings.value("RotatorStartHeading4").toInt();
 	
-	rotatorDegrees[0] = settings.value("RotatorDegrees1").toInt();
-	rotatorDegrees[1] = settings.value("RotatorDegrees2").toInt();
-	rotatorDegrees[2] = settings.value("RotatorDegrees3").toInt();
-	rotatorDegrees[3] = settings.value("RotatorDegrees4").toInt();
+    rotatorDegrees[0] = settings.value("rotatorDegrees1").toInt();
+    rotatorDegrees[1] = settings.value("rotatorDegrees2").toInt();
+    rotatorDegrees[2] = settings.value("rotatorDegrees3").toInt();
+    rotatorDegrees[3] = settings.value("rotatorDegrees4").toInt();
 	
 	rotatorDelay[0] = settings.value("RotatorDelay1").toInt();
 	rotatorDelay[1] = settings.value("RotatorDelay2").toInt();

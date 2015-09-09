@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QMainWindow>
+#include <QDebug>
 #include <qsettings.h>
 
 #include "rotatorclass.h"
@@ -32,8 +33,8 @@ RotatorClass::RotatorClass() {
 }
 
 void RotatorClass::writeSettings(QSettings& settings) {
-	settings.beginGroup("RotatorSettings");
-	
+    settings.beginGroup("RotatorSettings");
+
 	settings.setValue("LastRotatorIndex",lastIndex);
 	
 	settings.beginWriteArray("Rotator");
@@ -96,9 +97,10 @@ unsigned char RotatorClass::changeRotatorProperties(int index, QString rotatorNa
 		nameList.replace(index, rotatorName);	
 		subAddressList.replace(index, subAddress);
 		addressList.replace(index, rotatorAddress);
-		startHeadingList.replace(index, rotatorStartHeading);
-		degreesList.replace(index, rotatorDegrees);
-	}
+
+        startHeadingList.replace(index, rotatorStartHeading);
+        degreesList.replace(index, rotatorDegrees);
+    }
 	else
 		return(1);
 	
