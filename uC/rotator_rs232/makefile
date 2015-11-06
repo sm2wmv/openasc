@@ -58,6 +58,11 @@ MCU = atmega128
 # Target file name (without extension).
 TARGET = main
 
+#defining indentifiers for the different rotator types
+ALFASPID = 0
+PROSISTEL = 1
+GREEN_HERON=2
+
 #The name of this device
 DEVICE_TYPE = DEVICE_TYPE_ROTATOR_UNIT_RS232
 BASE_ADDRESS = 10
@@ -69,7 +74,7 @@ INTERNAL_COMM_RX_QUEUE_SIZE = 5
 
 # The type of rotator the code is compiled for
 # ALFASPID, PROSISTEL
-ROTATOR_TYPE = ALFASPID
+ROTATOR_TYPE = PROSISTEL
 
 # The size of the RX queue in buffers
 BUS_RX_QUEUE_SIZE = 8
@@ -109,7 +114,8 @@ EXTRAINCDIRS = $(ROOT)
 CDEFS += -DEVENT_LIST_SIZE=$(EVENT_LIST_SIZE)
 CDEFS += -DINTERNAL_COMM_RX_QUEUE_SIZE=$(INTERNAL_COMM_RX_QUEUE_SIZE)
 CDEFS += -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
-CDEFS += -DROTATOR=$(ROTATOR_TYPE)
+#defs for the rotator options
+CDEFS += -DALFASPID=0 -DPROSISTEL=1 -DGREEN_HERON=2 -DROTATOR=$(ROTATOR_TYPE)
 
 #Use this to compile with the latest version of avr-libc
 CDEFS += -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__

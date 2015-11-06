@@ -31,7 +31,7 @@
 #include "../wmv_bus/bus_commands.h"
 
 #if ROTATOR == ALFASPID
-  #define RS232_RX_BUF_LEN 5
+#define RS232_RX_BUF_LEN 5
 #elif ROTATOR == PROSISTEL
   #define RS232_RX_BUF_LEN 10
 #elif ROTATOR == GREEN_HERON
