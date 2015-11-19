@@ -33,9 +33,9 @@
 #if ROTATOR == ALFASPID
 #define RS232_RX_BUF_LEN 5
 #elif ROTATOR == PROSISTEL
-  #define RS232_RX_BUF_LEN 10
+#define RS232_RX_BUF_LEN 12
 #elif ROTATOR == GREEN_HERON
-  #define RS232_RX_BUF_LEN 4
+#define RS232_RX_BUF_LEN 4
 #endif
 
 static unsigned char rx_buffer[RS232_RX_BUF_LEN];
@@ -51,6 +51,7 @@ unsigned int counter_ping_interval=0;
 
 unsigned char char_count = 0;
 unsigned int curr_angle = 0;
+unsigned int offset = 20;
 
 void rotator_rs232_get_status(void) {
   #if ROTATOR == ALFASPID
@@ -68,7 +69,10 @@ void rotator_rs232_get_status(void) {
     usart0_transmit(0x1F);
     usart0_transmit(0x20);
   #elif ROTATOR == PROSISTEL
-    
+    usart0_transmit(0x02);
+    usart0_transmit('A');
+    usart0_transmit('?');
+    usart0_transmit(0x0d);
   #elif ROTATOR == GREEN_HERON
     usart0_transmit('A');
     usart0_transmit('I');
@@ -107,6 +111,14 @@ void rotator_rs232_send_stop(void) {
     usart0_transmit(0x0F);
     usart0_transmit(0x20);
   #elif ROTATOR == PROSISTEL
+    // Soft-stop
+    usart0_transmit(0x02);
+    usart0_transmit('A');
+    usart0_transmit('G');
+    usart0_transmit('9');
+    usart0_transmit('7');
+    usart0_transmit('7');
+    usart0_transmit(0x0D);
   #elif ROTATOR == GREEN_HERON
     usart0_transmit(';');
   #endif
@@ -133,6 +145,19 @@ void rotator_rs232_set_heading(unsigned int target) {
     usart0_transmit(0x2F);
     usart0_transmit(0x20);
   #elif ROTATOR == PROSISTEL
+    char temp[5];
+    
+    //Convert the target heading into characters
+    itoa(target+offset,temp,10);
+      
+    // Goto
+    usart0_transmit(0x02);
+    usart0_transmit('A');
+    usart0_transmit('G');
+    usart0_transmit(temp[0]);
+    usart0_transmit(temp[1]);
+    usart0_transmit(temp[2]);
+    usart0_transmit(0x0D);    
   #elif ROTATOR == GREEN_HERON
     char temp[5];
     
@@ -265,7 +290,7 @@ int main(void)
   #if ROTATOR == ALFASPID
     usart0_init(382); //Init the USART at 1200 baud
   #elif ROTATOR == PROSISTEL
-    
+    usart0_init(47); // Init the USAR at 9600 baud
   #elif ROTATOR == GREEN_HERON
     usart0_init(95); //Init the USART at 4800 baud
   #endif
@@ -349,9 +374,30 @@ ISR(SIG_USART0_RECV) {
       char_count = 0;
     }
   #elif ROTATOR == PROSISTEL
-  
+    if (char_count == 1 && rx_buffer[0] != 0x02)
+	    char_count = 0;
+    if (char_count == 11) {
+      if (rx_buffer[0] == 0x02
+       && rx_buffer[1] == 'A'
+       && rx_buffer[2] == ','
+       && rx_buffer[3] == '?'
+       && rx_buffer[4] == ','
+       && rx_buffer[8] == ','
+       && rx_buffer[10] == 0x0d) {
+	      curr_angle = (rx_buffer[5]-'0') * 100 + (rx_buffer[6]-'0') * 10 + (rx_buffer[7] - '0');
+	// ',' 'R' 0x02
+	// ',' 'B' 0x02
+	      curr_angle -= offset;
+	      while (curr_angle < 0)
+		      curr_angle += 360;
+	      while (curr_angle >= 360)
+		      curr_angle -= 360;
+      }
+      
+      char_count = 0;
+    }  
   #elif ROTATOR == GREEN_HERON
-    if (char_count == 4) {
+    if (char_count == 4) {
       if (rx_buffer[3] == ';') {  //End of message
         curr_angle = rx_buffer[0] * 100 + rx_buffer[1] * 10 + rx_buffer[2];
         
