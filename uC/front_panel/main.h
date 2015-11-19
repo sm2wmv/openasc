@@ -269,6 +269,8 @@ typedef struct {
   unsigned char ethernet_ip_addr[4];
   //! The ethernet submask address
   unsigned char ethernet_submask[4];
+  //! The ethernet gateway address
+  unsigned char ethernet_gateway[4];
   //! The ethernet port
   unsigned int ethernet_port;
   //! Ethernet local mode

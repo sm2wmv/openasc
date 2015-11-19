@@ -57,7 +57,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabopenASC">
        <attribute name="title">
@@ -3882,7 +3882,7 @@ a function to it</string>
          <rect>
           <x>255</x>
           <y>5</y>
-          <width>313</width>
+          <width>256</width>
           <height>271</height>
          </rect>
         </property>
@@ -4072,8 +4072,8 @@ a function to it</string>
          <rect>
           <x>255</x>
           <y>290</y>
-          <width>208</width>
-          <height>128</height>
+          <width>201</width>
+          <height>156</height>
          </rect>
         </property>
         <property name="title">
@@ -4082,7 +4082,7 @@ a function to it</string>
         <property name="checkable">
          <bool>true</bool>
         </property>
-        <layout class="QFormLayout" name="formLayout_4">
+        <layout class="QGridLayout" name="gridLayout_18">
          <item row="0" column="0">
           <widget class="QLabel" name="labelButtonEthernetIP">
            <property name="text">
@@ -4093,7 +4093,7 @@ a function to it</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="1" colspan="3">
           <widget class="QLineEdit" name="lineEditEthernetIP"/>
          </item>
          <item row="1" column="0">
@@ -4106,10 +4106,23 @@ a function to it</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="1" column="1" colspan="3">
           <widget class="QLineEdit" name="lineEditEthernetSubmask"/>
          </item>
          <item row="2" column="0">
+          <widget class="QLabel" name="labelButtonEthernetGatewayAddr_2">
+           <property name="text">
+            <string>Gateway:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" colspan="3">
+          <widget class="QLineEdit" name="lineEditEthernetGateway"/>
+         </item>
+         <item row="3" column="0">
           <widget class="QLabel" name="labelButtonEthernetPort">
            <property name="text">
             <string>Port:</string>
@@ -4119,7 +4132,7 @@ a function to it</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1" colspan="2">
           <widget class="QSpinBox" name="spinBoxEthernetPort">
            <property name="minimum">
             <number>1</number>
@@ -4132,7 +4145,33 @@ a function to it</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="3" column="3">
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>62</width>
+             <height>16</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="4" column="2" rowspan="2" colspan="2">
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>92</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="checkBoxEthernetLocalMode">
            <property name="text">
             <string>Local mode</string>
@@ -4343,7 +4382,7 @@ a function to it</string>
      <x>0</x>
      <y>0</y>
      <width>656</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">

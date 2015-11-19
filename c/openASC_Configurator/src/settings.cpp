@@ -29,6 +29,7 @@ SettingsClass::SettingsClass() {
     ethernetPort = 4750;
     ethernetIPAddr = "192.168.1.130";
     ethernetSubmask = "255.255.255.0";
+    ethernetGateway = "192.168.1.1";
     ethernetEnabled = false;
     ethernetLocalMode = false;
 
@@ -89,11 +90,12 @@ void SettingsClass::writeSettings(QSettings& settings) {
 	settings.setValue("AmpFuncStatus",ampFuncStatus);
 	settings.setValue("AmpBandSegmentCount",ampBandSegmentCount);
 
-    settings.setValue("EthernetEnabled",ethernetEnabled);
-    settings.setValue("EthernetIPAddr",ethernetIPAddr);
-    settings.setValue("EthernetSubmask",ethernetSubmask);
-    settings.setValue("EthernetPort",ethernetPort);
-    settings.setValue("EthernetLocalMode",ethernetLocalMode);
+  settings.setValue("EthernetEnabled",ethernetEnabled);
+  settings.setValue("EthernetIPAddr",ethernetIPAddr);
+  settings.setValue("EthernetSubmask",ethernetSubmask);
+  settings.setValue("EthernetIPGateway",ethernetGateway);
+  settings.setValue("EthernetPort",ethernetPort);
+  settings.setValue("EthernetLocalMode",ethernetLocalMode);
 
 	settings.setValue("StatusFieldIndex",statusFieldIndex);
 
@@ -157,6 +159,7 @@ void SettingsClass::loadSettings(QSettings& settings) {
     ethernetEnabled = settings.value("EthernetEnabled").toBool();
     ethernetIPAddr = settings.value("EthernetIPAddr").toString();
     ethernetSubmask = settings.value("EthernetSubmask").toString();
+    ethernetGateway = settings.value("EthernetIPGateway").toString();
     ethernetPort = settings.value("EthernetPort").toInt();
     ethernetLocalMode = settings.value("EthernetLocalMode").toBool();
 
@@ -255,21 +258,22 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
 
     QStringList listIP = ethernetIPAddr.split(QRegExp("[.]"));
     QStringList listSubmask = ethernetSubmask.split(QRegExp("[.]"));
+    QStringList listGateway = ethernetGateway.split(QRegExp("[.]"));
 
     tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_ETHERNET;
 
     if (listIP.size() == 4) {
-    tx_buff[1] = listIP.takeFirst().toInt();
-    tx_buff[2] = listIP.takeFirst().toInt();
-    tx_buff[3] = listIP.takeFirst().toInt();
-    tx_buff[4] = listIP.takeFirst().toInt();
+      tx_buff[1] = listIP.takeFirst().toInt();
+      tx_buff[2] = listIP.takeFirst().toInt();
+      tx_buff[3] = listIP.takeFirst().toInt();
+      tx_buff[4] = listIP.takeFirst().toInt();
     }
     else
     {
-    tx_buff[1] = 0;
-    tx_buff[2] = 0;
-    tx_buff[3] = 0;
-    tx_buff[4] = 0;
+      tx_buff[1] = 0;
+      tx_buff[2] = 0;
+      tx_buff[3] = 0;
+      tx_buff[4] = 0;
     }
 
     if (listSubmask.size() == 4) {
@@ -280,23 +284,38 @@ void SettingsClass::sendSettings(CommClass& serialPort) {
     }
     else
     {
-    tx_buff[5] = 0;
-    tx_buff[6] = 0;
-    tx_buff[7] = 0;
-    tx_buff[8] = 0;
+      tx_buff[5] = 0;
+      tx_buff[6] = 0;
+      tx_buff[7] = 0;
+      tx_buff[8] = 0;
     }
 
-    tx_buff[9] = (ethernetPort >> 8) & 0xFF; //Upper byte
-    tx_buff[10] = ethernetPort & 0xFF;       //Lower byte
-    if (ethernetLocalMode)
-        tx_buff[11] = 1;
+    if (listGateway.size() == 4) {
+      tx_buff[9] = listGateway.takeFirst().toInt();
+      tx_buff[10] = listGateway.takeFirst().toInt();
+      tx_buff[11] = listGateway.takeFirst().toInt();
+      tx_buff[12] = listGateway.takeFirst().toInt();
+    }
     else
-        tx_buff[11] = 0;
+    {
+      tx_buff[9] = 0;
+      tx_buff[10] = 0;
+      tx_buff[11] = 0;
+      tx_buff[12] = 0;
+    }
 
-    serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 12, tx_buff);
+    tx_buff[13] = (ethernetPort >> 8) & 0xFF; //Upper byte
+    tx_buff[14] = ethernetPort & 0xFF;       //Lower byte
 
-	tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
-	serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
+    if (ethernetLocalMode)
+        tx_buff[15] = 1;
+    else
+        tx_buff[15] = 0;
+
+    serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 16, tx_buff);
+
+    tx_buff[0] = CTRL_SET_DEVICE_SETTINGS_SAVE;
+    serialPort.addTXMessage(CTRL_SET_DEVICE_SETTINGS, 1, tx_buff);
 }
 
 bool SettingsClass::getEthernetLocalMode(){
@@ -448,6 +467,10 @@ void SettingsClass::setEthernetSubmask(QString address) {
 	ethernetSubmask = address;
 }
 
+void SettingsClass::setEthernetGateway(QString address) {
+  ethernetGateway = address;
+}
+
 void SettingsClass::setEthernetPort(unsigned int port) {
   ethernetPort = port;
 }
@@ -458,6 +481,10 @@ QString SettingsClass::getEthernetIPAddr(void) {
 
 QString SettingsClass::getEthernetSubmask(void) {
 	return(ethernetSubmask);
+}
+
+QString SettingsClass::getEthernetGateway(void) {
+  return(ethernetGateway);
 }
 
 unsigned int SettingsClass::getEthernetPort(void) {

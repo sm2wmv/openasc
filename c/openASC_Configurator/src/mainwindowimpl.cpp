@@ -229,6 +229,7 @@ void MainWindowImpl::loadInitialGUIValues() {
     groupBoxEthernet->setChecked(settingsClass.getEthernetEnabled());
     lineEditEthernetIP->setText(settingsClass.getEthernetIPAddr());
     lineEditEthernetSubmask->setText(settingsClass.getEthernetSubmask());
+    lineEditEthernetGateway->setText(settingsClass.getEthernetGateway());
     spinBoxEthernetPort->setValue(settingsClass.getEthernetPort());
     checkBoxEthernetLocalMode->setChecked(settingsClass.getEthernetLocalMode());
 
@@ -521,6 +522,7 @@ void MainWindowImpl::actionSaveTriggered() {
 	settingsClass.setEthernetEnabled(groupBoxEthernet->isChecked());
 	settingsClass.setEthernetIPAddr(lineEditEthernetIP->text());
 	settingsClass.setEthernetSubmask(lineEditEthernetSubmask->text());
+  settingsClass.setEthernetGateway(lineEditEthernetGateway->text());
 	settingsClass.setEthernetPort(spinBoxEthernetPort->value());
     settingsClass.setEthernetLocalMode(checkBoxEthernetLocalMode->isChecked());
 
@@ -1847,9 +1849,11 @@ MainWindowImpl::MainWindowImpl( QWidget * parent, Qt::WindowFlags f) : QMainWind
 	v->setRegExp(rx);
 	lineEditEthernetIP->setValidator(v);
 	lineEditEthernetSubmask->setValidator(v);
+  lineEditEthernetGateway->setValidator(v);
 
 	lineEditEthernetIP->setText("192.168.1.130");
 	lineEditEthernetSubmask->setText("255.255.255.0");
+  lineEditEthernetGateway->setText("192.168.1.1");
 
 	groupBoxEthernet->setChecked(false);
 

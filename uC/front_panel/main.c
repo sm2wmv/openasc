@@ -671,7 +671,7 @@ int main(void){
   //Check if this is the first time we start the device, if so we need to initiate some
 	//data structures. To force this at startup just change the value that should be read and
 	//written to the EEPROM
-	if (eeprom_read_startup_byte() != 0x05) {
+	if (eeprom_read_startup_byte() != 0x06) {
 		eeprom_create_table();
 		
 		eeprom_read_table();
@@ -689,7 +689,7 @@ int main(void){
 		//Write the settings to the EEPROM
 		eeprom_save_runtime_settings(&runtime_settings);
 		
-		eeprom_write_startup_byte(0x05);
+		eeprom_write_startup_byte(0x06);
 
 		//The first time the box is started, we need to setup the settings
 		computer_interface_activate_setup();

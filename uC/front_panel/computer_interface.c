@@ -622,10 +622,15 @@ void computer_interface_parse_data(void) {
           settings_ptr->ethernet_submask[2] = computer_comm.rx_buffer_start[7];
           settings_ptr->ethernet_submask[3] = computer_comm.rx_buffer_start[8];
           
-          settings_ptr->ethernet_port = computer_comm.rx_buffer_start[9] << 8;
-          settings_ptr->ethernet_port |= computer_comm.rx_buffer_start[10];
+          settings_ptr->ethernet_gateway[0] = computer_comm.rx_buffer_start[9];
+          settings_ptr->ethernet_gateway[1] = computer_comm.rx_buffer_start[10];
+          settings_ptr->ethernet_gateway[2] = computer_comm.rx_buffer_start[11];
+          settings_ptr->ethernet_gateway[3] = computer_comm.rx_buffer_start[12];
+		  
+          settings_ptr->ethernet_port = computer_comm.rx_buffer_start[13] << 8;
+          settings_ptr->ethernet_port |= computer_comm.rx_buffer_start[14];
           
-          settings_ptr->ethernet_local_mode = computer_comm.rx_buffer_start[11];
+          settings_ptr->ethernet_local_mode = computer_comm.rx_buffer_start[15];
           
           computer_interface_send_ack();
           break;

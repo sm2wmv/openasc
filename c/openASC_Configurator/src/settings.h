@@ -45,16 +45,18 @@ class SettingsClass {
 		void setAmpBandSegmentCount(unsigned char segments);
 		void setEthernetIPAddr(QString address);
 		void setEthernetSubmask(QString address);
+    void setEthernetGateway(QString address);
 		void setEthernetPort(unsigned int port);
 		QString getEthernetIPAddr(void);
 		QString getEthernetSubmask(void);
+    QString getEthernetGateway(void);
 		unsigned int getEthernetPort(void);
 		bool getEthernetEnabled(void);
 		void setEthernetEnabled(bool state);
 		void setStatusFieldIndex(int index);
 		int getStatusFieldIndex();
-        bool getEthernetLocalMode();
-        void setEthernetLocalMode(bool state);
+    bool getEthernetLocalMode();
+    void setEthernetLocalMode(bool state);
 	private:
 		int networkAddress;
 		bool deviceIsMaster;
@@ -73,9 +75,10 @@ class SettingsClass {
 		bool ethernetEnabled;
 		QString ethernetIPAddr;
 		QString ethernetSubmask;
-        bool ethernetLocalMode;
+    QString ethernetGateway;
+    bool ethernetLocalMode;
 		unsigned int ethernetPort;
-		int statusFieldIndex;
+    int statusFieldIndex;
 	protected:
 };
 

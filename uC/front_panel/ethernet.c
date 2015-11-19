@@ -190,7 +190,7 @@ void ethernet_init(void) {
   unsigned char sub_mask[] = {settings->ethernet_submask[0],settings->ethernet_submask[1],settings->ethernet_submask[2],settings->ethernet_submask[3]};
   //unsigned char ip_addr[] = {77,110,45,191};
   //unsigned char sub_mask[] = {255,255,255,0};
-  unsigned char gtw_addr[] = {0,0,0,0};
+  unsigned char gtw_addr[] = {settings->ethernet_gateway[0],settings->ethernet_gateway[1],settings->ethernet_gateway[2],settings->ethernet_gateway[3]};
 
   ethernet_tcp_port = settings->ethernet_port;
   
