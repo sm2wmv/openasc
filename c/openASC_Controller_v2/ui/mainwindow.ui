@@ -8,19 +8,19 @@
     <x>0</x>
     <y>0</y>
     <width>566</width>
-    <height>500</height>
+    <height>520</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>566</width>
-    <height>500</height>
+    <height>520</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>566</width>
-    <height>500</height>
+    <height>520</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -69,7 +69,7 @@
           <x>5</x>
           <y>5</y>
           <width>126</width>
-          <height>447</height>
+          <height>451</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -674,7 +674,7 @@
         <rect>
          <x>160</x>
          <y>360</y>
-         <width>281</width>
+         <width>261</width>
          <height>71</height>
         </rect>
        </property>
@@ -786,7 +786,24 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
+          <item row="0" column="5">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+           </layout>
+          </item>
+          <item row="1" column="2">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+           </layout>
+          </item>
+          <item row="1" column="0">
            <widget class="QLabel" name="labelLEDRotating">
             <property name="minimumSize">
              <size>
@@ -811,14 +828,14 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="4">
+          <item row="1" column="1">
            <widget class="QLabel" name="labelRotating">
             <property name="text">
              <string>Rotating</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="6">
+          <item row="1" column="3">
            <widget class="QLabel" name="labelLEDRemote">
             <property name="minimumSize">
              <size>
@@ -843,29 +860,12 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="7">
+          <item row="1" column="4">
            <widget class="QLabel" name="labelRemote">
             <property name="text">
              <string>Connected</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="2">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>6</number>
-            </property>
-            <property name="leftMargin">
-             <number>12</number>
-            </property>
-           </layout>
-          </item>
-          <item row="0" column="5">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <property name="leftMargin">
-             <number>12</number>
-            </property>
-           </layout>
           </item>
          </layout>
         </item>
@@ -1004,7 +1004,7 @@
              </size>
             </property>
             <property name="text">
-             <string>TX ANT 3</string>
+             <string>TX A3</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1026,7 +1026,7 @@
              </size>
             </property>
             <property name="text">
-             <string>TX ANT 1</string>
+             <string>TX A1</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1048,7 +1048,7 @@
              </size>
             </property>
             <property name="text">
-             <string>TX ANT 2</string>
+             <string>TX A2</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1070,7 +1070,7 @@
              </size>
             </property>
             <property name="text">
-             <string>TX ANT 4</string>
+             <string>TX A4</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1192,7 +1192,7 @@
              </size>
             </property>
             <property name="text">
-             <string>RX ANT 1</string>
+             <string>RX A1</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1214,7 +1214,7 @@
              </size>
             </property>
             <property name="text">
-             <string>RX ANT 2</string>
+             <string>RX A2</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1236,7 +1236,7 @@
              </size>
             </property>
             <property name="text">
-             <string>RX ANT 3</string>
+             <string>RX A3</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1258,7 +1258,7 @@
              </size>
             </property>
             <property name="text">
-             <string>RX ANT 4</string>
+             <string>RX A4</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -1337,8 +1337,8 @@
       <widget class="QGroupBox" name="groupBox">
        <property name="geometry">
         <rect>
-         <x>435</x>
-         <y>315</y>
+         <x>425</x>
+         <y>320</y>
          <width>106</width>
          <height>143</height>
         </rect>
@@ -1453,7 +1453,7 @@
      <x>0</x>
      <y>0</y>
      <width>566</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuNetwork">
