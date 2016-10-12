@@ -701,53 +701,7 @@ ISR(ISR_BUS_USART_RECV) {
 	//Reset the bus timeout since we have received a character
 	timer_bus_timeout = 0;
 
-	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-		unsigned char data = UDR2;
-	#endif
-
-  #ifdef DEVICE_TYPE_STN_CTRL_BOARD
-    unsigned char data = UDR2;
-  #endif
-
-  #ifdef DEVICE_TYPE_DRIVER_UNIT_V2
-		unsigned char data = UDR1;
-	#endif
-
-	#ifdef DEVICE_TYPE_GENERAL_IO
-		unsigned char data = UDR1;
-	#endif
-
-  #ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
-    unsigned char data = UDR1;
-  #endif
-    
-  #ifdef DEVICE_TYPE_ROTATOR_UNIT
-		unsigned char data = UDR1;
-  #endif
-		
-	#ifdef DEVICE_TYPE_DRIVER_UNIT
-		unsigned char data = UDR;
-	#endif
-
-	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
-			unsigned char data = UDR;
-	#endif		
-	
-  #ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
-      unsigned char data = UDR;
-  #endif  	
-      
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
-      unsigned char data = UDR2;
-  #endif
-      
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
-      unsigned char data = UDR2;
-  #endif
-
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
-      unsigned char data = UDR2;
-  #endif
+	unsigned char data = UDR_DATA;
 	
 	bus_status.char_count++;
         
