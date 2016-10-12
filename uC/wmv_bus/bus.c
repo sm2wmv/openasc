@@ -106,11 +106,16 @@ void bus_init(void) {
 		bus_usart_init(15);
 	#endif
 	
-  #ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
-    //57.600kpbs
-    bus_usart_init(15);
-  #endif
-			
+	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
+		//57.600kpbs
+		bus_usart_init(15);
+	#endif
+				
+	#ifdef DEVICE_TYPE_XBEE_INTERFACE_V1
+		//57.600kpbs
+		bus_usart_init(15);
+	#endif
+				
 	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
 		//57.600kpbs
 		bus_usart_init(15);
@@ -598,6 +603,10 @@ void __inline__ disable_bus_interrupt(void) {
   #ifdef DEVICE_TYPE_STN_CTRL_BOARD
     UCSR2B &= ~(1<<RXCIE2);
   #endif
+  
+  #ifdef DEVICE_TYPE_XBEE_INTERFACE_V1
+	UCSR1B &= ~(1<<RXCIE1);
+  #endif
 
   #ifdef DEVICE_TYPE_DRIVER_UNIT_V2
     UCSR1B &= ~(1<<RXCIE1);
@@ -647,6 +656,10 @@ void __inline__ enable_bus_interrupt(void) {
 
   #ifdef DEVICE_TYPE_STN_CTRL_BOARD
     UCSR2B |= (1<<RXCIE2);
+  #endif
+
+  #ifdef DEVICE_TYPE_XBEE_INTERFACE_V1
+    UCSR1B |= (1<<RXCIE1);
   #endif
 
   #ifdef DEVICE_TYPE_DRIVER_UNIT_V2
