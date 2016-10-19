@@ -28,5 +28,6 @@ void xbee_interface_rx_char(uint8_t data);
 void xbee_interface_ms_tick(void);
 
 void xbee_interface_transmit_frame(uint8_t frame_type, uint8_t dest_addr[8], uint8_t *rf_data, uint8_t data_len);
+void xbee_interface_transmit_remote_at_cmd(uint8_t dest_addr[8], uint8_t at_cmd0, uint8_t at_cmd1, uint8_t parameter);
 
 #endif

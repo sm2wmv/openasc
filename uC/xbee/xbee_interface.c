@@ -75,6 +75,46 @@ void xbee_interface_transmit_frame(uint8_t frame_type, uint8_t dest_addr[8], uin
   f_ptr_tx(0xFF-checksum);
 }
 
+void xbee_interface_transmit_remote_at_cmd(uint8_t dest_addr[8], uint8_t at_cmd0, uint8_t at_cmd1, uint8_t parameter) {
+  uint16_t len = 16;
+  uint8_t checksum;
+
+  f_ptr_tx(0x7E);
+  f_ptr_tx(0x00); //Currently we never send long messages
+  f_ptr_tx(len);
+  f_ptr_tx(0x17); //Remote AT command
+  checksum = 0x17;
+  f_ptr_tx(01);
+  checksum += 01;//frame_cnt;
+  frame_cnt++;
+
+  //Set the destination address
+  for (uint8_t i=0;i<8;i++) {
+    f_ptr_tx(dest_addr[i]);
+    checksum += dest_addr[i];
+  }
+
+  f_ptr_tx(0xFF);
+  checksum += 0xFF;
+  f_ptr_tx(0xFE);
+  checksum += 0xFE;
+
+  f_ptr_tx(0x02);
+  checksum += 0x02;
+
+  f_ptr_tx(at_cmd0);
+  checksum += at_cmd0;
+  
+  f_ptr_tx(at_cmd1);
+  checksum += at_cmd1;
+  
+  f_ptr_tx(parameter);
+  checksum += parameter;
+  
+  //Send the checksum
+  f_ptr_tx(0xFF-checksum);
+}
+
 void xbee_interface_rx_char(uint8_t data) {
   last_rxed_char = 0;
   rx_buffer_pos++;

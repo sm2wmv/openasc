@@ -38,6 +38,9 @@
 #include "../wmv_bus/bus_ping.h"
 #include "../wmv_bus/bus_commands.h"
 
+volatile uint8_t dev_addr_HiZ[8] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0xD5, 0x0A, 0x4D};
+
+
 //! Contains info if the module is a positive or negative driver
 volatile unsigned char device_id;
 
@@ -73,14 +76,22 @@ void activate_output(unsigned char from_addr, unsigned char index, unsigned char
 	driver_status.driver_output_type[index-1] = type;
 
 	switch (index) {
-		case 1 :	
+		case 1 :	//DIR NW, both relays off
+      xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x44, 0x34, 0x04);
+      xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x50, 0x32, 0x04);
 			break;
-		case 2 :
+		case 2 : //DIR NE, Relay 1 On, Relay 2 off
+      xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x44, 0x34, 0x04);
+			xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x50, 0x32, 0x05);
+      break;
+		case 3 :  //DIR SE, Relay 1 Off, Relay 2 On
+      xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x44, 0x34, 0x05);
+			xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x50, 0x32, 0x04);
 			break;
-		case 3 :
-			break;
-		case 4 :
-			break;
+		case 4 :  //DIR SW, Relay 1 On, Relay 2 On
+      xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x44, 0x34, 0x05);
+			xbee_interface_transmit_remote_at_cmd((uint8_t *)dev_addr_HiZ, 0x50, 0x32, 0x05);
+      break;
 		case 5 :
 			break;
 		case 6 :
@@ -131,7 +142,7 @@ void deactivate_output(unsigned char from_addr, unsigned char index) {
 		driver_status.driver_output_type[index-1] = 0;
 
 		switch (index) {
-			case 1 :	
+			case 1 :
 				break;
 			case 2 :	
 				break;
@@ -311,6 +322,8 @@ void main_parse_xbee_message(uint8_t *rx_data, uint8_t length, uint8_t *source_a
 
   if (length < 6)
     return;
+
+  
 }
 
 void main_xbee_frame_rxed(struct_xbee_api_frame frame) {
@@ -356,7 +369,7 @@ int main(void)
 	/* Initialize various hardware resources */
 
 	/* Read the external address of the device */
-	bus_set_address(BUS_BASE_ADDR+read_ext_addr());
+	bus_set_address(22);
 
 	/* This delay is simply so that if you have the devices connected to the same power supply
 	all units should not send their status messages at the same time. Therefor we insert a delay
@@ -374,9 +387,15 @@ int main(void)
 
 	
 	usart0_init(95);
-	
+	 
 	xbee_interface_init(usart0_transmit, main_xbee_frame_rxed);
 	
+  //Reset XBEE module
+  PORTA &= ~(1<<2);
+  delay_ms(100);
+  PORTA |= (1<<2);
+  delay_ms(100);
+  
 	//Timer used for the communication bus. The interrupt is caught in bus.c
 	init_timer_2();	
 	
@@ -432,13 +451,15 @@ ISR(SIG_USART0_RECV) {
 ISR(SIG_USART0_DATA) {
 }
 
+uint8_t count_pos = 0;
+
 /*! \brief Output compare 0 interrupt - "called" with 1ms intervals*/
 ISR(SIG_OUTPUT_COMPARE0) {
 	counter_ms++;
 	counter_sync++;
 	counter_ping_interval++;
 	counter_compare0++;
-
+  
 	if ((counter_ms % 100) == 0)
 		bus_ping_tick();
 	

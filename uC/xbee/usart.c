@@ -24,7 +24,7 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include <string.h>
-unsigned char usart1_transmit(char  data );
+
 /*! \brief Initiliaze the USART for the communication bus
  * This function is used to initialize the USART which a baudrate
  * that needs to be sent in as a parameter Use the baudrate settings

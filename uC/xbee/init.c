@@ -51,7 +51,7 @@ void init_timer_2(void) {
 /*!Set the direction of the ports
 */
 void init_ports(void) {
-	DDRA = 0x00;
+	DDRA = (1<<2);
 	DDRB = 0x00;
 	DDRC = 0x00;
 	DDRD = 0x08;
@@ -63,4 +63,7 @@ void init_ports(void) {
 	PORTD |= (1<<3);	
 	PORTE |= (1<<0);
 	PORTE |= (1<<1);
+  
+  //Set XBEE reset high
+  PORTA |= (1<<2);
 }
