@@ -73,6 +73,9 @@ unsigned char device_online = 0;
 //! Ping list, so we dont need to make space in the memory for it each time
 //static bus_struct_ping_status main_ping_list;
 
+//! The encoder value
+static int encoder_val = 0;
+
 //! Counter which is used to keep track of when we last received a sync message from the bus
 static unsigned int counter_sync = 32000;
 //! Counter which keeps track of when we should poll the buttons
@@ -935,18 +938,19 @@ int main(void){
 				main_flags &= ~(1<<FLAG_POLL_EXT_DEVICES);
 			}
 		
-			if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
-				int val = rotary_encoder_poll();
-			
-				if (val != 0) {
-					if (val == 1)
-						event_pulse_sensor_up();
-					else if (val == -1)
-						event_pulse_sensor_down();
-				
-					counter_last_pulse_event = 0;
-				}
-			}
+			//if (main_flags & (1<<FLAG_POLL_PULSE_SENSOR)) {
+      //Testing if the rotary encoder can be polled quickly, if it does have
+      //any other impact. If not the if(1) can be removed 
+      encoder_val = rotary_encoder_poll();
+    
+      if (encoder_val != 0) {
+        if (encoder_val == 1)
+          event_pulse_sensor_up();
+        else if (encoder_val == -1)
+          event_pulse_sensor_down();
+      
+        counter_last_pulse_event = 0;
+      }
 		
 			if (main_flags & (1<<FLAG_BLINK_BAND_LED)) {
 				if (status.new_band != status.selected_band) {
