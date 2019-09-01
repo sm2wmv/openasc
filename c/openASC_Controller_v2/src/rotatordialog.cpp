@@ -336,10 +336,10 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antVerticalArray[i] = false;
 		}
 
-		groupBoxAnt1->setVisible(false);
-		groupBoxAnt2->setVisible(false);
-		groupBoxAnt3->setVisible(false);
-		groupBoxAnt4->setVisible(false);
+        frameAnt1->setVisible(false);
+        frameAnt2->setVisible(false);
+        frameAnt3->setVisible(false);
+        frameAnt4->setVisible(false);
 
 		pushButtonAnt1->setVisible(false);
 		pushButtonAnt2->setVisible(false);
@@ -417,10 +417,10 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 		setStatusPresetButtons();
 
-		groupBoxAnt1->setVisible(false);
-		groupBoxAnt2->setVisible(false);
-		groupBoxAnt3->setVisible(false);
-		groupBoxAnt4->setVisible(false);
+        frameAnt1->setVisible(false);
+        frameAnt2->setVisible(false);
+        frameAnt3->setVisible(false);
+        frameAnt4->setVisible(false);
 
 		pushButtonAnt1->setVisible(false);
 		pushButtonAnt2->setVisible(false);
@@ -428,7 +428,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		pushButtonAnt4->setVisible(false);
 
 		if (antExist[0]) {
-			groupBoxAnt1->setVisible(true);
+            frameAnt1->setVisible(true);
 			pushButtonAnt1->setVisible(true);
 
 			if ((antHasRotor[0]) || (antVerticalArray[0])) {
@@ -443,7 +443,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		}
 
 		if (antExist[1]) {
-			groupBoxAnt2->setVisible(true);
+            frameAnt2->setVisible(true);
 			pushButtonAnt2->setVisible(true);
 
 			if ((antHasRotor[1]) || (antVerticalArray[1])) {
@@ -461,7 +461,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		}
 
 		if (antExist[2]) {
-			groupBoxAnt3->setVisible(true);
+            frameAnt3->setVisible(true);
 			pushButtonAnt3->setVisible(true);
 
 			if ((antHasRotor[2]) || (antVerticalArray[2])) {
@@ -479,7 +479,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		}
 
 		if (antExist[3]) {
-			groupBoxAnt4->setVisible(true);
+            frameAnt4->setVisible(true);
 			pushButtonAnt4->setVisible(true);
 
 			if ((antHasRotor[3]) || (antVerticalArray[3])) {
@@ -757,10 +757,10 @@ void RotatorDialog::setupLayout() {
   pushButtonAnt2->setGeometry(sizeWidth+5,110,55,96);
   pushButtonAnt3->setGeometry(sizeWidth+5,210,55,96);
   pushButtonAnt4->setGeometry(sizeWidth+5,310,55,96);
-  groupBoxAnt1->setGeometry(sizeWidth+65,10,130,96);
-  groupBoxAnt2->setGeometry(sizeWidth+65,110,130,96);
-  groupBoxAnt3->setGeometry(sizeWidth+65,210,130,96);
-  groupBoxAnt4->setGeometry(sizeWidth+65,310,130,96);
+  frameAnt1->setGeometry(sizeWidth+65,10,130,96);
+  frameAnt2->setGeometry(sizeWidth+65,110,130,96);
+  frameAnt3->setGeometry(sizeWidth+65,210,130,96);
+  frameAnt4->setGeometry(sizeWidth+65,310,130,96);
   pushButtonRotateCCW->setGeometry(sizeWidth-120,sizeHeight-60,55,55);
   pushButtonRotateCW->setGeometry(sizeWidth-60,sizeHeight-60,55,55);
   pushButtonReconnect->setGeometry(5,sizeHeight-60,121,55);
@@ -817,22 +817,22 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   QPalette plt;
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
-  groupBoxAnt1->setPalette(plt);
+  frameAnt1->setPalette(plt);
   pushButtonAnt1->setPalette(plt);
 
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
-  groupBoxAnt2->setPalette(plt);
+  frameAnt2->setPalette(plt);
   pushButtonAnt2->setPalette(plt);
 
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
-  groupBoxAnt3->setPalette(plt);
+  frameAnt3->setPalette(plt);
   pushButtonAnt3->setPalette(plt);
 
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
-  groupBoxAnt4->setPalette(plt);
+  frameAnt4->setPalette(plt);
   pushButtonAnt4->setPalette(plt);
 
   connect(pushButtonAnt1, SIGNAL(clicked()), this, SLOT(pushButtonAnt1Clicked()));

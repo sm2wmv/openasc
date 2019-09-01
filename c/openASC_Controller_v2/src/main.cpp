@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QStyleFactory>
 #include "mainwindowimpl.h"
 //
 int main(int argc, char ** argv)
