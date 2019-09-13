@@ -28,8 +28,8 @@
 #define TARGET_DIR_BEAMWIDTH_A3_COLOR	darkGreen
 #define CURRENT_DIR_BEAMWIDTH_A3_COLOR	darkGreen
 
-#define TARGET_DIR_BEAMWIDTH_A4_COLOR	darkYellow
-#define CURRENT_DIR_BEAMWIDTH_A4_COLOR	darkYellow
+#define TARGET_DIR_BEAMWIDTH_A4_COLOR	darkRed
+#define CURRENT_DIR_BEAMWIDTH_A4_COLOR	darkRed
 
 class RotatorDialog : public QDialog, public Ui::Dialog
 {
@@ -76,6 +76,7 @@ private:
 	int verticalArrayNrDirs[4];
 	int verticalArrayDirAngle[4][4];
 	QString verticalArrayDirName[4][4];
+    int lengthMapLabel;
 	void setStatusPresetButtons();
 private slots:
 

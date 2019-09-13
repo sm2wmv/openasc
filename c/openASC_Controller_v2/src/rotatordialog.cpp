@@ -1,5 +1,8 @@
 #include "rotatordialog.h"
 #include <math.h>
+#include <QtMath>
+#include <QtDebug>
+#include <QGraphicsDropShadowEffect>
 
 #include "mainwindowimpl.h"
 
@@ -17,16 +20,33 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 	float rectHeight = sizeHeight - (sizeHeight * 0.06);
 	QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth-2, rectHeight-2);
 
+
+    QPen linepen(Qt::red);
+    linepen.setCapStyle(Qt::RoundCap);
+    linepen.setWidth(5);
+    painter.setRenderHint(QPainter::Antialiasing,true);
+    painter.setPen(linepen);
+    painter.drawPoint(QPoint(sizeWidth/2-2,sizeHeight/2-2));
+
+    QSize labelSize;
+
 	for (int i=0;i<4;i++) {
 		if ((antExist[i] == true) && (antBeamWidth[i] > 0)) {
 			if (i==0) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
 
-					if (antVerticalArray[i])
+                    labelSize = labelMapNameAnt1->size();
+
+                    if (antVerticalArray[i]) {
 						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-					else
-						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+                        labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+                    }
+                    else {
+                        labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+
+                        painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+                    }
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -35,15 +55,22 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
                         painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A1_COLOR),Qt::SolidPattern));
 						painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
 					}
+
 			}
 			else if (i==1) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
 
-					if (antVerticalArray[i])
+                    labelSize = labelMapNameAnt2->size();
+
+                    if (antVerticalArray[i]) {
 						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-					else
-						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+                        labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+                    }
+                    else {
+                        labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+                        painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+                    }
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -57,10 +84,16 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
 
-					if (antVerticalArray[i])
+                    labelSize = labelMapNameAnt3->size();
+
+                    if (antVerticalArray[i]) {
 						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-					else
+                        labelMapNameAnt3->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+                    }
+                    else {
 						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+                        labelMapNameAnt3->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+                    }
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -74,10 +107,16 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
 					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
 
-					if (antVerticalArray[i])
+                    labelSize = labelMapNameAnt4->size();
+
+                    if (antVerticalArray[i]) {
 						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-					else
+                        labelMapNameAnt4->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+                    }
+                    else {
 						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+                        labelMapNameAnt4->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+                    }
 
 					if (antBiDirectional[i])
 						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
@@ -427,9 +466,15 @@ void RotatorDialog::loadBand(int bandIndex) {
 		pushButtonAnt3->setVisible(false);
 		pushButtonAnt4->setVisible(false);
 
+        labelMapNameAnt1->setVisible(false);
+        labelMapNameAnt2->setVisible(false);
+        labelMapNameAnt3->setVisible(false);
+        labelMapNameAnt4->setVisible(false);
+
 		if (antExist[0]) {
             frameAnt1->setVisible(true);
 			pushButtonAnt1->setVisible(true);
+            labelMapNameAnt1->setVisible(true);
 
 			if ((antHasRotor[0]) || (antVerticalArray[0])) {
 				pushButtonAnt1->setEnabled(true);
@@ -445,6 +490,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		if (antExist[1]) {
             frameAnt2->setVisible(true);
 			pushButtonAnt2->setVisible(true);
+            labelMapNameAnt2->setVisible(true);
 
 			if ((antHasRotor[1]) || (antVerticalArray[1])) {
 				pushButtonAnt2->setEnabled(true);
@@ -463,6 +509,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		if (antExist[2]) {
             frameAnt3->setVisible(true);
 			pushButtonAnt3->setVisible(true);
+            labelMapNameAnt3->setVisible(true);
 
 			if ((antHasRotor[2]) || (antVerticalArray[2])) {
 				pushButtonAnt3->setEnabled(true);
@@ -481,6 +528,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 		if (antExist[3]) {
             frameAnt4->setVisible(true);
 			pushButtonAnt4->setVisible(true);
+            labelMapNameAnt4->setVisible(true);
 
 			if ((antHasRotor[3]) || (antVerticalArray[3])) {
 				pushButtonAnt4->setEnabled(true);
@@ -502,6 +550,20 @@ void RotatorDialog::loadBand(int bandIndex) {
 		labelAnt2Title->setText(antName[1]);
 		labelAnt3Title->setText(antName[2]);
 		labelAnt4Title->setText(antName[3]);
+
+        labelMapNameAnt1->setText(antName[0]);
+        labelMapNameAnt1->adjustSize();
+
+        labelMapNameAnt2->setText(antName[1]);
+        labelMapNameAnt2->adjustSize();
+
+        labelMapNameAnt3->setText(antName[2]);
+        labelMapNameAnt3->adjustSize();
+
+        labelMapNameAnt4->setText(antName[3]);
+        labelMapNameAnt4->adjustSize();
+
+        qDebug() << labelMapNameAnt1->size();
 
 		if (antFixed[0]) {
 			labelAnt1Status->setText("Fixed");
@@ -737,7 +799,7 @@ void RotatorDialog::setupLayout() {
     sizeHeight = settings.value("MapHeight").toInt();
   }
   else {
-    imagePath = "maps/map.png";
+    imagePath = "maps/map2.png";
     sizeWidth = 600;
     sizeHeight = 600;
 
@@ -804,7 +866,7 @@ void RotatorDialog::setupLayout() {
 RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f) {
   setupUi(this);
 
-  imagePath = "maps/map.png";
+  imagePath = "maps/map2.png";
   sizeWidth = 600;
   sizeHeight = 600;
 
@@ -814,26 +876,75 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
 
   currAntIndex = 0;
 
+  QGraphicsDropShadowEffect* effect[4];
+
+  for (int i=0;i<4;i++) {
+      effect[i] = new QGraphicsDropShadowEffect();
+      effect[i]->setColor(Qt::black);
+      effect[i]->setBlurRadius(20);
+      effect[i]->setXOffset(3);
+      effect[i]->setYOffset(3);
+  }
+
+  labelMapNameAnt1->setVisible(false);
+  labelMapNameAnt2->setVisible(false);
+  labelMapNameAnt3->setVisible(false);
+  labelMapNameAnt4->setVisible(false);
+
+  labelMapNameAnt1->setGraphicsEffect(effect[0]);
+  labelMapNameAnt2->setGraphicsEffect(effect[1]);
+  labelMapNameAnt3->setGraphicsEffect(effect[2]);
+  labelMapNameAnt4->setGraphicsEffect(effect[3]);
+
   QPalette plt;
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
-  frameAnt1->setPalette(plt);
+  plt.setColor(QPalette::Button, Qt::lightGray);
+  labelMapNameAnt1->setPalette(plt);
   pushButtonAnt1->setPalette(plt);
+  plt.setColor(QPalette::Window, Qt::lightGray);
+  frameAnt1->setAutoFillBackground(true);
+  frameAnt1->setPalette(plt);
 
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
-  frameAnt2->setPalette(plt);
+  plt.setColor(QPalette::Button, Qt::lightGray);
+  labelMapNameAnt2->setPalette(plt);
   pushButtonAnt2->setPalette(plt);
+  plt.setColor(QPalette::Window, Qt::lightGray);
+  frameAnt2->setAutoFillBackground(true);
+  frameAnt2->setPalette(plt);
 
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
-  frameAnt3->setPalette(plt);
+  plt.setColor(QPalette::Button, Qt::lightGray);
+  labelMapNameAnt3->setPalette(plt);
   pushButtonAnt3->setPalette(plt);
+  plt.setColor(QPalette::Window, Qt::lightGray);
+  frameAnt3->setAutoFillBackground(true);
+  frameAnt3->setPalette(plt);
 
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
-  frameAnt4->setPalette(plt);
+  plt.setColor(QPalette::Button, Qt::lightGray);
+  labelMapNameAnt4->setPalette(plt);
   pushButtonAnt4->setPalette(plt);
+  plt.setColor(QPalette::Background, Qt::lightGray);
+  frameAnt4->setAutoFillBackground(true);
+  frameAnt4->setPalette(plt);
+
+  lengthMapLabel = 220;
+
+/*  this->pushButtonAnt1->setStyleSheet("QPushButton {\nbackground-color:lightGray;\ncolor:"+QString(STRING_DIR_BEAMWIDTH_A1_COLOR)+";\n}");
+  this->pushButtonAnt2->setStyleSheet("QPushButton {\nbackground-color:lightGray;\ncolor:"+QString(STRING_DIR_BEAMWIDTH_A2_COLOR)+";\n}");
+  this->pushButtonAnt3->setStyleSheet("QPushButton {\nbackground-color:lightGray;\ncolor:"+QString(STRING_DIR_BEAMWIDTH_A3_COLOR)+";\n}");
+  this->pushButtonAnt4->setStyleSheet("QPushButton {\nbackground-color:lightGray;\ncolor:"+QString(STRING_DIR_BEAMWIDTH_A4_COLOR)+";\n}");
+
+  this->frameAnt1->setStyleSheet("QFrame {\nbackground-color:lightGray;\ncolor"+QString(STRING_DIR_BEAMWIDTH_A1_COLOR)+";\n}");
+  this->frameAnt2->setStyleSheet("QFrame {\nbackground-color:lightGray;\ncolor"+QString(STRING_DIR_BEAMWIDTH_A2_COLOR)+";\n}");
+  this->frameAnt3->setStyleSheet("QFrame {\nbackground-color:lightGray;\ncolor"+QString(STRING_DIR_BEAMWIDTH_A3_COLOR)+";\n}");
+  this->frameAnt4->setStyleSheet("QFrame {\nbackground-color:lightGray;\ncolor"+QString(STRING_DIR_BEAMWIDTH_A4_COLOR)+";\n}");
+*/
 
   connect(pushButtonAnt1, SIGNAL(clicked()), this, SLOT(pushButtonAnt1Clicked()));
   connect(pushButtonAnt2, SIGNAL(clicked()), this, SLOT(pushButtonAnt2Clicked()));
