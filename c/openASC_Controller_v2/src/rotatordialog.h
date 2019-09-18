@@ -18,6 +18,8 @@
 #include "../../../uC/remote_commands.h"
 #include "../../../uC/wmv_bus/bus_commands.h"
 
+#define ANT_SEL_ROTATE_TIMEOUT 10000
+
 #define TARGET_DIR_BEAMWIDTH	1
 #define TARGET_DIR_BEAMWIDTH_A1_COLOR	black
 #define CURRENT_DIR_BEAMWIDTH_A1_COLOR	black
@@ -57,7 +59,9 @@ private:
 	QString imagePath;
 	int currAzimuthAngle[4];
 	int targetAzimuthAngle[4];
-	int currAntIndex;
+    int antCount;
+    int currAntIndex;
+    int lastAntIndex;
 	int sizeWidth;
 	int sizeHeight;
 	QImage image;
@@ -78,6 +82,7 @@ private:
 	QString verticalArrayDirName[4][4];
     int lengthMapLabel;
 	void setStatusPresetButtons();
+    QTimer *singleShotTimer;
 private slots:
 
 public slots:
@@ -95,6 +100,7 @@ public slots:
 	void pushButtonRotateCCWPressed();
 	void pushButtonRotateCWReleased();
 	void pushButtonRotateCCWReleased();
+    void disableButtonAntSelection();
 };
 #endif
 

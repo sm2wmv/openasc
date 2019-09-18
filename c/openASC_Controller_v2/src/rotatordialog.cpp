@@ -203,15 +203,17 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 }
 
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
-  if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (sizeWidth)) && (event->y() <= sizeHeight)) {
-      double mapX = abs(sizeWidth/2 - event->x());
-      double mapY = sizeHeight/2 - event->y();
+    if (currAntIndex != -1) {
+      if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (sizeWidth)) && (event->y() <= sizeHeight)) {
+          double mapX = abs(sizeWidth/2 - event->x());
+          double mapY = sizeHeight/2 - event->y();
 
-      if ((sizeWidth/2 - event->x()) < 0)
-					setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
-			else
-					setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
-	}
+          if ((sizeWidth/2 - event->x()) < 0)
+                        setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
+                else
+                        setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
+        }
+    }
 }
 
 void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
@@ -375,6 +377,8 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antVerticalArray[i] = false;
 		}
 
+        antCount = 0;
+
         frameAnt1->setVisible(false);
         frameAnt2->setVisible(false);
         frameAnt3->setVisible(false);
@@ -400,6 +404,8 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 		settings.beginGroup(bandName);
 
+        antCount = 0;
+
 		int size = settings.beginReadArray("Ant");
 
 		for (int i=0;i<size;i++) {
@@ -414,6 +420,8 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antFixed[i] = settings.value("AntennaFixed").toBool();
 			antBiDirectional[i] = settings.value("AntennaBiDirectional").toBool();
 
+            if (antExist[i])
+                antCount++;
 
 			if (antVerticalArray[i]) {
 				verticalArrayNrDirs[i] = settings.value("VerticalArrayNrDirs").toInt();
@@ -478,9 +486,8 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 			if ((antHasRotor[0]) || (antVerticalArray[0])) {
 				pushButtonAnt1->setEnabled(true);
-				currAntIndex = 0;
-				pushButtonAnt1->setChecked(true);
-			}
+                pushButtonAnt1->setChecked(false);
+            }
 			else {
 				pushButtonAnt1->setEnabled(false);
 				pushButtonAnt1->setChecked(false);
@@ -494,11 +501,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 			if ((antHasRotor[1]) || (antVerticalArray[1])) {
 				pushButtonAnt2->setEnabled(true);
-
-				if (currAntIndex == -1) {
-					currAntIndex = 1;
-					pushButtonAnt2->setChecked(true);
-				}
 			}
 			else {
 				pushButtonAnt2->setEnabled(false);
@@ -513,11 +515,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 			if ((antHasRotor[2]) || (antVerticalArray[2])) {
 				pushButtonAnt3->setEnabled(true);
-
-				if (currAntIndex == -1) {
-					currAntIndex = 2;
-					pushButtonAnt3->setChecked(true);
-				}
 			}
             else {
 				pushButtonAnt3->setEnabled(false);
@@ -532,11 +529,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
 			if ((antHasRotor[3]) || (antVerticalArray[3])) {
 				pushButtonAnt4->setEnabled(true);
-
-				if (currAntIndex == -1) {
-					currAntIndex = 3;
-					pushButtonAnt4->setChecked(true);
-				}
 			}
             else {
                 pushButtonAnt4->setEnabled(false);
@@ -632,6 +624,13 @@ void RotatorDialog::loadBand(int bandIndex) {
 		}
 	}
 
+    if (antCount == 1) {
+        for (int i=0;i<4;i++) {
+            if (antExist[i])
+                currAntIndex = i;
+        }
+    }
+
 	repaint();
 }
 
@@ -681,68 +680,127 @@ void RotatorDialog::setRotatorAngle(int antIndex, unsigned int angle) {
 
 void RotatorDialog::pushButtonRotateCWPressed() {
 	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_TURN_CW,currAntIndex);
+        TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_TURN_CW,lastAntIndex);
 	}
 }
 
 void RotatorDialog::pushButtonRotateCCWPressed() {
 	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_TURN_CCW,currAntIndex);
+        TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_TURN_CCW,lastAntIndex);
 	}
 }
 
-void RotatorDialog::pushButtonRotateCWReleased() {
-	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
+void RotatorDialog::pushButtonRotateCWReleased() {	
+    if (TCPComm->isConnected()) {
+        TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,lastAntIndex);
 	}
+    pushButtonRotateCW->setEnabled(false);
 }
 
 void RotatorDialog::pushButtonRotateCCWReleased() {
 	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
+        TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,lastAntIndex);
 	}
+    pushButtonRotateCCW->setEnabled(false);
+}
+
+void RotatorDialog::disableButtonAntSelection() {
+    if (antCount != 1) {
+        if (!antVerticalArray[currAntIndex]) {
+            pushButtonAnt1->setChecked(false);
+            pushButtonAnt2->setChecked(false);
+            pushButtonAnt3->setChecked(false);
+            pushButtonAnt4->setChecked(false);
+
+
+            pushButtonPreset1->setEnabled(false);
+            pushButtonPreset2->setEnabled(false);
+            pushButtonPreset3->setEnabled(false);
+            pushButtonPreset4->setEnabled(false);
+            pushButtonPreset5->setEnabled(false);
+
+            if (pushButtonRotateCW->isDown() != true)
+                pushButtonRotateCW->setEnabled(false);
+
+            if (pushButtonRotateCCW->isDown() != true)
+                pushButtonRotateCCW->setEnabled(false);
+
+            currAntIndex = -1;
+        }
+    }
 }
 
 void RotatorDialog::pushButtonAnt1Clicked() {
+    //Make sure if the timer is already running that we stop it
+    if (singleShotTimer->isActive()) {
+        qDebug() << "Stopping timer";
+        singleShotTimer->stop();
+    }
+
 	pushButtonAnt1->setChecked(true);
 	pushButtonAnt2->setChecked(false);
 	pushButtonAnt3->setChecked(false);
 	pushButtonAnt4->setChecked(false);
 
+    lastAntIndex = currAntIndex;
 	currAntIndex = 0;
+
+    singleShotTimer->start();
+    qDebug() << "Starting timer";
 
 	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt2Clicked() {
+    //Make sure if the timer is already running that we stop it
+    if (singleShotTimer->isActive())
+        singleShotTimer->stop();
+
 	pushButtonAnt1->setChecked(false);
 	pushButtonAnt2->setChecked(true);
 	pushButtonAnt3->setChecked(false);
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 1;
+    lastAntIndex = currAntIndex;
 
-	setStatusPresetButtons();
+    singleShotTimer->start();
+
+    setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt3Clicked() {
+    //Make sure if the timer is already running that we stop it
+    if (singleShotTimer->isActive())
+        singleShotTimer->stop();
+
 	pushButtonAnt1->setChecked(false);
 	pushButtonAnt2->setChecked(false);
 	pushButtonAnt3->setChecked(true);
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 2;
+    lastAntIndex = currAntIndex;
+
+    singleShotTimer->start();
 
 	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt4Clicked() {
-	pushButtonAnt1->setChecked(false);
+    //Make sure if the timer is already running that we stop it
+    if (singleShotTimer->isActive())
+        singleShotTimer->stop();
+
+    pushButtonAnt1->setChecked(false);
 	pushButtonAnt2->setChecked(false);
 	pushButtonAnt3->setChecked(false);
 	pushButtonAnt4->setChecked(true);
 
 	currAntIndex = 3;
+    lastAntIndex = currAntIndex;
+
+    singleShotTimer->start();
 
 	setStatusPresetButtons();
 }
@@ -752,28 +810,33 @@ void RotatorDialog::setCOMMPtr(TCPClass *ptr) {
 }
 
 void RotatorDialog::pushButtonPreset1Clicked() {
-	setTargetDir(currAntIndex,presetButtonValue[0]);
+    if (currAntIndex != -1)
+        setTargetDir(currAntIndex,presetButtonValue[0]);
 }
 
 void RotatorDialog::pushButtonPreset2Clicked() {
-	setTargetDir(currAntIndex,presetButtonValue[1]);
+    if (currAntIndex != -1)
+        setTargetDir(currAntIndex,presetButtonValue[1]);
 }
 
 void RotatorDialog::pushButtonPreset3Clicked() {
-	setTargetDir(currAntIndex,presetButtonValue[2]);
+    if (currAntIndex != -1)
+        setTargetDir(currAntIndex,presetButtonValue[2]);
 }
 
 void RotatorDialog::pushButtonPreset4Clicked() {
-	setTargetDir(currAntIndex,presetButtonValue[3]);
+    if (currAntIndex != -1)
+        setTargetDir(currAntIndex,presetButtonValue[3]);
 }
 
 void RotatorDialog::pushButtonPreset5Clicked() {
-	setTargetDir(currAntIndex,presetButtonValue[4]);
+    if (currAntIndex != -1)
+        setTargetDir(currAntIndex,presetButtonValue[4]);
 }
 
 void RotatorDialog::pushButtonSTOPClicked() {
 	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,currAntIndex);
+        TCPComm->addTXMessage(REMOTE_COMMAND_ROTATOR_STOP,lastAntIndex);
 	}
 }
 
@@ -874,7 +937,16 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
 
   rotationEventStatus = 0;
 
-  currAntIndex = 0;
+  currAntIndex = -1;
+
+  //This timer is used to disable the antenna selection for rotation. It does this to all
+  //Antennas except if there is only one on the band or if the last selected antenna is a
+  //vertical array. This is because we want to avoid having people rotating antenna towers
+  //by mistake.
+  singleShotTimer = new QTimer();
+  singleShotTimer->setSingleShot(true);
+  singleShotTimer->setInterval(ANT_SEL_ROTATE_TIMEOUT);
+  connect(singleShotTimer,SIGNAL(timeout()),this,SLOT(disableButtonAntSelection()));
 
   QGraphicsDropShadowEffect* effect[4];
 
