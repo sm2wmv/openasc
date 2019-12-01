@@ -128,7 +128,7 @@ void clear_screensaver_timer(void) {
 }
 
 unsigned char main_get_ethernet_local_mode(void) {
-  return(settings.ethernet_local_mode);
+  return(runtime_settings.ethernet_local_mode);
 }
 
 struct_setting* main_get_settings_ptr(void) {
@@ -685,6 +685,7 @@ int main(void){
 		runtime_settings.radio_ptt_output = 1;
 		runtime_settings.inhibit_state = 0;
 		runtime_settings.band_change_mode = BAND_CHANGE_MODE_MANUAL;
+		runtime_settings.ethernet_local_mode = 0;
     
     for (unsigned char i=0;i<9;i++)
       runtime_settings.antenna_disabled[i] = 0;

@@ -81,6 +81,7 @@ typedef struct {
 #define MENU_POS_AMP_STATUS      8
 //! Show the error menu 
 #define MENU_POS_SHOW_ERRORS      9
+#define MENU_POS_ETHERNET       10
 
 //! Menu flag scroll up
 #define MENU_SCROLL_UP			0

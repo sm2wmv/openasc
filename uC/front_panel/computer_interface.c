@@ -631,6 +631,9 @@ void computer_interface_parse_data(void) {
           settings_ptr->ethernet_port |= computer_comm.rx_buffer_start[14];
           
           settings_ptr->ethernet_local_mode = computer_comm.rx_buffer_start[15];
+					
+					if (runtime_settings.ethernet_local_mode != settings_ptr->ethernet_local_mode)
+						runtime_settings.ethernet_local_mode = settings_ptr->ethernet_local_mode;
           
           computer_interface_send_ack();
           break;

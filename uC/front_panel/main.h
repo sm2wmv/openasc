@@ -362,6 +362,8 @@ typedef struct {
 	unsigned char powermeter_address;
   //! This is a runtime setting which makes it possible to cross out antennas
   unsigned char antenna_disabled[9];
+	//! Ethernet local mode, 1 = ON, 0 = OFF
+	unsigned char ethernet_local_mode;
 } struct_runtime_settings;
 
 /* Different views */

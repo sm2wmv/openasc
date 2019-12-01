@@ -42,7 +42,7 @@
 #define MENU_OPTION_LEFT_POS 13
 
 //! Number of options in the menu system
-#define MENU_OPTIONS	10
+#define MENU_OPTIONS	11
 
 const char error_0[] PROGMEM = "Bus resend";
 const char error_1[] PROGMEM = "No bus sync";
@@ -87,6 +87,8 @@ const struct_menu_option menu_option_amp_ptt_output[] = {{"ON"},{"OFF"}};
 const struct_menu_option menu_option_radio_ptt_output[] = {{"ON"},{"OFF"}};
 //! Menu system option - Amplifier ON/OFF
 const struct_menu_option menu_option_amp_status[] = {{"ON"},{"OFF"}};
+//! Menu system option - Ethernet local mode ON/OFF
+const struct_menu_option menu_option_ethernet_localmode[] = {{"ON"},{"OFF"}};
 
 /********* SETUP MENUS *********/
 const prog_char header_1[] PROGMEM = "Band change";
@@ -99,6 +101,7 @@ const prog_char header_7[] PROGMEM = "Powermeter";
 const prog_char header_8[] PROGMEM = "Antenna status";
 const prog_char header_9[] PROGMEM = "Power amplifier";
 const prog_char header_10[] PROGMEM = "Errors";
+const prog_char header_11[] PROGMEM = "Ethernet";
 
 //! Menu system
 const struct_menu_text menu_system_text[] = {
@@ -111,7 +114,8 @@ const struct_menu_text menu_system_text[] = {
 {MENU_POS_SHOW_POWERMETER_ADDR, header_7, NULL, 0,MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_ANT_STATUS, header_8, NULL, 0, MENU_OPTION_TYPE_SCROLL_NUMBERS},
 {MENU_POS_AMP_STATUS, header_9, (struct_menu_option *)menu_option_amp_status, 0, MENU_OPTION_TYPE_NORMAL},
-{MENU_POS_SHOW_ERRORS, header_10, NULL, 0,MENU_OPTION_TYPE_NORMAL}
+{MENU_POS_SHOW_ERRORS, header_10, NULL, 0,MENU_OPTION_TYPE_NORMAL},
+{MENU_POS_ETHERNET, header_11, (struct_menu_option *)menu_option_ethernet_localmode, 0,MENU_OPTION_TYPE_NORMAL}
 };
 
 /*! \brief Show the text of a menu on the display 
@@ -259,6 +263,41 @@ void menu_show_text(struct_menu_text menu_text) {
     
     glcd_text(MENU_OPTION_LEFT_POS,18+10+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
   }
+  else if (menu_text.pos == MENU_POS_ETHERNET) {
+    strcpy_P(temp_str,menu_text.header);
+    glcd_text(0,0,FONT_NINE_DOT,temp_str,strlen(temp_str));
+  
+    //Draw a seperation line between the options and the header
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),12);
+    glcd_line(0,display_handler_calculate_width(temp_str,FONT_NINE_DOT,strlen(temp_str)),14);
+    
+    char temp[30];
+    
+		struct_setting *settings = main_get_settings_ptr();
+		
+    /* Show IP Address */
+      sprintf_P(temp,PSTR("IP: %i.%i.%i.%i"),settings->ethernet_ip_addr[0],settings->ethernet_ip_addr[1],settings->ethernet_ip_addr[2],settings->ethernet_ip_addr[3]);
+			
+			glcd_text(MENU_OPTION_LEFT_POS,18,FONT_SEVEN_DOT,temp,strlen(temp));
+	
+			/* Show Gateway */
+      sprintf_P(temp,PSTR("GW: %i.%i.%i.%i"),settings->ethernet_gateway[0],settings->ethernet_gateway[1],settings->ethernet_gateway[2],settings->ethernet_gateway[3]);
+			
+			glcd_text(MENU_OPTION_LEFT_POS,18+10,FONT_SEVEN_DOT,temp,strlen(temp));
+			
+			/* Show Port */
+      sprintf_P(temp,PSTR("Port: %u"),settings->ethernet_port);
+			
+			glcd_text(MENU_OPTION_LEFT_POS,18+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
+			
+			/* Show Localmode */
+			if (runtime_settings.ethernet_local_mode)
+				sprintf_P(temp,PSTR("Local mode: ON"));
+			else
+				sprintf_P(temp,PSTR("Local mode: OFF"));
+			
+			glcd_text(MENU_OPTION_LEFT_POS,18+10+10+10,FONT_SEVEN_DOT,temp,strlen(temp));			
+	}
 	else {
     strcpy_P(temp_str,menu_text.header);
     glcd_text(0,0,FONT_NINE_DOT,temp_str,strlen(temp_str));
@@ -363,6 +402,8 @@ void menu_init(void) {
 		current_menu_option_selected[MENU_POS_AMP_PTT] = 0;
 	else
 		current_menu_option_selected[MENU_POS_AMP_PTT] = 1;
+	
+	current_menu_option_selected[MENU_POS_ETHERNET] = runtime_settings.ethernet_local_mode;
 }
 
 //! Function will reset to init values, like menu level etc
@@ -441,7 +482,6 @@ void menu_action(unsigned char menu_action_type) {
             if (runtime_settings.antenna_disabled[status.selected_band-1] > 0)
               runtime_settings.antenna_disabled[status.selected_band-1]--;
         }
-
 			}
 		}
 		
@@ -465,6 +505,12 @@ void menu_action(unsigned char menu_action_type) {
         }
           
 			}	
+			else if (current_menu_pos == MENU_POS_ETHERNET) {
+				if (runtime_settings.ethernet_local_mode == 1)
+					runtime_settings.ethernet_local_mode = 0;
+				else
+					runtime_settings.ethernet_local_mode = 1;
+			}
 			else if (menu_system_text[current_menu_pos].option_type != MENU_OPTION_TYPE_NONE)
 				current_menu_level = 1;
 		}
