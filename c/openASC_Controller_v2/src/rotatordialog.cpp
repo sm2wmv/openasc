@@ -650,28 +650,28 @@ void RotatorDialog::setRotatorAngle(int antIndex, unsigned int angle) {
 				labelAnt1Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
 			}
 			else
-				labelAnt1Dir->setText(QString::number(angle) + '°');
+                labelAnt1Dir->setText(QString::number(angle) + "\u00B0");
 		}
 		else if (antIndex == 1) {
 			if (antVerticalArray[antIndex]) {
 				labelAnt2Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
 			}
 			else
-				labelAnt2Dir->setText(QString::number(angle) + '°');
+                labelAnt2Dir->setText(QString::number(angle) + "\u00B0");
 		}
 		else if (antIndex == 2) {
 			if (antVerticalArray[antIndex]) {
 				labelAnt3Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
 			}
 			else
-				labelAnt3Dir->setText(QString::number(angle) + '°');
+                labelAnt3Dir->setText(QString::number(angle) + "\u00B0");
 		}
 		else if (antIndex == 3) {
 			if (antVerticalArray[antIndex]) {
 				labelAnt4Dir->setText(verticalArrayDirName[antIndex][currAzimuthAngle[antIndex]]);
 			}
 			else
-				labelAnt4Dir->setText(QString::number(angle) + '°');
+                labelAnt4Dir->setText(QString::number(angle) + "\u00B0");
 		}
 
 		repaint();
@@ -1048,3 +1048,8 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
     rotatorStatus[i] = 0;
 }
 //
+
+void RotatorDialog::on_pushButtonRotateQuit_clicked()
+{
+    emit quitProgram();
+}

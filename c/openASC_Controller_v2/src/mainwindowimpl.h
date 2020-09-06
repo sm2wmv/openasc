@@ -108,6 +108,7 @@ public slots:
   void pushButtonMenuRightClicked();
 
   void pushButtonSubClicked();
+  void quitProgram(void);
 };
 #endif
 

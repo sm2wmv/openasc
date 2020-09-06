@@ -582,28 +582,35 @@ void MainWindowImpl::updateBandInfo() {
   }
 }
 
+void MainWindowImpl::quitProgram() {
+    qDebug() << "Quitting";
+    settingsDialog->setPosMainWindowX(geometry().x());
+    settingsDialog->setPosMainWindowY(geometry().y());
+    settingsDialog->setPosKeypadWindowX(keypadWindow->geometry().x());
+    settingsDialog->setPosKeypadWindowY(keypadWindow->geometry().y());
+    settingsDialog->setPosRotatorWindowX(rotatorWindow->geometry().x());
+    settingsDialog->setPosRotatorWindowY(rotatorWindow->geometry().y());
+    settingsDialog->setPosTerminalWindowX(terminalWindow->geometry().x());
+    settingsDialog->setPosTerminalWindowY(terminalWindow->geometry().y());
+    settingsDialog->setPosPowerMeterWindowX(powerMeterWindow->geometry().x());
+    settingsDialog->setPosPowerMeterWindowY(powerMeterWindow->geometry().y());
+
+    settingsDialog->setPowerMeterWindowOpen(powerMeterWindow->isVisible());
+    settingsDialog->setRotatorWindowOpen(rotatorWindow->isVisible());
+    settingsDialog->setTerminalWindowOpen(terminalWindow->isVisible());
+    settingsDialog->setKeypadWindowOpen(keypadWindow->isVisible());
+
+    settingsDialog->saveSettings();
+
+    TCPComm->stopConnection();
+
+    QApplication::quit();
+}
+
 void MainWindowImpl::closeEvent ( QCloseEvent * event ) {
 	event->ignore();
 
-	settingsDialog->setPosMainWindowX(geometry().x());
-	settingsDialog->setPosMainWindowY(geometry().y());
-	settingsDialog->setPosKeypadWindowX(keypadWindow->geometry().x());
-	settingsDialog->setPosKeypadWindowY(keypadWindow->geometry().y());
-	settingsDialog->setPosRotatorWindowX(rotatorWindow->geometry().x());
-	settingsDialog->setPosRotatorWindowY(rotatorWindow->geometry().y());
-	settingsDialog->setPosTerminalWindowX(terminalWindow->geometry().x());
-	settingsDialog->setPosTerminalWindowY(terminalWindow->geometry().y());
-  settingsDialog->setPosPowerMeterWindowX(powerMeterWindow->geometry().x());
-  settingsDialog->setPosPowerMeterWindowY(powerMeterWindow->geometry().y());
-
-  settingsDialog->setPowerMeterWindowOpen(powerMeterWindow->isVisible());
-	settingsDialog->setRotatorWindowOpen(rotatorWindow->isVisible());
-	settingsDialog->setTerminalWindowOpen(terminalWindow->isVisible());
-	settingsDialog->setKeypadWindowOpen(keypadWindow->isVisible());
-
-	settingsDialog->saveSettings();
-
-	TCPComm->stopConnection();
+    quitProgram();
 
 	event->accept();
 };
@@ -774,6 +781,8 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(pushButtonMenuLeft, SIGNAL(clicked()), this, SLOT(pushButtonMenuLeftClicked()));
 	connect(pushButtonMenuRight, SIGNAL(clicked()), this, SLOT(pushButtonMenuRightClicked()));
     connect(pushButtonSub, SIGNAL(clicked()), this, SLOT(pushButtonSubClicked()));
+
+    connect(rotatorWindow, SIGNAL(quitProgram()), this, SLOT(quitProgram()));
 
   //Set the default pixmaps
   resetGUI();

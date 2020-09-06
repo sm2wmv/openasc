@@ -1,6 +1,7 @@
 #ifndef ROTATORDIALOG_H
 #define ROTATORDIALOG_H
 //
+
 #include <QDialog>
 #include "ui_rotatorwindow.h"
 
@@ -47,8 +48,8 @@ public:
 	void setRotatorFlag(unsigned char antIndex, unsigned char flags);
 	void setCOMMPtr(TCPClass *ptr);
 	void setRotatorStatusText(unsigned char index, unsigned char status);
-  void keyPressEvent(QKeyEvent *e);
-  void setupLayout();
+    void keyPressEvent(QKeyEvent *e);
+    void setupLayout();
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent ( QMouseEvent * event );
@@ -84,7 +85,9 @@ private:
 	void setStatusPresetButtons();
     QTimer *singleShotTimer;
 private slots:
-
+    void on_pushButtonRotateQuit_clicked();
+signals:
+    void quitProgram();
 public slots:
 	void pushButtonAnt1Clicked();
 	void pushButtonAnt2Clicked();
