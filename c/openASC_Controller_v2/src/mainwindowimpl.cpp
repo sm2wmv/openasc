@@ -200,12 +200,12 @@ void MainWindowImpl::actionSettingsEditTriggered() {
 }
 
 void MainWindowImpl::actionDisconnectTriggered() {
-	timerPollStatus->stop();
-  timerPollRXQueue->stop();
-  timerActivity->stop();
+    timerPollStatus->stop();
+    timerPollRXQueue->stop();
+    timerActivity->stop();
 
-  powerMeterWindow->stopTimers();
-  busClient->stopProcess();
+    powerMeterWindow->stopTimers();
+    busClient->stopProcess();
 
 	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
 
@@ -214,7 +214,7 @@ void MainWindowImpl::actionDisconnectTriggered() {
 	actionConnect->setEnabled(true);
 	actionDisconnect->setEnabled(false);
 
-  resetGUI();
+    resetGUI();
 }
 
 void MainWindowImpl::actionConnectTriggered() {
@@ -262,7 +262,7 @@ void MainWindowImpl::timerPollStatusUpdate(void) {
   }
 }
 
-void MainWindowImpl::pushButtonRXAntClicked() {
+void MainWindowImpl::pushButtonRXAntEnableClicked() {
 	if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_RX_ANT_MODE);
 	}
@@ -410,46 +410,97 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
           }
         }
         else if (cmd == REMOTE_COMMAND_RX_ANT_INFO) {
-          switch(rxMessage.at(3)) {
+            if (rxAntennaLayout == nullptr) {
+                rxAntennaLayout = new QVBoxLayout();
+                labelRXAntennas = new QLabel("RX Antennas");
+
+                rxAntennaLayout->addWidget(labelRXAntennas);
+            }
+
+            unsigned char id=0;
+
+            switch(rxMessage.at(3)) {
             case 0:
-              pushButtonRXAnt1->setText(QString(rxMessage.mid(4,len-1)));
+              pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+              pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+              connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt1Clicked()));
+              rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 1:
-              pushButtonRXAnt2->setText(QString(rxMessage.mid(4,len-1)));
-              break;
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt2Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
+                break;
             case 2:
-              pushButtonRXAnt3->setText(QString(rxMessage.mid(4,len-1)));
-              break;
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt3Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
+                break;
             case 3:
-              pushButtonRXAnt4->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt4Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 4:
-              pushButtonRXAnt5->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt5Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 5:
-              pushButtonRXAnt6->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt6Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 6:
-              pushButtonRXAnt7->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt7Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 7:
-              pushButtonRXAnt8->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt8Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 8:
-              pushButtonRXAnt9->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt9Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 9:
-              pushButtonRXAnt10->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt10Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 10:
-              pushButtonRXAnt11->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt11Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 11:
-              pushButtonRXAnt12->setText(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
+                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+                connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt12Clicked()));
+                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             default:
               break;
           }
+
+            frameRXAntennas->setLayout(rxAntennaLayout);
+            frameRXAntennas->show();
+
+//            QSpacerItem *verticalSpacerRXAntennas = new QSpacerItem(22,1500, QSizePolicy::Fixed, QSizePolicy::Expanding);
+//            rxAntennaLayout->addItem(verticalSpacerRXAntennas);
         }
         else if (cmd == REMOTE_COMMAND_STATUS) {
           if (rxMessage.size() > 7) {
@@ -460,57 +511,46 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
             if (currBand != rxMessage.at(6)) {
               switch(rxMessage.at(6)) {
                 case BAND_UNDEFINED:
-                  labelBand->setText("Band: None");
                   comboBoxBand->setCurrentIndex(0);
                   rotatorWindow->loadBand(BAND_UNDEFINED);
                   break;
                 case BAND_160M:
-                  labelBand->setText("Band: 160m");
                   comboBoxBand->setCurrentIndex(1);
                   rotatorWindow->loadBand(BAND_160M);
                   break;
                 case BAND_80M:
-                  labelBand->setText("Band: 80m");
                   comboBoxBand->setCurrentIndex(2);
                   rotatorWindow->loadBand(BAND_80M);
                   break;
                 case BAND_40M:
-                  labelBand->setText("Band: 40m");
                   comboBoxBand->setCurrentIndex(3);
                   rotatorWindow->loadBand(BAND_40M);
                   break;
                 case BAND_30M:
-                  labelBand->setText("Band: 30m");
                   comboBoxBand->setCurrentIndex(4);
                   rotatorWindow->loadBand(BAND_30M);
                   break;
                 case BAND_20M:
-                  labelBand->setText("Band: 20m");
                   comboBoxBand->setCurrentIndex(5);
                   rotatorWindow->loadBand(BAND_20M);
                   break;
                 case BAND_17M:
-                  labelBand->setText("Band: 17m");
                   comboBoxBand->setCurrentIndex(6);
                   rotatorWindow->loadBand(BAND_17M);
                   break;
                 case BAND_15M:
-                  labelBand->setText("Band: 15m");
                   comboBoxBand->setCurrentIndex(7);
                   rotatorWindow->loadBand(BAND_15M);
                   break;
                 case BAND_12M:
-                  labelBand->setText("Band: 12m");
                   comboBoxBand->setCurrentIndex(8);
                   rotatorWindow->loadBand(BAND_12M);
                   break;
                 case BAND_10M:
-                  labelBand->setText("Band: 10m");
                   comboBoxBand->setCurrentIndex(9);
                   rotatorWindow->loadBand(BAND_10M);
                   break;
                 default:
-                  labelBand->setText("Band: None");
                   comboBoxBand->setCurrentIndex(0);
                   rotatorWindow->loadBand(BAND_UNDEFINED);
                   break;
@@ -566,20 +606,60 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 }
 
 void MainWindowImpl::updateBandInfo() {
-  for (unsigned char i=0;i<6;i++) {
-    if ((settingsDialog->getBandInfoBoxAddr(0) != 0) && (settingsDialog->getBandInfoBoxAddr(0) == currBandInfoAddr[i]))
-      labelBoxABand->setText(getBandName(currBandInfoBand[i]));
-    else if ((settingsDialog->getBandInfoBoxAddr(1) != 0) && (settingsDialog->getBandInfoBoxAddr(1) == currBandInfoAddr[i]))
-      labelBoxBBand->setText(getBandName(currBandInfoBand[i]));
-    else if ((settingsDialog->getBandInfoBoxAddr(2) != 0) && (settingsDialog->getBandInfoBoxAddr(2) == currBandInfoAddr[i]))
-      labelBoxCBand->setText(getBandName(currBandInfoBand[i]));
-    else if ((settingsDialog->getBandInfoBoxAddr(3) != 0) && (settingsDialog->getBandInfoBoxAddr(3) == currBandInfoAddr[i]))
-      labelBoxDBand->setText(getBandName(currBandInfoBand[i]));
-    else if ((settingsDialog->getBandInfoBoxAddr(4) != 0) && (settingsDialog->getBandInfoBoxAddr(4) == currBandInfoAddr[i]))
-      labelBoxEBand->setText(getBandName(currBandInfoBand[i]));
-    else if ((settingsDialog->getBandInfoBoxAddr(5) != 0) && (settingsDialog->getBandInfoBoxAddr(5) == currBandInfoAddr[i]))
-      labelBoxFBand->setText(getBandName(currBandInfoBand[i]));
-  }
+    QPalette plt1;
+    plt1.setColor(QPalette::WindowText, Qt::green);
+    QPalette plt2;
+    plt2.setColor(QPalette::WindowText, Qt::lightGray);
+
+    for (unsigned char i=0;i<6;i++) {
+        if ((settingsDialog->getBandInfoBoxAddr(0) != 0) && (settingsDialog->getBandInfoBoxAddr(0) == currBandInfoAddr[i])) {
+            if (currBandInfoBand[i] != 0)
+                labelBoxABand->setPalette(plt1);
+            else
+                labelBoxABand->setPalette(plt2);
+
+            labelBoxABand->setText(getBandName(currBandInfoBand[i]));
+        }
+        else if ((settingsDialog->getBandInfoBoxAddr(1) != 0) && (settingsDialog->getBandInfoBoxAddr(1) == currBandInfoAddr[i])) {
+            if (currBandInfoBand[i] != 0)
+                labelBoxBBand->setPalette(plt1);
+            else
+                labelBoxBBand->setPalette(plt2);
+            labelBoxBBand->setText(getBandName(currBandInfoBand[i]));
+        }
+        else if ((settingsDialog->getBandInfoBoxAddr(2) != 0) && (settingsDialog->getBandInfoBoxAddr(2) == currBandInfoAddr[i])) {
+            if (currBandInfoBand[i] != 0)
+                labelBoxCBand->setPalette(plt1);
+            else
+                labelBoxCBand->setPalette(plt2);
+
+          labelBoxCBand->setText(getBandName(currBandInfoBand[i]));
+        }
+        else if ((settingsDialog->getBandInfoBoxAddr(3) != 0) && (settingsDialog->getBandInfoBoxAddr(3) == currBandInfoAddr[i])) {
+            if (currBandInfoBand[i] != 0)
+                labelBoxDBand->setPalette(plt1);
+            else
+                labelBoxDBand->setPalette(plt2);
+
+          labelBoxDBand->setText(getBandName(currBandInfoBand[i]));
+        }
+        else if ((settingsDialog->getBandInfoBoxAddr(4) != 0) && (settingsDialog->getBandInfoBoxAddr(4) == currBandInfoAddr[i])) {
+            if (currBandInfoBand[i] != 0)
+                labelBoxEBand->setPalette(plt1);
+            else
+                labelBoxEBand->setPalette(plt2);
+
+          labelBoxEBand->setText(getBandName(currBandInfoBand[i]));
+        }
+        else if ((settingsDialog->getBandInfoBoxAddr(5) != 0) && (settingsDialog->getBandInfoBoxAddr(5) == currBandInfoAddr[i])) {
+            if (currBandInfoBand[i] != 0)
+                labelBoxFBand->setPalette(plt1);
+            else
+                labelBoxFBand->setPalette(plt2);
+
+          labelBoxFBand->setText(getBandName(currBandInfoBand[i]));
+        }
+    }
 }
 
 void MainWindowImpl::quitProgram() {
@@ -642,8 +722,8 @@ void MainWindowImpl::actionKeypadTriggered() {
 }
 
 void MainWindowImpl::paintEvent(QPaintEvent *event) {
-	QPainter painter(this);
-	painter.setViewport(180,130,512,256);
+    QPainter painter(this);
+    painter.setViewport(183,140,512,256);
 
 	for (unsigned int y=0;y<8;y++) {
 		for (unsigned int x=0;x<128;x++) {
@@ -677,9 +757,61 @@ void MainWindowImpl::resetGUI() {
   labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
   labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
 
+
+
+  if (rxAntennaLayout != nullptr) {
+      QLayoutItem *child;
+      while ((child = rxAntennaLayout->takeAt(0)) != nullptr) {
+          delete child->widget(); // delete the widget
+          delete child;   // delete the layout item
+      }
+
+      rxAntennaLayout = nullptr;
+      frameRXAntennas->layout()->deleteLater();
+  }
+
   for (unsigned int y=0;y<8;y++)
     for (unsigned int x=0;x<128;x++)
       glcd_buffer[y][x] = 255;
+
+  QPalette plt;
+  plt.setColor(QPalette::WindowText, Qt::red);
+
+  for (unsigned char i=0;i<6;i++) {
+      if (settingsDialog->getBandInfoBoxAddr(i) != 0) {
+      if (i == 0) {
+        labelBoxAName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxABand->setPalette(plt);
+        labelBoxABand->setText("N/A");
+      }
+      else if (i == 1) {
+        labelBoxBName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxBBand->setPalette(plt);
+        labelBoxBBand->setText("N/A");
+      }
+      else if (i == 2) {
+        labelBoxCName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxCBand->setPalette(plt);
+        labelBoxCBand->setText("N/A");
+      }
+      else if (i == 3) {
+        labelBoxDName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxDBand->setPalette(plt);
+        labelBoxDBand->setText("N/A");
+      }
+      else if (i == 4) {
+        labelBoxEName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxEBand->setPalette(plt);
+        labelBoxEBand->setText("N/A");
+      }
+      else if (i == 5) {
+        labelBoxFName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxFBand->setPalette(plt);
+        labelBoxFBand->setText("N/A");
+      }
+    }
+  }
+
 
   repaint();
 
@@ -736,6 +868,11 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
     rotatorWindow->setCursor(QCursor( Qt::BlankCursor ));
   }
 
+  for (int i=0;i<12;i++)
+    pushButtonRXAnt[i] = nullptr;
+
+  rxAntennaLayout = nullptr;
+
   timerActivity = new QTimer(this);
   connect(timerActivity, SIGNAL(timeout()), this, SLOT(timerActivityUpdate()));
 
@@ -761,20 +898,7 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(pushButtonTX2, SIGNAL(clicked()), this, SLOT(pushButtonTX2Clicked()));
 	connect(pushButtonTX3, SIGNAL(clicked()), this, SLOT(pushButtonTX3Clicked()));
 	connect(pushButtonTX4, SIGNAL(clicked()), this, SLOT(pushButtonTX4Clicked()));
-
-	connect(pushButtonRXAnt1, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt1Clicked()));
-	connect(pushButtonRXAnt2, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt2Clicked()));
-	connect(pushButtonRXAnt3, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt3Clicked()));
-	connect(pushButtonRXAnt4, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt4Clicked()));
-	connect(pushButtonRXAnt5, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt5Clicked()));
-	connect(pushButtonRXAnt6, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt6Clicked()));
-	connect(pushButtonRXAnt7, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt7Clicked()));
-	connect(pushButtonRXAnt8, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt8Clicked()));
-	connect(pushButtonRXAnt9, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt9Clicked()));
-	connect(pushButtonRXAnt10, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt10Clicked()));
-  connect(pushButtonRXAnt11, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt11Clicked()));
-  connect(pushButtonRXAnt12, SIGNAL(clicked()), this, SLOT(pushButtonRXAnt12Clicked()));
-	connect(pushButtonRXAnt, SIGNAL(clicked()), this, SLOT(pushButtonRXAntClicked()));
+    connect(pushButtonRXAntEnable, SIGNAL(clicked()), this, SLOT(pushButtonRXAntEnableClicked()));
 
 	connect(pushButtonMenu, SIGNAL(clicked()), this, SLOT(pushButtonMenuClicked()));
 	connect(pushButtonMenuEnter, SIGNAL(clicked()), this, SLOT(pushButtonMenuEnterClicked()));
@@ -789,11 +913,26 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 
 	currBand = BAND_UNDEFINED;
 
-	setGeometry(QRect(settingsDialog->getPosMainWindowX(),settingsDialog->getPosMainWindowY(),this->width(),this->height()));
+
+//    pushButtonRXAnt1->hide();
+//    pushButtonRXAnt2->hide();
+//    pushButtonRXAnt3->hide();
+//    pushButtonRXAnt4->hide();
+//    pushButtonRXAnt5->hide();
+//    pushButtonRXAnt6->hide();
+//    pushButtonRXAnt7->hide();
+//    pushButtonRXAnt8->hide();
+//    pushButtonRXAnt9->hide();
+//    pushButtonRXAnt10->hide();
+//    pushButtonRXAnt11->hide();
+//    pushButtonRXAnt12->hide();
+
+
+    setGeometry(QRect(settingsDialog->getPosMainWindowX(),settingsDialog->getPosMainWindowY(),566,600));
 	keypadWindow->setGeometry(QRect(settingsDialog->getPosKeypadWindowX(),settingsDialog->getPosKeypadWindowY(),keypadWindow->width(),keypadWindow->height()));
 	rotatorWindow->setGeometry(QRect(settingsDialog->getPosRotatorWindowX(),settingsDialog->getPosRotatorWindowY(),rotatorWindow->width(),rotatorWindow->height()));
 	terminalWindow->setGeometry(QRect(settingsDialog->getPosTerminalWindowX(),settingsDialog->getPosTerminalWindowY(),terminalWindow->width(),terminalWindow->height()));
-  powerMeterWindow->setGeometry(QRect(settingsDialog->getPosPowerMeterWindowX(),settingsDialog->getPosPowerMeterWindowY(),powerMeterWindow->width(),powerMeterWindow->height()));
+    powerMeterWindow->setGeometry(QRect(settingsDialog->getPosPowerMeterWindowX(),settingsDialog->getPosPowerMeterWindowY(),powerMeterWindow->width(),powerMeterWindow->height()));
 
 	if (settingsDialog->getRotatorWindowOpen())
 		rotatorWindow->show();
@@ -823,34 +962,50 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
   }
 
   for (unsigned char i=0;i<6;i++) {
-    if (settingsDialog->getBandInfoBoxAddr(i) != 0) {
+      QPalette plt;
+      plt.setColor(QPalette::WindowText, Qt::red);
+
+      if (settingsDialog->getBandInfoBoxAddr(i) != 0) {
       if (i == 0) {
         labelBoxAName->setText(settingsDialog->getBandInfoBoxName(i)+":");
-        labelBoxABand->setText("Offline");
+        labelBoxABand->setPalette(plt);
+        labelBoxABand->setText("N/A");
       }
       else if (i == 1) {
         labelBoxBName->setText(settingsDialog->getBandInfoBoxName(i)+":");
-        labelBoxBBand->setText("Offline");
+        labelBoxBBand->setPalette(plt);
+        labelBoxBBand->setText("N/A");
       }
       else if (i == 2) {
         labelBoxCName->setText(settingsDialog->getBandInfoBoxName(i)+":");
-        labelBoxCBand->setText("Offline");
+        labelBoxCBand->setPalette(plt);
+        labelBoxCBand->setText("N/A");
       }
       else if (i == 3) {
         labelBoxDName->setText(settingsDialog->getBandInfoBoxName(i)+":");
-        labelBoxDBand->setText("Offline");
+        labelBoxDBand->setPalette(plt);
+        labelBoxDBand->setText("N/A");
       }
       else if (i == 4) {
         labelBoxEName->setText(settingsDialog->getBandInfoBoxName(i)+":");
-        labelBoxEBand->setText("Offline");
+        labelBoxEBand->setPalette(plt);
+        labelBoxEBand->setText("N/A");
       }
       else if (i == 5) {
         labelBoxFName->setText(settingsDialog->getBandInfoBoxName(i)+":");
-        labelBoxFBand->setText("Offline");
+        labelBoxFBand->setPalette(plt);
+        labelBoxFBand->setText("N/A");
       }
     }
   }
 
   updateBandInfo();
+
+
+  for (int x=0; x<128; x++)
+      for (int y=0; y<8; y++)
+          glcd_buffer[y][x] = 0;
+
+  repaint();
 }
 //

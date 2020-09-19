@@ -62,6 +62,9 @@ private:
   unsigned char currBandInfoBand[6];
   void updateBandInfo();
   QMutex mutex;
+  QPushButton *pushButtonRXAnt[12];
+  QLabel *labelRXAntennas;
+  QVBoxLayout *rxAntennaLayout;
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
@@ -96,7 +99,7 @@ public slots:
   void pushButtonRXAnt11Clicked();
   void pushButtonRXAnt12Clicked();
 
-  void pushButtonRXAntClicked();
+  void pushButtonRXAntEnableClicked();
 
   void timerPollRXQueueUpdate();
   void timerPollStatusUpdate();

@@ -973,6 +973,9 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
   plt.setColor(QPalette::Button, Qt::lightGray);
   labelMapNameAnt1->setPalette(plt);
+  labelAnt1Title->setPalette(plt);
+  labelAnt1Dir->setPalette(plt);
+  labelAnt1Status->setPalette(plt);
   pushButtonAnt1->setPalette(plt);
   plt.setColor(QPalette::Window, Qt::lightGray);
   frameAnt1->setAutoFillBackground(true);
@@ -982,6 +985,9 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
   plt.setColor(QPalette::Button, Qt::lightGray);
   labelMapNameAnt2->setPalette(plt);
+  labelAnt2Title->setPalette(plt);
+  labelAnt2Dir->setPalette(plt);
+  labelAnt2Status->setPalette(plt);
   pushButtonAnt2->setPalette(plt);
   plt.setColor(QPalette::Window, Qt::lightGray);
   frameAnt2->setAutoFillBackground(true);
@@ -991,6 +997,9 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
   plt.setColor(QPalette::Button, Qt::lightGray);
   labelMapNameAnt3->setPalette(plt);
+  labelAnt3Title->setPalette(plt);
+  labelAnt3Dir->setPalette(plt);
+  labelAnt3Status->setPalette(plt);
   pushButtonAnt3->setPalette(plt);
   plt.setColor(QPalette::Window, Qt::lightGray);
   frameAnt3->setAutoFillBackground(true);
@@ -1000,6 +1009,9 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   plt.setColor(QPalette::ButtonText, Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
   plt.setColor(QPalette::Button, Qt::lightGray);
   labelMapNameAnt4->setPalette(plt);
+  labelAnt4Title->setPalette(plt);
+  labelAnt4Dir->setPalette(plt);
+  labelAnt4Status->setPalette(plt);
   pushButtonAnt4->setPalette(plt);
   plt.setColor(QPalette::Background, Qt::lightGray);
   frameAnt4->setAutoFillBackground(true);
