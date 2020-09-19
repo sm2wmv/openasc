@@ -1,47 +1,34 @@
 #include "tcpclass.h"
-#include <QHostAddress>
 
 QByteArray PREAMBLE;
 
-TCPClass::TCPClass() {
+TCPClass::TCPClass(QObject *parent) : QObject(parent) {
 	PREAMBLE.append(0xFE);
 	PREAMBLE.append(0xFE);
 
-	threadActive = false;
-  rxTimeout = 0;
+    client = new QTcpSocket(this);
+
+    rxTimeout = 0;
 }
 
-void TCPClass::startTransfer() {
-	threadActive = true;
-}
-
-void TCPClass::connect(QString address, unsigned int port) {
+void TCPClass::connectToHost(QString address, unsigned int port) {
 	QHostAddress addr(address);
-	client.connectToHost(addr, port);
+
+    client->connectToHost(addr, port);
 }
+
 
 void TCPClass::stopConnection(void) {
-	client.abort();
+    client->abort();
 }
 
 bool TCPClass::isConnected() {
-	return(client.isOpen());
+    return(client->isOpen());
 }
-
-/*void TCPClass::run() {
-	threadActive = true;
-
-	while(threadActive) {
-		receiveMsg();
-		transmitMsg();
-
-		QThread::usleep(100);
-	}
-}*/
 
 void TCPClass::receiveMsg() {
 	QByteArray buff;
-	unsigned int numBytes = client.bytesAvailable();
+    unsigned int numBytes = client->bytesAvailable();
 
   rxTimeout++;
 
@@ -54,7 +41,7 @@ void TCPClass::receiveMsg() {
 		if (numBytes > TCP_BUF_LEN)
 			numBytes = TCP_BUF_LEN;
 
-		 buff = client.read(TCP_BUF_LEN);
+         buff = client->read(TCP_BUF_LEN);
 
 		//rxMessage.clear();
 		rxMessage.append(buff,buff.length());
@@ -116,7 +103,7 @@ QByteArray TCPClass::getMessage(void) {
 
 bool TCPClass::transmitMsg() {
 	if (txQueue.size() > 0) {
-		client.write(txQueue.takeFirst());
+        client->write(txQueue.takeFirst());
 
     return(true);
 	}

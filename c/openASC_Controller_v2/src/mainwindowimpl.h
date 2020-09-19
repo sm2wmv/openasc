@@ -65,6 +65,7 @@ private:
   QPushButton *pushButtonRXAnt[12];
   QLabel *labelRXAntennas;
   QVBoxLayout *rxAntennaLayout;
+  int timerConnectionTimeoutCounter = 0;
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:

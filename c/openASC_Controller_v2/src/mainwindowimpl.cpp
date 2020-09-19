@@ -192,7 +192,7 @@ void MainWindowImpl::pushButtonMenuLeftClicked() {
 void MainWindowImpl::pushButtonMenuRightClicked() {
 	if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_KNOB_ROTATE_CW);
-	}
+    }
 }
 
 void MainWindowImpl::actionSettingsEditTriggered() {
@@ -214,11 +214,13 @@ void MainWindowImpl::actionDisconnectTriggered() {
 	actionConnect->setEnabled(true);
 	actionDisconnect->setEnabled(false);
 
+    timerConnectionTimeoutCounter = 0;
+
     resetGUI();
 }
 
 void MainWindowImpl::actionConnectTriggered() {
-	TCPComm->connect(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
+    TCPComm->connectToHost(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
 
   timerPollRXQueue->setInterval(10);
   timerPollRXQueue->start();
@@ -253,13 +255,24 @@ void MainWindowImpl::comboBoxBandIndexChanged(int index) {
 }
 
 void MainWindowImpl::timerPollStatusUpdate(void) {
-  TCPComm->receiveMsg();
+    if (TCPComm->isConnected() == false)
+        actionDisconnectTriggered();
+    else {
+        TCPComm->receiveMsg();
 
-  if (TCPComm->transmitMsg()) {
-    if (settingsDialog->getActivityTimer()) {
-      activityTimeoutCounter = 0;
+        if (TCPComm->transmitMsg()) {
+          if (settingsDialog->getActivityTimer()) {
+            activityTimeoutCounter = 0;
+          }
+        }
     }
-  }
+
+    if (TCPComm->isConnected()) {
+        timerConnectionTimeoutCounter++;
+
+        if (timerConnectionTimeoutCounter > 1500)
+            actionDisconnectTriggered();
+    }
 }
 
 void MainWindowImpl::pushButtonRXAntEnableClicked() {
@@ -392,6 +405,9 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 
   if (TCPComm->isConnected()) {
     if (TCPComm->rxQueueSize() > 0) {
+        //We have recieved data from the client, reset the timeout counter
+        timerConnectionTimeoutCounter = 0;
+
       QByteArray rxMessage = TCPComm->getMessage();
 
       if (rxMessage.size() >= 3) {
@@ -855,7 +871,7 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
   keypadWindow = new Keypad(this);
   keypadWindow->hide();
 
-  TCPComm = new TCPClass();
+  TCPComm = new TCPClass(this);
 
   busClient = new WMVBusClient();
 
@@ -886,11 +902,11 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(actionReboot, SIGNAL(triggered()), this, SLOT(actionRebootTriggered()));
 	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));
 	connect(actionWindowsRotators, SIGNAL(triggered()), this, SLOT(WindowRotatorsTriggered()));
-	connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
+    connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
 	connect(actionDisconnect, SIGNAL(triggered()), this, SLOT(actionDisconnectTriggered()));
 	connect(actionTerminal, SIGNAL(triggered()), this, SLOT(actionTerminalTriggered()));
-  connect(actionKeypad, SIGNAL(triggered()), this, SLOT(actionKeypadTriggered()));
-  connect(actionPowerMeter, SIGNAL(triggered()), this, SLOT(actionPowerMeterTriggered()));
+    connect(actionKeypad, SIGNAL(triggered()), this, SLOT(actionKeypadTriggered()));
+    connect(actionPowerMeter, SIGNAL(triggered()), this, SLOT(actionPowerMeterTriggered()));
 
 	connect(comboBoxBand, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxBandIndexChanged(int)));
 

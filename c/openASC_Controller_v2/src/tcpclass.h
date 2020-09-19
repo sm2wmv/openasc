@@ -2,19 +2,19 @@
 #define TCPCLASS_H
 
 #include <QtNetwork>
-#include <QObject>
 #include <QString>
 #include <QTcpSocket>
-#include <QThread>
+#include <QObject>
+#include <QHostAddress>
+#include <QDebug>
 
 #define TCP_BUF_LEN	2048
 
-//class TCPClass : public QThread {
-class TCPClass {
+class TCPClass : public QObject {
+Q_OBJECT
 public:
-    TCPClass();
-    void startTransfer();
-    void connect(QString address, unsigned int port);
+    explicit TCPClass(QObject *parent);
+    void connectToHost(QString address, unsigned int port);
     bool isConnected();
     QByteArray getMessage(void);
     unsigned int rxQueueSize(void);
@@ -27,16 +27,12 @@ public:
     bool transmitMsg();
 private:
 		unsigned int tcpPort;
-		QTcpSocket client;
-		bool threadActive;
+        QTcpSocket *client;
 		QByteArray rxMessage;
 		QLinkedList<QByteArray> txQueue;
 		QLinkedList<QByteArray> rxQueue;
-    unsigned int rxTimeout;
+        unsigned int rxTimeout;
 protected:
-    //void run();
-
-public slots:
 
 };
 
