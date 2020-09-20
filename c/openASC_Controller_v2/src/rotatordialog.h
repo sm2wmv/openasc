@@ -21,6 +21,8 @@
 
 #define ANT_SEL_ROTATE_TIMEOUT 10000
 
+#define CURRENT_RX_ANT_COLOR red
+
 #define TARGET_DIR_BEAMWIDTH	1
 #define TARGET_DIR_BEAMWIDTH_A1_COLOR	black
 #define CURRENT_DIR_BEAMWIDTH_A1_COLOR	black
@@ -48,8 +50,10 @@ public:
 	void setRotatorFlag(unsigned char antIndex, unsigned char flags);
 	void setCOMMPtr(TCPClass *ptr);
 	void setRotatorStatusText(unsigned char index, unsigned char status);
-    void keyPressEvent(QKeyEvent *e);
-    void setupLayout();
+  void keyPressEvent(QKeyEvent *e);
+  void setupLayout();
+  void setRXAntStatus(bool state);
+  void updateRXAntenna(int index);
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent ( QMouseEvent * event );
@@ -60,15 +64,18 @@ private:
 	QString imagePath;
 	int currAzimuthAngle[4];
 	int targetAzimuthAngle[4];
-    int antCount;
-    int currAntIndex;
-    int lastAntIndex;
+  int antCount;
+  int currAntIndex;
+  int lastAntIndex;
 	int sizeWidth;
 	int sizeHeight;
 	QImage image;
 	unsigned char rotationEventStatus;
 	QString bandName;
 	QString antName[4];
+  int rxAntStartDir[12];
+  int rxAntStopDir[12];
+  QString rxAntName[12];
 	bool antExist[4];
 	bool antHasRotor[4];
 	bool antBiDirectional[4];
@@ -81,13 +88,22 @@ private:
 	int verticalArrayNrDirs[4];
 	int verticalArrayDirAngle[4][4];
 	QString verticalArrayDirName[4][4];
-    int lengthMapLabel;
+  int lengthMapLabel;
 	void setStatusPresetButtons();
-    QTimer *singleShotTimer;
+  QTimer *singleShotTimer;
+  void selectRXAnt(int index);
+  int convRXAnt(int heading);
+  int currRXAntenna=0;
+  int rxAntennaCalcWidth(int index);
+  int rxAntennaCalcAngle(int index);
 private slots:
     void on_pushButtonRotateQuit_clicked();
+    void on_pushButtonRX_clicked(bool checked);
+
 signals:
     void quitProgram();
+    void signalSelectRXAntenna(int index);
+    void signalEnableRXAntenna();
 public slots:
 	void pushButtonAnt1Clicked();
 	void pushButtonAnt2Clicked();
@@ -103,7 +119,7 @@ public slots:
 	void pushButtonRotateCCWPressed();
 	void pushButtonRotateCWReleased();
 	void pushButtonRotateCCWReleased();
-    void disableButtonAntSelection();
+  void disableButtonAntSelection();
 };
 #endif
 

@@ -461,6 +461,111 @@ border: 1px solid black;
       <string>Quit</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButtonRX">
+     <property name="geometry">
+      <rect>
+       <x>550</x>
+       <y>5</y>
+       <width>55</width>
+       <height>55</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>RX</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelLEDRXMode">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>25</y>
+       <width>15</width>
+       <height>15</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>15</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../src/leds/led_green_off_15x15.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelMapNameRX">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>335</y>
+       <width>150</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+background-color: lightGray;
+border-radius: 5px;
+border: 1px solid black;
+}</string>
+     </property>
+     <property name="text">
+      <string>RX</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="margin">
+      <number>2</number>
+     </property>
+    </widget>
     <zorder>imageLabel</zorder>
     <zorder>labelMapNameAnt1</zorder>
     <zorder>labelMapNameAnt3</zorder>
@@ -468,6 +573,9 @@ border: 1px solid black;
     <zorder>labelMapNameAnt4</zorder>
     <zorder>labelMapNameAnt2</zorder>
     <zorder>pushButtonRotateQuit</zorder>
+    <zorder>pushButtonRX</zorder>
+    <zorder>labelLEDRXMode</zorder>
+    <zorder>labelMapNameRX</zorder>
    </widget>
    <widget class="QFrame" name="frameRight">
     <property name="geometry">

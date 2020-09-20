@@ -8,6 +8,9 @@
 
 #define PI 3.1415
 
+#define PIXMAP_GREEN_ON QCoreApplication::applicationDirPath()+"/leds/led_green_on_15x15.png"
+#define PIXMAP_GREEN_OFF QCoreApplication::applicationDirPath()+"/leds/led_green_off_15x15.png"
+
 void RotatorDialog::paintEvent(QPaintEvent *event) {
 	QPainter painter(this);
 
@@ -16,8 +19,8 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 
 	painter.drawImage(0 , 0 , image);
 
-	float rectWidth = sizeWidth - (sizeWidth * 0.06);
-	float rectHeight = sizeHeight - (sizeHeight * 0.06);
+  float rectWidth = sizeWidth - (sizeWidth * 0.06);
+  float rectHeight = sizeHeight - (sizeHeight * 0.06);
 	QRectF rectangle(sizeWidth/2-rectWidth/2,sizeWidth/2-rectHeight/2, rectWidth-2, rectHeight-2);
 
 
@@ -30,104 +33,123 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 
     QSize labelSize;
 
-	for (int i=0;i<4;i++) {
-		if ((antExist[i] == true) && (antBeamWidth[i] > 0)) {
-			if (i==0) {
-					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
-					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
+    if (currRXAntenna != 0) {
 
-                    labelSize = labelMapNameAnt1->size();
+      labelMapNameRX->setVisible(true);
+      QString rxAntText = rxAntName[currRXAntenna-1] + "\u00B0";
+      labelMapNameRX->setText(rxAntText);
+      labelMapNameRX->adjustSize();
+      labelSize = labelMapNameRX->size();
+      labelMapNameRX->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(rxAntennaCalcAngle(currRXAntenna)-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(rxAntennaCalcAngle(currRXAntenna)-270))),labelSize.width(),labelSize.height());
 
-                    if (antVerticalArray[i]) {
-						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                        labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
-                    }
-                    else {
-                        labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+      painter.setPen(Qt::CURRENT_RX_ANT_COLOR);
+      painter.setBrush(QBrush(QColor(Qt::CURRENT_RX_ANT_COLOR),Qt::DiagCrossPattern));
+      painter.drawPie(rectangle,(360-(-90+rxAntennaCalcAngle(currRXAntenna) + rxAntennaCalcWidth(currRXAntenna)/2))*16,rxAntennaCalcWidth(currRXAntenna)*16);
+    }
 
-                        painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                    }
+    for (int i=0;i<4;i++) {
+      if ((antExist[i] == true) && (antBeamWidth[i] > 0)) {
+        if (i==0) {
+          painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
+          painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR),Qt::FDiagPattern));
 
-					if (antBiDirectional[i])
-						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          labelSize = labelMapNameAnt1->size();
 
-					if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
-                        painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A1_COLOR),Qt::SolidPattern));
-						painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
-					}
+          if (!antFixed[i]) {
+            if (antVerticalArray[i]) {
+              painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+              labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+            }
+            else {
+              labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
 
-			}
-			else if (i==1) {
-					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
-					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
+              painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            }
 
-                    labelSize = labelMapNameAnt2->size();
+            if (antBiDirectional[i])
+              painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
-                    if (antVerticalArray[i]) {
-						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                        labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
-                    }
-                    else {
-                        labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
-                        painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                    }
+            if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+              painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A1_COLOR),Qt::SolidPattern));
+              painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
+            }
+          }
+          else {
+            labelMapNameAnt1->hide();
+          }
+        }
+        else if (i==1) {
+          painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR);
+          painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
 
-					if (antBiDirectional[i])
-						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          labelSize = labelMapNameAnt2->size();
+          if (!antFixed[i]) {
+            if (antVerticalArray[i]) {
+              painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+              labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+            }
+            else {
+              labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+              painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            }
 
-                    if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
-                        painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A2_COLOR),Qt::SolidPattern));
-                        painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
-                    }
-			}
-			else if (i==2) {
-					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
-					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
+            if (antBiDirectional[i])
+              painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
-                    labelSize = labelMapNameAnt3->size();
+            if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+              painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A2_COLOR),Qt::SolidPattern));
+              painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
+            }
+          }
+        }
+        else if (i==2) {
+          painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR);
+          painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A3_COLOR),Qt::FDiagPattern));
 
-                    if (antVerticalArray[i]) {
-						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                        labelMapNameAnt3->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
-                    }
-                    else {
-						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                        labelMapNameAnt3->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
-                    }
+          labelSize = labelMapNameAnt3->size();
 
-					if (antBiDirectional[i])
-						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          if (antVerticalArray[i]) {
+            painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            labelMapNameAnt3->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+          }
+          else {
+            painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            labelMapNameAnt3->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+          }
 
-                    if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
-                        painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A3_COLOR),Qt::SolidPattern));
-                        painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
-                    }
-			}
-			else if (i==3) {
-					painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
-					painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
+          if (antBiDirectional[i])
+            painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
-                    labelSize = labelMapNameAnt4->size();
+          if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+            painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A3_COLOR),Qt::SolidPattern));
+            painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
+          }
+        }
+        else if (i==3) {
+          painter.setPen(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR);
+          painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A4_COLOR),Qt::FDiagPattern));
 
-                    if (antVerticalArray[i]) {
-						painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                        labelMapNameAnt4->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
-                    }
-                    else {
-						painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-                        labelMapNameAnt4->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
-                    }
+          labelSize = labelMapNameAnt4->size();
 
-					if (antBiDirectional[i])
-						painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          if (antVerticalArray[i]) {
+            painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            labelMapNameAnt4->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+          }
+          else {
+            painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            labelMapNameAnt4->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+          }
 
-                    if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
-                        painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A4_COLOR),Qt::SolidPattern));
-                        painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
-                    }
-			}
-		}
-	}
+          if (antBiDirectional[i])
+            painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+            if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+              painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A4_COLOR),Qt::SolidPattern));
+              painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
+            }
+        }
+      }
+    }
 }
 
 void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char status) {
@@ -199,21 +221,97 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
         }
         else
             labelAnt4Status->setText("");
-	}
+  }
 }
 
 void RotatorDialog::mousePressEvent ( QMouseEvent * event ) {	
-    if (currAntIndex != -1) {
-      if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (sizeWidth)) && (event->y() <= sizeHeight)) {
-          double mapX = abs(sizeWidth/2 - event->x());
-          double mapY = sizeHeight/2 - event->y();
+  if (pushButtonRX->isChecked()) {
+    if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (sizeWidth)) && (event->y() <= sizeHeight)) {
+      double mapX = abs(sizeWidth/2 - event->x());
+      double mapY = sizeHeight/2 - event->y();
 
-          if ((sizeWidth/2 - event->x()) < 0)
-                        setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
-                else
-                        setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
-        }
+      if ((sizeWidth/2 - event->x()) < 0) {
+        selectRXAnt(convRXAnt(90-atan(mapY/mapX)*(180/PI)));
+      }
+      else {
+        selectRXAnt(convRXAnt(270+atan(mapY/mapX)*(180/PI)));
+      }
     }
+
+    repaint();
+  }
+  if (currAntIndex != -1) {
+    if ((event->x() >= 8) && (event->y() >= 8) && (event->x() <= (sizeWidth)) && (event->y() <= sizeHeight)) {
+      double mapX = abs(sizeWidth/2 - event->x());
+      double mapY = sizeHeight/2 - event->y();
+
+      if ((sizeWidth/2 - event->x()) < 0)
+        setTargetDir(currAntIndex,90-atan(mapY/mapX)*(180/PI));
+      else
+        setTargetDir(currAntIndex,270+atan(mapY/mapX)*(180/PI));
+    }
+  }
+}
+
+void RotatorDialog::updateRXAntenna(int index) {
+  currRXAntenna = index;
+
+  repaint();
+}
+
+int RotatorDialog::rxAntennaCalcAngle(int index) {
+  // Calculate the center angle of the selected RX antenna
+  if (rxAntStartDir[currRXAntenna-1] < rxAntStopDir[currRXAntenna-1]) {
+    return(rxAntStartDir[currRXAntenna-1] + (rxAntStopDir[currRXAntenna-1] - rxAntStartDir[currRXAntenna-1])/2);
+  }
+  else {
+    return(rxAntStartDir[currRXAntenna-1] + ((360-rxAntStartDir[currRXAntenna-1]) + rxAntStopDir[currRXAntenna-1])/2 - 360);
+  }
+
+  return(0);
+}
+
+int RotatorDialog::rxAntennaCalcWidth(int index) {
+  // Calculate the beam width of the selected RX antenna
+/*  if (rxAntStartDir[currRXAntenna-1] < rxAntStopDir[currRXAntenna-1]) {
+    return(rxAntStopDir[currRXAntenna-1] - rxAntStartDir[currRXAntenna-1]);
+  }
+  else {
+    return(360-rxAntStartDir[currRXAntenna-1]) + rxAntStopDir[currRXAntenna-1];
+  }
+*/
+
+  //Decided to have a constant beam width on the bevarages. This can be changed however by
+  //uncommenting the code above and putting return(0) below.
+  return(5);
+}
+
+
+void RotatorDialog::selectRXAnt(int index) {
+  emit signalEnableRXAntenna();
+  emit signalSelectRXAntenna(index);
+}
+
+int RotatorDialog::convRXAnt(int heading) {
+  //Go through the different rx antenna combinations  and check
+  //if there is some RX antenna suitable to be used for a certain heading
+  for (int i=0;i<12;i++) {
+    if (rxAntStartDir[i] != -1) {
+      if (rxAntStartDir[i] < rxAntStopDir[i]) {
+        if ((heading > rxAntStartDir[i]) && (heading <= rxAntStopDir[i]))
+          return(i+1);
+      }
+      else {
+        if ((heading > rxAntStopDir[i]) && (heading <= 359))
+          return(i+1);
+        else if ((heading > 0) && (heading < rxAntStartDir[i]))
+          return(i+1);
+      }
+    }
+  }
+
+  //No antenna was found
+  return(0);
 }
 
 void RotatorDialog::setTargetDir(int antIndex, int targetAngle) {
@@ -377,12 +475,12 @@ void RotatorDialog::loadBand(int bandIndex) {
 			antVerticalArray[i] = false;
 		}
 
-        antCount = 0;
+    antCount = 0;
 
-        frameAnt1->setVisible(false);
-        frameAnt2->setVisible(false);
-        frameAnt3->setVisible(false);
-        frameAnt4->setVisible(false);
+    frameAnt1->setVisible(false);
+    frameAnt2->setVisible(false);
+    frameAnt3->setVisible(false);
+    frameAnt4->setVisible(false);
 
 		pushButtonAnt1->setVisible(false);
 		pushButtonAnt2->setVisible(false);
@@ -400,206 +498,302 @@ void RotatorDialog::loadBand(int bandIndex) {
 		pushButtonSTOP->setEnabled(false);
 	}
 	else {
-		QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
+    QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
 
-		settings.beginGroup(bandName);
+    QStringList groups = settings.childGroups();
 
-        antCount = 0;
+    settings.beginGroup(bandName);
 
-		int size = settings.beginReadArray("Ant");
+    antCount = 0;
 
-		for (int i=0;i<size;i++) {
-			settings.setArrayIndex(i);
+    int size = settings.beginReadArray("Ant");
 
-			antName[i] = settings.value("Name").toString();
-			antExist[i] = settings.value("Exist").toBool();
-			antHasRotor[i] = settings.value("HasRotor").toBool();
-			antBeamWidth[i] = settings.value("BeamWidth").toInt();
-			antVerticalArray[i] = settings.value("VerticalArray").toBool();
-			antFixedAngle[i] = settings.value("AntennaFixedAngle").toInt();
-			antFixed[i] = settings.value("AntennaFixed").toBool();
-			antBiDirectional[i] = settings.value("AntennaBiDirectional").toBool();
+    for (int i=0;i<size;i++) {
+      settings.setArrayIndex(i);
 
-            if (antExist[i])
-                antCount++;
+      antName[i] = settings.value("Name").toString();
+      antExist[i] = settings.value("Exist").toBool();
+      antHasRotor[i] = settings.value("HasRotor").toBool();
+      antBeamWidth[i] = settings.value("BeamWidth").toInt();
+      antVerticalArray[i] = settings.value("VerticalArray").toBool();
+      antFixedAngle[i] = settings.value("AntennaFixedAngle").toInt();
+      antFixed[i] = settings.value("AntennaFixed").toBool();
+      antBiDirectional[i] = settings.value("AntennaBiDirectional").toBool();
 
-			if (antVerticalArray[i]) {
-				verticalArrayNrDirs[i] = settings.value("VerticalArrayNrDirs").toInt();
+      if (antExist[i])
+          antCount++;
 
-				verticalArrayDirAngle[i][0] = settings.value("VerticalArrayDir1Angle").toInt();
-				verticalArrayDirAngle[i][1] = settings.value("VerticalArrayDir2Angle").toInt();
-				verticalArrayDirAngle[i][2] = settings.value("VerticalArrayDir3Angle").toInt();
-				verticalArrayDirAngle[i][3] = settings.value("VerticalArrayDir4Angle").toInt();
+      if (antVerticalArray[i]) {
+        verticalArrayNrDirs[i] = settings.value("VerticalArrayNrDirs").toInt();
 
-				verticalArrayDirName[i][0] = settings.value("VerticalArrayDir1Name").toString();
-				verticalArrayDirName[i][1] = settings.value("VerticalArrayDir2Name").toString();
-				verticalArrayDirName[i][2] = settings.value("VerticalArrayDir3Name").toString();
-				verticalArrayDirName[i][3] = settings.value("VerticalArrayDir4Name").toString();
-			}
+        verticalArrayDirAngle[i][0] = settings.value("VerticalArrayDir1Angle").toInt();
+        verticalArrayDirAngle[i][1] = settings.value("VerticalArrayDir2Angle").toInt();
+        verticalArrayDirAngle[i][2] = settings.value("VerticalArrayDir3Angle").toInt();
+        verticalArrayDirAngle[i][3] = settings.value("VerticalArrayDir4Angle").toInt();
 
-			if (antFixed[i]) {
-				setRotatorAngle(i,antFixedAngle[i]);
-			}
-		}
+        verticalArrayDirName[i][0] = settings.value("VerticalArrayDir1Name").toString();
+        verticalArrayDirName[i][1] = settings.value("VerticalArrayDir2Name").toString();
+        verticalArrayDirName[i][2] = settings.value("VerticalArrayDir3Name").toString();
+        verticalArrayDirName[i][3] = settings.value("VerticalArrayDir4Name").toString();
+      }
 
-		settings.endArray();
+      if (antFixed[i]) {
+        setRotatorAngle(i,antFixedAngle[i]);
+      }
+    }
 
-		settings.endGroup();
+    settings.endArray();
 
-		settings.beginGroup("PresetButtons");
+    settings.endGroup();
 
-		pushButtonPreset1->setText(settings.value("Preset1Text").toString());
-		pushButtonPreset2->setText(settings.value("Preset2Text").toString());
-		pushButtonPreset3->setText(settings.value("Preset3Text").toString());
-		pushButtonPreset4->setText(settings.value("Preset4Text").toString());
-		pushButtonPreset5->setText(settings.value("Preset5Text").toString());
+    settings.beginGroup("PresetButtons");
 
-		presetButtonValue[0] = settings.value("Preset1Angle").toInt();
-		presetButtonValue[1] = settings.value("Preset2Angle").toInt();
-		presetButtonValue[2] = settings.value("Preset3Angle").toInt();
-		presetButtonValue[3] = settings.value("Preset4Angle").toInt();
-		presetButtonValue[4] = settings.value("Preset5Angle").toInt();
+    pushButtonPreset1->setText(settings.value("Preset1Text").toString());
+    pushButtonPreset2->setText(settings.value("Preset2Text").toString());
+    pushButtonPreset3->setText(settings.value("Preset3Text").toString());
+    pushButtonPreset4->setText(settings.value("Preset4Text").toString());
+    pushButtonPreset5->setText(settings.value("Preset5Text").toString());
 
-		settings.endGroup();
+    presetButtonValue[0] = settings.value("Preset1Angle").toInt();
+    presetButtonValue[1] = settings.value("Preset2Angle").toInt();
+    presetButtonValue[2] = settings.value("Preset3Angle").toInt();
+    presetButtonValue[3] = settings.value("Preset4Angle").toInt();
+    presetButtonValue[4] = settings.value("Preset5Angle").toInt();
 
-		setStatusPresetButtons();
+    settings.endGroup();
 
-        frameAnt1->setVisible(false);
-        frameAnt2->setVisible(false);
-        frameAnt3->setVisible(false);
-        frameAnt4->setVisible(false);
+    setStatusPresetButtons();
 
-		pushButtonAnt1->setVisible(false);
-		pushButtonAnt2->setVisible(false);
-		pushButtonAnt3->setVisible(false);
-		pushButtonAnt4->setVisible(false);
+    if (groups.contains("RXAntennas") == true) {
+      settings.beginGroup("RXAntennas");
 
-        labelMapNameAnt1->setVisible(false);
-        labelMapNameAnt2->setVisible(false);
-        labelMapNameAnt3->setVisible(false);
-        labelMapNameAnt4->setVisible(false);
+      rxAntName[0] = settings.value("RXAnt1Name").toString();
+      rxAntName[1] = settings.value("RXAnt2Name").toString();
+      rxAntName[2] = settings.value("RXAnt3Name").toString();
+      rxAntName[3] = settings.value("RXAnt4Name").toString();
+      rxAntName[4] = settings.value("RXAnt5Name").toString();
+      rxAntName[5] = settings.value("RXAnt6Name").toString();
+      rxAntName[6] = settings.value("RXAnt7Name").toString();
+      rxAntName[7] = settings.value("RXAnt8Name").toString();
+      rxAntName[8] = settings.value("RXAnt9Name").toString();
+      rxAntName[9] = settings.value("RXAnt10Name").toString();
+      rxAntName[10] = settings.value("RXAnt11Name").toString();
+      rxAntName[11] = settings.value("RXAnt12Name").toString();
 
-		if (antExist[0]) {
-            frameAnt1->setVisible(true);
-			pushButtonAnt1->setVisible(true);
-            labelMapNameAnt1->setVisible(true);
+      rxAntStartDir[0] = settings.value("RXAnt1StartDir").toInt();
+      rxAntStartDir[1] = settings.value("RXAnt2StartDir").toInt();
+      rxAntStartDir[2] = settings.value("RXAnt3StartDir").toInt();
+      rxAntStartDir[3] = settings.value("RXAnt4StartDir").toInt();
+      rxAntStartDir[4] = settings.value("RXAnt5StartDir").toInt();
+      rxAntStartDir[5] = settings.value("RXAnt6StartDir").toInt();
+      rxAntStartDir[6] = settings.value("RXAnt7StartDir").toInt();
+      rxAntStartDir[7] = settings.value("RXAnt8StartDir").toInt();
+      rxAntStartDir[8] = settings.value("RXAnt9StartDir").toInt();
+      rxAntStartDir[9] = settings.value("RXAnt10StartDir").toInt();
+      rxAntStartDir[10] = settings.value("RXAnt11StartDir").toInt();
+      rxAntStartDir[11] = settings.value("RXAnt12StartDir").toInt();
 
-			if ((antHasRotor[0]) || (antVerticalArray[0])) {
-				pushButtonAnt1->setEnabled(true);
-                pushButtonAnt1->setChecked(false);
-            }
-			else {
-				pushButtonAnt1->setEnabled(false);
-				pushButtonAnt1->setChecked(false);
-			}
-		}
+      rxAntStopDir[0] = settings.value("RXAnt1StopDir").toInt();
+      rxAntStopDir[1] = settings.value("RXAnt2StopDir").toInt();
+      rxAntStopDir[2] = settings.value("RXAnt3StopDir").toInt();
+      rxAntStopDir[3] = settings.value("RXAnt4StopDir").toInt();
+      rxAntStopDir[4] = settings.value("RXAnt5StopDir").toInt();
+      rxAntStopDir[5] = settings.value("RXAnt6StopDir").toInt();
+      rxAntStopDir[6] = settings.value("RXAnt7StopDir").toInt();
+      rxAntStopDir[7] = settings.value("RXAnt8StopDir").toInt();
+      rxAntStopDir[8] = settings.value("RXAnt9StopDir").toInt();
+      rxAntStopDir[9] = settings.value("RXAnt10StopDir").toInt();
+      rxAntStopDir[10] = settings.value("RXAnt11StopDir").toInt();
+      rxAntStopDir[11] = settings.value("RXAnt12StopDir").toInt();
 
-		if (antExist[1]) {
-            frameAnt2->setVisible(true);
-			pushButtonAnt2->setVisible(true);
-            labelMapNameAnt2->setVisible(true);
+      settings.endGroup();
+    }
+    else {
+      //If this category does not exist in the INI-file, then we add it with
+      //the default value of -1 so we know there is no antenna direction information
+      settings.beginGroup("RXAntennas");
 
-			if ((antHasRotor[1]) || (antVerticalArray[1])) {
-				pushButtonAnt2->setEnabled(true);
-			}
-			else {
-				pushButtonAnt2->setEnabled(false);
-                pushButtonAnt2->setChecked(false);
-			}
-		}
+      settings.setValue("RXAnt1Name"," ");
+      settings.setValue("RXAnt1StartDir", -1);
+      settings.setValue("RXAnt1StopDir", -1);
+      settings.setValue("RXAnt2Name"," ");
+      settings.setValue("RXAnt2StartDir", -1);
+      settings.setValue("RXAnt2StopDir", -1);
+      settings.setValue("RXAnt3Name"," ");
+      settings.setValue("RXAnt3StartDir", -1);
+      settings.setValue("RXAnt3StopDir", -1);
+      settings.setValue("RXAnt4Name"," ");
+      settings.setValue("RXAnt4StartDir", -1);
+      settings.setValue("RXAnt4StopDir", -1);
+      settings.setValue("RXAnt5Name"," ");
+      settings.setValue("RXAnt5StartDir", -1);
+      settings.setValue("RXAnt5StopDir", -1);
+      settings.setValue("RXAnt6Name"," ");
+      settings.setValue("RXAnt6StartDir", -1);
+      settings.setValue("RXAnt6StopDir", -1);
+      settings.setValue("RXAnt7Name"," ");
+      settings.setValue("RXAnt7StartDir", -1);
+      settings.setValue("RXAnt7StopDir", -1);
+      settings.setValue("RXAnt8Name"," ");
+      settings.setValue("RXAnt8StartDir", -1);
+      settings.setValue("RXAnt8StopDir", -1);
+      settings.setValue("RXAnt9Name"," ");
+      settings.setValue("RXAnt9StartDir", -1);
+      settings.setValue("RXAnt9StopDir", -1);
+      settings.setValue("RXAnt10Name"," ");
+      settings.setValue("RXAnt10StartDir", -1);
+      settings.setValue("RXAnt10StopDir", -1);
+      settings.setValue("RXAnt11Name"," ");
+      settings.setValue("RXAnt11StartDir", -1);
+      settings.setValue("RXAnt11StopDir", -1);
+      settings.setValue("RXAnt12Name"," ");
+      settings.setValue("RXAnt12StartDir", -1);
+      settings.setValue("RXAnt12StopDir", -1);
 
-		if (antExist[2]) {
-            frameAnt3->setVisible(true);
-			pushButtonAnt3->setVisible(true);
-            labelMapNameAnt3->setVisible(true);
+      settings.endGroup();
+    }
 
-			if ((antHasRotor[2]) || (antVerticalArray[2])) {
-				pushButtonAnt3->setEnabled(true);
-			}
-            else {
-				pushButtonAnt3->setEnabled(false);
-                pushButtonAnt3->setChecked(false);
-            }
-		}
+    pushButtonRX->setChecked(false);
 
-		if (antExist[3]) {
-            frameAnt4->setVisible(true);
-			pushButtonAnt4->setVisible(true);
-            labelMapNameAnt4->setVisible(true);
+    frameAnt1->setVisible(false);
+    frameAnt2->setVisible(false);
+    frameAnt3->setVisible(false);
+    frameAnt4->setVisible(false);
 
-			if ((antHasRotor[3]) || (antVerticalArray[3])) {
-				pushButtonAnt4->setEnabled(true);
-			}
-            else {
-                pushButtonAnt4->setEnabled(false);
-                pushButtonAnt4->setChecked(false);
-            }
-        }
+    pushButtonAnt1->setVisible(false);
+    pushButtonAnt2->setVisible(false);
+    pushButtonAnt3->setVisible(false);
+    pushButtonAnt4->setVisible(false);
 
-        setStatusPresetButtons();
+    labelMapNameAnt1->setVisible(false);
+    labelMapNameAnt2->setVisible(false);
+    labelMapNameAnt3->setVisible(false);
+    labelMapNameAnt4->setVisible(false);
+    labelMapNameRX->setVisible(false);
 
-		labelAnt1Title->setText(antName[0]);
-		labelAnt2Title->setText(antName[1]);
-		labelAnt3Title->setText(antName[2]);
-		labelAnt4Title->setText(antName[3]);
+    if (antExist[0]) {
+      frameAnt1->setVisible(true);
+      pushButtonAnt1->setVisible(true);
+      labelMapNameAnt1->setVisible(true);
 
-        labelMapNameAnt1->setText(antName[0]);
-        labelMapNameAnt1->adjustSize();
+      if ((antHasRotor[0]) || (antVerticalArray[0])) {
+        pushButtonAnt1->setEnabled(true);
+        pushButtonAnt1->setChecked(false);
+      }
+      else {
+        pushButtonAnt1->setEnabled(false);
+        pushButtonAnt1->setChecked(false);
+      }
+    }
 
-        labelMapNameAnt2->setText(antName[1]);
-        labelMapNameAnt2->adjustSize();
+    if (antExist[1]) {
+      frameAnt2->setVisible(true);
+      pushButtonAnt2->setVisible(true);
+      labelMapNameAnt2->setVisible(true);
 
-        labelMapNameAnt3->setText(antName[2]);
-        labelMapNameAnt3->adjustSize();
+      if ((antHasRotor[1]) || (antVerticalArray[1])) {
+        pushButtonAnt2->setEnabled(true);
+      }
+      else {
+        pushButtonAnt2->setEnabled(false);
+        pushButtonAnt2->setChecked(false);
+      }
+    }
 
-        labelMapNameAnt4->setText(antName[3]);
-        labelMapNameAnt4->adjustSize();
+    if (antExist[2]) {
+      frameAnt3->setVisible(true);
+      pushButtonAnt3->setVisible(true);
+      labelMapNameAnt3->setVisible(true);
 
-        qDebug() << labelMapNameAnt1->size();
+      if ((antHasRotor[2]) || (antVerticalArray[2])) {
+        pushButtonAnt3->setEnabled(true);
+      }
+      else {
+        pushButtonAnt3->setEnabled(false);
+        pushButtonAnt3->setChecked(false);
+      }
+    }
 
-		if (antFixed[0]) {
-			labelAnt1Status->setText("Fixed");
-			pushButtonAnt1->setVisible(false);
-		}
-		else if (antVerticalArray[0])
-			labelAnt1Status->setText("");
-        else if (antHasRotor[0] == false)
-            labelAnt1Status->setText("Stopped");
-        else
-            labelAnt1Status->setText("");
+    if (antExist[3]) {
+      frameAnt4->setVisible(true);
+      pushButtonAnt4->setVisible(true);
+      labelMapNameAnt4->setVisible(true);
 
-		if (antFixed[1]) {
-			labelAnt2Status->setText("Fixed");
-			pushButtonAnt2->setVisible(false);
-		}
-		else if (antVerticalArray[1])
-			labelAnt2Status->setText("");
-        else if (antHasRotor[1] == false)
-            labelAnt2Status->setText("Stopped");
-        else
-            labelAnt2Status->setText("");
+      if ((antHasRotor[3]) || (antVerticalArray[3])) {
+        pushButtonAnt4->setEnabled(true);
+      }
+      else {
+        pushButtonAnt4->setEnabled(false);
+        pushButtonAnt4->setChecked(false);
+      }
+    }
 
-		if (antFixed[2]) {
-			labelAnt3Status->setText("Fixed");
-			pushButtonAnt3->setVisible(false);
-		}
-		else if (antVerticalArray[2])
-			labelAnt3Status->setText("");
-        else if (antHasRotor[2] == false)
-            labelAnt3Status->setText("Stopped");
-        else
-            labelAnt3Status->setText("");
+    setStatusPresetButtons();
 
-		if (antFixed[3]) {
-			labelAnt4Status->setText("Fixed");
-			pushButtonAnt4->setVisible(false);
-		}
-		else if (antVerticalArray[3])
-			labelAnt4Status->setText("");
-        else if (antHasRotor[3])
-            labelAnt4Status->setText("Stopped");
-        else
-            labelAnt4Status->setText("");
+    if (currRXAntenna != 0) {
+      labelMapNameRX->setVisible(true);
+    }
+
+    labelAnt1Title->setText(antName[0]);
+    labelAnt2Title->setText(antName[1]);
+    labelAnt3Title->setText(antName[2]);
+    labelAnt4Title->setText(antName[3]);
+
+    labelMapNameAnt1->setText(antName[0]);
+    labelMapNameAnt1->adjustSize();
+
+    labelMapNameAnt2->setText(antName[1]);
+    labelMapNameAnt2->adjustSize();
+
+    labelMapNameAnt3->setText(antName[2]);
+    labelMapNameAnt3->adjustSize();
+
+    labelMapNameAnt4->setText(antName[3]);
+    labelMapNameAnt4->adjustSize();
+
+    if (antFixed[0]) {
+      labelAnt1Status->setText("Fixed");
+      pushButtonAnt1->setVisible(false);
+    }
+    else if (antVerticalArray[0])
+      labelAnt1Status->setText("");
+    else if (antHasRotor[0] == false)
+      labelAnt1Status->setText("Stopped");
+    else
+      labelAnt1Status->setText("");
+
+    if (antFixed[1]) {
+      labelAnt2Status->setText("Fixed");
+      pushButtonAnt2->setVisible(false);
+    }
+    else if (antVerticalArray[1])
+      labelAnt2Status->setText("");
+    else if (antHasRotor[1] == false)
+      labelAnt2Status->setText("Stopped");
+    else
+      labelAnt2Status->setText("");
+
+    if (antFixed[2]) {
+      labelAnt3Status->setText("Fixed");
+      pushButtonAnt3->setVisible(false);
+    }
+    else if (antVerticalArray[2])
+      labelAnt3Status->setText("");
+    else if (antHasRotor[2] == false)
+      labelAnt3Status->setText("Stopped");
+    else
+      labelAnt3Status->setText("");
+
+    if (antFixed[3]) {
+      labelAnt4Status->setText("Fixed");
+      pushButtonAnt4->setVisible(false);
+    }
+    else if (antVerticalArray[3])
+      labelAnt4Status->setText("");
+    else if (antHasRotor[3])
+      labelAnt4Status->setText("Stopped");
+    else
+      labelAnt4Status->setText("");
 
     }
 
@@ -624,12 +818,12 @@ void RotatorDialog::loadBand(int bandIndex) {
 		}
 	}
 
-    if (antCount == 1) {
-        for (int i=0;i<4;i++) {
-            if (antExist[i])
-                currAntIndex = i;
-        }
+  if (antCount == 1) {
+    for (int i=0;i<4;i++) {
+      if (antExist[i])
+        currAntIndex = i;
     }
+  }
 
 	repaint();
 }
@@ -705,56 +899,60 @@ void RotatorDialog::pushButtonRotateCCWReleased() {
 }
 
 void RotatorDialog::disableButtonAntSelection() {
-    if (antCount != 1) {
-        if (!antVerticalArray[currAntIndex]) {
-            pushButtonAnt1->setChecked(false);
-            pushButtonAnt2->setChecked(false);
-            pushButtonAnt3->setChecked(false);
-            pushButtonAnt4->setChecked(false);
+  if (antCount != 1) {
+    if (!antVerticalArray[currAntIndex]) {
+      pushButtonAnt1->setChecked(false);
+      pushButtonAnt2->setChecked(false);
+      pushButtonAnt3->setChecked(false);
+      pushButtonAnt4->setChecked(false);
 
 
-            pushButtonPreset1->setEnabled(false);
-            pushButtonPreset2->setEnabled(false);
-            pushButtonPreset3->setEnabled(false);
-            pushButtonPreset4->setEnabled(false);
-            pushButtonPreset5->setEnabled(false);
+      pushButtonPreset1->setEnabled(false);
+      pushButtonPreset2->setEnabled(false);
+      pushButtonPreset3->setEnabled(false);
+      pushButtonPreset4->setEnabled(false);
+      pushButtonPreset5->setEnabled(false);
 
-            if (pushButtonRotateCW->isDown() != true)
-                pushButtonRotateCW->setEnabled(false);
+      if (pushButtonRotateCW->isDown() != true)
+          pushButtonRotateCW->setEnabled(false);
 
-            if (pushButtonRotateCCW->isDown() != true)
-                pushButtonRotateCCW->setEnabled(false);
+      if (pushButtonRotateCCW->isDown() != true)
+          pushButtonRotateCCW->setEnabled(false);
 
-            currAntIndex = -1;
-        }
+      currAntIndex = -1;
     }
+  }
 }
 
 void RotatorDialog::pushButtonAnt1Clicked() {
-    //Make sure if the timer is already running that we stop it
-    if (singleShotTimer->isActive()) {
-        qDebug() << "Stopping timer";
-        singleShotTimer->stop();
-    }
+  //Make sure if the timer is already running that we stop it
+  if (singleShotTimer->isActive()) {
+      singleShotTimer->stop();
+  }
+
+  //Disable RX ant selection function
+  pushButtonRX->setChecked(false);
 
 	pushButtonAnt1->setChecked(true);
 	pushButtonAnt2->setChecked(false);
 	pushButtonAnt3->setChecked(false);
 	pushButtonAnt4->setChecked(false);
 
-    lastAntIndex = currAntIndex;
+  lastAntIndex = currAntIndex;
 	currAntIndex = 0;
 
-    singleShotTimer->start();
-    qDebug() << "Starting timer";
+  singleShotTimer->start();
 
 	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt2Clicked() {
-    //Make sure if the timer is already running that we stop it
-    if (singleShotTimer->isActive())
-        singleShotTimer->stop();
+  //Make sure if the timer is already running that we stop it
+  if (singleShotTimer->isActive())
+      singleShotTimer->stop();
+
+  //Disable RX ant selection function
+  pushButtonRX->setChecked(false);
 
 	pushButtonAnt1->setChecked(false);
 	pushButtonAnt2->setChecked(true);
@@ -762,17 +960,20 @@ void RotatorDialog::pushButtonAnt2Clicked() {
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 1;
-    lastAntIndex = currAntIndex;
+  lastAntIndex = currAntIndex;
 
-    singleShotTimer->start();
+  singleShotTimer->start();
 
     setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt3Clicked() {
-    //Make sure if the timer is already running that we stop it
-    if (singleShotTimer->isActive())
-        singleShotTimer->stop();
+  //Make sure if the timer is already running that we stop it
+  if (singleShotTimer->isActive())
+      singleShotTimer->stop();
+
+  //Disable RX ant selection function
+  pushButtonRX->setChecked(false);
 
 	pushButtonAnt1->setChecked(false);
 	pushButtonAnt2->setChecked(false);
@@ -780,27 +981,30 @@ void RotatorDialog::pushButtonAnt3Clicked() {
 	pushButtonAnt4->setChecked(false);
 
 	currAntIndex = 2;
-    lastAntIndex = currAntIndex;
+  lastAntIndex = currAntIndex;
 
-    singleShotTimer->start();
+  singleShotTimer->start();
 
 	setStatusPresetButtons();
 }
 
 void RotatorDialog::pushButtonAnt4Clicked() {
-    //Make sure if the timer is already running that we stop it
-    if (singleShotTimer->isActive())
-        singleShotTimer->stop();
+  //Make sure if the timer is already running that we stop it
+  if (singleShotTimer->isActive())
+      singleShotTimer->stop();
 
-    pushButtonAnt1->setChecked(false);
+  //Disable RX ant selection function
+  pushButtonRX->setChecked(false);
+
+  pushButtonAnt1->setChecked(false);
 	pushButtonAnt2->setChecked(false);
 	pushButtonAnt3->setChecked(false);
 	pushButtonAnt4->setChecked(true);
 
 	currAntIndex = 3;
-    lastAntIndex = currAntIndex;
+  lastAntIndex = currAntIndex;
 
-    singleShotTimer->start();
+  singleShotTimer->start();
 
 	setStatusPresetButtons();
 }
@@ -948,25 +1152,27 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   singleShotTimer->setInterval(ANT_SEL_ROTATE_TIMEOUT);
   connect(singleShotTimer,SIGNAL(timeout()),this,SLOT(disableButtonAntSelection()));
 
-  QGraphicsDropShadowEffect* effect[4];
+  QGraphicsDropShadowEffect* effect[5];
 
-  for (int i=0;i<4;i++) {
-      effect[i] = new QGraphicsDropShadowEffect();
-      effect[i]->setColor(Qt::black);
-      effect[i]->setBlurRadius(20);
-      effect[i]->setXOffset(3);
-      effect[i]->setYOffset(3);
+  for (int i=0;i<5;i++) {
+    effect[i] = new QGraphicsDropShadowEffect();
+    effect[i]->setColor(Qt::black);
+    effect[i]->setBlurRadius(20);
+    effect[i]->setXOffset(3);
+    effect[i]->setYOffset(3);
   }
 
   labelMapNameAnt1->setVisible(false);
   labelMapNameAnt2->setVisible(false);
   labelMapNameAnt3->setVisible(false);
   labelMapNameAnt4->setVisible(false);
+  labelMapNameRX->setVisible(false);
 
   labelMapNameAnt1->setGraphicsEffect(effect[0]);
   labelMapNameAnt2->setGraphicsEffect(effect[1]);
   labelMapNameAnt3->setGraphicsEffect(effect[2]);
   labelMapNameAnt4->setGraphicsEffect(effect[3]);
+  labelMapNameRX->setGraphicsEffect(effect[4]);
 
   QPalette plt;
   plt.setColor(QPalette::WindowText, Qt::CURRENT_DIR_BEAMWIDTH_A1_COLOR);
@@ -1017,6 +1223,11 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   frameAnt4->setAutoFillBackground(true);
   frameAnt4->setPalette(plt);
 
+  plt.setColor(QPalette::WindowText, Qt::black);
+  plt.setColor(QPalette::ButtonText, Qt::CURRENT_RX_ANT_COLOR);
+  plt.setColor(QPalette::Button, Qt::CURRENT_RX_ANT_COLOR);
+  labelMapNameRX->setPalette(plt);
+
   lengthMapLabel = 220;
 
 /*  this->pushButtonAnt1->setStyleSheet("QPushButton {\nbackground-color:lightGray;\ncolor:"+QString(STRING_DIR_BEAMWIDTH_A1_COLOR)+";\n}");
@@ -1049,10 +1260,14 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
 
   connect(pushButtonReconnect, SIGNAL(clicked()), parent, SLOT(actionReconnect()));
 
+  labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
   pushButtonAnt1->setChecked(true);
   pushButtonAnt2->setChecked(false);
   pushButtonAnt3->setChecked(false);
   pushButtonAnt4->setChecked(false);
+
+  pushButtonRX->setStyleSheet("QPushButton:checked { background-color: green; }");
 
   loadBand(0);
 
@@ -1064,4 +1279,86 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
 void RotatorDialog::on_pushButtonRotateQuit_clicked()
 {
     emit quitProgram();
+}
+
+void RotatorDialog::setRXAntStatus(bool state) {
+  if (state) {
+    labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_ON));
+  }
+  else {
+    currRXAntenna = 0;
+    labelMapNameRX->setVisible(false);
+    labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+    on_pushButtonRX_clicked(false);
+  }
+
+  repaint();
+}
+
+void RotatorDialog::on_pushButtonRX_clicked(bool checked)
+{
+  if (checked) {
+    //Make sure if the timer is already running that we stop it
+    if (singleShotTimer->isActive()) {
+        singleShotTimer->stop();
+    }
+
+    pushButtonAnt1->setChecked(false);
+    pushButtonAnt2->setChecked(false);
+    pushButtonAnt3->setChecked(false);
+    pushButtonAnt4->setChecked(false);
+
+    pushButtonPreset1->setEnabled(false);
+    pushButtonPreset2->setEnabled(false);
+    pushButtonPreset3->setEnabled(false);
+    pushButtonPreset4->setEnabled(false);
+    pushButtonPreset5->setEnabled(false);
+
+    if (pushButtonRotateCW->isDown() != true)
+      pushButtonRotateCW->setEnabled(false);
+
+    if (pushButtonRotateCCW->isDown() != true)
+      pushButtonRotateCCW->setEnabled(false);
+
+    currAntIndex = -1;
+  }
+  else {
+    pushButtonRX->setChecked(false);
+    if (lastAntIndex != -1)
+      if (antVerticalArray[lastAntIndex] != 0) {
+        switch (lastAntIndex) {
+          case 0:
+            pushButtonAnt1->setChecked(true);
+            pushButtonAnt2->setChecked(false);
+            pushButtonAnt3->setChecked(false);
+            pushButtonAnt4->setChecked(false);
+            currAntIndex = lastAntIndex;
+          break;
+          case 1:
+            pushButtonAnt1->setChecked(false);
+            pushButtonAnt2->setChecked(true);
+            pushButtonAnt3->setChecked(false);
+            pushButtonAnt4->setChecked(false);
+            currAntIndex = lastAntIndex;
+            break;
+          case 2:
+            pushButtonAnt1->setChecked(false);
+            pushButtonAnt2->setChecked(false);
+            pushButtonAnt3->setChecked(true);
+            pushButtonAnt4->setChecked(false);
+            currAntIndex = lastAntIndex;
+            break;
+          case 3:
+            pushButtonAnt1->setChecked(false);
+            pushButtonAnt2->setChecked(false);
+            pushButtonAnt3->setChecked(false);
+            pushButtonAnt4->setChecked(true);
+            currAntIndex = lastAntIndex;
+            break;
+          default:
+            break;
+
+        }
+      }
+  }
 }

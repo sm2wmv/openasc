@@ -34,6 +34,8 @@ public:
 	int getPosTerminalWindowY();
   int getPosPowerMeterWindowX();
   int getPosPowerMeterWindowY();
+  int getGlcdPosXOffset();
+  int getGlcdPosYOffset();
 
 	void setPosMainWindowX(int pos);
 	void setPosMainWindowY(int pos);
@@ -99,6 +101,9 @@ private:
 	int terminalWindowPosY;
   int powerMeterWindowPosX;
   int powerMeterWindowPosY;
+
+  int glcdPosXOffset;
+  int glcdPosYOffset;
 
 	bool keypadWindowOpen;
 	bool rotatorWindowOpen;

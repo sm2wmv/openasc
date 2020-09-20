@@ -76,7 +76,7 @@ void MainWindowImpl::WindowRotatorsTriggered() {
 }
   
 void MainWindowImpl::pushButtonTX1Clicked() {
-	if (TCPComm->isConnected()) {
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_TX_ANT1);
 	}
 }
@@ -100,75 +100,99 @@ void MainWindowImpl::pushButtonTX4Clicked() {
 }
 
 void MainWindowImpl::pushButtonRXAnt1Clicked() {
+  pushButtonRXAnt[0]->setChecked(false);
+
 	if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT1);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt2Clicked() {
+  pushButtonRXAnt[1]->setChecked(false);
+
 	if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT2);
-	}
+  }
 }
 
 void MainWindowImpl::pushButtonRXAnt3Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[2]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT3);
-	}
+  }
 }
 
 void MainWindowImpl::pushButtonRXAnt4Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[3]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT4);
-	}
+  }
 }
 
 void MainWindowImpl::pushButtonRXAnt5Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[4]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT5);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt6Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[5]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT6);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt7Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[6]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT7);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt8Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[7]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT8);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt9Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[8]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT9);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt10Clicked() {
-	if (TCPComm->isConnected()) {
+  pushButtonRXAnt[9]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
 		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT10);
 	}
 }
 
 void MainWindowImpl::pushButtonRXAnt11Clicked() {
-    if (TCPComm->isConnected()) {
-        TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT11);
-    }
+  pushButtonRXAnt[10]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
+      TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT11);
+  }
 }
 
 void MainWindowImpl::pushButtonRXAnt12Clicked() {
-    if (TCPComm->isConnected()) {
-        TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT12);
-    }
+  pushButtonRXAnt[11]->setChecked(false);
+
+  if (TCPComm->isConnected()) {
+      TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_SEL_RX_ANT12);
+  }
 }
 
 void MainWindowImpl::pushButtonMenuClicked() {
@@ -200,12 +224,12 @@ void MainWindowImpl::actionSettingsEditTriggered() {
 }
 
 void MainWindowImpl::actionDisconnectTriggered() {
-    timerPollStatus->stop();
-    timerPollRXQueue->stop();
-    timerActivity->stop();
+  timerPollStatus->stop();
+  timerPollRXQueue->stop();
+  timerActivity->stop();
 
-    powerMeterWindow->stopTimers();
-    busClient->stopProcess();
+  powerMeterWindow->stopTimers();
+  busClient->stopProcess();
 
 	labelLEDRemote->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
 
@@ -214,13 +238,16 @@ void MainWindowImpl::actionDisconnectTriggered() {
 	actionConnect->setEnabled(true);
 	actionDisconnect->setEnabled(false);
 
-    timerConnectionTimeoutCounter = 0;
+  timerConnectionTimeoutCounter = 0;
 
-    resetGUI();
+  resetGUI();
 }
 
 void MainWindowImpl::actionConnectTriggered() {
-    TCPComm->connectToHost(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
+  glcdPosX = frameDisplay->geometry().x();
+  glcdPosY = frameDisplay->geometry().y();
+
+  TCPComm->connectToHost(settingsDialog->getNetworkIPAddress(),settingsDialog->getNetworkPort());
 
   timerPollRXQueue->setInterval(10);
   timerPollRXQueue->start();
@@ -276,8 +303,12 @@ void MainWindowImpl::timerPollStatusUpdate(void) {
 }
 
 void MainWindowImpl::pushButtonRXAntEnableClicked() {
-	if (TCPComm->isConnected()) {
-		TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_RX_ANT_MODE);
+	if (TCPComm->isConnected()) {  
+    TCPComm->addTXMessage(REMOTE_COMMAND_BUTTON_EVENT,EXT_CTRL_TOGGLE_RX_ANT_MODE);
+
+    if (currStatus & (1<<LED_STATUS_RXANT))
+
+    rotatorWindow->updateRXAntenna(currRXAntenna);
 	}
 }
 
@@ -292,7 +323,7 @@ void MainWindowImpl::actionTerminalTriggered() {
 }
 
 void MainWindowImpl::setLEDStatus(unsigned int led_status, unsigned char led_ptt_status) {
-	if (led_ptt_status == LED_PTT_STATUS_OK) {
+  if (led_ptt_status == LED_PTT_STATUS_OK) {
 		labelLEDPTT->setPixmap(QPixmap(PIXMAP_BLANK));
 	}
 	else if (led_ptt_status == LED_PTT_STATUS_INHIBIT) {
@@ -367,15 +398,30 @@ void MainWindowImpl::setLEDStatus(unsigned int led_status, unsigned char led_ptt
 	else
 		labelLEDTXRX->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
 
-	if (led_status & (1<<LED_STATUS_RXANT))
+  if (led_status & (1<<LED_STATUS_RXANT)) {
 		labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_ON));
-	else
+
+    if ((led_status & (1<<LED_STATUS_RXANT)) != (currStatus & (1<<LED_STATUS_RXANT))) {
+      rotatorWindow->setRXAntStatus(true);
+      rotatorWindow->updateRXAntenna(currRXAntenna);
+
+    }
+  }
+  else {
 		labelLEDRXMode->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+    if ((led_status & (1<<LED_STATUS_RXANT)) != (currStatus & (1<<LED_STATUS_RXANT))) {
+      rotatorWindow->setRXAntStatus(false);
+    }
+
+  }
 
 	if (led_status & (1<<LED_STATUS_SUB))
 		labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_ON));
 	else
 		labelLEDSub->setPixmap(QPixmap(PIXMAP_GREEN_OFF));
+
+  currStatus = led_status;
 }
 
 void MainWindowImpl::timerPollRXQueueUpdate(void) {
@@ -435,78 +481,54 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
 
             unsigned char id=0;
 
-            switch(rxMessage.at(3)) {
-            case 0:
+            if (rxMessage.at(3) < 11) {
               pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
               pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-              connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt1Clicked()));
+              pushButtonRXAnt[rxMessage.at(3)]->setCheckable(true);
+              pushButtonRXAnt[rxMessage.at(3)]->setStyleSheet("QPushButton:checked { background-color: green; }");
               rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
+
+              if ((currRXAntenna > 0) && ((currRXAntenna-1) == rxMessage.at(3)))
+                pushButtonRXAnt[rxMessage.at(3)]->setChecked(true);
+
+            }
+
+            switch(rxMessage.at(3)) {
+            case 0:
+              connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt1Clicked()));
               break;
             case 1:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt2Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
                 break;
             case 2:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt3Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
                 break;
             case 3:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt4Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 4:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt5Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 5:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt6Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 6:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt7Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 7:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt8Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 8:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt9Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 9:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt10Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 10:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt11Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             case 11:
-                pushButtonRXAnt[rxMessage.at(3)] = new QPushButton(QString(rxMessage.mid(4,len-1)));
-                pushButtonRXAnt[rxMessage.at(3)]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 connect(pushButtonRXAnt[rxMessage.at(3)], SIGNAL(clicked()), this, SLOT(pushButtonRXAnt12Clicked()));
-                rxAntennaLayout->addWidget(pushButtonRXAnt[rxMessage.at(3)]);
               break;
             default:
               break;
@@ -576,6 +598,23 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
             }
 
             comboBoxBand->blockSignals(false);
+
+            if (rxMessage.size() > 8) { //This is just so we are backwards compatible
+              currRXAntenna = rxMessage.at(8);
+              rotatorWindow->updateRXAntenna(currRXAntenna);
+
+              for (int i=0;i<12;i++) {
+                if ((currRXAntenna > 0) && ((currRXAntenna-1) == i)) {
+                  if (pushButtonRXAnt[i] != nullptr)
+                    pushButtonRXAnt[i]->setChecked(true);
+
+                }
+                else {
+                  if (pushButtonRXAnt[i] != nullptr)
+                    pushButtonRXAnt[i]->setChecked(false);
+                }
+              }
+            }
           }
         }
         else if (cmd == REMOTE_COMMAND_TERMINAL_DATA) {
@@ -738,8 +777,8 @@ void MainWindowImpl::actionKeypadTriggered() {
 }
 
 void MainWindowImpl::paintEvent(QPaintEvent *event) {
-    QPainter painter(this);
-    painter.setViewport(183,140,512,256);
+  QPainter painter(this);
+  painter.setViewport(glcdPosX+settingsDialog->getGlcdPosXOffset(),glcdPosY+settingsDialog->getGlcdPosYOffset(),512,256);
 
 	for (unsigned int y=0;y<8;y++) {
 		for (unsigned int x=0;x<128;x++) {
@@ -849,6 +888,56 @@ void MainWindowImpl::timerActivityUpdate() {
   }
 }
 
+void MainWindowImpl::selectRXAntenna(int index) {
+  switch (index) {
+    case 1:
+      pushButtonRXAnt1Clicked();
+
+      break;
+    case 2:
+      pushButtonRXAnt2Clicked();
+      break;
+    case 3:
+      pushButtonRXAnt3Clicked();
+      break;
+    case 4:
+      pushButtonRXAnt4Clicked();
+      break;
+    case 5:
+      pushButtonRXAnt5Clicked();
+      break;
+    case 6:
+      pushButtonRXAnt6Clicked();
+      break;
+    case 7:
+      pushButtonRXAnt7Clicked();
+      break;
+    case 8:
+      pushButtonRXAnt8Clicked();
+      break;
+    case 9:
+      pushButtonRXAnt9Clicked();
+      break;
+    case 10:
+      pushButtonRXAnt10Clicked();
+      break;
+    case 11:
+      pushButtonRXAnt11Clicked();
+      break;
+    case 12:
+      pushButtonRXAnt12Clicked();
+      break;
+    default:
+      break;
+  }
+}
+
+void MainWindowImpl::enableRXAntenna(void) {
+  if ((currStatus & (1<<LED_STATUS_RXANT)) == 0) {
+    pushButtonRXAntEnableClicked();
+  }
+}
+
 MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWindow ( parent, f ) {
 	setupUi(this);
 
@@ -902,11 +991,11 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(actionReboot, SIGNAL(triggered()), this, SLOT(actionRebootTriggered()));
 	connect(actionSettingsEdit, SIGNAL(triggered()), this, SLOT(actionSettingsEditTriggered()));
 	connect(actionWindowsRotators, SIGNAL(triggered()), this, SLOT(WindowRotatorsTriggered()));
-    connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
+  connect(actionConnect, SIGNAL(triggered()), this, SLOT(actionConnectTriggered()));
 	connect(actionDisconnect, SIGNAL(triggered()), this, SLOT(actionDisconnectTriggered()));
 	connect(actionTerminal, SIGNAL(triggered()), this, SLOT(actionTerminalTriggered()));
-    connect(actionKeypad, SIGNAL(triggered()), this, SLOT(actionKeypadTriggered()));
-    connect(actionPowerMeter, SIGNAL(triggered()), this, SLOT(actionPowerMeterTriggered()));
+  connect(actionKeypad, SIGNAL(triggered()), this, SLOT(actionKeypadTriggered()));
+  connect(actionPowerMeter, SIGNAL(triggered()), this, SLOT(actionPowerMeterTriggered()));
 
 	connect(comboBoxBand, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxBandIndexChanged(int)));
 
@@ -914,15 +1003,17 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 	connect(pushButtonTX2, SIGNAL(clicked()), this, SLOT(pushButtonTX2Clicked()));
 	connect(pushButtonTX3, SIGNAL(clicked()), this, SLOT(pushButtonTX3Clicked()));
 	connect(pushButtonTX4, SIGNAL(clicked()), this, SLOT(pushButtonTX4Clicked()));
-    connect(pushButtonRXAntEnable, SIGNAL(clicked()), this, SLOT(pushButtonRXAntEnableClicked()));
+  connect(pushButtonRXAntEnable, SIGNAL(clicked()), this, SLOT(pushButtonRXAntEnableClicked()));
 
 	connect(pushButtonMenu, SIGNAL(clicked()), this, SLOT(pushButtonMenuClicked()));
 	connect(pushButtonMenuEnter, SIGNAL(clicked()), this, SLOT(pushButtonMenuEnterClicked()));
 	connect(pushButtonMenuLeft, SIGNAL(clicked()), this, SLOT(pushButtonMenuLeftClicked()));
 	connect(pushButtonMenuRight, SIGNAL(clicked()), this, SLOT(pushButtonMenuRightClicked()));
-    connect(pushButtonSub, SIGNAL(clicked()), this, SLOT(pushButtonSubClicked()));
+  connect(pushButtonSub, SIGNAL(clicked()), this, SLOT(pushButtonSubClicked()));
 
-    connect(rotatorWindow, SIGNAL(quitProgram()), this, SLOT(quitProgram()));
+  connect(rotatorWindow, SIGNAL(quitProgram()), this, SLOT(quitProgram()));
+  connect(rotatorWindow, SIGNAL(signalSelectRXAntenna(int)), this, SLOT(selectRXAntenna(int)));
+  connect(rotatorWindow, SIGNAL(signalEnableRXAntenna()), this, SLOT(enableRXAntenna()));
 
   //Set the default pixmaps
   resetGUI();
@@ -1016,11 +1107,6 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
   }
 
   updateBandInfo();
-
-
-  for (int x=0; x<128; x++)
-      for (int y=0; y<8; y++)
-          glcd_buffer[y][x] = 0;
 
   repaint();
 }

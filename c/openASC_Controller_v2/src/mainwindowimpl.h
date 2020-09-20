@@ -55,6 +55,8 @@ private:
   QTimer *timerPollStatus;
   QTimer *timerActivity;
   status_struct status;
+  int glcdPosX=0;
+  int glcdPosY=0;
   int currBand;
   int activityTimeoutCounter;
   void resetGUI();
@@ -66,6 +68,8 @@ private:
   QLabel *labelRXAntennas;
   QVBoxLayout *rxAntennaLayout;
   int timerConnectionTimeoutCounter = 0;
+  unsigned int currStatus = 0;
+  int currRXAntenna = 0;
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:
@@ -113,6 +117,8 @@ public slots:
 
   void pushButtonSubClicked();
   void quitProgram(void);
+  void selectRXAntenna(int index);
+  void enableRXAntenna(void);
 };
 #endif
 

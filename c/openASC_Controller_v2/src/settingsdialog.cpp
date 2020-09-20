@@ -79,6 +79,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
     cPickupType[7] = settings.value("PickupType7").toInt();
     cPickupType[8] = settings.value("PickupType8").toInt();
 
+    glcdPosXOffset = settings.value("glcdPosXOffset").toInt();
+    glcdPosYOffset = settings.value("glcdPosYOffset").toInt();
+
     powerMeterAllBands = settings.value("PowerMeterAllBands").toBool();
 
     iBargraphsUpdateRate = settings.value("BargraphsUpdateRate").toInt();
@@ -121,6 +124,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), m_ui(new Ui::
     bandInfoBoxName[3] = "Radio 4";
     bandInfoBoxName[4] = "Radio 5";
     bandInfoBoxName[5] = "Radio 6";
+
+    //Default offsets
+    glcdPosXOffset = 26;
+    glcdPosYOffset = 33;
 
     for (unsigned char i=0;i<9;i++) {
       cPickupAddr[i] = 0;
@@ -289,12 +296,22 @@ void SettingsDialog::saveSettings() {
 
   settings.setValue("BargraphsUpdateRate",iBargraphsUpdateRate);
   settings.setValue("TextUpdateRate",iTextUpdateRate);
+  settings.setValue("glcdPosXOffset", glcdPosXOffset);
+  settings.setValue("glcdPosYOffset", glcdPosYOffset);
 
   settings.endGroup();
 }
 
 bool SettingsDialog::getConnectOnStart() {
   return(connectOnStart);
+}
+
+int SettingsDialog::getGlcdPosXOffset() {
+  return(glcdPosXOffset);
+}
+
+int SettingsDialog::getGlcdPosYOffset() {
+  return(glcdPosYOffset);
 }
 
 bool SettingsDialog::getFrameRotatorWindowStartOnTop() {
