@@ -110,17 +110,18 @@ void remote_control_parse_command(unsigned char command, unsigned char length, c
 }
 
 void remote_control_send_status(void) {
-  unsigned char var[5] = {0};
+  unsigned char var[6] = {0};
 
   var[0] = led_get_ptt_status();
   var[1] = (led_get_status() >> 8) & 0xFF;
   var[2] = led_get_status() & 0xFF;
   var[3] = status.selected_band;
   var[4] = runtime_settings.band_change_mode;
-
+	var[5] = status.selected_rx_antenna;
+	
   led_status_clear();
 
-  ethernet_send_data(0, REMOTE_COMMAND_STATUS, 5, var);
+  ethernet_send_data(0, REMOTE_COMMAND_STATUS, 6, var);
 }
 
 void remote_control_send_rx_antennas(void) {

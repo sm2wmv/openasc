@@ -180,7 +180,12 @@ void event_internal_comm_parse_message(struct_comm_interface_msg message) {
  *  \param ant_index The index of the RX antenna we wish to chose */
 void __inline__ event_set_rx_antenna(unsigned char ant_index) {
   if (ant_index <= antenna_ctrl_get_rx_antenna_count()) {
-    status.selected_rx_antenna = ant_index;
+		//If we select an RX Antenna, make sure we actually do turn on the RX antenna function too 
+		//so that the LED is lit and when we press RX ANT button we disable it
+		led_set_rxant(LED_STATE_ON);		
+		status.function_status |= (1<<FUNC_STATUS_RXANT);
+		
+		status.selected_rx_antenna = ant_index;
 	  
 	  status.last_rx_antenna = status.selected_rx_antenna;
 		  
@@ -247,7 +252,7 @@ void event_process_task(unsigned char task_index) {
 	
 	/* Requires that we dont change the order of the functions */
 	if ((task_index >= EXT_CTRL_SEL_RX_ANT1) && (task_index <= EXT_CTRL_SEL_RX_ANT12)) {
-    event_set_rx_antenna(task_index);
+		event_set_rx_antenna(task_index);
 		display_handler_repaint();
 
     return;

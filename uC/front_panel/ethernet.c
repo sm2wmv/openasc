@@ -558,10 +558,11 @@ void ethernet_process(void) {
 
         ethernet_send_data(0,REMOTE_COMMAND_CONNECTED,0,0);
 
-        remote_control_send_status();
-
-        if (main_get_ethernet_local_mode() == 0) {
-          remote_control_send_rx_antennas();
+				remote_control_send_rx_antennas();
+				
+				remote_control_send_status();
+				
+        if (main_get_ethernet_local_mode() == 0) {          
           glcd_ethernet_send_disp();
         }
       }
