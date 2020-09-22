@@ -133,7 +133,7 @@
          <item>
           <widget class="QCheckBox" name="checkBoxRotatorShowMousePointer">
            <property name="text">
-            <string>Show mouse pointer (Rotator window)</string>
+            <string>Show mouse pointer</string>
            </property>
           </widget>
          </item>

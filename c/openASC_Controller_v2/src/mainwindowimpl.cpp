@@ -297,8 +297,15 @@ void MainWindowImpl::timerPollStatusUpdate(void) {
     if (TCPComm->isConnected()) {
         timerConnectionTimeoutCounter++;
 
-        if (timerConnectionTimeoutCounter > 1500)
+        if (timerConnectionTimeoutCounter > 1500) {
             actionDisconnectTriggered();
+	    QMessageBox::warning(
+	      this,
+	      tr("Disconnected"),
+	      tr("Connection to the openASC box failed")
+	    );
+      }
+
     }
 }
 
@@ -971,6 +978,7 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 
   if (settingsDialog->getShowMousePointer() == false) {
     rotatorWindow->setCursor(QCursor( Qt::BlankCursor ));
+    this->setCursor(QCursor( Qt::BlankCursor));
   }
 
   for (int i=0;i<12;i++)

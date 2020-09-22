@@ -431,6 +431,13 @@ void RotatorDialog::loadBand(int bandIndex) {
   pushButtonAnt3->setChecked(false);
   pushButtonAnt4->setChecked(false);
 
+  labelMapNameAnt1->setVisible(false);
+  labelMapNameAnt2->setVisible(false);
+  labelMapNameAnt3->setVisible(false);
+  labelMapNameAnt4->setVisible(false);
+  labelMapNameRX->setVisible(false);
+
+
   labelAnt1Dir->setText("");
   labelAnt2Dir->setText("");
   labelAnt3Dir->setText("");
