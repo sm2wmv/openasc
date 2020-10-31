@@ -12,17 +12,27 @@
 #include "../delay.h"
 #include "../event_queue.h"
 #include "statemachine.h"
+#include "sequencer.h"
+
+uint32_t event_counter = 0;
+
+uint16_t run_win_state_table_input[] = {0,1,2,3,4,5,6,7,8,9,10,11,16,17,18,19,20,21,22,23,24,25,26,27,32,33,34,35,36,37,38,39,40,41,42,43,48,49,50,51,52,53,54,55,56,57,58,59};
+uint16_t run_win_state_table_output[] = {0,10,21,21,7424,7434,21,21,4224,4234,4245,4245,3584,3594,3605,3605,6912,6922,2325,2325,7808,7818,7829,7829,0,109,21,21,6912,109,2325,2325,4224,4205,6357,6357,2624,109,2133,2133,7488,4461,2325,2325,6848,4205,7829,7829};
+
+uint16_t inband_win_state_table_input[] = {0,1,2,3,4,5,6,7,8,9,10,11,16,17,18,19,20,21,22,23,24,25,26,27,32,33,34,35,36,37,38,39,40,41,42,43,48,49,50,51,52,53,54,55,56,57,58,59};
+uint16_t inband_win_state_table_output[] = {0,10,21,10,7424,7434,21,7434,4224,4234,4245,4234,3584,3594,3605,3594,6912,6922,2325,6922,7808,7818,7829,7818,0,109,21,109,6912,109,2325,109,4224,4205,6357,4205,2624,109,2133,109,7488,4461,2325,4461,6848,4205,7829,4205};
+
+uint8_t openasc_ptt_in_state = 0;
 
 #define FLAG_RUN_EVENT_QUEUE 0
 
-static unsigned char curr_state[NR_OF_EVENTS] = {0};
-static unsigned char prev_state[NR_OF_EVENTS] = {0};
+uint8_t curr_state = 0;
+uint8_t prev_state = 0;
 
 unsigned char flag_poll_inputs = 1;
 
 //! Counter to keep track of the numbers of ticks from timer0
 unsigned long counter_compare0 = 0;
-unsigned char st = 0;
 
 unsigned char counter_poll_inputs = 0;
 
@@ -60,68 +70,159 @@ void event_run(void) {
   }
 }
 
+//! Here we check that the openASC ptt output matches the PTT input to the box
+//! This is so that we are sure that no error has occured in the openASC system.
+//! If that happens we are not allowed to transmit
+void main_check_openasc_state(void) {
+  if (ext_control_get_run_ptt_asc() != 0)
+    if ((curr_state & (1<<EVENT_ASC_INPUT_STATE)) != 0) {
+      PRINTF("openASC PTT STATE: OK\r\n");
+    }
+    else {
+      sequencer_exit_inband_sequence();
+      sequencer_exit_run_amp_sequence();
+      sequencer_exit_run_sequence();
+
+      PRINTF("openASC PTT STATE: NOT OK\r\n");
+    }
+}
+
 #ifdef DEBUG
 void print_state_debug_info(void) {
   PRINTF("CURR_STATE != PREV_STATE\r\n");
 
-  if (curr_state[EVENT_FOOTSWICH_R1_STATE])
+  PRINTF("EVENT #: %i\r\n",event_counter);
+  
+  if (curr_state & (1<<EVENT_FOOTSWICH_RUN_STATE))
     PRINTF("STATE >> FSW_R1 -> ACTIVE\r\n");
   else
     PRINTF("STATE >> FSW_R1 -> NOT ACTIVE\r\n");
 
-  if (curr_state[EVENT_FOOTSWICH_R2_STATE])
+  if (curr_state & (1<<EVENT_FOOTSWICH_INBAND_STATE))
     PRINTF("STATE >> FSW_R2 -> ACTIVE\r\n");
   else
     PRINTF("STATE >> FSW_R2 -> NOT ACTIVE\r\n");
   
-  if (curr_state[EVENT_R2_SUPPORT_OP_STATE])
-    PRINTF("STATE >> SUPPORT MODE -> ACTIVE\r\n");
+  if (curr_state & (1<<EVENT_INBAND_TX_SELECT_STATE))
+    PRINTF("STATE >> INBAND TX SEL -> INBAND\r\n");
   else
-    PRINTF("STATE >> SUPPORT MODE -> NOT ACTIVE\r\n");
+    PRINTF("STATE >> INBAND TX SEL -> RUN\r\n");
 
-  if (curr_state[EVENT_PRIORITY_STATE] == 0)
+  if (curr_state & (1<<EVENT_PRIORITY_STATE) == 0)
     PRINTF("STATE >> PRIORITY STATE -> FIRST WINS\r\n");
-  else if (curr_state[EVENT_PRIORITY_STATE] == 1)
+  else if (curr_state & (1<<EVENT_PRIORITY_STATE) == 1)
     PRINTF("STATE >> PRIORITY STATE -> R1 WINS\r\n");
-  else if (curr_state[EVENT_PRIORITY_STATE] == 2)
+  else if (curr_state & (1<<EVENT_PRIORITY_STATE) == 2)
     PRINTF("STATE >> PRIORITY STATE -> R2 WINS\r\n");
   
-  if (curr_state[EVENT_R1_TXRX_ANT_SEL])
+  if (curr_state & (1<<EVENT_RUN_RX_ANT_SELECT))
     PRINTF("STATE >> RX ANT R1 -> ACTIVE\r\n");
   else
     PRINTF("STATE >> RX ANT R1 -> NOT ACTIVE\r\n");
   
-  if (curr_state[EVENT_R2_TXRX_ANT_SEL])
-    PRINTF("STATE >> RX ANT R2 -> ACTIVE\r\n");
+  if (curr_state & (1<<EVENT_INBAND_RX_ANT_SELECT))
+    PRINTF("STATE >> RX ANT R2 -> RX\r\n");
   else
-    PRINTF("STATE >> RX ANT R2 -> NOT ACTIVE\r\n");  
+    PRINTF("STATE >> RX ANT R2 -> TX\r\n");  
   
-  if (curr_state[EVENT_MUTE_ON_TX])
-    PRINTF("STATE >> MUTE ON TX -> ACTIVE\r\n");
+  if (curr_state & (1<<EVENT_INBAND_RX_ANT_R1_SELET))
+    PRINTF("STATE >> RX ANT R2 -> R1\r\n");
+  
+  if (curr_state & (1<<EVENT_ASC_INPUT_STATE))
+    PRINTF("STATE >> ASC INPUT STATE -> ACTIVE\r\n");
   else
-    PRINTF("STATE >> MUTE ON TX -> NOT ACTIVE\r\n");
+    PRINTF("STATE >> ASC INPUT STATE -> DEACTIVE\r\n");
+  
+  if (ext_control_get_run_ptt_asc())
+    PRINTF("STATE >> ASC OUTPUT STATE -> ACTIVE\r\n");
+  else
+    PRINTF("STATE >> ASC OUTPUT STATE -> DEACTIVE\r\n");
+
   
   PRINTF("\r\n");
 }
 #endif
 
+//Check if there is any PTT activity going on for radio 1
+uint8_t main_check_ptt_active_run() {
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_AMP_ON))
+      return(1);
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_AMP_OFF))
+      return(1);    
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_ON))
+      return (1);
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_OFF))
+      return (1);    
+    if (sequencer_get_ptt_state_run())
+      return(1);
+    
+    return(0);
+}
+
+uint8_t main_check_ptt_active_inband() {
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_AMP_ON))
+      return(1);
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_AMP_OFF))
+      return(1);    
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_ON))
+      return (1);
+    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_OFF))
+      return (1);    
+    if (sequencer_get_ptt_state_inband())
+      return(1);
+    
+    return(0);  
+}
+
 void main_execute_statemachine(void) {
-  ext_control_read_inputs(curr_state);
+  curr_state = ext_control_read_inputs();
   
-  #ifdef DEBUG
-    print_state_debug_info();
-  #endif
+  event_counter++;
   
-  //Check which event has changed and update the statemachine
-  for (unsigned char i=0;i<NR_OF_EVENTS;i++)
-    if (prev_state[i] != curr_state[i])
-      statemachine_new_event(i,curr_state[i]);
+  if (prev_state != curr_state) {
+    #ifdef DEBUG
+      print_state_debug_info();
+    #endif
+      
+    if (ext_control_get_priority_state() == PRIORITY_R1_WINS) {
+      PRINTF("USE THE R1 WIN TABLE\r\n");
+      PRINTF("STATE: %i\r\n",curr_state);
+      //We remove the priority part and ASC in the state since that has got nothing to do with the truth table sent in
+      statemachine_new_event(curr_state & 0x3F, (uint16_t *) run_win_state_table_input,(uint16_t *)run_win_state_table_output,sizeof(run_win_state_table_input));
+    }
+    else if (ext_control_get_priority_state() == PRIORITY_R2_WINS) {
+      //We remove the priority part since that has got nothing to do with the truth table sent in
+      statemachine_new_event(curr_state & 0x3F, (uint16_t *) inband_win_state_table_input,(uint16_t *)inband_win_state_table_output,sizeof(inband_win_state_table_input));
+    }
+    else { //First WINS
+      if (((curr_state & (1<<EVENT_FOOTSWICH_RUN_STATE)) != 0) && ((curr_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)) != 0)) {
+        //Both footswitches are pushed, lets do nothing since the choice has already been made previosly
+        PRINTF("BOTH FSW PUSHED\r\n");
+      }
+      else {
+        if ((prev_state & (1<<EVENT_FOOTSWICH_RUN_STATE)) != (curr_state & (1<<EVENT_FOOTSWICH_RUN_STATE)))
+          statemachine_new_event(curr_state & 0x3F, (uint16_t *) run_win_state_table_input,(uint16_t *)run_win_state_table_output,sizeof(run_win_state_table_input));
+      
+        if ((prev_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)) != (curr_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)))
+          statemachine_new_event(curr_state & 0x3F, (uint16_t *) inband_win_state_table_input,(uint16_t *)inband_win_state_table_output,sizeof(inband_win_state_table_input));
+      }
   
-  memcpy(prev_state,curr_state,sizeof(curr_state));
+    }
+  }
+  
+  event_add_message(main_check_openasc_state,OPENASC_PTT_CHECK_TIME,EVENT_CHECK_OPENASC_PTT);
+  
+  prev_state = curr_state;
   
   flag_poll_inputs = 1;
   counter_poll_inputs = 0;
 }
+  
+uint8_t main_poll_external_state(void) {
+  
+  return(0);
+}
+        
 
 int main(void) {
   cli();
@@ -142,7 +243,7 @@ int main(void) {
   
   PRINTF("\r\n\r\nSupport op board started\r\n");
   PRINTF("------------------------\r\n");
-  PRINTF("Version: 0.1b\r\n");
+  PRINTF("Version: 0.2b\r\n");
   PRINTF("By: Mikael Larsmark, SM2WMV/SJ2W\r\n");
   PRINTF("Debug mode\r\n\r\n");
 
@@ -153,12 +254,12 @@ int main(void) {
       main_flags &= ~(1<<FLAG_RUN_EVENT_QUEUE);
       PRINTF("EVENT >> RUNNING (M) - %i\r\n",event_queue_get().id);
     }
-        
+               
     if (flag_poll_inputs == 1) {
       if (counter_poll_inputs >= COUNTER_POLL_INPUT_LIMIT) {
-        ext_control_read_inputs(curr_state);
+        curr_state = ext_control_read_inputs();
         
-        if (memcmp(curr_state,prev_state,sizeof(curr_state)) != 0) {
+        if (curr_state != prev_state) {
           event_add_message(main_execute_statemachine,KEYBOUNCE_TIME,EVENT_CHECK_INPUTS);
           
           flag_poll_inputs = 0;

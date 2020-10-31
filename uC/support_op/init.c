@@ -20,7 +20,7 @@ void init_timer_0(void) {
 */
 void init_ports(void) {
 	DDRA = 0xF3;
-	DDRB = 0x81;
+	DDRB = 0x81 | (1<<4);
 	DDRC = 0x00;
 	DDRD = 0x08;
 	DDRE = 0xFC;
