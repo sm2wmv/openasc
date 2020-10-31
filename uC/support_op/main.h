@@ -80,8 +80,6 @@
 
 void main_execute_statemachine(void);
 void event_add_message(void (*func), unsigned int offset, unsigned char id);
-uint8_t main_check_ptt_active_run();
-uint8_t main_check_ptt_active_inband();
 
 void __inline__ r1_ptt_amp_on(void);
 

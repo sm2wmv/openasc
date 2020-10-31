@@ -104,9 +104,9 @@ void print_state_debug_info(void) {
     PRINTF("STATE >> FSW_R2 -> NOT ACTIVE\r\n");
   
   if (curr_state & (1<<EVENT_INBAND_TX_SELECT_STATE))
-    PRINTF("STATE >> INBAND TX SEL -> INBAND\r\n");
-  else
     PRINTF("STATE >> INBAND TX SEL -> RUN\r\n");
+  else
+    PRINTF("STATE >> INBAND TX SEL -> INBAND\r\n");
 
   if (curr_state & (1<<EVENT_PRIORITY_STATE) == 0)
     PRINTF("STATE >> PRIORITY STATE -> FIRST WINS\r\n");
@@ -143,36 +143,6 @@ void print_state_debug_info(void) {
 }
 #endif
 
-//Check if there is any PTT activity going on for radio 1
-uint8_t main_check_ptt_active_run() {
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_AMP_ON))
-      return(1);
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_AMP_OFF))
-      return(1);    
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_ON))
-      return (1);
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_RUN_OFF))
-      return (1);    
-    if (sequencer_get_ptt_state_run())
-      return(1);
-    
-    return(0);
-}
-
-uint8_t main_check_ptt_active_inband() {
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_AMP_ON))
-      return(1);
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_AMP_OFF))
-      return(1);    
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_ON))
-      return (1);
-    if (event_queue_check_id(SEQUENCER_EVENT_TYPE_PTT_INBAND_OFF))
-      return (1);    
-    if (sequencer_get_ptt_state_inband())
-      return(1);
-    
-    return(0);  
-}
 
 void main_execute_statemachine(void) {
   curr_state = ext_control_read_inputs();
@@ -196,15 +166,18 @@ void main_execute_statemachine(void) {
     }
     else { //First WINS
       if (((curr_state & (1<<EVENT_FOOTSWICH_RUN_STATE)) != 0) && ((curr_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)) != 0)) {
-        //Both footswitches are pushed, lets do nothing since the choice has already been made previosly
-        PRINTF("BOTH FSW PUSHED\r\n");
+        if (prev_state & (1<<EVENT_FOOTSWICH_RUN_STATE))
+          statemachine_new_event(curr_state & 0x3F, (uint16_t *) run_win_state_table_input,(uint16_t *)run_win_state_table_output,sizeof(run_win_state_table_input));
+        else 
+          statemachine_new_event(curr_state & 0x3F, (uint16_t *) inband_win_state_table_input,(uint16_t *)inband_win_state_table_output,sizeof(inband_win_state_table_input));
       }
       else {
         if ((prev_state & (1<<EVENT_FOOTSWICH_RUN_STATE)) != (curr_state & (1<<EVENT_FOOTSWICH_RUN_STATE)))
           statemachine_new_event(curr_state & 0x3F, (uint16_t *) run_win_state_table_input,(uint16_t *)run_win_state_table_output,sizeof(run_win_state_table_input));
-      
-        if ((prev_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)) != (curr_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)))
+        else if ((prev_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)) != (curr_state & (1<<EVENT_FOOTSWICH_INBAND_STATE)))
           statemachine_new_event(curr_state & 0x3F, (uint16_t *) inband_win_state_table_input,(uint16_t *)inband_win_state_table_output,sizeof(inband_win_state_table_input));
+        else  //If neither of the radios have pushed the PTT and are in RX mode it does not matter which tables we select
+          statemachine_new_event(curr_state & 0x3F, (uint16_t *) run_win_state_table_input,(uint16_t *)run_win_state_table_output,sizeof(run_win_state_table_input));
       }
   
     }

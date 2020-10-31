@@ -121,7 +121,6 @@ void statemachine_execute(uint16_t output_state) {
   }
   
   if ((output_state & (1<<OFFSET_PTT_RUN_AMP)) != (prev_output_state & (1<<OFFSET_PTT_RUN_AMP))) {
-    
     if (output_state & (1<<OFFSET_PTT_RUN_AMP)) {
       PRINTF("PTT RUN AMP: ACTIVE\r\n");
 
@@ -151,17 +150,19 @@ void statemachine_execute(uint16_t output_state) {
     }
   }
 
-  if (output_state & (1<<OFFSET_PTT_INBAND_AMP)) {
-    PRINTF("PTT INBAND AMP: ACTIVE\r\n");
-    
-    sequencer_enter_inband_amp_sequence();
-    prev_output_state |= (1<<OFFSET_PTT_INBAND_AMP);
-  }
-  else {
-    PRINTF("PTT INBAND AMP: DEACTIVE\r\n");
-    
-    sequencer_exit_inband_amp_sequence();
-    prev_output_state &= ~(1<<OFFSET_PTT_INBAND_AMP);
+  if ((output_state & (1<<OFFSET_PTT_INBAND_AMP)) != (prev_output_state & (1<<OFFSET_PTT_INBAND_AMP))) {
+    if (output_state & (1<<OFFSET_PTT_INBAND_AMP)) {
+      PRINTF("PTT INBAND AMP: ACTIVE\r\n");
+      
+      sequencer_enter_inband_amp_sequence();
+      prev_output_state |= (1<<OFFSET_PTT_INBAND_AMP);
+    }
+    else {
+      PRINTF("PTT INBAND AMP: DEACTIVE\r\n");
+      
+      sequencer_exit_inband_amp_sequence();
+      prev_output_state &= ~(1<<OFFSET_PTT_INBAND_AMP);
+    }
   }
 
   if (output_state & (1<<OFFSET_RELAY_TRANSFER)) {

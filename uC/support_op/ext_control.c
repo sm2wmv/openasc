@@ -170,33 +170,33 @@ void ext_control_run_ptt_asc_clr(void) {
   PRINTF("EXT_CTRL >> PTT ASC CLR\r\n");
 }
 void ext_control_run_ptt_radio_set(void) {
-  PORTG |= (1<<1);	//Set RUN PTT LED on RUN BOX
+  PORTG |= (1<<0);	//Set RUN PTT LED on RUN BOX
   PORTG |= (1<<3);  //PTT RUN RADIO
-  PORTF |= (1<<6);	//Set RUN PTT LED on INBAND BOX
+  PORTF |= (1<<5);	//Set RUN PTT LED on INBAND BOX
   
   PRINTF("EXT_CTRL >> PTT RUN SET\r\n");
 }
 
 void ext_control_run_ptt_radio_clr(void) {
-  PORTG &= ~(1<<1);  	//Clear RUN PTT LED on RUN BOX
+  PORTG &= ~(1<<0);  	//Clear RUN PTT LED on RUN BOX
   PORTG &= ~(1<<3);	 	//PTT OFF RUN RADIO
-  PORTF &= ~(1<<6);		//CLR RUN PTT LED on INBAND BOX
+  PORTF &= ~(1<<5);		//CLR RUN PTT LED on INBAND BOX
   
   PRINTF("EXT_CTRL >> PTT RUN CLR\r\n");
 }
 
 void ext_control_inband_ptt_radio_set(void) {
-  PORTG |= (1<<0);
+  PORTG |= (1<<1);
   PORTF |= (1<<1);
-  PORTF |= (1<<5);
+  PORTF |= (1<<6);
   
   PRINTF("EXT_CTRL >> PTT INBAND SET\r\n");
 }
 
 void ext_control_inband_ptt_radio_clr(void) {
-  PORTG &= ~(1<<0);
+  PORTG &= ~(1<<1);
   PORTF &= ~(1<<1);
-  PORTF &= ~(1<<5);
+  PORTF &= ~(1<<6);
   
   PRINTF("EXT_CTRL >> PTT INBAND CLR\r\n");
 }
