@@ -33,7 +33,6 @@ void sequencer_exit_run_sequence(void) {
   if (event_queue_drop_id(SEQUENCER_EVENT_TYPE_PTT_RUN_ON) == 0) {
     event_add_message((void *)ext_control_run_ptt_radio_clr, RUN_RADIO_POST_DELAY, SEQUENCER_EVENT_TYPE_PTT_RUN_OFF);
   }
-        
   
   ptt_state_run = PTT_DEACTIVE;
   
