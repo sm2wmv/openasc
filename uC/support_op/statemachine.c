@@ -73,6 +73,7 @@ void statemachine_new_event(uint8_t new_state, uint16_t *input_table, uint16_t *
     prev_input_state = new_state;
   }
   else {
+    ext_control_led_red_set();
     PRINTF("!!! ERROR: UNKNOWN STATE !!!\r\n");
     PRINTF("!!! ERROR: UNKNOWN STATE !!!\r\n");  
     PRINTF("!!! ERROR: UNKNOWN STATE !!!\r\n");  
