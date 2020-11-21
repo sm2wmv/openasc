@@ -67,6 +67,11 @@ BUS_RX_QUEUE_SIZE = 10
 #The size of the TX queue in buffers
 BUS_TX_QUEUE_SIZE = 10
 
+
+# CLOCK_FREQ_LOW  = Clock frequency is 7.3728 MHz
+# CLOCK_FREQ_HIGH = Clock frequency is 14.7456 MHz
+CLOCK_FREQ = CLOCK_FREQ_LOW
+
 #Root directories
 WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c ../queue.c
 
@@ -127,7 +132,7 @@ CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -Wall -Wstrict-prototypes
 CFLAGS += -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
-CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE)
+CFLAGS += $(CSTANDARD) -D$(DEVICE_TYPE) -DBUS_BASE_ADDR=$(BASE_ADDRESS) -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)  -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE) -D$(CLOCK_FREQ)
 CFLAGS += -D__AVR_LIBC_DEPRECATED_ENABLE__
 
 

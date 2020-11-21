@@ -81,6 +81,10 @@ GLOBAL_SRC =  i2c.c delay.c
 # Board related sources
 BOARD_SRC = eeprom.c
 
+# CLOCK_FREQ_LOW  = Clock frequency is 7.3728 MHz
+# CLOCK_FREQ_HIGH = Clock frequency is 14.7456 MHz
+CLOCK_FREQ = CLOCK_FREQ_LOW
+
 # Local sources
 LOCAL_SRC = $(TARGET).c bus_handler.c bsp.c rotator.c config.c
 
@@ -101,7 +105,7 @@ ASRC =
 EXTRAINCDIRS = $(ROOT) $(ROOT)/qpn/include $(ROOT)/rotator $(ROOT)/misc
 
 # Place -D or -U options here
-CDEFS =
+CDEFS = -D$(CLOCK_FREQ)
 
 # Additional paths where to look for C sources
 vpath %.c $(ROOT)/misc

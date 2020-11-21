@@ -96,63 +96,12 @@ void bus_init(void) {
   for (unsigned char i=0;i<sizeof(critical_list);i++)
     critical_list[i] = 0;
 	
-	#ifdef DEVICE_TYPE_DRIVER_UNIT
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
-		
-	#ifdef DEVICE_TYPE_POWERMETER_PICKUP
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
-	
-	#ifdef DEVICE_TYPE_POWERMETER_PICKUP_V2
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
-				
-	#ifdef DEVICE_TYPE_XBEE_INTERFACE_V1
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
-				
-	#ifdef DEVICE_TYPE_DRIVER_UNIT_V2
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
 
-	#ifdef DEVICE_TYPE_GENERAL_IO
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
-
-  #ifdef DEVICE_TYPE_ROTATOR_UNIT_RS232
-      //57.600kpbs
+  #ifdef CLOCK_FREQ_LOW
+    //57.600kpbs
     bus_usart_init(7);
-  #endif
-	
-	#ifdef DEVICE_TYPE_ROTATOR_UNIT
-			//57.600kpbs
-		bus_usart_init(7);
-	#endif
-			
-	#ifdef DEVICE_TYPE_MAIN_FRONT_UNIT
-		//57.600kpbs
-		bus_usart_init(15);
-	#endif
-    
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD1
-    //57.600kpbs
-    bus_usart_init(15);
-  #endif    
-    
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOARD2
-    //57.600kpbs
-    bus_usart_init(15);
-  #endif    
-    
-  #ifdef DEVICE_TYPE_AMP_CTRL_BOX
-    //57.600kpbs
+  #else
+    //57.600kpbs  
     bus_usart_init(15);
   #endif
     

@@ -85,6 +85,10 @@ BUS_TX_QUEUE_SIZE = 12
 # WMW bus sources
 WMV_BUS_SRC = bus.c bus_usart.c bus_ping.c
 
+# CLOCK_FREQ_LOW  = Clock frequency is 7.3728 MHz
+# CLOCK_FREQ_HIGH = Clock frequency is 14.7456 MHz
+CLOCK_FREQ = CLOCK_FREQ_LOW
+
 # Global sources
 GLOBAL_SRC =  delay.c queue.c
 
@@ -119,7 +123,7 @@ CDEFS += -DALFASPID=0 -DPROSISTEL=1 -DGREEN_HERON=2 -DROTATOR=$(ROTATOR_TYPE)
 
 #Use this to compile with the latest version of avr-libc
 CDEFS += -Wno-deprecated-declarations -D__PROG_TYPES_COMPAT__
-
+CDEFS += -D$(CLOCK_FREQ)
 #CDEFS += -DETHERNET_DEBUG_ENABLED
 #CDEFS += -DDEBUG_COMPUTER_USART_ENABLED
 
