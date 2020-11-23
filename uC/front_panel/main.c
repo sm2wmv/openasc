@@ -110,7 +110,7 @@ static unsigned char device_count = 0;
 unsigned int main_flags = 0;
 
 //! Ping message of the openASC device
-static unsigned char ping_message[3];
+static unsigned char ping_message[5];
 
 //! Variable to check if the device has actually gone through all init steps
 static unsigned char device_started = 0;
@@ -145,25 +145,36 @@ void main_update_mainbox_list(unsigned char from_addr) {
       //in the ping list, so we insert this information so it gets sent to the ethernet unit
       status.mainbox_status[i][0] = bus_get_address();
       status.mainbox_status[i][1] = status.selected_band;
-      break;
+	  status.mainbox_status[i][2] = status.selected_ant;
+	  status.mainbox_status[i][3] = status.selected_rx_antenna;
+	  
+  	  //Attach the PTT status of the box
+	  if (radio_get_ptt_status() != 0)
+		status.mainbox_status[i][3] |= 0x80;
+			
+	  break;
     }
     else if (band_info_ptr[i] == from_addr) {
       ping_status_ptr = bus_ping_get_ping_data(band_info_ptr[i]-1);
       
       status.mainbox_status[i][0] = from_addr;
       status.mainbox_status[i][1] = ping_status_ptr->data[1];
+	  status.mainbox_status[i][2] = ping_status_ptr->data[2];
+	  status.mainbox_status[i][3] = ping_status_ptr->data[3];
     }
   }
   
-  if (ethernet_is_active() && (main_get_ethernet_local_mode() == 0)) {
-    unsigned char data[MAINBOX_DEVICE_COUNT*2];
+  if (ethernet_is_active()) {// && (main_get_ethernet_local_mode() == 0)) {
+    unsigned char data[MAINBOX_DEVICE_COUNT*4];
     
     for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++) {
       data[i] = status.mainbox_status[i][0];
-      data[i+MAINBOX_DEVICE_COUNT] = status.mainbox_status[i][1];
-    }
+      data[i+MAINBOX_DEVICE_COUNT*1] = status.mainbox_status[i][1];
+	  data[i+MAINBOX_DEVICE_COUNT*2] = status.mainbox_status[i][2];
+	  data[i+MAINBOX_DEVICE_COUNT*3] = status.mainbox_status[i][3];
+	}
     
-    ethernet_send_data(0, REMOTE_COMMAND_BAND_INFO, MAINBOX_DEVICE_COUNT*2, data);
+    ethernet_send_data(0, REMOTE_COMMAND_BAND_INFO, MAINBOX_DEVICE_COUNT*4, data);
   }
 }
 
@@ -541,8 +552,14 @@ enum enum_inhibit_state main_get_inhibit_state(void) {
 void send_ping(void) {
 	//Set which is the current selected band
 	ping_message[2] = status.selected_band;
+	ping_message[3] = status.selected_ant;
+	ping_message[4] = status.selected_rx_antenna;
+	
+	//Attach the PTT status of the box
+	if (radio_get_ptt_status() != 0)
+		ping_message[4] |= 0x80;
 				
-	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 3, ping_message);
+	bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR, 0, BUS_CMD_PING, 5, ping_message);
 }
 
 void main_update_status_field(void ) {

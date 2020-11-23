@@ -29,7 +29,7 @@ typedef struct {
 	//! Flags, see defines above
 	unsigned char flags;
 	//! Data from the device, content varies depending on device_id
-	unsigned char data[2];
+	unsigned char data[4];
 } bus_struct_ping_status;
 
 void bus_ping_init(void);

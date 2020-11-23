@@ -342,8 +342,8 @@ typedef struct {
   unsigned char amp_band;
   /*! The amplifier operational status */
   unsigned char amp_op_status;
-  /*! Mainboxes band info byte 0 = addr, byte 1 = current band */
-  unsigned char mainbox_status[MAINBOX_DEVICE_COUNT][2];
+  /*! Mainboxes band info byte 0 = addr, byte 1 = current band, byte 2 = tx rx ant comb, byte 3 = rx ant & ptt status */
+  unsigned char mainbox_status[MAINBOX_DEVICE_COUNT][4];
 } struct_status;
 
 //! Settings like status but which should be saved into the EEPROM
