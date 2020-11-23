@@ -158,9 +158,9 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 	if (index == 0) {
         if (antHasRotor[index]) {
             if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
-                labelAnt1Status->setText("Rotating CCW");
+                labelAnt1Status->setText("Turning CCW");
             else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
-                labelAnt1Status->setText("Rotating CW");
+                labelAnt1Status->setText("Turning CW");
             else {
                 if (antVerticalArray[0])
                     labelAnt1Status->setText("");
@@ -174,9 +174,9 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 	else if (index == 1) {
         if (antHasRotor[index]) {
             if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
-                labelAnt2Status->setText("Rotating CCW");
+                labelAnt2Status->setText("Turning CCW");
             else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
-                labelAnt2Status->setText("Rotating CW");
+                labelAnt2Status->setText("Turning CW");
             else {
                 if (antVerticalArray[1])
                     labelAnt2Status->setText("");
@@ -190,9 +190,9 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 	else if (index == 2) {
         if (antHasRotor[index]) {
             if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
-                labelAnt3Status->setText("Rotating CCW");
+                labelAnt3Status->setText("Turning CCW");
             else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
-                labelAnt3Status->setText("Rotating CW");
+                labelAnt3Status->setText("Turning CW");
             else {
                 if (antVerticalArray[2])
                     labelAnt3Status->setText("");
@@ -208,9 +208,9 @@ void RotatorDialog::setRotatorStatusText(unsigned char index, unsigned char stat
 	else if (index == 3) {
         if (antHasRotor[index]) {
             if (status & (1<<FLAG_ROTATOR_ROTATION_CCW))
-                labelAnt4Status->setText("Rotating CCW");
+                labelAnt4Status->setText("Turning CCW");
             else if (status & (1<<FLAG_ROTATOR_ROTATION_CW))
-                labelAnt4Status->setText("Rotating CW");
+                labelAnt4Status->setText("Turning CW");
             else {
                 if (antVerticalArray[3])
                     labelAnt4Status->setText("");
@@ -352,23 +352,23 @@ int RotatorDialog::getTargetDir(unsigned char antIndex) {
 void RotatorDialog::setRotatorFlag(unsigned char antIndex, unsigned char flags) {
 	if (flags & (1<<3)) {
 		if (antIndex == 0)
-			labelAnt1Status->setText("Rotating CW");
+            labelAnt1Status->setText("Turning CW");
 		else if (antIndex == 1)
-			labelAnt2Status->setText("Rotating CW");
+            labelAnt2Status->setText("Turning CW");
 		else if (antIndex == 1)
-			labelAnt3Status->setText("Rotating CW");
+            labelAnt3Status->setText("Turning CW");
 		else if (antIndex == 1)
-			labelAnt4Status->setText("Rotating CW");
+            labelAnt4Status->setText("Turning CW");
 	}
 	else if (flags & (1<<4)) {
 		if (antIndex == 0)
-			labelAnt1Status->setText("Rotating CCW");
+            labelAnt1Status->setText("Turning CCW");
 		else if (antIndex == 1)
-			labelAnt2Status->setText("Rotating CCW");
+            labelAnt2Status->setText("Turning CCW");
 		else if (antIndex == 1)
-			labelAnt3Status->setText("Rotating CCW");
+            labelAnt3Status->setText("Turning CCW");
 		else if (antIndex == 1)
-			labelAnt4Status->setText("Rotating CCW");
+            labelAnt4Status->setText("Turning CCW");
 	}
 	else {
 		if (antIndex == 0) {
@@ -526,6 +526,7 @@ void RotatorDialog::loadBand(int bandIndex) {
       antFixedAngle[i] = settings.value("AntennaFixedAngle").toInt();
       antFixed[i] = settings.value("AntennaFixed").toBool();
       antBiDirectional[i] = settings.value("AntennaBiDirectional").toBool();
+      antRotatorIndex[i] = settings.value("RotatorIndex").toInt();
 
       if (antExist[i])
           antCount++;
@@ -741,6 +742,11 @@ void RotatorDialog::loadBand(int bandIndex) {
       labelMapNameRX->setVisible(true);
     }
 
+    pushButtonAnt1->setText("#1");
+    pushButtonAnt2->setText("#2");
+    pushButtonAnt3->setText("#3");
+    pushButtonAnt4->setText("#4");
+
     labelAnt1Title->setText(antName[0]);
     labelAnt2Title->setText(antName[1]);
     labelAnt3Title->setText(antName[2]);
@@ -760,7 +766,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
     if (antFixed[0]) {
       labelAnt1Status->setText("Fixed");
-      pushButtonAnt1->setVisible(false);
     }
     else if (antVerticalArray[0])
       labelAnt1Status->setText("");
@@ -771,7 +776,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
     if (antFixed[1]) {
       labelAnt2Status->setText("Fixed");
-      pushButtonAnt2->setVisible(false);
     }
     else if (antVerticalArray[1])
       labelAnt2Status->setText("");
@@ -782,7 +786,7 @@ void RotatorDialog::loadBand(int bandIndex) {
 
     if (antFixed[2]) {
       labelAnt3Status->setText("Fixed");
-      pushButtonAnt3->setVisible(false);
+      pushButtonAnt3->setText(" ");
     }
     else if (antVerticalArray[2])
       labelAnt3Status->setText("");
@@ -793,7 +797,6 @@ void RotatorDialog::loadBand(int bandIndex) {
 
     if (antFixed[3]) {
       labelAnt4Status->setText("Fixed");
-      pushButtonAnt4->setVisible(false);
     }
     else if (antVerticalArray[3])
       labelAnt4Status->setText("");
@@ -1190,6 +1193,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   labelAnt1Dir->setPalette(plt);
   labelAnt1Status->setPalette(plt);
   pushButtonAnt1->setPalette(plt);
+  labelAnt1UsedBy->setPalette(plt);
   plt.setColor(QPalette::Window, Qt::lightGray);
   frameAnt1->setAutoFillBackground(true);
   frameAnt1->setPalette(plt);
@@ -1201,6 +1205,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   labelAnt2Title->setPalette(plt);
   labelAnt2Dir->setPalette(plt);
   labelAnt2Status->setPalette(plt);
+  labelAnt2UsedBy->setPalette(plt);
   pushButtonAnt2->setPalette(plt);
   plt.setColor(QPalette::Window, Qt::lightGray);
   frameAnt2->setAutoFillBackground(true);
@@ -1214,6 +1219,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   labelAnt3Dir->setPalette(plt);
   labelAnt3Status->setPalette(plt);
   pushButtonAnt3->setPalette(plt);
+  labelAnt3UsedBy->setPalette(plt);
   plt.setColor(QPalette::Window, Qt::lightGray);
   frameAnt3->setAutoFillBackground(true);
   frameAnt3->setPalette(plt);
@@ -1226,6 +1232,7 @@ RotatorDialog::RotatorDialog( QWidget * parent, Qt::WindowFlags f) : QDialog(par
   labelAnt4Dir->setPalette(plt);
   labelAnt4Status->setPalette(plt);
   pushButtonAnt4->setPalette(plt);
+  labelAnt4UsedBy->setPalette(plt);
   plt.setColor(QPalette::Background, Qt::lightGray);
   frameAnt4->setAutoFillBackground(true);
   frameAnt4->setPalette(plt);
@@ -1368,4 +1375,23 @@ void RotatorDialog::on_pushButtonRX_clicked(bool checked)
         }
       }
   }
+}
+
+void RotatorDialog::setAntennaUsedBy(qint8 antIndex, QString text) {
+    switch (antIndex) {
+      case 0:
+        labelAnt1UsedBy->setText(text);
+      break;
+      case 1:
+        labelAnt2UsedBy->setText(text);
+        break;
+      case 2:
+        labelAnt3UsedBy->setText(text);
+        break;
+      case 3:
+        labelAnt4UsedBy->setText(text);
+        break;
+      default:
+        break;
+    }
 }
