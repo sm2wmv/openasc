@@ -62,7 +62,12 @@ private:
   void resetGUI();
   unsigned char currBandInfoAddr[6];
   unsigned char currBandInfoBand[6];
+  unsigned char currBandInfoAntComb[6];
+  unsigned char currBandInfoRXAnt[6];
+  unsigned char currBandInfoPTTState[6];
+  unsigned char rotatorIndexList[9][4];
   void updateBandInfo();
+  void updateAntInfo();
   QMutex mutex;
   QPushButton *pushButtonRXAnt[12];
   QLabel *labelRXAntennas;
@@ -70,6 +75,7 @@ private:
   int timerConnectionTimeoutCounter = 0;
   unsigned int currStatus = 0;
   int currRXAntenna = 0;
+  QString translateBoxName(int radioIndex);
 protected:
 		void paintEvent(QPaintEvent *event);
 private slots:

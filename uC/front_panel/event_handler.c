@@ -978,6 +978,8 @@ void event_tx_button1_pressed(void) {
 			}
 		}
 		
+		send_ping();
+		
 		main_update_ptt_status();
 	}
 }
@@ -1054,6 +1056,8 @@ void event_tx_button2_pressed(void) {
 				set_tx_ant_leds();
 			}
     }
+
+	send_ping();
     
     main_update_ptt_status();
   }
@@ -1133,6 +1137,8 @@ void event_tx_button3_pressed(void) {
 			}
 		}
 		
+		send_ping();	
+	
 		main_update_ptt_status();
 	}
 }
@@ -1211,6 +1217,8 @@ void event_tx_button4_pressed(void) {
 			}
   	}
   	
+	send_ping();
+	
   	main_update_ptt_status();
 	}
 }
@@ -1346,7 +1354,7 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
       
       //if (bus_message.length > 0)
         //for (unsigned char i=0;i<bus_message.length-1;i++)
-          //printf("BUS_PING->  DATA[%i]: %i\r\n",i,bus_message.data[i+1]);
+         // printf("BUS_PING->  DATA[%i]: %i\r\n",i,bus_message.data[i+1]);
     #endif
     
     if (bus_message.length > 1) {

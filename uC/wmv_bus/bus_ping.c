@@ -37,7 +37,7 @@ void bus_ping_init(void) {
 	}
 	
 	for (unsigned char i=0;i<MAINBOX_DEVICE_COUNT;i++)
-    mainbox_band_info[i] = 0;
+		mainbox_band_info[i] = 0;
 }
 
 /*! \brief This function will update the ping list with the sent in arguments and reset the counter to 0 
@@ -77,6 +77,23 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 				printf("BUS_PING->NEW[%i][1]: %i\n\r",from_addr,data[1]);
 			}
 		}
+
+		if (data_len > 2) {
+			if (ping_list[from_addr-1].data[1] != data[1]) {
+				printf_P(PSTR("BUS_PING->DATA CHANGED\n\r"));
+				printf("BUS_PING->OLD[%i][1]: %i\n\r",from_addr,ping_list[from_addr-1].data[2]);
+				printf("BUS_PING->NEW[%i][1]: %i\n\r",from_addr,data[2]);
+			}
+		}
+
+		if (data_len > 3) {
+			if (ping_list[from_addr-1].data[1] != data[1]) {
+				printf_P(PSTR("BUS_PING->DATA CHANGED\n\r"));
+				printf("BUS_PING->OLD[%i][1]: %i\n\r",from_addr,ping_list[from_addr-1].data[3]);
+				printf("BUS_PING->NEW[%i][1]: %i\n\r",from_addr,data[3]);
+			}
+		}
+
 	#endif
 
 	ping_list[from_addr-1].addr = from_addr;
@@ -98,6 +115,8 @@ void bus_ping_new_stamp(unsigned char from_addr, unsigned char device_type, unsi
 		
 		#ifdef DEBUG_BUS_PING_ENABLED
 			printf("BUS_PING->MAINBOX [0x%02X]->BAND: %i\r\n",from_addr,data[1]);
+			printf("BUS_PING->MAINBOX [0x%02X]->ANT: %i\r\n",from_addr,data[2]);
+			printf("BUS_PING->MAINBOX [0x%02X]->RX_PTT: %i\r\n",from_addr,data[3]);
 		#endif
   }
   

@@ -641,6 +641,7 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
         }
         else if (cmd == REMOTE_COMMAND_BAND_INFO) {
           bool bUpdateBandInfo = false;
+          bool bUpdateAntInfo = false;
 
           for (unsigned char i=0;i<6;i++) {
             unsigned char temp = currBandInfoAddr[i];
@@ -651,20 +652,142 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
           }
 
           for (unsigned char i=0;i<6;i++) {
-            unsigned char temp = currBandInfoBand[i];
+            unsigned char temp1 = currBandInfoBand[i];
+            unsigned char temp2 = currBandInfoAntComb[i];
+           // unsigned char temp3 = currBandInfoRXAnt[i];
+            //unsigned char temp4 = currBandInfoPTTState[i];
 
             currBandInfoBand[i] = rxMessage.at(9+i);
 
-            if (temp != currBandInfoBand[i])
+            if (temp1 != currBandInfoBand[i])
                 bUpdateBandInfo = true;
+
+            //This check is so we are backwards compatible, so the program at least does not crash
+            //when not receiving a message that is not long enough
+            if (rxMessage.length() > 15) {
+                currBandInfoAntComb[i] = rxMessage.at(15+i);
+
+                currBandInfoRXAnt[i] = rxMessage.at(21+i) & 0x7F;
+
+                //Check the PTT state flag
+                if (rxMessage.at(21+i) & 0x80)
+                    currBandInfoPTTState[i] = true;
+                else
+                    currBandInfoPTTState[i] = false;
+
+                if (temp2 != currBandInfoAntComb[i])
+                    bUpdateAntInfo = true;
+
+               // if (temp3 != currBandInfoRXAnt[i])
+              //      bUpdateRxAntInfo = true;
+
+                //if (temp4 != currBandInfoPTTState[i])
+                //    bUpdatePTTInfo = true;
+            }
           }
 
           if (bUpdateBandInfo)
             updateBandInfo();
+
+          if (bUpdateAntInfo)
+            updateAntInfo();
         }
       }
     }
   }
+}
+
+QString MainWindowImpl::translateBoxName(int radioIndex) {
+    for (unsigned char i=0;i<6;i++) {
+        if (settingsDialog->getBandInfoBoxAddr(i) == currBandInfoAddr[radioIndex]) {
+            return(settingsDialog->getBandInfoBoxName(i));
+        }
+    }
+
+    return(" ");
+}
+
+void MainWindowImpl::updateAntInfo() {
+    qDebug() << "Update antenna info";
+
+    unsigned char myRotatorIndexes[4];
+    //Get the current antenna selection on this box from
+
+    unsigned char myAntennaSelection = 0;
+
+    if (currStatus & (1<<LED_STATUS_TX_ANT1))
+        myAntennaSelection |= 1<<0;
+    if (currStatus & (1<<LED_STATUS_TX_ANT2))
+        myAntennaSelection |= 1<<1;
+    if (currStatus & (1<<LED_STATUS_TX_ANT3))
+        myAntennaSelection |= 1<<2;
+    if (currStatus & (1<<LED_STATUS_TX_ANT4))
+        myAntennaSelection |= 1<<3;
+
+    qDebug() << "ANT SEL: " << myAntennaSelection;
+
+    if (currBand != 0) {
+        myRotatorIndexes[0] = rotatorIndexList[currBand-1][0];
+        myRotatorIndexes[1] = rotatorIndexList[currBand-1][1];
+        myRotatorIndexes[2] = rotatorIndexList[currBand-1][2];
+        myRotatorIndexes[3] = rotatorIndexList[currBand-1][3];
+
+        qDebug() << "ROT INDEX1: " << myRotatorIndexes[0];
+        qDebug() << "ROT INDEX2: " << myRotatorIndexes[1];
+        qDebug() << "ROT INDEX3: " << myRotatorIndexes[2];
+        qDebug() << "ROT INDEX4: " << myRotatorIndexes[3];
+
+
+        QString usedByString[4] = {"","","",""};
+
+        for (int radioIndex=5;radioIndex>=0;radioIndex--) {
+            qDebug() << "currBandInfoBand " << currBandInfoBand[radioIndex] << " Box Name " << translateBoxName(radioIndex);
+
+            if (currBandInfoBand[radioIndex] != 0) {
+                //If any antenna is selected, go through and see if it is some rotator we have
+                if (currBandInfoAntComb[radioIndex] != 0) {
+                    if (currBandInfoAntComb[radioIndex] & (1<<0)) {
+                        for (int myAntIndex=0;myAntIndex<4;myAntIndex++)
+                            if ((myRotatorIndexes[myAntIndex] != 0) && (myRotatorIndexes[myAntIndex] == rotatorIndexList[currBandInfoBand[radioIndex]-1][0]))
+                                usedByString[myAntIndex].append(translateBoxName(radioIndex)+" ");
+                    }
+
+                    if (currBandInfoAntComb[radioIndex] & (1<<1)) {
+                        for (int myAntIndex=0;myAntIndex<4;myAntIndex++)
+                            if ((myRotatorIndexes[myAntIndex] != 0) && (myRotatorIndexes[myAntIndex] == rotatorIndexList[currBandInfoBand[radioIndex]-1][1]))
+                                usedByString[myAntIndex].append(translateBoxName(radioIndex)+" ");
+                    }
+
+                    if (currBandInfoAntComb[radioIndex] & (1<<2)) {
+                        for (int myAntIndex=0;myAntIndex<4;myAntIndex++)
+                            if ((myRotatorIndexes[myAntIndex] != 0) && (myRotatorIndexes[myAntIndex] == rotatorIndexList[currBandInfoBand[radioIndex]-1][2]))
+                                usedByString[myAntIndex].append(translateBoxName(radioIndex)+" ");
+                    }
+
+                    if (currBandInfoAntComb[radioIndex] & (1<<3)) {
+                        for (int myAntIndex=0;myAntIndex<4;myAntIndex++)
+                            if ((myRotatorIndexes[myAntIndex] != 0) && (myRotatorIndexes[myAntIndex] == rotatorIndexList[currBandInfoBand[radioIndex]-1][3]))
+                                usedByString[myAntIndex].append(translateBoxName(radioIndex)+" ");
+                    }
+
+
+
+                    //if (myRotatorIndexes[0] == rotatorIndexList[currBandInfoBand[radioIndex]-1][0])
+                }
+            }
+        }
+
+        for (int antIndex=0;antIndex<4;antIndex++) {
+            rotatorWindow->setAntennaUsedBy(antIndex,usedByString[antIndex]);
+            qDebug() << "STR -> " << usedByString[antIndex];
+        }
+    }
+    else {
+        rotatorWindow->setAntennaUsedBy(0," ");
+        rotatorWindow->setAntennaUsedBy(1," ");
+        rotatorWindow->setAntennaUsedBy(2," ");
+        rotatorWindow->setAntennaUsedBy(3," ");
+    }
 }
 
 void MainWindowImpl::updateBandInfo() {
@@ -842,22 +965,22 @@ void MainWindowImpl::resetGUI() {
   for (unsigned char i=0;i<6;i++) {
       if (settingsDialog->getBandInfoBoxAddr(i) != 0) {
       if (i == 0) {
-        labelBoxAName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxAName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxABand->setPalette(plt);
         labelBoxABand->setText("N/A");
       }
       else if (i == 1) {
-        labelBoxBName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxBName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxBBand->setPalette(plt);
         labelBoxBBand->setText("N/A");
       }
       else if (i == 2) {
-        labelBoxCName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxCName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxCBand->setPalette(plt);
         labelBoxCBand->setText("N/A");
       }
       else if (i == 3) {
-        labelBoxDName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxDName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxDBand->setPalette(plt);
         labelBoxDBand->setText("N/A");
       }
@@ -960,6 +1083,11 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
     rotatorWindow = new RotatorDialog(this,Qt::FramelessWindowHint);
 
 	rotatorWindow->hide();
+
+  rotatorWindow->setAntennaUsedBy(0," ");
+  rotatorWindow->setAntennaUsedBy(1," ");
+  rotatorWindow->setAntennaUsedBy(2," ");
+  rotatorWindow->setAntennaUsedBy(3," ");
 
   powerMeterWindow = new PowerMeterDialog(this);
   powerMeterWindow->hide();
@@ -1082,36 +1210,58 @@ MainWindowImpl::MainWindowImpl ( QWidget * parent, Qt::WindowFlags f ) : QMainWi
 
       if (settingsDialog->getBandInfoBoxAddr(i) != 0) {
       if (i == 0) {
-        labelBoxAName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxAName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxABand->setPalette(plt);
         labelBoxABand->setText("N/A");
       }
       else if (i == 1) {
-        labelBoxBName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxBName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxBBand->setPalette(plt);
         labelBoxBBand->setText("N/A");
       }
       else if (i == 2) {
-        labelBoxCName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxCName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxCBand->setPalette(plt);
         labelBoxCBand->setText("N/A");
       }
       else if (i == 3) {
-        labelBoxDName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxDName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxDBand->setPalette(plt);
         labelBoxDBand->setText("N/A");
       }
       else if (i == 4) {
-        labelBoxEName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxEName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxEBand->setPalette(plt);
         labelBoxEBand->setText("N/A");
       }
       else if (i == 5) {
-        labelBoxFName->setText(settingsDialog->getBandInfoBoxName(i)+":");
+        labelBoxFName->setText("Radio " + settingsDialog->getBandInfoBoxName(i)+":");
         labelBoxFBand->setPalette(plt);
         labelBoxFBand->setText("N/A");
       }
     }
+  }
+
+  //Creating an index of which rotators are used for which antennas
+  //so that we are able to write what radio is using what dependent antennas
+  QSettings settings("rotator_settings.ini",QSettings::IniFormat,0);
+
+  QStringList groups = settings.childGroups();
+
+  for (int bandIndex=0;bandIndex<9;bandIndex++) {
+      settings.beginGroup(getBandName(bandIndex+1));
+
+      int size = settings.beginReadArray("Ant");
+
+      for (int i=0;i<size;i++) {
+        settings.setArrayIndex(i);
+
+        rotatorIndexList[bandIndex][i] = settings.value("RotatorIndex").toInt();
+      }
+
+      settings.endArray();
+
+      settings.endGroup();
   }
 
   updateBandInfo();

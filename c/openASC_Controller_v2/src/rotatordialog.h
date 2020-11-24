@@ -54,6 +54,7 @@ public:
   void setupLayout();
   void setRXAntStatus(bool state);
   void updateRXAntenna(int index);
+  void setAntennaUsedBy(qint8 antIndex, QString text);
 protected:
 	void paintEvent(QPaintEvent *event);
 	void mousePressEvent ( QMouseEvent * event );
@@ -79,6 +80,7 @@ private:
 	bool antExist[4];
 	bool antHasRotor[4];
 	bool antBiDirectional[4];
+    int antRotatorIndex[4];
 	bool antFixed[4];
 	int antBeamWidth[4];
 	int antFixedAngle[4];
