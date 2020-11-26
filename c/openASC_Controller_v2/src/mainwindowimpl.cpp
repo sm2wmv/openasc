@@ -686,8 +686,10 @@ void MainWindowImpl::timerPollRXQueueUpdate(void) {
             }
           }
 
-          if (bUpdateBandInfo)
+          if (bUpdateBandInfo) {
             updateBandInfo();
+			updateAntInfo();
+		  }
 
           if (bUpdateAntInfo)
             updateAntInfo();
