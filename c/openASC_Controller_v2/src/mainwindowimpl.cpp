@@ -708,7 +708,10 @@ QString MainWindowImpl::translateBoxName(int radioIndex) {
 }
 
 void MainWindowImpl::updateAntInfo() {
-    qDebug() << "Update antenna info";
+    rotatorWindow->setAntennaUsedBy(0," ");
+    rotatorWindow->setAntennaUsedBy(1," ");
+    rotatorWindow->setAntennaUsedBy(2," ");
+    rotatorWindow->setAntennaUsedBy(3," ");
 
     unsigned char myRotatorIndexes[4];
     //Get the current antenna selection on this box from
@@ -724,7 +727,7 @@ void MainWindowImpl::updateAntInfo() {
     if (currStatus & (1<<LED_STATUS_TX_ANT4))
         myAntennaSelection |= 1<<3;
 
-    qDebug() << "ANT SEL: " << myAntennaSelection;
+    //qDebug() << "ANT SEL: " << myAntennaSelection;
 
     if (currBand != 0) {
         myRotatorIndexes[0] = rotatorIndexList[currBand-1][0];
@@ -732,16 +735,16 @@ void MainWindowImpl::updateAntInfo() {
         myRotatorIndexes[2] = rotatorIndexList[currBand-1][2];
         myRotatorIndexes[3] = rotatorIndexList[currBand-1][3];
 
-        qDebug() << "ROT INDEX1: " << myRotatorIndexes[0];
-        qDebug() << "ROT INDEX2: " << myRotatorIndexes[1];
-        qDebug() << "ROT INDEX3: " << myRotatorIndexes[2];
-        qDebug() << "ROT INDEX4: " << myRotatorIndexes[3];
+//        qDebug() << "ROT INDEX1: " << myRotatorIndexes[0];
+       // qDebug() << "ROT INDEX2: " << myRotatorIndexes[1];
+       // qDebug() << "ROT INDEX3: " << myRotatorIndexes[2];
+        //qDebug() << "ROT INDEX4: " << myRotatorIndexes[3];
 
 
         QString usedByString[4] = {"","","",""};
 
         for (int radioIndex=5;radioIndex>=0;radioIndex--) {
-            qDebug() << "currBandInfoBand " << currBandInfoBand[radioIndex] << " Box Name " << translateBoxName(radioIndex);
+           // qDebug() << "currBandInfoBand " << currBandInfoBand[radioIndex] << " Box Name " << translateBoxName(radioIndex);
 
             if (currBandInfoBand[radioIndex] != 0) {
                 //If any antenna is selected, go through and see if it is some rotator we have
@@ -779,7 +782,7 @@ void MainWindowImpl::updateAntInfo() {
 
         for (int antIndex=0;antIndex<4;antIndex++) {
             rotatorWindow->setAntennaUsedBy(antIndex,usedByString[antIndex]);
-            qDebug() << "STR -> " << usedByString[antIndex];
+            //qDebug() << "STR -> " << usedByString[antIndex];
         }
     }
     else {
