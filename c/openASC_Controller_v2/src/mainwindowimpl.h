@@ -20,6 +20,9 @@
 #include <QMessageBox>
 #include <QMutex>
 
+//Uncomment this to disable the timeout counter for disconnect, this time is ms/10, so 1500 means 15 seconds
+#define TIMER_TIMEOUT_CONNECTION_LIMIT 1500
+
 typedef struct {
 	unsigned char currentBand;
 	unsigned char currentAntennas;

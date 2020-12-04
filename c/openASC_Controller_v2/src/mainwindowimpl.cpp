@@ -297,13 +297,15 @@ void MainWindowImpl::timerPollStatusUpdate(void) {
     if (TCPComm->isConnected()) {
         timerConnectionTimeoutCounter++;
 
-        if (timerConnectionTimeoutCounter > 1500) {
+        if (timerConnectionTimeoutCounter > TIMER_TIMEOUT_CONNECTION_LIMIT) {
             actionDisconnectTriggered();
 	    QMessageBox::warning(
 	      this,
 	      tr("Disconnected"),
 	      tr("Connection to the openASC box failed")
 	    );
+
+        timerConnectionTimeoutCounter = 0;
       }
 
     }
