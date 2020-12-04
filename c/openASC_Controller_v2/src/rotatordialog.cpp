@@ -55,27 +55,22 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
 
           labelSize = labelMapNameAnt1->size();
 
-          if (!antFixed[i]) {
-            if (antVerticalArray[i]) {
-              painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-              labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
-            }
-            else {
-              labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
-
-              painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-            }
-
-            if (antBiDirectional[i])
-              painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-
-            if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
-              painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A1_COLOR),Qt::SolidPattern));
-              painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
-            }
+          if (antVerticalArray[i]) {
+            painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
           }
           else {
-            labelMapNameAnt1->hide();
+            labelMapNameAnt1->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+
+            painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          }
+
+          if (antBiDirectional[i])
+            painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+
+          if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+            painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A1_COLOR),Qt::SolidPattern));
+            painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
           }
         }
         else if (i==1) {
@@ -83,23 +78,21 @@ void RotatorDialog::paintEvent(QPaintEvent *event) {
           painter.setBrush(QBrush(QColor(Qt::CURRENT_DIR_BEAMWIDTH_A2_COLOR),Qt::FDiagPattern));
 
           labelSize = labelMapNameAnt2->size();
-          if (!antFixed[i]) {
-            if (antVerticalArray[i]) {
-              painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-              labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
-            }
-            else {
-              labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
-              painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
-            }
+          if (antVerticalArray[i]) {
+            painter.drawPie(rectangle,(360-(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+            labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(-90+verticalArrayDirAngle[i][currAzimuthAngle[i]] + antBeamWidth[i]-270))),labelSize.width(),labelSize.height());
+          }
+          else {
+            labelMapNameAnt2->setGeometry(sizeWidth/2 - labelSize.width()/2 - lengthMapLabel * qCos(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),sizeHeight/2-labelSize.height()/2-lengthMapLabel*qSin(qDegreesToRadians((float)(currAzimuthAngle[i]-270))),labelSize.width(),labelSize.height());
+            painter.drawPie(rectangle,(360-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          }
 
-            if (antBiDirectional[i])
-              painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
+          if (antBiDirectional[i])
+            painter.drawPie(rectangle,(180-(-90+currAzimuthAngle[i] + antBeamWidth[i]/2))*16,antBeamWidth[i]*16);
 
-            if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
-              painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A2_COLOR),Qt::SolidPattern));
-              painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
-            }
+          if ((rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CW)) || (rotatorStatus[i] & (1<<FLAG_ROTATOR_ROTATION_CCW))) {
+            painter.setBrush(QBrush(QColor(Qt::TARGET_DIR_BEAMWIDTH_A2_COLOR),Qt::SolidPattern));
+            painter.drawPie(rectangle,(360-(-90+targetAzimuthAngle[i] + 0.5))*16,0.5*16);
           }
         }
         else if (i==2) {
