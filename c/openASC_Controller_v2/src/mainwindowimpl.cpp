@@ -294,21 +294,22 @@ void MainWindowImpl::timerPollStatusUpdate(void) {
         }
     }
 
+    #ifdef TIMER_TIMEOUT_CONNECTION_LIMIT
     if (TCPComm->isConnected()) {
-        timerConnectionTimeoutCounter++;
+      timerConnectionTimeoutCounter++;
 
         if (timerConnectionTimeoutCounter > TIMER_TIMEOUT_CONNECTION_LIMIT) {
             actionDisconnectTriggered();
-	    QMessageBox::warning(
-	      this,
-	      tr("Disconnected"),
-	      tr("Connection to the openASC box failed")
-	    );
+      QMessageBox::warning(
+        this,
+        tr("Disconnected"),
+        tr("Connection to the openASC box failed")
+      );
 
         timerConnectionTimeoutCounter = 0;
       }
-
     }
+    #endif
 }
 
 void MainWindowImpl::pushButtonRXAntEnableClicked() {
