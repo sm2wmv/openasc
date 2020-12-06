@@ -359,8 +359,8 @@ unsigned char ethernet_listen(unsigned char sock) {
 unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, unsigned int buflen) {
   unsigned char preamble[5] = {0xFE,0xFE,REMOTE_COMMAND_DISPLAY_DATA,(buflen >> 8) & 0xFF,buflen & 0xFF};
   
-  unsigned int ptr,offaddr,realaddr,txsize,timeout;   
-
+  unsigned int ptr,offaddr,realaddr,txsize;   
+ 
   if (buflen <= 0 || sock != 0) 
     return 0;
 
@@ -368,8 +368,6 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
   txsize=ethernet_spi_read(SO_TX_FSR);
   txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
-  timeout=0;
-  
   while (txsize < (buflen+5)) {
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
@@ -380,7 +378,6 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
       return 0;
     }*/
   }
-
   // Read the Tx Write Pointer
   ptr = ethernet_spi_read(S0_TX_WR);
   offaddr = (((ptr & 0x00FF) << 8 ) + ethernet_spi_read(S0_TX_WR + 1));
@@ -419,8 +416,8 @@ unsigned int ethernet_send_display_data(unsigned char sock, unsigned char *buf, 
   ethernet_spi_write(S0_CR,CR_SEND);
 
   // Wait for Sending Process
-  //while(ethernet_spi_read(S0_CR)); 
-
+  while(ethernet_spi_read(S0_CR)); 
+  
   return 1;
 }
 
@@ -444,6 +441,13 @@ void ethernet_send_data(unsigned char sock, unsigned char cmd, unsigned char len
 unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned int buflen) {
   unsigned int ptr,offaddr,realaddr,txsize,timeout;   
 
+  #ifdef ETHERNET_DEBUG_ENABLED
+    printf("ETH >> SEND SIZE: %i\n",buflen);
+
+    unsigned int time=main_get_ms_counter();
+  #endif
+    
+  
   if (buflen <= 0 || sock != 0) 
     return 0;
 
@@ -451,12 +455,13 @@ unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned
   txsize=ethernet_spi_read(SO_TX_FSR);
   txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
-  timeout=0;
+  timeout = 0;
+  
   while (txsize < buflen) {
     txsize=ethernet_spi_read(SO_TX_FSR);
     txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
-    /*if (timeout++ > 1000) {
+/*    if (timeout++ > 1000) {
       //Close the socket
       ethernet_close(sock);
       return 0;
@@ -487,6 +492,10 @@ unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned
   // Wait for Sending Process
   while(ethernet_spi_read(S0_CR)); 
 
+  #ifdef ETHERNET_DEBUG_ENABLED
+    printf("ETH >> Time %u\n",main_get_ms_counter()-time);
+  #endif
+    
   return 1;
 }
 
@@ -650,7 +659,7 @@ void ethernet_process(void) {
 
 unsigned char ethernet_is_active(void) {
   if (ethernet_chip_enabled)
-    if (sockstat == SOCK_ESTABLISHED)
+    if (ethernet_spi_read(S0_SR) == SOCK_ESTABLISHED)
       return(1);
 
   return(0);

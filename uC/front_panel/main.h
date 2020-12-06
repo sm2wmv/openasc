@@ -425,4 +425,6 @@ void main_update_status_field(void);
 
 unsigned char __inline__ main_get_status_field_index(void);
 
+unsigned int main_get_ms_counter(void);
+
 #endif

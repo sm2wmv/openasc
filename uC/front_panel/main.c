@@ -859,7 +859,7 @@ int main(void){
 	delay_ms(250);
 	led_set_all(LED_STATE_OFF);
 
-  wdt_enable(WDTO_2S);
+  wdt_enable(WDTO_8S);
 
   ethernet_init();
   
@@ -1090,6 +1090,10 @@ int main(void){
 		
     event_check_pings();
 	}
+}
+
+unsigned int main_get_ms_counter() {
+  return(counter_ms);  
 }
 
 unsigned char te=0;
