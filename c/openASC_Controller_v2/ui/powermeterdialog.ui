@@ -27,16 +27,16 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
- background-color: rgb(225, 225, 225);
- color: black;
+ background-color: rgb(42, 42, 42);
+ color: white;
 }
  QProgressBar {
-     border: 1px solid black;
+     border: 1px solid gray;
      border-radius: 3px;
-     background-color: rgb(170, 170, 170);
+     background-color: rgb(53, 53, 53);
  }
  QProgressBar::chunk {
-     background-color: lime;
+     background-color: green;
      width: 3px;
      margin: 1px;
  }
