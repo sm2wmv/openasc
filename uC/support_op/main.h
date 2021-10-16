@@ -70,7 +70,7 @@
 #define TRANSFER_RELAY_PULSE_TIME 25
 
 //! The between an event has occured and until we check the state of the openASC PTT_ACTIVE
-#define OPENASC_PTT_CHECK_TIME  30
+#define OPENASC_PTT_CHECK_TIME  60
 
 #ifdef DEBUG
 #define PRINTF printf

@@ -9,11 +9,11 @@
 #define INBAND_AMP_PRE_DELAY    30
 #define INBAND_RADIO_PRE_DELAY  120
 
-#define RUN_AMP_POST_DELAY    10
-#define RUN_RADIO_POST_DELAY  0
+#define RUN_AMP_POST_DELAY    20
+#define RUN_RADIO_POST_DELAY  10
 
-#define INBAND_AMP_POST_DELAY    10
-#define INBAND_RADIO_POST_DELAY  0
+#define INBAND_AMP_POST_DELAY    20
+#define INBAND_RADIO_POST_DELAY  10
 
 
 unsigned char sequencer_get_ptt_state_run(void);
