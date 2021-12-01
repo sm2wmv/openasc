@@ -93,6 +93,11 @@ void event_parse_ext_event(unsigned int ext_event_status);
 void event_sub_button_pressed(void);
 void event_rotate_button_pressed(void);
 
+void event_rx_button1_pressed(void);
+void event_rx_button2_pressed(void);
+void event_rx_button3_pressed(void);
+void event_rx_button4_pressed(void);
+
 void event_tx_button1_pressed(void);
 void event_tx_button2_pressed(void);
 void event_tx_button3_pressed(void);

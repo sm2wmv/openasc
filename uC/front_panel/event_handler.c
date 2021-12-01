@@ -737,6 +737,15 @@ void event_menu_button_pressed(void) {
 /*! \brief The TX/RX mode button was pressed */
 void event_txrx_mode_pressed(void) {
   clear_screensaver_timer();
+
+  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
+    status.function_status &= ~(1<<FUNC_STATUS_TXRX_MODE);
+    led_set_txrx(LED_STATE_OFF);
+  }
+  else {
+    status.function_status |= (1<<FUNC_STATUS_TXRX_MODE);
+    led_set_txrx(LED_STATE_ON);
+  }
 }
 
 /*! \brief Function which will poll all buttons and perform the proper action depending on their state */
@@ -771,7 +780,31 @@ void event_poll_buttons(void) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON4_TX_BIT))
 				event_tx_button4_pressed();
 		}
-    
+
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON1_RX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON1_RX_BIT))
+				event_rx_button1_pressed();
+		}		
+
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON2_RX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON2_RX_BIT))
+				event_rx_button2_pressed();
+		}		
+
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON3_RX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON3_RX_BIT))
+				event_rx_button3_pressed();
+		}		
+		
+	
+	//Checks if the status of this antenna button was changed
+		if (btn_status & (1<<FLAG_BUTTON4_RX_BIT)) {
+			if (status.buttons_current_state & (1<<FLAG_BUTTON4_RX_BIT))
+				event_rx_button4_pressed();
+		}			
     //Checks if the status of this antenna button was changed
     if (btn_status & (1<<FLAG_BUTTON_TXRX_BIT)) {
       if (status.buttons_current_state & (1<<FLAG_BUTTON_TXRX_BIT))
@@ -901,6 +934,27 @@ void __inline__ event_handler_set_ptt_status(void) {
     
     event_add_message((void *)main_update_ptt_status, ANT_CHANGE_PTT_LOCK_TIME, EVENT_TYPE_ANT_CHANGE_PTT_LOCK);
   }*/
+}
+
+
+/*! \brief Perform the action of RX antenna button 1 if it was pressed */
+void event_rx_button1_pressed(void) {
+	clear_screensaver_timer();
+}
+
+/*! \brief Perform the action of RX antenna button 2 if it was pressed */
+void event_rx_button2_pressed(void) {
+	clear_screensaver_timer();
+}
+
+/*! \brief Perform the action of RX antenna button 3 if it was pressed */
+void event_rx_button3_pressed(void) {
+	clear_screensaver_timer();
+}
+
+/*! \brief Perform the action of RX antenna button 4 if it was pressed */
+void event_rx_button4_pressed(void) {
+	clear_screensaver_timer();
 }
 
 /*! \brief Perform the action of TX antenna button 1 if it was pressed */

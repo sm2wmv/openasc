@@ -124,17 +124,19 @@
 #define OUTPUT_ADDR_DELIMITER			0xFF
 
 //! Define for function status
-#define FUNC_STATUS_RXANT							0
+#define FUNC_STATUS_RXANT							    0
 //! Define for function status, that rotation is active
-#define FUNC_STATUS_ROTATE						1
+#define FUNC_STATUS_ROTATE						    1
 //! Define for function status, to select which antenna that should be rotated
-#define FUNC_STATUS_SELECT_ANT_ROTATE	2
+#define FUNC_STATUS_SELECT_ANT_ROTATE	    2
 //! Define for function status, to select sub menu
-#define FUNC_STATUS_SUBMENU						3
+#define FUNC_STATUS_SUBMENU						    3
 //! Define for function status, menu is active
-#define FUNC_STATUS_MENU_ACTIVE       4
+#define FUNC_STATUS_MENU_ACTIVE           4
 //! Shutdown in progress
 #define FUNC_STATUS_SHUTDOWN_IN_PROGRESS  5
+//! TX RX mode is active
+#define FUNC_STATUS_TXRX_MODE             6
 
 //! Display level openASC logo
 #define DISPLAY_LEVEL_LOGO		0
