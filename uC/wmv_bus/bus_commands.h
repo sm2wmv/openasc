@@ -42,9 +42,9 @@
 #define BUS_CMD_DRIVER_ACTIVATE_TXRX_MODE							0x10
 /*! Deactivate TX/RX mode */
 #define BUS_CMD_DRIVER_DEACTIVATE_TXRX_MODE						0x11
-/*! Activate a driver combo, type = TX ANT */
+/*! Activate a driver combo, type = TX ANT combo */
 #define BUS_CMD_DRIVER_ACTIVATE_TX_ANT_COMBO					0x12
-/*! Deactivate a driver combo, type = TX ANT */
+/*! Deactivate a driver combo, type = TX ANT combo */
 #define BUS_CMD_DRIVER_DEACTIVATE_TX_ANT_COMBO				0x13
 /*! Activate a driver combo, type = RX ANT combo */
 #define BUS_CMD_DRIVER_ACTIVATE_RX_ANT_COMBO					0x14
@@ -107,7 +107,10 @@
 #define BUS_CMD_DRIVER_DEACTIVATE_SUBMENU_ANT4_OUTPUT				0x30
 /*! Deactivate all sub menu outputs */
 #define BUS_CMD_DRIVER_DEACTIVATE_ALL_SUBMENU_ANT4_OUTPUTS	0x31
-
+/*! Deactivate all the ant outputs enabled by this device */
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_TX_ANT_COMB_OUTPUTS		0x32
+/*! Deactivate all the ant outputs enabled by this device */
+#define BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANT_COMB_OUTPUTS		0x33
 
 //! Amplifier control command - Set mains status
 #define BUS_CMD_AMPLIFIER_TOGGLE_MAINS_STATUS         0x40

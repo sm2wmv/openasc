@@ -257,7 +257,7 @@ unsigned char internal_comm_is_tx_queue_full(void) {
  *  \param length The length of the data field 
  *  \param data The data we wish to send */
 void internal_comm_add_tx_message(unsigned char command, unsigned char length, char *data) {
-	#ifdef INT_COMM_DEBUG
+  #ifdef INT_COMM_DEBUG
 		printf("ADD 0x%02X\n",command);
     printf("TX_BUF_SIZE: %i\n\r",int_comm_tx_queue_size());
     printf("RX_BUF_SIZE: %i\n\r",int_comm_rx_queue_count());

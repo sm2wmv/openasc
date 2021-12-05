@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "../global.h"
 
 #include "main.h"
 #include "board.h"
@@ -64,6 +65,8 @@ unsigned char ptt_polarity = 0;
 
 unsigned int counter_ms = 0;
 
+void set_ptt_led_status(unsigned char state);
+
 /*! \brief Activate a driver output
 * This function is used to activate an output on the driver unit. It will remember
 * which device that sent the request for an activation so that the driver_unit will
@@ -72,55 +75,55 @@ unsigned int counter_ms = 0;
 * \param index The index of which output to activate 
 * \param type The type of output this is, usually is the bus command */
 void activate_output(unsigned char from_addr, unsigned char index, unsigned char type) {
-	driver_status.driver_output_state |= (1<<(index-1));
-	driver_status.driver_output_owner[index-1] = from_addr;
+  driver_status.driver_output_state |= (1<<(index-1));
+  driver_status.driver_output_owner[index-1] = from_addr;
 
-	driver_status.driver_output_type[index-1] = type;
+  driver_status.driver_output_type[index-1] = type;
 
-	switch (index) {
-		case 1 :	PORTB |= (1<<4);
-							break;
-		case 2 :	PORTB |= (1<<5);
-							break;
-		case 3 :	PORTB |= (1<<6);
-							break;
-		case 4 :	PORTB |= (1<<7);
-							break;
-		case 5 :	PORTG |= (1<<3);
-							break;
-		case 6 :	PORTG |= (1<<4);
-							break;
-		case 7 :	PORTD |= (1<<4);
-							break;
-		case 8 :	PORTD |= (1<<5);
-							break;
-		case 9 :	PORTD |= (1<<6);
-							break;
-		case 10 :	PORTD |= (1<<7);
-							break;
-		case 11 :	PORTC |= (1<<0);
-							break;
-		case 12 :	PORTC |= (1<<1);
-							break;
-		case 13 :	PORTC |= (1<<2);
-							break;
-		case 14 :	PORTC |= (1<<3);
-							break;
-		case 15 :	PORTC |= (1<<4);
-							break;
-		case 16 :	PORTC |= (1<<5);
-							break;
-		case 17 :	PORTC |= (1<<6);
-							break;
-		case 18 :	PORTC |= (1<<7);
-							break;
-		case 19 :	PORTG |= (1<<2);
-							break;
-		case 20 :	PORTA |= (1<<7);
-							break;
-		default: 
-							break;
-	}
+  switch (index) {
+    case 1 :	PORTB |= (1<<4);
+              break;
+    case 2 :	PORTB |= (1<<5);
+              break;
+    case 3 :	PORTB |= (1<<6);
+              break;
+    case 4 :	PORTB |= (1<<7);
+              break;
+    case 5 :	PORTG |= (1<<3);
+              break;
+    case 6 :	PORTG |= (1<<4);
+              break;
+    case 7 :	PORTD |= (1<<4);
+              break;
+    case 8 :	PORTD |= (1<<5);
+              break;
+    case 9 :	PORTD |= (1<<6);
+              break;
+    case 10 :	PORTD |= (1<<7);
+              break;
+    case 11 :	PORTC |= (1<<0);
+              break;
+    case 12 :	PORTC |= (1<<1);
+              break;
+    case 13 :	PORTC |= (1<<2);
+              break;
+    case 14 :	PORTC |= (1<<3);
+              break;
+    case 15 :	PORTC |= (1<<4);
+              break;
+    case 16 :	PORTC |= (1<<5);
+              break;
+    case 17 :	PORTC |= (1<<6);
+              break;
+    case 18 :	PORTC |= (1<<7);
+              break;
+    case 19 :	PORTG |= (1<<2);
+              break;
+    case 20 :	PORTA |= (1<<7);
+              break;
+    default: 
+              break;
+  }
 }
 
 /*! \brief Deactivate a driver output
@@ -130,56 +133,56 @@ void activate_output(unsigned char from_addr, unsigned char index, unsigned char
 * \param from_addr The device that sent the request of deactivating the output
 * \param index The index of which output to deactivate */
 void deactivate_output(unsigned char from_addr, unsigned char index) {
-	if (from_addr == driver_status.driver_output_owner[index-1]) {
-		driver_status.driver_output_state &= ~(1<<(index-1));
-		driver_status.driver_output_owner[index-1] = 0;
-		driver_status.driver_output_type[index-1] = 0;
+  if (from_addr == driver_status.driver_output_owner[index-1]) {
+      driver_status.driver_output_state &= ~(1<<(index-1));
+      driver_status.driver_output_owner[index-1] = 0;
+      driver_status.driver_output_type[index-1] = 0;
 
-		switch (index) {
-			case 1 :	PORTB &= ~(1<<4);
-								break;
-			case 2 :	PORTB &= ~(1<<5);
-								break;
-			case 3 :	PORTB &= ~(1<<6);
-								break;
-			case 4 :	PORTB &= ~(1<<7);
-								break;
-			case 5 :	PORTG &= ~(1<<3);
-								break;
-			case 6 :	PORTG &= ~(1<<4);
-								break;
-			case 7 :	PORTD &= ~(1<<4);
-								break;
-			case 8 :	PORTD &= ~(1<<5);
-								break;
-			case 9 :	PORTD &= ~(1<<6);
-								break;
-			case 10 :	PORTD &= ~(1<<7);
-								break;
-			case 11 :	PORTC &= ~(1<<0);
-								break;
-			case 12 :	PORTC &= ~(1<<1);
-								break;
-			case 13 :	PORTC &= ~(1<<2);
-								break;
-			case 14 :	PORTC &= ~(1<<3);
-								break;
-			case 15 :	PORTC &= ~(1<<4);
-								break;
-			case 16 :	PORTC &= ~(1<<5);
-								break;
-			case 17 :	PORTC &= ~(1<<6);
-								break;
-			case 18 :	PORTC &= ~(1<<7);
-								break;
-			case 19 :	PORTG &= ~(1<<2);
-								break;
-			case 20 :	PORTA &= ~(1<<7);
-								break;
-			default: 
-								break;
-		}
-	}
+      switch (index) {
+        case 1 :	PORTB &= ~(1<<4);
+                  break;
+        case 2 :	PORTB &= ~(1<<5);
+                  break;
+        case 3 :	PORTB &= ~(1<<6);
+                  break;
+        case 4 :	PORTB &= ~(1<<7);
+                  break;
+        case 5 :	PORTG &= ~(1<<3);
+                  break;
+        case 6 :	PORTG &= ~(1<<4);
+                  break;
+        case 7 :	PORTD &= ~(1<<4);
+                  break;
+        case 8 :	PORTD &= ~(1<<5);
+                  break;
+        case 9 :	PORTD &= ~(1<<6);
+                  break;
+        case 10 :	PORTD &= ~(1<<7);
+                  break;
+        case 11 :	PORTC &= ~(1<<0);
+                  break;
+        case 12 :	PORTC &= ~(1<<1);
+                  break;
+        case 13 :	PORTC &= ~(1<<2);
+                  break;
+        case 14 :	PORTC &= ~(1<<3);
+                  break;
+        case 15 :	PORTC &= ~(1<<4);
+                  break;
+        case 16 :	PORTC &= ~(1<<5);
+                  break;
+        case 17 :	PORTC &= ~(1<<6);
+                  break;
+        case 18 :	PORTC &= ~(1<<7);
+                  break;
+        case 19 :	PORTG &= ~(1<<2);
+                  break;
+        case 20 :	PORTA &= ~(1<<7);
+                  break;
+        default: 
+                  break;
+      }
+  }
 }
 
 /*! \brief Checks the ping queue to see if any openASC box has stopped responding. If so we shut down all the outputs that it has activated */
@@ -200,7 +203,7 @@ void check_pings(void) {
 
 /*! \brief Get the number the TX active signal is connected to
  *  \param addr The address of the device
- *  \return The ptt interlock input, 0 = none or 1-7*/
+ *  \return The ptt interlock input, 0 = none or 1-8*/
 unsigned char get_ptt_interlock_input(unsigned char addr) {
 	for (unsigned char i=0;i<7;i++)
 		if (driver_status.ptt_interlock_input[i] == addr)
@@ -224,6 +227,8 @@ unsigned int lm76_get_temp(void) {
 * This function is used to parse a message that was receieved on the bus that is located
 * in the RX queue. */
 void bus_parse_message(BUS_MESSAGE *bus_message) {
+  unsigned char offset = 0;
+  
 	if (bus_message->cmd == BUS_CMD_ACK)
 		bus_message_acked(bus_message->from_addr);
 	else if (bus_message->cmd == BUS_CMD_NACK)
@@ -262,6 +267,35 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 			for (unsigned char i=0;i<bus_message->length;i++)
 				deactivate_output(bus_message->from_addr,bus_message->data[i]);
 			break;
+    case BUS_CMD_DRIVER_ACTIVATE_TX_ANT_COMBO:
+			for (unsigned char i=0;i<bus_message->length;i++) {
+        driver_status.driver_output_state_tx_comb |= (1<<(bus_message->data[i]-1));
+        driver_status.driver_output_owner_tx_comb[bus_message->data[i]-1] = bus_message->from_addr;
+      }
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_TX_ANT_COMBO:
+			for (unsigned char i=0;i<bus_message->length;i++) {
+        driver_status.driver_output_state_tx_comb &= ~(1<<(bus_message->data[i]-1));
+        driver_status.driver_output_owner_tx_comb[bus_message->data[i]-1] = 0;
+      }	
+      break;      
+    case BUS_CMD_DRIVER_ACTIVATE_RX_ANT_COMBO:
+			for (unsigned char i=0;i<bus_message->length;i++) {
+        driver_status.driver_output_state_rx_comb |= (1<<(bus_message->data[i]-1));
+        driver_status.driver_output_owner_rx_comb[bus_message->data[i]-1] = bus_message->from_addr;
+      
+        activate_output(bus_message->from_addr, bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
+      }
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_RX_ANT_COMBO:
+			for (unsigned char i=0;i<bus_message->length;i++) {
+        driver_status.driver_output_state_rx_comb &= ~(1<<(bus_message->data[i]-1));
+        driver_status.driver_output_owner_rx_comb[bus_message->data[i]-1] = 0;
+
+        //We deactivate the ANT outputs on purpose, because the in/out driver only know that state
+        deactivate_output(bus_message->from_addr,bus_message->data[i]);
+      }	
+      break;
 		case BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT:
 			for (unsigned char i=0;i<bus_message->length;i++)
 				activate_output(bus_message->from_addr,bus_message->data[i], BUS_CMD_DRIVER_ACTIVATE_BAND_OUTPUT);
@@ -286,6 +320,25 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 			for (unsigned char i=1;i<=20;i++)
 				if (driver_status.driver_output_type[i-1] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
 					deactivate_output(bus_message->from_addr,i);
+			break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_TX_ANT_COMB_OUTPUTS:
+			for (unsigned char i=0;i<20;i++) {
+        if (driver_status.driver_output_owner_tx_comb[i] == bus_message->from_addr) {
+          driver_status.driver_output_state_tx_comb &= ~(1<<i);
+          driver_status.driver_output_owner_tx_comb[i] = 0;
+        }
+      }
+      break;
+		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANT_COMB_OUTPUTS:
+			for (unsigned char i=0;i<20;i++) {
+        if (driver_status.driver_output_owner_rx_comb[i] == bus_message->from_addr) {
+          driver_status.driver_output_state_rx_comb &= ~(1<<i);
+          driver_status.driver_output_owner_rx_comb[i] = 0;
+
+          if (driver_status.driver_output_type[i] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
+            deactivate_output(bus_message->from_addr,i+1);
+        }
+      }
 			break;
 		case BUS_CMD_DRIVER_DEACTIVATE_ALL_RX_ANTENNA_OUTPUTS:
 			for (unsigned char i=1;i<=20;i++)
@@ -376,10 +429,66 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
 			break;
 		case BUS_CMD_SYNC:
 			break;
+    case BUS_CMD_DRIVER_ACTIVATE_TXRX_MODE:
+      offset = get_ptt_interlock_input(bus_message->from_addr);
+      
+      if (offset > 0) {
+        driver_status.txrx_mode_enabled[offset-1] = bus_message->from_addr;
+      }      
+      break;
+    case BUS_CMD_DRIVER_DEACTIVATE_TXRX_MODE:
+      offset = get_ptt_interlock_input(bus_message->from_addr);
+
+      if (offset != 0) {
+        driver_status.txrx_mode_enabled[offset-1] = 0;
+        
+        //For extra precaution, loop through and disable all TXRX ANT comb
+        for (unsigned char i=0;i<20;i++) {
+          driver_status.driver_output_owner_tx_comb[i] = 0;
+          driver_status.driver_output_owner_rx_comb[i] = 0;
+                  
+          
+          if (driver_status.driver_output_type[i] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT)
+            deactivate_output(bus_message->from_addr,i+1);
+        }
+
+        driver_status.driver_output_state_rx_comb = 0;
+        driver_status.driver_output_state_tx_comb = 0;
+      }
+      break;      
 		default:
-			
-			break;
+      break;
 	}
+}
+
+void update_txrx_state(unsigned char index, unsigned char state) {
+  if (state != 0) { //PTT is active
+    if (driver_status.txrx_mode_enabled[index] != 0) {  //TXRX mode is enabled
+      for (unsigned char i=0;i<20;i++) {
+        if ((driver_status.driver_output_type[i] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT) &&
+            (driver_status.driver_output_owner[i] == driver_status.txrx_mode_enabled[index])) {
+          deactivate_output(driver_status.txrx_mode_enabled[index], i+1);
+        }
+        
+        if (driver_status.driver_output_owner_tx_comb[i] == driver_status.txrx_mode_enabled[index])
+          activate_output(driver_status.txrx_mode_enabled[index], i+1, BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
+      }
+    }
+    
+  }
+  else {  //PTT is not active
+    if (driver_status.txrx_mode_enabled[index] != 0) {  //TXRX mode is enabled
+      for (unsigned char i=0;i<20;i++) {
+        if ((driver_status.driver_output_type[i] == BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT) &&
+            (driver_status.driver_output_owner[i] == driver_status.txrx_mode_enabled[index])) {
+          deactivate_output(driver_status.txrx_mode_enabled[index], i+1);
+        }
+        
+        if (driver_status.driver_output_owner_rx_comb[i] == driver_status.txrx_mode_enabled[index])
+          activate_output(driver_status.txrx_mode_enabled[index], i+1, BUS_CMD_DRIVER_ACTIVATE_ANT_OUTPUT);
+      }
+    }
+  }
 }
 
 /*! \brief Read the external DIP-switch.
@@ -458,8 +567,11 @@ int main(void)
 	else
 		device_id = DEVICE_ID_DRIVER_NEG;
 
-	for (unsigned char i=1;i<=20;i++)
+	for (unsigned char i=1;i<=20;i++) {
 		deactivate_output(0x00,i);
+    driver_status.driver_output_owner_tx_comb[i-1] = 0;
+    driver_status.driver_output_state_tx_comb = 0;
+  }
 
 	unsigned char device_count = bus_get_device_count();
 
@@ -505,6 +617,12 @@ int main(void)
         ptt_status_current = get_ptt_status();
       
       if (ptt_status_current != ptt_status_prev) {
+        for (unsigned char i=0;i<7;i++) {
+          if ((ptt_status_prev ^ ptt_status_current) == (1<<i)) {
+            update_txrx_state(i, (ptt_status_current & (1<<i)) >> i);
+          }
+        }
+        
         //Fix the visual
         set_ptt_led_status(ptt_status_current);
         

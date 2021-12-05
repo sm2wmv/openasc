@@ -29,6 +29,7 @@
 #include "radio_interface.h"
 #include "led_control.h"
 #include "band_ctrl.h"
+#include "radio_interface.h"
 #include "main.h"
 #include "usart.h"
 #include "board.h"
@@ -37,6 +38,7 @@
 #include "../internal_comm_commands.h"
 #include "../global.h"
 #include "powermeter.h"
+#include "display_handler.h"
 
 //! Serial receive buffer
 unsigned char *radio_serial_rx_buffer;
@@ -139,6 +141,8 @@ void radio_ptt_active(void) {
 		
 		if ((runtime_settings.powermeter_address != 0x00) || (main_get_powermeter_address(status.selected_band-1) != 0x00))
 			powermeter_set_active(1);
+    else
+      display_handler_repaint();
 	}
 }
 
@@ -152,6 +156,9 @@ void radio_ptt_deactive(void) {
 	
 	if ((runtime_settings.powermeter_address != 0x00) || (main_get_powermeter_address(status.selected_band-1) != 0x00))
     powermeter_set_active(0);
+  else
+    display_handler_repaint();
+  
 }
 
 /*! \brief Enable the TX ACTIVE output */

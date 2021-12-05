@@ -469,16 +469,24 @@ void display_handler_update_antennas(unsigned char band, unsigned char antenna) 
     
   glcd_line(0,128,55);
     
-  if (antenna & (1<<0))
+  
+  uint8_t temp_ant = antenna;
+
+  //If we transmit we wish to toggle over to the TX ant combination
+  if ((radio_get_ptt_status() & (1<<RADIO_FLAG_RADIO_PTT)) == 0)
+    if ((temp_ant & 0xF0) != 0)
+      temp_ant = (temp_ant & 0xF0) >> 4;
+  
+  if (temp_ant & (1<<0))
     display_handler_invert_antenna(ANTENNA_1);
 
-  if (antenna & (1<<1))
+  if (temp_ant & (1<<1))
     display_handler_invert_antenna(ANTENNA_2);
 
-  if (antenna & (1<<2))
+  if (temp_ant & (1<<2))
     display_handler_invert_antenna(ANTENNA_3);
 
-  if (antenna & (1<<3))
+  if (temp_ant & (1<<3))
     display_handler_invert_antenna(ANTENNA_4);
 
   display_handler_status_field_text(strlen(status_field_text),status_field_text);

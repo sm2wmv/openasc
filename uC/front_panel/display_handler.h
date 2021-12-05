@@ -79,7 +79,7 @@
 //! The position of the antenna2 text X position
 #define DISPLAY_TEXT_ANT2_X_POS	0
 //! The position of the antenna2 text Y position
-#define DISPLAY_TEXT_ANT2_Y_POS	15
+#define DISPLAY_TEXT_ANT2_Y_POS	14
 
 //! The position of the antenna3 text X position
 #define DISPLAY_TEXT_ANT3_X_POS	0

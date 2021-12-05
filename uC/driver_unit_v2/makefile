@@ -70,7 +70,7 @@ BUS_TX_QUEUE_SIZE = 10
 
 # CLOCK_FREQ_LOW  = Clock frequency is 7.3728 MHz
 # CLOCK_FREQ_HIGH = Clock frequency is 14.7456 MHz
-CLOCK_FREQ = CLOCK_FREQ_LOW
+CLOCK_FREQ = CLOCK_FREQ_HIGH
 
 #Root directories
 WMV_BUS_SRC = ../wmv_bus/bus.c ../wmv_bus/bus_usart.c ../wmv_bus/bus_ping.c ../queue.c

@@ -532,6 +532,10 @@ void main_update_ptt_status(void) {
 	}
 }
 
+uint8_t main_get_ptt_interlock_input(void) {
+  return(settings.ptt_interlock_input);
+}
+
 /*! \brief Set the inhibit state 
  *  This function is used to set the inhibit state, which is used to check at various places if it is safe for example
  *  to transmit, change band or change antennas. 
@@ -795,6 +799,10 @@ int main(void){
     #ifdef ETHERNET_DEBUG_ENABLED
       init_usart_computer();
     #endif
+
+    #ifdef TXRX_DEBUG_ENABLED
+      init_usart_computer();
+    #endif      
 	}
 	else {
 		//Init the computer communication

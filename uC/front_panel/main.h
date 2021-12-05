@@ -412,7 +412,7 @@ void main_set_new_band(unsigned char band);
 unsigned char main_get_current_band(void);
 
 void main_process_lock(unsigned char lock_status);
-
+uint8_t main_get_ptt_interlock_input(void);
 unsigned char main_get_ethernet_local_mode(void);
 struct_setting* main_get_settings_ptr(void);
 

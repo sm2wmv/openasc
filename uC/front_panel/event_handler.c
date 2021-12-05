@@ -737,15 +737,52 @@ void event_menu_button_pressed(void) {
 /*! \brief The TX/RX mode button was pressed */
 void event_txrx_mode_pressed(void) {
   clear_screensaver_timer();
-
-  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
-    status.function_status &= ~(1<<FUNC_STATUS_TXRX_MODE);
-    led_set_txrx(LED_STATE_OFF);
+  if (main_get_ptt_interlock_input() != 0) {
+    if (main_get_current_band() != BAND_UNDEFINED) {
+      if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0)) == 0)) {
+        if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
+          status.function_status &= ~(1<<FUNC_STATUS_TXRX_MODE);
+          led_set_txrx(LED_STATE_OFF);
+          led_set_rx_ant(0, LED_STATE_OFF); //Turn off all LEDs
+          
+          status.selected_ant &= 0x0F;
+          
+          status.txrx_mode = 0;
+          antenna_ctrl_disable_txrx_mode();
+        }
+        else {
+          status.function_status |= (1<<FUNC_STATUS_TXRX_MODE);
+          led_set_txrx(LED_STATE_ON);
+          
+          if (status.selected_ant  & (1<<0)) {
+            led_set_rx_ant(1, LED_STATE_ON);
+            status.selected_ant |= (1<<4);
+          }
+          
+          if (status.selected_ant  & (1<<1)) {
+            led_set_rx_ant(2, LED_STATE_ON);
+            status.selected_ant |= (1<<5);
+          }
+          
+          if (status.selected_ant  & (1<<2)) {
+            led_set_rx_ant(3, LED_STATE_ON);
+            status.selected_ant |= (1<<6);
+          }
+          
+          if (status.selected_ant  & (1<<3)) {
+            led_set_rx_ant(4, LED_STATE_ON);
+            status.selected_ant |= (1<<7);
+          }
+          
+          status.txrx_mode = 1;
+          
+          antenna_ctrl_enable_txrx_mode();
+        }
+      }    
+    }
   }
-  else {
-    status.function_status |= (1<<FUNC_STATUS_TXRX_MODE);
-    led_set_txrx(LED_STATE_ON);
-  }
+  
+  display_handler_repaint();
 }
 
 /*! \brief Function which will poll all buttons and perform the proper action depending on their state */
@@ -772,7 +809,7 @@ void event_poll_buttons(void) {
 	//Checks if the status of this antenna button was changed
 		if (btn_status & (1<<FLAG_BUTTON3_TX_BIT)) {
 			if (status.buttons_current_state & (1<<FLAG_BUTTON3_TX_BIT))
-				event_tx_button3_pressed();
+ 				event_tx_button3_pressed();
 		}
 	
 	//Checks if the status of this antenna button was changed
@@ -940,21 +977,292 @@ void __inline__ event_handler_set_ptt_status(void) {
 /*! \brief Perform the action of RX antenna button 1 if it was pressed */
 void event_rx_button1_pressed(void) {
 	clear_screensaver_timer();
+  
+  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
+    if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0)) == 0)) {
+      if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
+        
+        event_handler_set_ptt_status();
+
+        unsigned char new_ant_comb = status.selected_ant;	
+        
+        if (status.selected_ant & (1<<4)) {
+          new_ant_comb &= ~(1<<4);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(1,LED_STATE_OFF);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x00) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x0F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              display_handler_repaint();
+            }
+          }
+        }
+        else {		
+          new_ant_comb |= (1<<4);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(1,LED_STATE_ON);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x10) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x1F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(1,LED_STATE_ON);
+              display_handler_repaint();
+            }
+          }
+        }
+      }
+
+      send_ping();
+
+      main_update_ptt_status();
+    }
+  }
 }
 
 /*! \brief Perform the action of RX antenna button 2 if it was pressed */
 void event_rx_button2_pressed(void) {
 	clear_screensaver_timer();
+  
+  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
+    if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<1)) == 0)) {
+      if (antenna_ctrl_get_flags(1) & (1<<ANTENNA_EXIST_FLAG)) {
+        
+        event_handler_set_ptt_status();
+
+        unsigned char new_ant_comb = status.selected_ant;	
+        
+        if (status.selected_ant & (1<<5)) {
+          new_ant_comb &= ~(1<<5);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(2,LED_STATE_OFF);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x00) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x0F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              display_handler_repaint();
+            }
+          }
+        }
+        else {		
+          new_ant_comb |= (1<<5);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(2,LED_STATE_ON);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x20) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x2F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(2,LED_STATE_ON);
+              display_handler_repaint();
+            }
+            else {
+              status.selected_ant = new_ant_comb & 0x1F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(1,LED_STATE_ON);
+              display_handler_repaint();            
+            }
+          }
+        }
+      }
+
+      send_ping();
+
+      main_update_ptt_status();
+    }
+  }
 }
 
 /*! \brief Perform the action of RX antenna button 3 if it was pressed */
 void event_rx_button3_pressed(void) {
 	clear_screensaver_timer();
+  
+  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
+    if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<2)) == 0)) {
+      if (antenna_ctrl_get_flags(2) & (1<<ANTENNA_EXIST_FLAG)) {
+        
+        event_handler_set_ptt_status();
+
+        unsigned char new_ant_comb = status.selected_ant;	
+        
+        if (status.selected_ant & (1<<6)) {
+          new_ant_comb &= ~(1<<6);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(3,LED_STATE_OFF);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x00) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x0F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              display_handler_repaint();
+            }
+          }
+        }
+        else {		
+          new_ant_comb |= (1<<6);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(3,LED_STATE_ON);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x40) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x4F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(3,LED_STATE_ON);
+              display_handler_repaint();
+            }
+            else {
+              status.selected_ant = new_ant_comb & 0x1F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(1,LED_STATE_ON);
+              display_handler_repaint();            
+            }
+          }
+        }
+      }
+
+      send_ping();
+
+      main_update_ptt_status();
+    }
+  }
 }
 
 /*! \brief Perform the action of RX antenna button 4 if it was pressed */
 void event_rx_button4_pressed(void) {
 	clear_screensaver_timer();
+  
+  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
+    if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<3)) == 0)) {
+      if (antenna_ctrl_get_flags(3) & (1<<ANTENNA_EXIST_FLAG)) {
+        
+        event_handler_set_ptt_status();
+
+        unsigned char new_ant_comb = status.selected_ant;	
+        
+        if (status.selected_ant & (1<<7)) {
+          new_ant_comb &= ~(1<<7);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(4,LED_STATE_OFF);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x00) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x0F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              display_handler_repaint();
+            }
+          }
+        }
+        else {		
+          new_ant_comb |= (1<<7);
+              
+          if (antenna_ctrl_comb_allowed((new_ant_comb & 0xF0) >> 4)) {
+            status.selected_ant = new_ant_comb;
+      
+            antenna_ctrl_send_rx_ant_comb_to_bus();
+                
+            led_set_rx_ant(4,LED_STATE_ON);
+            display_handler_repaint();
+          }
+          else {
+            if (antenna_ctrl_comb_allowed((new_ant_comb & 0x80) >> 4)) {
+              status.selected_ant = new_ant_comb & 0x8F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(4,LED_STATE_ON);
+              display_handler_repaint();
+            }
+            else {
+              status.selected_ant = new_ant_comb & 0x1F;
+        
+              antenna_ctrl_send_rx_ant_comb_to_bus();
+                  
+              led_set_rx_ant(0,LED_STATE_OFF);
+              led_set_rx_ant(1,LED_STATE_ON);
+              display_handler_repaint();            
+            }
+          }
+        }
+      }
+
+      send_ping();
+
+      main_update_ptt_status();
+    }
+  }
 }
 
 /*! \brief Perform the action of TX antenna button 1 if it was pressed */
@@ -975,7 +1283,10 @@ void event_tx_button1_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 						
-						antenna_ctrl_send_ant_data_to_bus();
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(1,LED_STATE_OFF);
 						display_handler_repaint();
@@ -984,7 +1295,10 @@ void event_tx_button1_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
 							status.selected_ant = new_ant_comb & 0xF0;
 								
-							antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 			
 							led_set_tx_ant(0,LED_STATE_OFF);
 							display_handler_repaint();
@@ -997,7 +1311,10 @@ void event_tx_button1_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 		
-						antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(1,LED_STATE_ON);
 						display_handler_repaint();
@@ -1006,7 +1323,10 @@ void event_tx_button1_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF1)) {
 							status.selected_ant = new_ant_comb & 0xF1;
 		
-							antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 			
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(1,LED_STATE_ON);
@@ -1056,7 +1376,10 @@ void event_tx_button2_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 		
-						antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 							
 						led_set_tx_ant(2,LED_STATE_OFF);
 						display_handler_repaint();
@@ -1065,7 +1388,10 @@ void event_tx_button2_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
 							status.selected_ant = new_ant_comb & 0xF0;
 			
-							antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 								
 							led_set_tx_ant(0,LED_STATE_OFF);
               display_handler_repaint();
@@ -1078,8 +1404,11 @@ void event_tx_button2_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 		
-						antenna_ctrl_send_ant_data_to_bus();
-							
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();							
+              
 						led_set_tx_ant(2,LED_STATE_ON);
             display_handler_repaint();
 					}
@@ -1087,12 +1416,27 @@ void event_tx_button2_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF2)) {
 							status.selected_ant = new_ant_comb & 0xF2;
 			
-							antenna_ctrl_send_ant_data_to_bus();
-								
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();								
+              
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(2,LED_STATE_ON);
               display_handler_repaint();
 						}
+						else { //If the above antenna combination was not allowed, then we try to default to just the main antenna
+							status.selected_ant = new_ant_comb & 0xF1;
+			
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
+              
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(1,LED_STATE_ON);
+              display_handler_repaint();
+            }
 					}
 				}
 			} else {
@@ -1135,8 +1479,11 @@ void event_tx_button3_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 		
-						antenna_ctrl_send_ant_data_to_bus();
-							
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();
+            
 						led_set_tx_ant(3,LED_STATE_OFF);
 						display_handler_repaint();
 					}
@@ -1144,7 +1491,10 @@ void event_tx_button3_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
 							status.selected_ant = new_ant_comb & 0xF0;
 								
-							antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 								
 							led_set_tx_ant(0,LED_STATE_OFF);
 							display_handler_repaint();
@@ -1157,8 +1507,11 @@ void event_tx_button3_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 		
-						antenna_ctrl_send_ant_data_to_bus();
-							
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();
+            
 						led_set_tx_ant(3,LED_STATE_ON);
 						display_handler_repaint();
 					}
@@ -1166,12 +1519,27 @@ void event_tx_button3_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF4)) {
 							status.selected_ant = new_ant_comb & 0xF4;
 			
-							antenna_ctrl_send_ant_data_to_bus();
-								
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
+              
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(3,LED_STATE_ON);
 							display_handler_repaint();
 						}
+            else { //If the above antenna combination was not allowed, then we try to default to just the main antenna
+							status.selected_ant = new_ant_comb & 0xF1;
+			
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
+								
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(1,LED_STATE_ON);
+              display_handler_repaint();
+            }						
 					}
 				}
 			}
@@ -1215,7 +1583,10 @@ void event_tx_button4_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 			
-						antenna_ctrl_send_ant_data_to_bus();
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();
 								
 						led_set_tx_ant(4,LED_STATE_OFF);
 						display_handler_repaint();
@@ -1224,7 +1595,10 @@ void event_tx_button4_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF0)) {
 							status.selected_ant = new_ant_comb & 0xF0;
 				
-							antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 									
 							led_set_tx_ant(0,LED_STATE_OFF);
 							display_handler_repaint();
@@ -1236,9 +1610,12 @@ void event_tx_button4_pressed(void) {
 							
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
-			
-						antenna_ctrl_send_ant_data_to_bus();
-								
+    
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();
+              
 						led_set_tx_ant(4,LED_STATE_ON);
 						display_handler_repaint();
 					}
@@ -1246,12 +1623,27 @@ void event_tx_button4_pressed(void) {
 						if (antenna_ctrl_comb_allowed(new_ant_comb & 0xF8)) {
 							status.selected_ant = new_ant_comb & 0xF8;
 				
-							antenna_ctrl_send_ant_data_to_bus();
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
 									
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(4,LED_STATE_ON);
 							display_handler_repaint();
 						}
+            else { //If the above antenna combination was not allowed, then we try to default to just the main antenna
+							status.selected_ant = new_ant_comb & 0xF1;
+			
+              if (status.txrx_mode)
+                antenna_ctrl_send_tx_ant_comb_to_bus();
+              else
+                antenna_ctrl_send_ant_data_to_bus();
+								
+							led_set_tx_ant(0,LED_STATE_OFF);
+							led_set_tx_ant(1,LED_STATE_ON);
+              display_handler_repaint();
+            }						
 					}
 				}
 			}
@@ -1271,7 +1663,7 @@ void event_tx_button4_pressed(void) {
 			}
   	}
   	
-	send_ping();
+    send_ping();
 	
   	main_update_ptt_status();
 	}

@@ -118,6 +118,9 @@ CDEFS += -DINTERNAL_COMM_TX_QUEUE_SIZE=$(INTERNAL_COMM_TX_QUEUE_SIZE)
 #Turn on debugging, this need to be used for any of the debug options below
 #CDEFS += -DDEBUG_COMPUTER_USART_ENABLED
 
+#Turn on debugging, this need to be used for any of the debug options below
+#CDEFS += -DTXRX_DEBUG_ENABLED
+
 #Turn on debug of the ethernet module
 #CDEFS += -DETHERNET_DEBUG_ENABLED
 

@@ -184,6 +184,7 @@ void band_ctrl_change_band(unsigned char band) {
 			status.selected_band = band;
 			status.new_band = band;
 			
+      led_set_txrx(LED_STATE_OFF);
 			led_set_band_none();
 			led_set_band(band);
 			
@@ -199,7 +200,12 @@ void band_ctrl_change_band(unsigned char band) {
       
       display_handler_new_view(DISPLAY_HANDLER_VIEW_ANTENNAS);
 
-			antenna_ctrl_deactivate_all_rx_band();
+			antenna_ctrl_disable_txrx_mode();
+
+      status.txrx_mode = 0;
+      status.function_status &= ~(1<<FUNC_STATUS_TXRX_MODE);
+
+      antenna_ctrl_deactivate_all_rx_band();
 			antenna_ctrl_deactivate_all();
 			band_ctrl_deactivate_all();
 		

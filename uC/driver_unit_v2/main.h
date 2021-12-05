@@ -28,32 +28,38 @@
 /*!Structure of the driver output status. It contains information of which address
  * an output was activated/deactivated from last and also it's status */
 typedef struct {
-	//! The address of the device that last changed the status of the output */
+  //! The address of the device that last changed the status of the output */
 	unsigned char driver_output_owner[20];	//The address of the last device to change the status
 	//! The type of message that activated the output
-	unsigned char driver_output_type[20];	
-	//! The address of the device that last changed the status of the output */
-	unsigned char driver_output_new_owner[20];	//The address of the last device to change the status
-	//! The type of message that activated the output
-	unsigned char driver_output_new_type[20];
-	//! The state of the driver output if it's high or low
+	unsigned char driver_output_type[20];
+  //! The state of the driver output if it's high or low
 	unsigned long driver_output_state;
+  //! The address of the device that last changed the status of the output */
+	unsigned char driver_output_owner_rx_comb[20];	//The address of the last device to change the status
+	//! The state of the driver output if it's high or low
+	unsigned long driver_output_state_rx_comb;
+  //! The address of the device that last changed the status of the output(TX/RX mode, RX state) */
+	unsigned char driver_output_owner_tx_comb[20];	//The address of the last device to change the status
+	//! The state of the driver output if it's high or low (RX state in TX/RX mode)
+	unsigned long driver_output_state_tx_comb;
+
+  
 	//! Flags
 	unsigned char flags;
 	//! PTT interlock input, byte1 = input 1, byte2 = input 2...byte7 = input 7
 	//! 0 = not active, If not 0 then the value does correspond to the address of the openASC box, so 5 for example
 	//! means address 5 corresponds to that ptt interlock input
 	unsigned char ptt_interlock_input[7];
+  //! TX/RX mode flag, set to 1 if its enabled, 0 if not.
+  unsigned char txrx_mode_enabled[7];
 } driver_status_struct;
-
- /*! Flag to indicate if the TX/RX mode is enabled */
- #define FLAG_TXRX_MODE_ENABLED	0
 
 //! Driver status for output OFF
 #define DRIVER_STATUS_OFF	0
 //! Driver status for output ON
 #define DRIVER_STATUS_ON	1
 
+void update_txrx_state(unsigned char index, unsigned char state);
 unsigned char get_ptt_interlock_input(unsigned char index);
 
 #endif

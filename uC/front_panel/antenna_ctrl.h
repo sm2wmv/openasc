@@ -172,4 +172,10 @@ unsigned char antenna_ctrl_get_rotator_sub_addr(unsigned char ant_index);
 void antenna_ctrl_set_antenna_to_rotate(unsigned char index);
 char antenna_ctrl_get_antenna_to_rotate(void);
 
+void antenna_ctrl_enable_txrx_mode(void);
+void antenna_ctrl_disable_txrx_mode(void);
+
+void antenna_ctrl_send_tx_ant_comb_to_bus(void);
+void antenna_ctrl_send_rx_ant_comb_to_bus(void);
+
 #endif
