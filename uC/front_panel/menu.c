@@ -259,7 +259,7 @@ void menu_show_text(struct_menu_text menu_text) {
     else if (status.amp_band == BAND_10M)
       strcpy_P(temp,PSTR("Band: 10m"));
 
-    sprintf(temp+strlen(temp)," S%i",status.amp_segment);
+    sprintf(temp+strlen(temp)," S%i - A:%i",status.amp_segment,status.amp_antenna_comb);
     
     glcd_text(MENU_OPTION_LEFT_POS,18+10+10+10,FONT_SEVEN_DOT,temp,strlen(temp));
   }

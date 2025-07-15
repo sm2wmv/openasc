@@ -69,6 +69,7 @@ static unsigned int ad_curr_val[3] = {0,0,0};
 
 main_struct_status main_status;
 main_struct_settings main_settings;
+main_struct_settings_old main_settings_old;
 
 unsigned char flag_start_tune;
 
@@ -169,8 +170,13 @@ void bus_parse_message(BUS_MESSAGE *bus_message) {
     if (ext_control_get_ptt_status() == 0) {
       if (main_status.mode == MODE_REMOTE) {
         if (main_status.amp_flags & (1<<AMP_STATUS_MAINS)) {
-          main_status.curr_band = bus_message->data[1];
-          main_status.curr_segment = bus_message->data[2];
+          //If the value for this field is 99 we know we don't need to change band or segment
+          if (bus_message->data[1] != 99)
+            main_status.curr_band = bus_message->data[1];
+          if (bus_message->data[2] != 99)
+            main_status.curr_segment = bus_message->data[2];
+
+          main_status.curr_ant_comb = bus_message->data[3];
           
           flag_start_tune = 1;
         }
@@ -230,14 +236,15 @@ void event_run(void) {
 
 void __inline__ send_amp_status(void) {
   if (main_status.parent_addr != 0) {
-    unsigned char message[5];
+    unsigned char message[6];
     message[0] = 0; //Sub addr
     message[1] = main_status.amp_flags;
     message[2] = main_status.amp_op_status;
     message[3] = main_status.curr_band;
     message[4] = main_status.curr_segment;
+    message[5] = main_status.curr_ant_comb;
     
-    bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 5, message);
+    bus_add_tx_message(bus_get_address(), main_status.parent_addr , (1<<BUS_MESSAGE_FLAGS_NEED_ACK), BUS_CMD_AMPLIFIER_GET_STATUS, 6, message);
     
     #ifdef DEBUG
       printf("BUS >> SENT STATUS MSG\n");
@@ -246,14 +253,15 @@ void __inline__ send_amp_status(void) {
 }
 
 void __inline__ broadcast_amp_status(void) {
-  unsigned char message[5];
+  unsigned char message[6];
   message[0] = 0; //Sub addr
   message[1] = main_status.amp_flags;
   message[2] = main_status.amp_op_status;
   message[3] = main_status.curr_band;
   message[4] = main_status.curr_segment;
+  message[5] = main_status.curr_ant_comb;
   
-  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR , 0, BUS_CMD_AMPLIFIER_GET_STATUS, 5, message);
+  bus_add_tx_message(bus_get_address(), BUS_BROADCAST_ADDR , 0, BUS_CMD_AMPLIFIER_GET_STATUS, 6, message);
   
   #ifdef DEBUG
     printf("BUS >> BROADCAST STATUS MSG\n");
@@ -285,13 +293,13 @@ void main_update_tune_sequence_status(unsigned char sequence_index) {
 void start_tune_amp(void) {
   //Check that PTT is not enabled
   if (ext_control_get_ptt_status() == 0) {
-    if ((main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR1_LIMIT_CW) && (main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] < MOTOR1_LIMIT_CCW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] > MOTOR2_LIMIT_CW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] <MOTOR2_LIMIT_CCW)) {
+    if ((main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb] > MOTOR1_LIMIT_CW) && (main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb] < MOTOR1_LIMIT_CCW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb] > MOTOR2_LIMIT_CW) && (main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb] <MOTOR2_LIMIT_CCW)) {
       main_status.tune_sequence_flags = (1<<TUNE_SEQUENCE_TUNE_DONE) | (0<<TUNE_SEQUENCE_LOAD_DONE) | (1<<TUNE_SEQUENCE_RELAY_DONE);
       main_status.amp_op_status = AMP_OP_STATUS_TUNING;
       
       ext_control_activate_band_relay(main_status.curr_band);
-      motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
-      motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+      motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb]);
+      motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb]);
       
       send_status_update = 1;
       
@@ -369,8 +377,8 @@ void event_handler_control_panel(unsigned int state) {
           printf("EVENT >> SAVE PRESSED\n");
         #endif
          
-        main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(0);
-        main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment] = motor_control_get_curr_pos(1);
+        main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb] = motor_control_get_curr_pos(0);
+        main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb] = motor_control_get_curr_pos(1);
         
         eeprom_write_block(&main_settings,(void *)1,sizeof(main_settings));
       }
@@ -382,10 +390,10 @@ void event_handler_control_panel(unsigned int state) {
           printf("EVENT >> RECALL PRESSED\n");
         #endif
           
-        motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
-        motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment]);
+        motor_control_goto(0,main_settings.tune_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb]);
+        motor_control_goto(1,main_settings.load_cap_pos[main_get_band_index(main_status.curr_band)][main_status.curr_segment][main_status.curr_ant_comb]);
 		
-		ext_control_activate_band_relay(main_status.curr_band);
+        ext_control_activate_band_relay(main_status.curr_band);
       }
     }
     
@@ -556,19 +564,34 @@ int main(void){
     printf("\n\r\n\rFinnPA control board started\n\r");
   #endif
 	
-  unsigned int motor_pos = 100;
+  unsigned int motor_pos =100;
   
   BUS_MESSAGE mess;
 
   unsigned int ext_control_state = 0;
 
-  eeprom_read_block(&main_settings,(void *)1,sizeof(main_settings));
+  //We keep the old settings in another location of the EEPROM just to be cautios
+
+  eeprom_read_block(&main_settings_old,(void *)1,sizeof(main_settings_old));
+
+  //First time we write the old EEPROM to all antenna combinations of the new
+  for (unsigned char tmp_band=0;tmp_band<6;tmp_band++)
+    for (unsigned char tmp_seg=0;tmp_seg<3;tmp_seg++)
+      for (unsigned char i=0;i<15;i++) {
+        main_settings.load_cap_pos[tmp_band][tmp_seg][i] = main_settings_old.load_cap_pos[tmp_band][tmp_seg];
+        main_settings.tune_cap_pos[tmp_band][tmp_seg][i] = main_settings_old.tune_cap_pos[tmp_band][tmp_seg];
+      }
+
+  eeprom_write_block(&main_settings,(void *)(10+sizeof(main_settings_old)),sizeof(main_settings));
+
+  eeprom_read_block(&main_settings,(void *)(10+sizeof(main_settings_old)),sizeof(main_settings));
   
   main_status.amp_op_status = AMP_OP_STATUS_OFF;
   main_status.amp_flags = 0;
   main_status.parent_addr = 0;
   main_status.curr_band = 0;
   main_status.curr_segment = 0;
+  main_status.curr_ant_comb = 0;
 
   ext_control_init();
   

@@ -344,6 +344,9 @@ typedef struct {
   unsigned char amp_band;
   /*! The amplifier operational status */
   unsigned char amp_op_status;
+	/*! The amplifier tuned antenna combination */
+	unsigned char amp_antenna_comb;
+
   /*! Mainboxes band info byte 0 = addr, byte 1 = current band, byte 2 = tx rx ant comb, byte 3 = rx ant & ptt status */
   unsigned char mainbox_status[MAINBOX_DEVICE_COUNT][4];
 } struct_status;

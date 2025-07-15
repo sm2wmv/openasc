@@ -376,11 +376,12 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
           temp[2] = 0;
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -412,11 +413,12 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
           temp[2] = 0;  // segment #1
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -432,11 +434,12 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
           temp[2] = 1;  // segment #2
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
 
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -452,11 +455,13 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
           temp[2] = 2;  // segment #3
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
 
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -472,11 +477,12 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
           temp[2] = 3;  // segment #4
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -492,11 +498,12 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
           temp[2] = 4;  // segment #5
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
 
         
@@ -513,11 +520,12 @@ void event_process_task(unsigned char task_index) {
         }
         
         if (amp_addr != 0) {
-          unsigned char temp[3];
+          unsigned char temp[4];
           temp[0] = amp_sub_addr;
           temp[1] = main_get_current_band();
-          temp[2] = 5;  // segment #6
-          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,3,temp);
+          temp[2] = 6;  // segment #6
+          temp[3] = antenna_ctrl_antenna_selected() & 0x0F;
+          bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
         }
         
         #ifdef DEBUG_COMPUTER_USART_ENABLED
@@ -562,6 +570,28 @@ void event_process_task(unsigned char task_index) {
 			}
 		}
 	}
+}
+
+void event_handler_amplifier_send_tx_ant(void) {
+  if (main_get_amp_ctrl_enabled()) {
+    if (amp_addr == 0) {
+      amp_addr = main_get_amp_addr();
+      amp_sub_addr = main_get_amp_sub_addr();
+    }
+
+    if (amp_addr != 0) {
+      unsigned char temp[4];
+      temp[0] = amp_sub_addr;
+      temp[1] = 99; //99 means this should not be changed
+      temp[2] = 99; //99 means this should not be changed
+      temp[3] = status.selected_ant & 0x0F;
+      bus_add_tx_message(bus_get_address(), amp_addr, (1<<BUS_MESSAGE_FLAGS_NEED_ACK) ,BUS_CMD_AMPLIFIER_TUNE,4,temp);
+    }
+
+    #ifdef DEBUG_COMPUTER_USART_ENABLED
+      printf("SENT TUNE CMD to: 0x%02X\n",amp_addr);
+    #endif
+  }
 }
 
 /*! \brief The pulse sensor was turned up */
@@ -1299,11 +1329,13 @@ void event_tx_button1_pressed(void) {
                 antenna_ctrl_send_tx_ant_comb_to_bus();
               else
                 antenna_ctrl_send_ant_data_to_bus();
-			
-							led_set_tx_ant(0,LED_STATE_OFF);
+
+              led_set_tx_ant(0,LED_STATE_OFF);
 							display_handler_repaint();
 						}
 					}
+
+          event_handler_amplifier_send_tx_ant();
 				}
 				else {
 					new_ant_comb |= (1<<0);
@@ -1311,11 +1343,11 @@ void event_tx_button1_pressed(void) {
 					if (antenna_ctrl_comb_allowed(new_ant_comb)) {
 						status.selected_ant = new_ant_comb;
 		
-              if (status.txrx_mode)
-                antenna_ctrl_send_tx_ant_comb_to_bus();
-              else
-                antenna_ctrl_send_ant_data_to_bus();
-							
+            if (status.txrx_mode)
+              antenna_ctrl_send_tx_ant_comb_to_bus();
+            else
+              antenna_ctrl_send_ant_data_to_bus();
+
 						led_set_tx_ant(1,LED_STATE_ON);
 						display_handler_repaint();
 					}
@@ -1333,6 +1365,8 @@ void event_tx_button1_pressed(void) {
 							display_handler_repaint();
 						}
 					}
+
+          event_handler_amplifier_send_tx_ant();
 				}
 			}
 			else {
@@ -1397,6 +1431,8 @@ void event_tx_button2_pressed(void) {
               display_handler_repaint();
 						}
 					}
+
+					event_handler_amplifier_send_tx_ant();
 				}
 				else {		
 					new_ant_comb |= (1<<1);
@@ -1427,19 +1463,24 @@ void event_tx_button2_pressed(void) {
 						}
 						else { //If the above antenna combination was not allowed, then we try to default to just the main antenna
 							status.selected_ant = new_ant_comb & 0xF1;
-			
+
               if (status.txrx_mode)
                 antenna_ctrl_send_tx_ant_comb_to_bus();
               else
                 antenna_ctrl_send_ant_data_to_bus();
-              
+
 							led_set_tx_ant(0,LED_STATE_OFF);
 							led_set_tx_ant(1,LED_STATE_ON);
               display_handler_repaint();
             }
+
+
 					}
+
+					event_handler_amplifier_send_tx_ant();
 				}
-			} else {
+			}
+			else {
 				status.antenna_to_rotate = 2;
 				status.function_status &= ~(1<<FUNC_STATUS_SELECT_ANT_ROTATE);
 				
@@ -1500,6 +1541,8 @@ void event_tx_button3_pressed(void) {
 							display_handler_repaint();
 						}
 					}
+
+					event_handler_amplifier_send_tx_ant();
 				}
 				else {
 					new_ant_comb |= (1<<2);
@@ -1541,6 +1584,8 @@ void event_tx_button3_pressed(void) {
               display_handler_repaint();
             }						
 					}
+
+					event_handler_amplifier_send_tx_ant();
 				}
 			}
 			else {
@@ -1604,6 +1649,8 @@ void event_tx_button4_pressed(void) {
 							display_handler_repaint();
 						}
 					}
+
+					event_handler_amplifier_send_tx_ant();
 				}
 				else {		
 					new_ant_comb |= (1<<3);
@@ -1645,7 +1692,9 @@ void event_tx_button4_pressed(void) {
               display_handler_repaint();
             }						
 					}
-				}
+
+          event_handler_amplifier_send_tx_ant();
+        }
 			}
 			else {
 				status.antenna_to_rotate = 4;
@@ -1887,6 +1936,10 @@ void event_bus_parse_message(BUS_MESSAGE bus_message) {
         status.amp_op_status = bus_message.data[2];
         status.amp_band = bus_message.data[3];
         status.amp_segment = bus_message.data[4];
+
+        //To be backwards compatible
+        if (bus_message.length > 5)
+          status.amp_antenna_comb = bus_message.data[5];
         
         main_update_ptt_status();
         main_update_status_field();

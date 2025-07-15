@@ -482,6 +482,10 @@ void main_update_ptt_status(void) {
       
       if (status.amp_band != status.selected_band)
         state = 3;
+
+			//Check so we have tuned to the correct antenna combination
+			if (status.amp_antenna_comb != (status.selected_ant & 0x0F))
+				state = 3;
     }
   }
 
@@ -733,6 +737,11 @@ int main(void){
 	status.rotator_step_resolution = 5;
   status.last_critical_cmd_state = 99;	
   status.curr_critical_cmd_state = 1;
+	status.amp_band = BAND_UNDEFINED;
+	status.amp_op_status = AMP_OP_STATUS_OFF;
+	status.amp_segment = 0;
+	status.amp_flags = 0;
+	status.amp_antenna_comb = 0;
   
   status.alarm_output = (1<<ALARM_OUTPUT_BIT);
   PORTB |= (1<<ALARM_OUTPUT_BIT);

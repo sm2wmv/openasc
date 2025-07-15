@@ -82,6 +82,9 @@
 void event_check_pings(void);
 void event_internal_comm_parse_message(struct_comm_interface_msg message);
 void __inline__ event_handler_process_ps2(unsigned char key_code);
+
+void event_handler_amplifier_send_tx_ant(void);
+
 void event_pulse_sensor_up(void);
 void event_pulse_sensor_down(void);
 

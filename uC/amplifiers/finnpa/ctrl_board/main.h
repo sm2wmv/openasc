@@ -78,6 +78,8 @@ typedef struct {
   unsigned char curr_band;
   /*! The current segment */
   unsigned char curr_segment;
+  /*! The current antenna combination */
+  unsigned char curr_ant_comb;
   /*! The parent address of the openASC unit controlling the amp */
   unsigned parent_addr;
   /*! Amplifier status flags */
@@ -91,6 +93,11 @@ typedef struct {
 typedef struct {
   unsigned int tune_cap_pos[6][3];
   unsigned int load_cap_pos[6][3];
+} main_struct_settings_old;
+
+typedef struct {
+  unsigned int tune_cap_pos[6][3][15];
+  unsigned int load_cap_pos[6][3][15];
 } main_struct_settings;
 
 void main_update_tune_sequence_status(unsigned char sequence_index);
