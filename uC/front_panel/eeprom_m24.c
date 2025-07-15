@@ -12,7 +12,6 @@
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
-//
 //    This program is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -214,11 +213,6 @@ unsigned char eeprom_m24_write_block(unsigned int start_address, unsigned int le
  *  \param data The memory area we wish to store the data to */
 unsigned char eeprom_m24_read_block(unsigned int start_address, unsigned int length, unsigned char *data) {
 //	if ((start_address & 0xFFC0) != ((start_address+length) & 0xFFC0)) 
-	unsigned char temp_addr[2];
-	
-	temp_addr[0] = ((start_address & 0xFF00) >> 8);
-	temp_addr[1] = start_address & 0x00FF;
-	
 	unsigned int current_address = start_address,last_address = start_address;
 	
 	unsigned char ptr_pos=0;

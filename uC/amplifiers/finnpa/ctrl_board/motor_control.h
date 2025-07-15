@@ -70,6 +70,8 @@ void __inline__ motor_control_step_motor1(void);
 void __inline__ motor_control_step_motor2(void);
 void __inline__ motor_control_step_motor3(void);
 
+void motor_control_check_out_of_bounds(void);
+
 void motor_control_stepper_turn_cw(unsigned char index);
 void motor_control_stepper_turn_ccw(unsigned char index);
 

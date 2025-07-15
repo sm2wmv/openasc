@@ -41,6 +41,9 @@ void ext_control_set_mains_off(void);
 
 void ext_control_activate_band_relay(unsigned char band);
 
+void ext_control_out_of_bounds_active(void);
+void ext_control_out_of_bounds_deactive(void);
+
 void ext_control_set_hv_on(void);
 void ext_control_set_hv_off(void);
 

@@ -29,6 +29,7 @@
 #include "a2d.h"
 #include "motor_control.h"
 #include "main.h"
+#include "ext_control.h"
 
 //! Variable which contains the current information of the stepper motor, positions etc
 static struct_stepper_motor stepper_motor[3];

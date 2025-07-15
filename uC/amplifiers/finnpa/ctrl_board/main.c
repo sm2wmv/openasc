@@ -564,8 +564,6 @@ int main(void){
     printf("\n\r\n\rFinnPA control board started\n\r");
   #endif
 	
-  unsigned int motor_pos =100;
-  
   BUS_MESSAGE mess;
 
   unsigned int ext_control_state = 0;

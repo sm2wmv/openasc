@@ -132,6 +132,7 @@ CFLAGS += -DBUS_RX_QUEUE_SIZE=$(BUS_RX_QUEUE_SIZE)
 CFLAGS += -DBUS_TX_QUEUE_SIZE=$(BUS_TX_QUEUE_SIZE)
 CFLAGS += -D__AVR_LIBC_DEPRECATED_ENABLE__
 CFLAGS += -D__PROG_TYPES_COMPAT__
+CFLAGS += -Wno-deprecated-declarations
 
 # Assembler flags.
 #  -Wa,...:   tell GCC to pass this to the assembler.

@@ -1,4 +1,4 @@
-/*! \file front_panel/sub_menu.c \brief Antenna sub menu functions
+	/*! \file front_panel/sub_menu.c \brief Antenna sub menu functions
  *  \ingroup front_panel_group
  *  \brief Antenna sub menu functions
  *  \author Mikael Larsmark, SM2WMV
@@ -56,7 +56,7 @@ struct_sub_menu_stack current_sub_menu_stack[4];
 unsigned char curr_option_selected[4] = {0,0,0,0};
 
 //! Array which we store the current devices which we have activated antenna outputs on
-unsigned char current_activated_sub_outputs[2][SUB_MENU_ARRAY_STR_SIZE];
+unsigned char current_activated_sub_outputs[4][SUB_MENU_ARRAY_STR_SIZE];
 
 //! How many devices we have activated antenna outputs on
 unsigned char current_activated_sub_outputs_length[4] = {0,0,0,0};

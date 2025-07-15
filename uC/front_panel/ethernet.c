@@ -439,7 +439,7 @@ void ethernet_send_data(unsigned char sock, unsigned char cmd, unsigned char len
 }
 
 unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned int buflen) {
-  unsigned int ptr,offaddr,realaddr,txsize,timeout;   
+  unsigned int ptr,offaddr,realaddr,txsize;//,timeout;
 
   #ifdef ETHERNET_DEBUG_ENABLED
     printf("ETH >> SEND SIZE: %i\n",buflen);
@@ -455,7 +455,7 @@ unsigned int ethernet_send(unsigned char sock,const unsigned char *buf, unsigned
   txsize=ethernet_spi_read(SO_TX_FSR);
   txsize=(((txsize & 0x00FF) << 8 ) + ethernet_spi_read(SO_TX_FSR + 1));
 
-  timeout = 0;
+  //timeout = 0;
   
   while (txsize < buflen) {
     txsize=ethernet_spi_read(SO_TX_FSR);
