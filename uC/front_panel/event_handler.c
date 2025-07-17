@@ -1008,7 +1008,6 @@ void __inline__ event_handler_set_ptt_status(void) {
 void event_rx_button1_pressed(void) {
 	clear_screensaver_timer();
   
-  if (status.function_status & (1<<FUNC_STATUS_TXRX_MODE)) {
     if ((main_get_inhibit_state() != INHIBIT_NOT_OK_TO_SEND_RADIO_TX) && ((runtime_settings.antenna_disabled[status.selected_band-1] & (1<<0)) == 0)) {
       if (antenna_ctrl_get_flags(0) & (1<<ANTENNA_EXIST_FLAG)) {
         

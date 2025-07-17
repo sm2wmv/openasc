@@ -96,8 +96,8 @@ typedef struct {
 } main_struct_settings_old;
 
 typedef struct {
-  unsigned int tune_cap_pos[6][3][15];
-  unsigned int load_cap_pos[6][3][15];
+  unsigned int tune_cap_pos[6][3][16];
+  unsigned int load_cap_pos[6][3][16];
 } main_struct_settings;
 
 void main_update_tune_sequence_status(unsigned char sequence_index);

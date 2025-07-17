@@ -575,10 +575,16 @@ int main(void){
   //First time we write the old EEPROM to all antenna combinations of the new
   for (unsigned char tmp_band=0;tmp_band<6;tmp_band++)
     for (unsigned char tmp_seg=0;tmp_seg<3;tmp_seg++)
-      for (unsigned char i=0;i<15;i++) {
+      for (unsigned char i=0;i<16;i++) {
         main_settings.load_cap_pos[tmp_band][tmp_seg][i] = main_settings_old.load_cap_pos[tmp_band][tmp_seg];
         main_settings.tune_cap_pos[tmp_band][tmp_seg][i] = main_settings_old.tune_cap_pos[tmp_band][tmp_seg];
       }
+
+  #ifdef DEBUG
+    printf("EEPROM START: %i\n\r", 10+sizeof(main_settings_old));
+    printf("EEPROM OLD SIZE: %i\n\r",sizeof(main_settings_old));
+    printf("EEPROM NEW SIZE: %i\n\r",sizeof(main_settings));
+  #endif
 
   eeprom_write_block(&main_settings,(void *)(10+sizeof(main_settings_old)),sizeof(main_settings));
 
